@@ -336,14 +336,18 @@ function Ranking() {
             ※ 점수 계산: 그룹 스터디 1회 = 개인 스터디 3회
           </Flex>
         )}
-        {tab === "스터디 랭킹" ? (
+        {isLoading ? (
+          <Box pos="relative" mt="80px">
+            <MainLoadingAbsolute size="sm" />
+          </Box>
+        ) : tab === "스터디 랭킹" ? (
           <Box>
             <RankingMembers users={sortedUsers} fieldName={fieldName} />
           </Box>
         ) : (
           <Box>
             <>
-              {tab !== "월간 활동 랭킹" || (sortedUsers && !isLoading) ? (
+              {sortedUsers && !isLoading ? (
                 <RankingMembers
                   users={tab === "월간 활동 랭킹" ? users2 : sortedUsers}
                   fieldName={fieldName}

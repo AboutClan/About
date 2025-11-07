@@ -35,7 +35,13 @@ function GatherDetail() {
 
   const setIsScrollAuto = useSetRecoilState(isScrollAutoState);
 
-  const { data: gather } = useGatherIDQuery(+id, { enabled: !!id });
+  const { data: gather } = useGatherIDQuery(+id, {
+    enabled: !!id,
+    onError() {
+      toast("info", "기간이 만료된 모임입니다.");
+      router.back();
+    },
+  });
 
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||

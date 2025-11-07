@@ -16,7 +16,7 @@ import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
 } from "../../libs/study/thumbnailCardLibs";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 export default function StudyList() {
   const { data: session } = useSession();
@@ -53,7 +53,7 @@ export default function StudyList() {
 
   return (
     <>
-      <Header title={dayjsToFormat(dayjs(date), "M월 D일 스터디")} />
+      <Header title="스터디" />
       <Slide>
         <Box mt={3}>
           {thumbnailCardInfoArr?.map((thumbnailCardInfo, idx) => (

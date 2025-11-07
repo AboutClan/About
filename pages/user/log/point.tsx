@@ -30,9 +30,9 @@ function UserLogSection() {
                 {userInfo?.point} Point
               </Box>
             </Box>
-            <Link href="/store">
+            <Link href="/user/point/charge">
               <Button colorScheme="mint" size="md">
-                <div>스토어로 이동하기</div>
+                <div>포인트 충전하기</div>
               </Button>
             </Link>
           </Flex>

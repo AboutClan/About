@@ -1,12 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
 import TabNav from "../../components/molecules/navs/TabNav";
 import { GATHER_REVIEW_RECEIVE, GATHER_REVIEW_WRITE } from "../../constants/keys/localStorage";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useFeedCntQuery } from "../../hooks/feed/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserGatherSection from "../../pageTemplates/user/UserGatherSection";
@@ -20,10 +18,7 @@ type Tab = "profile" | "gather" | "group";
 function UserPage() {
   const router = useRouter();
   const tabParam = router.query.tab as Tab;
-  const { data: session } = useSession();
-  const isGuest = session?.user.role === "guest";
   const { data: user } = useUserInfoQuery();
-  const typeToast = useTypeToast();
   const [section, setSection] = useState<Tab>("profile");
   const [isAlert, setIsAlert] = useState(false);
 
@@ -35,10 +30,6 @@ function UserPage() {
   }, [tabParam]);
 
   const handleClickTab = (type: Tab) => {
-    if (isGuest) {
-      typeToast("guest");
-      return;
-    }
     setSection(type);
   };
 

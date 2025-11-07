@@ -98,10 +98,10 @@ function StudyPageHeader() {
               h={6}
               mr={0.5}
               onClick={() => {
-                if (userInfo?.role === "guest") {
-                  typeToast("guest");
-                  return;
-                }
+                // if (userInfo?.role === "guest") {
+                //   typeToast("guest");
+                //   return;
+                // }
                 router.push(
                   { pathname: router.pathname, query: { ...router.query, modal: "location" } },
                   undefined,

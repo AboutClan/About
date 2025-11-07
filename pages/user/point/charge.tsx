@@ -79,7 +79,7 @@ function Charge() {
 
   return (
     <>
-      <Header title="정산 받기" />
+      <Header title="" />
       <Slide>
         <Box h="54px" />
         <RegisterOverview>
@@ -137,13 +137,18 @@ function Charge() {
           </Box>
         </>
       </Slide>
-      <BottomNav onClick={handleSubmit} text="완 료" isLoading={isLoading1 || isLoading2} />
+      <BottomNav
+        isActive={isChecked}
+        onClick={handleSubmit}
+        text="입금 완료"
+        isLoading={isLoading1 || isLoading2}
+      />
     </>
   );
 }
 const INFO_ARR = [
-  "완료 즉시 포인트가 충전됩니다.",
-  "입금 전에 '충전' 버튼을 누르면 불이익을 받을 수 있습니다. ",
+  "입금을 완료한 뒤에, [입금 완료] 버튼을 눌러주세요.",
+  "입금하지 않고 누르는 경우, 동아리에서 영구 제명됩니다.",
 ];
 
 export default Charge;

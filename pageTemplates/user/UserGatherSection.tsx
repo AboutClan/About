@@ -56,7 +56,11 @@ function UserGatherSection() {
 
   useEffect(() => {
     setIsLoading(true);
-    if (!gathers?.length || !userInfo) return;
+    if (!gathers || !userInfo) return;
+    if (gathers?.length === 0) {
+      setIsLoading(false);
+      return;
+    }
 
     const leftFunc = (hasReview: boolean, id: string, category: "gather" | "group") => {
       if (hasReview) {

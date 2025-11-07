@@ -123,14 +123,14 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
     infoArr: [
       {
         left: "일일 출석체크",
-        right: "+ 1 ~ 100 Point",
+        right: "+ 0 ~ 3000 Point",
       },
       {
         left: "스터디 매칭 신청",
-        right: "+ 50 Point",
+        right: "+ 100 Point",
       },
       {
-        left: "스터디 출석체크(알파벳)",
+        left: "스터디 출석체크",
         right: "+ 100 ~ 1,000 Point",
       },
       {
@@ -149,7 +149,6 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
         left: "모임 후기 올리기",
         right: "+ 2,000 Point",
       },
-
       {
         left: "좋아요 받기",
         right: "+ 2 Point",
