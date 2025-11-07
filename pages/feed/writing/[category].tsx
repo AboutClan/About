@@ -52,7 +52,7 @@ function FeedWritingPage() {
 
   const isOrganazier = (gather?.user as UserSimpleInfoProps)?._id === userInfo?._id;
 
-  const { mutate: updatePoint } = usePointSystemMutation("point");
+  const { mutate: updatePoint, isLoading: isLoading2 } = usePointSystemMutation("point");
   const { mutate, isLoading } = useFeedMutation({
     onSuccess() {
       const defaultValue = !isAnonymous ? 1000 : 200;
@@ -126,7 +126,7 @@ function FeedWritingPage() {
     <>
       <Header title="" rightPadding={8}>
         <Button
-          isDisabled={!watch().content || isLoading}
+          isDisabled={!watch().content || isLoading || isLoading2}
           variant="ghost"
           size="md"
           type="submit"

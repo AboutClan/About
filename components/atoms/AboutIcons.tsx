@@ -16,10 +16,11 @@ export function AboutIcon({
   isActive,
 }: {
   alphabet: Alphabet;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   isActive: boolean;
 }) {
-  const width = size === "sm" ? 32 : size === "md" ? 48 : size === "lg" ? 62 : null;
+  const width =
+    size === "xs" ? 20 : size === "sm" ? 32 : size === "md" ? 48 : size === "lg" ? 62 : null;
 
   return (
     <Flex

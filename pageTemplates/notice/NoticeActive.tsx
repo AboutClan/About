@@ -1,8 +1,8 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
-import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
+import { AboutIcon } from "../../components/atoms/AboutIcons";
 import { ActiveIcon } from "../../components/Icons/NoticeIcons";
 import { NOTICE_ACTIVE_LOG } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
@@ -35,16 +35,15 @@ function NoticeActive({ activeLogs }: INoticeActive) {
 
   const { mutate: interactionFriend } = useInteractionMutation("friend", "patch", {
     onSuccess() {
-      if (statusType === "approval") toast("success", "수락 완료 !");
-      if (statusType === "refusal") toast("success", "거절하였습니다.");
+      if (statusType === "approval") toast("success", "친구가 되었어요!");
+
       statusType = null;
       resetQueryData([NOTICE_ACTIVE_LOG]);
     },
   });
   const { mutate: interactionAlphabet } = useInteractionMutation("alphabet", "patch", {
     onSuccess() {
-      if (statusType === "approval") toast("success", "수락 완료 !");
-      if (statusType === "refusal") toast("success", "거절하였습니다.");
+      if (statusType === "approval") toast("success", "교환 완료!");
       statusType = null;
       resetQueryData([NOTICE_ACTIVE_LOG]);
     },
@@ -83,6 +82,8 @@ function NoticeActive({ activeLogs }: INoticeActive) {
           const type = item.type;
           const [name, message] = item.message.split("님");
           const alphabet = item?.sub?.split("/");
+          let text = message?.replace("알파벳 교환", "교환");
+          text = text?.replace("친구추가", "친구");
 
           return (
             <Item key={idx}>
@@ -94,28 +95,27 @@ function NoticeActive({ activeLogs }: INoticeActive) {
                 {type === "alphabet" && `(${alphabet[0]})`}
               </Name>
               <Content>
-                님{message} {type === "like" && <Point>+2 point</Point>}
+                님{text} {type === "like" && <Point>+2 point</Point>}
               </Content>
               {type === "alphabet" && (
                 <AlphabetWrapper style={{ marginRight: "var(--gap-2)" }}>
-                  <AlphabetIcon alphabet={alphabet[0] as Alphabet} isCircle={true} />
-                  <span>
-                    <i className="fa-solid fa-arrow-right" />
-                  </span>
-                  <AlphabetIcon alphabet={alphabet[1] as Alphabet} isCircle={true} />
+                  <AboutIcon alphabet={alphabet[0] as Alphabet} size="xs" isActive />
+                  <Box mx={1}>
+                    <ArrowIcon />
+                  </Box>
+                  <AboutIcon alphabet={alphabet[1] as Alphabet} size="xs" isActive />
                 </AlphabetWrapper>
               )}
               {type === "friend" || type === "alphabet" ? (
                 item.status === "pending" ? (
                   <FriendButtons>
                     <Button
-                      mx="var(--gap-1)"
+                      mr={2}
                       size="xs"
-                      border="1px solid var(--color-mint)"
-                      borderRadius="11px"
-                      fontSize="12px"
-                      fontWeight="700"
-                      mr="var(--gap-2)"
+                      border="var(--border)"
+                      borderColor="mint"
+                      borderRadius="12px"
+                      fontSize="10px"
                       variant="ghost"
                       color="var(--color-mint)"
                       onClick={() =>
@@ -130,11 +130,11 @@ function NoticeActive({ activeLogs }: INoticeActive) {
                       수락
                     </Button>
                     <Button
-                      fontSize="12px"
-                      border="1px solid var(--gray-700)"
-                      borderRadius="11px"
+                      fontSize="10px"
+                      border="1px solid var(--gray-600)"
+                      borderRadius="12px"
                       size="xs"
-                      color="var(--gray-700)"
+                      color="var(--gray-600)"
                       variant="ghost"
                       onClick={() =>
                         onClickFriendRequest(
@@ -151,9 +151,7 @@ function NoticeActive({ activeLogs }: INoticeActive) {
                 ) : item.status === "response" ? (
                   <Date>{item?.createdAt && getDateDiff(dayjs(item.createdAt))}</Date>
                 ) : (
-                  <FriendComplete>
-                    {item.status === "approval" ? "수락 완료" : "거절 완료"}
-                  </FriendComplete>
+                  <FriendComplete>{item.status === "approval" ? "수락" : "거절"}</FriendComplete>
                 )
               ) : (
                 <Date>{item?.createdAt && getDateDiff(dayjs(item.createdAt))}</Date>
@@ -163,6 +161,18 @@ function NoticeActive({ activeLogs }: INoticeActive) {
         })}
     </>
   );
+}
+
+function ArrowIcon() {
+  return <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="16px"
+    viewBox="0 -960 960 960"
+    width="16px"
+    fill="var(--gray-800)"
+  >
+    <path d="m233-440 75 75q11 12 11.5 28.5T308-308q-12 12-28 12t-28-12L108-452q-6-6-8.5-13T97-480q0-8 2.5-15t8.5-13l144-144q12-12 28-12t28 12q12 12 12 28.5T308-595l-75 75h494l-75-75q-11-12-11.5-28.5T652-652q12-12 28-12t28 12l144 144q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L708-308q-12 12-28 12t-28-12q-12-12-12-28.5t12-28.5l75-75H233Z" />
+  </svg>
 }
 
 const AlphabetWrapper = styled.div`
@@ -210,8 +220,8 @@ const Point = styled.span`
 const Date = styled.span`
   margin-left: auto;
   white-space: nowrap;
-  color: var(--gray-600);
-  font-size: 11px;
+  color: var(--gray-500);
+  font-size: 10px;
 `;
 
 const FriendButtons = styled.div`
@@ -221,9 +231,8 @@ const FriendButtons = styled.div`
 
 const FriendComplete = styled.span`
   margin-left: auto;
-  color: var(--gray-600);
-  font-weight: 500;
-  font-size: 12px;
+  color: var(--gray-500);
+  font-size: 10px;
 `;
 
 export default NoticeActive;

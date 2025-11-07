@@ -81,7 +81,7 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
         isDrawerUp
         setIsModal={onClose}
         isHideBottom
-        drawerOptions={{ footer: { text: "취소", func: onClose } }}
+        drawerOptions={{ footer: { text: "취 소", func: onClose } }}
         height={249}
         zIndex={800}
       >
