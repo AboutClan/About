@@ -14,10 +14,11 @@ import ProfileOverviewSkeleton from "./skeleton/ProfileOverviewSkeleton";
 
 interface IProfileOverview {
   user?: IUser;
-  groupCnt: number;
+
+  gatherCount: number;
 }
 
-function ProfileOverview({ user, groupCnt }: IProfileOverview) {
+function ProfileOverview({ user, gatherCount }: IProfileOverview) {
   const toast = useToast();
   const typeToast = useTypeToast();
   const { data: session } = useSession();
@@ -25,7 +26,7 @@ function ProfileOverview({ user, groupCnt }: IProfileOverview) {
   const isFriend = user?.friend.includes(session?.user.uid);
   const isGuest = session ? session.user.name === "guest" : false;
   return (
-    <Flex flexDir="column" my={4}>
+    <Flex flexDir="column" my={3}>
       {user ? (
         <>
           <Flex flexDir="column">
@@ -52,7 +53,7 @@ function ProfileOverview({ user, groupCnt }: IProfileOverview) {
               borderRadius="full"
               leftIcon={<ChatIcon />}
               border="var(--border)"
-              mt={3}
+              mt={2}
               w="max-content"
               size="sm"
               onClick={() => {
@@ -88,19 +89,24 @@ function ProfileOverview({ user, groupCnt }: IProfileOverview) {
               {user?.comment}
             </Box>
           </Flex>
-          <Flex justify="space-between" align="center" mt={5}>
+          <Flex justify="space-between" align="center" mt={6}>
             <Flex>
               <RelationItem>
                 <span>친구</span>
                 <span>{user?.friend?.length}</span>
               </RelationItem>
               <RelationItem>
-                <span>좋아요</span>
-                <span>{user?.like || 0}</span>
+                <span>모임</span>
+                <span>{gatherCount || 0}</span>
               </RelationItem>
               <RelationItem>
-                <span>소모임</span>
-                <span>{groupCnt || 0}</span>
+                <span>스터디</span>
+                <span>
+                  {Math.floor(
+                    (user.studyRecord.accumulationCnt * 3 + user.studyRecord.accumulationMinutes) /
+                      3,
+                  ) || 0}
+                </span>
               </RelationItem>
             </Flex>
             <Flex
@@ -152,20 +158,20 @@ function ProfileOverview({ user, groupCnt }: IProfileOverview) {
 
 const RelationItem = styled.div`
   width: max-content;
-  margin-right: 16px;
+  margin-right: 20px;
   text-align: center;
   display: flex;
   flex-direction: column;
 
   > span:first-child {
-    font-size: 10px;
+    font-size: 12px;
     color: var(--gray-600);
-    font-weight: light;
     margin-bottom: 8px;
   }
   > span:last-child {
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 12px;
+    color: var(--gray-800);
+    line-height: 20px;
   }
 `;
 

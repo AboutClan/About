@@ -15,13 +15,20 @@ import Textarea from "../../components/atoms/Textarea";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import {
+  GatherThumbnailCard,
+  GatherThumbnailCardProps,
+} from "../../components/molecules/cards/GatherThumbnailCard";
+import TabNav from "../../components/molecules/navs/TabNav";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useGatherCountQuery, useGatherMyStatusQuery } from "../../hooks/gather/queries";
 import { useGroupsTitleQuery } from "../../hooks/groupStudy/queries";
 import { useUserFriendMutation } from "../../hooks/user/mutations";
 import { useUserIdToUserInfoQuery, useUserReviewQuery } from "../../hooks/user/queries";
 import { useInteractionMutation } from "../../hooks/user/sub/interaction/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
+import { setGatherDataToCardCol } from "../../pageTemplates/home/HomeGatherCol";
 import DetailInfo from "../../pageTemplates/profile/DetailInfo";
 import ProfileOverview from "../../pageTemplates/profile/ProfileOverview";
 import UserReviewBar from "../../pageTemplates/user/UserReviewBar";
@@ -41,14 +48,25 @@ function ProfilePage() {
 
   const [modalType, setModalType] = useState<"add" | "remove" | "declare">(null);
   const setTransferUserName = useSetRecoilState(transferUserName);
+  const [tab, setTab] = useState<"후 기" | "모 임">("후 기");
+  const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
 
   const { data: user } = useUserIdToUserInfoQuery(userId as string, {
     enabled: !!userId,
   });
 
+  const { data: count } = useGatherCountQuery(userId, { enabled: !!userId });
+
   const { data } = useGroupsTitleQuery(userId, {
     enabled: !!userId,
   });
+
+  const { data: gatherData } = useGatherMyStatusQuery(0, userId, { enabled: !!userId });
+
+  useEffect(() => {
+    if (!gatherData) return;
+    setCardDataArr(setGatherDataToCardCol(gatherData, true));
+  }, [gatherData]);
 
   const { data: reviewArr } = useUserReviewQuery(user?.uid, {
     enabled: !!user?.uid,
@@ -153,7 +171,7 @@ function ProfilePage() {
       {user && (
         <>
           <Slide>
-            <ProfileOverview user={user as IUser} groupCnt={groups?.length} />
+            <ProfileOverview gatherCount={count} user={user as IUser}  />
           </Slide>
           <Slide isNoPadding>
             <Divider type={200} />
@@ -163,77 +181,70 @@ function ProfilePage() {
           </Slide>
           <Slide isNoPadding>
             <Divider type={200} />
-            <UserReviewBar user={user} />
-            {/* <Box mx={5} my={3} mt={5}>
-              <SectionHeader
-                title={`받은 매너 평가 ${reviewArr?.totalCnt || 0}`}
-                size="sm"
-                subTitle=""
-              >
-                <ButtonWrapper size="sm" onClick={() => typeToast("not-yet")}>
-                  <ShortArrowIcon dir="right" />
-                </ButtonWrapper>
-              </SectionHeader>
-            </Box> */}
-
-            {/* <Flex align="center" mx={5} fontSize="13px">
-              <Flex align="center" flex={1}>
-                <Avatar user={{ avatar: { type: 20, bg: 1 } }} size="xs1" />
-                <Box ml={2} mr={1}>
-                  최고예요 😘
-                </Box>
-                <Box fontWeight="bold">{reviewArr?.greatCnt || 0}</Box>
-              </Flex>
-              <Flex align="center" flex={1}>
-                <Avatar user={{ avatar: { type: 11, bg: 6 } }} size="xs1" />
-                <Box ml={2} mr={1}>
-                  좋아요 😉
-                </Box>
-                <Box fontWeight="bold">{reviewArr?.goodCnt}</Box>
-              </Flex>
-            </Flex> */}
-            <Box h="1px" my={3} bg="gray.100" />
-            <Box mt={5} mx={5} mb={0}>
-              <SectionHeader
-                title={`받은 모임 후기 ${reviewArr?.reviewArr?.length || ""}`}
-                size="sm"
-                subTitle=""
-              >
-                <ButtonWrapper size="sm" onClick={() => typeToast("not-yet")}>
-                  <ShortArrowIcon dir="right" />
-                </ButtonWrapper>
-              </SectionHeader>
-            </Box>
-            <Flex flexDir="column" minH="80px">
-              {reviewArr?.reviewArr?.map((item, idx) => (
-                <Flex key={idx} px={5} align="center" py={3} borderBottom="var(--border)">
-                  <Flex justify="center" alignSelf="flex-start" mr={2}>
-                    <Avatar user={{ avatar: { type: 15, bg: 0 } }} size="sm1" isLink={false} />
-                  </Flex>
-                  <Flex
-                    w="full"
-                    direction="column"
-                    fontSize="12px"
-                    lineHeight={1.6}
-                    justify="space-around"
+            <TabNav
+              tabOptionsArr={[
+                { text: "후 기", func: () => setTab("후 기") },
+                { text: "모 임", func: () => setTab("모 임") },
+              ]}
+              isFullSize
+              isBlack
+            />
+            {tab === "후 기" ? (
+              <>
+                <UserReviewBar user={user} />
+                <Box h="1px" my={3} bg="gray.100" />
+                <Box mt={5} mx={5} mb={0}>
+                  <SectionHeader
+                    title={`받은 모임 후기 ${reviewArr?.reviewArr?.length || ""}`}
+                    size="sm"
+                    subTitle=""
                   >
-                    <Flex w="full" justify="space-between" mb={1}>
-                      <Box fontWeight="bold" fontSize="13px" lineHeight="20px" color="gray.800">
-                        익명 {idx + 1}
-                      </Box>
+                    <ButtonWrapper size="sm" onClick={() => typeToast("not-yet")}>
+                      <ShortArrowIcon dir="right" />
+                    </ButtonWrapper>
+                  </SectionHeader>
+                </Box>
+                <Flex flexDir="column" minH="80px">
+                  {reviewArr?.reviewArr?.map((item, idx) => (
+                    <Flex key={idx} px={5} align="center" py={3} borderBottom="var(--border)">
+                      <Flex justify="center" alignSelf="flex-start" mr={2}>
+                        <Avatar user={{ avatar: { type: 15, bg: 0 } }} size="sm1" isLink={false} />
+                      </Flex>
+                      <Flex
+                        w="full"
+                        direction="column"
+                        fontSize="12px"
+                        lineHeight={1.6}
+                        justify="space-around"
+                      >
+                        <Flex w="full" justify="space-between" mb={1}>
+                          <Box fontWeight="bold" fontSize="13px" lineHeight="20px" color="gray.800">
+                            익명 {idx + 1}
+                          </Box>
+                        </Flex>
+                        <Box mb={2} as="p" fontWeight="light" fontSize="12px" lineHeight="18px">
+                          {item.message}
+                        </Box>{" "}
+                        <Flex h="16px" align="center" fontSize="10px" color="gray.600">
+                          <Box color="gray.600" fontWeight="500">
+                            {getDateDiff(dayjs(item.createdAt))}
+                          </Box>
+                        </Flex>
+                      </Flex>
                     </Flex>
-                    <Box mb={2} as="p" fontWeight="light" fontSize="12px" lineHeight="18px">
-                      {item.message}
-                    </Box>{" "}
-                    <Flex h="16px" align="center" fontSize="10px" color="gray.600">
-                      <Box color="gray.600" fontWeight="500">
-                        {getDateDiff(dayjs(item.createdAt))}
-                      </Box>
-                    </Flex>
-                  </Flex>
+                  ))}
                 </Flex>
-              ))}
-            </Flex>
+              </>
+            ) : (
+              <Box p={5}>
+                {cardDataArr?.map((cardData, idx) => (
+                  <Box mb="12px" key={idx}>
+                    <GatherThumbnailCard {...cardData} />
+                  </Box>
+                ))}
+              </Box>
+            )}
+            <Box h={10} />
           </Slide>
         </>
       )}

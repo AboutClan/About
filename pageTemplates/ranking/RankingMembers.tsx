@@ -18,28 +18,34 @@ const GIFT_MAP = {
   gold: [
     "배달의민족 10,000원권",
     "올리브영 10,000원권",
-    "다이소 10,000원권",
+    "스타벅스 기프티콘",
     "스타벅스 기프티콘",
     "베스킨라빈스 기프티콘",
   ],
-  silver: ["+ 5,000 Point", "+ 3,000 Point", "+ 2,000 Point", "+ 1,000 Point", "+ 1,000 Point"],
+  silver: ["+ 3,000 Point", "+ 2,000 Point", "+ 1,000 Point", "+ 1,000 Point", "+ 1,000 Point"],
   bronze: ["+ 3,000 Point", "+ 2,000 Point", "+ 1,000 Point", "+ 1,000 Point", "+ 1,000 Point"],
   temperature: [
-    "올리브영 10,000원권",
-    "스타벅스 기프티콘",
-    "스타벅스 기프티콘",
-    "베스킨라빈스 기프티콘",
-    "베스킨라빈스 기프티콘",
+    "+ 5,000 Point",
+    "+ 3,000 Point",
+    "+ 1,000 Point",
+    "+ 1,000 Point",
+    "+ 1,000 Point",
   ],
+  study: ["+ 5,000 Point", "+ 3,000 Point", "+ 1,000 Point", "+ 1,000 Point", "+ 1,000 Point"],
 };
 
 function RankingMembers({ users, fieldName }: IRankingMembers) {
   const { data: session } = useSession();
   const [giftContent, setGiftContent] = useState<{ title: string; text: string }>();
 
-  const onClickGift = (type: "gold" | "silver" | "bronze" | "temperature", idx: number) => {
+  const onClickGift = (
+    type: "gold" | "silver" | "bronze" | "temperature" | "study",
+    idx: number,
+  ) => {
     setGiftContent({
-      title: `${type === "temperature" ? "인기" : RANK_MAP[type]} 랭킹 ${idx + 1}위 상품`,
+      title: `${
+        type === "temperature" ? "인기" : type === "study" ? "스터디" : RANK_MAP[type]
+      } 랭킹 ${idx + 1}위 상품`,
       text: `${GIFT_MAP[type][idx]}`,
     });
   };
@@ -89,11 +95,11 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
               )}
               <Button
                 onClick={() =>
-                  onClickGift(fieldName === "monthScore" ? user.user.rank : "temperature", idx)
+                  onClickGift(fieldName === "monthScore" ? user.user.rank : fieldName, idx)
                 }
                 variant="unstyled"
               >
-                {idx < 5 && fieldName === "monthScore" && <GiftIcon />}
+                {idx < 5 && <GiftIcon />}
               </Button>
             </Flex>
           </Flex>

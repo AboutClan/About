@@ -26,6 +26,17 @@ export const useGatherQuery = (
     options,
   );
 
+export const useGatherCountQuery = (userId: string, options?: QueryOptions<number>) =>
+  useQuery<number, AxiosError>(
+    [GATHER_CONTENT, "groupCount", userId],
+    async () => {
+      const res = await axios.get<number>(`${SERVER_URI}/gather/count`, {
+        params: { userId },
+      });
+      return res.data;
+    },
+    options,
+  );
 export const useGatherGroupQuery = (id: string, options?: QueryOptions<IGather[]>) =>
   useQuery<IGather[], AxiosError>(
     [GATHER_CONTENT, "group", id],
@@ -49,12 +60,16 @@ export const useGroupFeedsQuery = (id: string, options?: QueryOptions<FeedProps[
     options,
   );
 
-export const useGatherMyStatusQuery = (cursor?: number, options?: QueryOptions<IGather[]>) =>
+export const useGatherMyStatusQuery = (
+  cursor?: number,
+  userId?: string,
+  options?: QueryOptions<IGather[]>,
+) =>
   useQuery<IGather[], AxiosError>(
-    [GATHER_CONTENT, "status", cursor],
+    [GATHER_CONTENT, "status", cursor, userId],
     async () => {
       const res = await axios.get<IGather[]>(`${SERVER_URI}/gather/status`, {
-        params: { cursor },
+        params: { cursor, userId },
       });
       return res.data;
     },
@@ -95,7 +110,7 @@ export const useGatherReviewOneQuery = (options?: QueryOptions<IGather>) =>
   useQuery<IGather, AxiosError, IGather>(
     [GATHER_CONTENT, "review"],
     async () => {
-      const res = await axios.get<IGather>(`${SERVER_URI}/gather/review`,);
+      const res = await axios.get<IGather>(`${SERVER_URI}/gather/review`);
       return res.data;
     },
     options,

@@ -211,13 +211,17 @@ function Ranking() {
   >();
 
   const { data: prizeData } = usePrizeQuery(0, "ranking");
-
+  console.log(5, prizeData);
   useEffect(() => {
     if (!prizeData) return;
 
     setTextArr(
       shuffleArray(prizeData)
-        ?.filter((props) => props.description.split(" ").includes("[골드]"))
+        ?.filter(
+          (props) =>
+            props.description.split(" ").includes("[골드]") ||
+            props.description.split(" ").includes("gold"),
+        )
         ?.slice(0, 5)
         ?.map((props) => ({
           name: props.winner.name,
@@ -225,7 +229,7 @@ function Ranking() {
         })),
     );
   }, [prizeData]);
-
+  console.log(23, textArr);
   return (
     <>
       <Header title="랭킹">

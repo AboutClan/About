@@ -76,7 +76,7 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
 
   return (
     <BlurredPart isBlur={isGuest} text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}>
-      <Flex flexDir="column" py={3}>
+      <Flex flexDir="column" py={2}>
         {itemMapping.map((item, idx) => (
           <Flex key={idx} fontSize="13px" fontWeight="semibold" py={2}>
             <Box w="64px" color="gray.500">
