@@ -69,7 +69,7 @@ export function GatherThumbnailCard({
   memberReview,
 }: GatherThumbnailCardProps) {
   const participantsMember = participants.filter(
-    (par) => par.user._id !== "65df1ddcd73ecfd250b42c89",
+    (par) => par.user?._id !== "65df1ddcd73ecfd250b42c89",
   );
 
   const has = !!(gatherReview || memberReview);
