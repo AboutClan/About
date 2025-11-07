@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -140,7 +140,7 @@ function Layout({ children }: ILayout) {
         }
 
         exitAppRef.current = true;
-        toast("warning", "뒤로가기 버튼을 한 번 더 누르면 종료됩니다!");
+        toast("warning", "뒤로가기 버튼을 한 번 더 누르면 종료됩니다.");
 
         setTimeout(() => {
           exitAppRef.current = false;
