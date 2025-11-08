@@ -93,7 +93,7 @@ export interface IUserSummary {
     cnt: number;
     sum?: number;
   };
-  telephone: string;
+  telephone?: string;
 }
 
 export interface IUserRegisterForm extends IUserRegisterFormWriting, TimeStampProps {
@@ -111,7 +111,7 @@ export interface IUserRegisterFormWriting {
   interests: { first: string; second?: string };
   majors: { department: string; detail: string }[];
   comment: string;
-  telephone: string;
+  telephone?: string;
   locationDetail: LocationDetailProps;
   introduceText?: string;
 }
