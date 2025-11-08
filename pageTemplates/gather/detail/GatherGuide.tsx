@@ -16,6 +16,7 @@ function GatherGuide({ isAdmin }: GatherGuideProps) {
           </Box>
           <InfoList
             items={[
+              "멤버 프로필에서 연락처를 확인할 수 있습니다.",
               "우측 상단 설정 버튼에서 다양한 기능을 확인할 수 있어요.",
               "모임 종료 후, 설정에서 불참 인원을 체크할 수 있습니다.",
               "불참자의 보증금은 포인트로 모임장에게 지급됩니다.",
@@ -33,6 +34,7 @@ function GatherGuide({ isAdmin }: GatherGuideProps) {
         </Box>
         <InfoList
           items={[
+            "모임 안내를 위해 모임장에게 연락처가 공개될 수 있습니다.",
             "참여 시 티켓 1장이 소모됩니다. (취소 시 자동 반환)",
             "모임 종료 후, 멤버 후기 평가를 할 수 있습니다.",
             "승인제 모임의 경우, 승인 여부는 모임장이 결정합니다.",

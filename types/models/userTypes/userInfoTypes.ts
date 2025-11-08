@@ -93,6 +93,7 @@ export interface IUserSummary {
     cnt: number;
     sum?: number;
   };
+  telephone: string;
 }
 
 export interface IUserRegisterForm extends IUserRegisterFormWriting, TimeStampProps {

@@ -1,3 +1,4 @@
+import { UserSimpleInfoProps } from "../models/userTypes/userInfoTypes";
 import { TimeStampProps } from "../utils/timeAndDate";
 
 export type InteractionType = "like" | "friend" | "alphabet";
@@ -12,6 +13,7 @@ export interface INoticeActiveLog extends IInteractionSendLike, TimeStampProps {
   type: InteractionType;
   sub?: string;
   status?: "pending" | "refusal" | "approval" | "response";
+  fromUser?: UserSimpleInfoProps;
 }
 
 export interface IInteractionLikeStorage {
@@ -20,4 +22,3 @@ export interface IInteractionLikeStorage {
 }
 
 export type CustomColor = "mint" | "orange" | "blue" | "gray";
-

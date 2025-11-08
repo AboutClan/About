@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 
 import { AboutIcon } from "../../components/atoms/AboutIcons";
-import { ActiveIcon } from "../../components/Icons/NoticeIcons";
+import Avatar from "../../components/atoms/Avatar";
 import { NOTICE_ACTIVE_LOG } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
@@ -87,9 +87,9 @@ function NoticeActive({ activeLogs }: INoticeActive) {
 
           return (
             <Item key={idx}>
-              <IconWrapper>
-                <ActiveIcon type={item.type} />
-              </IconWrapper>
+              <Box mr={2}>
+                <Avatar user={{ ...item?.fromUser }} size="xs1" />
+              </Box>
               <Name>
                 {name}
                 {type === "alphabet" && `(${alphabet[0]})`}
@@ -164,15 +164,17 @@ function NoticeActive({ activeLogs }: INoticeActive) {
 }
 
 function ArrowIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="16px"
-    viewBox="0 -960 960 960"
-    width="16px"
-    fill="var(--gray-800)"
-  >
-    <path d="m233-440 75 75q11 12 11.5 28.5T308-308q-12 12-28 12t-28-12L108-452q-6-6-8.5-13T97-480q0-8 2.5-15t8.5-13l144-144q12-12 28-12t28 12q12 12 12 28.5T308-595l-75 75h494l-75-75q-11-12-11.5-28.5T652-652q12-12 28-12t28 12l144 144q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L708-308q-12 12-28 12t-28-12q-12-12-12-28.5t12-28.5l75-75H233Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="16px"
+      viewBox="0 -960 960 960"
+      width="16px"
+      fill="var(--gray-800)"
+    >
+      <path d="m233-440 75 75q11 12 11.5 28.5T308-308q-12 12-28 12t-28-12L108-452q-6-6-8.5-13T97-480q0-8 2.5-15t8.5-13l144-144q12-12 28-12t28 12q12 12 12 28.5T308-595l-75 75h494l-75-75q-11-12-11.5-28.5T652-652q12-12 28-12t28 12l144 144q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L708-308q-12 12-28 12t-28-12q-12-12-12-28.5t12-28.5l75-75H233Z" />
+    </svg>
+  );
 }
 
 const AlphabetWrapper = styled.div`
@@ -188,13 +190,9 @@ const AlphabetWrapper = styled.div`
 const Item = styled.div`
   display: flex;
   align-items: center;
-  padding: var(--gap-3) var(--gap-5);
+  padding: var(--gap-2) var(--gap-5);
   font-size: 13px;
   border-bottom: 1px solid var(--gray-200);
-`;
-
-const IconWrapper = styled.div`
-  margin-right: var(--gap-2);
 `;
 
 const Name = styled.div`
@@ -206,7 +204,6 @@ const Content = styled.div`
   display: flex;
   align-items: center;
   white-space: nowrap;
-  height: 22px;
   margin-right: var(--gap-2);
 `;
 

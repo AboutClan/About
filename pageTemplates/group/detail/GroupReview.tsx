@@ -21,8 +21,10 @@ function GroupReview({ feeds }: GroupReviewProps) {
       <Box>
         {feeds?.length ? (
           (isOpen ? feeds : feeds.slice(0, 3))?.map((feed) => (
-            <FeedLayout key={feed.id} {...convertFeedToLayout(feed)} isSmall isRadius />
-        ))
+            <Box mb={2} key={feed.id}>
+              <FeedLayout {...convertFeedToLayout(feed)} isSmall isRadius />
+            </Box>
+          ))
         ) : (
           <>
             <Box color="gray.600" mb={40} as="p" fontSize="14px" mt={20} textAlign="center">
