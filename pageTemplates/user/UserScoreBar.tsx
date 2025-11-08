@@ -11,7 +11,7 @@ interface UserScoreBarProps {
 function UserScoreBar({ score }: UserScoreBarProps) {
   const userInfo = useUserInfo();
   const isGuest = userInfo?.role === "guest";
-  console.log(1, userInfo);
+
   return (
     <>
       <Flex mx={5} flexDir="column" my={3} py={2} pb={1} border="var(--border)" borderRadius="8px">

@@ -147,7 +147,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
     if (status === "agree") toast("success", "승인되었습니다.");
     else if (status === "refuse") toast("success", "거절했습니다.");
   };
-  console.log(gatherData.participants);
+
   return (
     <>
       <Header title="모임 정보" url="/gather">
@@ -183,9 +183,9 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             users={gatherData.participants.map((who) => ({
               user: who.user,
               text:
-                ((who?.user?.telephone?.length > 0 && who?.user?.telephone?.length < 14
+                (who?.user?.telephone?.length > 0 && who?.user?.telephone?.length < 14
                   ? who?.user?.telephone
-                  : decodeByAES256(who?.user?.telephone))) || "없음",
+                  : decodeByAES256(who?.user?.telephone)) || "없음",
             }))}
             handleDelete={(userId) => deleteUser({ userId })}
           />

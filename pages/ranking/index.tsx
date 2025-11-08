@@ -211,7 +211,7 @@ function Ranking() {
   >();
 
   const { data: prizeData } = usePrizeQuery(0, "ranking");
-  console.log(5, prizeData);
+
   useEffect(() => {
     if (!prizeData) return;
 
@@ -229,7 +229,7 @@ function Ranking() {
         })),
     );
   }, [prizeData]);
-  console.log(23, textArr);
+
   return (
     <>
       <Header title="랭킹">
@@ -318,7 +318,7 @@ function Ranking() {
           <WinnerTextSlider textArr={textArr} />
         </Box>
         <Box borderBottom="var(--border)" px={5}>
-          <TabNav tabOptionsArr={tabOptionsArr} isBlack isMain />
+          <TabNav tabOptionsArr={tabOptionsArr} isBlack isMain selected={tab} />
         </Box>
         {tab === "월간 활동 랭킹" ? (
           <Flex flex={1} justify="space-between" h="52px">

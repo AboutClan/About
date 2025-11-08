@@ -13,7 +13,7 @@ interface UserDeleteBoardProps {
 
 function UserDeleteBoard({ users, handleDelete }: UserDeleteBoardProps) {
   const [deleteUserId, setDeleteUserId] = useState<string>(null);
-  console.log(3, users);
+
   return (
     <>
       <Flex direction="column">
