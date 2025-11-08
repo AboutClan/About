@@ -10,8 +10,6 @@ interface UserScoreBarProps {
 
 function UserScoreBar({ score }: UserScoreBarProps) {
   const userInfo = useUserInfo();
-  const toast = useToast();
-  const typeToast = useTypeToast();
   const isGuest = userInfo?.role === "guest";
   console.log(1, userInfo);
   return (
@@ -20,40 +18,7 @@ function UserScoreBar({ score }: UserScoreBarProps) {
         <Box px={3}>
           <ProgressMark value={score} />
         </Box>
-        <Flex mt={2}>
-          <Button
-            pt={0.5}
-            pb={1.5}
-            px={2}
-            variant="unstyled"
-            color="var(--color-gray)"
-            ml="auto"
-            border="none"
-            w="max-content"
-            fontSize="10px"
-            lineHeight="14px"
-            rightIcon={
-              <Flex
-                transform="translateY(2.7px)"
-                alignItems="center"
-                justifyContent="center"
-                h="14px"
-              >
-                <RightIcon />
-              </Flex>
-            }
-            iconSpacing={0.5}
-            onClick={() => {
-              if (isGuest) {
-                typeToast("guest");
-              } else {
-                toast("info", "준비중");
-              }
-            }}
-          >
-            동아리 점수 가이드
-          </Button>
-        </Flex>
+        <BarButton isGuest={isGuest} />
       </Flex>
     </>
   );
@@ -61,7 +26,43 @@ function UserScoreBar({ score }: UserScoreBarProps) {
 
 export default UserScoreBar;
 
-function RightIcon() {
+export function BarButton({ isGuest }: { isGuest: boolean }) {
+  const toast = useToast();
+  const typeToast = useTypeToast();
+  return (
+    <Flex mt={2}>
+      <Button
+        pt={0.5}
+        pb={1.5}
+        px={2}
+        variant="unstyled"
+        color="var(--color-gray)"
+        ml="auto"
+        border="none"
+        w="max-content"
+        fontSize="10px"
+        lineHeight="14px"
+        rightIcon={
+          <Flex transform="translateY(2.7px)" alignItems="center" justifyContent="center" h="14px">
+            <BarRightIcon />
+          </Flex>
+        }
+        iconSpacing={0.5}
+        onClick={() => {
+          if (isGuest) {
+            typeToast("guest");
+          } else {
+            toast("info", "준비중");
+          }
+        }}
+      >
+        동아리 점수 가이드
+      </Button>
+    </Flex>
+  );
+}
+
+export function BarRightIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

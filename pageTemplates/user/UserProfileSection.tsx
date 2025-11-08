@@ -33,7 +33,9 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
         <UserPointBlock />
         <UserScoreBar score={user?.monthScore + 10} />
       </Box>
-      <UserReviewBar user={user} />
+      <Box borderBottom="var(--border)" pb={2}>
+        <UserReviewBar user={user} />
+      </Box>
       <UserCollection />
       <UserProfile />
       <UserInviteFriendSection />

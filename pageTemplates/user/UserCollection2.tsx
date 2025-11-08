@@ -56,7 +56,7 @@ export default function UserCollection() {
   const alphabetArr = alphabets?.collects;
 
   return (
-    <Flex direction="column" fontSize="16px" mt={5}>
+    <Flex direction="column" fontSize="16px" mt={2}>
       <Link
         href="/user/alphabet"
         onClick={

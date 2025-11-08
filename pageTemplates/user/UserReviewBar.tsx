@@ -1,15 +1,20 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 
 import Avatar from "../../components/atoms/Avatar";
 import { getTemperatureColor } from "../../components/molecules/SocialingScoreBadge";
+import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserReviewQuery } from "../../hooks/user/queries";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import { BarRightIcon } from "./UserScoreBar";
 
 interface UserReviewBarProps {
   user: IUser;
 }
 
 function UserReviewBar({ user }: UserReviewBarProps) {
+  const toast = useToast();
+  const typeToast = useTypeToast();
+  const isGuest = user?.role === "guest";
   const { data: reviewArr } = useUserReviewQuery(user?.uid, {
     enabled: !!user?.uid,
   });
@@ -58,6 +63,40 @@ function UserReviewBar({ user }: UserReviewBarProps) {
           </Box>
           <Box fontWeight="bold">{calculatePercent(reviewArr?.goodCnt)}%</Box>
         </Flex>
+      </Flex>
+      <Flex mt={2} mx={5}>
+        <Button
+          pt={0.5}
+          pb={1.5}
+          px={2}
+          variant="unstyled"
+          color="var(--color-gray)"
+          ml="auto"
+          border="none"
+          w="max-content"
+          fontSize="10px"
+          lineHeight="14px"
+          rightIcon={
+            <Flex
+              transform="translateY(2.7px)"
+              alignItems="center"
+              justifyContent="center"
+              h="14px"
+            >
+              <BarRightIcon />
+            </Flex>
+          }
+          iconSpacing={0.5}
+          onClick={() => {
+            if (isGuest) {
+              typeToast("guest");
+            } else {
+              toast("info", "준비중");
+            }
+          }}
+        >
+          소셜링 온도 혜택
+        </Button>
       </Flex>
     </>
   );

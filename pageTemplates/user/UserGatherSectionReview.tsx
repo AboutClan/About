@@ -38,6 +38,7 @@ function UserGatherSectionReview() {
           color="gray.700"
           onClick={() => {
             if (!feeds?.writtenReviewCnt) {
+              localStorage.setItem(GATHER_REVIEW_WRITE, 0 + "");
               toast("info", "작성한 후기가 없습니다.");
               return;
             }
@@ -80,6 +81,7 @@ function UserGatherSectionReview() {
           color="gray.700"
           onClick={() => {
             if (!feeds?.reviewReceived) {
+              localStorage.setItem(GATHER_REVIEW_RECEIVE, 0 + "");
               toast("info", "받은 후기가 없습니다.");
               return;
             }

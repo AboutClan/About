@@ -38,12 +38,15 @@ function UserPage() {
 
     const feedSumWriteSave = localStorage.getItem(GATHER_REVIEW_WRITE);
     const feedSumReceiveSave = localStorage.getItem(GATHER_REVIEW_RECEIVE);
+
     if (
       (feeds?.reviewReceived !== 0 || feeds?.writtenReviewCnt !== 0) &&
       (feeds?.reviewReceived !== +feedSumReceiveSave ||
         feeds?.writtenReviewCnt !== +feedSumWriteSave)
     ) {
       setIsAlert(true);
+    } else {
+      setIsAlert(false);
     }
   }, [feeds]);
 
