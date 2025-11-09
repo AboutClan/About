@@ -75,6 +75,13 @@ export const detectDevice = () => {
   }
 };
 
+export const detectDeviceFromGlobal = () => {
+  if (typeof window !== "undefined") {
+    return window?.AboutAppBridge?.platform || null;
+  }
+  return null;
+};
+
 export const detectAppDevice = () => {
   if (typeof navigator === "undefined") return null;
 
