@@ -182,7 +182,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
           <UserDeleteBoard
             users={gatherData.participants.map((who) => ({
               user: who.user,
-              text:
+              text:"a"+
                 safeDecodeTel(who?.user?.telephone) || (who?.user?.telephone?.toString() ?? "없음"),
             }))}
             handleDelete={(userId) => deleteUser({ userId })}
