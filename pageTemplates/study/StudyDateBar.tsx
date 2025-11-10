@@ -76,8 +76,8 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
           address: placeInfo?.location.address,
         },
         time: {
-          start: dayjs(),
-          end: dayjs().add(4, "hour"),
+          start: dayjs().hour(2),
+          end: dayjs().hour(6),
         },
         status: studyType === "soloRealTimes" ? "solo" : "participation",
       };
