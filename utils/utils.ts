@@ -24,7 +24,7 @@ const key = process.env.NEXT_PUBLIC_CRYPTO;
 export const decodeByAES256 = (encodedTel: string) => {
   try {
     // console.log(4, key);
-    // if (!key) return encodedTel;
+    if (!key) return encodedTel;
 
     const bytes = CryptoJS.AES.decrypt(encodedTel, key);
     const originalText = bytes.toString(CryptoJS.enc.Utf8);

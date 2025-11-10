@@ -183,9 +183,10 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             users={gatherData.participants.map((who) => ({
               user: who.user,
               text:
-                (who?.user?.telephone?.length > 0 && who?.user?.telephone?.length < 14
-                  ? who?.user?.telephone
-                  : decodeByAES256(who?.user?.telephone)) || "없음",
+                "2" +
+                  (who?.user?.telephone?.length > 0 && who?.user?.telephone?.length < 14
+                    ? who?.user?.telephone
+                    : decodeByAES256(who?.user?.telephone)) || "없음",
             }))}
             handleDelete={(userId) => deleteUser({ userId })}
           />

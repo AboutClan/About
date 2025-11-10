@@ -85,7 +85,7 @@ function StudyPageMap({
       lon: userInfo.locationDetail.longitude,
     };
     const zoom = mapOptions?.zoom || (isMapExpansion ? 11 : 13);
-  
+
     const options = getMapOptions(currentLocation || myLocation, zoom);
     setZoomNumber(zoom);
     setMapOptions(options);
@@ -206,14 +206,14 @@ function StudyPageMap({
   }, [isMapExpansion, filterType]);
 
   const handleMapClick = () => {
-    router.push(
-      { pathname: router.pathname, query: { ...router.query, modal: "map" } },
-      undefined,
-      {
-        shallow: true,
-      },
-    );
     if (!isMapExpansion) {
+      router.push(
+        { pathname: router.pathname, query: { ...router.query, modal: "map" } },
+        undefined,
+        {
+          shallow: true,
+        },
+      );
       setIsMapExpansion(true);
     }
   };
@@ -252,6 +252,15 @@ function StudyPageMap({
               isMapExpansion={isMapExpansion}
               onClose={() => {
                 if (onClose) {
+                  const { modal, ...restQuery } = router.query; // modal만 제외하고 나머지 유지
+                  console.log(modal);
+                  router.push({ pathname: router.pathname, query: restQuery }, undefined, {
+                    shallow: true,
+                  });
+
+                  if (isMapExpansion) {
+                    setIsMapExpansion(false); // 지도 확장 상태 해제
+                  }
                   onClose();
                 } else {
                   router.back();
