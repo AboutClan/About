@@ -19,7 +19,7 @@ export const getUserLocation = (onSuccess, onError) => {
   );
 };
 
-const key = process.env.NEXT_PUBLIC_CRYPTO;
+const key = "ESWwoYQplyTZN+vifnWcRA==";
 
 export const decodeByAES256 = (encodedTel: string) => {
   try {
