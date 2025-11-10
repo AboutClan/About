@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Box } from "@chakra-ui/react";
-import { useParams, useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -14,11 +14,14 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherGroupQuery, useGroupFeedsQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
+import GroupComments from "../../../pageTemplates/group/detail/GroupComment";
 import GroupContent from "../../../pageTemplates/group/detail/GroupContent";
 import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupOverview from "../../../pageTemplates/group/detail/GroupOverview";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
+import GroupReview from "../../../pageTemplates/group/detail/GroupReview";
+import GroupGathering from "../../../pageTemplates/group/GroupGathering";
 import { setGatherDataToCardCol } from "../../../pageTemplates/home/HomeGatherCol";
 import { backUrlState } from "../../../recoils/navigationRecoils";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
@@ -114,7 +117,7 @@ function GroupDetail() {
               text="정규 멤버"
               isPlanned={group.participants.length <= 3}
             />
-            {/* {group.participants.length >= 2 && (
+            {group.participants.length >= 2 && (
               <>
                 {group.participants.length > 3 &&
                   group?.participants?.filter((par) => par?.role === "member")?.length && (
@@ -133,11 +136,11 @@ function GroupDetail() {
                 <GroupGathering gatherData={gatherData} />
                 <GroupReview feeds={gatherFeeds} />
               </>
-            )} */}
+            )}
           </Box>
-          {/* {(group.comments.length || findMyInfo) && group.participants.length >= 2 && (
+          {(group.comments.length || findMyInfo) && group.participants.length >= 2 && (
             <GroupComments comments={group.comments} hasAutority={!!findMyInfo} />
-          )} */}
+          )}
         </Slide>
       )}
       {isAdmin && (
