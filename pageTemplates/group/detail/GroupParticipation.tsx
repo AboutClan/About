@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { IProfileCommentCard } from "../../../components/molecules/cards/ProfileCommentCard";
 import SocialingScoreBadge from "../../../components/molecules/SocialingScoreBadge";
 import ProfileCardColumn from "../../../components/organisms/ProfileCardColumn";
+import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
@@ -19,18 +20,18 @@ interface IGroupParticipation {
 
 function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipation) {
   const isSecret = data?.isSecret;
-
+  console.log("c", data);
   const [isOpen, setIsOpen] = useState(false);
 
   const userCardArr: IProfileCommentCard[] = data.participants
     .filter((par) => par.user.uid !== "3224546232")
-    .map((par) => {
+    .map((par, idx) => {
       const roleText = GROUP_STUDY_ROLE[par.role];
 
       if (isSecret) {
         return {
-          user: null,
-          comment: { comment: "익명으로 진행되는 소모임입니다." },
+          user: { ...SECRET_USER_SUMMARY, name: `익명 ${idx + 1}` },
+          comment: { comment: `비공개` },
           rightComponent: <ParticipateTime isFirst={true}>비공개</ParticipateTime>,
         };
       }
@@ -54,6 +55,7 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
       const bRank = rank[b.crownType as "main" | "sub"] ?? 2;
       return aRank - bRank;
     });
+
   return (
     <Layout>
       <Flex mb={2} fontSize="18px" lineHeight="28px" alignItems="flex-end">

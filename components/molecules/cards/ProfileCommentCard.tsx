@@ -52,7 +52,9 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
-
+  if (!user?.uid) {
+    console.log("W", user);
+  }
   return (
     <>
       <Flex py={2.5} align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>

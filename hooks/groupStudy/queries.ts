@@ -108,7 +108,8 @@ export const useGroupIdQuery = (groupStudyId?: string, options?: QueryOptions<IG
         params: { groupStudyId },
       });
 
-      return res.data;
+      const data = res.data;
+      return { ...data, participants: data?.participants?.filter((par) => !!par?.user?.uid) };
     },
     options,
   );
