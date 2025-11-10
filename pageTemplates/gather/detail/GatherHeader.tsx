@@ -26,7 +26,7 @@ import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../../utils/imageUtils";
-import { decodeByAES256 } from "../../../utils/utils";
+import { safeDecodeTel } from "../../../utils/utils";
 
 interface IGatherHeader {
   gatherData: IGather;
@@ -183,10 +183,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             users={gatherData.participants.map((who) => ({
               user: who.user,
               text:
-                "2" +
-                  (who?.user?.telephone?.length > 0 && who?.user?.telephone?.length < 14
-                    ? who?.user?.telephone
-                    : decodeByAES256(who?.user?.telephone)) || "없음",
+                safeDecodeTel(who?.user?.telephone) || (who?.user?.telephone?.toString() ?? "없음"),
             }))}
             handleDelete={(userId) => deleteUser({ userId })}
           />
