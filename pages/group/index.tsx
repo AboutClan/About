@@ -55,7 +55,7 @@ function GroupPage() {
   const [status, setStatus] = useState<Status>(statusParam ? enToStatus[statusParam] : "모집중");
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
 
-  const [cursor, setCursor] = useState(localStorageCursorNum);
+  const [cursor, setCursor] = useState(status === "모집중" ? localStorageCursorNum : 0);
   const [category, setCategory] = useState<GatherCategoryMain | "전체">("전체");
 
   const loader = useRef<HTMLDivElement | null>(null);
@@ -64,7 +64,7 @@ function GroupPage() {
   const { data: groups, isLoading } = useGroupQuery(
     status === "모집중" ? "pending" : status === "오픈 예정" ? "planned" : "end",
     category,
-    category === "전체" && status !== "오픈 예정" ? cursor : 0,
+    cursor,
     {
       enabled: !!status,
     },
@@ -100,7 +100,7 @@ function GroupPage() {
   }, []);
 
   useEffect(() => {
-    setCursor(localStorageCursorNum);
+    setCursor(status === "모집중" ? localStorageCursorNum : 0);
     setGroupStudies([]);
   }, [status, category]);
 
@@ -127,7 +127,7 @@ function GroupPage() {
                 : prevCursor === 3
                 ? 4
                 : 0;
-            if (nextCursor === localStorageCursorNum) {
+            if (status === "모집중" && nextCursor === localStorageCursorNum) {
               return prevCursor;
             }
 
