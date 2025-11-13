@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -54,7 +54,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const { mutate: sendRegisterForm, isLoading: isLoading2 } = useGroupWaitingMutation(+id, {
     onSuccess() {
-      toast("success", "대기 요청 완료! 이후 연락 예정.");
+      toast("success", "오픈 대기 완료! 오픈 후 알림이 발송됩니다.");
 
       queryClient.invalidateQueries([GROUP_STUDY, id]);
     },
