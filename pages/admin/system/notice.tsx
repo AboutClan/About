@@ -6,15 +6,22 @@ import Header from "../../../components/layouts/Header";
 import ButtonGroups from "../../../components/molecules/groups/ButtonGroups";
 import { useSendNotificationAllMutation } from "../../../hooks/FcmManger/mutations";
 
+const STUDY_ALERT = [
+  {
+    title: "이번주 카공 같이 할 사람? ✨",
+    description: "근처에 있는 멤버들이 스터디 기다리고 있어요! 지금 신청하고 같이 카공해요!",
+  },
+];
+
 function Notice() {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [tab, setTab] = useState(null);
 
   const { mutate } = useSendNotificationAllMutation("study");
-
+  console.log(3, STUDY_ALERT);
   const onSubmit = () => {
-    mutate({ title, description: text });
+    mutate(STUDY_ALERT[0]);
   };
 
   return (

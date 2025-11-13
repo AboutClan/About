@@ -62,17 +62,11 @@ function HomeGroupSection() {
           dragElastic={0.3}
           style={{ marginLeft: "20px", display: "flex", width: "100%", gap: "16px" }}
         >
-          <SlideSectionCol
-            title="About 취향저격 소모임"
-            subTitle="아는 사람만 아는, 그 취향 그대로"
-          >
-            <HomeGroupCol threeGroups={groups?.hobby2.slice(0, 3)} type="study1" />
+          <SlideSectionCol title="About 오픈 예정 소모임" subTitle="새로운 만남을 준비 중">
+            <HomeGroupCol threeGroups={groups?.waiting.slice(0, 3)} type="study1" />
           </SlideSectionCol>
-          <SlideSectionCol
-            title="About 취향저격 소모임"
-            subTitle="아는 사람만 아는, 그 취향 그대로"
-          >
-            <HomeGroupCol threeGroups={groups?.hobby2.slice(3, 6)} type="self" />
+          <SlideSectionCol title="About 오픈 예정 소모임" subTitle="새로운 만남을 준비 중">
+            <HomeGroupCol threeGroups={groups?.waiting.slice(3, 6)} type="self" />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>

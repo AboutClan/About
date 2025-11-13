@@ -2,7 +2,6 @@ import Slide from "../../components/layouts/PageSlide";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeGroupSection from "../../pageTemplates/home/HomeGroupSection";
-import HomeGroupSection2 from "../../pageTemplates/home/HomeGroupSection2";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
@@ -32,9 +31,9 @@ function Home() {
       <Slide>
         <HomeReviewSection />
       </Slide>{" "}
-      <Slide isNoPadding>
+      {/* <Slide isNoPadding>
         <HomeGroupSection2 />
-      </Slide>
+      </Slide> */}
       {/* <HomeGroupStudySection groups={data} /> */}
       {/* <HomeFooter /> */}
       {/* <Slide isNoPadding>
