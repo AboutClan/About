@@ -106,6 +106,7 @@ function GroupDetail() {
               content={group.content}
               rules={group.rules}
               hashTagString={group.hashTag}
+              isSecret={group.isSecret}
             />
             <GroupParticipation
               data={{
@@ -114,7 +115,7 @@ function GroupDetail() {
                   group?.participants?.filter((par) => par?.role !== "member"),
                 ),
               }}
-              text="정규 멤버"
+              text={group.participants?.length >= 3 ? "정규 멤버" : "오픈 대기 멤버"}
               isPlanned={group.participants.length <= 3}
             />
             {group.participants.length >= 2 && (

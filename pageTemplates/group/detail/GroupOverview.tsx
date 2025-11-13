@@ -28,7 +28,8 @@ function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverview
         infoBoxPropsArr={[
           {
             category: "인 원",
-            text: `총 ${group?.participants?.length}명`,
+            text:
+              group?.participants?.length >= 3 ? `총 ${group?.participants?.length}명` : `모집중`,
           },
           {
             category: "활 동",
@@ -37,7 +38,11 @@ function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverview
 
           {
             category: "단톡방",
-            rightChildren: <BlurredLink isBlur={!isMyGroup} url={group?.link} />,
+            rightChildren: group?.link ? (
+              <BlurredLink isBlur={!isMyGroup} url={group?.link} />
+            ) : (
+              <Box color="gray.600">개설 예정</Box>
+            ),
           },
         ]}
         size="md"

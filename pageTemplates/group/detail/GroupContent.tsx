@@ -5,17 +5,22 @@ interface GroupContentProps {
   content: string;
   rules: string[];
   hashTagString: string;
+  isSecret: boolean;
 }
 
-function GroupContent({ isResting, content, rules, hashTagString }: GroupContentProps) {
+function GroupContent({ isResting, content, rules, hashTagString, isSecret }: GroupContentProps) {
   return (
     <Flex direction="column">
       <Box px={5} mt={5}>
-        {isResting && (
+        {isResting ? (
           <Box fontSize="12px" mb={4} color="mint">
             ※ 현재 휴식중인 소모임입니다. 곧 활동 예정!
           </Box>
-        )}
+        ) : isSecret ? (
+          <Box fontSize="12px" mb={4} color="mint">
+            ※ 익명으로 활동하는 소모임입니다.
+          </Box>
+        ) : null}
         <Box
           color="gray.800"
           fontWeight="regular"

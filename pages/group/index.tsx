@@ -2,6 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
@@ -19,6 +20,7 @@ import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstan
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
 import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
+import { backUrlState } from "../../recoils/navigationRecoils";
 import { GroupStatus, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 import { getRandomImage } from "../../utils/imageUtils";
@@ -51,6 +53,8 @@ function GroupPage() {
   const categoryIdx = searchParams.get("category") || "0";
 
   const localStorageCursorNum = +localStorage.getItem(GROUP_CURSOR_NUM);
+
+  const setBackUrl = useSetRecoilState(backUrlState);
 
   const [status, setStatus] = useState<Status>(statusParam ? enToStatus[statusParam] : "모집중");
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
@@ -100,6 +104,9 @@ function GroupPage() {
   }, []);
 
   useEffect(() => {
+    if (status) {
+      setBackUrl(`/group?filter=${statusToEn[status]}`);
+    }
     setCursor(status === "모집중" ? localStorageCursorNum : 0);
     setGroupStudies([]);
   }, [status, category]);

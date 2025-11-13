@@ -8,6 +8,7 @@ import SocialingScoreBadge from "../../../components/molecules/SocialingScoreBad
 import ProfileCardColumn from "../../../components/organisms/ProfileCardColumn";
 import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
+import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
@@ -19,18 +20,27 @@ interface IGroupParticipation {
 }
 
 function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipation) {
+  const userInfo = useUserInfo();
   const isSecret = data?.isSecret;
-  console.log("c", data);
+  console.log("c", data, isPlanned);
   const [isOpen, setIsOpen] = useState(false);
 
+  const isMine = data?.organizer?._id === userInfo?._id;
+
   const userCardArr: IProfileCommentCard[] = data.participants
-    .filter((par) => par.user.uid !== "3224546232")
+    .filter((par) => (isSecret ? true : par.user.uid !== "3224546232"))
     .map((par, idx) => {
       const roleText = GROUP_STUDY_ROLE[par.role];
-
       if (isSecret) {
+        if (idx === 0) {
+          return {
+            user: { ...SECRET_USER_SUMMARY, name: `익명 (모임장)` },
+            comment: { comment: `비공개` },
+            rightComponent: <ParticipateTime isFirst={true}>비공개</ParticipateTime>,
+          };
+        }
         return {
-          user: { ...SECRET_USER_SUMMARY, name: `익명 ${idx + 1}` },
+          user: { ...SECRET_USER_SUMMARY, name: `익명 ${idx}` },
           comment: { comment: `비공개` },
           rightComponent: <ParticipateTime isFirst={true}>비공개</ParticipateTime>,
         };
@@ -60,7 +70,8 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
     <Layout>
       <Flex mb={2} fontSize="18px" lineHeight="28px" alignItems="flex-end">
         <Box mr={2} fontWeight="bold">
-          {text} {!isPlanned ? userCardArr?.length : "(오픈 대기중)"}
+          {text}{" "}
+          {userCardArr?.length >= 3 ? userCardArr.length : (isMine ? 1 : 6) + data?.waiting.length}
         </Box>
         {isTemp && (
           <Box ml="auto" mt="auto" fontSize="11px" color="mint" lineHeight={1}>
