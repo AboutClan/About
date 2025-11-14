@@ -90,6 +90,15 @@ export const usePointSystemQuery = (
     { ...options, staleTime: 0, cacheTime: 0 },
   );
 
+export const useMonthScoreLogQuery = (options?: QueryOptions<IPointLog[]>) =>
+  useQuery<IPointLog[], AxiosError, IPointLog[]>(
+    [USER_POINT_SYSTEM, "monthScore", "log"],
+    async () => {
+      const res = await axios.get<IPointLog[]>(`${SERVER_URI}/log/monthScore`);
+      return res.data;
+    },
+    { ...options, staleTime: 0, cacheTime: 0 },
+  );
 export const usePointSystemLogQuery = (
   category: "score" | "point" | "deposit",
   scopeQuery?: "all",

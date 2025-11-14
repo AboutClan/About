@@ -53,8 +53,8 @@ function PointGuideModalSubTitle({ type }: { type: PointGuideType }) {
     <Box mb={3}>
       {type === "store" ? (
         <>
-          동아리 활동을 통해 <b>포인트</b>를 획득할 수 있습니다.
-          <br /> <b>1포인트</b>는 <b>1원</b>과 동일한 가치를 가집니다.
+          동아리 활동을 통해 <b>포인트</b>를 적립할 수 있어요!
+          <br /> <b>100 포인트</b>는 현금 <b>100원</b>과 동일합니다.
         </>
       ) : (
         <>
@@ -76,23 +76,15 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
     infoArr: [
       {
         left: "스터디 매칭 신청",
-        right: "+ 50 Point",
+        right: "기본 100 Point",
       },
       {
-        left: "개인 스터디 참여",
-        right: "+ 30 Point",
+        left: "스터디 출석체크 (매칭)",
+        right: "최대 1,000 Point",
       },
       {
-        left: "카페 후기 작성",
-        right: "+ 100 Point",
-      },
-      {
-        left: "신규 카공 카페 등록",
-        right: "+ 100 Point",
-      },
-      {
-        left: "스터디 출석체크(알파벳)",
-        right: "+ 100 ~ 1,000 Point",
+        left: "개인 스터디 인증",
+        right: "최대 500 Point",
       },
       {
         left: "월간 스터디 랭킹 정산",
@@ -118,40 +110,39 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
   },
   store: {
     title: "포인트 획득 방법",
-    subTitle:
-      "동아리 활동을 통해 포인트를 획득할 수 있습니다. 1포인트는 1원과 동일한 가치를 가집니다.",
+    subTitle: "동아리 활동을 통해 포인트를 모을 수 있어요! 1포인트는 1원과 동일한 가치를 가집니다.",
     infoArr: [
       {
-        left: "일일 출석체크",
-        right: "+ 0 ~ 3000 Point",
-      },
-      {
         left: "스터디 매칭 신청",
-        right: "+ 100 Point",
+        right: "기본 100 Point",
       },
       {
-        left: "스터디 출석체크",
-        right: "+ 100 ~ 1,000 Point",
+        left: "스터디 출석체크 (매칭)",
+        right: "200 - 1,000 Point",
       },
       {
-        left: "카페 후기 작성",
-        right: "+ 100 Point",
+        left: "스터디 출석체크 (그외)",
+        right: "100 - 500 Point",
       },
       {
-        left: "신규 카페 등록",
-        right: "+ 100 Point",
+        left: "개인 공부 인증",
+        right: "50 - 500 Point",
       },
       {
-        left: "소모임 리뷰 작성",
-        right: "+ 200 Point",
+        left: "월간 랭킹 정산",
+        right: "1,000 - 5,000 Point",
       },
       {
-        left: "모임 후기 올리기",
-        right: "+ 2,000 Point",
+        left: "일일 출석체크 수집 보상",
+        right: "2,000 - 3000 Point",
       },
       {
-        left: "좋아요 받기",
-        right: "+ 2 Point",
+        left: "모임 개설 & 후기 작성",
+        right: "2,000 Point",
+      },
+      {
+        left: "모임장/서포터즈 정산",
+        right: "최대 70,000 Point",
       },
     ],
   },

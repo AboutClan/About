@@ -6,6 +6,7 @@ import { Fragment } from "react";
 
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
+import PointGuideModalButton from "../../../components/modalButtons/PointGuideModalButton";
 import IconRowBlock2 from "../../../components/molecules/IconRowBlock2";
 import { usePointSystemLogQuery, useUserInfoQuery } from "../../../hooks/user/queries";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -20,7 +21,9 @@ function UserLogSection() {
 
   return (
     <>
-      <Header title="포인트 기록" />
+      <Header title="포인트 기록">
+        <PointGuideModalButton type="store" />
+      </Header>
       <Slide isNoPadding>
         <Box px={5} mt={16}>
           <Flex align="center" justify="space-between">

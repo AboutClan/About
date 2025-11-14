@@ -5,7 +5,7 @@ interface ProgressMarkProps {
 }
 
 function ProgressMark({ value }: ProgressMarkProps) {
-  const type = value < 10 ? "first" : value < 30 ? "second" : "third";
+  const type = value < 10 ? "first" : value < 20 ? "second" : "third";
 
   return (
     <Box fontSize="8px" color="gray.800">

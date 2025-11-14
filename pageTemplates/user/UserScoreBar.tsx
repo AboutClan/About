@@ -1,14 +1,15 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
 import ProgressMark from "../../components/molecules/ProgressMark";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 
 interface UserScoreBarProps {
   score: number;
+  handleButton: () => void;
 }
 
-function UserScoreBar({ score }: UserScoreBarProps) {
+function UserScoreBar({ score, handleButton }: UserScoreBarProps) {
   const userInfo = useUserInfo();
   const isGuest = userInfo?.role === "guest";
 
@@ -18,7 +19,7 @@ function UserScoreBar({ score }: UserScoreBarProps) {
         <Box px={3}>
           <ProgressMark value={score} />
         </Box>
-        <BarButton isGuest={isGuest} />
+        <BarButton isGuest={isGuest} handleButton={handleButton} />
       </Flex>
     </>
   );
@@ -26,8 +27,13 @@ function UserScoreBar({ score }: UserScoreBarProps) {
 
 export default UserScoreBar;
 
-export function BarButton({ isGuest }: { isGuest: boolean }) {
-  const toast = useToast();
+export function BarButton({
+  isGuest,
+  handleButton,
+}: {
+  isGuest: boolean;
+  handleButton: () => void;
+}) {
   const typeToast = useTypeToast();
   return (
     <Flex mt={2}>
@@ -52,7 +58,7 @@ export function BarButton({ isGuest }: { isGuest: boolean }) {
           if (isGuest) {
             typeToast("guest");
           } else {
-            toast("info", "준비중");
+            handleButton();
           }
         }}
       >

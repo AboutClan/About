@@ -171,7 +171,7 @@ function ProfilePage() {
       {user && (
         <>
           <Slide>
-            <ProfileOverview gatherCount={count} user={user as IUser}  />
+            <ProfileOverview gatherCount={count} user={user as IUser} />
           </Slide>
           <Slide isNoPadding>
             <Divider type={200} />
@@ -192,7 +192,7 @@ function ProfilePage() {
             {tab === "후 기" ? (
               <>
                 <UserReviewBar user={user} />
-                <Box h="1px" my={3} bg="gray.100" />
+                <Box h="1px" my={3} mt={4} bg="gray.100" />
                 <Box mt={5} mx={5} mb={0}>
                   <SectionHeader
                     title={`받은 모임 후기 ${reviewArr?.reviewArr?.length || ""}`}

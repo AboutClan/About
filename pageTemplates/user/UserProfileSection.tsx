@@ -1,6 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
@@ -20,25 +22,82 @@ import UserProfile from "./UserProfile2";
 import UserProfileBar from "./UserProfileBar";
 import UserReviewBar from "./UserReviewBar";
 import UserScoreBar from "./UserScoreBar";
+import UserScoreGuideDrawer from "./UserScoreGuideDrawer";
+import UserSocialGuideDrawer from "./UserSocialGuideDrawer";
 
 interface UserProfileSectionProps {
   user: IUser;
 }
 
+type ModalType = "score" | "temperature";
+
 function UserProfileSection({ user }: UserProfileSectionProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const modalParam = searchParams.get("modal") as ModalType;
+  const [modalType, setModalType] = useState<ModalType>();
+
+  useEffect(() => {
+    if (!modalParam) {
+      setModalType(null);
+    } else {
+      setModalType(modalParam);
+    }
+  }, [modalParam]);
+
   return (
     <>
       <Box borderBottom="var(--border)">
         <UserProfileBar user={user} />
         <UserPointBlock />
-        <UserScoreBar score={user?.monthScore + 10} />
+        <UserScoreBar
+          score={user?.monthScore}
+          handleButton={() => {
+            router.push(
+              { pathname: router.pathname, query: { ...router.query, modal: "score" } },
+              undefined,
+              {
+                shallow: true,
+              },
+            );
+            setModalType("score");
+          }}
+        />
       </Box>
       <Box borderBottom="var(--border)" pb={2}>
-        <UserReviewBar user={user} />
+        <UserReviewBar
+          user={user}
+          handleButton={() => {
+            router.push(
+              { pathname: router.pathname, query: { ...router.query, modal: "temperature" } },
+              undefined,
+              {
+                shallow: true,
+              },
+            );
+            setModalType("temperature");
+          }}
+        />
       </Box>
       <UserCollection />
       <UserProfile />
-      <UserInviteFriendSection />
+      <UserInviteFriendSection />{" "}
+      {modalType === "score" && (
+        <UserScoreGuideDrawer
+          onClose={() => {
+            router.back();
+            setModalType(null);
+          }}
+        />
+      )}
+      {modalType === "temperature" && (
+        <UserSocialGuideDrawer
+          onClose={() => {
+            router.back();
+            setModalType(null);
+          }}
+        />
+      )}
     </>
   );
 }

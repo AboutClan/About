@@ -116,7 +116,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
             <br />
             매번{" "}
             <Box as="b" color="inherit">
-              최대 500원
+              최대 1,000원
             </Box>{" "}
             적립
           </Box>
@@ -149,7 +149,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
             <br />
             매번{" "}
             <Box as="b" color="inherit">
-              최대 200원
+              최대 500원
             </Box>{" "}
             적립
           </Box>
