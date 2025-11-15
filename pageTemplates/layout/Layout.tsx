@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -114,34 +114,6 @@ function Layout({ children }: ILayout) {
       }
     });
   }, []);
-
-  useEffect(() => {
-    const pathArr = pathname?.split("/");
-    const firstPath = pathArr?.[1];
-    const secondPath = pathArr?.[2];
-    const prevPath = router?.query?.path;
-    if (firstPath === "study" && secondPath !== "writing") {
-      if (prevPath === "home") {
-        router.replace("/home");
-      } else {
-        router.replace(`/studyPage?date=${getTodayStr()}`);
-      }
-    }
-    if (firstPath === "gather" && secondPath && secondPath !== "writing") {
-      if (prevPath === "home") {
-        router.replace("/home");
-      } else {
-        router.replace(`/gather`);
-      }
-    }
-    if (firstPath === "group" && secondPath && secondPath !== "writing") {
-      if (prevPath === "home") {
-        router.replace("/home");
-      } else {
-        router.replace(`/group`);
-      }
-    }
-  }, [router]);
 
   const exitAppRef = useRef<boolean>(false);
   useEffect(() => {
