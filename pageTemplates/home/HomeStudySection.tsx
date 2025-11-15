@@ -36,8 +36,12 @@ function HomeStudySection() {
       setThumbnailCardinfoArr(null);
       return;
     }
-    const getThumbnailCardInfoArr = setStudyThumbnailCard(dayjsToStr(dayjs()), studySet, null, () =>
-      setBackUrl("/home"),
+    const getThumbnailCardInfoArr = setStudyThumbnailCard(
+      dayjsToStr(dayjs()),
+      studySet,
+      null,
+      () => setBackUrl("/home"),
+      true,
     );
     setThumbnailCardinfoArr(sortThumbnailCardInfoArr("날짜순", getThumbnailCardInfoArr, null));
   }, [studySet]);

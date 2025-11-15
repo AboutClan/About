@@ -20,6 +20,7 @@ export const setStudyThumbnailCard = (
   studySet: StudySetProps,
   myId: string,
   func?: () => void,
+  pathHome?: boolean,
 ): StudyThumbnailCardProps[] => {
   const { participations, openRealTimes, soloRealTimes, results } = studySet;
 
@@ -42,7 +43,7 @@ export const setStudyThumbnailCard = (
         _id: "",
       },
       participants: soloRealTimes?.flatMap((par) => par.study.members.map((member) => member.user)),
-      url: `/study/realTime/${date}?type=soloRealTimes`,
+      url: `/study/realTime/${date}?type=soloRealTimes` + (pathHome ? "&path=home" : ""),
       studyType: "soloRealTimes",
       isMyStudy: false,
       func,
@@ -63,7 +64,7 @@ export const setStudyThumbnailCard = (
         _id: "",
       },
       participants: shortenParticipations(participations).map((par) => par.user),
-      url: `/study/participations/${date}?type=participations`,
+      url: `/study/participations/${date}?type=participations` + (pathHome ? "&path=home" : ""),
       studyType: "participations",
       isMyStudy: false,
       func,
@@ -115,7 +116,9 @@ export const setStudyThumbnailCard = (
         _id: placeInfo._id,
       },
       participants: study.members.map((att) => att.user),
-      url: `/study/${placeInfo._id}/${data.date}?type=${data.study.status}`,
+      url:
+        `/study/${placeInfo._id}/${data.date}?type=${data.study.status}` +
+        (pathHome ? "&path=home" : ""),
       studyType: data.study.status,
       isMyStudy: study.members.map((member) => member.user._id).includes(myId),
       isFutureDate: dayjs(data.date).hour(9).isAfter(dayjs()),

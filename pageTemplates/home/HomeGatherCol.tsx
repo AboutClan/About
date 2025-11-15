@@ -38,7 +38,7 @@ export default function HomeGatherCol({ gathers, isPriority }: HomeGatherColProp
       {cardDataArr?.length ? (
         <Flex direction="column">
           {cardDataArr.map((cardData, idx) => (
-            <GatherThumbnailCard key={idx} {...cardData} />
+            <GatherThumbnailCard key={idx} {...cardData} homePath />
           ))}
         </Flex>
       ) : (

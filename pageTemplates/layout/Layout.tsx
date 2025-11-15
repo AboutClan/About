@@ -13,6 +13,7 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
@@ -114,6 +115,34 @@ function Layout({ children }: ILayout) {
     });
   }, []);
 
+  useEffect(() => {
+    const pathArr = pathname?.split("/");
+    const firstPath = pathArr?.[1];
+    const secondPath = pathArr?.[2];
+    const prevPath = router?.query?.path;
+    if (firstPath === "study" && secondPath !== "writing") {
+      if (prevPath === "home") {
+        router.replace("/home");
+      } else {
+        router.replace(`/studyPage?date=${getTodayStr()}`);
+      }
+    }
+    if (firstPath === "gather" && secondPath && secondPath !== "writing") {
+      if (prevPath === "home") {
+        router.replace("/home");
+      } else {
+        router.replace(`/gather`);
+      }
+    }
+    if (firstPath === "group" && secondPath && secondPath !== "writing") {
+      if (prevPath === "home") {
+        router.replace("/home");
+      } else {
+        router.replace(`/group`);
+      }
+    }
+  }, [router]);
+
   const exitAppRef = useRef<boolean>(false);
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -130,6 +159,33 @@ function Layout({ children }: ILayout) {
     };
 
     const handleBackAction = () => {
+      if (!router?.query?.modal) {
+        const pathArr = pathname?.split("/");
+        const firstPath = pathArr?.[1];
+        const secondPath = pathArr?.[2];
+        const prevPath = router?.query?.path;
+        if (firstPath === "study" && secondPath !== "writing") {
+          if (prevPath === "home") {
+            router.replace("/home");
+          } else {
+            router.replace(`/studyPage?date=${getTodayStr()}`);
+          }
+        }
+        if (firstPath === "gather" && secondPath && secondPath !== "writing") {
+          if (prevPath === "home") {
+            router.replace("/home");
+          } else {
+            router.replace(`/gather`);
+          }
+        }
+        if (firstPath === "group" && secondPath && secondPath !== "writing") {
+          if (prevPath === "home") {
+            router.replace("/home");
+          } else {
+            router.replace(`/group`);
+          }
+        }
+      }
       if (
         BASE_BOTTOM_NAV_SEGMENT.map((item) => "/" + item).includes(pathname) &&
         !router.query?.modal

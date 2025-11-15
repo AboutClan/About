@@ -41,6 +41,7 @@ export interface GatherThumbnailCardProps {
     isCompleted: boolean;
     handleBtn: () => void;
   };
+  homePath?: boolean;
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -67,6 +68,7 @@ export function GatherThumbnailCard({
   gatherType,
   gatherReview,
   memberReview,
+  homePath,
 }: GatherThumbnailCardProps) {
   const participantsMember = participants.filter(
     (par) => par.user?._id !== "65df1ddcd73ecfd250b42c89",
@@ -77,7 +79,11 @@ export function GatherThumbnailCard({
   const statusProps = STATUS_TO_BADGE_PROPS[dayjs(date).isBefore(dayjs()) ? "expired" : status];
 
   return (
-    <CardLink href={`/${"gather"}/${id}`} has={has ? "true" : "false"} onClick={func}>
+    <CardLink
+      href={`/${"gather"}/${id}` + (homePath ? "?path=home" : "")}
+      has={has ? "true" : "false"}
+      onClick={func}
+    >
       <Flex justify="space-between">
         <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
         <Flex direction="column" ml="12px" flex={1}>

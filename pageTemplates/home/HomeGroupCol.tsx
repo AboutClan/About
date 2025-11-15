@@ -64,6 +64,7 @@ export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupCo
                   key={idx}
                   isBig={false}
                   {...createGroupThumbnailProps(group, status, idx, () => handleClick(), false)}
+                  homePath
                 />
               );
             })}

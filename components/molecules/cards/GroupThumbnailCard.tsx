@@ -32,6 +32,7 @@ export interface GroupThumbnailCardProps {
   waitingCnt?: number;
   isBig?: boolean;
   isFree: boolean;
+  homePath?: boolean;
 }
 
 export function GroupThumbnailCard({
@@ -47,6 +48,7 @@ export function GroupThumbnailCard({
   waitingCnt,
   isBig = true,
   isFree,
+  homePath,
 }: GroupThumbnailCardProps) {
   const statusToBadgeProps: Record<GroupStatus, { text: string; colorScheme: string }> = {
     imminent: { text: `마감까지 ${maxCnt - participants.length}명`, colorScheme: "red" },
@@ -58,7 +60,7 @@ export function GroupThumbnailCard({
   };
 
   return (
-    <CardLink href={`/group/${id}`} onClick={func}>
+    <CardLink href={`/group/${id}` + (homePath ? "?path=home" : "")} onClick={func}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
         <Flex mb={1} justify="space-between" align="center">
