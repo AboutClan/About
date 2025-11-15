@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
-import AlertModal from "../../../components/AlertModal";
 import { Input } from "../../../components/atoms/Input";
 import BottomButtonNav from "../../../components/molecules/BottomButtonNav";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
@@ -22,6 +21,7 @@ import {
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherExpireModal from "../../../modals/gather/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "../../../modals/gather/gatherExpireModal/GatherReviewDrawer";
+import { ModalLayout } from "../../../modals/Modals";
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { FeedProps } from "../../../types/models/feed";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
@@ -203,7 +203,9 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
         text: "참여 취소",
         type: "red",
         isReverse: true,
-        handleFunction: () => (diffDate < 2 ? setIsCancelModal(true) : cancel()),
+        handleFunction: () => {
+          diffDate < 2 ? setIsCancelModal(true) : cancel();
+        },
       };
     }
 
@@ -260,7 +262,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
   };
 
   const { text = "", handleFunction, type, isEnd = false, isReverse = false } = getButtonSettings();
-
+  console.log(1, handleFunction);
   useEffect(() => {
     if (value === data?.password) {
       participate({ phase: "first", isFree: true });
@@ -443,40 +445,44 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
         />
       )}
       {isCancelModal && (
-        <AlertModal
-          options={{
-            title: "정말 참여를 취소하시겠어요?",
-            text: "참여 취소",
-            defaultText: "닫 기",
-            func: () => handleFunction(),
+        <ModalLayout
+          title="모임 참여 취소"
+          footerOptions={{
+            main: { text: "참여 취소", func: () => cancel() },
+            sub: { text: "닫기" },
+            colorType: "red",
           }}
-          setIsModal={setIsCancelModal}
+          setIsModal={() => setIsCancelModal(false)}
         >
-          <Box as="li" textAlign="start">
-            {diffDate === 1 ? (
-              <>
-                <Box as="b" color="red">
-                  하루 전
-                </Box>
-                으로 보증금이 1,000원만 반환됩니다.
-              </>
+          <Box mb={5}>
+            {diffDate === 2 ? (
+              <u>모임 이틀 전으로, 보증금이 100% 반환됩니다.</u>
+            ) : diffDate === 1 ? (
+              <u>하루 전 불참은 보증금이 50%만 반환됩니다.</u>
             ) : (
-              <>
-                <Box as="b" color="red">
-                  당일 불참
-                </Box>
-                으로 보증금이 반환되지 않습니다.
-              </>
+              <u>당일 불참은 보증금이 반환되지 않습니다.</u>
             )}{" "}
+            {diffDate !== 2 && (
+              <>
+                <br />
+                사전에 협의된 특별한 사정이 있다면, <br />
+                모임장님에게 내보내기를 요청해주세요.
+              </>
+            )}
           </Box>
-          <Box as="li" textAlign="start">
-            톡방을 나가기 전에 모임장에게도 알려주세요.
-          </Box>{" "}
-          <Box mt={5} fontSize="11px" textAlign="start" color="gray.600">
-            ※ 사전에 협의된 경우, 모임장님께 불참 처리를 요청하시면 보증금이 차감되지 않습니다.
+          <Box
+            px={3}
+            py={3}
+            bg="gray.100"
+            border="var(--border)"
+            borderRadius="8px"
+            fontSize="12px"
+            color="gray.600"
+          >
+            ※ 모임 톡방에 입장한 상태라면, 모임장님 또는 단톡방에 양해를 구해주세요. 비매너 노쇼로
+            체크되는 경우, 최대 5,000원의 벌금이 발생합니다.
           </Box>
-          {diffDate < 2 && <br />}
-        </AlertModal>
+        </ModalLayout>
       )}
     </>
   );
