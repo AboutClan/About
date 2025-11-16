@@ -280,7 +280,7 @@ export default function Page() {
               location={placeInfo?.location}
               findStudy={findStudy}
               tempCheck={
-                !members?.some((member) => member.user._id === userInfo._id) &&
+                !members?.some((member) => member.user._id === userInfo?._id) &&
                 studyType === "participations"
               }
             />

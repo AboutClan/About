@@ -105,11 +105,10 @@ export function GatherThumbnailCard({
                   ? "공식 행사"
                   : statusProps.text}
               </Badge>
-              {statusProps.text !== "2모집 종료" && (
-                <Badge size="md" colorScheme="gray" color="var(--gray-600)">
-                  {category}
-                </Badge>
-              )}
+
+              <Badge size="md" colorScheme="gray" color="var(--gray-600)">
+                {category}
+              </Badge>
             </Flex>
             {(age[0] !== 19 || age[1] !== 28) && (
               <Badge size="md" variant="subtle" colorScheme="blue">
@@ -126,7 +125,7 @@ export function GatherThumbnailCard({
                   ・
                 </Box>
                 <Box as="span" fontWeight={600}>
-                  {place}
+                  {place || "온라인"}
                 </Box>
               </>
             ) : (

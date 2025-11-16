@@ -58,6 +58,7 @@ function PlaceImage({
     } else {
       typeToast("inspection");
     }
+
     console.log(e);
     return;
 

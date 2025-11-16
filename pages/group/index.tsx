@@ -91,7 +91,7 @@ function GroupPage() {
       enabled: !!status,
     },
   );
-  console.log("status", status, "cursor", cursor, "category", category);
+
   useEffect(() => {
     if (!router.isReady) return;
     const idx = Number(categoryIdx);
@@ -256,6 +256,7 @@ function GroupPage() {
             ) : (
               <Flex direction="column">
                 {groupStudies?.slice()?.map((group, idx) => {
+                  console.log(group);
                   const status =
                     group.memberCnt.max !== 0 && group.memberCnt.max <= group.participants.length
                       ? "full"
@@ -295,9 +296,9 @@ export const createGroupThumbnailProps = (
   text: group.guide,
   status: group.participants.length <= 2 ? "planned" : status,
   category: group.category,
-  participants: group.participants.map((user) =>
-    group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
-  ),
+  participants: group.participants
+    .filter((par) => par.user._id !== "65df1ddcd73ecfd250b42c89")
+    .map((user) => (group.isSecret ? { user: ABOUT_USER_SUMMARY } : user)),
   imageProps: {
     image: group?.squareImage || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]),
     isPriority: isPriority && idx < 4,

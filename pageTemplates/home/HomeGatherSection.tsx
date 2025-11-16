@@ -48,6 +48,26 @@ function HomeGatherSection() {
             gap: "12px",
           }}
         >
+          <SlideSectionCol title="About 인기 최고 모임" subTitle="최근 가장 인기가 많았던 모임">
+            <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
+          </SlideSectionCol>
+          <SlideSectionCol title="About 인기 최고 모임" subTitle="최근 가장 인기가 많았던 모임">
+            <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
+          </SlideSectionCol>
+        </motion.div>
+      </AnimatePresence>
+      {/* <AnimatePresence initial={false}>
+        <motion.div
+          drag="x"
+          dragConstraints={{ left: -width, right: 0 }}
+          dragElastic={0.3}
+          style={{
+            marginLeft: "20px",
+            display: "flex",
+            width: "100%",
+            gap: "12px",
+          }}
+        >
           <SlideSectionCol
             title="About 마감 임박 모임"
             subTitle="자리가 얼마 없어요. 마지막 참여 기회!"
@@ -61,7 +81,7 @@ function HomeGatherSection() {
             <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
-      </AnimatePresence>
+      </AnimatePresence> */}
       {/* <AnimatePresence initial={false}>
         <motion.div
           drag="x"

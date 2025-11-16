@@ -262,7 +262,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
   };
 
   const { text = "", handleFunction, type, isEnd = false, isReverse = false } = getButtonSettings();
-  console.log(1, handleFunction);
+
   useEffect(() => {
     if (value === data?.password) {
       participate({ phase: "first", isFree: true });

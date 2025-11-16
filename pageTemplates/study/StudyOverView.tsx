@@ -64,7 +64,10 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
 
     {
       category: "스터디 혜택",
-      text: "매칭 여부와 상관없이 100 Point 획득",
+      text:
+        studyType === "participations"
+          ? "기본 100 Point / 매칭 시 최대 1,000 Point 획득"
+          : "최대 500 Point 획득",
     },
   ];
 

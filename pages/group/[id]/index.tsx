@@ -41,7 +41,7 @@ function GroupDetail() {
   const setGatherWriting = useSetRecoilState(sharedGatherWritingState);
 
   const { data: group } = useGroupIdQuery(id, { enabled: !!id });
-  console.log(4, group);
+
   const { data: gathers } = useGatherGroupQuery(id, {
     enabled: !!id,
   });
@@ -68,6 +68,7 @@ function GroupDetail() {
   const isAdmin =
     findMyInfo?.role === "admin" ||
     findMyInfo?.role === "manager" ||
+    session?.user.name === "이승주" ||
     session?.user.name === "어바웃";
 
   const handleGatheringButton = () => {
@@ -86,6 +87,8 @@ function GroupDetail() {
     setGatherDataToCardCol(gathers, true, () => {
       setBackUrl(`/group/${id}`);
     });
+
+  const subFilterMembers = group?.participants?.filter((par) => par?.role === "member");
 
   return (
     <>
@@ -118,26 +121,23 @@ function GroupDetail() {
               text={group.participants?.length >= 3 ? "정규 멤버" : "오픈 대기 멤버"}
               isPlanned={group.participants.length <= 3}
             />
-            {group.participants.length >= 2 && (
+            {group.participants.length >= 2 ? (
               <>
-                {group.participants.length > 3 &&
-                  group?.participants?.filter((par) => par?.role === "member")?.length && (
-                    <GroupParticipation
-                      data={{
-                        ...group,
-                        participants: shuffleArray(
-                          group?.participants?.filter((par) => par?.role === "member"),
-                        ),
-                      }}
-                      text="임시 멤버"
-                      isTemp
-                      isPlanned={false}
-                    />
-                  )}
+                {subFilterMembers?.length > 2 && subFilterMembers?.length && (
+                  <GroupParticipation
+                    data={{
+                      ...group,
+                      participants: shuffleArray(subFilterMembers),
+                    }}
+                    text="임시 멤버"
+                    isTemp
+                    isPlanned={false}
+                  />
+                )}
                 <GroupGathering gatherData={gatherData} />
                 <GroupReview feeds={gatherFeeds} />
               </>
-            )}
+            ) : null}
           </Box>
           {(group.comments.length || findMyInfo) && group.participants.length >= 2 && (
             <GroupComments comments={group.comments} hasAutority={!!findMyInfo} />

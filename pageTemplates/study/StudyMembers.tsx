@@ -7,7 +7,7 @@ import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
 import ImageZoomModal from "../../modals/ImageZoomModal";
@@ -27,6 +27,7 @@ interface IStudyMembers {
 }
 
 export default function StudyMembers({ studyType, date, members, isAttend }: IStudyMembers) {
+  const toast = useToast();
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
   // const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -103,7 +104,7 @@ export default function StudyMembers({ studyType, date, members, isAttend }: ISt
         ...obj,
         changeComment,
         rightComponent: rightComponentProps ? (
-          image ? (
+          studyType === "soloRealTimes" && image ? (
             <>
               <Box
                 position="relative"
@@ -120,7 +121,17 @@ export default function StudyMembers({ studyType, date, members, isAttend }: ISt
               </Box>
             </>
           ) : (
-            <AttendanceBadge type={rightComponentProps.type} time={rightComponentProps.time} />
+            <AttendanceBadge
+              type={rightComponentProps.type}
+              time={rightComponentProps.time}
+              handleButton={() => {
+                if (image) {
+                  setHasImageProps({ image, toUid: participant.user.uid });
+                } else {
+                  toast("info", "등록된 출석 이미지가 없습니다.");
+                }
+              }}
+            />
           )
         ) : null,
       };

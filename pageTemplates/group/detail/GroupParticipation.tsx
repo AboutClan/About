@@ -22,7 +22,7 @@ interface IGroupParticipation {
 function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipation) {
   const userInfo = useUserInfo();
   const isSecret = data?.isSecret;
-  console.log("c", data, isPlanned);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const isMine = data?.organizer?._id === userInfo?._id;
@@ -71,7 +71,9 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
       <Flex mb={2} fontSize="18px" lineHeight="28px" alignItems="flex-end">
         <Box mr={2} fontWeight="bold">
           {text}{" "}
-          {userCardArr?.length >= 3 ? userCardArr.length : (isMine ? 1 : 6) + data?.waiting.length}
+          {userCardArr?.length >= 3 || !isPlanned
+            ? userCardArr.length
+            : (isMine ? 1 : 6) + data?.waiting.length}
         </Box>
         {isTemp && (
           <Box ml="auto" mt="auto" fontSize="11px" color="mint" lineHeight={1}>

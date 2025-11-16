@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRef, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
@@ -13,16 +13,13 @@ import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
+import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import { useStudySetQuery } from "../../../hooks/study/queries";
-import { ModalLayout } from "../../../modals/Modals";
-import {
-  transferStudyAttendanceState,
-  transferStudyRewardState,
-} from "../../../recoils/transferRecoils";
+import { transferStudyRewardState } from "../../../recoils/transferRecoils";
 import { PointInfoProps } from "../../../types/common";
 import {
   StudyConfirmedSetProps,
@@ -51,6 +48,7 @@ function Configuration() {
 
   const findStudy = confirmedSet?.find((set) => set.study.place._id === id)?.study;
 
+  const [image, setImage] = useState<Blob>();
   const [endTime, setEndTime] = useState(
     dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
@@ -60,11 +58,15 @@ function Configuration() {
 
   const [attendMessage, setAttendMessage] = useState("");
   const [isChecking, setIsChecking] = useState(false);
-  const [stampCnt, setStampCnt] = useState<number>();
 
-  const [transferStudyAttendance, setTransferStudyAttendance] = useRecoilState(
-    transferStudyAttendanceState,
-  );
+  //  const keypadHeight = useKeypadHeight();
+
+  //  useEffect(() => {
+  //    if (isFocus && keypadHeight !== 0) {
+  //      window.scrollBy({ top: 130, behavior: "smooth" });
+  //    }
+  //  }, [isFocus, keypadHeight]);
+
   // const studyType = myStudyResult?.status;
 
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
@@ -97,24 +99,8 @@ function Configuration() {
     currentDayjs = currentDayjs.add(30, "m");
   }
 
-  // useEffect(() => {
-  //   if (!transferStudyAttendance) return;
-  //   if (isSoloPage) {
-  //     setOtherPermission("비허용");
-  //   }
-  // }, [transferStudyAttendance]);
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      setTimeout(() => {
-        textareaRef.current.focus();
-      }, 500);
-    }
-  }, []);
-
   const handleAttendSuccess = (data: PointInfoProps) => {
     resetStudy();
-    setTransferStudyAttendance(null);
     setTimeout(() => {
       setTransferStudyReward(data);
     }, 500);
@@ -128,6 +114,11 @@ function Configuration() {
   const formData = new FormData();
 
   const handleSubmit = () => {
+    if (!image) {
+      toast("warning", "이미지를 등록해 주세요");
+      return;
+    }
+
     if (attendMessage?.length < 1) {
       if (isSoloRealTimesPage) toast("warning", "오늘의 한마디를 남겨주세요!");
       else toast("warning", "출석 메세지를 남겨주세요");
@@ -139,17 +130,19 @@ function Configuration() {
     }
 
     if (isSoloRealTimesPage) {
-      if (!transferStudyAttendance?.image) {
-        toast("warning", "인증 사진이 누락되었습니다.");
-        return;
-      } else if (!transferStudyAttendance?.place) {
-        toast("warning", "스터디 장소가 입력되지 않았습니다.");
-        return;
-      }
       formData.append("memo", attendMessage);
       formData.append("status", "solo");
-      formData.append("images", transferStudyAttendance?.image as Blob);
-      formData.append("place", JSON.stringify(transferStudyAttendance?.place));
+      formData.append("images", image as Blob);
+
+      formData.append(
+        "place",
+        JSON.stringify({
+          name: "temp",
+          latitude: 0,
+          longitude: 0,
+          address: "temp",
+        }),
+      );
       formData.append(
         "time",
         JSON.stringify({
@@ -157,12 +150,11 @@ function Configuration() {
           end: convertTimeStringToDayjs(endTime).toISOString(),
         }),
       );
-
       attendRealTimeStudy(formData);
     } else if (type === "openRealTimes") {
       formData.append("memo", attendMessage);
       formData.append("place", JSON.stringify(findStudy.place.location));
-
+      formData.append("images", image as Blob);
       formData.append(
         "time",
         JSON.stringify({
@@ -187,14 +179,41 @@ function Configuration() {
         <Header title="" isBorder={false} />
         <Slide>
           <PageIntro
-            main={{ first: isSoloRealTimesPage ? "개인 스터디 인증" : "출석 인증하기" }}
+            main={{ first: isSoloRealTimesPage ? "개인 공부 인증" : "출석 인증하기" }}
             sub={
               isSoloRealTimesPage
                 ? "인증에 필요한 정보를 입력해 주세요"
                 : "출석에 필요한 정보를 입력해 주세요"
             }
           />
-          <Box mb={5}>
+          {type !== "results" && (
+            <Box mb={5}>
+              <Box mb={3}>
+                <SectionTitle
+                  text={isSoloRealTimesPage ? "오늘의 공부 사진" : "현재 테이블 사진"}
+                />
+              </Box>
+              <ImageUploadInput setImageUrl={setImage} />
+            </Box>
+          )}
+
+          <Box mb={3}>
+            <SectionTitle
+              text={isSoloRealTimesPage ? "오늘의 공부 한마디" : "내 위치 및 인상착의"}
+            />
+          </Box>
+          <Textarea
+            value={attendMessage}
+            onChange={(e) => setAttendMessage(e.target.value)}
+            ref={textareaRef}
+            minH="120px"
+            placeholder={
+              isSoloRealTimesPage
+                ? "자유롭게 하고 싶은 말을 작성해 주세요!"
+                : "ex) 2층 창가 자리 오른쪽 끝, 체크 셔츠 입고 있어요!"
+            }
+          />
+          <Box mt={5}>
             <Box mb={3}>
               <SectionTitle text="예상 종료 시간" />
             </Box>
@@ -206,25 +225,6 @@ function Configuration() {
               setValue={setEndTime}
             />
           </Box>
-          <Box mb={3}>
-            <SectionTitle
-              text={
-                isSoloRealTimesPage || transferStudyAttendance
-                  ? "오늘의 공부 한마디"
-                  : "나의 인상착의 및 위치"
-              }
-            />
-          </Box>
-          <Textarea
-            value={attendMessage}
-            onChange={(e) => setAttendMessage(e.target.value)}
-            ref={textareaRef}
-            placeholder={
-              isSoloRealTimesPage || transferStudyAttendance
-                ? "자유롭게 하고 싶은 말을 작성해 주세요!"
-                : "다른 사람이 찾을 수 있도록 작성해 주세요!"
-            }
-          />
           {/* <Box my={5}>
             <Box mb={3}>
               <SectionTitle text="다른 인원 참여 허용" isActive={false} />
@@ -251,7 +251,6 @@ function Configuration() {
           <ScreenOverlay zIndex={2000} />
         </>
       )}
-      {stampCnt && <ModalLayout setIsModal={() => setStampCnt(null)}>{stampCnt}</ModalLayout>}
     </>
   );
 }

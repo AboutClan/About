@@ -1,4 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import AlertDot from "../../components/atoms/AlertDot";
@@ -8,6 +9,9 @@ import { useFeedCntQuery, useFeedTypeQuery } from "../../hooks/feed/queries";
 import GathersReviewDrawer from "../../modals/gather/gatherExpireModal/GathersReviewDrawer";
 
 function UserGatherSectionReview() {
+  const router = useRouter();
+  const modalParam = router.query.modal as "mine" | "receive";
+
   const toast = useToast();
   const [modalType, setModalType] = useState<"mine" | "receive">(null);
 
@@ -26,6 +30,14 @@ function UserGatherSectionReview() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (!modalParam) {
+      setModalType(null);
+    } else {
+      setModalType(modalParam);
+    }
+  }, [modalParam]);
+
   return (
     <>
       <Flex h="44px" bg="rgba(66,66,66,0.04)" mb={3}>
@@ -42,6 +54,13 @@ function UserGatherSectionReview() {
               toast("info", "작성한 후기가 없습니다.");
               return;
             }
+            router.push(
+              { pathname: router.pathname, query: { ...router.query, modal: "mine" } },
+              undefined,
+              {
+                shallow: true,
+              },
+            );
             setModalType("mine");
           }}
           pos="relative"
@@ -85,6 +104,13 @@ function UserGatherSectionReview() {
               toast("info", "받은 후기가 없습니다.");
               return;
             }
+            router.push(
+              { pathname: router.pathname, query: { ...router.query, modal: "receive" } },
+              undefined,
+              {
+                shallow: true,
+              },
+            );
             setModalType("receive");
           }}
           pos="relative"
@@ -113,7 +139,16 @@ function UserGatherSectionReview() {
           )}
         </Button>
       </Flex>
-      {modalType && <GathersReviewDrawer isOpen feeds={data} onClose={() => setModalType(null)} />}
+      {modalType && (
+        <GathersReviewDrawer
+          isOpen
+          feeds={data}
+          onClose={() => {
+            router.back();
+            setModalType(null);
+          }}
+        />
+      )}
     </>
   );
 }

@@ -34,7 +34,12 @@ function GatherExpireModal({ setIsModal, gather }: GatherExpireModalProps) {
         /> */}
       </ModalLayout>
       {modal === "expire" ? (
-        <GatherExpireModalExpireDialog setIsModal={() => setModal(null)} />
+        <GatherExpireModalExpireDialog
+          setIsModal={() => {
+            setIsModal(false);
+            setModal(null);
+          }}
+        />
       ) : modal === "cancel" ? (
         <GatherExpireModalCancelDialog
           memberCnt={gather.participants.length}

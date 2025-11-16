@@ -20,8 +20,8 @@ function GroupReview({ feeds }: GroupReviewProps) {
       </Flex>
       <Box>
         {feeds?.length ? (
-          (isOpen ? feeds : feeds.slice(0, 3))?.map((feed) => (
-            <Box mb={2} key={feed.id}>
+          (isOpen ? feeds : feeds.slice(0, 3))?.map((feed, idx) => (
+            <Box mb={2} key={idx}>
               <FeedLayout {...convertFeedToLayout(feed)} isSmall isRadius />
             </Box>
           ))

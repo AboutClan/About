@@ -11,9 +11,7 @@ function PushPage() {
 
   usePushQuery(uid, {
     enabled: !!uid,
-    onSuccess() {
-      console.log("SUCCESS");
-    },
+    onSuccess() {},
   });
 
   const onClick = () => {

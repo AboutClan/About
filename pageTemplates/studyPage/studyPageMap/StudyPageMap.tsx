@@ -44,7 +44,7 @@ function StudyPageMap({
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
   const { currentLocation, refetchCurrentLocation, isLoadingLocation } = useUserCurrentLocation();
-  console.log("current", currentLocation);
+
   /* 네이버 지도와 마커 옵션 */
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>(null);

@@ -251,7 +251,7 @@ function StudyNavigation({
             text: "공부 인증",
             type: "single",
             colorScheme: "mint",
-            func: () => router.push(`/vote/attend/certification?date=${date}&type=soloRealTimes`),
+            func: () => router.push(`/vote/attend/configuration?date=${date}&type=soloRealTimes`),
           };
         } else if (myStatus === "participation") {
           return {

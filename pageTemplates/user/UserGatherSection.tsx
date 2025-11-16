@@ -28,14 +28,14 @@ function UserGatherSection() {
   const [cursor, setCursor] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const setBackUrl = useSetRecoilState(backUrlState);
   const [isGatherReviewDrawer, setIsGatherReviewDrawer] = useState<{
     category: "gather" | "group";
     id: string;
   }>();
 
-  const { data: gatherData } = useGatherMyStatusQuery(cursor);
+  const { data: gatherData, isLoading: isLoading2 } = useGatherMyStatusQuery(cursor);
 
   const { data: feed } = useFeedsQuery(
     isGatherReviewDrawer?.category,
@@ -48,19 +48,18 @@ function UserGatherSection() {
   );
 
   useEffect(() => {
+    if (!gatherData) return;
     if (gatherData?.length) {
       setGathers((old) => [...old, ...gatherData]);
       firstLoad.current = false;
+    } else {
+      setIsLoading(false);
     }
   }, [gatherData, cursor]);
 
   useEffect(() => {
     setIsLoading(true);
-    if (!gathers || !userInfo) return;
-    if (gathers?.length === 0) {
-      setIsLoading(false);
-      return;
-    }
+    if (!userInfo) return;
 
     const leftFunc = (hasReview: boolean, id: string, category: "gather" | "group") => {
       if (hasReview) {
@@ -117,7 +116,7 @@ function UserGatherSection() {
                 </Box>
               ))}
             </>
-          ) : isLoading ? (
+          ) : isLoading || isLoading2 ? (
             <>
               {[1, 2, 3, 4, 5].map((_, idx) => (
                 <Box mb="12px" key={idx}>

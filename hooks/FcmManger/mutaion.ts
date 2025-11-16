@@ -14,7 +14,7 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
         try {
           await waitForDeviceInfo(uid);
         } catch (e) {
-          console.log("error");
+          console.error("error");
         }
       } else {
         await initializePWAPushService();
@@ -71,16 +71,10 @@ const initializePWAPushService = async () => {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
       });
-    } else {
-      console.log("Existing subscription found.");
     }
 
     // 서버에 구독 정보 전송
-    const response = await registerPushServiceWithPWA(subscription);
-
-    if (response) {
-      console.log("Successfully registered push subscription with the server.");
-    }
+    await registerPushServiceWithPWA(subscription);
   } catch (error) {
     console.error("Failed to initialize PWA push service:", error);
   }

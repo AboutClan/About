@@ -35,7 +35,10 @@ function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverview
             category: "활 동",
             text: gatherCnt === 0 ? "시작 전" : `모임 ${gatherCnt}번 / 후기 ${reviewCnt}개`,
           },
-
+          {
+            category: "티 켓",
+            text: `월 ${group.requiredTicket}장 소모`,
+          },
           {
             category: "단톡방",
             rightChildren: group?.link ? (
