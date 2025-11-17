@@ -61,7 +61,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
   }, [logs]);
 
   return (
-    <RightDrawer title="스터디 혜택" px={false} onClose={onClose}>
+    <RightDrawer title="혜택" px={false} onClose={onClose}>
       <Flex px={5} h="120px" justify="space-between" py={3}>
         <Box fontSize="16px">
           <Box as="span" fontWeight="bold" fontSize="18px">
@@ -74,7 +74,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
         <Flex flexDir="column" justify="flex-end">
           <Box as="span" color="mint" fontSize="16px" fontWeight="extrabold">
             <Box as="span" fontSize="28px">
-              {totalValue}
+              {totalValue.toLocaleString()}
             </Box>{" "}
             원
           </Box>

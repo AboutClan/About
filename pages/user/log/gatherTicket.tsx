@@ -36,7 +36,7 @@ function GatherTicketLogSection() {
       return;
     }
     if (userInfo?.point < 7000) {
-      toast("info", "구매 후 5,000 Point 이상의 잔액이 남아야 합니다.");
+      toast("info", "포인트가 부족합니다. 구매 후 잔액이 5,000 Point 이상이어야 합니다.");
       return;
     }
     mutate({ ticketNum: 1, type: "gather" });

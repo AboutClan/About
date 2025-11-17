@@ -11,7 +11,9 @@ import { useStudyPassedDayQuery, useStudySetQuery } from "../hooks/study/queries
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageChallenge from "../pageTemplates/studyPage/StudyPageChallenge";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
-import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
+import StudyPageMap, {
+  LocationAddDrawer,
+} from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 import StudyPageNav from "../pageTemplates/studyPage/StudyPageNav";
 import StudyPagePlaceSection from "../pageTemplates/studyPage/StudyPagePlaceSection";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
@@ -28,16 +30,18 @@ export default function StudyPage() {
 
   const tabParam = searchParams.get("tab") as "study" | "map";
   const dateParam = searchParams.get("date");
+  const modalParam = searchParams.get("modal");
 
   const isGuest = session?.user.role === "guest";
 
   const [tab, setTab] = useState<StudyPageTab>("About 스터디");
   const [date, setDate] = useState<string>(null);
+  const [modal, setModal] = useState<"cafe">(null);
 
   const isPassedDate = !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
 
   const { data: studySet } = useStudySetQuery(date, { enabled: !!date && !isPassedDate });
- 
+
   const { data: passedStudyData } = useStudyPassedDayQuery(date, {
     enabled: !!date && !!isPassedDate,
   });
@@ -50,6 +54,12 @@ export default function StudyPage() {
       setTab("카공 지도.ZIP 🔥");
     }
   }, [tabParam]);
+
+  useEffect(() => {
+    if (!modalParam) {
+      setModal(null);
+    }
+  }, [modalParam]);
 
   useEffect(() => {
     if (!dateParam || dateParam === date) return;
@@ -82,15 +92,19 @@ export default function StudyPage() {
       </Slide>
       <>
         {tab === "About 스터디" ? (
-          <Slide>
-            <StudyPageCalendar date={date} setDate={setDate} />
-            <StudyPagePlaceSection
-              studySet={isPassedDate ? passedStudyData : studySet}
-              date={date}
-              setDate={setDate}
-            />
-            <StudyPageChallenge />
-          </Slide>
+          <>
+            <Slide>
+              <StudyPageCalendar date={date} setDate={setDate} />
+              <StudyPagePlaceSection
+                studySet={isPassedDate ? passedStudyData : studySet}
+                date={date}
+                setDate={setDate}
+              />
+            </Slide>
+            <Slide isNoPadding>
+              <StudyPageChallenge />
+            </Slide>
+          </>
         ) : (
           <Slide isNoPadding>
             <Box h={5} />
@@ -102,7 +116,11 @@ export default function StudyPage() {
               <Box mt={5}>
                 <IconRowBlock
                   leftIcon={<MapIcon />}
-                  func={() => router.push("/study/writing/place")}
+                  func={() => {
+                    setModal("cafe");
+                    newSearchParams.set("modal", "cafe");
+                    router.push(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
+                  }}
                   mainText="카공 장소 추가 요청"
                   subText="공부하기 좋은 카공 스팟을 함께 공유해요!"
                 />
@@ -119,7 +137,15 @@ export default function StudyPage() {
           </Slide>
         )}
       </>
-      {!isGuest && (
+      {modal === "cafe" && (
+        <LocationAddDrawer
+          onClose={() => {
+            setModal(null);
+            router.back();
+          }}
+        />
+      )}
+      {isGuest && (
         <Box mb={20} mt={5}>
           <StudyControlButton date={date} />
         </Box>

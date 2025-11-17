@@ -18,7 +18,7 @@ export const useStoreQuery = (
       const res = await axios.get<StoreGiftProps[]>(
         `${SERVER_URI}/store?status=${status}&cursor=${cursor}`,
       );
-      return [...shuffleArray(res.data.map((data) => ({ ...data, point: data.point * 0.95 })))];
+      return [...shuffleArray(res.data.map((data) => ({ ...data, point: data.point * 0.9 })))];
     },
     options,
   );

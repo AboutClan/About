@@ -324,7 +324,7 @@ interface LocationAddDrawerProps {
   onClose: () => void;
 }
 
-function LocationAddDrawer({ onClose }: LocationAddDrawerProps) {
+export function LocationAddDrawer({ onClose }: LocationAddDrawerProps) {
   const toast = useToast();
 
   const [isFirstPage, setIsFirstPage] = useState(true);
