@@ -28,6 +28,13 @@ function StudyPageChallenge() {
     });
     setTotalValue(temp);
   }, [logs]);
+
+  const transformMinutesToHour = (minutes: number) => {
+    return `${Math.floor(minutes / 60)}시간 ${minutes % 60}분`;
+  };
+
+  const record = userInfo?.studyRecord;
+
   return (
     <>
       <Box px={5}>
@@ -44,7 +51,7 @@ function StudyPageChallenge() {
             borderRadius="8px"
           >
             <Box fontSize="18px" lineHeight="26px" color="mint" fontWeight="bold">
-              47시간 21분
+              {transformMinutesToHour(record?.monthCnt)}
             </Box>
             <Box fontSize="13px" lineHeight="18px" color="gray.500" fontWeight="medium">
               스터디 참여
@@ -59,7 +66,7 @@ function StudyPageChallenge() {
               px={3}
               py={1.5}
             >
-              13 회
+              {record?.accumulationCnt} 회
             </Box>
           </Flex>
           <Flex
@@ -72,7 +79,7 @@ function StudyPageChallenge() {
             borderRadius="8px"
           >
             <Box fontSize="18px" lineHeight="26px" fontWeight="bold">
-              182시간 47분
+              {transformMinutesToHour(record?.monthMinutes)}
             </Box>
             <Box fontSize="13px" lineHeight="18px" color="gray.500" fontWeight="medium">
               개인 공부 인증
@@ -87,7 +94,7 @@ function StudyPageChallenge() {
               px={3}
               py={1.5}
             >
-              36 회
+              {record?.accumulationMinutes} 회
             </Box>
           </Flex>
         </Flex>
