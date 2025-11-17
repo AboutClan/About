@@ -29,7 +29,7 @@ function StudyPageChallenge() {
     setTotalValue(temp);
   }, [logs]);
 
-  const transformMinutesToHour = (minutes: number) => {
+  const transformMinutesToHour = (minutes: number = 0) => {
     return `${Math.floor(minutes / 60)}시간 ${minutes % 60}분`;
   };
 
@@ -51,7 +51,7 @@ function StudyPageChallenge() {
             borderRadius="8px"
           >
             <Box fontSize="18px" lineHeight="26px" color="mint" fontWeight="bold">
-              {transformMinutesToHour(record?.monthCnt)}
+              {transformMinutesToHour(null)}
             </Box>
             <Box fontSize="13px" lineHeight="18px" color="gray.500" fontWeight="medium">
               스터디 참여
