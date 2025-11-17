@@ -125,7 +125,7 @@ function StudyPageChallenge() {
             w="full"
             borderRadius="8px"
             colorScheme="black"
-            onClick={() => toast("info", "스터디 챌린지 오픈을 기다려주세요!")}
+            onClick={() => router.push("/ranking?tab=study")}
           >
             스터디 랭킹 보러가기
           </Button>

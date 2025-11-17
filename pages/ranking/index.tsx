@@ -1,5 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import Avatar from "../../components/atoms/Avatar";
@@ -37,6 +38,8 @@ export const RANK_MAP = {
 };
 
 function Ranking() {
+  const router = useRouter();
+  const tabParam = router.query.tab as "study" | "monthScore" | "temperature";
   const { data: session } = useSession();
 
   const [myRanking, setMyRanking] = useState<RankingProps>();
@@ -57,7 +60,19 @@ function Ranking() {
   const { data: allUserData } = useAllUserDataQuery(fieldName, {
     enabled: !!fieldName,
   });
-  console.log(allUserData);
+
+  useEffect(() => {
+    if (tabParam) {
+      setTab(
+        tabParam === "study"
+          ? "스터디 랭킹"
+          : tabParam === "monthScore"
+          ? "월간 활동 랭킹"
+          : "인기 랭킹",
+      );
+    }
+  }, [tabParam]);
+
   useEffect(() => {
     setSortedUsers(null);
 
