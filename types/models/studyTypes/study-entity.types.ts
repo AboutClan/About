@@ -40,6 +40,7 @@ export interface StudyConfirmedMemberProps extends TimeStampProps {
   user: UserSimpleInfoProps;
   time?: StringTimeProps;
   attendance?: StudyAttendanceProps;
+  heartCnt?: number;
   comment?: CommentProps;
 }
 

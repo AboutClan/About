@@ -64,6 +64,7 @@ export const setStudyWeekData = (
                   user: user.user,
                   time: user.time,
                   attendance: user.attendance,
+                  heartCnt: user.heartCnt,
                   comment: {
                     comment: user?.comment?.text,
                   },
@@ -128,6 +129,7 @@ export const setStudyOneDayData = (
               user: user.user,
               time: user.time,
               attendance: user.attendance,
+              heartCnt:user.heartCnt,
               comment: {
                 comment: user?.comment?.text,
               },

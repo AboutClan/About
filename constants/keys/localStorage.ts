@@ -11,6 +11,7 @@ export const GATHER_REVIEW_RECEIVE = "gatherReviewReceive";
 
 //스터디
 
+export const STUDY_HEART_ARR = "studyHeartArr";
 export const RECENT_STUDY_RECORD = {};
 
 /** */

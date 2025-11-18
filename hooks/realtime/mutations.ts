@@ -61,6 +61,18 @@ export const useRealtimeInviteMutation = (
     });
   }, options);
 
+export const useRealTimeHeartMutation = (
+  date: string,
+  options?: MutationOptions<{ userId: string }, void>,
+) =>
+  useMutation<void, AxiosError, { userId: string }>((param) => {
+    return requestServer<{ userId: string }, void>({
+      method: "post",
+      url: `realtime/${date}/heart`,
+      body: param,
+    });
+  }, options);
+
 export const useRealTimeAttendMutation = (
   date: string,
   options?: MutationOptions<RealTimeAttendanceProps | FormData, PointInfoProps>,

@@ -54,6 +54,7 @@ export interface InitialRealTimesProps {
   time: TimeRangeProps;
   status: RealTimesStudyStatus;
   place: StudyPlaceProps;
+  heartCnt?: number;
   attendance: {
     attendanceImage: string;
     memo: string;
@@ -78,7 +79,6 @@ export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) 
     [STUDY_VOTE, "week"],
     async () => {
       const { data } = await axios.get<StudySetInitialDataProps[]>(`${SERVER_URI}/vote2/week`);
-
       return data;
     },
     {
@@ -125,6 +125,7 @@ export interface InitialStudyPassedDayUserProps {
   };
   place: StudyPlaceProps;
   comment?: { text: string };
+  heartCnt: number;
   status: RealTimesStudyStatus;
   time: TimeRangeProps;
   user: UserSimpleInfoProps;

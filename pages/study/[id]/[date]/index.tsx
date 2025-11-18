@@ -158,6 +158,8 @@ export default function Page() {
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
 
+
+  
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
