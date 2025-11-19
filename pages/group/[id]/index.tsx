@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Box } from "@chakra-ui/react";
-import { useParams, useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -74,7 +74,7 @@ function GroupDetail() {
   const handleGatheringButton = () => {
     setGatherWriting({
       type: { title: group.category.main, subtitle: "" },
-      title: `[${group.title}] 오픈 번개`,
+      title: ``,
       content: `[${group.title}]에서 진행하는 번개입니다! 관심있는 분들 모두 환영해요 :)`,
       image: `${group.squareImage}`,
       coverImage: `${group.image}`,
