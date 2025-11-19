@@ -71,7 +71,6 @@ export default function StudyMembers({
 
   const { mutate: increaseHeartCnt } = useRealTimeHeartMutation(date, {
     onSuccess(_, variables) {
-      console.log(22);
       const prevStorage =
         (JSON.parse(localStorage.getItem(STUDY_HEART_ARR)) as {
           date: string;
@@ -164,6 +163,28 @@ export default function StudyMembers({
             ?.find((props) => props.date === date)
             ?.heartArr?.includes(participant.user._id)
         : null;
+      const arrived = participant.attendance?.time;
+
+      const extraValue = dayjs(arrived).minute() % 10;
+
+      const lastMinutes = dayjs(date).endOf("day").diff(dayjs(arrived), "minutes");
+
+      const thresholds = Array.from({ length: 20 }, (_, i) => (i + 1) * 57);
+
+      const diffMinutes = Math.abs(
+        (dayjs(date).isBefore(dayjs().startOf("day")) ? dayjs(date).endOf("day") : dayjs()).diff(
+          dayjs(arrived),
+          "minutes",
+        ),
+      );
+      let extraHeartCnt = 0;
+      for (const t of thresholds) {
+        const addValue = extraValue + t;
+
+        if (addValue > lastMinutes) break;
+        if (lastMinutes < addValue) break;
+        if (diffMinutes > addValue) extraHeartCnt++;
+      }
 
       return {
         ...obj,
@@ -203,7 +224,7 @@ export default function StudyMembers({
                   color={hasMyHeart ? "gray.600" : "gray.500"}
                   lineHeight="16px"
                 >
-                  {participant.heartCnt}
+                  {participant.heartCnt + extraHeartCnt}
                 </Box>
               </Flex>
               <Flex flexDir="column">
