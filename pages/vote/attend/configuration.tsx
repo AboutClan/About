@@ -114,10 +114,10 @@ function Configuration() {
   const formData = new FormData();
 
   const handleSubmit = () => {
-    if (!image) {
-      toast("warning", "이미지를 등록해 주세요");
-      return;
-    }
+    // if (!image) {
+    //   toast("warning", "이미지를 등록해 주세요");
+    //   return;
+    // }
 
     if (attendMessage?.length < 1) {
       if (isSoloRealTimesPage) toast("warning", "오늘의 한마디를 남겨주세요!");
