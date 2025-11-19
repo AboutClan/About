@@ -7,8 +7,8 @@ export const COLOR_400_ARR = [
   "#36a5ff",
   "#26c6da",
   "#b33fc9",
-  "var(--gray-500)",
-  "var(--gray-500)",
+  "var(--gray-400)",
+  "var(--gray-400)",
 ];
 
 export const COLOR_TABLE = [
