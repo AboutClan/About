@@ -16,7 +16,8 @@ export const getStudyVoteIcon = (type: "default" | "main" | "sub", text: string)
 };
 
 export const getPlaceCountIcon = (cnt?: number) => {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="60" viewBox="0 0 56 60" fill="none">
+  return `<div style="display:flex; justify-content:center; align-items:center; width:120px;
+  "> <svg xmlns="http://www.w3.org/2000/svg" width="56" height="60" viewBox="0 0 56 60" fill="none">
 <g filter="url(#filter0_d_2023_1738)">
 <rect x="12" y="12.7065" width="32" height="32" rx="16" fill="#00C2B3"/>
 <path d="M22.825 35.1896C22.4226 35.0147 22.1105 34.7726 21.8889 34.4635C21.6731 34.1485 21.5652 33.7869 21.5652 33.3786C21.5652 33.0753 21.6439 32.705 21.8014 32.2675L24.881 24.3148C25.1668 23.5857 25.5809 23.0257 26.1234 22.635C26.6716 22.2383 27.2957 22.04 27.9956 22.04C28.7014 22.04 29.3255 22.2383 29.8679 22.635C30.4162 23.0257 30.8332 23.5857 31.119 24.3148L34.1986 32.2675C34.3561 32.7283 34.4348 33.0987 34.4348 33.3786C34.4348 33.7869 34.324 34.1485 34.1024 34.4635C33.8866 34.7726 33.5774 35.0147 33.175 35.1896C32.895 35.3121 32.6092 35.3734 32.3176 35.3734C31.9035 35.3734 31.5185 35.2421 31.1627 34.9797C30.8128 34.7172 30.5532 34.3527 30.3841 33.8861L30.1829 33.2911H25.8347L25.6159 33.8861C25.4584 34.341 25.2018 34.7026 24.846 34.9709C24.4961 35.2392 24.1082 35.3734 23.6824 35.3734C23.3908 35.3734 23.105 35.3121 22.825 35.1896ZM27.0333 29.6866H28.9668L27.9956 26.2133L27.0333 29.6866Z" fill="white"/>
@@ -36,7 +37,7 @@ export const getPlaceCountIcon = (cnt?: number) => {
 </defs>${`<div style="
     position: absolute;
     top: 8px;
-    right: 8px;
+    right: 40px;
     width: 16px;
     height: 16px;
     display:flex;
@@ -46,25 +47,42 @@ export const getPlaceCountIcon = (cnt?: number) => {
     font-weight:600;
     border-radius: 50%;
     background-color: white;
-  
     outline: 1px solid var(--gray-300);
   ">${cnt}</div>`}
-</svg>`;
+</svg></div>`;
 };
 
-export const getPlaceBasicIcon = (color: "orange" | "mint", text?: string, isBig?: boolean) => {
+export const getPlaceBasicIcon = (
+  color: "orange" | "mint",
+  text?: string,
+  isBig?: boolean,
+  rating?: number,
+) => {
+  const StarIcon = () => `
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="12px"
+      viewBox="0 -960 960 960"
+      width="12px"
+      fill="var(--color-yellow)"
+    >
+      <path d="M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z" />
+    </svg>
+  `;
+
   return `
-  <div style="display:flex; flex-direction:column; align-items:center;">
+  <div style="width:120px; height:60px; display:flex; justify-content:flex-end;  flex-direction:column; align-items:center;" >
   ${
     text
-      ? `<div  style= "overflow:hidden;
-          white-space:nowrap;
-          text-overflow:ellipsis; padding:4px 8px; padding-right:${
-            isBig ? "8px" : "4px"
-          }; margin-bottom:4px; text-align:center; line-height:12px; font-weight:600;font-size:10px;color:#424242; background:white; border:1px solid #eeeeee; border-radius:4px; height:20px; width:${
-          isBig ? "72px" : "60px"
-        };" >
-    ${text} </div>`
+      ? `<div  style="display:flex; 
+           padding:4px 8px; padding-right:${
+             isBig ? "8px" : "4px"
+           }; margin-bottom:4px; text-align:center; line-height:12px; font-weight:600;font-size:10px;color:#424242; background:white; border:1px solid #eeeeee; border-radius:4px; height:20px; " >
+    <div style="max-width:${
+      isBig ? "72px" : "80px"
+    }; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;"> ${text}</div> <span style="margin:0 2px; margin-bottom:2px;">${StarIcon()}</span> ${rating.toFixed(
+          1,
+        )}</div>`
       : ``
   }
   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="36" viewBox="0 0 32 36" fill="none">

@@ -78,7 +78,7 @@ IVoteMap) {
 
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
-    
+
     if (!mapInstanceRef.current) {
       // 처음에만 맵을 생성
       const map = new naver.maps.Map(mapRef.current, {
@@ -143,7 +143,6 @@ IVoteMap) {
         info.open(map, marker);
         mapElementsRef.current.infoWindow.push(info);
       }
-
       if (markerOptions.polyline) {
         const polyline = new naver.maps.Polyline({
           map,
@@ -151,7 +150,6 @@ IVoteMap) {
         });
         mapElementsRef.current.polylines.push(polyline);
       }
-
       naver.maps.Event.addListener(marker, "click", () => {
         if (handleMarker) {
           const currentZoom = map.getZoom();

@@ -72,6 +72,7 @@ export const getStudyPlaceMarkersOptions = (
     count: number;
     type: "cluster" | "noise";
     name: string;
+    rating: number;
   }
 
   const getClusterInfo = (placeData: StudyPlaceProps[], zoom: number): ClusterInfoProps[] => {
@@ -131,6 +132,7 @@ export const getStudyPlaceMarkersOptions = (
         count: 1,
         type: "noise",
         name: data.location.name,
+        rating: data.rating,
       };
     });
 
@@ -163,20 +165,25 @@ export const getStudyPlaceMarkersOptions = (
               ? getPlaceBasicIcon("orange", null)
               : cluster.count > 1
               ? getPlaceCountIcon(cluster.count)
-              : getPlaceBasicIcon("mint", zoomNumber >= 15 ? cluster.name : null),
+              : getPlaceBasicIcon(  
+                  "mint",
+                  zoomNumber >= 15 ? cluster.name : null,
+                  false,
+                  cluster.rating,
+                ),
 
-          size:
-            selectedId === cluster._id
-              ? new naver.maps.Size(32, 36)
-              : cluster.count > 1
-              ? new naver.maps.Size(32, zoomNumber >= 15 ? 60 : 36)
-              : new naver.maps.Size(zoomNumber >= 15 ? 60 : 32, zoomNumber >= 15 ? 60 : 36),
-          anchor:
-            selectedId === cluster._id
-              ? new naver.maps.Point(16, 36)
-              : cluster.count > 1
-              ? new naver.maps.Point(16, zoomNumber >= 15 ? 60 : 36)
-              : new naver.maps.Point(zoomNumber >= 15 ? 30 : 16, zoomNumber >= 15 ? 60 : 36),
+          size: new naver.maps.Size(120, 60),
+          // selectedId === cluster._id
+          //   ? new naver.maps.Size(32, 36)
+          //   : cluster.count > 1
+          //   ? new naver.maps.Size(32, zoomNumber >= 15 ? 60 : 36)
+          //   : new naver.maps.Size(zoomNumber >= 15 ? 60 : 32, zoomNumber >= 15 ? 60 : 36),
+          anchor: new naver.maps.Point(60, 60),
+          // selectedId === cluster._id
+          //   ? new naver.maps.Point(16, 36)
+          //   : cluster.count > 1
+          //   ? new naver.maps.Point(16, zoomNumber >= 15 ? 60 : 36)
+          //   : new naver.maps.Point(zoomNumber >= 15 ? 30 : 16, zoomNumber >= 15 ? 60 : 36),
         },
       });
     });

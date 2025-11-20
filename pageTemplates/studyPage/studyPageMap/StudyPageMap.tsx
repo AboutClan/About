@@ -56,7 +56,7 @@ function StudyPageMap({
   const [filterType, setFilterType] = useState<StudyPlaceFilter>(
     type === "mainPlace" ? "main" : null,
   );
-  const [zoomNumber, setZoomNumber] = useState<number>(13);
+  const [zoomNumber, setZoomNumber] = useState<number>(16);
   const [tempToggle, setTempToggle] = useState(false);
 
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
@@ -84,7 +84,7 @@ function StudyPageMap({
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
     };
-    const zoom = mapOptions?.zoom || (isMapExpansion ? 11 : 13);
+    const zoom = mapOptions?.zoom || (isMapExpansion ? 11 : 16);
 
     const options = getMapOptions(currentLocation || myLocation, zoom);
     setZoomNumber(zoom);
@@ -257,7 +257,6 @@ function StudyPageMap({
                   router.push({ pathname: router.pathname, query: restQuery }, undefined, {
                     shallow: true,
                   });
-
                   if (isMapExpansion) {
                     setIsMapExpansion(false); // 지도 확장 상태 해제
                   }
@@ -270,7 +269,6 @@ function StudyPageMap({
               filterType={filterType}
               setFilterType={setFilterType}
             />
-
             <VoteMap
               mapOptions={mapOptions}
               markersOptions={markersOptions}
@@ -284,7 +282,6 @@ function StudyPageMap({
               //     : null
               // }
             />
-
             {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
             {((isLoading && !isLoading2) || (isLoadingLocation && tempToggle)) && (
               <MainLoadingAbsolute size="sm" />
