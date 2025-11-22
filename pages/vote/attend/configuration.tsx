@@ -5,10 +5,8 @@ import { useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import PageIntro from "../../../components/atoms/PageIntro";
-import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import SectionTitle from "../../../components/atoms/SectionTitle";
 import Select from "../../../components/atoms/Select";
-import Spinner from "../../../components/atoms/Spinner";
 import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
@@ -57,7 +55,6 @@ function Configuration() {
   const textareaRef = useRef(null);
 
   const [attendMessage, setAttendMessage] = useState("");
-  const [isChecking, setIsChecking] = useState(false);
 
   //  const keypadHeight = useKeypadHeight();
 
@@ -114,10 +111,10 @@ function Configuration() {
   const formData = new FormData();
 
   const handleSubmit = () => {
-    // if (!image) {
-    //   toast("warning", "이미지를 등록해 주세요");
-    //   return;
-    // }
+    if (!image) {
+      toast("warning", "이미지를 등록해 주세요");
+      return;
+    }
 
     if (attendMessage?.length < 1) {
       if (isSoloRealTimesPage) toast("warning", "오늘의 한마디를 남겨주세요!");
@@ -165,11 +162,11 @@ function Configuration() {
 
       attendRealTimeStudy(formData);
     } else {
-      setIsChecking(true);
-      handleArrived({
-        memo: attendMessage,
-        end: convertTimeStringToDayjs(endTime).toISOString(),
-      });
+      formData.append("memo", attendMessage);
+      formData.append("end", convertTimeStringToDayjs(endTime).toISOString());
+      formData.append("image", image as Blob);
+
+      handleArrived(formData);
     }
   };
 
@@ -186,17 +183,13 @@ function Configuration() {
                 : "출석에 필요한 정보를 입력해 주세요"
             }
           />
-          {type !== "results" && (
-            <Box mb={5}>
-              <Box mb={3}>
-                <SectionTitle
-                  text={isSoloRealTimesPage ? "오늘의 공부 사진" : "현재 테이블 사진"}
-                />
-              </Box>
-              <ImageUploadInput setImageUrl={setImage} />
-            </Box>
-          )}
 
+          <Box mb={5}>
+            <Box mb={3}>
+              <SectionTitle text={isSoloRealTimesPage ? "오늘의 공부 사진" : "현재 테이블 사진"} />
+            </Box>
+            <ImageUploadInput setImageUrl={setImage} />
+          </Box>
           <Box mb={3}>
             <SectionTitle
               text={isSoloRealTimesPage ? "오늘의 공부 한마디" : "내 위치 및 인상착의"}
@@ -245,12 +238,12 @@ function Configuration() {
         onClick={handleSubmit}
         isLoading={isLoading1 || isLoading2}
       />
-      {isChecking && (
+      {/* {isChecking && (
         <>
           <Spinner text="위치를 확인중입니다..." />
           <ScreenOverlay zIndex={2000} />
         </>
-      )}
+      )} */}
     </>
   );
 }

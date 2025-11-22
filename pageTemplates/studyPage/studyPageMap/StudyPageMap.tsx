@@ -56,7 +56,7 @@ function StudyPageMap({
   const [filterType, setFilterType] = useState<StudyPlaceFilter>(
     type === "mainPlace" ? "main" : null,
   );
-  const [zoomNumber, setZoomNumber] = useState<number>(16);
+  const [zoomNumber, setZoomNumber] = useState<number>(14);
   const [tempToggle, setTempToggle] = useState(false);
 
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
@@ -84,7 +84,7 @@ function StudyPageMap({
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
     };
-    const zoom = mapOptions?.zoom || (isMapExpansion ? 11 : 16);
+    const zoom = mapOptions?.zoom || (isMapExpansion ? 11 : 14);
 
     const options = getMapOptions(currentLocation || myLocation, zoom);
     setZoomNumber(zoom);
@@ -151,8 +151,8 @@ function StudyPageMap({
       return;
     }
     if (isMapExpansion) {
-      setFilterType("good");
-    } else setFilterType("best");
+      setFilterType("all");
+    } else setFilterType("all");
 
     return () => {
       document.documentElement.style.overscrollBehavior = "";

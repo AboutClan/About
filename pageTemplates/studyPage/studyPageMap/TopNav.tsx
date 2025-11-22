@@ -54,7 +54,7 @@ function TopNav({
       )}
       <Flex
         w="100%"
-        direction={isMapExpansion ? "row" : "row-reverse"}
+        // direction={isMapExpansion ? "row" : "row-reverse"}
         justify="space-between"
         align="center"
         p={5}
@@ -63,37 +63,6 @@ function TopNav({
         left="0"
         zIndex={100}
       >
-        {/* {isMapExpansion && !isCafePlace && (
-          <Flex flex={0.8} align="center" h="32px" justify="space-around" px={4} borderRadius="4px">
-            <Flex align="center" mr={2}>
-              <StudyIcon color="mint" />
-              <Box fontSize="10px" ml={1} fontWeight="semibold">
-                신청중인 인원
-              </Box>
-            </Flex>
-            <Flex align="center">
-              <StudyIcon color="orange" />
-              <Box fontSize="10px" ml={1} fontWeight="semibold">
-                매칭 예상 장소
-              </Box>
-            </Flex>
-          </Flex>
-        )} */}
-        {!isMapExpansion && (
-          <Button
-            borderRadius="4px"
-            bgColor="white"
-            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-            w="32px"
-            h="32px"
-            size="sm"
-            p="0"
-            border="var(--border-main)"
-          >
-            <ExpansionIcon />
-          </Button>
-        )}
-
         <Flex gap={2} h="32px">
           {isMainType && (
             <Button
@@ -121,6 +90,56 @@ function TopNav({
               About 스터디 장소
             </Button>
           )}
+          <Button
+            h="32px"
+            px={4}
+            borderRadius="20px"
+            border={filterType === "all" ? "none" : "var(--border)"}
+            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+            bg={filterType === "all" ? "gray.800" : "white"}
+            fontSize="11px"
+            color={filterType === "all" ? "white" : "gray.800"}
+            fontWeight={600}
+            lineHeight="12px"
+            onClick={(e) => handleFilter(e, "all")}
+            _hover={{
+              bg: "gray.900",
+            }}
+            _active={{
+              bg: "gray.900",
+            }}
+            _focus={{
+              bg: "gray.900",
+            }}
+          >
+            모든 카공 카페
+          </Button>
+          {isMapExpansion && !isMainType && (
+            <Button
+              h="32px"
+              px={4}
+              borderRadius="20px"
+              border={filterType === "good" ? "none" : "var(--border)"}
+              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+              bg={filterType === "good" ? "gray.900" : "white"}
+              fontSize="11px"
+              color={filterType === "good" ? "white" : "gray.800"}
+              fontWeight={600}
+              lineHeight="12px"
+              onClick={(e) => handleFilter(e, "good")}
+              _hover={{
+                bg: "gray.900",
+              }}
+              _active={{
+                bg: "gray.900",
+              }}
+              _focus={{
+                bg: "gray.900",
+              }}
+            >
+              별점 4.0 이상
+            </Button>
+          )}{" "}
           {!isMainType && (
             <Button
               h="32px"
@@ -147,57 +166,21 @@ function TopNav({
               별점 4.5 이상
             </Button>
           )}
-          {isMapExpansion && !isMainType && (
-            <Button
-              h="32px"
-              px={4}
-              borderRadius="20px"
-              border={filterType === "good" ? "none" : "var(--border)"}
-              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-              bg={filterType === "good" ? "gray.900" : "white"}
-              fontSize="11px"
-              color={filterType === "good" ? "white" : "gray.800"}
-              fontWeight={600}
-              lineHeight="12px"
-              onClick={(e) => handleFilter(e, "good")}
-              _hover={{
-                bg: "gray.900",
-              }}
-              _active={{
-                bg: "gray.900",
-              }}
-              _focus={{
-                bg: "gray.900",
-              }}
-            >
-              별점 4.0 이상
-            </Button>
-          )}
+        </Flex>{" "}
+        {!isMapExpansion && (
           <Button
-            h="32px"
-            px={4}
-            borderRadius="20px"
-            border={filterType === "all" ? "none" : "var(--border)"}
+            borderRadius="4px"
+            bgColor="white"
             boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-            bg={filterType === "all" ? "gray.800" : "white"}
-            fontSize="11px"
-            color={filterType === "all" ? "white" : "gray.800"}
-            fontWeight={600}
-            lineHeight="12px"
-            onClick={(e) => handleFilter(e, "all")}
-            _hover={{
-              bg: "gray.900",
-            }}
-            _active={{
-              bg: "gray.900",
-            }}
-            _focus={{
-              bg: "gray.900",
-            }}
+            w="32px"
+            h="32px"
+            size="sm"
+            p="0"
+            border="var(--border-main)"
           >
-            모든 카공 카페
+            <ExpansionIcon />
           </Button>
-        </Flex>
+        )}
       </Flex>
       {isMapExpansion && (
         <Flex

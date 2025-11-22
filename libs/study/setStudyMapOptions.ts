@@ -165,7 +165,7 @@ export const getStudyPlaceMarkersOptions = (
               ? getPlaceBasicIcon("orange", null)
               : cluster.count > 1
               ? getPlaceCountIcon(cluster.count)
-              : getPlaceBasicIcon(  
+              : getPlaceBasicIcon(
                   "mint",
                   zoomNumber >= 15 ? cluster.name : null,
                   false,

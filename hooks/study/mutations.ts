@@ -123,14 +123,14 @@ export const useStudyParticipateMutation = (
   }, options);
 
 export const useStudyAttendCheckMutation = (
-  options?: MutationOptions<{ memo: string; end: string }, PointInfoProps>,
+  options?: MutationOptions<{ memo: string; end: string } | FormData, PointInfoProps>,
 ) =>
-  useMutation<PointInfoProps, AxiosError, { memo: string; end: string }>(
-    ({ memo, end }) =>
-      requestServer<{ memo: string; end: string }, PointInfoProps>({
+  useMutation<PointInfoProps, AxiosError, { memo: string; end: string } | FormData>(
+    (param) =>
+      requestServer<{ memo: string; end: string } | FormData, PointInfoProps>({
         method: "post",
         url: `vote2/${dayjsToStr(dayjs())}/arrive`,
-        body: { memo, end },
+        body: param,
       }),
     options,
   );
