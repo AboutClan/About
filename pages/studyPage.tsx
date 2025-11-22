@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
@@ -145,7 +145,7 @@ export default function StudyPage() {
           }}
         />
       )}
-      {isGuest && (
+      {!isGuest && (
         <Box mb={20} mt={5}>
           <StudyControlButton date={date} />
         </Box>
