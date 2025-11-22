@@ -29,9 +29,9 @@ function StudyExpectedMap({ centerLocation, rangeNum }: StudyExpectedMapProps) {
       {
         position: new naver.maps.LatLng(centerLocation.latitude, centerLocation.longitude),
         icon: {
-          content: getPlaceBasicIcon("mint", centerLocation?.name, true),
-          size: new naver.maps.Size(72, 60),
-          anchor: new naver.maps.Point(36, 48),
+          content: getPlaceBasicIcon("orange", null),
+          size: new naver.maps.Size(120, 60),
+          anchor: new naver.maps.Point(60, 60),
         },
       },
     ]);
