@@ -32,6 +32,7 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
         if (data.name !== "deviceInfo") return;
 
         const deviceInfo = data;
+        console.log("deviceInfo:", deviceInfo);
 
         await registerPushServiceWithApp({
           uid,
@@ -39,7 +40,14 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
           platform: deviceInfo?.platform || "web",
         });
 
-        resolve(deviceInfo); // ✅ deviceInfo 반환 가능
+        if (typeof window !== "undefined") {
+          if (!window.AboutAppBridge) {
+            window.AboutAppBridge = {};
+          }
+          window.AboutAppBridge.platform = deviceInfo?.platform || "web";
+        }
+
+        resolve(deviceInfo); // deviceInfo 반환 가능
         window.removeEventListener("message", handleDeviceInfo);
       } catch (e) {
         reject(e);
