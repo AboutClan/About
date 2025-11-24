@@ -7,9 +7,10 @@ interface BottomNavButtonProps {
   text: string;
   func: () => void;
   color: "mint" | "black";
+  isLoading:boolean
 }
 
-function BottomNavButton({ text, func, color }: BottomNavButtonProps) {
+function BottomNavButton({ text, func, color,isLoading }: BottomNavButtonProps) {
   return (
     <Slide isFixed={true} posZero="top">
       <Box
@@ -20,7 +21,7 @@ function BottomNavButton({ text, func, color }: BottomNavButtonProps) {
         mx="auto"
         maxW="var(--max-width)"
       >
-        <Button size="lg" w="full" onClick={func} colorScheme={color}>
+        <Button size="lg" w="full" onClick={func} isLoading={isLoading} colorScheme={color}>
           {text}
         </Button>
       </Box>

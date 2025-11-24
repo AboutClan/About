@@ -62,6 +62,9 @@ function FeedWritingPage() {
       toast("success", `${value.toLocaleString()} Point가 지급되었습니다.`);
       router.push(`/gather/${id}`);
     },
+    onError() {
+      toast("error", "오류가 발생했어요! 앱을 다시 실행하거나, 운영진에게 문의주세요!");
+    },
   });
 
   useEffect(() => {
@@ -146,7 +149,7 @@ function FeedWritingPage() {
         <Box my={5}>
           {gather && (
             <SummaryBlock
-              url={`/gather/${gather.groupId}`}
+              url={`/gather/${gather.id}`}
               title={gather.title}
               text={`${gather.type.title} · ${dayjsToFormat(dayjs(gather.date), "M월 D일(ddd)")}`}
             />

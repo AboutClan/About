@@ -78,7 +78,11 @@ function Notice() {
   const { mutate } = useSendNotificationAllMutation("study");
   console.log(mutate);
   const onSubmit = () => {
-    // mutate(STUDY_ALERT[0]);
+    mutate({
+      title: "☕ 다음주 카공 멤버 모집중 ! ☕",
+      description:
+        "스터디 신청 오류가 해결됐어요😊 다음주 스터디 신청하고 같이 카공해요! 신청만 해도 포인트 획득~!",
+    });
   };
 
   return (
