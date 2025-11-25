@@ -6,12 +6,14 @@ import FAQModal from "../../../components/overlay/FAQModal";
 import GatherRecordDrawer from "../../../components/overlay/GatherRecordDrawer";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
 import NewMemberModal from "../../../components/overlay/NewMemberModal";
+import PointLowModal from "../../../components/overlay/PointLowModal";
 import SelfIntroduceModal from "../../../components/overlay/SelfIntroduceModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
   FAQ_MODAL_AT,
   GATHER_REVIEW_MODAL_ID,
   NEW_MEMBER_MODAL_AT,
+  POINT_RECEIVE_AT,
 } from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
@@ -25,7 +27,8 @@ export type PopUpType =
   | "monthlyScore"
   | "gatherReview"
   | "introduce"
-  | "newMember";
+  | "newMember"
+  | "pointReceive";
 
 interface PopUpProps extends CloseProps {}
 
@@ -36,6 +39,7 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
   gatherReview: GatherRecordDrawer,
   introduce: SelfIntroduceModal,
   newMember: NewMemberModal,
+  pointReceive: PointLowModal,
 };
 
 export default function UserSettingPopUp({ user }: { user: IUser }) {
@@ -61,6 +65,10 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
       localStorage.setItem(GATHER_REVIEW_MODAL_ID, data.id + "");
 
       setPopUpType((old) => [...old, "gatherReview"]);
+      return;
+    }
+    if (user?.point === 3000 && !checkAndSetLocalStorage(POINT_RECEIVE_AT, 30)) {
+      setPopUpType((old) => [...old, "pointReceive"]);
       return;
     }
 

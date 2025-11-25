@@ -6,7 +6,24 @@ import { Location } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
 import { IStudyVotePlaces } from "../studyTypes/studyInterActions";
 
+export const MEMBERSHIP_CONVERTOR: Record<UserMemberShip, UserMemberShipKr> = {
+  newbie: "뉴비",
+  studySupporters: "스터디 서포터즈",
+  gatherSupporters: "번개 서포터즈",
+  manager: "운영진/소모임장",
+  normal: null,
+};
+
+export type UserMemberShip =
+  | "newbie"
+  | "studySupporters"
+  | "gatherSupporters"
+  | "manager"
+  | "normal";
+
+type UserMemberShipKr = "뉴비" | "스터디 서포터즈" | "번개 서포터즈" | "운영진/소모임장";
 export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary {
+  membership: UserMemberShip;
   id: string;
   point: number;
   badge: {

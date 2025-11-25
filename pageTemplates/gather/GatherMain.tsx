@@ -1,5 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
@@ -54,20 +53,7 @@ export default function GatherMain() {
     if (gathers.length < 3 && category === "스터디") {
       setCursor((prev) => prev + 1);
     }
-    const temp =
-      sortBy === "기본순"
-        ? (() => {
-            const pending = gathers
-              .filter((g) => g.status === "pending")
-              .sort((a, b) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf());
-
-            const others = gathers.filter((g) => g.status !== "pending");
-
-            return [...pending, ...others];
-          })()
-        : gathers;
-
-    setCardDataArr(setGatherDataToCardCol(temp, true));
+    setCardDataArr(setGatherDataToCardCol(gathers, true));
   }, [gathers]);
 
   useEffect(() => {

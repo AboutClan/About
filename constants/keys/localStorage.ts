@@ -8,6 +8,7 @@ export const NEW_MEMBER_MODAL_AT = "newMemberModalAt";
 export const GATHER_REVIEW_MODAL_ID = "gatherReviewModalId";
 export const GATHER_REVIEW_WRITE = "gatherReviewWrite";
 export const GATHER_REVIEW_RECEIVE = "gatherReviewReceive";
+export const POINT_RECEIVE_AT = "pointReceiveAt";
 
 //스터디
 

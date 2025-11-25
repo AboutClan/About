@@ -162,14 +162,12 @@ const RelationItem = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
-
+  font-size: 11px;
   > span:first-child {
-    font-size: 12px;
     color: var(--gray-600);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   > span:last-child {
-    font-size: 12px;
     color: var(--gray-800);
     line-height: 20px;
   }

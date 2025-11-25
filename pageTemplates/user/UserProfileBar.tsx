@@ -4,6 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
+import SpecialBadge from "../../components/atoms/badges/SpecialBadge";
 import UserBadge from "../../components/atoms/badges/UserBadge";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
@@ -41,6 +42,10 @@ function UserProfileBar({ user }: UserProfileBarProps) {
               {user?.name || "익명"}
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
+
+            <Box ml={1}>
+              <SpecialBadge hasMembership={user?.membership !== "normal"} />
+            </Box>
           </Flex>
           <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
             <CommentText>{user?.comment}</CommentText>
