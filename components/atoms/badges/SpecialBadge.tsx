@@ -1,5 +1,6 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
+
 import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import { ModalLayout } from "../../../modals/Modals";
 import {
@@ -15,8 +16,6 @@ interface SpecialBadgeProps {
 function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
   const userInfo = useUserInfo();
   const [isModal, setIsModal] = useState(false);
-
-  const myBadge = "new" as "new";
 
   const [idx, setIdx] = useState(0);
 
@@ -145,9 +144,9 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
         fontSize="9px"
         color="white"
         bg={
-          !hasMembership
+          hasMembership
             ? "linear-gradient(135deg, #00C2B3 0%, #007DFB 100%)"
-            : "linear-gradient(135deg, var(--gray-400) 0%, var(--color-gray) 100%)"
+            : "linear-gradient(135deg, #D3D5DB 0%, #A8ABB3 100%)"
         }
         position="relative"
         overflow="hidden"
@@ -185,7 +184,13 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
           <Box minH="330px">
             <Flex flexDir="column">
               <Box fontSize="14px">
-                <b>[{MEMBERSHIP_CONVERTOR[userInfo?.membership]}]</b> 멤버십이 적용중입니다 !
+                {userInfo?.membership === "normal" ? (
+                  <Box color="gray.500">적용중인 멤버십이 없습니다.</Box>
+                ) : (
+                  <>
+                    <b>[{MEMBERSHIP_CONVERTOR[userInfo?.membership]}]</b> 멤버십이 적용중입니다 !
+                  </>
+                )}
               </Box>
             </Flex>{" "}
             <Flex
