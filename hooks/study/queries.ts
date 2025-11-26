@@ -79,6 +79,7 @@ export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) 
     [STUDY_VOTE, "week"],
     async () => {
       const { data } = await axios.get<StudySetInitialDataProps[]>(`${SERVER_URI}/vote2/week`);
+
       return data;
     },
     {
@@ -140,6 +141,29 @@ export const useStudyPassedDayQuery = (date: string, options?: QueryOptions<Stud
       );
 
       return setStudyOneDayData(data, date);
+    },
+    options,
+  );
+
+interface StudyMineProps {
+  date: string;
+  participations: any[];
+  results: {
+    members: {
+      userId: UserSimpleInfoProps;
+    }[];
+    placeId: StudyPlaceProps;
+  }[];
+}
+
+export const useStudyMineQuery = (options?: any) =>
+  useQuery<StudyMineProps[], AxiosError, StudyMineProps[]>(
+    [STUDY_VOTE, "mine"],
+    async () => {
+      const { data } = await axios.get<StudyMineProps[]>(`${SERVER_URI}/vote2/mine`);
+      console.log(data);
+      return data;
+      // return setStudyOneDayData(data, date);
     },
     options,
   );

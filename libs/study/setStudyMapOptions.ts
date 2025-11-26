@@ -2,61 +2,46 @@ import clustering from "density-clustering";
 
 import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
+import {
+  StudyParticipationProps,
+  StudyPlaceProps,
+} from "../../types/models/studyTypes/study-entity.types";
 import {
   getCurrentLocationIcon,
   getPlaceBasicIcon,
   getPlaceCountIcon,
   getVoteLocationIcon,
 } from "./getStudyVoteIcon";
-// export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): StudyInfoProps => {
-//   const members = result.members;
 
-//   const sortedCommentUserArr = [...members]?.sort((a, b) => {
-//     const aTime = dayjs(a?.updatedAt);
-//     const bTime = dayjs(b?.updatedAt);
-//     if (aTime.isBefore(bTime)) return -1;
-//     else if (aTime.isAfter(bTime)) return 1;
-//     return 0;
-//   });
+export const getNearLocationCluster = (
+  members: StudyParticipationProps[],
+): StudyParticipationProps[] => {
+  const data2 = members.map((p) => [p.location.latitude, p.location.longitude]);
 
-//   const commentUser = sortedCommentUserArr?.[0]?.user;
-//   const findMyInfo = result?.members?.find((who) => who.user.uid === myUid);
-//   const isPrivate = result?.status !== "open";
+  const DBSCAN = new clustering.DBSCAN();
 
-//   const place = convertStudyToPlaceInfo(result.place);
+  const eps = 0.05;
+  const minPts = 2;
+  const clusters: number[][] = DBSCAN.run(data2, eps, minPts);
 
-//   return {
-//     isPrivate,
-//     place,
-//     time: getStudyTime(result?.members) || {
-//       //수정 필요
-//       start: dayjsToFormat(dayjs(), "HH:mm"),
-//       end: dayjsToFormat(dayjs(), "HH:mm"),
-//     },
-//     participantCnt: result?.members?.length,
-//     status: result.status,
-//     comment: {
-//       user: commentUser
-//         ? {
-//             uid: commentUser.uid,
-//             avatar: commentUser.avatar,
-//             image: commentUser.profileImage,
-//           }
-//         : null,
-//       text:
-//         sortedCommentUserArr?.[0]?.comment?.comment ||
-//         STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
-//     },
-//     firstUserUid: result?.members?.[0]?.user?.uid,
-//     memberStatus:
-//       !findMyInfo || !result?.members.some((who) => who.user.uid === myUid)
-//         ? "notParticipation"
-//         : findMyInfo?.attendance?.time
-//         ? "attendance"
-//         : ("participation" as "notParticipation" | "attendance" | "participation"),
-//   };
-// };
+  // 4️⃣ 클러스터 중심 계산
+  const clusterInfo = clusters.map((cluster) => {
+    const points = cluster.map((idx) => members[idx]);
+    return points;
+  });
+
+  // 2) noise도 동일하게 2차원 배열 형태로 처리
+  const noiseInfo = DBSCAN.noise.map((idx) => [members[idx]]);
+
+  // 3) 클러스터 크기 기준 정렬 (큰 그룹 먼저)
+  const sortedGroups = [...clusterInfo, ...noiseInfo].sort((a, b) => b.length - a.length);
+
+  // 4) 🔥 최종적으로 1차원 배열로 flatten
+  const flattened = sortedGroups.flat();
+
+  return flattened;
+};
+
 export const getStudyPlaceMarkersOptions = (
   placeData: StudyPlaceProps[],
   selectedId: string,

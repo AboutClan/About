@@ -12,8 +12,9 @@ import UserGroupSection from "../../pageTemplates/user/UserGroupSection";
 import UserHeader from "../../pageTemplates/user/UserHeader2";
 import UserLogSection from "../../pageTemplates/user/UserLogSection";
 import UserProfileSection from "../../pageTemplates/user/UserProfileSection";
+import UserStudySection from "../../pageTemplates/user/UserStudySection";
 
-type Tab = "profile" | "gather" | "group";
+type Tab = "profile" | "gather" | "group" | "study";
 
 function UserPage() {
   const router = useRouter();
@@ -61,6 +62,8 @@ function UserPage() {
                 ? "프로필"
                 : section === "gather"
                 ? "내가 참여한 모임"
+                : section === "study"
+                ? "내가 참여한 스터디"
                 : "소모임"
             }
             tabOptionsArr={[
@@ -77,6 +80,14 @@ function UserPage() {
                   router.replace(`/user?tab=gather`);
                   handleClickTab("gather");
                   setIsAlert(false);
+                },
+                isAlert,
+              },
+              {
+                text: "내가 참여한 스터디",
+                func: () => {
+                  router.replace(`/user?tab=study`);
+                  handleClickTab("study");
                 },
                 isAlert,
               },
@@ -99,6 +110,8 @@ function UserPage() {
               <UserProfileSection user={user} />
             ) : section === "gather" ? (
               <UserGatherSection />
+            ) : section === "study" ? (
+              <UserStudySection />
             ) : section === "group" ? (
               <UserGroupSection />
             ) : (

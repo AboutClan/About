@@ -16,6 +16,7 @@ import {
   useRealTimeHeartMutation,
 } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
+import { getNearLocationCluster } from "../../libs/study/setStudyMapOptions";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import {
   StudyConfirmedMemberProps,
@@ -47,7 +48,7 @@ export default function StudyMembers({
     image: string;
     toUid: string;
   }>();
-  console.log(prevMembers);
+
   const [members, setMembers] = useState<StudyConfirmedMemberProps[] | StudyParticipationProps[]>(
     [],
   );
@@ -124,16 +125,22 @@ export default function StudyMembers({
             ),
           }));
 
-  const userCardArr: IProfileCommentCard[] = filterMembers?.map((member) => {
+  const tempArr =
+    studyType === "participations"
+      ? getNearLocationCluster(filterMembers as StudyParticipationProps[])
+      : filterMembers;
+  console.log(42, tempArr);
+
+  const userCardArr: IProfileCommentCard[] = tempArr?.map((member) => {
     const user = member.user;
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
     if (studyType === "participations") {
       const participant = member as StudyParticipationProps;
-
       let month = dayjs(participant.dates[0]).month();
+      const addressArr = participant.location.address.split(" ");
       return {
         user: user,
-        memo: participant.user.comment,
+        memo: addressArr?.[0] + " " + addressArr?.[1],
         rightComponent: (
           <Badge variant="subtle" colorScheme="blue" size="md">
             {participant.dates.map((date, idx) => {

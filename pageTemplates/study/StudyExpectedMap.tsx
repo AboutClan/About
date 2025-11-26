@@ -39,7 +39,7 @@ function StudyExpectedMap({ centerLocation, rangeNum }: StudyExpectedMapProps) {
   return (
     <>
       <Box mt={5} mb={10}>
-        <Box mt={3} mb={3}>
+        <Box mt={3} mb={2}>
           <Box
             aspectRatio={1 / 1}
             position="relative"

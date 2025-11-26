@@ -22,7 +22,6 @@ import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyNearMap from "../../../../pageTemplates/study/StudyNearMap";
-import StudyNearMemberSection from "../../../../pageTemplates/study/StudyNearMemberSection";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyPendingSection from "../../../../pageTemplates/study/StudyPendingSection";
 import StudyPlaceMap from "../../../../pageTemplates/study/StudyPlaceMap";
@@ -158,8 +157,6 @@ export default function Page() {
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
 
-
-  
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
@@ -227,7 +224,7 @@ export default function Page() {
                     )}
                   </Box>
                 </Box>
-                {studyType === "participations" && myStudyInfo && members?.length && (
+                {/* {studyType === "participations" && members?.length && (
                   <>
                     <Box h={2} bg="gray.100" my={4} />
                     <StudyNearMemberSection
@@ -235,7 +232,7 @@ export default function Page() {
                       members={members as StudyParticipationProps[]}
                     />
                   </>
-                )}
+                )} */}
               </Slide>
             ) : (
               <Slide>
