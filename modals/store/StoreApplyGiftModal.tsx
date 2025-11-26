@@ -8,6 +8,7 @@ import CountNum from "../../components/atoms/CountNum";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { STORE_GIFT } from "../../constants/keys/queryKeys";
 import { useErrorToast, useFailToast, useToast } from "../../hooks/custom/CustomToast";
+import { useHasMemership } from "../../hooks/custom/UserHooks";
 import { useStoreMutation } from "../../hooks/sub/store/mutation";
 import { usePointSystemMutation, useUserTicketMutation } from "../../hooks/user/mutations";
 import { usePointSystemQuery, useUserInfoQuery } from "../../hooks/user/queries";
@@ -50,7 +51,9 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     },
   });
 
-  const totalCost = giftInfo.point * value;
+  const hasMembership = useHasMemership("store");
+
+  const totalCost = giftInfo.point * (hasMembership ? 0.9 : 1) * value;
 
   const totalCnt = giftInfo.applicants.reduce((acc, cur) => {
     return acc + cur.cnt;

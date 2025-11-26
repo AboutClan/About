@@ -14,6 +14,7 @@ import ImageShadowCover from "../../components/molecules/ImageShadowCover";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import WinnerTextSlider from "../../components/molecules/WinnerTextSlider";
 import { usePrizeQuery } from "../../constants/prize/queries";
+import { useHasMemership } from "../../hooks/custom/UserHooks";
 import { useStoreQuery } from "../../hooks/sub/store/queries";
 import { IStoreApplicant, IStoreGift, StoreGiftProps } from "../../types/models/store";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
@@ -39,6 +40,7 @@ function StorePage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { data } = useStoreQuery(tab, cursor);
+  const hasMembership = useHasMemership("store");
 
   useEffect(() => {
     if (!statusParam) {
@@ -220,15 +222,35 @@ function StorePage() {
                       <Box mr="auto" fontWeight="bold" fontSize="14px" lineHeight="20px">
                         {item.name}
                       </Box>
-                      <Box
-                        color="mint"
-                        mt={1}
-                        mr="auto"
-                        fontWeight="bold"
-                        fontSize="13px"
-                        lineHeight="20px"
-                      >
-                        {item.point} Point
+                      <Box mt={1} mr="auto" display="flex" alignItems="center" gap="6px">
+                        {hasMembership ? (
+                          <>
+                            <Box
+                              color="mint"
+                              fontWeight="bold"
+                              fontSize="13px"
+                              lineHeight="20px"
+                              textDecoration="line-through"
+                            >
+                              {item.point} Point
+                            </Box>
+                            <Box fontWeight="bold" fontSize="13px" lineHeight="20px" color="red">
+                              {Math.round(item.point * 0.9)} Point
+                            </Box>
+                          </>
+                        ) : (
+                          <Box
+                            color="mint"
+                            mt={1}
+                            mr="auto"
+                            fontWeight="bold"
+                            fontSize="13px"
+                            lineHeight="20px"
+                          >
+                            {" "}
+                            {item.point} Point{" "}
+                          </Box>
+                        )}
                       </Box>
                     </Button>
                   );

@@ -1,6 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { AboutIcon } from "../../../components/atoms/AboutIcons";
@@ -8,6 +7,8 @@ import { StarIcon } from "../../../components/Icons/StarIcons";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useHasMemership, useUserInfo } from "../../../hooks/custom/UserHooks";
+import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { useCollectionAlphabetQuery } from "../../../hooks/user/sub/collection/queries";
 import { useDailyCheckMutation } from "../../../hooks/user/sub/dailyCheck/mutation";
 import { IModal } from "../../../types/components/modalTypes";
@@ -17,11 +18,10 @@ import { IFooterOptions, ModalLayout } from "../../Modals";
 function DailyCheckModal({ setIsModal }: IModal) {
   const toast = useToast();
   const typeToast = useTypeToast();
-  const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const userInfo = useUserInfo();
+  const isGuest = userInfo?.role === "guest";
 
   const [isFirstPage, setIsFirstPage] = useState(true);
-
   const [stampCnt, setStampCnt] = useState(0);
   const [alphabet, setAlphatbet] = useState(null);
   const [isGuideModal, setIsGuideModal] = useState(false);
@@ -34,6 +34,9 @@ function DailyCheckModal({ setIsModal }: IModal) {
     enabled: !isGuest,
     onError() {},
   });
+  const { mutate } = usePointSystemMutation("point");
+
+  const hasMembership = useHasMemership("dailyCheck");
 
   useEffect(() => {
     if (!collections) return;
@@ -46,7 +49,17 @@ function DailyCheckModal({ setIsModal }: IModal) {
       if (data?.alphabet) {
         setAlphatbet(data.alphabet);
       } else {
-        toast("success", "출석 완료!");
+        if (hasMembership) {
+          const randomPoint = Math.floor(Math.random() * 20) + 10;
+          mutate({
+            value: randomPoint,
+            message: "데일리 출석체크 (멤버십 추가 보상)",
+            sub: "dailyCheck",
+          });
+          toast("success", `출석 완료! 멤버십으로 ${randomPoint}P 더 챙겼어요!`);
+        } else {
+          toast("success", "출석 완료!");
+        }
         setStampCnt(data.stamps);
       }
       refetch();

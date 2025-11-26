@@ -10,7 +10,7 @@ interface IconRowBlock2Props {
 
 function IconRowBlock2({ text, time, rightChildren, leftChildren }: IconRowBlock2Props) {
   return (
-    <Flex px={5} mt={4} justify="space-between" align="center">
+    <Flex px={5} mt={5} justify="space-between" align="center">
       <Flex justify="center" align="center" mr={3}>
         {leftChildren}
       </Flex>

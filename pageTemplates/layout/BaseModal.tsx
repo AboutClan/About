@@ -6,6 +6,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
+import { useUserInfo } from "../../hooks/custom/UserHooks";
 import DailyCheckWinModal from "../../modals/aboutHeader/dailyCheckModal/DailyCheckWinModal";
 import WriteDrawer from "../../modals/home/writeDrawer";
 import ErrorUserInfoPopUp from "../../modals/pop-up/ErrorUserInfoPopUp";
@@ -36,6 +37,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
   const newSearchParams = new URLSearchParams(searchParams);
   const isWriteModal = !!searchParams.get("write");
   const isLogoutModal = !!searchParams.get("logout");
+  const userInfo = useUserInfo();
 
   const [transferStudyReward, setTransferStudyReward] = useRecoilState(transferStudyRewardState);
 
@@ -53,6 +55,10 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
     setTransferStudyReward(null);
     router.replace(pathname + (params ? `?${params}` : ""));
   };
+
+  const studySupArr = ["manager", "newbie", "studySupporters"];
+
+  const hasStudyMembership = studySupArr.includes(userInfo?.membership);
 
   return (
     <>
@@ -92,7 +98,14 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
               : "출석"}{" "}
             완료!
             <br />
-            랜덤으로 <b>{transferStudyReward.point} Point</b>가 적립되었습니다.
+            랜덤으로{" "}
+            <b>
+              {hasStudyMembership
+                ? Math.floor(transferStudyReward.point * 1.2)
+                : transferStudyReward.point}{" "}
+              Point
+            </b>
+            가 적립되었습니다.
           </Box>
           <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
             스터디에 참여하면 매번 포인트를 획득할 수 있어요!

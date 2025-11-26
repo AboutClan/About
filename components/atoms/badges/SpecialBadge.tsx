@@ -22,8 +22,8 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
   const mapping: Record<UserMemberShip, { type: string; value: string }[]> = {
     newbie: [
       {
-        type: "일일 출석체크 리워드",
-        value: "+ 20%",
+        type: "일일 출석체크",
+        value: "포인트 추가 획득",
       },
       {
         type: "공부 인증 리워드",
@@ -44,8 +44,8 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
     ],
     studySupporters: [
       {
-        type: "일일 출석체크 리워드",
-        value: "+ 20%",
+        type: "일일 출석체크",
+        value: "포인트 추가 획득",
       },
       {
         type: "공부 인증 리워드",
@@ -62,8 +62,8 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
     ],
     gatherSupporters: [
       {
-        type: "일일 출석체크 리워드",
-        value: "+ 20%",
+        type: "일일 출석체크",
+        value: "포인트 추가 획득",
       },
       {
         type: "번개 개설 리워드",
@@ -84,13 +84,13 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
       },
       {
         type: "공식 행사 참여비 할인",
-        value: "20 ~ 30%",
+        value: "- 20 ~ 30%",
       },
     ],
     manager: [
       {
-        type: "일일 출석체크 리워드",
-        value: "+ 20%",
+        type: "일일 출석체크",
+        value: "포인트 추가 획득",
       },
       {
         type: "공부 인증 리워드",

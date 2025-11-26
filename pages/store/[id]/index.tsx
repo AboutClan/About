@@ -11,6 +11,7 @@ import MenuButton from "../../../components/atoms/buttons/MenuButton";
 import Header from "../../../components/layouts/Header";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useHasMemership } from "../../../hooks/custom/UserHooks";
 import { useStoreGiftQuery } from "../../../hooks/sub/store/queries";
 import StoreApplyGiftModal from "../../../modals/store/StoreApplyGiftModal";
 import StoreGiftWinModal from "../../../modals/store/StoreGiftWinModal";
@@ -26,6 +27,8 @@ function StoreItem() {
   const [drawerHeight, setDrawerHeight] = useState(0);
 
   const { data: giftInfo } = useStoreGiftQuery(id as string, { enabled: !!id });
+
+  const hasMembership = useHasMemership("store");
 
   useEffect(() => {
     const calculateHeight = () => {
@@ -107,9 +110,26 @@ function StoreItem() {
                 </b>
                 입니다.
               </Box>
-              <Box mb={4} fontWeight="extrabold" fontSize="16px" lineHeight="24px" color="mint">
-                {giftInfo.point} Point
-              </Box>
+              {hasMembership ? (
+                <Box
+                  mb={4}
+                  fontWeight="extrabold"
+                  fontSize="16px"
+                  lineHeight="24px"
+                  display="flex"
+                  alignItems="center"
+                  gap="8px"
+                >
+                  <Box color="mint" textDecoration="line-through">
+                    {giftInfo.point} Point
+                  </Box>
+                  <Box color="red">{Math.round(giftInfo.point * 0.9)} Point</Box>
+                </Box>
+              ) : (
+                <Box mb={4} fontWeight="extrabold" fontSize="16px" lineHeight="24px" color="mint">
+                  {giftInfo.point} Point
+                </Box>
+              )}
               <Flex
                 w="full"
                 h="full"

@@ -18,7 +18,11 @@ export const useStoreQuery = (
       const res = await axios.get<StoreGiftProps[]>(
         `${SERVER_URI}/store?status=${status}&cursor=${cursor}`,
       );
-      return [...shuffleArray(res.data.map((data) => ({ ...data, point: data.point * 0.9 })))];
+      return [
+        ...shuffleArray(
+          res.data.map((data) => ({ ...data, point: Math.floor(data.point * 0.95) })),
+        ),
+      ];
     },
     options,
   );
@@ -28,7 +32,7 @@ export const useStoreGiftQuery = (giftId: string, options?: QueryOptions<StoreGi
     ["store", "gift", giftId],
     async () => {
       const res = await axios.get<StoreGiftProps>(`${SERVER_URI}/store/${giftId}`);
-      return res.data;
+      return { ...res.data, point: Math.floor(res.data.point * 0.95) };
     },
     options,
   );
