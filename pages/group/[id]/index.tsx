@@ -11,6 +11,7 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import ControlButton from "../../../components/ControlButton";
 import Slide from "../../../components/layouts/PageSlide";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import { useGatherGroupQuery, useGroupFeedsQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
@@ -32,6 +33,7 @@ export type GroupSectionCategory = "정 보" | "모 임" | "피 드";
 
 function GroupDetail() {
   const { data: session } = useSession();
+  const userInfo = useUserInfo();
   const router = useRouter();
   const toast = useToast();
   const setBackUrl = useSetRecoilState(backUrlState);
@@ -65,7 +67,10 @@ function GroupDetail() {
   const findMyInfo =
     group?.participants && group.participants.find((who) => who?.user?._id === session?.user?.id);
 
-  const isAdmin = false;
+  const isAdmin =
+    userInfo?.role === "previliged" ||
+    findMyInfo?.role === "admin" ||
+    findMyInfo?.role === "manager";
 
   const handleGatheringButton = () => {
     setGatherWriting({
