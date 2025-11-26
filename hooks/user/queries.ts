@@ -115,7 +115,7 @@ export const usePointSystemLogQuery = (
           },
         },
       );
-      return res.data;
+      return res.data.filter((props) => props.meta.value > 100 || props.meta.value < -100);
     },
     { ...options, staleTime: 0, cacheTime: 0 },
   );

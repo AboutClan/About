@@ -17,7 +17,7 @@ function UserLogSection() {
   const { data: logsData } = usePointSystemLogQuery("point");
 
   let stepDate: string;
-  let stepValue: number = userInfo?.point;
+  let stepValue: number = 22612;
 
   return (
     <>
@@ -40,7 +40,7 @@ function UserLogSection() {
             </Link>
           </Flex>
         </Box>
-        <Box>
+        <Box mb={10}>
           {logsData?.map((log, idx) => {
             const timeStamp = dayjs(log.timestamp);
             const timeStr = dayjsToStr(timeStamp);
