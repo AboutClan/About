@@ -22,7 +22,7 @@ function UserStudySection() {
 
     const getThumbnailCardInfoArr = data.map((props) => {
       const findStudy = props.results.find((result) =>
-        result.members.some((member) => member.userId._id === "62a44519f4a6968c58fedb88"),
+        result.members.some((member) => member.userId._id === userInfo?._id),
       );
 
       const place = findStudy?.placeId;
