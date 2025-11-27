@@ -217,7 +217,7 @@ function StudyApplyDrawer({
           sub={
             isFirstPage
               ? "여러 날짜를 한번에 신청할 수도 있습니다."
-              : "설정한 범위 내에 3명 이상의 멤버가 모이는 경우 진행됩니다."
+              : "설정한 범위 내 3명 이상의 멤버가 모이는 경우 진행됩니다."
           }
         />
         {isFirstPage ? (

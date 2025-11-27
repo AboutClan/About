@@ -122,7 +122,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
       },
       {
         type: "공식 행사 참여비 할인",
-        value: "20 ~ 30%",
+        value: "- 20 ~ 30%",
       },
     ],
     normal: [],
