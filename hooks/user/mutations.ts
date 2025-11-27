@@ -183,7 +183,26 @@ export const useUserReviewMutation = (options?: MutationOptions<UserReviewReques
     async (param) =>
       requestServer<UserReviewRequestProps>({
         method: "post",
-        url: `notice/temperature`,
+        url: `notice/temperature/gatherReview`,
+        body: param,
+      }),
+    options,
+  );
+
+interface UserStudyReviewRequestProps {
+  infos: UserReviewProps[];
+  date: string;
+  studyId: string;
+}
+
+export const useUserStudyReviewMutation = (
+  options?: MutationOptions<UserStudyReviewRequestProps>,
+) =>
+  useMutation<void, AxiosError, UserStudyReviewRequestProps>(
+    async (param) =>
+      requestServer<UserStudyReviewRequestProps>({
+        method: "post",
+        url: `notice/temperature/studyReview`,
         body: param,
       }),
     options,

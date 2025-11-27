@@ -51,7 +51,7 @@ function StudyPageChallenge() {
             borderRadius="8px"
           >
             <Box fontSize="18px" lineHeight="26px" color="mint" fontWeight="bold">
-              {transformMinutesToHour(null)}
+              {transformMinutesToHour(record?.monthCnt)}
             </Box>
             <Box fontSize="13px" lineHeight="18px" color="gray.500" fontWeight="medium">
               스터디 참여

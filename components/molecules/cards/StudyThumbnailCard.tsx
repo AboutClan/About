@@ -1,13 +1,14 @@
-import { Badge, Box, Flex } from "@chakra-ui/react";
+import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import { getStudyBadge } from "../../../libs/study/studyHelpers";
 import { SingleLineText } from "../../../styles/layout/components";
 import { StudyType } from "../../../types/models/studyTypes/study-set.types";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 import { CheckCircleIcon } from "../../Icons/CircleIcons";
 import { LocationDotIcon } from "../../Icons/LocationIcons";
 import { UserIcon } from "../../Icons/UserIcons";
@@ -35,6 +36,10 @@ export interface StudyThumbnailCardProps {
   func?: () => void;
   isMyStudy: boolean;
   isFutureDate?: boolean;
+  hasReviewBtn?: boolean;
+
+  hasReview?: boolean;
+  hasAttend?: boolean;
 }
 
 export function StudyThumbnailCard({
@@ -45,7 +50,12 @@ export function StudyThumbnailCard({
   func = undefined,
   isMyStudy,
   isFutureDate,
+  hasReviewBtn,
+
+  hasReview,
+  hasAttend,
 }: StudyThumbnailCardProps) {
+  const router = useRouter();
   return (
     <CardLink
       href={url}
@@ -83,7 +93,6 @@ export function StudyThumbnailCard({
               </Badge>
             </Flex>
           </Flex>
-
           <Subtitle>
             <Flex>
               {place.date && (
@@ -116,7 +125,6 @@ export function StudyThumbnailCard({
               </Box>
             </Flex>
           </Subtitle>
-
           <Flex mb={1} mt="auto" alignItems="center" justify="space-between">
             <Box>
               <AvatarGroupsOverwrap users={participants} maxCnt={status ? 8 : VOTER_SHOW_MAX} />
@@ -152,6 +160,23 @@ export function StudyThumbnailCard({
               </Flex>
             </Flex>
           </Flex>
+          {hasReviewBtn && (
+            <Button
+              mt={3}
+              w="max-content"
+              ml="auto"
+              size="sm"
+              colorScheme="black"
+              isDisabled={hasReview || !hasAttend}
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                router.push(`/home/studyReview?date=${dayjsToStr(place.date)}&id=${place._id}`);
+              }}
+            >
+              {!hasAttend ? "미 출석" : !hasReview ? "멤버 평가" : "평가 완료"}
+            </Button>
+          )}
         </Flex>
       </>
     </CardLink>

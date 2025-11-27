@@ -1,48 +1,33 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useEffect, useState } from "react";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import { GatherThumbnailCardProps } from "../../components/molecules/cards/GatherThumbnailCard";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { useStudyMineQuery } from "../../hooks/study/queries";
-import { backUrlState } from "../../recoils/navigationRecoils";
+import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import GatherSkeletonMain from "../gather/GatherSkeletonMain";
 
 function UserStudySection() {
-  const router = useRouter();
   const userInfo = useUserInfo();
-
-  const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
-
-  const loader = useRef<HTMLDivElement | null>(null);
-  const firstLoad = useRef(true);
-  const [isLoading, setIsLoading] = useState(true);
-  const setBackUrl = useSetRecoilState(backUrlState);
-
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
 
-  const { data } = useStudyMineQuery();
-  console.log(1, data);
+  const { data, isLoading } = useStudyMineQuery();
 
   useEffect(() => {
     if (!data?.length) return;
 
     const getThumbnailCardInfoArr = data.map((props) => {
-      console.log(1214, props);
       const findStudy = props.results.find((result) =>
         result.members.some((member) => member.userId._id === "62a44519f4a6968c58fedb88"),
       );
-      console.log(55, findStudy, props.results[0]);
+
       const place = findStudy?.placeId;
       const textArr = place.location?.address.split(" ");
-
+      const members = findStudy.members.map((userId) => userId.userId);
       return {
         place: {
           name: place?.location?.name,
@@ -53,12 +38,15 @@ function UserStudySection() {
             image: place?.image,
             isPriority: true,
           },
-          _id: "",
+          _id: place?._id,
         },
-        participants: findStudy.members.map((userId) => userId.userId),
+        participants: members,
         url: `/study/${findStudy.placeId._id}/${props.date}?type=results`,
-        studyType: "results",
+        studyType: "results" as StudyType,
         isMyStudy: false,
+        hasReview: findStudy.reviewers.includes(userInfo?._id),
+        hasAttend: !!findStudy?.members?.find((member) => member.userId._id === userInfo?._id)
+          ?.arrived,
       };
     });
     setThumbnailCardinfoArr(getThumbnailCardInfoArr);
@@ -66,13 +54,13 @@ function UserStudySection() {
 
   return (
     <>
-      <Box mx={5} pb={10}>
+      <Box pb={10}>
         <Box position="relative" minH="1000px">
           {thumbnailCardInfoArr?.length ? (
             <>
               {thumbnailCardInfoArr?.map((thumbnailCardInfo, idx) => (
-                <Box mb={3} key={idx}>
-                  <StudyThumbnailCard {...thumbnailCardInfo} />
+                <Box mb={3} key={idx} mx={5}>
+                  <StudyThumbnailCard {...thumbnailCardInfo} hasReviewBtn />
                 </Box>
               ))}
             </>
@@ -102,12 +90,6 @@ function UserStudySection() {
             </Flex>
           )}
         </Box>
-        <div ref={loader} />
-        {isLoading && cardDataArr?.length ? (
-          <Box position="relative" mt="32px">
-            <MainLoadingAbsolute size="sm" />
-          </Box>
-        ) : undefined}
       </Box>
     </>
   );

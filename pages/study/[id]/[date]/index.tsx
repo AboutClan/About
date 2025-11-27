@@ -168,7 +168,7 @@ export default function Page() {
               <StudyOverview date={date} placeInfo={placeInfo} studyType={studyType} />
               <Divider />
             </Slide>
-            <Slide>{isOpenStudy && <StudyAddressMap location={placeInfo.location} />}</Slide>
+            <Slide>{isOpenStudy && <StudyAddressMap location={placeInfo?.location} />}</Slide>
             <Slide isNoPadding>
               {isOpenStudy && (
                 <Box mt={5}>

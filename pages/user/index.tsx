@@ -80,7 +80,7 @@ function UserPage() {
                   router.replace(`/user?tab=gather`);
                   handleClickTab("gather");
                   setIsAlert(false);
-                },
+              },
                 isAlert,
               },
               {
@@ -89,7 +89,6 @@ function UserPage() {
                   router.replace(`/user?tab=study`);
                   handleClickTab("study");
                 },
-                isAlert,
               },
               {
                 text: "소모임",

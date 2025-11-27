@@ -147,16 +147,17 @@ export const useStudyPassedDayQuery = (date: string, options?: QueryOptions<Stud
 
 interface StudyMineProps {
   date: string;
-  participations: any[];
   results: {
     members: {
       userId: UserSimpleInfoProps;
+      arrived?: string;
     }[];
     placeId: StudyPlaceProps;
+    reviewers: string[];
   }[];
 }
 
-export const useStudyMineQuery = (options?: any) =>
+export const useStudyMineQuery = (options?: QueryOptions<StudyMineProps[]>) =>
   useQuery<StudyMineProps[], AxiosError, StudyMineProps[]>(
     [STUDY_VOTE, "mine"],
     async () => {
