@@ -17,7 +17,7 @@ function UserLogSection() {
   const { data: logsData } = usePointSystemLogQuery("point");
 
   let stepDate: string;
-  let stepValue: number = 22612;
+  let stepValue: number = userInfo?.point;
 
   return (
     <>
