@@ -30,7 +30,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
         value: "+ 20%",
       },
       {
-        type: "스터디 출석 리워드",
+        type: "스터디 참여 리워드",
         value: "+ 20%",
       },
       {
@@ -52,7 +52,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
         value: "+ 20%",
       },
       {
-        type: "스터디 출석 리워드",
+        type: "스터디 참여 리워드",
         value: "+ 20%",
       },
       {
@@ -97,7 +97,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
         value: "+ 20%",
       },
       {
-        type: "스터디 출석 리워드",
+        type: "스터디 참여 리워드",
         value: "+ 20%",
       },
       {
