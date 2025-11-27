@@ -59,10 +59,6 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
         type: "스토어 상품 할인",
         value: "- 10%",
       },
-      {
-        type: "매월 지원금 지급",
-        value: "5,000원",
-      },
     ],
     gatherSupporters: [
       {
