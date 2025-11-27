@@ -23,7 +23,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
     newbie: [
       {
         type: "일일 출석체크",
-        value: "포인트 추가 획득",
+        value: "+ 20%",
       },
       {
         type: "공부 인증 리워드",
@@ -45,7 +45,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
     studySupporters: [
       {
         type: "일일 출석체크",
-        value: "포인트 추가 획득",
+        value: "+ 20%",
       },
       {
         type: "공부 인증 리워드",
@@ -63,7 +63,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
     gatherSupporters: [
       {
         type: "일일 출석체크",
-        value: "포인트 추가 획득",
+        value: "+ 20%",
       },
       {
         type: "번개 개설 리워드",
@@ -90,7 +90,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
     manager: [
       {
         type: "일일 출석체크",
-        value: "포인트 추가 획득",
+        value: "+ 20%",
       },
       {
         type: "공부 인증 리워드",
