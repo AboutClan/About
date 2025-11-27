@@ -58,15 +58,15 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
         studyType === "soloRealTimes"
           ? "자유 카페 / 자유 공간"
           : studyType === "participations"
-          ? "신청한 매칭 범위 이내 · 3명 이상의 멤버"
-          : "신청한 매칭 범위 이내 · 3명 이상의 멤버",
+          ? "설정한 매칭 범위 내 · 3명 이상의 멤버"
+          : "설정한 매칭 범위 내 · 3명 이상의 멤버",
     },
 
     {
       category: "스터디 혜택",
       text:
         studyType === "participations"
-          ? "기본 100 Point / 매칭 시 최대 1,000 Point 획득"
+          ? "기본 100 Point / 매칭 시 최대 1,000 Point"
           : "최대 500 Point 획득",
     },
   ];
@@ -119,7 +119,7 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
             </Box>
             <Box mt={1} mb={2} mr={2} fontSize="20px" fontWeight="bold">
               {studyType === "participations"
-                ? "스터디 매칭 라운지"
+                ? "카공 스터디 라운지"
                 : studyType === "soloRealTimes"
                 ? "실시간 공부 인증"
                 : placeInfo?.location.name}

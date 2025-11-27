@@ -16,7 +16,6 @@ export const getMyStudyDateArr = (
       (studySet[key] as StudyConfirmedSetProps[] | StudyParticipationsSetProps[]).forEach(
         (study) => {
           if (key === "participations") {
-           
             const study2: StudyParticipationsSetProps = study;
             study2.study.forEach((props) => {
               if (props.user._id === myId) {
@@ -41,7 +40,7 @@ export const getMyStudyDateArr = (
 export const getStudyBadge = (studyType: StudyType, isFutureDate: boolean) => {
   switch (studyType) {
     case "participations":
-      return { text: "스터디 라운지", colorScheme: "blue" };
+      return { text: "스터디 매칭", colorScheme: "blue" };
     case "soloRealTimes":
       return { text: "공부 인증", colorScheme: "red" };
 

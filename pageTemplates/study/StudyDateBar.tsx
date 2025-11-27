@@ -125,8 +125,7 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
           </Button>
         </Flex>
         <Box mt={1} fontSize="12px" color="gray.500">
-          {studyType === "participations" ? "총" : "현재"}{" "}
-          <b>{memberIdArr?.length || 0}명의 멤버</b>가{" "}
+          현재 <b>{memberIdArr?.length || 0}명의 멤버</b>가{" "}
           {studyType === "participations" ? "스터디를 기다리고 있어요!" : "참여중이에요!"}
         </Box>
       </Box>

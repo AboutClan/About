@@ -52,9 +52,9 @@ export const setStudyThumbnailCard = (
   if (!isPassedDate) {
     basicThumbnailCard.push({
       place: {
-        name: "스터디 매칭 라운지",
+        name: "카공 스터디 라운지",
         branch: "위치 선정 중...",
-        address: "가까운 인원들과 스터디를 매칭하고 있어요",
+        address: "가까운 인원들과 카공 스터디를 매칭하고 있어요",
         date: null,
         imageProps: {
           image:
