@@ -287,7 +287,7 @@ export default function Page() {
           {!isMyReview &&
             date === dayjsToStr(dayjs()) &&
             (studyType === "openRealTimes" || studyType === "results") &&
-            (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type === "arrived" && (
+            (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type !== "arrived" && (
               <StudyReviewButton
                 placeId={placeInfo?._id}
                 myStudyInfo={myStudyInfo as StudyConfirmedMemberProps}
