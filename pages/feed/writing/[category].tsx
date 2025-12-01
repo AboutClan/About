@@ -58,7 +58,7 @@ function FeedWritingPage() {
   const { mutate: updatePoint, isLoading: isLoading2 } = usePointSystemMutation("point");
   const { mutate, isLoading } = useFeedMutation({
     onSuccess() {
-      const defaultValue = !isAnonymous ? 1000 : 200;
+      const defaultValue = !isAnonymous ? 1000 : 300;
       const addValue = gather.type.title === "스터디" || !isOrganazier ? 0 : 1000;
       const value = hasMembership ? (defaultValue + addValue) * 2.5 : defaultValue + addValue;
       updatePoint({ value, message: `모임 후기 지원금 ${hasMembership ? `(멤버십 +150%)` : ""}` });
@@ -197,7 +197,7 @@ function FeedWritingPage() {
 }
 
 const INFO_ARR = [
-  "실명은 1,000 Point, 익명은 200 Point가 즉시 지급합니다.",
+  "실명은 1,000 Point, 익명은 300 Point가 즉시 지급합니다.",
   "모임장이라면 추가로 1,000 Point가 지급됩니다. (카공 제외)",
   "함께 참여한 멤버들에게 리뷰 알림이 전송됩니다.",
   "작성된 리뷰는 모임 페이지, 라운지, 프로필에서 볼 수 있습니다.",
