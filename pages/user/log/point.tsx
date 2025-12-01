@@ -51,7 +51,7 @@ function UserLogSection() {
               const valueText = " Point";
               const value = log.meta.value;
               const block = (
-                <Fragment key={idx + stepValue}>
+                <Fragment key={idx}>
                   <Box
                     mt={!isFirst && 5}
                     pt={5}
@@ -105,7 +105,7 @@ function UserLogSection() {
               const value = log.meta.value;
               const block = (
                 <IconRowBlock2
-                  key={idx + stepValue}
+                  key={idx}
                   text={log.message}
                   time={dayjsToFormat(timeStamp, "HH:mm")}
                   leftChildren={

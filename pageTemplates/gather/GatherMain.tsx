@@ -43,6 +43,9 @@ export default function GatherMain() {
     firstLoad.current = false;
     if (cursor === 0) {
       setGathers(gatherData);
+      if (gatherData.length < 5) {
+        setCursor(1);
+      }
     } else {
       setGathers((old) => [...old, ...gatherData]);
     }

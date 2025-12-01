@@ -25,7 +25,7 @@ export const VALUE_BOX_COL_ITEMS: ValueBoxCol2ItemProps[] = [
     left: `가입비`,
     right: "10,000원",
     lineThroughText: "15,000원",
-    leftSub: `(${dayjs().month() + 2}월 중 인상 예정)`,
+    leftSub: `(${dayjs().add(1, "month").month() + 1}월 중 인상 예정)`,
   },
   {
     left: "보증금",

@@ -49,7 +49,11 @@ function GatherHeader({ gatherData }: IGatherHeader) {
     session?.user.uid === "2259633694" ||
     session?.user.uid === "3224546232";
 
-  const { mutate: absenceCheck } = useGatherAbsenceCheckMutation(+gatherData.id);
+  const { mutate: absenceCheck } = useGatherAbsenceCheckMutation(+gatherData.id, {
+    onSuccess() {
+      toast("success", "체크 완료!");
+    },
+  });
 
   const { mutate: changeStatus } = useGatherStatusMutation(+gatherData.id, {
     onSuccess() {
