@@ -1,11 +1,21 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+const sendMessageToNative = (message: { type: "webviewReady" }) => {
+  if (typeof window !== "undefined" && window.ReactNativeWebView) {
+    window.ReactNativeWebView.postMessage(JSON.stringify(message));
+  }
+};
+
 export const useDeepLink = () => {
   const router = useRouter();
 
   useEffect(() => {
     console.log("🌐 Setting up webview message listener...");
+
+    // 네이티브에게 웹뷰가 준비되었음을 알림
+    sendMessageToNative({ type: "webviewReady" });
+    console.log("🌐 Sent webviewReady message to native");
 
     const handleMessage = (event: MessageEvent) => {
       console.log("🌐 Message event received:", event);
@@ -26,7 +36,6 @@ export const useDeepLink = () => {
           return;
         }
 
-        alert(JSON.stringify(data));
         console.log("📩 Deep link data:", data);
         const target = `${data.path}${
           Object.keys(data.params).length > 0
