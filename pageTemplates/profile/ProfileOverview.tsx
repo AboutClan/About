@@ -42,7 +42,7 @@ function ProfileOverview({ user, gatherCount }: IProfileOverview) {
                   </Box>
                 </Flex>
                 <Box fontSize="10px" color="gray.500">
-                  {dayjsToFormat(dayjs(user?.registerDate), "YYYY년 M월 d일 가입") || "게스트"}
+                  {dayjsToFormat(dayjs(user?.registerDate), "YYYY년 M월 D일 가입") || "게스트"}
                 </Box>
               </Flex>
               <Box ml="auto" mt={2}>

@@ -34,13 +34,13 @@ export function useUserCurrentLocation() {
         (error) => {
           setCoordinate(null);
           setIsLoading(false); // ✅ 실패 시 로딩 OFF
-          if (locationAccessStorage !== todayDateStr) {
-            toast(
-              "error",
-              "스터디 장소 추천을 위해, 설정 > 앱 권한에서 위치 접근을 허용해 주세요!",
-            );
-            localStorage.setItem(LocationAccessStorage, todayDateStr);
-          }
+          // if (locationAccessStorage !== todayDateStr) {
+          //   toast(
+          //     "error",
+          //     "스터디 장소 추천을 위해, 설정 > 앱 권한에서 위치 접근을 허용해 주세요!",
+          //   );
+          //   localStorage.setItem(LocationAccessStorage, todayDateStr);
+          // }
           console.error("위치 오류: ", error);
           resolve(null);
         },
