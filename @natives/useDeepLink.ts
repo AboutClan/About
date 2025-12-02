@@ -11,7 +11,6 @@ export const useDeepLink = () => {
       console.log("🌐 Message event received:", event);
       console.log("🌐 Message data type:", typeof event.data);
       console.log("🌐 Message data:", event.data);
-      alert(event.data);
 
       if (typeof event.data !== "string") {
         console.log("🌐 Ignoring non-string message");
@@ -27,6 +26,7 @@ export const useDeepLink = () => {
           return;
         }
 
+        alert(JSON.stringify(data));
         console.log("📩 Deep link data:", data);
         const target = `${data.path}${
           Object.keys(data.params).length > 0
