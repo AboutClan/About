@@ -125,13 +125,6 @@ function Layout({ children }: ILayout) {
         if (data.name === "backAction") {
           handleBackAction();
         }
-
-        if (data.name === "deeplink") {
-          console.log("📩 Received deep link:", data);
-          // 예: /page?id=123 → 내부 라우터로 이동
-          const target = `/${data.path}?${new URLSearchParams(data.params).toString()}`;
-          router.push(target);
-        }
       } catch (error) {
         console.error("Failed to parse message data:", error);
       }
@@ -185,11 +178,9 @@ function Layout({ children }: ILayout) {
       }
     };
 
-    window.addEventListener("message", handleMessage);
     document.addEventListener("message", handleMessage);
 
     return () => {
-      window.removeEventListener("message", handleMessage);
       document.removeEventListener("message", handleMessage);
     };
   }, [pathname, router.query?.modal]);
