@@ -185,9 +185,11 @@ function Layout({ children }: ILayout) {
       }
     };
 
+    window.addEventListener("message", handleMessage);
     document.addEventListener("message", handleMessage);
 
     return () => {
+      window.removeEventListener("message", handleMessage);
       document.removeEventListener("message", handleMessage);
     };
   }, [pathname, router.query?.modal]);
