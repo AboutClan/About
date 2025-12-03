@@ -1,18 +1,16 @@
-import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
 import { CoordinatesProps } from "../../types/common";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { useToast } from "./CustomToast";
 
-const LocationAccessStorage = "locationAccess";
+// const LocationAccessStorage = "locationAccess";
 
 export function useUserCurrentLocation() {
   const toast = useToast();
   const [coordinate, setCoordinate] = useState<CoordinatesProps | null | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false); // ✅ 추가
-  const locationAccessStorage = localStorage.getItem(LocationAccessStorage);
-  const todayDateStr = dayjsToStr(dayjs().date(0));
+  // const locationAccessStorage = localStorage.getItem(LocationAccessStorage);
+  // const todayDateStr = dayjsToStr(dayjs().date(0));
 
   // ✅ 위치 요청 함수 (초기 + refetch 둘 다 이걸 사용)
   const getCurrentLocation = async () => {
