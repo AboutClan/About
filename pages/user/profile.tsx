@@ -56,17 +56,19 @@ function Profile() {
   });
 
   useEffect(() => {
-    setMajors(userInfo?.majors);
-    setMbti(userInfo?.mbti);
+    if (!userInfo) return;
+
+    setMajors(userInfo.majors ?? []);
+    setMbti(userInfo.mbti ?? "");
     setPlaceInfo({
-      name: userInfo?.locationDetail.name || "",
-      address: userInfo?.locationDetail?.address || "",
-      longitude: userInfo?.locationDetail?.longitude,
-      latitude: userInfo?.locationDetail?.latitude,
+      name: userInfo.locationDetail?.name || "",
+      address: userInfo.locationDetail?.address || "",
+      longitude: userInfo.locationDetail?.longitude ?? null,
+      latitude: userInfo.locationDetail?.latitude ?? null,
     });
-    setInstagram(userInfo?.instagram);
-    setComment(userInfo?.comment);
-    setText(userInfo?.introduceText);
+    setInstagram(userInfo.instagram ?? "");
+    setComment(userInfo.comment ?? "");
+    setText(userInfo.introduceText ?? "");
   }, [userInfo]);
 
   const handleSubmit = () => {
@@ -185,12 +187,12 @@ function Profile() {
             />
             <Flex ml="auto" mt={1} w="max-content" fontSize="12px" color="gray.500">
               <Box
-                color={text.length >= 90 ? "red" : text.length < 40 ? "gray.500" : "gray.800"}
+                color={text?.length >= 90 ? "red" : text?.length < 40 ? "gray.500" : "gray.800"}
                 mr={1}
               >
-                {text.length}
+                {text?.length}
               </Box>{" "}
-              / {text.length >= 90 ? "최대 90자" : "최소 40자"}
+              / {text?.length >= 90 ? "최대 90자" : "최소 40자"}
             </Flex>
           </Box>
           <Box mb={4}>
