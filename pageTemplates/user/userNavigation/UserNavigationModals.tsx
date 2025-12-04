@@ -47,7 +47,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
   const { mutate } = usePointSystemMutation("point", {
     onSuccess() {
       queryClient.refetchQueries(["pointLog", "coupon"]);
-      toast("success", "2,000 Point가 지급되었습니다!");
+      toast("success", "1,000 Point가 지급되었습니다!");
       setModalOpen(null);
     },
   });
