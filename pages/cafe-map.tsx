@@ -1,8 +1,8 @@
-import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
 import { gaEvent } from "../libs/gtag";
+
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 
@@ -50,6 +50,7 @@ function StudyMap() {
     main: {
       text: "이 동",
       func: () => {
+        localStorage.setItem("moving", "cafe-map");
         gaEvent("cafe-map-moving");
         router.push("/home");
       },
