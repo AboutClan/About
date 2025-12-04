@@ -52,7 +52,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
     },
   });
 
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState("196643625581");
 
   const handleCoupon = () => {
     if (!userInfo) {
@@ -67,7 +67,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
     } else {
       if (data) {
         toast("warning", "이미 사용한 쿠폰입니다.");
-      } else mutate({ value: 2000, message: "카카오톡 채널 추가 쿠폰", sub: "coupon" });
+      } else mutate({ value: 1000, message: "카카오톡 채널 추가 쿠폰", sub: "coupon" });
     }
   };
 

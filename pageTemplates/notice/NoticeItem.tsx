@@ -9,25 +9,24 @@ import {
   Text,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { NoticeIcon } from "../../components/Icons/NoticeIcons";
 import ExternalLink from "../../components/molecules/ExternalLink";
 import { NOTICE_ALERT } from "../../constants/keys/localStorage";
-import { useUserInfoQuery } from "../../hooks/user/queries";
+import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { NOTICE_ARR } from "../../storage/notice";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 function NoticeItem() {
-  const { data: userInfo } = useUserInfoQuery();
+  const userInfo = useUserInfo();
+
+  const [list, setList] = useState([]);
 
   useEffect(() => {
     localStorage.setItem(NOTICE_ALERT, NOTICE_ARR.length + "");
-  }, []);
-
-  const list = [];
-
-  if (userInfo) {
+    if (!userInfo) return;
+    const temp = [];
     const REGISTER_NOTICE = {
       id: "10000",
       title: "🎉 신규 가입을 환영합니다! 🎉",
@@ -38,19 +37,24 @@ function NoticeItem() {
       link: "https://pf.kakao.com/_SaWXn/109551233",
       linkTitle: "신규 인원 가이드",
     };
-
+    let addNewNotice = false;
     NOTICE_ARR.forEach((notice) => {
-      if (dayjs(notice.date).startOf("day").isAfter(dayjs(userInfo?.registerDate).startOf("day"))) {
-        list.push(REGISTER_NOTICE);
-        list.push(notice);
+      if (
+        addNewNotice === false &&
+        dayjs(notice.date).startOf("day").isAfter(dayjs(userInfo?.registerDate).startOf("day"))
+      ) {
+        addNewNotice = true;
+        temp.push(REGISTER_NOTICE);
+        temp.push(notice);
       } else {
-        list.push(notice);
+        temp.push(notice);
       }
     });
-    if (NOTICE_ARR.length === list.length) {
-      list.push(REGISTER_NOTICE);
+    if (NOTICE_ARR.length === temp.length) {
+      temp.push(REGISTER_NOTICE);
     }
-  }
+    setList(temp);
+  }, [userInfo]);
 
   return (
     <>

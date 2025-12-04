@@ -20,12 +20,11 @@ function NewMemberModal({ onClose }: NewMemberModalProps) {
       title="신규 인원 가이드"
       footerOptions={{
         main: {
-          text: "신규 인원 가이드",
+          text: "보러 가기",
           func: () => {
             handleClick();
           },
         },
-        sub: { text: "닫기" },
       }}
       setIsModal={onClose}
     >

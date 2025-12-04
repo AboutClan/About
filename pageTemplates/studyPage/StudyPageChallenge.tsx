@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import AvatarGroupsOverwrap from "../../components/molecules/groups/AvatarGroupsOverwrap";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
+import { useAllUserDataQuery } from "../../hooks/admin/quries";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { usePointPlusLogQuery } from "../../hooks/user/queries";
@@ -19,6 +20,8 @@ function StudyPageChallenge() {
   const [isModal, setIsModal] = useState(false);
   const { data: logs } = usePointPlusLogQuery();
 
+  const { data: studyUsers } = useAllUserDataQuery("study");
+  console.log(studyUsers);
   useEffect(() => {
     if (!logs?.length) return;
 
@@ -119,7 +122,7 @@ function StudyPageChallenge() {
             />
           </Flex>
           <Box mt={4} mb={4}>
-            <b>84명</b>의 멤버가 함께 도전중이에요!
+            <b>{studyUsers?.length}명</b>의 멤버가 함께 도전중이에요!
           </Box>
           <Button
             w="full"

@@ -22,7 +22,7 @@ function UserReviewBar({ user, handleButton }: UserReviewBarProps) {
     if (!cnt) return 0;
     return Math.round((cnt / totalCnt) * 100);
   };
-
+  console.log(reviewArr);
   return (
     <>
       <Box mx={5} my={3} mt={5}>
