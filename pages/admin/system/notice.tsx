@@ -75,14 +75,17 @@ function Notice() {
   const [text, setText] = useState("");
   const [tab, setTab] = useState(null);
 
-  const { mutate } = useSendNotificationAllMutation("study");
+  const { mutate } = useSendNotificationAllMutation("all");
   console.log(mutate);
+
+  // 제목 길이 조절하기.
+  const monthAlert = {
+    title: "12월 시작! 소셜링 온도 업데이트 + 티켓 리필 완료 ✨",
+    description:
+      "지난 멤버 평가가 반영됐고, 참여 티켓도 새로 충전되었어요! 이번 달도 즐겁게 시작해봐요 🙌",
+  };
   const onSubmit = () => {
-    mutate({
-      title: "☕ 다음주 카공 멤버 모집중 ! ☕",
-      description:
-        "스터디 신청 오류가 해결됐어요😊 다음주 스터디 신청하고 같이 카공해요! 신청만 해도 포인트 획득~!",
-    });
+    mutate(monthAlert);
   };
 
   return (

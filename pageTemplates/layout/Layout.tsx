@@ -201,7 +201,7 @@ function Layout({ children }: ILayout) {
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
         };
-
+  console.log(345, process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID);
   return (
     <>
       {/* <Seo title="ABOUT" /> */}

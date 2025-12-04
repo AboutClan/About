@@ -14,6 +14,7 @@ import { ACCORDION_CONTENT_FAQ } from "../../constants/contentsText/accordionCon
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
+import { gaEvent } from "../../libs/gtag";
 import { ModalLayout } from "../../modals/Modals";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
@@ -52,8 +53,12 @@ function Fee() {
 
   const { mutate: changeRole } = useUserInfoFieldMutation("role");
 
+  const moving = localStorage.getItem("moving");
+
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {
+      if (moving) gaEvent("register_complete_by_cafe_map");
+      else gaEvent("register_complete");
       changeRole({ role: "waiting" });
 
       setLocalStorageObj(REGISTER_INFO, null);

@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+import { gaEvent } from "../libs/gtag";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 
@@ -48,7 +49,10 @@ function StudyMap() {
   const footerOptions: IFooterOptions = {
     main: {
       text: "이 동",
-      func: () => router.push("/home"),
+      func: () => {
+        gaEvent("cafe-map-moving");
+        router.push("/home");
+      },
     },
     sub: {
       text: "닫 기",

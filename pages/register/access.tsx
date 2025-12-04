@@ -13,6 +13,7 @@ import ValueBoxCol2 from "../../components/molecules/ValueBoxCol2";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserRegisterControlMutation } from "../../hooks/user/mutations";
+import { gaEvent } from "../../libs/gtag";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { navigateExternalLink } from "../../utils/navigateUtils";
@@ -39,6 +40,7 @@ function Access() {
 
   const { mutate: approve, isLoading } = useUserRegisterControlMutation("post", {
     onSuccess() {
+      gaEvent("sign_up_complete");
       toast("success", "가입이 승인되었습니다!");
       queryClient.resetQueries([USER_INFO]);
       router.push("/home");
