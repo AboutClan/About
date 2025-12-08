@@ -84,7 +84,7 @@ function WithDrawel() {
 }
 const INFO_ARR = [
   "포인트 출금 시 10% 수수료가 발생합니다.",
-  "출금 후 잔액이 최소 5,000원 이상이어야 합니다.",
+  "출금 후 잔액이 최소 8,000원 이상이어야 합니다.",
 ];
 
 export default WithDrawel;

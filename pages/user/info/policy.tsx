@@ -1,374 +1,400 @@
-import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Container, Heading, List, ListItem, Text } from "@chakra-ui/react";
 
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import ExternalLink from "../../../components/molecules/ExternalLink";
 
 function Policy() {
   return (
     <>
       <Header title="About 이용약관" />
       <Slide>
-        <Container>
-          <Heading as="h2" fontSize="2xl" marginTop="15px">
+        <Container maxW="container.md" py={4}>
+          {/* 제1장 총칙 */}
+          <Heading as="h2" fontSize="2xl" mt={4}>
             제1장 총칙
           </Heading>
 
-          <Heading as="h3" fontSize="lg" marginTop="10px">
+          <Heading as="h3" fontSize="lg" mt={3}>
             제1조(목적)
           </Heading>
           <Text>
-            본 약관은 Vote Helper 스터디 참여 투표 자동화 서비스(
-            <a
-              href={process.env.NEXT_PUBLIC_NEXTAUTH_URL}
-            >{`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}`}</a>
-            , 이하 &quot;Vote Helper&quot;)이 제공하는 서비스의 이용과 관련하여 회원과 Vote Helper
-            사이의 권리·의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 한다.
+            본 약관은 About 연합 동아리 및 커뮤니티 서비스(
+            <a href={process.env.NEXT_PUBLIC_NEXTAUTH_URL}>
+              {process.env.NEXT_PUBLIC_NEXTAUTH_URL}
+            </a>
+            , 이하 &quot;About&quot;)가 제공하는 스터디, 번개(소셜링), 소모임 및 관련 제반 서비스의
+            이용과 관련하여, About와 회원 간의 권리·의무 및 책임사항, 기타 필요한 사항을 정함을
+            목적으로 합니다.
           </Text>
 
-          <Heading as="h3" fontSize="lg" marginTop="10px">
+          <Heading as="h3" fontSize="lg" mt={3}>
             제2조(정의)
           </Heading>
-          <Text>이 약관에서 사용하는 용어의 정의는 다음 각 호와 같다.</Text>
-          <List styleType="number" marginLeft="1em">
+          <Text>이 약관에서 사용하는 용어의 정의는 다음과 같습니다.</Text>
+          <List styleType="number" ml="1em">
             <ListItem>
-              &quot;서비스&quot;라 함은 구현되는 단말기(PC, 휴대형단말기 등의 각종 유무선 장치를
-              포함)와 상관없이 회원이 이용할 수 있는 Vote Helper 관련 제반 서비스를 의미한다.
+              &quot;서비스&quot;란 About가 운영하는 웹·앱을 통하여 제공하는 스터디, 번개(소셜링),
+              소모임, 동아리 행사 및 기타 부가 기능을 말합니다.
             </ListItem>
             <ListItem>
-              &quot;회원&quot;이라 함은 Vote Helper 서비스에 접속하여 이 약관에 따라 Vote Helper
-              이용계약을 체결하고 Vote Helper 제공하는 서비스를 이용하는 자를 의미한다.
+              &quot;회원&quot;이란 본 약관에 동의하고 About와 이용계약을 체결하여 서비스를 이용하는
+              자를 말합니다.
             </ListItem>
             <ListItem>
-              &quot;계정&quot;이라 함은 Vote Helper 서비스를 이용하기 위해 Vote Helper 회원에게
-              부여하는 회원 식별 단위를 의미한다.
+              &quot;스터디&quot;란 카공 등 공부를 목적으로, 지역·시간을 기준으로 자동 매칭 또는
+              모집을 통해 진행되는 모임을 말합니다.
             </ListItem>
             <ListItem>
-              &quot;프로필 사진&quot;이라 함은 사용자의 동의에 따라 카카오에서 Vote Helper에게
-              제공하는 사용자의 카카오톡 프로필 사진을 의미한다.
+              &quot;번개(소셜링)&quot;이란 맛집, 카페, 액티비티 등 다양한 주제로, 비교적 1회성에
+              가깝게 진행되는 모임을 말합니다.
             </ListItem>
             <ListItem>
-              &quot;프로필 이름&quot;이라 함은 사용자의 동의에 따라 카카오에서 Vote Helper에게
-              제공하는 사용자의 카카오톡 프로필 이름을 의미한다.
+              &quot;소모임&quot;이란 같은 관심사를 가진 멤버들이 일정 기간 지속적으로 활동하는 정기
+              모임을 말합니다.
             </ListItem>
             <ListItem>
-              &quot;카카오 액세스 토큰(Kakao Access Token)&quot;이라 함은 카카오 로그인(OAuth2.0)을
-              통해서 Vote Helper 서비스에 로그인 한 사용자에 한해 카카오 인증서버에서 Vote Helper
-              서비스에게 사용자의 로그인 여부를 통지 및 최초 회원가입시 사용자가 동의한 정보에 대한
-              Vote Helper의 접근요청을 허용하기 위해 카카오 인증서버에서 발급되는 식별자를 의미한다.
+              &quot;호스트&quot; 또는 &quot;모임장&quot;이란 스터디, 번개, 소모임 등 모임을
+              개설하거나 운영을 담당하는 회원을 말합니다.
             </ListItem>
             <ListItem>
-              &quot;카카오 리프레시 토큰(Kakao Refresh Token)&quot;이라 함은 카카오 액세스 토큰이
-              만료되었을때 갱신을 위한 목적으로 카카오 인증서버에서 Vote Helper에게 발급되는
-              식별자를 의미한다.
+              &quot;포인트&quot;란 출석, 스터디·모임 참여, 친구 초대 등 활동에 따라 적립되며,
+              About가 정한 기준에 따라 보증금, 스토어 상품 구매 등 서비스 내에서 사용할 수 있는
+              가상의 재산적 가치 단위를 말합니다.
             </ListItem>
             <ListItem>
-              &quot;보안 토큰&quot;이라 함은 Vote Helper 서비스에 접속하는 사용자의 인증 및 인가를
-              위해 서비스에서 각 사용자에게 발급하는 사용자의 식별정보(서비스 내 사용자 식별 ID,
-              프로필 사진, 프로필 이름) 및 서비스 내 권한이 암호화된 문자열을 의미한다. 토큰의
-              암호화 및 발급 절차는{" "}
-              <ExternalLink href="https://datatracker.ietf.org/doc/html/rfc7519">
-                JWT 표준
-                <ExternalLinkIcon mx="2px" />
-              </ExternalLink>
-              을 따른다.
+              &quot;참여권(티켓)&quot;이란 번개 또는 소모임에 참여하기 위해 필요한 이용권으로,
+              월별로 부여·초기화되며, About 정책에 따라 추가 지급 또는 구매가 가능할 수 있습니다.
             </ListItem>
             <ListItem>
-              &quot;게시물&quot;이라 함은 회원이 서비스를 이용함에 있어 회원이 서비스에 게시한 문자,
-              문서, 그림, 음성, 링크, 파일 혹은 이들의 조합으로 이루어진 정보 등 모든 정보나 자료를
-              의미한다.
+              &quot;보증금&quot;이란 노쇼 방지 및 원활한 모임 운영을 위하여 참여 시 선차감되는
+              포인트 또는 금전을 말하며, 출석 여부 및 취소 시점에 따라 전부 또는 일부가 환급되지
+              않을 수 있습니다.
+            </ListItem>
+            <ListItem>
+              &quot;소셜링 온도&quot;란 번개(소셜링) 참여 후 멤버들이 남기는 익명 리뷰를 바탕으로
+              산정되는 후기 지표로, 모임 승인률·혜택 등에 영향을 줄 수 있습니다.
             </ListItem>
           </List>
 
-          <Heading as="h2" fontSize="2xl" marginTop="15px">
+          {/* 제2장 회원 */}
+          <Heading as="h2" fontSize="2xl" mt={6}>
             제2장 회원
           </Heading>
 
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제3조(회원의 가입)
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제3조(회원가입 및 계정 관리)
           </Heading>
-          <List styleType="number" marginLeft="1em">
+          <List styleType="number" ml="1em">
             <ListItem>
-              회원은 Vote Helper 서비스에서 본 이용약관에 동의한 후 회원가입을 요청하고 이를 Vote
-              Helper가 승낙함으로써 이용계약을 체결하며, Vote Helper로부터 계정을 부여받음으로써
-              회원으로 가입할 수 있다.
+              회원가입은 서비스 내 가입 화면에서 본 약관 및 개인정보처리방침에 동의하고, About가
+              정한 정보를 입력하여 이용 신청을 한 후 About가 이를 승낙함으로써 완료됩니다.
             </ListItem>
             <ListItem>
-              Vote Helper는 서비스관련설비의 여유가 없거나, 기술상 또는 업무상 문제가 있는 경우에는
-              이용신청 승낙을 유보할 수 있다.
+              About는 다음 각 호에 해당하는 경우 이용 신청을 승낙하지 않거나 사후에 이용을
+              제한·해지할 수 있습니다.
+              <List styleType="circle" ml="1em" mt={1}>
+                <ListItem>타인의 정보를 도용하거나 허위 정보를 기재한 경우</ListItem>
+                <ListItem>
+                  부정한 목적(종교·이성·정치적 목적 등)으로 서비스를 이용하려는 것으로 판단되는 경우
+                </ListItem>
+                <ListItem>
+                  과거 서비스 이용 제한 또는 강제 탈퇴 이력이 있는 경우로서 재가입이 부적절하다고
+                  판단되는 경우
+                </ListItem>
+              </List>
+            </ListItem>
+            <ListItem>
+              회원은 자신의 계정 및 로그인 정보를 선량한 관리자의 주의로 관리해야 하며, 타인에게
+              양도·대여하거나 공유할 수 없습니다.
             </ListItem>
           </List>
 
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제4조(회원에 대한 통지 및 정보제공)
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제4조(회원에 대한 통지)
           </Heading>
-          <List styleType="number" marginLeft="1em">
+          <List styleType="number" ml="1em">
             <ListItem>
-              <Text>
-                Vote Helper가 특정 혹은 불특정 회원에 대한 통지를 하는 경우 서비스 내 공지사항 또는
-                카카오톡 알림톡 서비스를 이용한다.
-              </Text>
+              About가 회원에게 개별 통지를 하는 경우, 서비스 내 알림, 공지, 회원이 제공한 이메일,
+              문자, 카카오톡 채널, 앱 푸시 등 합리적인 수단을 이용할 수 있습니다.
             </ListItem>
             <ListItem>
-              <Text>
-                Vote Helper는 회원이 서비스 이용에 필요하다고 인정되는 다양한 정보를 회원이 제공한
-                카카오톡 알림톡을 통하여 제공할 수 있다.
-              </Text>
+              다수 회원에게 공통으로 적용되는 사항에 대해서는 서비스 내 공지사항 게시로 개별 통지에
+              갈음할 수 있습니다.
+            </ListItem>
+          </List>
+
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제5조(회원 탈퇴 및 자격 상실)
+          </Heading>
+          <List styleType="number" ml="1em">
+            <ListItem>
+              회원은 언제든지 서비스 내 [마이페이지 &gt; 설정 &gt; 회원탈퇴] 메뉴를 통하여 탈퇴를
+              신청할 수 있으며, 관련 법령에서 정한 범위를 제외하고 회원의 정보와 활동 이력은 일정
+              기간 후 삭제 또는 비식별 처리됩니다.
             </ListItem>
             <ListItem>
-              <Text>
-                Vote Helper는 다음 각호에 해당하는 경우 회원의 동의여부와 상관없이 카카오톡 알림톡
-                또는 개별 카카오톡 메시지로 발송할 수 있다.
-              </Text>
-              <List as="ol" marginLeft="1em" styleType="circle">
+              회원이 다음 각 호에 해당하는 경우 About는 서비스 이용을 제한하거나 회원 자격을
+              상실시킬 수 있습니다.
+              <List styleType="circle" ml="1em" mt={1}>
                 <ListItem>
-                  서비스를 제공함에 있어 회원이 반드시 알아야 하는 중대한 정보라고 Vote Helper가
-                  판단하는 경우
+                  반복적인 노쇼, 무단 불참, 심각한 비매너 등으로 다른 회원에게 지속적인 피해를 주는
+                  경우
+                </ListItem>
+                <ListItem>
+                  일방적 연락, 스토킹, 성희롱, 종교·이성·정치 권유 등으로 신고·거리두기가 다수
+                  누적되는 경우
+                </ListItem>
+                <ListItem>
+                  서비스 운영을 고의로 방해하거나, 시스템을 악용·불법으로 사용하는 경우
                 </ListItem>
               </List>
             </ListItem>
           </List>
 
-          <Heading as="h2" fontSize="2xl" marginTop="15px">
-            제3장 서비스
+          {/* 제3장 서비스 이용 */}
+          <Heading as="h2" fontSize="2xl" mt={6}>
+            제3장 서비스 이용
           </Heading>
 
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제5조(서비스의 제공)
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제6조(서비스의 내용)
           </Heading>
-          <Text>Vote Helper는 회원에게 아래와 같은 서비스를 제공한다.</Text>
-          <List styleType="number" marginLeft="1em">
-            <ListItem>투표 자동화 서비스</ListItem>
-            <ListItem>투표 통계 서비스</ListItem>
-            <ListItem>기타 Vote Helper가 자체 개발을 통해 회원들에게 제공할 일체의 서비스</ListItem>
-          </List>
-
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제6조(서비스의 중단)
-          </Heading>
-          <List styleType="number" marginLeft="1em">
+          <Text>About가 제공하는 주요 서비스는 다음과 같습니다.</Text>
+          <List styleType="number" ml="1em">
+            <ListItem>스터디 매칭 및 출석·인증 기능</ListItem>
+            <ListItem>번개(소셜링) 개설 및 참여 기능</ListItem>
+            <ListItem>소모임 개설, 승인, 운영 및 멤버 관리 기능</ListItem>
+            <ListItem>동아리 행사 및 각종 이벤트 안내·신청 기능</ListItem>
+            <ListItem>포인트·참여권·보증금 관리 및 활동 리워드 기능</ListItem>
+            <ListItem>카공 지도, 후기/리뷰, 신고·거리두기 등 부가 기능</ListItem>
             <ListItem>
-              Vote Helper는 컴퓨터 등 정보통신설비의 보수점검·교체 및 고장, 통신의 두절 등의
-              경우에는 서비스의 제공을 일시적으로 중단할 수 있고, 새로운 서비스로의 교체 및 기타
-              Vote Helper가 적절하다고 판단하는 경우 현재 제공되는 서비스를 완전히 중단할 수 있다.
-            </ListItem>
-            <ListItem>
-              제1항에 의한 서비스 중단의 경우 Vote Helper는 제4조에서 정한 방법으로 회원에게
-              통지한다. 단, Vote Helper가 통제할 수 없는 사유로 인한 서비스의 중단(시스템 관리자의
-              고의 또는 과실이 없는 디스크 장애, 시스템 다운, 천재지변 등)으로 인하여 사전 통지가
-              불가능한 경우는 예외로 한다.
+              그 밖에 About가 추가로 개발하거나 제휴를 통해 제공하는 일체의 서비스
             </ListItem>
           </List>
 
-          <Heading as="h2" fontSize="2xl" marginTop="15px">
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제7조(서비스의 변경 및 중단)
+          </Heading>
+          <List styleType="number" ml="1em">
+            <ListItem>
+              About는 서비스의 품질 향상 및 운영상 필요에 따라 서비스의 전부 또는 일부를 변경할 수
+              있으며, 중요한 변경 사항은 사전에 서비스 내 공지사항 등을 통하여 안내합니다.
+            </ListItem>
+            <ListItem>
+              About는 다음 각 호의 사유가 있는 경우 서비스의 전부 또는 일부를 일시적으로 중단할 수
+              있습니다.
+              <List styleType="circle" ml="1em" mt={1}>
+                <ListItem>
+                  서비스 설비의 보수, 점검, 교체, 고장, 통신 장애 등 부득이한 사유가 있는 경우
+                </ListItem>
+                <ListItem>천재지변, 정전, 화재, 전쟁 등 불가항력적 사유</ListItem>
+              </List>
+            </ListItem>
+          </List>
+
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제8조(오프라인 모임 및 책임)
+          </Heading>
+          <List styleType="number" ml="1em">
+            <ListItem>
+              About를 통해 이루어지는 스터디, 번개, 소모임, 행사 등 오프라인 활동은 기본적으로
+              호스트와 참여자 간 자율적인 약속에 따라 진행됩니다.
+            </ListItem>
+            <ListItem>
+              오프라인 활동 과정에서 발생하는 개인 간 분쟁, 상해, 도난, 기타 손해에 대해서는
+              원칙적으로 당사자 간에 책임이 있으며, About는 고의 또는 중대한 과실이 없는 한 이에
+              대한 법적 책임을 부담하지 않습니다.
+            </ListItem>
+            <ListItem>
+              다만, About는 신고·거리두기 제도 등을 통해 안전한 모임 문화를 유지하기 위해 노력하며,
+              필요 시 회원 자격 제한 등의 조치를 취할 수 있습니다.
+            </ListItem>
+          </List>
+
+          {/* 제4장 권리와 의무 */}
+          <Heading as="h2" fontSize="2xl" mt={6}>
             제4장 권리와 의무
           </Heading>
 
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제7조(이용자의 개인정보보호)
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제9조(About의 의무)
+          </Heading>
+          <List styleType="number" ml="1em">
+            <ListItem>
+              About는 관련 법령과 본 약관이 금지하거나 공서양속에 반하는 행위를 하지 않으며,
+              안정적인 서비스 제공을 위해 최선을 다합니다.
+            </ListItem>
+            <ListItem>
+              About는 서비스 운영과 관련하여 알게 된 회원의 개인정보를 개인정보처리방침에서 정한
+              목적 및 범위 내에서만 이용하며, 안전한 보호를 위해 노력합니다.
+            </ListItem>
+          </List>
+
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제10조(회원의 의무)
+          </Heading>
+          <List styleType="number" ml="1em">
+            <ListItem>
+              회원은 서비스 이용 시 다음 각 호의 행위를 하여서는 안 됩니다.
+              <List styleType="number" ml="1em" mt={1}>
+                <ListItem>다른 회원 또는 제3자를 비방·모욕하거나 명예를 훼손하는 행위</ListItem>
+                <ListItem>
+                  일방적인 연락, 스토킹, 이성·종교·정치 권유 등 타인에게 불편함을 주는 행위
+                </ListItem>
+                <ListItem>
+                  폭언, 성희롱, 차별적 발언, 과도한 음주 권유 등 모임 분위기를 심각하게 해치는 행위
+                </ListItem>
+                <ListItem>
+                  서비스 내 정보를 무단으로 수집·복제·배포하거나 영리 목적으로 이용하는 행위
+                </ListItem>
+                <ListItem>서비스의 정상적인 운영을 방해하거나 시스템·버그를 악용하는 행위</ListItem>
+              </List>
+            </ListItem>
+            <ListItem>
+              회원이 본 조를 위반한 경우, About는 경고, 이용 제한, 강제 탈퇴, 재가입 제한 등 필요한
+              조치를 취할 수 있습니다.
+            </ListItem>
+          </List>
+
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제11조(게시물의 저작권 및 관리)
+          </Heading>
+          <List styleType="number" ml="1em">
+            <ListItem>
+              서비스 및 이에 관련된 소프트웨어, 디자인, 로고 등 일체의 권리는 About 또는 정당한
+              권리자에게 귀속됩니다.
+            </ListItem>
+            <ListItem>
+              회원이 서비스 내에 게시한 게시물(사진, 글, 후기 등)의 저작권은 원칙적으로 해당
+              게시자에게 귀속됩니다. 다만, About는 서비스 운영·홍보 및 품질 개선을 위하여 필요한
+              범위 내에서 게시물을 이용·편집·저장·노출할 수 있습니다.
+            </ListItem>
+            <ListItem>
+              회원의 게시물이 관련 법령 또는 본 약관에 위반되거나 타인의 권리를 침해한다고 판단되는
+              경우, About는 사전 통지 없이 해당 게시물을 숨김·수정·삭제할 수 있습니다.
+            </ListItem>
+          </List>
+
+          {/* 제5장 포인트·보증금·참여권 */}
+          <Heading as="h2" fontSize="2xl" mt={6}>
+            제5장 포인트·보증금·참여권
+          </Heading>
+
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제12조(포인트)
+          </Heading>
+          <List styleType="number" ml="1em">
+            <ListItem>
+              포인트는 출석 체크, 스터디·모임 참여, 친구 초대, 이벤트 참여 등 About가 정한 기준에
+              따라 적립되며, 적립·사용·소멸 기준은 서비스 내 안내 및 공지에 따릅니다.
+            </ListItem>
+            <ListItem>
+              포인트는 원칙적으로 서비스 내에서만 사용 가능하며, 현금으로 환급되지 않습니다. 단,
+              About가 별도로 정한 정책에 따라 출금 또는 정산이 허용되는 경우 그 기준을 따릅니다.
+            </ListItem>
+            <ListItem>
+              회원이 부정한 방법(허위 출석, 허위 인증, 어뷰징 등)으로 포인트를 적립한 경우, About는
+              해당 포인트를 회수하고 서비스 이용을 제한할 수 있습니다.
+            </ListItem>
+          </List>
+
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제13조(참여권(티켓))
+          </Heading>
+          <List styleType="number" ml="1em">
+            <ListItem>
+              참여권은 번개 또는 소모임 참여를 위해 필요한 이용권으로, 매월 1일 기준으로
+              초기화·지급됩니다. 기본 제공 수량 및 추가 지급 기준은 서비스 내 정책에 따릅니다.
+            </ListItem>
+            <ListItem>
+              참여권은 타인에게 양도할 수 없으며, 유효기간이 지난 참여권은 소멸합니다.
+            </ListItem>
+          </List>
+
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제14조(보증금 및 불참 처리)
+          </Heading>
+          <List styleType="number" ml="1em">
+            <ListItem>
+              일부 번개·소모임은 노쇼 방지 및 운영 안정성을 위해 보증금(포인트 또는 금전)을 선차감할
+              수 있으며, 구체적인 금액·환급 조건은 모임 상세 페이지 및 서비스 내 정책에 따릅니다.
+            </ListItem>
+            <ListItem>
+              모임 하루 전 취소, 당일 취소 또는 노쇼(무단 불참)의 경우 보증금 전부 또는 일부가
+              환급되지 않을 수 있으며, 소셜링 온도 및 활동 기록에 불이익이 발생할 수 있습니다.
+            </ListItem>
+            <ListItem>
+              정상적인 취소 및 출석 절차를 따르는 경우, 정책에서 정한 기준에 따라 보증금은
+              환급되거나 포인트로 전환됩니다.
+            </ListItem>
+          </List>
+
+          {/* 제6장 개인정보 보호 */}
+          <Heading as="h2" fontSize="2xl" mt={6}>
+            제6장 개인정보 보호
+          </Heading>
+
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제15조(개인정보 보호)
           </Heading>
           <Text>
-            Vote Helper가 회원의 등록정보를 포함한 회원들의 개인정보를 보호하기 위하여 노력한다.
-            회원의 개인정보보호에 관해서는 Vote Helper가 별도로 정하는
-            &quot;개인정보취급방침&quot;에 정한 바에 의한다.
+            About는 회원의 개인정보를 보호하기 위하여 관련 법령 및 개인정보처리방침을 준수합니다.
+            개인정보의 수집·이용·제공·보관 등 구체적인 사항은 About가 별도로 게시한
+            &quot;개인정보처리방침&quot;의 내용을 따릅니다.
           </Text>
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제8조(Vote Helper의 의무)
+
+          {/* 제7장 약관의 개정 및 분쟁 */}
+          <Heading as="h2" fontSize="2xl" mt={6}>
+            제7장 약관의 개정 및 분쟁 해결
           </Heading>
-          <List styleType="number" marginLeft="1em">
+
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제16조(약관의 개정)
+          </Heading>
+          <List styleType="number" ml="1em">
             <ListItem>
-              Vote Helper는 법령과 본 약관이 금지하거나 공서양속에 반하는 행위를 하지 않으며 본
-              약관이 정하는 바에 따라 지속적이고, 안정적으로 서비스를 제공하기 위해서 노력한다.
+              About는 「약관의 규제에 관한 법률」, 「정보통신망 이용촉진 및 정보보호 등에 관한
+              법률」 등 관련 법령을 위배하지 않는 범위에서 본 약관을 개정할 수 있습니다.
             </ListItem>
             <ListItem>
-              Vote Helper는 이용자가 안전하게 인터넷 서비스를 이용할 수 있도록 이용자의
-              개인정보(신용정보 포함) 보호를 위한 보안 시스템을 구축한다.
+              약관을 개정하는 경우, 개정 내용과 적용일자를 명시하여 적용일 7일 전까지 서비스 내
+              공지사항 등을 통해 회원에게 공지합니다. 다만 회원에게 불리한 변경의 경우에는 최소 30일
+              전에 공지합니다.
+            </ListItem>
+            <ListItem>
+              회원이 개정 약관에 동의하지 않는 경우, 약관 시행일 전까지 회원탈퇴를 통해 이용계약을
+              해지할 수 있습니다. 약관 시행일 이후에도 서비스를 계속 이용하는 경우, 개정 약관에
+              동의한 것으로 봅니다.
             </ListItem>
           </List>
 
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제9조(제휴)
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제17조(면책조항)
           </Heading>
-          <List styleType="number" marginLeft="1em">
-            <ListItem>Vote Helper는 다른 회사 또는 서비스 제공 주체와 제휴할 수 없다.</ListItem>
-          </List>
-
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제10조(이용자의 보안 토큰에 대한 의무)
-          </Heading>
-          <List styleType="number" marginLeft="1em">
+          <List styleType="number" ml="1em">
             <ListItem>
-              Vote Helper는 관계법령, &quot;개인정보취급방침&quot;에 의해서 그 책임을 지는 경우를
-              제외하고, 보안 토큰에 관한 관리책임은 각 회원에게 있다.
+              About는 천재지변, 전쟁, 화재, 정전, 통신 장애 등 불가항력적인 사유로 인하여 서비스를
+              제공할 수 없는 경우 그 책임을 지지 않습니다.
             </ListItem>
             <ListItem>
-              회원은 자신의 보안 토큰을 제3자에게 제공하거나 계정을 양도해서는 안 된다.
+              About는 회원의 귀책사유로 인한 서비스 이용 장애 및 손해에 대해 책임을 지지 않습니다.
             </ListItem>
             <ListItem>
-              회원은 보안 토큰을 도난당하거나 제3자가 사용하고 있음을 인지한 경우에는 즉시 Vote
-              Helper에 통보하여 Vote Helper가 대응하고 도움을 줄 수 있도록 해야 한다.
+              About는 회원 상호 간 또는 회원과 제3자 간에 서비스를 매개로 발생한 분쟁에 개입하지
+              않으며, 이로 인한 손해에 대하여 책임을 부담하지 않습니다.
             </ListItem>
           </List>
 
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제11조(카카오 액세스 토큰 및 카카오 리프레시 토큰 보호에 대한 의무)
-          </Heading>
-          <List styleType="number" marginLeft="1em">
-            <ListItem>
-              Vote Helper는 사용자의 카카오 액세스 토큰 및 카카오 리프레시 토큰을 정의된 목적 외에
-              사용하지 않는다.
-            </ListItem>
-            <ListItem>
-              Vote Helper는 사용자의 카카오 액세스 토큰 및 카카오 리프레시 토큰이 제3자에게 양도
-              또는 유출되지 않도록 보호할 책임이 있다.
-            </ListItem>
-            <ListItem>
-              Vote Helper는 카카오 액세스 토큰 및 카카오 리프레시 토큰을 도난당하거나 제3자가
-              사용하고 있음을 인지한 경우에는 즉시 해당 사용자에게 통보 및 대응방법을 통지해야 한다.
-            </ListItem>
-          </List>
-
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제12조(회원의 의무)
-          </Heading>
-          <List styleType="number" marginLeft="1em">
-            <ListItem>
-              <Text>회원은 다음 각 호의 행위를 하여서는 안 된다.</Text>
-              <List styleType="number" marginLeft="1em">
-                <ListItem>
-                  Vote Helper 및 기타 제3자의 인격권 또는 지적재산권을 침해하거나 업무를 방해하는
-                  행위
-                </ListItem>
-                <ListItem>
-                  Vote Helper 개발자나 Vote Helper 서비스의 관리자를 가장하여 글을 게시하거나 메일을
-                  발송하는 행위
-                </ListItem>
-                <ListItem>
-                  컴퓨터 소프트웨어, 하드웨어, 전기통신 장비의 정상적인 가동을 방해, 파괴할 목적으로
-                  고안된 소프트웨어 바이러스, 기타 다른 컴퓨터 코드, 파일, 프로그램을 포함하고 있는
-                  자료를 게시하는 행위
-                </ListItem>
-                <ListItem>
-                  다른 이용자에 대한 개인정보를 동의 없이 수집, 저장, 공개하는 행위
-                </ListItem>
-                <ListItem>Vote Helper의 서비스를 이용하여 영리목적의 활동을 하는 행위</ListItem>
-                <ListItem>기타 Vote Helper가 제공하는 서비스에 정한 약관을 위반하는 행위</ListItem>
-              </List>
-            </ListItem>
-            <ListItem>
-              <Text>
-                제1항에 해당하는 행위를 한 회원이 있을 경우 Vote Helper는 회원의 서비스 이용을 제한,
-                정지 또는 상실시킬 수 있다.
-              </Text>
-            </ListItem>
-          </List>
-
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제13조(게시물의 권리와 책임)
-          </Heading>
-          <List styleType="number" marginLeft="1em">
-            <ListItem>서비스에 대한 저작권 및 지적재산권은 Vote Helper에 귀속된다.</ListItem>
-          </List>
-          <List styleType="number" marginLeft="1em">
-            <ListItem>
-              <Text>
-                회원이 서비스 내에 게시한 게시물의 저작권은 해당 게시물의 저작자에게 귀속된다.
-              </Text>
-            </ListItem>
-            <ListItem>
-              <Text>
-                회원은 Vote Helper를 이용함으로써 얻은 정보를 Vote Helper의 사전승낙 없이 복제,
-                전송, 출판, 배포, 방송, 기타 방법에 의하여 영리목적으로 이용하거나 제3자에게
-                이용하게 하여서는 안된다.
-              </Text>
-            </ListItem>
-            <ListItem>
-              <Text>
-                회원은 자신이 서비스 내에 게시한 게시물 및 시간표를 Vote Helper가 다음과 같은
-                목적으로 사용하는 것을 허락한다.
-              </Text>
-              <ul>
-                <ListItem>
-                  회원의 편의를 목적으로 게시물 및 시간표를 이미지 형태로 변환하는 것
-                </ListItem>
-                <ListItem>회원이 허용하는 다른 회원에게 시간표를 공개하는 것</ListItem>
-                <ListItem>회원이 직접 요청한 경우 제3자 서비스에 제공하는 것</ListItem>
-                <ListItem>
-                  비영리적 목적으로 시간표를 개인 식별이 불가능한 형태로 가공, 공개 및 이용하는 것
-                </ListItem>
-              </ul>
-            </ListItem>
-          </List>
-
-          <Heading as="h2" fontSize="2xl" marginTop="15px">
-            제5장 약관의 개정과 분쟁의 조정
-          </Heading>
-
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제14조(약관의 개정)
-          </Heading>
-          <List styleType="number" marginLeft="1em">
-            <ListItem>
-              Vote Helper는 「약관의 규제 등에 관한 법률」, 「정보통신망이용촉진 등에 관한 법률」 등
-              관련 법률을 위배하지 않는 범위에서 본 약관을 개정할 수 있다.
-            </ListItem>
-            <ListItem>
-              Vote Helper가 본 약관을 개정할 경우에는 적용일자 및 개정사유를 명시하여 현행약관과
-              함께 제4조에서 정한 방법으로 그 적용일자 7일 이전에 공지한다.
-            </ListItem>
-            <ListItem>
-              회원은 변경된 약관에 대해 변경된 약관이 공지 된 때로부터 15일까지 거부할 권리가 있다.
-              이 경우 Vote Helper는 당해 회원과의 계약을 해지할 수 있다. 변경된 약관이 공지된 후
-              15일 이내에 거부의사를 표시하지 않는 회원은 당해 약관 개정에 동의하는 것으로 간주한다.
-            </ListItem>
-          </List>
-
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제15조(면책조항)
-          </Heading>
-          <List styleType="number" marginLeft="1em">
-            <ListItem>
-              <Text>다음과 같은 사유가 있을 경우 Vote Helper는 책임을 면제받을 수 있다.</Text>
-              <List styleType="number" marginLeft="1em">
-                <ListItem>
-                  Vote Helper는 천재 지변, 전쟁 및 기타 이에 준하는 불가항력으로 인하여 서비스를
-                  제공할 수 없는 경우에는 서비스 제공에 대한 책임이 면제된다.
-                </ListItem>
-                <ListItem>
-                  Vote Helper는 기간통신 사업자가 전기통신 서비스를 중지하거나 정상적으로 제공하지
-                  아니하여 손해가 발생한 경우 책임이 면제된다.
-                </ListItem>
-                <ListItem>
-                  Vote Helper는 서비스용 설비의 보수, 교체, 정기점검, 공사 등 부득이한 사유로 발생한
-                  손해에 대한 책임이 면제된다.
-                </ListItem>
-                <ListItem>
-                  Vote Helper는 회원의 귀책 사유로 인한 서비스 이용의 장애 또는 손해에 대하여 책임을
-                  지지 않는다.
-                </ListItem>
-                <ListItem>
-                  Vote Helper는 회원의 컴퓨터 오류에 의해 손해가 발생한 경우, 또는 회원이 개인정보를
-                  부정확하게 기재하여 손해가 발생한 경우 책임을 지지 않는다.
-                </ListItem>
-                <ListItem>
-                  Vote Helper는 회원이 서비스를 이용하면서 얻은 자료로 인한 손해에 대하여 책임을
-                  지지 않는다.
-                </ListItem>
-                <ListItem>
-                  Vote Helper는 회원에게 무료로 제공하는 서비스의 이용과 관련해서는 어떠한 손해도
-                  책임을 지지 않는다.
-                </ListItem>
-              </List>
-            </ListItem>
-          </List>
-
-          <Heading as="h3" fontSize="lg" marginTop="10px">
-            제16조(준거법 및 재판관할)
+          <Heading as="h3" fontSize="lg" mt={3}>
+            제18조(준거법 및 관할)
           </Heading>
           <Text>
-            Vote Helper와 이용자 간에 발생한 서비스 이용에 관한 분쟁에 대하여는 대한민국 법을
-            적용하며, 본 분쟁으로 인한 소는 민사소송법상의 관할을 가지는 대한민국의 법원에 제기한다.
+            본 약관 및 서비스 이용과 관련하여 About와 회원 간에 발생한 분쟁에 대하여는 대한민국 법을
+            준거법으로 하며, 분쟁으로 인한 소송은 민사소송법에서 정한 관할 법원에 제기합니다.
+          </Text>
+
+          <Text fontSize="sm" color="gray.500" mt={6}>
+            본 약관은 2025년 12월 1일부터 시행합니다.
           </Text>
         </Container>
       </Slide>

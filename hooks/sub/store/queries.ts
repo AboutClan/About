@@ -19,9 +19,7 @@ export const useStoreQuery = (
         `${SERVER_URI}/store?status=${status}&cursor=${cursor}`,
       );
       return [
-        ...shuffleArray(
-          res.data.map((data) => ({ ...data, point: Math.floor(data.point * 0.95) })),
-        ),
+        ...shuffleArray(res.data.map((data) => ({ ...data, point: Math.floor(data.point) }))),
       ];
     },
     options,

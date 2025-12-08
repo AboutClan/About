@@ -6,7 +6,7 @@ import Header from "../../../components/layouts/Header";
 import { useUserRequestQuery } from "../../../hooks/admin/quries";
 
 function CheckAttendWinner() {
-  const { data, isLoading } = useUserRequestQuery("출석");
+  const { data, isLoading } = useUserRequestQuery("출금");
 
   return (
     <>
@@ -22,7 +22,9 @@ function CheckAttendWinner() {
               <Item key={idx}>
                 <Wrapper>
                   <ItemHeader>
-                    <span>{"temp" || "익명"}</span>
+                    <span>
+                      {item.writer.name}({item.writer.uid})
+                    </span>
                     <span>{dayjs(item.updatedAt).format("M월 D일 H시 m분")}</span>
                   </ItemHeader>
                   <Content>{item.content}</Content>

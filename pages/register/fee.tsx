@@ -29,13 +29,13 @@ export const VALUE_BOX_COL_ITEMS: ValueBoxCol2ItemProps[] = [
     leftSub: `(${dayjs().add(1, "month").month() + 1}월 중 인상 예정)`,
   },
   {
-    left: "보증금",
+    left: "포인트",
     right: "10,000원",
-    leftSub: "(상시 환급 가능)",
+    leftSub: "(모임 참여 등 활동에 쓰이는 재화)",
   },
   {
     left: "총 금액",
-    right: "= 20,000원 (보증금 포함)",
+    right: "= 20,000원",
     isFinal: true,
   },
 ];
