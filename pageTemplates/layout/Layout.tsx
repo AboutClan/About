@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -93,26 +93,18 @@ function Layout({ children }: ILayout) {
   }, [session, status]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const inappdenyExecVanillajs = (callback: any) => {
-      if (document.readyState !== "loading") callback();
-      else document.addEventListener("DOMContentLoaded", callback);
+    if (typeof window === "undefined") return;
+    const useragt = navigator.userAgent.toLowerCase();
+    const isKakao = useragt.includes("kakaotalk");
+    if (!isKakao) return;
+    const targetUrl = window.location.href;
+    const handleLoad = () => {
+      window.location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(targetUrl);
     };
-
-    inappdenyExecVanillajs(() => {
-      const useragt = navigator.userAgent.toLowerCase();
-      const targetUrl = location.href;
-
-      // 카카오톡 or 인스타그램 인앱 브라우저 감지
-      const isInAppBrowser = useragt.includes("kakaotalk") || useragt.includes("instagram");
-
-      if (isInAppBrowser) {
-        // 카카오톡은 외부 브라우저 스킴을 지원
-        if (useragt.includes("kakaotalk")) {
-          location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(targetUrl);
-        }
-      }
-    });
+    window.addEventListener("load", handleLoad);
+    return () => {
+      window.removeEventListener("load", handleLoad);
+    };
   }, []);
 
   const exitAppRef = useRef<boolean>(false);
@@ -201,17 +193,16 @@ function Layout({ children }: ILayout) {
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
         };
-  console.log(345, process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID);
+ 
   return (
     <>
-      {/* <Seo title="ABOUT" /> */}
       <Head>
         {title && <meta property="og:title" content={title} />}
         {description && <meta property="og:description" content={description} />}
         {url && <meta property="og:url" content={url} />}
         {image && <meta property="og:image" content={image} />}
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
       </Head>
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
 
       {token && (
         <>
