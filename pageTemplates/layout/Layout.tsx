@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
-import dynamic from "next/dynamic";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
@@ -32,12 +32,6 @@ interface BackActionMessage {
   [key: string]: any;
 }
 
-const GoogleAnalytics = dynamic(
-  () => import("@next/third-parties/google").then((mod) => mod.GoogleAnalytics),
-  {
-    ssr: false, // 서버 사이드 렌더링 비활성화
-  },
-);
 interface ILayout {
   children: React.ReactNode;
 }
@@ -193,7 +187,7 @@ function Layout({ children }: ILayout) {
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
         };
- 
+
   return (
     <>
       <Head>
