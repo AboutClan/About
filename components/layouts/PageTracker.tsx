@@ -19,6 +19,7 @@ const REGISTER_WRITING_SEQUENCE = {
   introduce: 9,
   phone: 10,
   fee: 11,
+  access: 12,
 };
 
 const GATHER_WRITING_SEQUENCE = {
