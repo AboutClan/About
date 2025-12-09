@@ -17,5 +17,11 @@ export const pageview = (url: string) => {
 export const gaEvent = (name: string, params?: Record<string, any>) => {
   if (!GA_MEASUREMENT_ID || typeof window === "undefined") return;
 
+  if (typeof window.gtag !== "function") {
+    // 로그만 찍고 조용히 무시 (에러 방지)
+    console.warn("[GA] gtag not ready:", name, params);
+    return;
+  }
+
   window.gtag("event", name, params);
 };

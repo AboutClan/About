@@ -195,8 +195,8 @@ function Layout({ children }: ILayout) {
         {description && <meta property="og:description" content={description} />}
         {url && <meta property="og:url" content={url} />}
         {image && <meta property="og:image" content={image} />}
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
       </Head>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
 
       {token && (
         <>
