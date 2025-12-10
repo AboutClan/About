@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
@@ -7,20 +8,37 @@ import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE } from "../../constants/keys/qu
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 
 export const useToken = () => {
-  const [token, setToken] = useState();
+  const { status } = useSession();
+  const [token, setToken] = useState<string | undefined>();
+  const fetchedOnceRef = useRef(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchToken = async () => {
+    try {
       const response = await axios.get("/api/token");
       setToken(response.data);
-    };
+    } catch (error) {
+      console.error("Failed to fetch token:", error);
+      setToken(undefined);
+    }
+  };
 
-    fetchData();
+  // 1) 기존처럼 마운트 시 한 번 호출 (속도 유지)
+  useEffect(() => {
+    if (fetchedOnceRef.current) return;
+    fetchedOnceRef.current = true;
+    fetchToken();
   }, []);
+
+  // 2) 나중에 status가 authenticated로 바뀌었는데 token이 없다면 → 한 번 더 호출
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    if (token) return;
+
+    fetchToken();
+  }, [status, token]);
 
   return token;
 };
-
 export const useResetQueryData = () => {
   const queryClient = useQueryClient();
 

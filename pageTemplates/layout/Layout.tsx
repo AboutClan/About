@@ -5,7 +5,7 @@ import axios from "axios";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -40,13 +40,16 @@ function Layout({ children }: ILayout) {
   const toast = useToast();
   const router = useRouter();
   const pathname = usePathname();
-  const token = useToken();
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
   const segment = pathname?.split("/")?.[1];
+
   const PUBLIC_SEGMENT = ["register", "login"];
 
   const { data: session, status } = useSession();
+  const token = useToken(); // ⚠️ 업데이트된 useToken을 사용한다고 가정
+
+  // axios 기본 Authorization 헤더 세팅 (토큰 있을 때만)
+  axios.defaults.headers.common["Authorization"] = token ? `Bearer ${token}` : "";
+
   const currentSegment = parseUrlToSegments(pathname);
   const isBottomNavCondition = useMemo(
     () => BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0]) && !currentSegment?.[1],
@@ -54,10 +57,33 @@ function Layout({ children }: ILayout) {
   );
 
   const isGuest = useMemo(() => session?.user?.name === "guest", [session]);
-
   const [isErrorModal, setIsErrorModal] = useState(false);
 
+  // 전역 자동 게스트 로그인 시도 여부
+  const guestSignInTriedRef = useRef(false);
+
+  /**
+   * 전역 자동 게스트 로그인
+   * - redirect: false (URL 그대로 유지)
+   * - 조건:
+   *   - status !== 'loading'
+   *   - status !== 'authenticated'
+   *   - token 없음
+   *   - PUBLIC / 약관 / 개인정보 / FAQ 페이지는 제외
+   */
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // 세션 로딩 중이면 대기
+    if (status === "loading") return;
+
+    // 이미 로그인(일반 or 게스트) 되어 있으면 자동 게스트 불필요
+    if (status === "authenticated") return;
+
+    // 토큰이 이미 있다면 (이론상 status도 authenticated겠지만, 방어적으로 한 번 더 체크)
+    if (token) return;
+
+    // 비로그인 허용 페이지(로그인/회원가입/정책/FAQ)는 자동 게스트 로그인 안 함
     if (
       PUBLIC_SEGMENT.includes(segment) ||
       pathname === "/user/info/policy" ||
@@ -66,42 +92,50 @@ function Layout({ children }: ILayout) {
     ) {
       return;
     }
-    if (!isBottomNavCondition && isGuest && pathname !== "/cafe-map") {
-      toast(
-        "info",
-        "현재 게스트 뷰어를 이용하고 있습니다. 활동을 위해서는 회원가입을 진행해 주세요!",
-        null,
-        true,
-      );
-      return;
-    }
-    if (status === "loading" || session === undefined) return;
 
-    // if (!session?.user) {
-    //   router.push("/login");
-    //   toast(
-    //     "warning",
-    //     "계정 정보를 불러올 수 없습니다. 지속되는 경우 마이페이지에서 다시 로그인 해주세요!",
-    //   );
-    // }
-  }, [session, status]);
+    // 이미 시도했으면 다시 시도하지 않음
+    if (guestSignInTriedRef.current) return;
+    guestSignInTriedRef.current = true;
 
+    // ⚡ 여기서 게스트 로그인 (redirect: false)
+    signIn("guest", {
+      redirect: false,
+      callbackUrl: router.asPath,
+    }).catch((err) => {
+      console.error("Guest sign-in failed:", err);
+      // 실패해도 화면은 보여야 하므로 여기서 따로 막지는 않음
+    });
+  }, [status, token, pathname, segment, router.asPath]);
+
+  /**
+   * 카카오 인앱 브라우저에서 외부 브라우저로 여는 처리
+   * (기존 기능 그대로 유지)
+   */
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     const useragt = navigator.userAgent.toLowerCase();
     const isKakao = useragt.includes("kakaotalk");
     if (!isKakao) return;
+
     const targetUrl = window.location.href;
+
     const handleLoad = () => {
       window.location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(targetUrl);
     };
+
     window.addEventListener("load", handleLoad);
     return () => {
       window.removeEventListener("load", handleLoad);
     };
   }, []);
 
+  /**
+   * 네이티브 WebView에서 backAction 메시지 처리
+   * (기존 기능 그대로 유지)
+   */
   const exitAppRef = useRef<boolean>(false);
+
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (typeof event.data !== "string") return;
@@ -122,6 +156,7 @@ function Layout({ children }: ILayout) {
         const firstPath = pathArr?.[1];
         const secondPath = pathArr?.[2];
         const prevPath = router?.query?.path;
+
         if (firstPath === "study" && secondPath !== "writing") {
           if (prevPath === "home") {
             router.replace("/home");
@@ -129,6 +164,7 @@ function Layout({ children }: ILayout) {
             router.replace(`/studyPage?date=${getTodayStr()}`);
           }
         }
+
         if (firstPath === "gather" && secondPath && secondPath !== "writing") {
           if (prevPath === "home") {
             router.replace("/home");
@@ -136,6 +172,7 @@ function Layout({ children }: ILayout) {
             router.replace(`/gather`);
           }
         }
+
         if (firstPath === "group" && secondPath && secondPath !== "writing") {
           if (prevPath === "home") {
             router.replace("/home");
@@ -144,6 +181,7 @@ function Layout({ children }: ILayout) {
           }
         }
       }
+
       if (
         BASE_BOTTOM_NAV_SEGMENT.map((item) => "/" + item).includes(pathname) &&
         !router.query?.modal
@@ -169,8 +207,37 @@ function Layout({ children }: ILayout) {
     return () => {
       document.removeEventListener("message", handleMessage);
     };
-  }, [pathname, router.query?.modal]);
+  }, [pathname, router, toast]);
 
+  /**
+   * 게스트 뷰어 안내 토스트
+   * (기존 로직을 유지하되, guest 세션이 잡힌 뒤 동작)
+   */
+  useEffect(() => {
+    if (status === "loading" || session === undefined) return;
+
+    if (
+      PUBLIC_SEGMENT.includes(segment) ||
+      pathname === "/user/info/policy" ||
+      pathname === "/user/info/privacy" ||
+      pathname === "/faq"
+    ) {
+      return;
+    }
+
+    if (!isBottomNavCondition && isGuest && pathname !== "/cafe-map") {
+      toast(
+        "info",
+        "현재 게스트 뷰어를 이용하고 있습니다. 활동을 위해서는 회원가입을 진행해 주세요!",
+        null,
+        true,
+      );
+    }
+  }, [session, status, isBottomNavCondition, isGuest, pathname, segment, toast]);
+
+  /**
+   * OG 메타 태그 설정 (기존 그대로)
+   */
   const { title, description, url, image } =
     pathname === "/cafe-map"
       ? {
@@ -196,6 +263,7 @@ function Layout({ children }: ILayout) {
         {url && <meta property="og:url" content={url} />}
         {image && <meta property="og:image" content={image} />}
       </Head>
+
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
 
       {token && (
@@ -219,12 +287,16 @@ function Layout({ children }: ILayout) {
           >
             {children}
           </div>
+
           <PageTracker />
+
           {isBottomNavCondition && <BottomNav hasBottomNav={isGuest && isBottomNavCondition} />}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
+
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}
+
       <BaseScript />
     </>
   );

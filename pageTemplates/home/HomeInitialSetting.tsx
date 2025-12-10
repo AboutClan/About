@@ -52,8 +52,8 @@ function HomeInitialSetting() {
       }
     },
     onError() {
-      toast("warning", "로그인 정보가 없습니다.");
-      router.push("/login");
+      // toast("warning", "로그인 정보가 없습니다.");
+      // router.push("/login");
     },
   });
 

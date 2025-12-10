@@ -1,48 +1,46 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { signIn, signOut } from "next-auth/react";
-import styled from "styled-components";
 
 function GuestBottomNav() {
   const customSignin = async () => {
     await signOut({ redirect: false });
-    signIn("kakao", {
+    await signIn("kakao", {
       callbackUrl: `${window.location.origin}/home`,
     });
   };
 
   return (
-    <Layout>
-      <Box fontSize="12px" color="gray.600">
-        게스트 뷰어를 이용하고 있습니다.
-      </Box>
-      <Box>
-        <Button size="sm" colorScheme="mint" onClick={() => customSignin()}>
-          동아리 가입하기
-        </Button>
-      </Box>
-    </Layout>
+    <Flex
+      position="fixed"
+      bottom="0"
+      transform="translateY(calc(-1 * var(--bottom-nav-height) - env(safe-area-inset-bottom)))"
+      w="100%"
+      maxW="var(--max-width)"
+      bg="gray.50" // 기존 흰색 대신 살짝 밝은 톤으로 구분 강화
+      zIndex="100"
+      px="4"
+      py="2"
+      align="center"
+      justify="space-between"
+      borderTop="1px solid"
+      borderColor="gray.200" // 더 명확한 구분
+      boxShadow="0px -4px 12px rgba(0, 0, 0, 0.05)"
+      borderTopRadius="lg"
+      fontSize="13px"
+      fontWeight="500"
+    >
+      <Flex direction="column" fontSize="11px" lineHeight="short">
+        <Box fontWeight="700" color="gray.700">
+          게스트 모드로 둘러보는 중이에요 👀
+        </Box>
+        <Box color="gray.500">가입 후에 모든 모임에 참여할 수 있어요!</Box>
+      </Flex>
+
+      <Button size="sm" colorScheme="mint" onClick={customSignin}>
+        로그인 / 동아리 가입
+      </Button>
+    </Flex>
   );
 }
-
-const Layout = styled.div`
-  position: fixed;
-  font-size: 13px;
-  bottom: 0;
-  transform: translateY(calc(-51.5px - env(safe-area-inset-bottom)));
-  width: 100%;
-  max-width: var(--max-width);
-  background-color: white;
-  /* border: var(--border); */
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 20px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  font-weight: 600;
-  border-top: var(--border);
-  box-shadow: 0px -4px 12px 0px rgba(0, 0, 0, 0.04);
-`;
 
 export default GuestBottomNav;
