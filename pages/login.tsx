@@ -31,18 +31,40 @@ const Login: NextPage<{
   const { data: session } = useSession();
   const toast = useToast();
 
-  const visibleWidth = window.innerWidth;
-  const visibleHeight = window.innerHeight;
+  // 화면 비율 계산 (SSR-safe)
+  const [ratio, setRatio] = useState<number | null>(null);
+  // 디바이스 타입 (iPhone 여부 등)
+  const [device, setDevice] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const updateRatio = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      if (!width) return;
+      setRatio(height / width);
+    };
+
+    updateRatio();
+    window.addEventListener("resize", updateRatio);
+    return () => window.removeEventListener("resize", updateRatio);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const d = detectAppDevice();
+    setDevice(d);
+  }, []);
+
   const statusParam = searchParams.get("status");
   const pageParam = searchParams.get("page");
-
-  const ratio = visibleHeight / visibleWidth;
 
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");
 
   const [isModal, setIsModal] = useState(false);
   const [isWaitingModal, setIsWaitingModal] = useState(false);
-  const [loadingType, setLoadingType] = useState<"member" | "guest" | "apple">();
+  const [loadingType, setLoadingType] = useState<"member" | "guest" | "apple" | null>(null);
 
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
@@ -60,22 +82,25 @@ const Login: NextPage<{
         toast("warning", "가입 대기중입니다.");
         break;
     }
-  }, [statusParam]);
+  }, [statusParam, toast]);
 
   const customSignin = async (type: "member" | "guest" | "apple") => {
     setLoadingType(type);
     const provider = type === "member" ? kakaoProvider.id : type === "apple" ? "apple" : "guest";
+
+    // 게스트 로그인
     if (provider === "guest") {
       setIsModal(false);
       await signIn(provider, { callbackUrl: `${window.location.origin}/home` });
-
       return;
     }
 
+    // 게스트 → 정회원 로그인으로 전환 시, 먼저 guest 세션 정리
     if (session?.user?.name === "guest") {
       await signOut({ redirect: false });
     }
 
+    // 다양한 statusParam에 따른 callbackUrl 분기
     if (statusParam === "before") {
       await signIn(provider, {
         callbackUrl: `${window.location.origin}/${pageParam}`,
@@ -100,11 +125,15 @@ const Login: NextPage<{
       });
       return;
     }
+
+    // 가입 대기 중인 경우
     if (userInfo?.role === "waiting" || statusParam === "waiting") {
       setIsWaitingModal(true);
       setLoadingType(null);
       return;
     }
+
+    // 기본: 로그인 후 /home
     await signIn(provider, {
       callbackUrl: `${window.location.origin}/home`,
     });
@@ -120,6 +149,10 @@ const Login: NextPage<{
       },
     },
   };
+
+  const isIPhone = device === "iPhone";
+  const showTopText = !isIPhone && ratio !== null && ratio >= 1.75;
+  const showBottomText = ratio !== null && ratio >= 1.55;
 
   return (
     <>
@@ -168,6 +201,7 @@ const Login: NextPage<{
             <Image src="/main.png" alt="main-icon" fill />
           </Box>
         </Flex>
+
         <Flex w="full" h="full" bg="mint" direction="column" alignItems="center" overflow="hidden">
           <Flex
             direction="column"
@@ -180,11 +214,20 @@ const Login: NextPage<{
             left="50%"
             transform="translate(-50%,0)"
           >
-            {detectAppDevice() !== "iPhone" && ratio >= 1.75 && (
-              <Box mb={5} color="white" fontSize="12px" lineHeight="16px" opacity={0.6}>
-                Sign up with Social Networks
-              </Box>
-            )}
+            {/* 🔹 위 안내 문구: 항상 자리 차지 + opacity만 변경 (레이아웃 점프 방지) */}
+            <Box
+              mb={5}
+              h="16px"
+              fontSize="12px"
+              lineHeight="16px"
+              color="white"
+              opacity={showTopText ? 0.6 : 0}
+              transition="opacity 0.2s ease-out"
+            >
+              Sign up with Social Networks
+            </Box>
+
+            {/* 카카오 로그인 버튼 */}
             <Button
               variant="unstyled"
               maxW="calc(var(--max-width) - 2 * 20px)"
@@ -207,7 +250,9 @@ const Login: NextPage<{
               <span>카카오톡으로 5초만에 시작하기</span>
               <div />
             </Button>
-            {detectAppDevice() === "iPhone" && (
+
+            {/* 애플 로그인 버튼 (iPhone에서만 노출) */}
+            {isIPhone && (
               <Button
                 variant="unstyled"
                 maxW="calc(var(--max-width) - 2 * 20px)"
@@ -232,6 +277,7 @@ const Login: NextPage<{
               </Button>
             )}
 
+            {/* 게스트 로그인 버튼 */}
             <Button
               variant="unstyled"
               maxW="calc(var(--max-width) - 2 * 20px)"
@@ -256,15 +302,24 @@ const Login: NextPage<{
               <div />
             </Button>
 
-            {ratio >= 1.55 && (
-              <Box mt={0} as="u" fontSize="12px" fontWeight="medium" opacity={0.6} color="white">
-                동아리 가입은 '카카오 로그인'을 이용해주세요.
-              </Box>
-            )}
+            {/* 🔹 하단 안내 문구도 동일하게 고정 높이 + opacity만 변경 */}
+            <Box
+              mt={0}
+              h="16px"
+              as="u"
+              fontSize="12px"
+              fontWeight="medium"
+              opacity={showBottomText ? 0.6 : 0}
+              color="white"
+              transition="opacity 0.2s ease-out"
+            >
+              동아리 가입은 '카카오 로그인'을 이용해주세요.
+            </Box>
           </Flex>
           <ForceLogoutDialog />
         </Flex>
       </Box>
+
       {/* {isModal && <GuestLoginModal setIsModal={setIsModal} customSignin={customSignin} />} */}
       {isWaitingModal && (
         <ModalLayout
@@ -292,6 +347,7 @@ export const KakaoIcon = () => (
     />
   </svg>
 );
+
 export const AppleIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="21px" height="21px">
     <path d="M 44.527344 34.75 C 43.449219 37.144531 42.929688 38.214844 41.542969 40.328125 C 39.601563 43.28125 36.863281 46.96875 33.480469 46.992188 C 30.46875 47.019531 29.691406 45.027344 25.601563 45.0625 C 21.515625 45.082031 20.664063 47.03125 17.648438 47 C 14.261719 46.96875 11.671875 43.648438 9.730469 40.699219 C 4.300781 32.429688 3.726563 22.734375 7.082031 17.578125 C 9.457031 13.921875 13.210938 11.773438 16.738281 11.773438 C 20.332031 11.773438 22.589844 13.746094 25.558594 13.746094 C 28.441406 13.746094 30.195313 11.769531 34.351563 11.769531 C 37.492188 11.769531 40.8125 13.480469 43.1875 16.433594 C 35.421875 20.691406 36.683594 31.78125 44.527344 34.75 Z M 31.195313 8.46875 C 32.707031 6.527344 33.855469 3.789063 33.4375 1 C 30.972656 1.167969 28.089844 2.742188 26.40625 4.78125 C 24.878906 6.640625 23.613281 9.398438 24.105469 12.066406 C 26.796875 12.152344 29.582031 10.546875 31.195313 8.46875 Z" />

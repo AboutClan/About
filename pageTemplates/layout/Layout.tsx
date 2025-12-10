@@ -56,6 +56,12 @@ function Layout({ children }: ILayout) {
     [currentSegment],
   );
 
+  const isPublicPage =
+    PUBLIC_SEGMENT.includes(segment) ||
+    pathname === "/user/info/policy" ||
+    pathname === "/user/info/privacy" ||
+    pathname === "/faq";
+
   const isGuest = useMemo(() => session?.user?.name === "guest", [session]);
   const [isErrorModal, setIsErrorModal] = useState(false);
 
@@ -72,13 +78,16 @@ function Layout({ children }: ILayout) {
    *   - PUBLIC / 약관 / 개인정보 / FAQ 페이지는 제외
    */
   useEffect(() => {
+    console.log("ABOUT", 33);
     if (typeof window === "undefined") return;
-
+    console.log("ABOUT", 332);
     // 세션 로딩 중이면 대기
     if (status === "loading") return;
 
+    console.log("ABOUT", 3352);
     // 이미 로그인(일반 or 게스트) 되어 있으면 자동 게스트 불필요
     if (status === "authenticated") return;
+    console.log("ABOUT", 33512);
 
     // 토큰이 이미 있다면 (이론상 status도 authenticated겠지만, 방어적으로 한 번 더 체크)
     if (token) return;
@@ -266,7 +275,7 @@ function Layout({ children }: ILayout) {
 
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
 
-      {token && (
+      {(token || isPublicPage) && (
         <>
           <div
             id="root-modal"
