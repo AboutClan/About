@@ -1,5 +1,5 @@
 # 1. Use the specific Node.js version as the base image
-FROM node:20.11.0 AS builder
+FROM public.ecr.aws/docker/library/node:20.11.0 AS builder
 
 # 2. Set working directory inside the container
 WORKDIR /app
@@ -40,7 +40,7 @@ RUN NEXT_PUBLIC_SERVER_URI=$NEXT_PUBLIC_SERVER_URI \
     npm run build
 
 # 7. Production image
-FROM node:20.11.0 AS production
+FROM public.ecr.aws/docker/library/node:20.11.0 AS production
 
 # 8. Set working directory inside the production container
 WORKDIR /app
