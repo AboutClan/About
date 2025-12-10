@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -235,14 +235,9 @@ function Layout({ children }: ILayout) {
     }
 
     if (!isBottomNavCondition && isGuest && pathname !== "/cafe-map") {
-      toast(
-        "info",
-        "현재 게스트 뷰어를 이용하고 있습니다. 활동을 위해서는 회원가입을 진행해 주세요!",
-        null,
-        true,
-      );
+      toast("info", "현재 게스트 뷰어를 이용중입니다.", null, true);
     }
-  }, [session, status, isBottomNavCondition, isGuest, pathname, segment, toast]);
+  }, [status, isBottomNavCondition, isGuest, pathname]);
 
   /**
    * OG 메타 태그 설정 (기존 그대로)
