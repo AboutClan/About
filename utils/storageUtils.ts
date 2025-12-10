@@ -38,7 +38,24 @@ export const isHeartCheckLocalStorage = (toUid: string) => {
   return true;
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const setLocalStorageObj = (key: string, obj: any) => {
-  localStorage.setItem(key, JSON.stringify(obj));
+export const setLocalStorageObj = (key: string, value: any) => {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // ignore
+  }
 };
-export const getLocalStorageObj = (key: string) => JSON.parse(localStorage.getItem(key));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getLocalStorageObj = (key: string, defaultValue: any = null): any => {
+  // SSR/빌드 환경에서는 무조건 default 반환
+  if (typeof window === "undefined") return defaultValue;
+
+  try {
+    const raw = window.localStorage.getItem(key);
+    if (!raw) return defaultValue;
+    return JSON.parse(raw);
+  } catch {
+    return defaultValue;
+  }
+};
