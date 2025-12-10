@@ -47,6 +47,7 @@ const baseNextConfig = {
     NEXT_PUBLIC_SERVER_URI: process.env.NEXT_PUBLIC_SERVER_URI,
     NEXT_PUBLIC_NEXTAUTH_URL: process.env.NEXT_PUBLIC_NEXTAUTH_URL,
     NEXT_PUBLIC_NAVER_AI_CLIENT_ID: process.env.NEXT_PUBLIC_NAVER_AI_CLIENT_ID,
+    NEXT_PUBLIC_TOSS_CLIENT_KEY: process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY,
   },
   // output: "standalone",
   images: {
