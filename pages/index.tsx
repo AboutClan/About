@@ -10,7 +10,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     redirect: {
       permanent: false,
       destination: `/home`,
-    },ㅜ
+    },
     props: {},
   };
 };
