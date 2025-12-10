@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -296,16 +296,13 @@ function Layout({ children }: ILayout) {
           >
             {children}
           </div>
-
           <PageTracker />
-
           {isBottomNavCondition && <BottomNav hasBottomNav={isGuest && isBottomNavCondition} />}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
 
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}
-
       <BaseScript />
     </>
   );

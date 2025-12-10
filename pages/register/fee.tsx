@@ -53,10 +53,9 @@ function Fee() {
 
   const { mutate: changeRole } = useUserInfoFieldMutation("role");
 
-  const moving = localStorage.getItem("moving");
-
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {
+      const moving = localStorage.getItem("moving");
       if (moving) gaEvent("register_complete_by_cafe_map");
       else gaEvent("register_complete");
       changeRole({ role: "waiting" });
@@ -64,7 +63,7 @@ function Fee() {
       setLocalStorageObj(REGISTER_INFO, null);
       setIsMomdal(true);
     },
-  onError: errorToast,
+    onError: errorToast,
   });
   console.log(info);
   const onClickNext = () => {
