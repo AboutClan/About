@@ -1,6 +1,6 @@
+import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
@@ -37,7 +37,8 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
 
   //네비게이션 함수
   const onClickBlock = <T extends "page" | "modal">(type: T, content: ContentByType<T>): void => {
-    if (isGuest && ((content as UserOverviewModal) !== "logout" && content) !== "/faq") {
+    console.log(content);
+    if (isGuest && (content as UserOverviewModal) !== "logout" && content !== "/faq") {
       failToast("guest");
       return;
     }
