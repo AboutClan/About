@@ -53,46 +53,60 @@ export default function BottomFlexDrawer({
   useEffect(() => {
     if (isDrawerUp) setDrawerHeight(maxHeight);
     else setDrawerHeight(DRAWER_MIN_HEIGHT);
-  }, [isDrawerUp]);
-
+  }, [isDrawerUp, maxHeight]);
+  useEffect(() => {
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, []);
   const handlePointerDown = (event) => {
-    setIsModal(false);
-    startYRef.current = event.clientY || event.touches[0].clientY; // 드래그 시작 위치 저장
-    currentHeightRef.current = drawerHeight; // 드래그 시작 시점의 높이 저장
+    console.log(1);
+    // 🔥 여기는 모달을 "닫으면 안 됨"
+    const clientY = event.clientY ?? event.touches?.[0]?.clientY;
+    startYRef.current = clientY;
+    currentHeightRef.current = drawerHeight;
+
     window.addEventListener("pointermove", handlePointerMove);
     window.addEventListener("pointerup", handlePointerUp);
   };
 
   const handlePointerMove = (event) => {
-    setIsModal(true);
-    const currentY = event.clientY || event.touches[0].clientY;
-    const deltaY = startYRef.current - currentY;
+    console.log(1);
+    const clientY = event.clientY ?? event.touches?.[0]?.clientY;
+    const deltaY = startYRef.current - clientY;
     let newHeight = currentHeightRef.current + deltaY;
 
-    // 최대 드래그 범위를 40px로 제한
-    const maxDragHeight = currentHeightRef.current + MAX_DRAG_DISTANCE;
-    const minDragHeight = currentHeightRef.current - MAX_DRAG_DISTANCE;
-    newHeight = Math.max(Math.min(newHeight, maxDragHeight), minDragHeight);
+    // 드래그 범위는 "현재 높이 ± MAX_DRAG_DISTANCE"가 아니라
+    // 최소/최대 높이 기준으로 제한하는 게 더 자연스럽기도 함
+    newHeight = Math.max(DRAWER_MIN_HEIGHT, Math.min(newHeight, maxHeight));
 
     setDrawerHeight(newHeight);
   };
 
   const handlePointerUp = (event) => {
-    const endY = event.clientY || event.touches[0].clientY;
-    const deltaY = startYRef.current - endY; // 드래그한 만큼의 변화량
+    console.log(1);
+    const clientY = event.clientY ?? event.touches?.[0]?.clientY;
+    const deltaY = startYRef.current - clientY;
 
     window.removeEventListener("pointermove", handlePointerMove);
     window.removeEventListener("pointerup", handlePointerUp);
 
+    // 위로 잘 올렸으면 풀오픈
     if (deltaY > SWIPE_THRESHOLD) {
-      setDrawerHeight(maxHeight); // 위로 쭉 올라가는 동작
-    } else if (deltaY < -SWIPE_THRESHOLD) {
-      setIsModal(false);
-
-      setDrawerHeight(DRAWER_MIN_HEIGHT); // 아래로 내려가는 동작
-    } else {
-      setDrawerHeight(currentHeightRef.current); // 스와이프가 임계값보다 짧으면 원래 높이로 복원
+      setDrawerHeight(maxHeight);
+      return;
     }
+
+    // 아래로 충분히 내렸으면 닫기
+    if (deltaY < -SWIPE_THRESHOLD) {
+      setIsModal(false); // ← 진짜 닫는 건 여기서만
+      setDrawerHeight(DRAWER_MIN_HEIGHT);
+      return;
+    }
+
+    // 애매하면 원래 위치로 복원
+    setDrawerHeight(currentHeightRef.current);
   };
 
   return (
@@ -103,6 +117,7 @@ export default function BottomFlexDrawer({
         zindex={zIndex}
         isdrawerup={isDrawerUp ? "true" : "false"}
         as={motion.div}
+        initial={{ height: DRAWER_MIN_HEIGHT + iPhoneNotchSize() }}
         animate={{ height: drawerHeight + iPhoneNotchSize() }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
@@ -160,7 +175,6 @@ const Layout = styled.div<{
   display: flex;
   flex-direction: column;
   align-items: center;
-  touch-action: none; /* 터치 스크롤을 막음 */
 `;
 
 const TopNav = styled.nav`

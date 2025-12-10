@@ -33,7 +33,13 @@ function UserLogSection() {
                 {userInfo?.point} Point
               </Box>
             </Box>
-            <Link href="/user/point/charge">
+            <Link
+              href={
+                userInfo?.name === "게스트" || userInfo?.name === "테스트"
+                  ? "/user/point/charge2"
+                  : "/user/point/charge"
+              }
+            >
               <Button colorScheme="mint" size="md">
                 <div>포인트 충전하기</div>
               </Button>

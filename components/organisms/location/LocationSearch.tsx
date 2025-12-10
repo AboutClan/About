@@ -15,6 +15,7 @@ interface ISearchLocation {
   isActive?: boolean;
   placeHolder?: string;
   setIsFocus?: DispatchBoolean;
+  size?: "sm" | "md";
 }
 
 export const mapxyToLatLng = (mapx: string | number, mapy: string | number) => {
@@ -31,8 +32,8 @@ function LocationSearch({
   isActive = true,
   placeHolder,
   setIsFocus,
+  size = "md",
 }: ISearchLocation) {
- 
   const defaultName = info?.name;
 
   const [value, setValue] = useState(defaultName || "");
@@ -76,6 +77,7 @@ function LocationSearch({
           isDisabled={!isActive}
           onFocus={() => setIsFocus && setIsFocus(true)}
           onBlur={() => setIsFocus && setIsFocus(false)}
+          h={size === "sm" ? "44px" : "52px"}
         />
       </Wrapper>
 
@@ -122,6 +124,8 @@ const SearchContent = styled.div<{ isContent: boolean; isSmall: boolean }>`
   border: ${(props) => (props.isContent ? "1px solid var(--gray-200)" : null)};
   border-radius: 12px;
   background-color: white;
+  position: relative;
+  z-index: 150;
 `;
 
 const Item = styled.div`

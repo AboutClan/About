@@ -62,7 +62,7 @@ function StudyMap() {
 
   return (
     <>
-      <StudyPageMap isDefaultOpen onClose={onClose} isDown />
+      <StudyPageMap isDefaultOpen onClose={onClose} isDown isCafeMap />
       {isModal && (
         <ModalLayout title="안내사항" footerOptions={footerOptions} setIsModal={setIsModal}>
           <p>

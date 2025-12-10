@@ -191,6 +191,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
           handleVotePick={handleVotePick}
           isDefaultOpen
           onClose={() => setIsMapOpen(false)}
+          isCafeMap={false}
         />
       )}
 

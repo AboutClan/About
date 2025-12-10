@@ -1,7 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Input } from "../components/atoms/Input";
 import ProgressHeader from "../components/molecules/headers/ProgressHeader";
@@ -21,8 +21,8 @@ function LoginId() {
   const handleLogin = async () => {
     if (id === publicID && pw === publicPW) {
       const result = await signIn("credentials", {
-        callbackUrl: `${window.location.origin}/home`,
-        username: "게스트",
+        callbackUrl: `${window.location.origin}/register/name`,
+        username: "테스트",
         password: "비밀번호",
       });
 
@@ -35,10 +35,6 @@ function LoginId() {
       toast("error", "아이디 비밀번호가 일치하지 않습니다.");
     }
   };
-
-  useEffect(() => {
-    toast("info", "동아리원을 희망하시는 분은 카카오 로그인을 이용해주세요.");
-  }, []);
 
   return (
     <>

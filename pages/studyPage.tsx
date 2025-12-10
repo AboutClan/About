@@ -111,7 +111,7 @@ export default function StudyPage() {
             <Box mx={5} mb={2} fontSize="16px" fontWeight={600}>
               ⬇️ &apos;찐&apos; 카공러들이 엄선한 카공 지도 끝.판.왕 ⬇️
             </Box>
-            <StudyPageMap />
+            <StudyPageMap isCafeMap />
             <Box mx={5}>
               <Box mt={5}>
                 <IconRowBlock

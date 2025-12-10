@@ -23,7 +23,7 @@ function StudyPlaceMap({ centerLocation }: StudyPlaceMapProps) {
           subTitle="아래 등록된 장소 중 가까운 곳으로 스터디가 매칭돼요!"
         ></SectionHeader>
       </Box>
-      <StudyPageMap type="mainPlace" />
+      <StudyPageMap type="mainPlace" isCafeMap={false} />
       {placeInfo && (
         <PlaceInfoDrawer
           handleVotePick={null}

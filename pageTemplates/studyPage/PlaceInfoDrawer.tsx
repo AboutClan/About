@@ -1,15 +1,14 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
+import { Box, Button, Flex, Grid } from "@chakra-ui/react";
 
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import StarRating from "../../components/atoms/StarRating";
+import { StarIcon } from "../../components/Icons/StarIcon";
 import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
 import PlaceImage from "../../components/molecules/PlaceImage";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
 
@@ -21,12 +20,6 @@ interface PlaceInfoDrawerProps {
 }
 
 function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick, isDown }: PlaceInfoDrawerProps) {
-  const { data: session } = useSession();
-  const typeToast = useTypeToast();
-  const toast = useToast();
-
-  const isGuest = session?.user.role === "guest";
-
   return (
     <>
       <BottomFlexDrawer
@@ -34,104 +27,165 @@ function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick, isDown }: PlaceIn
         isOverlay
         isHideBottom
         zIndex={2000}
-        height={!handleVotePick ? 202 : 258}
+        height={!handleVotePick ? 202 : 272}
         setIsModal={onClose}
       >
-        <Flex direction="column" w="100%">
-          <Flex justifyContent="space-between">
-            <Flex direction="column" mr={2}>
-              <Box
-                fontSize="18px"
-                lineHeight="28px"
-                fontWeight={600}
-                textOverflow="ellipsis"
-                overflow="hidden"
-                whiteSpace="nowrap"
-                maxW="60dvw"
-              >
-                {placeInfo.location.name}
-              </Box>
-              <Flex align="center" fontSize="11px" mt={1}>
-                {/* <Box mr={1} as="span">
-                  <LocationDotIcon size="md" />
-                </Box> */}
-                {/* <Box
-                  color="var(--gray-600)"
-                  as="span"
-                  textOverflow="ellipsis"
-                  overflow="hidden"
-                  whiteSpace="nowrap"
-                  maxW="140px"
-                >
-                  {placeInfo.location.address}
-                </Box> */}
-
-                {/* <Box>4.5</Box> */}
-                <Flex align="center">
-                  <StarRating rating={placeInfo?.rating} size="md" />
-                </Flex>
-              </Flex>
-              <Box mt={2} fontSize="11px" as="span" color="gray.500" lineHeight="12px">
-                등록일: {dayjsToFormat(dayjs(placeInfo?.registerDate), "YYYY년 M월 D일")}
-              </Box>
-              <Flex mt={2} align="center" fontSize="12px" color="gray.600">
-                한 줄 메모 기능 준비중...
-                {/* <Avatar user={user} size="xs1" />
-                <Box ml={1} fontSize="12px" color="var(--gray-600)">
-                  {user?.name || "어바웃"}님 Pick
-                </Box> */}
-              </Flex>
-            </Flex>
-            <Box>
-              <PlaceImage
-                imageProps={{ image: placeInfo?.image || getRandomImage(STUDY_MAIN_IMAGES) }}
-                size="lg"
-                hasToggleHeart
-                isDown={isDown}
-              />
-            </Box>
-          </Flex>
-          <Box py={2}>
-            <NewTwoButtonRow
-              leftProps={{
-                icon: (
-                  <Box mb="2px">
-                    <InfoIcon />
-                  </Box>
-                ),
-                func: () => {
-                  navigateExternalLink(`https://map.naver.com/p/search/${placeInfo.location.name}`);
-                },
-
-                children: <Box mr="2px">네이버 리뷰</Box>,
-              }}
-              rightProps={{
-                icon: (
-                  <Box mb="2px">
-                    <QuoteIcon />
-                  </Box>
-                ),
-                func: () => {
-                  if (isDown || isGuest) {
-                    toast("info", "ABOUT 멤버만 이용할 수 있는 기능입니다.");
-                  } else typeToast("not-yet");
-                },
-                children: <Box mr="2px">멤버 리뷰</Box>,
-              }}
-            />
-          </Box>
-          {handleVotePick && (
-            <Button colorScheme="black" size="lg" onClick={handleVotePick}>
-              이 장소로 스터디 개설
-            </Button>
-          )}
-        </Flex>
+        <PlaceInfoBox placeInfo={placeInfo} isDown={isDown} handleVotePick={handleVotePick} />
       </BottomFlexDrawer>
     </>
   );
 }
 
 export default PlaceInfoDrawer;
+
+export function PlaceInfoBox({
+  placeInfo,
+  isDown,
+  handleVotePick,
+}: {
+  placeInfo: StudyPlaceProps;
+  isDown: boolean;
+  handleVotePick?: () => void;
+}) {
+  const userInfo = useUserInfo();
+  const typeToast = useTypeToast();
+  const toast = useToast();
+
+  const isGuest = userInfo?.role === "guest";
+  const reviewCnt = Math.ceil(Math.random() * 30);
+  return (
+    <Flex direction="column" w="100%">
+      <Flex justifyContent="space-between">
+        <Flex direction="column" mr={2} w="full">
+          <Box
+            fontSize="18px"
+            lineHeight="28px"
+            fontWeight={600}
+            textOverflow="ellipsis"
+            overflow="hidden"
+            whiteSpace="nowrap"
+            maxW="60dvw"
+          >
+            {placeInfo.location.name}
+          </Box>
+          <Flex mt={0.5} align="center">
+            <Box>
+              <StarRating rating={placeInfo?.rating} size="lg" />
+            </Box>
+            <Box fontWeight={600} fontSize="16px" mb="-2px" ml={1.5} mr={1}>
+              {placeInfo?.rating?.toFixed(1)}
+            </Box>
+            <Box color="gray.500" fontSize="13px" mb="-2px">
+              ({reviewCnt})
+            </Box>
+          </Flex>
+          <Grid
+            gridTemplateColumns="repeat(2,1fr)"
+            gridGap="4px"
+            fontSize="12px"
+            mt={2}
+            bg="gray.100"
+            w="full"
+            px={3}
+            py={2}
+            borderRadius="8px"
+            color="gray.800"
+            mb={1}
+          >
+            <Flex>
+              <Box w="56px">공부 분위기</Box>
+              <Box mx="1px">
+                <StarIcon type="empty" size="md" />
+              </Box>
+              {placeInfo?.rating?.toFixed(1)}
+            </Flex>
+            <Flex ml="-2px">
+              <Box>콘센트/테이블</Box>
+              <Box mx="1px">
+                <StarIcon type="empty" size="md" />
+              </Box>
+              {placeInfo?.rating?.toFixed(1)}
+            </Flex>
+            <Flex>
+              <Box w="56px">음료/가성비</Box>
+              <Box mx="1px">
+                <StarIcon type="empty" size="md" />
+              </Box>
+              {placeInfo?.rating?.toFixed(1)}
+            </Flex>
+            <Flex ml="-2px">
+              기타
+              <Box mx="1px">
+                <StarIcon type="empty" size="md" />
+              </Box>
+              {placeInfo?.rating?.toFixed(1)}
+            </Flex>
+          </Grid>
+          {/* <Flex mt={2}>
+            환경
+            <Box mx="1px">
+              <StarIcon type="empty" size="md" />
+            </Box>
+            4.0 | 콘센트
+            <Box mx="1px">
+              <StarIcon type="empty" size="md" />
+            </Box>
+            4.0 | 기타
+            <Box mx="1px">
+              <StarIcon type="empty" size="md" />
+            </Box>
+            4.5
+          </Flex> */}
+          {/* <Flex mt={2} align="center" fontSize="12px" color="gray.600">
+            한 줄 메모 기능 준비중...
+          </Flex> */}
+        </Flex>
+        <Box>
+          <PlaceImage
+            imageProps={{ image: placeInfo?.image || getRandomImage(STUDY_MAIN_IMAGES) }}
+            size="md2"
+            hasToggleHeart
+            isDown={isDown}
+          />
+        </Box>
+      </Flex>
+      <Box py={2}>
+        <NewTwoButtonRow
+          leftProps={{
+            icon: (
+              <Box mb="2px">
+                <InfoIcon />
+              </Box>
+            ),
+            func: () => {
+              navigateExternalLink(`https://map.naver.com/p/search/${placeInfo.location.name}`);
+            },
+
+            children: <Box mr="2px">네이버 리뷰</Box>,
+          }}
+          rightProps={{
+            icon: (
+              <Box mb="2px">
+                <QuoteIcon />
+              </Box>
+            ),
+            func: () => {
+              if (isDown || isGuest) {
+                toast("info", "ABOUT 멤버만 이용할 수 있는 기능입니다.");
+              } else typeToast("not-yet");
+            },
+            children: <Box mr="2px">멤버 리뷰</Box>,
+          }}
+        />
+      </Box>
+      {handleVotePick && (
+        <Button colorScheme="black" size="lg" onClick={handleVotePick}>
+          이 장소로 스터디 개설
+        </Button>
+      )}
+    </Flex>
+  );
+}
 
 function InfoIcon() {
   return (

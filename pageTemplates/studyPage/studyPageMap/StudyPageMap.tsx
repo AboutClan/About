@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -6,7 +6,9 @@ import styled from "styled-components";
 import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import Textarea from "../../../components/atoms/Textarea";
+import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import BottomNav from "../../../components/layouts/BottomNav";
+import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import SearchLocation from "../../../components/organisms/SearchLocation";
 import VoteMap from "../../../components/organisms/VoteMap";
@@ -22,16 +24,22 @@ import {
   StudyPlaceFilter,
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
+import { getDistanceFromLatLonInKm } from "../../../utils/mathUtils";
 import RegisterOverview from "../../register/RegisterOverview";
-import PlaceInfoDrawer from "../PlaceInfoDrawer";
+import PlaceInfoDrawer, { PlaceInfoBox } from "../PlaceInfoDrawer";
+import { StudyPageTopNav } from "./StudyPageTopNav";
 import StudyMapTopNav from "./TopNav";
 
+interface KmPlaceProps extends StudyPlaceProps {
+  _diffKm: number;
+}
 interface StudyPageMapProps {
   isDefaultOpen?: boolean;
   handleVotePick?: (place: StudyPlaceProps) => void;
   onClose?: () => void;
   isDown?: boolean;
   type?: "mainPlace";
+  isCafeMap: boolean;
 }
 
 function StudyPageMap({
@@ -40,6 +48,7 @@ function StudyPageMap({
   handleVotePick,
   isDown,
   type,
+  isCafeMap,
 }: StudyPageMapProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
@@ -52,6 +61,7 @@ function StudyPageMap({
   const [isLoading, setIsLoading] = useState(false);
   const scrollLockY = useRef(0);
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
+  const [drawerType, setDrawerType] = useState<"cafe" | "menu" | "list">(null);
   const [isAddCafeDrawer, setIsAddCafeDrawer] = useState(false);
   const [filterType, setFilterType] = useState<StudyPlaceFilter>(
     type === "mainPlace" ? "main" : null,
@@ -233,9 +243,20 @@ function StudyPageMap({
           onClick={handleMapClick}
         >
           <ClipLayer $rounded={!isMapExpansion}>
+            {isMapExpansion && (
+              <StudyPageTopNav
+                isCafeMap={isCafeMap}
+                handleCenterLocation={(location) => {
+                  setMapOptions(getMapOptions(location, zoomNumber));
+                }}
+                openMenu={() => {
+                  setDrawerType("menu");
+                }}
+                onClose={onClose}
+              />
+            )}
             <StudyMapTopNav
-              openAddCafeDrawer={() => setIsAddCafeDrawer(true)}
-              isDown={isDown}
+              isCafeMap={isCafeMap}
               isMainType={type === "mainPlace"}
               handleLocationRefetch={async () => {
                 setTempToggle(true);
@@ -250,6 +271,9 @@ function StudyPageMap({
                 );
               }}
               isMapExpansion={isMapExpansion}
+              openList={() => {
+                setDrawerType("list");
+              }}
               onClose={() => {
                 if (onClose) {
                   const { modal, ...restQuery } = router.query; // modal만 제외하고 나머지 유지
@@ -306,7 +330,34 @@ function StudyPageMap({
           isDown={isDown}
         />
       )}
+      {drawerType === "menu" && (
+        <RightMenuDrawer
+          onClose={() => setDrawerType(null)}
+          handleButton={(type: "addCafe") => {
+            console.log(type);
+            setDrawerType(null);
+            setIsAddCafeDrawer(true);
+          }}
+        />
+      )}
       {isAddCafeDrawer && <LocationAddDrawer onClose={() => setIsAddCafeDrawer(false)} />}
+      {drawerType === "list" && (
+        <CafeListDrawer
+          onClose={() => setDrawerType(null)}
+          placeData={(placeData as KmPlaceProps[])
+            ?.filter((place) => {
+              const diffKm = getDistanceFromLatLonInKm(
+                mapOptions.center.y,
+                mapOptions.center.x,
+                place.location.latitude,
+                place.location.longitude,
+              );
+              place._diffKm = diffKm;
+              return diffKm < 3;
+            })
+            ?.sort((a, b) => a._diffKm - b._diffKm)}
+        />
+      )}
       {isLoading && (
         <>
           <ScreenOverlay zIndex={2000} />
@@ -317,6 +368,159 @@ function StudyPageMap({
   );
 }
 
+interface CafeListDrawerProps {
+  onClose: () => void;
+  placeData: StudyPlaceProps[];
+}
+
+function CafeListDrawer({ onClose, placeData }: CafeListDrawerProps) {
+  return (
+    <BottomFlexDrawer
+      isDrawerUp
+      isOverlay
+      height={643}
+      isHideBottom
+      zIndex={2000}
+      setIsModal={onClose}
+    >
+      <Box
+        pt={1}
+        pb={0}
+        lineHeight="32px"
+        w="100%"
+        fontWeight="semibold"
+        fontSize="20px"
+        textAlign="start"
+      >
+        내 인근 카공 카페
+      </Box>{" "}
+      <Box color="gray.500" mr="auto" fontSize="12px">
+        3km 이내, 총 <b>{placeData?.length}개</b>의 카공 카페가 있어요!
+      </Box>
+      <Flex
+        flexDir="column"
+        w="full"
+        mt={3}
+        flex="1"
+        minH={0}
+        overflowY="auto"
+        borderTop="var(--border-main)"
+        borderTopWidth="2px"
+        sx={{
+          "::-webkit-scrollbar": { display: "none" },
+          scrollbarWidth: "none",
+          touchAction: "auto",
+          "& *": {
+            touchAction: "auto", // ← 자식들까지 다 풀어버리기
+          },
+        }}
+      >
+        {placeData?.map((place, idx) => {
+          return (
+            <Box key={idx} borderBottom="var(--border-main)" py={3}>
+              <PlaceInfoBox placeInfo={place} isDown={false} />
+            </Box>
+          );
+        })}
+      </Flex>
+    </BottomFlexDrawer>
+  );
+}
+
+function RightMenuDrawer({
+  onClose,
+  handleButton,
+}: {
+  onClose: () => void;
+  handleButton: (type: "addCafe") => void;
+}) {
+  const router = useRouter();
+  const toast = useToast();
+  return (
+    <RightDrawer title="메뉴" onClose={onClose}>
+      <Flex flexDir="column">
+        <Button
+          w="full"
+          py={3}
+          px={1}
+          variant="unstyled"
+          borderBottom="var(--border-main)"
+          textAlign="start"
+          onClick={() => handleButton("addCafe")}
+        >
+          <Flex justify="space-between" align="center">
+            <Box>장소 추가 요청</Box>
+            <ShortArrowIcon dir="right" color="black" />
+          </Flex>
+        </Button>
+        <Button
+          w="full"
+          py={3}
+          px={1}
+          variant="unstyled"
+          borderBottom="var(--border-main)"
+          textAlign="start"
+          onClick={() => {
+            toast("info", "준비중");
+          }}
+        >
+          <Flex justify="space-between" align="center">
+            <Box>정보 수정 요청</Box>
+            <ShortArrowIcon dir="right" color="black" />
+          </Flex>
+        </Button>
+        <Button
+          w="full"
+          py={3}
+          px={1}
+          variant="unstyled"
+          borderBottom="var(--border-main)"
+          textAlign="start"
+          onClick={() => {
+            toast("info", "준비중");
+          }}
+        >
+          <Flex justify="space-between" align="center">
+            <Box>오류 제보</Box>
+            <ShortArrowIcon dir="right" color="black" />
+          </Flex>
+        </Button>
+        <Button
+          w="full"
+          py={3}
+          px={1}
+          variant="unstyled"
+          borderBottom="var(--border-main)"
+          textAlign="start"
+          onClick={() => {
+            router.push("/home");
+          }}
+        >
+          <Flex justify="space-between" align="center">
+            <Box>About이 궁금해요!</Box>
+            <ShortArrowIcon dir="right" color="black" />
+          </Flex>
+        </Button>
+        <Button
+          w="full"
+          py={3}
+          px={1}
+          variant="unstyled"
+          borderBottom="var(--border-main)"
+          textAlign="start"
+          onClick={() => {
+            toast("info", "준비중");
+          }}
+        >
+          <Flex justify="space-between" align="center">
+            <Box>문의하기</Box>
+            <ShortArrowIcon dir="right" color="black" />
+          </Flex>
+        </Button>
+      </Flex>
+    </RightDrawer>
+  );
+}
 interface LocationAddDrawerProps {
   onClose: () => void;
 }

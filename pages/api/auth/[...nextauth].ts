@@ -28,6 +28,15 @@ const GUEST_USER = {
   profileImage: "",
   location: "수원" as ActiveLocation,
 };
+const TEST_USER = {
+  id: "6938e715ec55cba47b90954d",
+  uid: "1234567898",
+  name: "테스트",
+  role: "member",
+  isActive: true,
+  profileImage: DEFAULT_PROFILE_IMAGE,
+  location: "수원" as ActiveLocation,
+};
 
 const MEMBER_GUEST_USER = {
   ...GUEST_USER,
@@ -85,7 +94,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        return { ...MEMBER_GUEST_USER, email: credentials.username };
+        return { ...TEST_USER, email: credentials.username };
       },
     }),
     KakaoProvider({

@@ -64,10 +64,14 @@ function Fee() {
       setLocalStorageObj(REGISTER_INFO, null);
       setIsMomdal(true);
     },
-    onError: errorToast,
+  onError: errorToast,
   });
-
+  console.log(info);
   const onClickNext = () => {
+    if (info.name === "게스트" || info.name === "테스트") {
+      router.push(`/register/access2`);
+      return;
+    }
     if (info?.telephone.length < 11) {
       toast("error", "핸드폰 번호를 확인해 주세요.");
       return;
@@ -99,10 +103,10 @@ function Fee() {
           {tab === "신청 안내" ? (
             <Flex direction="column">
               <ValueBoxCol2 items={VALUE_BOX_COL_ITEMS} />
-              <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
-                보증금은 다양한 활동에 사용할 수 있고, 탈퇴 시 환급됩니다.
+              <Box fontSize="10px" ml="auto" mt={2} color="gray.500">
+                * 위 내용은 결제일로부터 1년간 유효합니다.
               </Box>
-              <Box mt={8} mb={5}>
+              <Box mt={5} mb={5}>
                 <Box ml={0.5} fontSize="14px" mb={2} fontWeight="semibold">
                   Q) 신청 완료 후에는 어떻게 하나요?
                 </Box>

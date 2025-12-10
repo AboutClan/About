@@ -1,14 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 
 import InfoList from "../../components/atoms/lists/InfoList";
-import { CopyBtn } from "../../components/Icons/CopyIcon";
 import BottomNav from "../../components/layouts/BottomNav";
 import Header from "../../components/layouts/Header";
-import TextCheckButton from "../../components/molecules/TextCheckButton";
 import ValueBoxCol2 from "../../components/molecules/ValueBoxCol2";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -17,7 +15,6 @@ import { gaEvent } from "../../libs/gtag";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { ACCOUNT_TEXT } from "../user/point/charge";
 import { VALUE_BOX_COL_ITEMS } from "./fee";
 
 function Access() {
@@ -26,8 +23,6 @@ function Access() {
   const toast = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
-
-  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
     if (session === undefined) return;
@@ -54,8 +49,23 @@ function Access() {
     },
   });
 
+  console.log(approve);
+
   const onClickNext = () => {
-    approve(session.user.uid);
+    if (!session?.user.uid) {
+      toast("error", "계정 확인을 위해 다시 로그인해주세요.");
+      router.push("/login?status=access");
+      return;
+    }
+    router.push({
+      pathname: "/payment/join-fee",
+      query: {
+        uid: session.user.uid,
+        amount: 20000,
+        source: "access",
+      },
+    });
+    // approve(session.user.uid);
   };
 
   return (
@@ -64,7 +74,7 @@ function Access() {
       <RegisterLayout>
         <RegisterOverview>
           <span>활동 시작 안내</span>
-          <span>회비 입금을 마치면, 바로 활동을 시작할 수 있습니다.</span>
+          <span>회비 입금을 마치면, 바로 활동을 시작할 있습니다.</span>
         </RegisterOverview>
 
         <Box mt={5}>
@@ -76,55 +86,39 @@ function Access() {
             <Box fontSize="10px" ml="auto" mt={2} color="gray.500">
               * 위 내용은 결제일로부터 1년간 유효합니다.
             </Box>
-
-            <Flex mt={5} align="center" ml={0.5} fontSize="14px" mb={2} fontWeight="semibold">
-              ✅ 입금 계좌
-            </Flex>
-            <Flex
-              fontSize="13px"
-              px={4}
-              py={3}
-              bg="rgba(0,194,179,0.02)"
-              borderRadius="16px"
-              border="1px solid rgba(0,194,179,0.08)"
-            >
-              <Box mr={2}>{ACCOUNT_TEXT}</Box>
-              <CopyBtn text={ACCOUNT_TEXT} />
-            </Flex>
-            <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
-              위 계좌로 20,000원을 입금 후, [활동 시작] 버튼을 눌러주세요!
-            </Box>
-
+            {/* 
             <Box mt={8} mb={5}>
+              <Box ml={0.5} fontSize="14px" mb={2} fontWeight="semibold">
+                ⚠️ 확인사항 ⚠️
+              </Box>
+              <InfoList items={INFO_ARR} />
+            </Box> */}
+            <Box mt={5} mb={5}>
               <Box ml={0.5} fontSize="14px" mb={2} fontWeight="semibold">
                 ⚠️ 유의사항 ⚠️
               </Box>
-              <InfoList items={INFO_ARR} />
+              <InfoList items={INFO_ARR2} />
             </Box>
-            <TextCheckButton
+            {/* <TextCheckButton
               text="위 내용을 확인했고, 입금을 마쳤습니다."
               isChecked={isChecked}
               toggleCheck={() => setIsChecked((old) => !old)}
-            />
+            /> */}
           </Flex>
         </Box>
       </RegisterLayout>
-      <BottomNav
-        isLoading={isLoading}
-        onClick={onClickNext}
-        text="동아리 활동 시작하기"
-        isActive={isChecked}
-      />
+      <BottomNav isLoading={isLoading} onClick={onClickNext} text="결제하고 활동 시작하기" />
     </>
   );
 }
 
-const INFO_ARR = [
-  "회비 입금을 완료한 뒤에, [활동 시작] 버튼을 눌러주세요.",
-  "가입 후에는 [신규 인원 가이드]를 확인해 주세요!",
+// const INFO_ARR = [
+//   "가입 후에는 [신규 인원 가이드]를 확인해 주세요!",
+//   "다른 회원에게 불편함을 줄 수 있는 모든 행위에 대해 패널티가 부여될 수 있습니다. 일방적인 연락, 무례한 언행, 종교 권유 등 불편함을 겪었다면 해당 멤버 프로필에서 '신고하기'를 이용해 주세요. 운영진의 판단에 따라 사전 경고 없이 활동이 제한되거나 강제 탈퇴될 수 있습니다.",
+// ];
+const INFO_ARR2 = [
   "결제 즉시 이용이 시작되며, 7일 내 미이용 시에만 환불됩니다.",
   "포인트는 모임 참여 등 서비스 이용 재화로, 환불되지 않습니다.",
-  "입금하지 않고 누르는 경우, 동아리에서 영구 제명됩니다.",
 ];
 
 export default Access;
