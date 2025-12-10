@@ -1,5 +1,5 @@
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -52,8 +52,8 @@ function HomeInitialSetting() {
       }
     },
     onError() {
-      // toast("warning", "로그인 정보가 없습니다.");
-      // router.push("/login");
+      toast("warning", "로그인 정보가 없습니다.");
+      router.push("/login");
     },
   });
 
