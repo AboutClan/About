@@ -7,6 +7,7 @@ function HomeFooter() {
         <Stack spacing={1} fontSize="sm">
           <Text>상호명: About | 대표자: 이승주</Text>
           <Text>사업자등록번호: 260-48-00924</Text>
+          <Text>통신판매업신고번호: 2025-부천원미-2462</Text>
           <Text>주소: 경기도 부천시 원미구 부천로 666번길 93, 나동 408호</Text>
           <Text>대표번호: 010-6230-0206 | 이메일: team.about.20s@gmail.com</Text>
         </Stack>
