@@ -40,7 +40,7 @@ function StudyPageChallenge() {
 
   return (
     <>
-      <Box px={5}>
+      <Box px={5} mb={5}>
         <SectionHeader title="챌린지에 도전하고 상품 받아가세요!" subTitle="스터디 챌린지" />
         <Flex mt={4}>
           <Flex
