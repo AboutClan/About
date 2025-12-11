@@ -26,7 +26,7 @@ export default function TossJoinFeeWidget({ uid, amount, orderName }: TossJoinFe
           return;
         }
 
-        const tossPayments = await loadTossPayments(clientKey);
+        const tossPayments = await loadTossPayments("test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm");
 
         // 회원 결제: uid를 customerKey로 사용
         const _widgets = tossPayments.widgets({
