@@ -10,6 +10,7 @@ function BaseScript() {
         src="//t1.daumcdn.net/kas/static/ba.min.js"
         strategy="afterInteractive"
       />
+      <Script src="https://t1.daumcdn.net/kas/static/ba.min.js" async strategy="afterInteractive" />
     </>
   );
 }
