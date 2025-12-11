@@ -217,27 +217,27 @@ function Layout({ children }: ILayout) {
    * 게스트 뷰어 안내 토스트
    * (기존 로직을 유지하되, guest 세션이 잡힌 뒤 동작)
    */
-  useEffect(() => {
-    if (status === "loading" || session === undefined) return;
+  // useEffect(() => {
+  //   if (status === "loading" || session === undefined) return;
 
-    if (
-      PUBLIC_SEGMENT.includes(segment) ||
-      pathname === "/user/info/policy" ||
-      pathname === "/user/info/privacy" ||
-      pathname === "/faq"
-    ) {
-      return;
-    }
-    console.log("ABOUT", pathname);
-    if (
-      !isBottomNavCondition &&
-      isGuest &&
-      pathname !== "/cafe-map" &&
-      pathname !== "/payment/join-fee"
-    ) {
-      toast("info", "현재 게스트 뷰어를 이용중입니다.", null, true);
-    }
-  }, [status, isBottomNavCondition, isGuest, pathname]);
+  //   if (
+  //     PUBLIC_SEGMENT.includes(segment) ||
+  //     pathname === "/user/info/policy" ||
+  //     pathname === "/user/info/privacy" ||
+  //     pathname === "/faq"
+  //   ) {
+  //     return;
+  //   }
+  //   console.log("ABOUT", pathname);
+  //   if (
+  //     !isBottomNavCondition &&
+  //     isGuest &&
+  //     pathname !== "/cafe-map" &&
+  //     pathname !== "/payment/join-fee"
+  //   ) {
+  //     toast("info", "현재 게스트 뷰어를 이용중입니다.", null, true);
+  //   }
+  // }, [status, isBottomNavCondition, isGuest, pathname]);
 
   /**
    * OG 메타 태그 설정 (기존 그대로)

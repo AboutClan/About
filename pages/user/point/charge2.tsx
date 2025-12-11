@@ -1,9 +1,8 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
-import CountNum from "../../../components/atoms/CountNum";
 import InfoList from "../../../components/atoms/lists/InfoList";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
@@ -23,8 +22,6 @@ function Charge() {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const [point, setPoint] = useState(5000);
-
   const queryClient = useQueryClient();
   const { mutate: updatePoint, isLoading: isLoading1 } = usePointSystemMutation("point", {
     onSuccess() {
@@ -38,6 +35,7 @@ function Charge() {
   //     router.push("/user");
   //   },
   // });
+  const [chargePoint, setChargePoint] = useState(3000);
 
   const valueBoxColItems: ValueBoxColItemProps[] = [
     {
@@ -46,12 +44,12 @@ function Charge() {
     },
     {
       left: `충전 포인트`,
-      right: point?.toLocaleString() + " Point",
+      right: chargePoint?.toLocaleString() + " Point",
     },
 
     {
       left: "최종 포인트",
-      right: (userInfo?.point + point)?.toLocaleString() + " Point",
+      right: (userInfo?.point + chargePoint)?.toLocaleString() + " Point",
       isFinal: true,
     },
   ];
@@ -61,7 +59,7 @@ function Charge() {
       pathname: "/payment/join-fee",
       query: {
         uid: userInfo.uid,
-        amount: 20000,
+        amount: chargePoint,
         source: "access",
       },
     });
@@ -78,6 +76,8 @@ function Charge() {
     // });
   };
 
+  const pointArr = [1000, 3000, 5000, 10000];
+
   return (
     <>
       <Header title="" />
@@ -86,26 +86,32 @@ function Charge() {
         <RegisterOverview>
           <>
             <span>포인트 충전</span>
-            <span>About 활동에 필요한 포인트를 충전할 수 있습니다</span>
+            <span>About 서비스 재화인 포인트를 충전할 수 있습니다</span>
           </>
         </RegisterOverview>
 
         <>
           <Box mt={5} mb={20}>
             <Flex direction="column">
-              <Flex justify="center">
-                <CountNum
-                  value={point}
-                  setValue={(newValue) => {
-                    setPoint(newValue);
-                  }}
-                  stepValue={1000}
-                  min={1000}
-                  unit="원"
-                  size="lg"
-                />
-              </Flex>
-              <Box mt={5} w="full">
+              <Grid gridTemplateColumns="repeat(2,1fr)" gap={2}>
+                {pointArr.map((point, idx) => (
+                  <Button
+                    key={idx}
+                    borderRadius="8px"
+                    size="lg"
+                    colorScheme={chargePoint === point ? "mint" : "gray"}
+                    onClick={() => {
+                      setChargePoint(point);
+                    }}
+                  >
+                    {point.toLocaleString()} Point
+                  </Button>
+                ))}
+              </Grid>
+              <Box mx="auto" mt={3} fontSize="12px" fontWeight={600} color="mint">
+                1,000 Point = 1,000원
+              </Box>
+              <Box mt={8} w="full">
                 <ValueBoxCol items={valueBoxColItems} />{" "}
               </Box>
               <Box fontSize="10px" ml="auto" mt={2} color="gray.500">

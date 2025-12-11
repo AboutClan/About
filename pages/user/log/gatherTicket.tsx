@@ -131,7 +131,7 @@ function GatherTicketLogSection() {
             번개 참여권을 구매하시겠어요?
           </Box>
           <Box color="gray.500" mr="auto" fontSize="12px">
-            매월 1일에 참여권이 초기화 됩니다.
+            모임 참여를 위해서는 참여권이 필요합니다.
           </Box>
           <Box
             mr="auto"
