@@ -23,9 +23,7 @@ export default function TossJoinFeeWidget({ uid, amount, orderName }: TossJoinFe
       try {
         if (!clientKey) {
           console.error("Toss client key is missing");
-          return;
         }
-
         const tossPayments = await loadTossPayments("test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm");
 
         // 회원 결제: uid를 customerKey로 사용

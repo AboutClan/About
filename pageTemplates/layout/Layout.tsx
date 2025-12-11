@@ -233,7 +233,7 @@ function Layout({ children }: ILayout) {
       !isBottomNavCondition &&
       isGuest &&
       pathname !== "/cafe-map" &&
-      pathname !== " /payment/join-fee"
+      pathname !== "/payment/join-fee"
     ) {
       toast("info", "현재 게스트 뷰어를 이용중입니다.", null, true);
     }
