@@ -248,7 +248,7 @@ function TopNav({
               justifyContent="center"
               overflow="hidden"
             >
-              <KakaoAdfit unitId="DAN-wFtrGbVXW3S2LVkN" width={320} height={100} />
+              <KakaoAdfit unitId="DAN-yjQDVIbCjd5Xbowz" width={320} height={50} />
             </Flex>
           )}
         </Flex>
