@@ -27,7 +27,7 @@ function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick, isDown }: PlaceIn
         isOverlay
         isHideBottom
         zIndex={2000}
-        height={!handleVotePick ? 202 : 272}
+        height={!handleVotePick ? 213 : 269}
         setIsModal={onClose}
       >
         <PlaceInfoBox placeInfo={placeInfo} isDown={isDown} handleVotePick={handleVotePick} />
@@ -174,12 +174,12 @@ export function PlaceInfoBox({
                 toast("info", "ABOUT 멤버만 이용할 수 있는 기능입니다.");
               } else typeToast("not-yet");
             },
-            children: <Box mr="2px">멤버 리뷰</Box>,
+            children: <Box mr="2px">별점 남기기</Box>,
           }}
         />
       </Box>
       {handleVotePick && (
-        <Button colorScheme="black" size="lg" onClick={handleVotePick}>
+        <Button mb={2} colorScheme="black" size="lg" onClick={handleVotePick}>
           이 장소로 스터디 개설
         </Button>
       )}
@@ -210,7 +210,7 @@ function QuoteIcon() {
       width="16px"
       fill="white"
     >
-      <path d="m228-240 92-160q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 23-5.5 42.5T458-480L320-240h-92Zm360 0 92-160q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 23-5.5 42.5T818-480L680-240h-92ZM320-500q25 0 42.5-17.5T380-560q0-25-17.5-42.5T320-620q-25 0-42.5 17.5T260-560q0 25 17.5 42.5T320-500Zm360 0q25 0 42.5-17.5T740-560q0-25-17.5-42.5T680-620q-25 0-42.5 17.5T620-560q0 25 17.5 42.5T680-500Zm0-60Zm-360 0Z" />
+      <path d="M240-240 114-114q-10 10-22 5t-12-19v-672q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240Zm240-221 76 46q11 7 22-.5t8-20.5l-20-87 68-59q10-9 6-21.5T622-617l-89-7-35-82q-5-12-18-12t-18 12l-35 82-89 7q-14 1-18 13.5t6 21.5l68 59-20 87q-3 13 8 20.5t22 .5l76-46Z" />
     </svg>
   );
 }
