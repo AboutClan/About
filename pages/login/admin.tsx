@@ -239,7 +239,7 @@ const Login: NextPage<{
               aspectRatio={7.42 / 1}
               backgroundColor="gray.900"
               color="white"
-              onClick={() => router.push(`/loginId`)}
+              onClick={() => router.push(`/login/account`)}
               display="flex"
               isLoading={loadingType === "guest"}
               justifyContent="space-between"

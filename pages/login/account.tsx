@@ -3,11 +3,11 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-import { Input } from "../components/atoms/Input";
-import ProgressHeader from "../components/molecules/headers/ProgressHeader";
-import { useToast } from "../hooks/custom/CustomToast";
-import RegisterLayout from "../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../pageTemplates/register/RegisterOverview";
+import { Input } from "../../components/atoms/Input";
+import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
+import { useToast } from "../../hooks/custom/CustomToast";
+import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
+import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 
 const publicID = "team.about.20s@gmail.com";
 const publicPW = "abcde12345?!";
@@ -62,7 +62,7 @@ function LoginId() {
         </Button>
         <Box
           mt={5}
-          onClick={() => router.push("/loginRegister")}
+          onClick={() => router.push("/login/register")}
           fontSize="13px"
           color="gray.600"
           ml="auto"

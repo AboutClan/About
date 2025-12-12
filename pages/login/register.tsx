@@ -2,11 +2,11 @@ import { Box, Button } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { Input } from "../components/atoms/Input";
-import ProgressHeader from "../components/molecules/headers/ProgressHeader";
-import { useToast } from "../hooks/custom/CustomToast";
-import RegisterLayout from "../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../pageTemplates/register/RegisterOverview";
+import { Input } from "../../components/atoms/Input";
+import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
+import { useToast } from "../../hooks/custom/CustomToast";
+import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
+import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 
 function LoginId() {
   const router = useRouter();
