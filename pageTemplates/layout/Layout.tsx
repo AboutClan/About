@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -148,6 +148,7 @@ function Layout({ children }: ILayout) {
         const data: BackActionMessage = JSON.parse(event.data);
         if (data.name === "deeplink") {
           const { path, params } = data;
+          toast("success", path, params);
           console.log("🌐 Deeplink received:", path, params);
           // Next.js에서는 replace 추천
           setTimeout(() => {
