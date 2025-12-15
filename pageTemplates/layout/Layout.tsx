@@ -142,11 +142,11 @@ function Layout({ children }: ILayout) {
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
+      toast("info", event?.data);
       if (typeof event.data !== "string") return;
 
       try {
         const data: BackActionMessage = JSON.parse(event.data);
-        toast("info", data.neme, data?.path);
         if (data.name === "deeplink") {
           const { path, params } = data;
           console.log("🌐 Deeplink received:", path, params);
