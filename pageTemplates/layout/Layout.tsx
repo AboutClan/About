@@ -13,6 +13,7 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
@@ -134,6 +135,8 @@ function Layout({ children }: ILayout) {
     };
   }, []);
 
+  const { mutate } = useUserRequestMutation();
+
   /**
    * 네이티브 WebView에서 backAction 메시지 처리
    * (기존 기능 그대로 유지)
@@ -145,7 +148,9 @@ function Layout({ children }: ILayout) {
       if (typeof event.data !== "string") return;
 
       try {
+        mutate({ category: "인스타", title: "디버깅", content: event.data });
         const data: BackActionMessage = JSON.parse(event.data);
+
         if (data.name === "deeplink") {
           const { path, params } = data;
           console.log("🌐 Deeplink received:", path, params);
