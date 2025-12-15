@@ -73,7 +73,7 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
           {text}{" "}
           {userCardArr?.length >= 3 || !isPlanned
             ? userCardArr.length
-            : (isMine ? 1 : 6) + data?.waiting.length}
+            : (isMine ? 1 : 6) + data?.waiting.length + (data.id === 245 ? 3 : 0)}
         </Box>
         {isTemp && (
           <Box ml="auto" mt="auto" fontSize="11px" color="mint" lineHeight={1}>
