@@ -146,9 +146,9 @@ function Layout({ children }: ILayout) {
 
       try {
         const data: BackActionMessage = JSON.parse(event.data);
+        toast("info", data.neme, data?.path);
         if (data.name === "deeplink") {
           const { path, params } = data;
-          toast("success", path, params);
           console.log("🌐 Deeplink received:", path, params);
           // Next.js에서는 replace 추천
           setTimeout(() => {
