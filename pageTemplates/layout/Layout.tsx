@@ -146,6 +146,16 @@ function Layout({ children }: ILayout) {
 
       try {
         const data: BackActionMessage = JSON.parse(event.data);
+        if (data.name === "deeplink") {
+          const { path, params } = data;
+          console.log("🌐 Deeplink received:", path, params);
+          // Next.js에서는 replace 추천
+          setTimeout(() => {
+            router.replace(path);
+          }, 0);
+
+          return;
+        }
         if (data.name === "backAction") {
           handleBackAction();
         }
