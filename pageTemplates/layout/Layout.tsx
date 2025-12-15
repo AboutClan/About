@@ -142,7 +142,6 @@ function Layout({ children }: ILayout) {
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      toast("info", event?.data);
       if (typeof event.data !== "string") return;
 
       try {
