@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -116,24 +116,24 @@ function Layout({ children }: ILayout) {
    * 카카오 인앱 브라우저에서 외부 브라우저로 여는 처리
    * (기존 기능 그대로 유지)
    */
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
 
-    const useragt = navigator.userAgent.toLowerCase();
-    const isKakao = useragt.includes("kakaotalk");
-    if (!isKakao) return;
+  //   const useragt = navigator.userAgent.toLowerCase();
+  //   const isKakao = useragt.includes("kakaotalk");
+  //   if (!isKakao) return;
 
-    const targetUrl = window.location.href;
+  //   const targetUrl = window.location.href;
 
-    const handleLoad = () => {
-      window.location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(targetUrl);
-    };
+  //   const handleLoad = () => {
+  //     window.location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(targetUrl);
+  //   };
 
-    window.addEventListener("load", handleLoad);
-    return () => {
-      window.removeEventListener("load", handleLoad);
-    };
-  }, []);
+  //   window.addEventListener("load", handleLoad);
+  //   return () => {
+  //     window.removeEventListener("load", handleLoad);
+  //   };
+  // }, []);
 
   const { mutate } = useUserRequestMutation();
 
