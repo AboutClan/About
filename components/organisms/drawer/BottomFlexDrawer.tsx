@@ -61,7 +61,6 @@ export default function BottomFlexDrawer({
     };
   }, []);
   const handlePointerDown = (event) => {
-    console.log(1);
     // 🔥 여기는 모달을 "닫으면 안 됨"
     const clientY = event.clientY ?? event.touches?.[0]?.clientY;
     startYRef.current = clientY;
@@ -72,7 +71,6 @@ export default function BottomFlexDrawer({
   };
 
   const handlePointerMove = (event) => {
-    console.log(1);
     const clientY = event.clientY ?? event.touches?.[0]?.clientY;
     const deltaY = startYRef.current - clientY;
     let newHeight = currentHeightRef.current + deltaY;
@@ -85,7 +83,6 @@ export default function BottomFlexDrawer({
   };
 
   const handlePointerUp = (event) => {
-    console.log(1);
     const clientY = event.clientY ?? event.touches?.[0]?.clientY;
     const deltaY = startYRef.current - clientY;
 

@@ -5,23 +5,20 @@ import { useEffect, useState } from "react";
 
 import SectionHeader from "../../components/atoms/SectionHeader";
 import AvatarGroupsOverwrap from "../../components/molecules/groups/AvatarGroupsOverwrap";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { useAllUserDataQuery } from "../../hooks/admin/quries";
-import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { usePointPlusLogQuery } from "../../hooks/user/queries";
 
 function StudyPageChallenge() {
   const router = useRouter();
   const userInfo = useUserInfo();
-  const toast = useToast();
 
   const [totalValue, setTotalValue] = useState(0);
-  const [isModal, setIsModal] = useState(false);
+
   const { data: logs } = usePointPlusLogQuery();
 
   const { data: studyUsers } = useAllUserDataQuery("study");
-  console.log(studyUsers);
+
   useEffect(() => {
     if (!logs?.length) return;
 
@@ -165,12 +162,17 @@ function StudyPageChallenge() {
             <Image src="/32.png" alt="studyReward" width={140} height={140} />
           </Flex>
 
-          <Button w="full" borderRadius="8px" colorScheme="black" onClick={() => setIsModal(true)}>
+          <Button
+            w="full"
+            borderRadius="8px"
+            colorScheme="black"
+            onClick={() => router.push("/store")}
+          >
             포인트 사용하기
           </Button>
         </Flex>
       </Box>
-      {isModal && (
+      {/* {isModal && (
         <BottomFlexDrawer
           isOverlay
           isDrawerUp
@@ -248,7 +250,7 @@ function StudyPageChallenge() {
             </Box>
           </Button>
         </BottomFlexDrawer>
-      )}
+      )} */}
     </>
   );
 }

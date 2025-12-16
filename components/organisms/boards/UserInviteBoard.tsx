@@ -37,7 +37,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
 
   const { data: usersAll, isLoading } = useAllUserDataQuery(null);
   const { data: group, isLoading: isLoading2 } = useGroupIdQuery(groupId, { enabled: !!groupId });
-  console.log(2, usersAll);
+
   const { mutate } = useGatherInviteMutation(+gatherId, {
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });

@@ -129,7 +129,6 @@ export default function StudyMembers({
     studyType === "participations"
       ? getNearLocationCluster(filterMembers as StudyParticipationProps[])
       : filterMembers;
-  console.log(42, tempArr);
 
   const userCardArr: IProfileCommentCard[] = tempArr?.map((member) => {
     const user = member.user;

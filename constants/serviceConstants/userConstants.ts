@@ -12,6 +12,7 @@ export const USER_ROLE = [
   "enthusiastic",
   "support",
   "block",
+  "secede",
 ] as const;
 
 export const ABOUT_USER_SUMMARY: IUserSummary = {

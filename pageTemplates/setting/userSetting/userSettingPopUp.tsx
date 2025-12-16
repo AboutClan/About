@@ -57,7 +57,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
   const studyRecordStr = localStorage.getItem(STUDY_RECORD_MODAL_AT);
   const studyRecord = JSON.parse(studyRecordStr);
   const { data: hasKakaoCuopon, isLoading } = usePointCuoponLogQuery();
-  console.log(2, hasKakaoCuopon);
+
   useEffect(() => {
     if (data === undefined || !session || isLoading) return;
     if (

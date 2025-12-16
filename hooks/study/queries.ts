@@ -162,7 +162,7 @@ export const useStudyMineQuery = (options?: QueryOptions<StudyMineProps[]>) =>
     [STUDY_VOTE, "mine"],
     async () => {
       const { data } = await axios.get<StudyMineProps[]>(`${SERVER_URI}/vote2/mine`);
-      console.log(data);
+
       return data;
       // return setStudyOneDayData(data, date);
     },

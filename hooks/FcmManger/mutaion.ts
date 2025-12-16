@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 
 import { isWebView } from "../../utils/appEnvUtils";
-import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
-import { registerPushServiceWithApp, registerPushServiceWithPWA } from "./apis";
+import { registerPushServiceWithApp } from "./apis";
 import { DeviceInfo } from "./types";
-import { requestNotificationPermission } from "./utils";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {
@@ -16,8 +14,6 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
         } catch (e) {
           console.error("error");
         }
-      } else {
-        await initializePWAPushService();
       }
     };
 
@@ -32,7 +28,6 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
         if (data.name !== "deviceInfo") return;
 
         const deviceInfo = data;
-        console.log("deviceInfo:", deviceInfo);
 
         await registerPushServiceWithApp({
           uid,
@@ -60,30 +55,30 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
     nativeMethodUtils.getDeviceInfo();
   });
 };
-const initializePWAPushService = async () => {
-  try {
-    const hasPermission = await requestNotificationPermission();
+// const initializePWAPushService = async () => {
+//   try {
+//     const hasPermission = await requestNotificationPermission();
 
-    if (!hasPermission) return;
-    const registration =
-      (await navigator.serviceWorker.getRegistration()) ||
-      (await navigator.serviceWorker.register("/worker.js", { scope: "/" }));
+//     if (!hasPermission) return;
+//     const registration =
+//       (await navigator.serviceWorker.getRegistration()) ||
+//       (await navigator.serviceWorker.register("/worker.js", { scope: "/" }));
 
-    let subscription = await registration.pushManager.getSubscription();
+//     let subscription = await registration.pushManager.getSubscription();
 
-    if (!subscription) {
-      const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
-      if (!publicVapidKey) throw new Error("Missing NEXT_PUBLIC_PWA_KEY");
+//     if (!subscription) {
+//       const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
+//       if (!publicVapidKey) throw new Error("Missing NEXT_PUBLIC_PWA_KEY");
 
-      subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-      });
-    }
+//       subscription = await registration.pushManager.subscribe({
+//         userVisibleOnly: true,
+//         applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+//       });
+//     }
 
-    // 서버에 구독 정보 전송
-    await registerPushServiceWithPWA(subscription);
-  } catch (error) {
-    console.error("Failed to initialize PWA push service:", error);
-  }
-};
+//     // 서버에 구독 정보 전송
+//     await registerPushServiceWithPWA(subscription);
+//   } catch (error) {
+//     console.error("Failed to initialize PWA push service:", error);
+//   }
+// };

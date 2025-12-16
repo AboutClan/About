@@ -131,7 +131,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
   const entries = Object.entries(mapping);
 
   const [currentKey, currentValue] = entries[idx];
-  console.log(userInfo);
+
   return (
     <>
       <Badge

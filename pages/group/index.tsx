@@ -256,7 +256,6 @@ function GroupPage() {
             ) : (
               <Flex direction="column">
                 {groupStudies?.slice()?.map((group, idx) => {
-                  console.log(group);
                   const status =
                     group.memberCnt.max !== 0 && group.memberCnt.max <= group.participants.length
                       ? "full"

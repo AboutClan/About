@@ -74,7 +74,7 @@ export const getStudyPlaceMarkersOptions = (
       11: 0.012,
       10: 0.014,
     };
-    console.log(zoom);
+
     const eps = zoom >= 16 || !zoom ? 0.0001 : ZOOM_EPS_MAPPIN[zoom];
     const minPts = 2;
     const clusters: number[][] = DBSCAN.run(data2, eps, minPts);

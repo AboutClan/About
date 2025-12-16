@@ -15,7 +15,7 @@ interface UserSocialGuideDrawerProps {
 export const getTemperatureTicket = (temp: number, isGirl: boolean) => {
   let gather, group;
 
-  if (temp <= 36.5) {
+  if (temp < 36.5) {
     gather = 1;
     group = 4;
   } else if (temp < 38) {

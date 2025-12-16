@@ -36,7 +36,7 @@ export const useToken = () => {
 
     fetchToken();
   }, [status, token]);
-  console.log(53, token);
+
   return token;
 };
 export const useResetQueryData = () => {

@@ -26,7 +26,7 @@ function UserAbsenceBoard({ users, handleDelete }: UserAbsenceBoardProps) {
       setMembers(users);
     }
   }, [users]);
-  console.log(1234, members);
+
   return (
     <>
       <Flex direction="column">

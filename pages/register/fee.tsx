@@ -65,7 +65,7 @@ function Fee() {
     },
     onError: errorToast,
   });
-  console.log(info);
+
   const onClickNext = () => {
     if (info.name === "게스트" || info.name === "테스트") {
       router.push(`/register/access2`);

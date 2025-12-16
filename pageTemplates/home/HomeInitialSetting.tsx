@@ -36,6 +36,11 @@ function HomeInitialSetting() {
         toast("warning", "신규 가입 페이지로 이동합니다.");
         router.push("/register/name");
       }
+      if (data.role === "secede") {
+        toast("warning", "탈퇴한 회원입니다. 관리자에게 문의주세요.");
+        router.push("/login");
+        return;
+      }
       if (data.role === "newUser") {
         router.push("/register/name");
         return;

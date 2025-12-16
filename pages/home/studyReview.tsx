@@ -236,8 +236,6 @@ function StudyReview() {
       })
       .filter((v): v is ReviewPayload => v !== null);
 
-    console.log(study.study.place._id);
-
     mutate({ studyId: study.study.place._id, date, infos });
   };
 

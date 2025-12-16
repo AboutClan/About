@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Avatar from "../../components/atoms/Avatar";
 import SpecialBadge from "../../components/atoms/badges/SpecialBadge";
 import UserBadge from "../../components/atoms/badges/UserBadge";
+import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { CameraIcon, ProfileCamera } from "./UserProfileSection";
@@ -23,7 +24,7 @@ function UserProfileBar({ user }: UserProfileBarProps) {
     <>
       <Flex px={5} py={3} align="center">
         <Box position="relative">
-          <Avatar size="lg1" user={user} />
+          <Avatar size="lg1" user={isGuest ? SECRET_USER_SUMMARY : user} />
           <IconWrapper
             onClick={() => {
               if (isGuest) {
