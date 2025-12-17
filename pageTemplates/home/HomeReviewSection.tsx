@@ -25,7 +25,10 @@ export default function HomeReviewSection() {
 
   return (
     <Box mt={5} mb={3}>
-      <SectionHeader title="About 모임 후기" subTitle="실제 참여자가 말해주는 이야기">
+      <SectionHeader
+        title="직접 다녀왔다! About 모임 후기"
+        subTitle="실제 참여자가 말해주는 이야기"
+      >
         <ButtonWrapper size="sm" url="/gather?category=all&tab=lounge">
           <ShortArrowIcon dir="right" />
         </ButtonWrapper>

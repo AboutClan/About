@@ -26,10 +26,16 @@ function HomeGroupSection() {
             gap: "16px",
           }}
         >
-          <SlideSectionCol title="About 취미 소모임" subTitle="같은 취미로 이어지는 우리">
+          <SlideSectionCol
+            title="겨울 시즌 시작! About 취미 소모임"
+            subTitle="겨울 내내 함께 즐기는 취미 활동 모임"
+          >
             <HomeGroupCol threeGroups={groups?.hobby.slice(0, 3)} type="hobby" />
           </SlideSectionCol>
-          <SlideSectionCol title="About 취미 소모임" subTitle="같은 취미로 이어지는 우리">
+          <SlideSectionCol
+            title="겨울 시즌 시작! About 취미 소모임"
+            subTitle="겨울 내내 함께 즐기는 취미 활동 모임"
+          >
             <HomeGroupCol threeGroups={groups?.hobby.slice(3, 6)} type="hobby" />
           </SlideSectionCol>
         </motion.div>
@@ -47,10 +53,16 @@ function HomeGroupSection() {
             columnGap: "16px",
           }}
         >
-          <SlideSectionCol title="About 스터디 소모임" subTitle="함께 공부하며 성장하는 스터디">
+          <SlideSectionCol
+            title="2026년을 바꾸는 About 스터디!"
+            subTitle="공부·자기계발·루틴까지 함께 쌓아가는 스터디 모임"
+          >
             <HomeGroupCol threeGroups={groups?.develop.slice(0, 3)} type="study1" />
           </SlideSectionCol>
-          <SlideSectionCol title="About 스터디 소모임" subTitle="함께 공부하며 성장하는 스터디">
+          <SlideSectionCol
+            title="2026년을 바꾸는 About 스터디!"
+            subTitle="공부·자기계발·루틴까지 함께 쌓아가는 스터디 모임"
+          >
             <HomeGroupCol threeGroups={groups?.develop.slice(3)} type="self" />
           </SlideSectionCol>
         </motion.div>
@@ -62,10 +74,16 @@ function HomeGroupSection() {
           dragElastic={0.3}
           style={{ marginLeft: "20px", display: "flex", width: "100%", gap: "16px" }}
         >
-          <SlideSectionCol title="About 오픈 예정 소모임" subTitle="새로운 만남을 준비 중">
+          <SlideSectionCol
+            title="오픈 임박! 신규 개설 소모임"
+            subTitle="새로운 만남을 기다리는 신규 소모임"
+          >
             <HomeGroupCol threeGroups={groups?.waiting.slice(0, 3)} type="study1" />
           </SlideSectionCol>
-          <SlideSectionCol title="About 오픈 예정 소모임" subTitle="새로운 만남을 준비 중">
+          <SlideSectionCol
+            title="About 오픈 예정 소모임"
+            subTitle="새로운 만남을 기다리는 신규 소모임"
+          >
             <HomeGroupCol threeGroups={groups?.waiting.slice(3, 6)} type="self" />
           </SlideSectionCol>
         </motion.div>

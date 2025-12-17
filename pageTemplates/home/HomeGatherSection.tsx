@@ -12,7 +12,7 @@ function HomeGatherSection() {
   const width = windowWidth - 70;
 
   const firstData = gathers?.slice(0, 6);
-  const secondData = gathers?.slice(6, 12);
+  // const secondData = gathers?.slice(6, 12);
 
   return (
     <>
@@ -28,15 +28,21 @@ function HomeGatherSection() {
             gap: "12px",
           }}
         >
-          <SlideSectionCol title="About 번개 모임" subTitle="편하게 시작하는 즐거운 만남">
+          <SlideSectionCol
+            title="오늘 뭐하지? About 번개"
+            subTitle="20대를 위한 편하고 즐거운 만남"
+          >
             <HomeGatherCol gathers={firstData?.slice(0, 3)} isPriority />
           </SlideSectionCol>
-          <SlideSectionCol title="About 번개 모임" subTitle="편하게 시작하는 즐거운 만남">
+          <SlideSectionCol
+            title="오늘 뭐하지? About 번개"
+            subTitle="20대를 위한 편하고 즐거운 만남"
+          >
             <HomeGatherCol gathers={firstData?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
-      <AnimatePresence initial={false}>
+      {/* <AnimatePresence initial={false}>
         <motion.div
           drag="x"
           dragConstraints={{ left: -width, right: 0 }}
@@ -48,14 +54,20 @@ function HomeGatherSection() {
             gap: "12px",
           }}
         >
-          <SlideSectionCol title="About 인기 최고 모임" subTitle="최근 가장 인기가 많았던 모임">
+          <SlideSectionCol
+            title="최근 제일 핫했던 About 모임"
+            subTitle="최근 가장 인기가 많았던 모임"
+          >
             <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
           </SlideSectionCol>
-          <SlideSectionCol title="About 인기 최고 모임" subTitle="최근 가장 인기가 많았던 모임">
+          <SlideSectionCol
+            title="요즘 제일 핫했던 About 모임"
+            subTitle="최근 가장 인기가 많았던 모임"
+          >
             <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
-      </AnimatePresence>
+      </AnimatePresence> */}
       {/* <AnimatePresence initial={false}>
         <motion.div
           drag="x"
