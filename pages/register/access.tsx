@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -122,7 +122,7 @@ function Access() {
 const INFO_ARR = [
   "회비 입금을 완료한 뒤에, [활동 시작] 버튼을 눌러주세요.",
   "가입 후에는 [신규 인원 가이드]를 확인해 주세요!",
-  "결제 즉시 이용이 시작되며, 7일 내 미이용 시에만 환불됩니다.",
+  // "결제 즉시 이용이 시작되며, 7일 내 미이용 시에만 환불됩니다.",
   "포인트는 모임 참여 등 서비스 이용 재화로, 환불되지 않습니다.",
   "입금하지 않고 누르는 경우, 동아리에서 영구 제명됩니다.",
 ];
