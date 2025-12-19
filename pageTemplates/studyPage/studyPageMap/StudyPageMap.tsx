@@ -243,7 +243,7 @@ function StudyPageMap({
           onClick={handleMapClick}
         >
           <ClipLayer $rounded={!isMapExpansion}>
-            {isMapExpansion && (
+            {!isMapExpansion && (
               <StudyPageTopNav
                 isCafeMap={isCafeMap}
                 handleCenterLocation={(location) => {

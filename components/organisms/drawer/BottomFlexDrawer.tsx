@@ -114,9 +114,9 @@ export default function BottomFlexDrawer({
         zindex={zIndex}
         isdrawerup={isDrawerUp ? "true" : "false"}
         as={motion.div}
-        initial={{ height: DRAWER_MIN_HEIGHT + iPhoneNotchSize() }}
-        animate={{ height: drawerHeight + iPhoneNotchSize() }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        // initial={{ height: DRAWER_MIN_HEIGHT + iPhoneNotchSize() }}
+        // animate={{ height: drawerHeight + iPhoneNotchSize() }}
+        // transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
         <Flex justify="center" py={3} w="full" cursor="grab" onPointerDown={handlePointerDown}>
           <TopNav />

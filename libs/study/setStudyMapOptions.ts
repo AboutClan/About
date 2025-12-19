@@ -79,25 +79,18 @@ export const getStudyPlaceMarkersOptions = (
     const minPts = 2;
     const clusters: number[][] = DBSCAN.run(data2, eps, minPts);
 
-    // 3️⃣ 중심점 계산 함수
     const calcCentroid = (points: number[][]) => {
       const sum = points.reduce((acc, [lat, lon]) => [acc[0] + lat, acc[1] + lon], [0, 0]);
       const count = points.length;
-      return [sum[0] / count, sum[1] / count]; // [평균 lat, 평균 lon]
+      return [sum[0] / count, sum[1] / count];
     };
 
-    // 4️⃣ 클러스터 중심 계산
     const clusterInfo = clusters.map((cluster) => {
       const points = cluster.map((idx) => data2[idx]);
       const center = calcCentroid(points);
       const count = points.length;
-
-      // 클러스터에 포함된 place들의 _id 배열
       const clusters = cluster.map((idx) => placeData[idx]);
-
-      // 대표 _id = 첫 번째 place의 _id
       const id = clusters[0]._id;
-
       return {
         _id: id,
         center,
@@ -106,11 +99,9 @@ export const getStudyPlaceMarkersOptions = (
       };
     });
 
-    // 5️⃣ 노이즈도 같은 형식으로 추가
     const noiseInfo = DBSCAN.noise.map((idx) => {
       const point = data2[idx];
       const data = placeData[idx];
-
       return {
         _id: data._id,
         center: point,
@@ -121,7 +112,6 @@ export const getStudyPlaceMarkersOptions = (
       };
     });
 
-    // 6️⃣ 합쳐서 반환
     return [...clusterInfo, ...noiseInfo];
   };
 
@@ -152,23 +142,12 @@ export const getStudyPlaceMarkersOptions = (
               ? getPlaceCountIcon(cluster.count)
               : getPlaceBasicIcon(
                   "mint",
-                  zoomNumber >= 15 ? cluster.name : null,
+                  zoomNumber >= 14 ? cluster.name : null,
                   false,
                   cluster.rating,
                 ),
-
           size: new naver.maps.Size(120, 60),
-          // selectedId === cluster._id
-          //   ? new naver.maps.Size(32, 36)
-          //   : cluster.count > 1
-          //   ? new naver.maps.Size(32, zoomNumber >= 15 ? 60 : 36)
-          //   : new naver.maps.Size(zoomNumber >= 15 ? 60 : 32, zoomNumber >= 15 ? 60 : 36),
           anchor: new naver.maps.Point(60, 60),
-          // selectedId === cluster._id
-          //   ? new naver.maps.Point(16, 36)
-          //   : cluster.count > 1
-          //   ? new naver.maps.Point(16, zoomNumber >= 15 ? 60 : 36)
-          //   : new naver.maps.Point(zoomNumber >= 15 ? 30 : 16, zoomNumber >= 15 ? 60 : 36),
         },
       });
     });
@@ -222,83 +201,6 @@ export const getMarkersOptions = (
     });
   }
 
-  // if (studyResults) {
-  //   studyResults.forEach((par) => {
-  //     temp.push({
-  //       id: par.place._id,
-  //       position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
-  //       icon: {
-  //         content: getPlaceCountIcon(
-  //           null,
-  //           par.members.length,
-  //           participations || selectedId === par.place._id ? "orange" : null,
-  //         ),
-  //         size: new naver.maps.Size(72, 72),
-  //         anchor: new naver.maps.Point(36, 44),
-  //       },
-  //     });
-  //   });
-  // }
-  // if (participations) {
-  //   participations.forEach((par) => {
-  //     temp.push({
-  //       position: new naver.maps.LatLng(par.latitude, par.longitude),
-  //       icon: {
-  //         content: getPlaceCountIcon(null, 0),
-  //         size: new naver.maps.Size(72, 72),
-  //         anchor: new naver.maps.Point(36, 44),
-  //       },
-  //     });
-  //   });
-  // }
-
-  // if (studyRealTimes) {
-  //   const tempArr = [];
-  //   const placeMap = new Map<
-  //     string,
-  //     { id: string; position: naver.maps.LatLng; name: string; count: number; status: StudyType }
-  //   >(); // fullname을 기준으로 그룹화할 Map 생성
-
-  //   // 그룹화: fullname을 키로 하여 개수를 카운트하고 중복된 place 정보를 저장
-  //   studyRealTimes
-  //     .filter((study) => study.status === "free")
-  //     .forEach((par) => {
-  //       const fullname = par.place.name;
-  //       if (placeMap.has(fullname)) {
-  //         // 이미 fullname이 존재하면 개수를 증가시킴
-  //         const existing = placeMap.get(fullname);
-  //         existing.count += 1;
-  //       } else {
-  //         // 새롭게 fullname을 추가하며 초기 값 설정
-  //         placeMap.set(fullname, {
-  //           id: par.place._id,
-  //           position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
-  //           count: 1,
-  //           status: par.status,
-  //           name: par.place.name,
-  //         });
-  //       }
-  //     });
-
-  //   // 그룹화된 결과를 temp에 추가
-  //   placeMap.forEach((value, fullname) => {
-  //     temp.push({
-  //       id: value.id,
-  //       position: value.position,
-  //       icon: {
-  //         content:
-  //           value.status === "solo"
-  //             ? getPlaceCountIcon("inactive")
-  //             : value.count === 1
-  //             ? getPlaceCountIcon("active")
-  //             : getPlaceCountIcon(null, value.count, selectedId === value.id ? "orange" : null), // count에 따라 content 값 설정
-  //         size: new naver.maps.Size(72, 72),
-  //         anchor: new naver.maps.Point(36, 44),
-  //       },
-  //     });
-  //     tempArr.push(fullname); // fullname을 tempArr에 추가
-  //   });
-  // }
   return temp;
 };
 
@@ -320,18 +222,3 @@ export const getMapOptions = (
     mapDataControl: false,
   };
 };
-
-// const getPolyline = (
-//   mainPlace: StudyPlaceProps,
-//   subPlace: StudyPlaceProps,
-//   isSecondSub?: boolean,
-// ) => {
-//   const { latitude, longitude } = mainPlace;
-//   const { latitude: subLat, longitude: subLon } = subPlace;
-//   return {
-//     path: [new naver.maps.LatLng(latitude, longitude), new naver.maps.LatLng(subLat, subLon)],
-//     strokeColor: isSecondSub ? "var(--gray-500)" : "var(--color-mint)",
-//     strokeOpacity: 0.5,
-//     strokeWeight: 3,
-//   };
-// };

@@ -47,7 +47,7 @@ function TopNav({
         px={5}
         py={4}
         position="absolute"
-        top={isMapExpansion ? "112px" : "0"}
+        top={!isMapExpansion ? "112px" : "0"}
         left="0"
         zIndex={100}
       >

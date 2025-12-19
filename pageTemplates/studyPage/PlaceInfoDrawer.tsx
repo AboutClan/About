@@ -53,6 +53,26 @@ export function PlaceInfoBox({
 
   const isGuest = userInfo?.role === "guest";
   const reviewCnt = Math.ceil(Math.random() * 30);
+
+  const a =
+    placeInfo.location.name === "셀렉티드닉스"
+      ? {
+          a: 5,
+          b: 5,
+          c: 4.5,
+          d: 5,
+          e: 5,
+          f: 31,
+        }
+      : {
+          a: 4.5,
+          b: 3,
+          c: 4.5,
+          d: 4,
+          e: 4,
+          f: 43,
+        };
+
   return (
     <Flex direction="column" w="100%">
       <Flex justifyContent="space-between">
@@ -70,13 +90,13 @@ export function PlaceInfoBox({
           </Box>
           <Flex mt={0.5} align="center">
             <Box>
-              <StarRating rating={placeInfo?.rating} size="lg" />
+              <StarRating rating={a.e} size="lg" />
             </Box>
             <Box fontWeight={600} fontSize="16px" mb="-2px" ml={1.5} mr={1}>
-              {placeInfo?.rating?.toFixed(1)}
+              {a.e?.toFixed(1)}
             </Box>
             <Box color="gray.500" fontSize="13px" mb="-2px">
-              ({reviewCnt})
+              ({a.f})
             </Box>
           </Flex>
           <Grid
@@ -97,28 +117,28 @@ export function PlaceInfoBox({
               <Box mx="1px">
                 <StarIcon type="empty" size="md" />
               </Box>
-              {placeInfo?.rating?.toFixed(1)}
+              {a.a?.toFixed(1)}
             </Flex>
             <Flex ml="-2px">
               <Box>콘센트/테이블</Box>
               <Box mx="1px">
                 <StarIcon type="empty" size="md" />
               </Box>
-              {placeInfo?.rating?.toFixed(1)}
+              {a.b?.toFixed(1)}
             </Flex>
             <Flex>
               <Box w="56px">음료/가성비</Box>
               <Box mx="1px">
                 <StarIcon type="empty" size="md" />
               </Box>
-              {placeInfo?.rating?.toFixed(1)}
+              {a.c?.toFixed(1)}
             </Flex>
             <Flex ml="-2px">
               기타
               <Box mx="1px">
                 <StarIcon type="empty" size="md" />
               </Box>
-              {placeInfo?.rating?.toFixed(1)}
+              {a?.d?.toFixed(1)}
             </Flex>
           </Grid>
           {/* <Flex mt={2}>
