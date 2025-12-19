@@ -60,7 +60,7 @@ function ProfilePage() {
   const { data } = useGroupsTitleQuery(userId, {
     enabled: !!userId,
   });
-
+  console.log(data);
   const { data: gatherData } = useGatherMyStatusQuery(0, userId, { enabled: !!userId });
 
   useEffect(() => {
@@ -96,7 +96,7 @@ function ProfilePage() {
     },
   });
 
-  const groups = data?.map((props) => props.title);
+ 
 
   useEffect(() => {
     if (user) setTransferUserName(user.name);
@@ -177,7 +177,7 @@ function ProfilePage() {
             <Divider type={200} />
           </Slide>
           <Slide>
-            <DetailInfo user={user as IUser} groups={groups} />
+            <DetailInfo user={user as IUser} groups={data} />
           </Slide>
           <Slide isNoPadding>
             <Divider type={200} />

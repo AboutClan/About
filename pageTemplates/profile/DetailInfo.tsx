@@ -1,13 +1,18 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 
-import InfoList from "../../components/atoms/lists/InfoList";
 import BlurredPart from "../../components/molecules/BlurredPart";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
 import { decodeByAES256 } from "../../utils/utils";
 
-function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
+function DetailInfo({
+  user,
+  groups,
+}: {
+  user: IUser;
+  groups: { title: string; isMember: boolean }[];
+}) {
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
 
@@ -17,8 +22,8 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
   const age = birthToAge(user?.birth);
 
   const isAdmin = session?.user.uid === "2259633694" || session?.user.uid === "3224546232";
-
-  const itemMapping: { category: string; text?: string; texts?: string[] }[] = !user
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const itemMapping: { category: string; text?: string; texts?: string[] | any[] }[] = !user
     ? []
     : [
         {
@@ -73,7 +78,7 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
             ]
           : []),
       ];
-
+  console.log(42, itemMapping);
   return (
     <BlurredPart isBlur={isGuest} text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}>
       <Flex flexDir="column" py={2}>
@@ -93,7 +98,30 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
                 {item.text}
               </Box>
             ) : item?.texts?.length ? (
-              <InfoList items={item?.texts?.slice(0, 5)} isSmall />
+              <UnorderedList
+                mx={0}
+                my={0}
+                px={3}
+                pl={1.5}
+                py={2}
+                bg="gray.100"
+                border="1px solid var(--gray-200)"
+                borderColor="gray.100"
+                borderRadius="8px"
+                fontSize="12px"
+                lineHeight="24px"
+                fontWeight="light"
+                whiteSpace="nowrap"
+                color="gray.800"
+                w="full"
+              >
+                {item.texts.slice(0, 5).map((item, idx) => (
+                  <ListItem key={idx} textAlign="start">
+                    {item.isMember ? <b style={{ marginRight: "4px" }}>[정규]</b> : <></>}
+                    {item?.title}
+                  </ListItem>
+                ))}
+              </UnorderedList>
             ) : (
               "없음"
             )}
