@@ -114,6 +114,32 @@ export const useGroupIdQuery = (groupStudyId?: string, options?: QueryOptions<IG
     options,
   );
 
+export interface GradeProps {
+  [uid: string]: {
+    great: number;
+    good: number;
+    soso: number;
+    block: number;
+  };
+}
+
+export const useGroupIdMannerQuery = (
+  groupStudyId?: string,
+  options?: QueryOptions<GradeProps[]>,
+) =>
+  useQuery<GradeProps[], AxiosError, GradeProps[]>(
+    [GROUP_STUDY, "manner", groupStudyId],
+    async () => {
+      const res = await axios.get<GradeProps[]>(`${SERVER_URI}/groupStudy/manner`, {
+        params: { groupStudyId },
+      });
+
+      const data = res.data;
+      return data;
+    },
+    options,
+  );
+
 export const useGroupAttendanceQuery = (id: number, options?: QueryOptions<IGroupAttendance>) =>
   useQuery<IGroupAttendance, AxiosError, IGroupAttendance>(
     [GROUP_STUDY, "attendance"],

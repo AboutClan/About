@@ -26,6 +26,7 @@ import {
   CheckCircleIcon,
   EditIcon,
   MemberCheckIcon,
+  MemberHeartIcon,
   MemberMinusIcon,
 } from "../../gather/detail/GatherHeader";
 import RegisterOverview from "../../register/RegisterOverview";
@@ -120,6 +121,13 @@ function GroupHeader({ group }: IGroupHeader) {
                 icon: <MemberMinusIcon />,
                 func: () => {
                   router.push(`/group/${group.id}/member`);
+                },
+              },
+              {
+                text: "멤버 후기 지표",
+                icon: <MemberHeartIcon />,
+                func: () => {
+                  router.push(`/group/${group.id}/manner`);
                 },
               },
               {
