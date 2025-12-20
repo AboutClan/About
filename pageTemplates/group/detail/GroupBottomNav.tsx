@@ -54,7 +54,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const { mutate: sendRegisterForm, isLoading: isLoading2 } = useGroupWaitingMutation(+id, {
     onSuccess() {
-      toast("success", "오픈 대기 완료! 오픈 후 알림이 발송됩니다.");
+      toast("success", "신청이 완료되었습니다.");
 
       queryClient.invalidateQueries([GROUP_STUDY, id]);
     },
@@ -127,7 +127,9 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     if (isFull) {
       return {
         text: "빈자리 생기면 참여 요청",
-        handleFunction: () => setIsModal(true),
+        handleFunction: () => {
+          sendRegisterForm({ answer: ["참여 대기 신청"], pointType: "point" });
+        },
         isReverse: true,
       };
     }
@@ -198,6 +200,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
               size="lg"
               colorScheme="black"
               onClick={() => (!data.isFree ? onClick("participate") : onClick("register"))}
+              isLoading={isLoading1}
             >
               {!data.isFree ? "가입 신청하기" : "가입하기"}
             </Button>
