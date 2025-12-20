@@ -15,7 +15,6 @@ import {
   useGroupMemberRoleMutation,
 } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
 import { GroupMemberRole, GroupParicipantProps } from "../../../types/models/groupTypes/group";
 
@@ -53,9 +52,6 @@ export default function Member() {
     },
   });
 
-  const { mutate: handleBelong } = useUserInfoFieldMutation("belong", {
-    onSuccess() {},
-  });
   const belong = groupData && checkGroupGathering(groupData.hashTag);
 
   const alertOptions: IAlertModalOptions = {
@@ -66,9 +62,6 @@ export default function Member() {
         toast("info", "외부인은 모두 제거됩니다. 인원에 맞게 다시 추가해주세요!");
       }
       await mutate({ toUid: deleteUser?.user?._id, randomId: deleteUser?.randomId });
-      if (belong) {
-        handleBelong({ uid: deleteUser?.user?.uid, belong: null });
-      }
       // setUsers((old) => ({
       //   ...old,
       //   participants: old.participants.filter((par) =>
