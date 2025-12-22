@@ -69,7 +69,7 @@ export const detectDevice = () => {
 
   // 3) iPadOS 13+가 Mac처럼 보이는 케이스 보완
   // (UA에 Mac이지만 터치가 있고 iOS 계열이면 iPad로 판단하는 흔한 패턴)
-  const isIPadLike = /Macintosh/i.test(ua) && (navigator as any).maxTouchPoints > 1;
+  const isIPadLike = /Macintosh/i.test(ua) && navigator.maxTouchPoints > 1;
 
   if (isIOS) return "iOS";
   if (isIPadLike) return "iOS"; // 사실상 iPadOS
