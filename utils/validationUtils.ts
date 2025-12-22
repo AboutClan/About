@@ -57,22 +57,25 @@ export const selectRandomWinners = (
 };
 
 export const detectDevice = () => {
-  if (typeof navigator === "undefined") {
-    return null;
-  }
-  const ua = navigator.userAgent;
-  // iPhone 감지
-  if (/iPhone/i.test(ua)) {
-    return "iPhone";
-  }
-  // Android 모바일 감지
-  else if (/Android/i.test(ua) && /mobile/i.test(ua)) {
-    return "Android";
-  }
-  // PC 감지
-  else {
-    return "PC";
-  }
+  if (typeof navigator === "undefined") return null;
+
+  const ua = navigator.userAgent || "";
+
+  // 1) iOS: iPhone/iPad/iPod 모두 포함 (iPadOS가 데스크톱처럼 보이는 경우 보완)
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+  // 2) Android: Mobile 키워드에 의존하지 말고 Android 자체로 판단
+  const isAndroid = /Android/i.test(ua);
+
+  // 3) iPadOS 13+가 Mac처럼 보이는 케이스 보완
+  // (UA에 Mac이지만 터치가 있고 iOS 계열이면 iPad로 판단하는 흔한 패턴)
+  const isIPadLike = /Macintosh/i.test(ua) && (navigator as any).maxTouchPoints > 1;
+
+  if (isIOS) return "iOS";
+  if (isIPadLike) return "iOS"; // 사실상 iPadOS
+  if (isAndroid) return "Android";
+
+  return "PC";
 };
 
 export const detectDeviceFromGlobal = () => {
