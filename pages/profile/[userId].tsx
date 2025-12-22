@@ -60,7 +60,7 @@ function ProfilePage() {
   const { data } = useGroupsTitleQuery(userId, {
     enabled: !!userId,
   });
-  console.log(data);
+
   const { data: gatherData } = useGatherMyStatusQuery(0, userId, { enabled: !!userId });
 
   useEffect(() => {
@@ -95,8 +95,6 @@ function ProfilePage() {
       setModalType(null);
     },
   });
-
- 
 
   useEffect(() => {
     if (user) setTransferUserName(user.name);

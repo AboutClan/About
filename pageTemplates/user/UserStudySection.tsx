@@ -6,9 +6,11 @@ import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { useStudyMineQuery } from "../../hooks/study/queries";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
+import { detectAppDevice, detectDevice } from "../../utils/validationUtils";
 import GatherSkeletonMain from "../gather/GatherSkeletonMain";
 
 function UserStudySection() {
@@ -16,6 +18,13 @@ function UserStudySection() {
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
 
   const { data, isLoading } = useStudyMineQuery();
+
+  const a = detectAppDevice();
+  const b = detectDevice();
+  const toast = useToast();
+  useEffect(() => {
+    toast("success", a, b);
+  }, [a, b]);
 
   useEffect(() => {
     if (!data?.length) return;
