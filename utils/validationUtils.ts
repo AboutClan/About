@@ -57,6 +57,25 @@ export const selectRandomWinners = (
 };
 
 export const detectDevice = () => {
+  if (typeof navigator === "undefined") {
+    return null;
+  }
+  const ua = navigator.userAgent;
+  // iPhone 감지
+  if (/iPhone/i.test(ua)) {
+    return "iPhone";
+  }
+  // Android 모바일 감지
+  else if (/Android/i.test(ua) && /mobile/i.test(ua)) {
+    return "Android";
+  }
+  // PC 감지
+  else {
+    return "PC";
+  }
+};
+
+export const detectDevice2 = () => {
   if (typeof navigator === "undefined") return null;
 
   const ua = navigator.userAgent || "";

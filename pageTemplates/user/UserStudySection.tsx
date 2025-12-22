@@ -10,7 +10,7 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { useStudyMineQuery } from "../../hooks/study/queries";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
-import { detectAppDevice, detectDevice } from "../../utils/validationUtils";
+import { detectAppDevice, detectDevice2 } from "../../utils/validationUtils";
 import GatherSkeletonMain from "../gather/GatherSkeletonMain";
 
 function UserStudySection() {
@@ -20,7 +20,7 @@ function UserStudySection() {
   const { data, isLoading } = useStudyMineQuery();
 
   const a = detectAppDevice();
-  const b = detectDevice();
+  const b = detectDevice2();
   const toast = useToast();
   useEffect(() => {
     toast("success", a + b);
