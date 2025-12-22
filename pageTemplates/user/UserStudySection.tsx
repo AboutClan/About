@@ -23,7 +23,7 @@ function UserStudySection() {
   const b = detectDevice();
   const toast = useToast();
   useEffect(() => {
-    toast("success", a, b);
+    toast("success", a + b);
   }, [a, b]);
 
   useEffect(() => {
