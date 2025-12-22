@@ -296,7 +296,7 @@ export const createGroupThumbnailProps = (
   status: group.participants.length <= 2 ? "planned" : status,
   category: group.category,
   participants: group.participants
-    .filter((par) => par.user._id !== "65df1ddcd73ecfd250b42c89")
+    .filter((par) => par?.user?._id !== "65df1ddcd73ecfd250b42c89")
     .map((user) => (group.isSecret ? { user: ABOUT_USER_SUMMARY } : user)),
   imageProps: {
     image: group?.squareImage || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]),

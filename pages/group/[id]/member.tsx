@@ -15,7 +15,6 @@ import {
   useGroupMemberRoleMutation,
 } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
 import { GroupMemberRole, GroupParicipantProps } from "../../../types/models/groupTypes/group";
 
 export default function Member() {
@@ -51,8 +50,6 @@ export default function Member() {
       console.error(err);
     },
   });
-
-  const belong = groupData && checkGroupGathering(groupData.hashTag);
 
   const alertOptions: IAlertModalOptions = {
     title: "유저 추방",

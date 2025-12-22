@@ -112,7 +112,6 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
         setIsCancelModal(false);
         setIsExpirationModal(false);
         typeToast("cancel");
-
         queryClient.invalidateQueries([GATHER_CONTENT, id]);
       },
     },
@@ -204,7 +203,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
         type: "red",
         isReverse: true,
         handleFunction: () => {
-          diffDate <= 2 ? setIsCancelModal(true) : cancel();
+          setIsCancelModal(true);
         },
       };
     }
@@ -455,14 +454,22 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
           setIsModal={() => setIsCancelModal(false)}
         >
           <Box mb={5}>
-            {diffDate === 2 ? (
-              <u>모임 이틀 전으로, 보증금이 100% 반환됩니다.</u>
+            {diffDate >= 2 ? (
+              <>
+                모임 {diffDate}일 전으로 참여권이 반환되며,
+                <br /> 별도의 패널티가 발생하지 않습니다.
+              </>
             ) : diffDate === 1 ? (
-              <u>하루 전 불참은 보증금이 50%만 반환됩니다.</u>
+              <>
+                하루 전 불참으로 <b style={{ color: "var(--color-red)" }}>1,000 Point</b>가
+                차감됩니다.
+              </>
             ) : (
-              <u>당일 불참은 보증금이 반환되지 않습니다.</u>
-            )}{" "}
-            {diffDate !== 2 && (
+              <>
+                당일 불참으로 <b style={{ color: "var(--color-red)" }}>2,000 Point</b>가 차감됩니다.
+              </>
+            )}
+            {diffDate <= 1 && (
               <>
                 <br />
                 사전에 협의된 특별한 사정이 있다면, <br />
@@ -479,8 +486,8 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
             fontSize="12px"
             color="gray.600"
           >
-            ※ 모임 톡방에 입장한 상태라면, 모임장님 또는 단톡방에 양해를 구해주세요. 비매너 노쇼로
-            체크되는 경우, 최대 5,000원의 벌금이 발생합니다.
+            ※ 톡방에 입장하신 경우, 톡방 또는 모임장님께 불참 양해를 구해주세요. 비매너 노쇼로
+            체크되는 경우, 최대 5,000원의 벌금이 발생됩니다.
           </Box>
         </ModalLayout>
       )}
