@@ -64,7 +64,7 @@ function Access() {
       <RegisterLayout>
         <RegisterOverview>
           <span>활동 시작 안내</span>
-          <span>회비 입금을 마치면, 바로 활동을 시작할 수 있습니다.</span>
+          <span>회비 입금을 마치면, 바로 활동을 시작할 수 있습니다!</span>
         </RegisterOverview>
 
         <Box mt={5}>

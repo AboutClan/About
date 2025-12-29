@@ -13,7 +13,7 @@ function Comment() {
   const info = getLocalStorageObj(REGISTER_INFO);
 
   const [errorMessage, setErrorMessage] = useState("");
- 
+
   const [text, setText] = useState(info?.introduceText || "");
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -37,7 +37,7 @@ function Comment() {
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>자기소개를 입력해 주세요</span>
-          <span>프로필에 노출되는 내용으로, 다른 사람이 열람할 수 있습니다.</span>
+          <span>프로필에 공개되는 내용으로, 다른 멤버도 열람할 수 있어요!</span>
         </RegisterOverview>
         <Box>
           <Textarea
