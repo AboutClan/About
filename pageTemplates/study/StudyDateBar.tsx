@@ -87,8 +87,8 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
         latitude: placeInfo?.location.latitude,
         longitude: placeInfo?.location.longitude,
         locationDetail: placeInfo?.location.address,
-        start: dayjs(),
-        end: dayjs().add(4, "hour"),
+        start: dayjs(date).hour(14).minute(0),
+        end: dayjs(date).hour(18).minute(0),
         eps: 3,
       };
       inviteStudy({ userId: inviteUser._id, ...voteInfo });

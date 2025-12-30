@@ -70,6 +70,10 @@ export const getPlaceBasicIcon = (
     </svg>
   `;
 
+  // ✅ rating 안전 처리 (undefined, NaN 방지 / 0도 허용)
+  const formattedRating =
+    typeof rating === "number" && !Number.isNaN(rating) ? rating.toFixed(1) : "3.0";
+
   return `
   <div style="width:120px; height:60px; display:flex; justify-content:flex-end;  flex-direction:column; align-items:center;" >
   ${
@@ -80,9 +84,9 @@ export const getPlaceBasicIcon = (
            }; margin-bottom:4px; text-align:center; line-height:12px; font-weight:600;font-size:10px;color:#424242; background:white; border:1px solid #eeeeee; border-radius:4px; height:20px; " >
     <div style="max-width:${
       isBig ? "72px" : "80px"
-    }; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;"> ${text}</div> <span style="margin:0 2px; margin-bottom:2px;">${StarIcon()}</span> ${(
-          rating || 3
-        ).toFixed(1)}</div>`
+    }; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;"> ${text}</div> 
+    <span style="margin:0 2px; margin-bottom:2px;">${StarIcon()}</span> 
+    ${formattedRating}</div>`
       : ``
   }
   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="36" viewBox="0 0 32 36" fill="none">
