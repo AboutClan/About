@@ -2,7 +2,7 @@ import { Box, Link, Stack, Text } from "@chakra-ui/react";
 
 function HomeFooter() {
   return (
-    <Box bg="gray.100" color="gray.600" mt={6} py={6} px={4}>
+    <Box bg="gray.100" color="gray.600" mt={40} py={6} px={4}>
       <Box mx="auto">
         <Stack spacing={1} fontSize="sm">
           <Text>상호명: About | 대표자: 이승주</Text>

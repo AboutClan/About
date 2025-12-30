@@ -134,7 +134,7 @@ function CollectionAlphabet() {
         <Slide isNoPadding>
           <Members>
             {members
-              ?.filter((member) => member?.user.name !== "어바웃")
+              ?.filter((member) => member?.user?.name !== "어바웃")
               .map((who) => {
                 if (!who?.user) return null;
                 const user = who.user;

@@ -54,7 +54,7 @@ export default function Select({
     if (selectRef.current) {
       const textLength = selectRef.current.selectedOptions[0].text.length;
       const addSize =
-        size === "xs" ? 44 : size === "sm" ? 48 : size === "md" ? 60 : size === "lg" ? 72 : 0;
+        size === "xs" ? 44 : size === "sm" ? 46 : size === "md" ? 60 : size === "lg" ? 72 : 0;
       selectRef.current.style.width = `${textLength * 6.5 + addSize}px`;
     }
   };
@@ -71,7 +71,7 @@ export default function Select({
           pointerEvents="none"
         >
           <Box>
-            <ShortArrowIcon dir="bottom" size="md" color="black" />
+            <ShortArrowIcon dir="bottom" size="sm" color="mint" />
           </Box>
         </Flex>
       }

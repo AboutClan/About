@@ -8,9 +8,11 @@ import { QueryOptions } from "../../types/hooks/reactTypes";
 import { FeedProps } from "../../types/models/feed";
 import { GatherRequestProps, IGather } from "../../types/models/gatherTypes/gatherTypes";
 
+export type GatherFilterType = "모집중" | "마감 임박" | "인기 모임" | null;
+
 export const useGatherQuery = (
   cursor?: number,
-  category?: "스터디" | "취미" | null,
+  category?: GatherFilterType,
   sortBy?: "createdAt" | "date" | "basic",
   options?: QueryOptions<IGather[]>,
 ) =>

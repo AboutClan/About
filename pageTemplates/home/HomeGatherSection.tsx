@@ -12,7 +12,8 @@ function HomeGatherSection() {
   const width = windowWidth - 70;
 
   const firstData = gathers?.slice(0, 6);
-  // const secondData = gathers?.slice(6, 12);
+  const secondData = gathers?.slice(6, 12);
+  const thirdData = gathers?.slice(12, 18);
 
   return (
     <>
@@ -68,7 +69,7 @@ function HomeGatherSection() {
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence> */}
-      {/* <AnimatePresence initial={false}>
+      <AnimatePresence initial={false}>
         <motion.div
           drag="x"
           dragConstraints={{ left: -width, right: 0 }}
@@ -80,21 +81,15 @@ function HomeGatherSection() {
             gap: "12px",
           }}
         >
-          <SlideSectionCol
-            title="About 마감 임박 모임"
-            subTitle="자리가 얼마 없어요. 마지막 참여 기회!"
-          >
+          <SlideSectionCol title="마감 임박! 막차 탑승하기" subTitle="곧 마감되는 인기 모임 리스트">
             <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
           </SlideSectionCol>
-          <SlideSectionCol
-            title="About 마감 임박 모임"
-            subTitle="자리가 얼마 없어요. 마지막 참여 기회!"
-          >
+          <SlideSectionCol title="마감 임박! 막차 탑승하기" subTitle="곧 마감되는 인기 모임 리스트">
             <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
-      </AnimatePresence> */}
-      {/* <AnimatePresence initial={false}>
+      </AnimatePresence>
+      <AnimatePresence initial={false}>
         <motion.div
           drag="x"
           dragConstraints={{ left: -width, right: 0 }}
@@ -106,14 +101,17 @@ function HomeGatherSection() {
             gap: "12px",
           }}
         >
-          <SlideSectionCol title="About 인기 최고 모임" subTitle="최근 가장 핫한 모임이에요!">
-            <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
+          <SlideSectionCol
+            title="시선 집중! 최근 HOT했던 인기 모임"
+            subTitle="실제 후기가 증명하는 베스트 인기 모임"
+          >
+            <HomeGatherCol gathers={thirdData?.slice(0, 3)} isPriority={false} />
           </SlideSectionCol>
           <SlideSectionCol title="About 인기 최고 모임" subTitle="요즘 제일 주목받는 모임이에요!">
-            <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
+            <HomeGatherCol gathers={thirdData?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
-      </AnimatePresence> */}
+      </AnimatePresence>
     </>
   );
 }
