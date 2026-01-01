@@ -127,7 +127,7 @@ function SquareLoungeSection() {
             size="sm"
           />
         </Flex>
-        <Box minH="calc(100dvh - 162px)">
+        <Box minH="calc(100dvh - 62px)">
           {loungeData ? (
             loungeData?.length ? (
               loungeData.map((feed, idx) => {

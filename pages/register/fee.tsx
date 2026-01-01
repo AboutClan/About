@@ -102,9 +102,9 @@ function Fee() {
           {tab === "신청 안내" ? (
             <Flex direction="column">
               <ValueBoxCol2 items={VALUE_BOX_COL_ITEMS} />
-              <Box fontSize="10px" ml="auto" mt={2} color="gray.500">
+              {/* <Box fontSize="10px" ml="auto" mt={2} color="gray.500">
                 * 위 내용은 결제일로부터 1년간 유효합니다.
-              </Box>
+              </Box> */}
               <Box mt={5} mb={5}>
                 <Box ml={0.5} fontSize="14px" mb={2} fontWeight="semibold">
                   Q) 신청 완료 후에는 어떻게 하나요?
