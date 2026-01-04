@@ -130,7 +130,7 @@ function LoginPage() {
     },
   };
 
-  const isIPhone = device === "iPhone";
+  const isIPhone = device === "ios";
   const showTopText = !isIPhone && ratio !== null && ratio >= 1.75;
   const showBottomText = ratio !== null && ratio >= 1.55;
 

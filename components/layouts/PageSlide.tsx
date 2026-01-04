@@ -43,7 +43,7 @@ function Slide({ children, isFixed, posZero, isNoPadding }: IPageLayout) {
 
   return (
     <>
-      {deviceType === "iPhone" ? (
+      {deviceType === "ios" ? (
         <div
           style={{
             paddingLeft: !isNoPadding && !isFixed ? "20px" : 0,

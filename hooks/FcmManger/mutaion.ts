@@ -32,7 +32,7 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
         await registerPushServiceWithApp({
           uid,
           fcmToken: deviceInfo.fcmToken,
-          platform: deviceInfo?.platform || "web",
+          platform: deviceInfo?.platform || "web", // platform: "ios" | "android" | "windows" | "macos" | "web"
         });
 
         if (typeof window !== "undefined") {

@@ -57,6 +57,9 @@ export const selectRandomWinners = (
 };
 
 export const detectDevice = () => {
+  if (window?.AboutAppBridge?.platform) {
+    return window.AboutAppBridge.platform;
+  }
   if (typeof navigator === "undefined") {
     return null;
   }
@@ -105,6 +108,10 @@ export const detectDeviceFromGlobal = () => {
 };
 
 export const detectAppDevice = () => {
+  if (window?.AboutAppBridge?.platform) {
+    return window.AboutAppBridge.platform;
+  }
+
   if (typeof navigator === "undefined") return null;
 
   const ua = navigator.userAgent || "";
@@ -117,8 +124,10 @@ export const detectAppDevice = () => {
     return null;
   }
   // ② 플랫폼 구분
+  // @ts-expect-error: __
   if (/iPhone/i.test(ua) || window?.AboutAppBridge?.platform === "iPhone") {
     return "iPhone";
+    // @ts-expect-error: __
   } else if (/Android/i.test(ua) || window?.AboutAppBridge?.platform === "Android") {
     return "Android";
   } else {

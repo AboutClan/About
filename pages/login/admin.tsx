@@ -180,7 +180,7 @@ const Login: NextPage<{
             left="50%"
             transform="translate(-50%,0)"
           >
-            {detectAppDevice() !== "iPhone" && ratio >= 1.75 && (
+            {detectAppDevice() !== "ios" && ratio >= 1.75 && (
               <Box mb={5} color="white" fontSize="12px" lineHeight="16px" opacity={0.6}>
                 Sign up with Social Networks
               </Box>
@@ -207,7 +207,7 @@ const Login: NextPage<{
               <span>카카오톡으로 5초만에 시작하기</span>
               <div />
             </Button>
-            {detectAppDevice() === "iPhone" && (
+            {detectAppDevice() === "ios" && (
               <Button
                 variant="unstyled"
                 maxW="calc(var(--max-width) - 2 * 20px)"

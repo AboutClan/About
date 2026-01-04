@@ -35,6 +35,9 @@ export declare global {
         signIn: () => void;
       };
     };
+    AboutAppBridge?: {
+      platform?: "ios" | "android" | "windows" | "macos" | "web";
+    };
   }
   /* eslint-disable no-var */
   var mongoose: {
