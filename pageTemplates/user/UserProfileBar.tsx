@@ -43,7 +43,6 @@ function UserProfileBar({ user }: UserProfileBarProps) {
               {user?.name || "익명"}
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
-
             <Box ml={1}>
               <SpecialBadge hasMembership={user?.membership !== "normal"} />
             </Box>
