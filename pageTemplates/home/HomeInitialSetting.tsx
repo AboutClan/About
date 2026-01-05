@@ -46,7 +46,7 @@ function HomeInitialSetting() {
         return;
       }
       if (data.role === "waiting") {
-        router.push("/login?status=waiting");
+        router.push("/register/access");
         return;
       }
       if (!data?.gender) {

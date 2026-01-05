@@ -63,7 +63,7 @@ function LoginPage() {
         toast("error", "동아리에 소속되어 있지 않습니다.");
         break;
       case "waiting":
-        toast("warning", "가입 대기중입니다.");
+        toast("warning", "카카오 로그인을 눌러 최종 가입을 완료해 주세요!");
         break;
     }
   }, [statusParam, toast]);
@@ -87,7 +87,7 @@ function LoginPage() {
       });
       return;
     }
-    if (statusParam === "access") {
+    if (statusParam === "access" || userInfo?.role === "waiting") {
       await signIn(type, {
         callbackUrl: `${window.location.origin}/register/access`,
       });
@@ -107,7 +107,7 @@ function LoginPage() {
     }
 
     // 가입 대기 중인 경우
-    if (userInfo?.role === "waiting" || statusParam === "waiting") {
+    if (statusParam === "waiting") {
       setIsWaitingModal(true);
       setLoadingType(null);
       return;

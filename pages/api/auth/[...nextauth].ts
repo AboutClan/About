@@ -216,7 +216,7 @@ export const authOptions: NextAuthOptions = {
         session.user = {
           id: token.id,
           uid: token.uid,
-          name: token.name ?? "ㅇㅇㅇ",
+          name: token.name ?? "게스트",
           role: token.role,
           isActive: token.isActive,
           profileImage: token.profileImage,
