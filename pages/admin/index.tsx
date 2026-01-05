@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -37,6 +38,7 @@ function Admin() {
 
   return (
     <>
+      <Box position="fixed" top="0" w="full" bg="black" h={3} />
       <Layout>
         <Header title="관리자 페이지" url="/user/setting" />
         <Slide isNoPadding>

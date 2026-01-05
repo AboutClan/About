@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
 import Head from "next/head";
@@ -35,6 +35,12 @@ interface BackActionMessage {
 interface ILayout {
   children: React.ReactNode;
 }
+
+const sendMessageToNative = (message: { type: "webviewReady" }) => {
+  if (typeof window !== "undefined" && (window as any).ReactNativeWebView) {
+    (window as any).ReactNativeWebView.postMessage(JSON.stringify(message));
+  }
+};
 
 function Layout({ children }: ILayout) {
   const toast = useToast();
@@ -77,6 +83,19 @@ function Layout({ children }: ILayout) {
    *   - token 없음
    *   - PUBLIC / 약관 / 개인정보 / FAQ 페이지는 제외
    */
+
+  useEffect(() => {
+    // WebView 환경에서만 의미 있음 (브라우저에서는 window.ReactNativeWebView가 없어서 그냥 무시됨)
+    // 메시지 유실 방지로 2~3번만 재전송
+    const timers = [
+      setTimeout(() => sendMessageToNative({ type: "webviewReady" }), 0),
+      setTimeout(() => sendMessageToNative({ type: "webviewReady" }), 300),
+      setTimeout(() => sendMessageToNative({ type: "webviewReady" }), 800),
+    ];
+
+    return () => timers.forEach(clearTimeout);
+  }, []);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     // 세션 로딩 중이면 대기
@@ -150,13 +169,20 @@ function Layout({ children }: ILayout) {
         if (data.name === "deeplink") {
           const { path, params } = data;
           console.log("🌐 Deeplink received:", path, params);
+
+          const qs =
+            params && Object.keys(params).length > 0
+              ? "?" + new URLSearchParams(params).toString()
+              : "";
+
           // Next.js에서는 replace 추천
           setTimeout(() => {
-            router.replace(path);
+            router.replace(`${path}${qs}`);
           }, 0);
 
           return;
         }
+
         if (data.name === "backAction") {
           handleBackAction();
         }
@@ -217,10 +243,12 @@ function Layout({ children }: ILayout) {
       }
     };
 
-    document.addEventListener("message", handleMessage);
+    window.addEventListener("message", handleMessage);
+    document.addEventListener("message", handleMessage as any);
 
     return () => {
-      document.removeEventListener("message", handleMessage);
+      window.removeEventListener("message", handleMessage);
+      document.removeEventListener("message", handleMessage as any);
     };
   }, [pathname, router, toast]);
 
