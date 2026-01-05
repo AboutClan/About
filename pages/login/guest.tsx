@@ -12,7 +12,6 @@ type Button = "home" | "cafe-map";
 
 function LoginGuest() {
   const [method, setMethod] = useState<Button>("home");
-
   const [isLoading, setIsLoading] = useState(false);
 
   const onClickNext = () => {

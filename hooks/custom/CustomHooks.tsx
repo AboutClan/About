@@ -94,13 +94,20 @@ export const useResetGatherQuery = () => {
 };
 
 export const useWindowWidth = () => {
-  const [width, setWidth] = useState(window.innerWidth);
+  const [width, setWidth] = useState<number>(() => {
+    // SSR 안전: 서버에서는 window 없음
+    if (typeof window === "undefined") return 428; // 기본값(원하는 값으로 조정 가능)
+    return window.innerWidth;
+  });
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
 
-    window.addEventListener("resize", handleResize); // resize 이벤트 추가
-    return () => window.removeEventListener("resize", handleResize); // 이벤트 정리
+    // 마운트 시 1번 동기화(초기값이 428로 들어갔을 수도 있으니)
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return width < 428 ? width : 428;

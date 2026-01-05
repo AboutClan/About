@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import Accordion from "../../components/molecules/Accordion";
@@ -11,19 +9,11 @@ function Faq() {
     <>
       <Header title="자주 묻는 질문" />
       <Slide>
-        <Layout>
-          <SectionBar title="동아리 가이드" />
-          <Container>
-            <Accordion contentArr={ACCORDION_CONTENT_FAQ} isFull={true} />
-          </Container>
-        </Layout>
+        <SectionBar title="동아리 가이드" />
+        <Accordion contentArr={ACCORDION_CONTENT_FAQ} isFull={true} />
       </Slide>
     </>
   );
 }
-
-const Layout = styled.div``;
-
-const Container = styled.div``;
 
 export default Faq;
