@@ -39,11 +39,11 @@ export function StudyPageTopNav({
 
   const device = detectDevice();
   const handleAppOpen = () => {
-    if (device === "Android") {
+    if (device === "android") {
       navigateExternalLink(
         "https://play.google.com/store/apps/details?id=com.about.studyaboutclubapp",
       );
-    } else if (device === "iPhone") {
+    } else if (device === "ios") {
       navigateExternalLink(
         "https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83/id6737145787",
       );
@@ -94,7 +94,7 @@ export function StudyPageTopNav({
                 <AboutLogo />
               </Button>
               <Flex align="center" mr={1}>
-                {device !== "PC" && (
+                {device !== "web" && (
                   <Button mr={3} h="32px" w="64px" colorScheme="mint" onClick={handleAppOpen}>
                     앱 열기
                   </Button>
