@@ -24,7 +24,6 @@ export const useDeepLink = () => {
       console.log("🌐 Message event received:", event);
       console.log("🌐 Message data type:", typeof event.data);
       console.log("🌐 Message data:", event.data);
-      toast("success", event.data);
       if (typeof event.data !== "string") {
         console.log("🌐 Ignoring non-string message");
         return;
@@ -32,6 +31,7 @@ export const useDeepLink = () => {
 
       try {
         const data = JSON.parse(event.data);
+        toast("success", data?.name, data);
         console.log("📩 Parsed data:", data?.name);
 
         if (data.name !== "deeplink") {
