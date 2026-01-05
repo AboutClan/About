@@ -32,7 +32,7 @@ export const useDeepLink = () => {
 
       try {
         const data = JSON.parse(event.data);
-        console.log("📩 Parsed data:", data);
+        console.log("📩 Parsed data:", data?.name);
 
         if (data.name !== "deeplink") {
           console.log("🌐 Not a deeplink message, ignoring");
