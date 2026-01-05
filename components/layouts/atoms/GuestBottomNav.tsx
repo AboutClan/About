@@ -4,8 +4,7 @@ import { signIn, signOut } from "next-auth/react";
 function GuestBottomNav() {
   const customSignin = async () => {
     await signOut({ redirect: false });
-    const callbackUrl = typeof window === "undefined" ? "/home" : `${window.location.origin}/home`;
-    await signIn("kakao", { callbackUrl });
+    await signIn("kakao", { callbackUrl: "/home" });
   };
 
   return (
