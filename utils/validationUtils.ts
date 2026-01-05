@@ -148,12 +148,8 @@ export const isEmpty = <T>(value: T | undefined | null): boolean => {
 };
 
 export const iPhoneNotchSize = () => {
-  if (typeof navigator === "undefined") return 0;
-  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-  const ua = navigator.userAgent;
-  // iPhone 감지
-
-  if (/iPhone/i.test(ua) && isStandalone) {
-    return 34;
-  } else return 0;
+  if (typeof window === "undefined" || typeof navigator === "undefined") return 0;
+  const isStandalone = window.matchMedia?.("(display-mode: standalone)")?.matches ?? false;
+  const ua = navigator.userAgent || "";
+  return /iPhone/i.test(ua) && isStandalone ? 34 : 0;
 };
