@@ -68,8 +68,6 @@ function HomeInitialSetting() {
     },
   });
 
-  const isPWALogin = isPWA();
-
   useEffect(() => {
     if (!userInfo?.role) return;
 
@@ -89,6 +87,7 @@ function HomeInitialSetting() {
       return;
     }
     if (userInfo?.role === "human") {
+      const isPWALogin = isPWA();
       if (isPWALogin) {
         setRole({ role: "member" });
       }
