@@ -2,6 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import { useAdminPoint2Mutation } from "../../../hooks/admin/mutation";
+import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import AlertModal from "../../AlertModal";
@@ -16,6 +17,7 @@ interface UserAbsenceBoardProps {
 
 function UserAbsenceBoard({ gatherData, users, handleDelete }: UserAbsenceBoardProps) {
   const { mutate: updatePoint } = useAdminPoint2Mutation();
+  const { mutate: getPoint } = usePointSystemMutation("point");
 
   const [deleteUserId, setDeleteUserId] = useState<string>(null);
   const [isNoManner, setIsNoManner] = useState(false);
@@ -101,7 +103,7 @@ function UserAbsenceBoard({ gatherData, users, handleDelete }: UserAbsenceBoardP
                   data: {
                     value: -3000,
                     sub: "gather",
-                    message: `[${title}] 모임 비매너 불참`,
+                    message: `[${title}] 모임 불참 패널티(비매너)`,
                   },
                 });
               } else {
@@ -110,6 +112,8 @@ function UserAbsenceBoard({ gatherData, users, handleDelete }: UserAbsenceBoardP
                   data: { value: -2000, sub: "gather", message: `[${title}] 모임 불참 패널티` },
                 });
               }
+              getPoint({ value: 1000, sub: "gather", message: "노쇼 인원에 대한 포인트 보상" });
+
               setMembers((old) =>
                 old.map((props) => ({
                   ...props,
