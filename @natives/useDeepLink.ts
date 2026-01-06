@@ -1,12 +1,15 @@
+/* eslint-disable @next/next/no-before-interactive-script-outside-document */
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { useToast } from "../hooks/custom/CustomToast";
 
 const sendMessageToNative = (message: { type: "webviewReady" }) => {
-  if (typeof window !== "undefined" && window.ReactNativeWebView) {
-    window.ReactNativeWebView.postMessage(JSON.stringify(message));
+  if (typeof window !== "undefined" && (window as any).ReactNativeWebView) {
+    (window as any).ReactNativeWebView.postMessage(JSON.stringify(message));
+    return true;
   }
+  return false;
 };
 
 export const useDeepLink = () => {
@@ -14,55 +17,71 @@ export const useDeepLink = () => {
   const toast = useToast();
 
   useEffect(() => {
-    console.log("🌐 Setting up webview message listener...");
+    const t = (title: string, desc?: any) => {
+      toast("success", title + "/" + typeof desc === "string" ? desc : JSON.stringify(desc));
+    };
 
-    // 네이티브에게 웹뷰가 준비되었음을 알림
-    sendMessageToNative({ type: "webviewReady" });
-    console.log("🌐 Sent webviewReady message to native");
+    t("DL: hook mounted");
 
-    toast("success", "접속 완료");
-    const handleMessage = (event: MessageEvent) => {
-      console.log("🌐 Message event received:", event);
-      console.log("🌐 Message data type:", typeof event.data);
-      console.log("🌐 Message data:", event.data);
-      toast("success", "type", event.data);
-      if (typeof event.data !== "string") {
-        console.log("🌐 Ignoring non-string message");
+    const handleMessage = (event: any) => {
+      const raw = event?.data ?? event?.nativeEvent?.data;
+
+      t("DL: message fired", {
+        rawType: typeof raw,
+        rawPreview: typeof raw === "string" ? raw.slice(0, 80) : String(raw),
+      });
+
+      if (!raw) {
+        t("DL: raw is empty");
         return;
       }
 
       try {
-        const data = JSON.parse(event.data);
-        toast("success", data?.name, data);
-        console.log("📩 Parsed data:", data?.name);
+        const text = typeof raw === "string" ? raw : JSON.stringify(raw);
 
-        if (data.name !== "deeplink") {
-          console.log("🌐 Not a deeplink message, ignoring");
+        let data: any;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          t("DL: JSON.parse fail", text.slice(0, 120));
           return;
         }
 
-        console.log("📩 Deep link data:", data);
-        const target = `${data.path}${
-          Object.keys(data.params).length > 0
-            ? "?" + new URLSearchParams(data.params).toString()
-            : ""
-        }`;
+        t("DL: parsed", { name: data?.name, path: data?.path });
 
-        console.log("📩 Navigating to:", target);
+        if (data?.name !== "deeplink") {
+          t("DL: ignore (not deeplink)", data?.name);
+          return;
+        }
+
+        const params = data?.params ?? {};
+        const qs = Object.keys(params).length ? `?${new URLSearchParams(params).toString()}` : "";
+
+        const target = `${data.path}${qs}`;
+        t("DL: navigating", target);
+
         router.push(target);
-      } catch (error) {
-        console.error("❌ Failed to parse message data:", error);
+      } catch (e: any) {
+        t("DL: error", e?.message ?? String(e));
+        console.error("❌ Failed to parse message:", e, raw);
       }
     };
 
-    // iOS와 Android 모두 지원
+    // ✅ 리스너 먼저
     window.addEventListener("message", handleMessage);
     document.addEventListener("message", handleMessage);
+    t("DL: listeners attached");
+
+    // ✅ webview ready 전송
+    const sent = sendMessageToNative({ type: "webviewReady" });
+    t("DL: webviewReady sent", sent ? "OK" : "NO ReactNativeWebView");
 
     return () => {
-      console.log("🌐 Removing webview message listener...");
       window.removeEventListener("message", handleMessage);
       document.removeEventListener("message", handleMessage);
+      t("DL: listeners removed");
     };
-  }, [router]);
+  }, [router, toast]);
+
+  return null;
 };
