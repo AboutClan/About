@@ -3,7 +3,6 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
-import { useDeepLink } from "../../@natives/useDeepLink";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
@@ -14,7 +13,7 @@ import { navigateExternalLink } from "../../utils/navigateUtils";
 
 function HomeInitialSetting() {
   const { data: session } = useSession();
-  useDeepLink();
+
   usePushServiceInitialize({
     uid: session?.user?.uid,
   });
