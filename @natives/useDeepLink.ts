@@ -20,10 +20,12 @@ export const useDeepLink = () => {
     sendMessageToNative({ type: "webviewReady" });
     console.log("🌐 Sent webviewReady message to native");
 
+    toast("success", "접속 완료");
     const handleMessage = (event: MessageEvent) => {
       console.log("🌐 Message event received:", event);
       console.log("🌐 Message data type:", typeof event.data);
       console.log("🌐 Message data:", event.data);
+      toast("success", "type", event.data);
       if (typeof event.data !== "string") {
         console.log("🌐 Ignoring non-string message");
         return;
