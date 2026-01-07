@@ -1,4 +1,5 @@
-/* eslint-disable @next/next/no-before-interactive-script-outside-document */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 

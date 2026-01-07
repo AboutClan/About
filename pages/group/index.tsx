@@ -22,7 +22,6 @@ import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import { backUrlState } from "../../recoils/navigationRecoils";
 import { GroupStatus, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
-import { getRandomImage } from "../../utils/imageUtils";
 
 type Status = "모집중" | "종료" | "오픈 예정";
 
@@ -299,7 +298,7 @@ export const createGroupThumbnailProps = (
     .filter((par) => par?.user?._id !== "65df1ddcd73ecfd250b42c89")
     .map((user) => (group.isSecret ? { user: ABOUT_USER_SUMMARY } : user)),
   imageProps: {
-    image: group?.squareImage || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]),
+    image: group?.squareImage || GATHER_MAIN_IMAGE_ARR["공통"][0],
     isPriority: isPriority && idx < 4,
   },
   maxCnt: group.memberCnt.max,
