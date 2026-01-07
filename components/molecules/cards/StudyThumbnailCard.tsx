@@ -51,7 +51,6 @@ export function StudyThumbnailCard({
   isMyStudy,
   isFutureDate,
   hasReviewBtn,
-
   hasReview,
   hasAttend,
 }: StudyThumbnailCardProps) {

@@ -1,4 +1,5 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
@@ -11,6 +12,7 @@ import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 type Button = "home" | "cafe-map";
 
 function LoginGuest() {
+  const router = useRouter();
   const [method, setMethod] = useState<Button>("home");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,7 +23,18 @@ function LoginGuest() {
 
   return (
     <>
-      <Header title="" url="/login" />
+      <Header title="" url="/login">
+        <Button
+          onClick={() => router.push(`/login/account`)}
+          variant="unstyled"
+          p={2}
+          color="gray.500"
+          fontSize="12px"
+          fontWeight={400}
+        >
+          관리자 로그인
+        </Button>
+      </Header>
       <RegisterLayout errorMessage={null}>
         <Box h="56px" />
         <RegisterOverview>
