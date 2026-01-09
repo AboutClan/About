@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useRouter } from "next/router";
 import { useEffect } from "react";
-
-import { useToast } from "../hooks/custom/CustomToast";
 
 const sendMessageToNative = (message: { type: "webviewReady" }) => {
   if (typeof window !== "undefined" && (window as any).ReactNativeWebView) {
@@ -14,75 +11,79 @@ const sendMessageToNative = (message: { type: "webviewReady" }) => {
 };
 
 export const useDeepLink = () => {
-  const router = useRouter();
-  const toast = useToast();
-
   useEffect(() => {
-    const t = (title: string, desc?: any) => {
-      toast("success", title + "/" + typeof desc === "string" ? desc : JSON.stringify(desc));
-    };
+    sendMessageToNative({ type: "webviewReady" });
+  }, []);
 
-    t("DL: hook mounted");
+  // const router = useRouter();
+  // const toast = useToast();
 
-    const handleMessage = (event: any) => {
-      const raw = event?.data ?? event?.nativeEvent?.data;
+  // useEffect(() => {
+  //   const t = (title: string, desc?: any) => {
+  //     toast("success", title + "/" + typeof desc === "string" ? desc : JSON.stringify(desc));
+  //   };
 
-      t("DL: message fired", {
-        rawType: typeof raw,
-        rawPreview: typeof raw === "string" ? raw.slice(0, 80) : String(raw),
-      });
+  //   t("DL: hook mounted");
 
-      if (!raw) {
-        t("DL: raw is empty");
-        return;
-      }
+  //   const handleMessage = (event: any) => {
+  //     const raw = event?.data ?? event?.nativeEvent?.data;
 
-      try {
-        const text = typeof raw === "string" ? raw : JSON.stringify(raw);
+  //     t("DL: message fired", {
+  //       rawType: typeof raw,
+  //       rawPreview: typeof raw === "string" ? raw.slice(0, 80) : String(raw),
+  //     });
 
-        let data: any;
-        try {
-          data = JSON.parse(text);
-        } catch {
-          t("DL: JSON.parse fail", text.slice(0, 120));
-          return;
-        }
+  //     if (!raw) {
+  //       t("DL: raw is empty");
+  //       return;
+  //     }
 
-        t("DL: parsed", { name: data?.name, path: data?.path });
+  //     try {
+  //       const text = typeof raw === "string" ? raw : JSON.stringify(raw);
 
-        if (data?.name !== "deeplink") {
-          t("DL: ignore (not deeplink)", data?.name);
-          return;
-        }
+  //       let data: any;
+  //       try {
+  //         data = JSON.parse(text);
+  //       } catch {
+  //         t("DL: JSON.parse fail", text.slice(0, 120));
+  //         return;
+  //       }
 
-        const params = data?.params ?? {};
-        const qs = Object.keys(params).length ? `?${new URLSearchParams(params).toString()}` : "";
+  //       t("DL: parsed", { name: data?.name, path: data?.path });
 
-        const target = `${data.path}${qs}`;
-        t("DL: navigating", target);
+  //       if (data?.name !== "deeplink") {
+  //         t("DL: ignore (not deeplink)", data?.name);
+  //         return;
+  //       }
 
-        router.push(target);
-      } catch (e: any) {
-        t("DL: error", e?.message ?? String(e));
-        console.error("❌ Failed to parse message:", e, raw);
-      }
-    };
+  //       const params = data?.params ?? {};
+  //       const qs = Object.keys(params).length ? `?${new URLSearchParams(params).toString()}` : "";
 
-    // ✅ 리스너 먼저
-    window.addEventListener("message", handleMessage);
-    document.addEventListener("message", handleMessage);
-    t("DL: listeners attached");
+  //       const target = `${data.path}${qs}`;
+  //       t("DL: navigating", target);
 
-    // ✅ webview ready 전송
-    const sent = sendMessageToNative({ type: "webviewReady" });
-    t("DL: webviewReady sent", sent ? "OK" : "NO ReactNativeWebView");
+  //       router.push(target);
+  //     } catch (e: any) {
+  //       t("DL: error", e?.message ?? String(e));
+  //       console.error("❌ Failed to parse message:", e, raw);
+  //     }
+  //   };
 
-    return () => {
-      window.removeEventListener("message", handleMessage);
-      document.removeEventListener("message", handleMessage);
-      t("DL: listeners removed");
-    };
-  }, [router, toast]);
+  //   // ✅ 리스너 먼저
+  //   window.addEventListener("message", handleMessage);
+  //   document.addEventListener("message", handleMessage);
+  //   t("DL: listeners attached");
 
-  return null;
+  //   // ✅ webview ready 전송
+  //   const sent = sendMessageToNative({ type: "webviewReady" });
+  //   t("DL: webviewReady sent", sent ? "OK" : "NO ReactNativeWebView");
+
+  //   return () => {
+  //     window.removeEventListener("message", handleMessage);
+  //     document.removeEventListener("message", handleMessage);
+  //     t("DL: listeners removed");
+  //   };
+  // }, [router, toast]);
+
+  // return null;
 };

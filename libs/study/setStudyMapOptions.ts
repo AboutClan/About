@@ -61,6 +61,7 @@ export const getStudyPlaceMarkersOptions = (
   }
 
   const getClusterInfo = (placeData: StudyPlaceProps[], zoom: number): ClusterInfoProps[] => {
+    console.log(placeData);
     const data2 = placeData.map((p) => [p.location.latitude, p.location.longitude]);
 
     const DBSCAN = new clustering.DBSCAN();
