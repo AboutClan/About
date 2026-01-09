@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const sendMessageToNative = (message: { type: "webviewReady" }) => {
@@ -11,79 +12,85 @@ const sendMessageToNative = (message: { type: "webviewReady" }) => {
 };
 
 export const useDeepLink = () => {
+  const router = useRouter();
+
   useEffect(() => {
-    sendMessageToNative({ type: "webviewReady" });
-  }, []);
+    const log = (...args: any[]) => console.log("[DL]", ...args);
 
-  // const router = useRouter();
-  // const toast = useToast();
+    const handleMessage = (event: any) => {
+      const raw = event?.data ?? event?.nativeEvent?.data;
 
-  // useEffect(() => {
-  //   const t = (title: string, desc?: any) => {
-  //     toast("success", title + "/" + typeof desc === "string" ? desc : JSON.stringify(desc));
-  //   };
+      if (!raw) {
+        log("raw is empty");
+        return;
+      }
 
-  //   t("DL: hook mounted");
+      // RN WebView 쪽에서 string으로 오지만, 혹시 모를 케이스 방어
+      const text =
+        typeof raw === "string"
+          ? raw
+          : (() => {
+              try {
+                return JSON.stringify(raw);
+              } catch {
+                return String(raw);
+              }
+            })();
 
-  //   const handleMessage = (event: any) => {
-  //     const raw = event?.data ?? event?.nativeEvent?.data;
+      let data: any;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        log("JSON.parse failed:", text.slice(0, 160));
+        return;
+      }
 
-  //     t("DL: message fired", {
-  //       rawType: typeof raw,
-  //       rawPreview: typeof raw === "string" ? raw.slice(0, 80) : String(raw),
-  //     });
+      // 우리가 처리할 건 { name: "deeplink", path, params } 만
+      if (data?.name !== "deeplink") {
+        // log("ignore message:", data?.name);
+        return;
+      }
 
-  //     if (!raw) {
-  //       t("DL: raw is empty");
-  //       return;
-  //     }
+      const path = typeof data?.path === "string" ? data.path : "";
+      const params = data?.params && typeof data.params === "object" ? data.params : {};
 
-  //     try {
-  //       const text = typeof raw === "string" ? raw : JSON.stringify(raw);
+      if (!path) {
+        log("deeplink missing path:", data);
+        return;
+      }
 
-  //       let data: any;
-  //       try {
-  //         data = JSON.parse(text);
-  //       } catch {
-  //         t("DL: JSON.parse fail", text.slice(0, 120));
-  //         return;
-  //       }
+      const qs =
+        Object.keys(params).length > 0
+          ? `?${new URLSearchParams(params as Record<string, string>).toString()}`
+          : "";
 
-  //       t("DL: parsed", { name: data?.name, path: data?.path });
+      const target = `${path}${qs}`;
+      log("navigate:", target);
 
-  //       if (data?.name !== "deeplink") {
-  //         t("DL: ignore (not deeplink)", data?.name);
-  //         return;
-  //       }
+      // 중복 이동 방지(가끔 같은 메시지가 2번 올 수 있음)
+      if (router.asPath === target) {
+        log("skip (already on target)");
+        return;
+      }
 
-  //       const params = data?.params ?? {};
-  //       const qs = Object.keys(params).length ? `?${new URLSearchParams(params).toString()}` : "";
+      router.push(target).catch((err) => {
+        log("router.push error:", err?.message ?? String(err));
+      });
+    };
 
-  //       const target = `${data.path}${qs}`;
-  //       t("DL: navigating", target);
+    // ✅ RN WebView는 환경에 따라 window/document 둘 중 하나로 들어올 수 있음
+    window.addEventListener("message", handleMessage);
+    document.addEventListener("message", handleMessage);
 
-  //       router.push(target);
-  //     } catch (e: any) {
-  //       t("DL: error", e?.message ?? String(e));
-  //       console.error("❌ Failed to parse message:", e, raw);
-  //     }
-  //   };
+    // ✅ 리스너 붙인 다음 webviewReady
+    const sent = sendMessageToNative({ type: "webviewReady" });
+    log("webviewReady sent:", sent ? "OK" : "NO ReactNativeWebView");
 
-  //   // ✅ 리스너 먼저
-  //   window.addEventListener("message", handleMessage);
-  //   document.addEventListener("message", handleMessage);
-  //   t("DL: listeners attached");
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      document.removeEventListener("message", handleMessage);
+    };
+  }, [router]);
 
-  //   // ✅ webview ready 전송
-  //   const sent = sendMessageToNative({ type: "webviewReady" });
-  //   t("DL: webviewReady sent", sent ? "OK" : "NO ReactNativeWebView");
-
-  //   return () => {
-  //     window.removeEventListener("message", handleMessage);
-  //     document.removeEventListener("message", handleMessage);
-  //     t("DL: listeners removed");
-  //   };
-  // }, [router, toast]);
-
-  // return null;
+  return null;
 };
