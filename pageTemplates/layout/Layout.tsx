@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { useDeepLink } from "../../@natives/useDeepLink";
 import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
@@ -46,7 +47,7 @@ function Layout({ children }: ILayout) {
 
   const { data: session, status } = useSession();
   const token = useToken(); // ⚠️ 업데이트된 useToken을 사용한다고 가정
-
+  useDeepLink({ token });
   // axios 기본 Authorization 헤더 세팅 (토큰 있을 때만)
   axios.defaults.headers.common["Authorization"] = token ? `Bearer ${token}` : "";
 
