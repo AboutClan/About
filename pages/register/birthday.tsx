@@ -69,7 +69,7 @@ function Birthday() {
     }
   }, [isClient, data, type, info?.birth, birthday]);
 
-  const onClickNext = (e: any) => {
+  const onClickNext = (e) => {
     if (!birthday) {
       e?.preventDefault?.();
       return;

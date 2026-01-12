@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useRef, useState } from "react";
 
 import Textarea from "../../components/atoms/Textarea";
 import BottomNav from "../../components/layouts/BottomNav";
@@ -11,7 +11,16 @@ import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils
 
 function Comment() {
   const info = getLocalStorageObj(REGISTER_INFO);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
+  const scrollToTextarea = () => {
+    setTimeout(() => {
+      containerRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 300);
+  };
   const [errorMessage, setErrorMessage] = useState("");
 
   const [text, setText] = useState(info?.introduceText || "");
@@ -39,12 +48,13 @@ function Comment() {
           <span>자기소개를 입력해 주세요</span>
           <span>프로필에 공개되는 내용으로, 다른 멤버도 열람할 수 있어요!</span>
         </RegisterOverview>
-        <Box>
+        <Box ref={containerRef}>
           <Textarea
             h="96px"
             placeholder="나는 어떤 사람인가요? 사람들과 어울릴 때의 성격이나 대화 스타일을 적어주세요!"
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onFocus={scrollToTextarea}
           />
           <Flex ml="auto" mt={1} w="max-content" fontSize="12px" color="gray.500">
             <Box

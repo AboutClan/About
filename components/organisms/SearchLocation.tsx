@@ -29,15 +29,18 @@ function SearchLocation({
         behavior: "smooth",
         block: "start",
       });
-    }, 300); // 키보드 올라오는 타이밍 보정
+    }, 300);
   };
   return (
-    <>
+    <Box ref={containerRef}>
       <LocationSearch
         info={placeInfo}
         setInfo={setPlaceInfo}
         isSmall={isSmall}
         placeHolder={placeHolder}
+        setIsFocus={(isFocus) => {
+          if (isFocus) handleFocus(); // ✅ 포커스 true일 때만 올림
+        }}
       />
       {hasDetail && placeInfo?.address && (
         <Box mt="20px">
@@ -53,7 +56,7 @@ function SearchLocation({
           />
         </Box>
       )}
-    </>
+    </Box>
   );
 }
 

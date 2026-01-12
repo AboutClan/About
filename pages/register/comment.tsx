@@ -12,8 +12,8 @@ import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils
 
 function Comment() {
   const info = getLocalStorageObj(REGISTER_INFO);
-
-  const inputRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState("");
   const [index, setIndex] = useState<number>();
@@ -26,6 +26,7 @@ function Comment() {
       setIndex(0);
       setValue(comment ?? "");
       timeoutId = setTimeout(() => {
+        scrollToInput();
         inputRef.current?.focus();
       }, 500);
     } else {
@@ -37,6 +38,14 @@ function Comment() {
       }
     };
   }, []);
+  const scrollToInput = () => {
+    setTimeout(() => {
+      containerRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 300);
+  };
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if ((index === null || index === 0) && value === "") {
@@ -61,7 +70,7 @@ function Comment() {
           <span>한 줄 코멘트를 입력해 주세요</span>
           <span>프로필에 노출되는 내용으로, 한 마디를 남겨주세요!</span>
         </RegisterOverview>
-        <div onClick={() => setIndex(0)}>
+        <div ref={containerRef} onClick={() => setIndex(0)}>
           <Input
             bgColor="white"
             placeholder="직접 입력"
@@ -78,6 +87,7 @@ function Comment() {
             _placeholder={{
               color: "var(--gray-500)",
             }}
+            onFocus={scrollToInput}
           />
         </div>
         <Container>
