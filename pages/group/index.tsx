@@ -117,6 +117,9 @@ function GroupPage() {
     const baseCursor = status === "모집중" && category === "전체" ? getInitialCursor() : 0;
     setCursor(baseCursor);
     setGroupStudies([]);
+    return () => {
+      setBackUrl(null);
+    };
   }, [status, category, setBackUrl]);
 
   useEffect(() => {

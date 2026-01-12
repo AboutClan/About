@@ -64,7 +64,7 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
     if (nameValue) setUsers(searchName(usersAll as UserSimpleInfoProps[], nameValue));
     else setUsers(usersAll as UserSimpleInfoProps[]);
   }, [nameValue, usersAll]);
-
+  console.log(dayjs().hour(2));
   useEffect(() => {
     if (!inviteUser) return;
     if (studyType === "soloRealTimes" || studyType === "openRealTimes") {
@@ -76,8 +76,8 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
           address: placeInfo?.location.address,
         },
         time: {
-          start: dayjs().hour(2),
-          end: dayjs().hour(6),
+          start: dayjs().hour(14).minute(0),
+          end: dayjs().hour(18).minute(0),
         },
         status: studyType === "soloRealTimes" ? "solo" : "participation",
       };

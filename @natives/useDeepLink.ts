@@ -7,6 +7,9 @@ export const useDeepLink = ({ token }: { token?: string | null }) => {
   const router = useRouter();
   const pendingRef = useRef<string | null>(null);
 
+
+  
+
   useEffect(() => {
     // 토큰 생기면, pending 있으면 그때 이동
     if (token && pendingRef.current) {

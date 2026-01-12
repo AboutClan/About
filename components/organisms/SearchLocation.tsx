@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import { useRef } from "react";
 
 import { LocationProps } from "../../types/common";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -20,6 +21,16 @@ function SearchLocation({
   placeHolder,
   hasDetail = true,
 }: SearchLocationProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const handleFocus = () => {
+    setTimeout(() => {
+      containerRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 300); // 키보드 올라오는 타이밍 보정
+  };
   return (
     <>
       <LocationSearch
