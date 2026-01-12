@@ -14,12 +14,10 @@ function Comment() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToTextarea = () => {
-    setTimeout(() => {
-      containerRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 300);
+    containerRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
   };
   const [errorMessage, setErrorMessage] = useState("");
 

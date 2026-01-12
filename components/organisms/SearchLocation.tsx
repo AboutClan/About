@@ -24,12 +24,10 @@ function SearchLocation({
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const handleFocus = () => {
-    setTimeout(() => {
-      containerRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 300);
+    containerRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
   };
   return (
     <Box ref={containerRef}>

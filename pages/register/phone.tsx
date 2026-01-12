@@ -16,7 +16,8 @@ function Phone() {
 
   const { data, type } = useUserKakaoInfoQuery();
 
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState(info?.telephone || "");
 
@@ -24,6 +25,13 @@ function Phone() {
     const cleaned = phone.replace("+82", "0").replace(/\s+/g, "");
     const digits = cleaned.replace(/-/g, "");
     return digits.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+  };
+
+  const scrollToInput = () => {
+    containerRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
   };
 
   useEffect(() => {
@@ -58,12 +66,15 @@ function Phone() {
           <span>핸드폰 번호를 입력해 주세요</span>
           <span>본인 확인 및 가입 승인을 위한 목적입니다.</span>
         </RegisterOverview>
-        <Input
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="010-1234-5678"
-          ref={inputRef}
-        />
+        <div ref={containerRef}>
+          <Input
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="010-1234-5678"
+            ref={inputRef}
+            onFocus={scrollToInput} // ✅ 추가
+          />
+        </div>
       </RegisterLayout>
       <BottomNav onClick={onClickNext} url="/register/fee" />
     </>
