@@ -39,10 +39,12 @@ function Comment() {
     };
   }, []);
   const scrollToInput = () => {
-    containerRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
+    setTimeout(() => {
+      containerRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }, 100);
   };
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
