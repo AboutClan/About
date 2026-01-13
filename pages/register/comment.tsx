@@ -38,13 +38,15 @@ function Comment() {
       }
     };
   }, []);
+
   const scrollToInput = () => {
-    setTimeout(() => {
-      containerRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }, 100);
+    if (!containerRef.current) return;
+    const OFFSET = 120; // 👈 원하는 만큼 조절 (px)
+    const elementTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: elementTop - OFFSET,
+      behavior: "smooth",
+    });
   };
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
