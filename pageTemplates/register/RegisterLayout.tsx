@@ -42,6 +42,8 @@ function RegisterLayout({
 
 const Layout = styled.div`
   padding-bottom: 40px;
+  min-height: calc(100vh - 68px);
+  background-color: pink;
 `;
 
 const Message = styled.div`
