@@ -13,14 +13,16 @@ function Comment() {
   const info = getLocalStorageObj(REGISTER_INFO);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const scrollToTextarea = () => {
-    setTimeout(() => {
-      containerRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }, 100);
+  const scrollToInput = () => {
+    if (!containerRef.current) return;
+    const OFFSET = 136; // 👈 원하는 만큼 조절 (px)
+    const elementTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: elementTop - OFFSET,
+      behavior: "smooth",
+    });
   };
+
   const [errorMessage, setErrorMessage] = useState("");
 
   const [text, setText] = useState(info?.introduceText || "");
@@ -54,7 +56,7 @@ function Comment() {
             placeholder="나는 어떤 사람인가요? 사람들과 어울릴 때의 성격이나 대화 스타일을 적어주세요!"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            onFocus={scrollToTextarea}
+            onFocus={scrollToInput}
           />
           <Flex ml="auto" mt={1} w="max-content" fontSize="12px" color="gray.500">
             <Box

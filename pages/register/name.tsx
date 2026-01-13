@@ -13,10 +13,9 @@ import { checkIsKorean } from "../../utils/validationUtils";
 
 function Name() {
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
-
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const { data } = useUserKakaoInfoQuery();
-
-  const inputRef = useRef(null);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState<string>(info?.name ?? "");
@@ -25,6 +24,16 @@ function Name() {
     if (!data || info?.name) return;
     setValue(data?.name || "");
   }, [data]);
+
+  const scrollToInput = () => {
+    if (!containerRef.current) return;
+    const OFFSET = 136; // 👈 원하는 만큼 조절 (px)
+    const elementTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: elementTop - OFFSET,
+      behavior: "smooth",
+    });
+  };
 
   const onClickNext = (e) => {
     if (value.length < 2 || value.length > 4) {
@@ -53,12 +62,15 @@ function Name() {
           <span>이름을 입력해 주세요</span>
           <span>실명으로 작성해 주세요!</span>
         </RegisterOverview>
-        <Input
-          ref={inputRef}
-          value={value}
-          onChange={onChange}
-          placeholder="이름을 입력해주세요."
-        />
+        <div ref={containerRef}>
+          <Input
+            ref={inputRef}
+            value={value}
+            onChange={onChange}
+            placeholder="이름을 입력해주세요."
+            onFocus={scrollToInput}
+          />
+        </div>
       </RegisterLayout>
       <BottomNav onClick={onClickNext} url="/register/gender" />
     </>

@@ -23,13 +23,14 @@ function SearchLocation({
 }: SearchLocationProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const handleFocus = () => {
-    setTimeout(() => {
-      containerRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }, 100);
+  const scrollToInput = () => {
+    if (!containerRef.current) return;
+    const OFFSET = 136; // 👈 원하는 만큼 조절 (px)
+    const elementTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: elementTop - OFFSET,
+      behavior: "smooth",
+    });
   };
   return (
     <Box ref={containerRef}>
@@ -39,7 +40,7 @@ function SearchLocation({
         isSmall={isSmall}
         placeHolder={placeHolder}
         setIsFocus={(isFocus) => {
-          if (isFocus) handleFocus(); // ✅ 포커스 true일 때만 올림
+          if (isFocus) scrollToInput(); // ✅ 포커스 true일 때만 올림
         }}
       />
       {hasDetail && placeInfo?.address && (
