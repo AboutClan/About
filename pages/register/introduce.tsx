@@ -15,7 +15,7 @@ function Comment() {
 
   const scrollToInput = () => {
     if (!containerRef.current) return;
-    const OFFSET = 136; // 👈 원하는 만큼 조절 (px)
+    const OFFSET = 164; // 👈 원하는 만큼 조절 (px)
     const elementTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({
       top: elementTop - OFFSET,
