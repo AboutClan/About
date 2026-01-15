@@ -17,7 +17,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import RankingMembers from "../../pageTemplates/ranking/RankingMembers";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 
-export type RankingTab = "월간 활동 랭킹" | "인기 랭킹" | "스터디 랭킹";
+export type RankingTab = "월간 활동 랭킹" | "누적 인기 랭킹" | "월간 스터디 랭킹";
 
 interface RankingProps {
   rank: number;
@@ -55,7 +55,7 @@ function Ranking() {
   const [isLoading, setIsLoading] = useState(false);
 
   const fieldName =
-    tab === "스터디 랭킹" ? "study" : tab === "월간 활동 랭킹" ? "monthScore" : "temperature";
+    tab === "월간 스터디 랭킹" ? "study" : tab === "월간 활동 랭킹" ? "monthScore" : "temperature";
 
   const { data: allUserData } = useAllUserDataQuery(fieldName, {
     enabled: !!fieldName,
@@ -65,10 +65,10 @@ function Ranking() {
     if (tabParam) {
       setTab(
         tabParam === "study"
-          ? "스터디 랭킹"
+          ? "월간 스터디 랭킹"
           : tabParam === "monthScore"
           ? "월간 활동 랭킹"
-          : "인기 랭킹",
+          : "누적 인기 랭킹",
       );
     }
   }, [tabParam]);
@@ -90,7 +90,7 @@ function Ranking() {
       const temp = [...users];
 
       return temp.sort((a, b) => {
-        if (tab === "스터디 랭킹") {
+        if (tab === "월간 스터디 랭킹") {
           const aSum = a.studyRecord.accumulationCnt * 3 + a.studyRecord.accumulationMinutes;
           const bSum = b.studyRecord.accumulationCnt * 3 + b.studyRecord.accumulationMinutes;
           return bSum - aSum; // 숫자가 클수록 앞에 오게
@@ -131,7 +131,8 @@ function Ranking() {
           return {
             user: { ...data },
             value: sum,
-            valueText: `스터디 ${data.studyRecord.accumulationCnt}회(개인 ${data.studyRecord.accumulationMinutes}회)`,
+            valueText:
+              data.studyRecord.accumulationCnt * 3 + data.studyRecord.accumulationMinutes + "",
             rank: valueToRank.get(sum)!,
           };
         }
@@ -144,7 +145,6 @@ function Ranking() {
         return {
           user: { ...data },
           value,
-
           rank: valueToRank.get(value)!,
         };
       });
@@ -170,16 +170,16 @@ function Ranking() {
       },
     },
     {
-      text: "인기 랭킹",
+      text: "월간 스터디 랭킹",
       func: () => {
-        setTab("인기 랭킹");
+        setTab("월간 스터디 랭킹");
         setSortedUsers(null);
       },
     },
     {
-      text: "스터디 랭킹",
+      text: "누적 인기 랭킹",
       func: () => {
-        setTab("스터디 랭킹");
+        setTab("누적 인기 랭킹");
         setSortedUsers(null);
       },
     },
@@ -333,7 +333,7 @@ function Ranking() {
           <WinnerTextSlider textArr={textArr} />
         </Box>
         <Box borderBottom="var(--border)" px={5}>
-          <TabNav tabOptionsArr={tabOptionsArr} isBlack isMain selected={tab} />
+          <TabNav tabOptionsArr={tabOptionsArr} isBlack isMain isFullSize selected={tab} />
         </Box>
         {tab === "월간 활동 랭킹" ? (
           <Flex flex={1} justify="space-between" h="52px">
@@ -346,20 +346,20 @@ function Ranking() {
               isBorder={false}
             />
           </Flex>
-        ) : tab === "인기 랭킹" ? (
+        ) : tab === "누적 인기 랭킹" ? (
           <Flex h="52px" align="center" mx={5} color="gray.500" fontSize="12px">
             ※ 인기 랭킹은 상위 100명까지만 보여집니다.
           </Flex>
         ) : (
           <Flex h="52px" align="center" mx={5} color="gray.500" fontSize="12px">
-            ※ 점수 계산: 그룹 스터디 1회 = 개인 스터디 3회
+            ※ 점수 계산: 그룹 스터디 = 3점 / 개인 스터디 = 1점
           </Flex>
         )}
         {isLoading ? (
           <Box pos="relative" mt="80px">
             <MainLoadingAbsolute size="sm" />
           </Box>
-        ) : tab === "스터디 랭킹" ? (
+        ) : tab === "월간 스터디 랭킹" ? (
           <Box>
             <RankingMembers users={sortedUsers} fieldName={fieldName} />
           </Box>

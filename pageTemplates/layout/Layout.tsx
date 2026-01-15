@@ -169,6 +169,7 @@ function Layout({ children }: ILayout) {
           } else {
             router.replace(`/studyPage?date=${getTodayStr()}`);
           }
+          return;
         }
 
         if (firstPath === "gather" && secondPath && secondPath !== "writing") {
@@ -177,6 +178,7 @@ function Layout({ children }: ILayout) {
           } else {
             router.replace(`/gather`);
           }
+          return;
         }
 
         if (firstPath === "group" && secondPath && secondPath !== "writing") {
@@ -185,6 +187,7 @@ function Layout({ children }: ILayout) {
           } else {
             router.replace(`/group`);
           }
+          return;
         }
       }
 

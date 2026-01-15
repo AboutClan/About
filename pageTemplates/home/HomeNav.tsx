@@ -49,8 +49,9 @@ export function HomeIcon({ title, image, bgColor }: HomeIconProps) {
         />
       </Flex>
       {title && (
-        <Box fontSize="11px" color="black" mt={2}>
+        <Box fontSize="11px" color="222222" mt={2}>
           {title}
+          {title === "랭킹" && " / 상품"}
         </Box>
       )}
     </Flex>
@@ -100,16 +101,16 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
     bgColor: "var(--color-gray)",
   },
   {
-    iconImage: RankingIconImage,
-    title: "랭킹",
-    url: "/ranking",
-    bgColor: "var(--color-purple)",
-  },
-  {
     iconImage: StoreIconImage,
     title: "스토어",
     url: "/store",
     bgColor: "var(--color-mint)",
+  },
+  {
+    iconImage: RankingIconImage,
+    title: "랭킹",
+    url: "/ranking",
+    bgColor: "var(--color-purple)",
   },
   {
     iconImage:
