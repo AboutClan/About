@@ -59,7 +59,7 @@ function GroupStudyTicketLogSection() {
               colorScheme="mint"
               size="md"
               onClick={() => {
-                toast("info", "12월 1일부터 구매 가능");
+                toast("info", "2월 1일부터 구매 가능");
               }}
             >
               <div>참여권 구매하기</div>
