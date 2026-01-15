@@ -58,7 +58,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
     setExistUsers((old) => [...old, inviteUser._id]);
     setInviteUser(null);
   }, [inviteUser]);
-
+  console.log(5, users);
   return (
     <>
       <Flex mt={5}>
@@ -105,6 +105,9 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
                   if (aInGroup && !bInGroup) return -1;
                   if (!aInGroup && bInGroup) return 1;
                   // 둘 다 포함되거나 둘 다 미포함인 경우 이름으로 정렬
+                }
+                if (a.monthScore !== b.monthScore) {
+                  return b.monthScore - a.monthScore;
                 }
 
                 // 이름 기준 내림차순

@@ -56,6 +56,28 @@ export const selectRandomWinners = (
   return Array.from(winners);
 };
 
+export const isIOS = (): boolean => {
+  const hasNavigator = typeof navigator !== "undefined";
+  const hasWindow = typeof window !== "undefined";
+
+  // SSR
+  if (!hasNavigator) return false;
+
+  const ua = navigator.userAgent || "";
+
+  // 1️⃣ Bridge 기반 (앱)
+  const bridgePlatform = hasWindow ? window.AboutAppBridge?.platform : null;
+
+  if (bridgePlatform === "ios") return true;
+
+  // 2️⃣ UA 기반 (웹 포함)
+  return (
+    /iPhone|iPad|iPod/i.test(ua) ||
+    // iPadOS (Macintosh로 위장하는 케이스)
+    (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1)
+  );
+};
+
 export const detectDevice = () => {
   if (typeof window !== "undefined" && window.AboutAppBridge?.platform) {
     return window.AboutAppBridge.platform;

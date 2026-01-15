@@ -93,13 +93,18 @@ function StudyNavigation({
   // const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
 
   const getNavigationProps = (studyType: StudyType, myStatus: MyStudyStatus): NavigationProps => {
-    if (
-      (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type ||
-      dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))
-    ) {
+    console.log(studyType, myStatus);
+    if (dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))) {
+      console.log(33);
       return null;
     }
-
+    if ((myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type) {
+      return {
+        text: "출석 완료",
+        type: "multi",
+        colorScheme: "black",
+      };
+    }
     switch (studyType) {
       case "participations":
         if (myStatus === "pending" || tempCheck) {

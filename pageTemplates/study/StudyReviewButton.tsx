@@ -36,8 +36,8 @@ function StudyReviewButton({ placeId, myStudyInfo }: StudyReviewButtonProps) {
         fontWeight={700}
         bottom={
           isAttend
-            ? `${iPhoneNotchSize() + 20}px`
-            : `calc(var(--bottom-nav-height) + ${iPhoneNotchSize() + 20}px)`
+            ? `${iPhoneNotchSize() + 72}px`
+            : `calc(var(--bottom-nav-height) + ${iPhoneNotchSize() + 72}px)`
         }
         right="20px"
       >

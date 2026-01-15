@@ -105,7 +105,7 @@ function HomeStudySection() {
               </Box>
             ))
           : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
-        <SectionFooterButton url={`/studyList?date=${dayjsToStr(dayjs())}`} />
+        <SectionFooterButton url={`/studyPage?date=${dayjsToStr(dayjs())}`} />
       </Flex>
     </>
   );

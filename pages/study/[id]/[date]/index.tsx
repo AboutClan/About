@@ -160,7 +160,7 @@ export default function Page() {
       {isPassedSolo || studyPassedData || studySet ? (
         <>
           <StudyHeader date={date} placeInfo={placeInfo} />
-          <Box mb={5}>
+          <Box mb={20}>
             <Slide isNoPadding>
               <StudyCover studyType={studyType} coverImage={placeInfo?.coverImage} />
               <StudyOverview date={date} placeInfo={placeInfo} studyType={studyType} />

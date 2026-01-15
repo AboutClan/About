@@ -69,6 +69,7 @@ export interface UserSimpleInfoProps {
   avatar: AvatarProps;
   profileImage: string;
   _id: string;
+  monthScore: number;
   uid: string;
   score: number;
   comment?: string;
