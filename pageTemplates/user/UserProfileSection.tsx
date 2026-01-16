@@ -14,7 +14,6 @@ import RequestChangeProfileImageModalAvatar from "../../modals/userRequest/Reque
 import SpecialAvatarModal from "../../modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
 import { IModal } from "../../types/components/modalTypes";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
-import { iPhoneNotchSize } from "../../utils/validationUtils";
 import UserCollection from "./UserCollection2";
 import UserInviteFriendSection from "./UserInviteFriendSection";
 import UserPointBlock from "./UserPointBlock";
@@ -132,7 +131,7 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
 
   return (
     <>
-      <BottomDrawerLg height={372 + iPhoneNotchSize()} setIsModal={setIsModal}>
+      <BottomDrawerLg height={372} setIsModal={setIsModal}>
         <Flex h="full" w="full" direction="column" fontSize="14px" color="gray.600">
           <Button
             lineHeight="20px"

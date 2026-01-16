@@ -5,7 +5,6 @@ import InfoList from "../../components/atoms/lists/InfoList";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { ModalLayout } from "../../modals/Modals";
 import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
-import { iPhoneNotchSize } from "../../utils/validationUtils";
 interface StudyReviewButtonProps {
   placeId: string;
 
@@ -36,8 +35,8 @@ function StudyReviewButton({ placeId, myStudyInfo }: StudyReviewButtonProps) {
         fontWeight={700}
         bottom={
           isAttend
-            ? `${iPhoneNotchSize() + 72}px`
-            : `calc(var(--bottom-nav-height) + ${iPhoneNotchSize() + 72}px)`
+            ? "calc(env(safe-area-inset-bottom, 0px) + 72px)"
+            : "calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px) + 72px)"
         }
         right="20px"
       >

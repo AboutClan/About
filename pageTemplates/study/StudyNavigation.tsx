@@ -98,6 +98,7 @@ function StudyNavigation({
       console.log(33);
       return null;
     }
+    
     if ((myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type) {
       return {
         text: "출석 완료",

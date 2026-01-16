@@ -8,7 +8,7 @@ import { AboutLogo } from "../../../components/services/AboutLogo";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { LocationProps } from "../../../types/common";
 import { navigateExternalLink } from "../../../utils/navigateUtils";
-import { detectDevice } from "../../../utils/validationUtils";
+import { getDeviceOS, isApp } from "../../../utils/validationUtils";
 
 interface StudyPageTopNavProps {
   handleCenterLocation: (location: { lat: number; lon: number }) => void;
@@ -37,13 +37,14 @@ export function StudyPageTopNav({
     handleCenterLocation({ lat: placeInfo.latitude, lon: placeInfo.longitude });
   }, [placeInfo]);
 
-  const device = detectDevice();
+  const device = getDeviceOS();
+
   const handleAppOpen = () => {
-    if (device === "android") {
+    if (device === "Android") {
       navigateExternalLink(
         "https://play.google.com/store/apps/details?id=com.about.studyaboutclubapp",
       );
-    } else if (device === "ios") {
+    } else if (device === "iOS") {
       navigateExternalLink(
         "https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83/id6737145787",
       );
@@ -94,7 +95,7 @@ export function StudyPageTopNav({
                 <AboutLogo />
               </Button>
               <Flex align="center" mr={1}>
-                {device !== "web" && (
+                {isApp() && (
                   <Button mr={3} h="32px" w="64px" colorScheme="mint" onClick={handleAppOpen}>
                     앱 열기
                   </Button>

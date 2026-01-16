@@ -17,7 +17,6 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
-import { iPhoneNotchSize } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 
@@ -282,14 +281,14 @@ function Layout({ children }: ILayout) {
             style={{
               ...(NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
-                    paddingTop: "56px",
+                    paddingTop: `calc(56px + env(safe-area-inset-top, 0px))`,
                   }
                 : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
                   !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
                   !(currentSegment?.[0] === "user" && currentSegment?.[1])
                 ? {
-                    paddingTop: "56px",
-                    paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px)`,
+                    paddingTop: `calc(56px + env(safe-area-inset-top, 0px))`,
+                    paddingBottom: `calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px))`,
                   }
                 : {}),
             }}

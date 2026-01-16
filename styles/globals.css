@@ -50,7 +50,7 @@ a {
   margin: 0 auto;
   background-color: white;
 
-  overflow: hidden;
+  overflow-x: hidden;
 }
 @media (min-width: 628px) {
   #__next {

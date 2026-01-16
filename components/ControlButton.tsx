@@ -1,8 +1,6 @@
 import { Box, Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import { ReactElement } from "react";
 
-import { iPhoneNotchSize } from "../utils/validationUtils";
-
 interface ControlButtonProps {
   colorScheme?: ThemeTypings["colorSchemes"];
   rightIcon: ReactElement;
@@ -27,9 +25,9 @@ function ControlButton({
       fontSize="12px"
       lineHeight="24px"
       fontWeight="bold"
-      bottom={`calc(${hasBottomNav ? "var(--bottom-nav-height)" : "8px"} + ${
-        iPhoneNotchSize() + 12
-      }px)`}
+      bottom={`calc(${
+        hasBottomNav ? "var(--bottom-nav-height)" : "8px"
+      } + env(safe-area-inset-bottom, 0px) + 12px)`}
       right="20px"
     >
       <Button

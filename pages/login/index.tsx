@@ -10,7 +10,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { detectAppDevice } from "../../utils/validationUtils";
+import { isIOS } from "../../utils/validationUtils";
 
 function LoginPage() {
   const router = useRouter();
@@ -21,7 +21,6 @@ function LoginPage() {
   // 화면 비율 계산 (SSR-safe)
   const [ratio, setRatio] = useState<number | null>(null);
   // 디바이스 타입 (iPhone 여부 등)
-  const [device, setDevice] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -36,12 +35,6 @@ function LoginPage() {
     updateRatio();
     window.addEventListener("resize", updateRatio);
     return () => window.removeEventListener("resize", updateRatio);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const d = detectAppDevice();
-    setDevice(d);
   }, []);
 
   const statusParam = searchParams.get("status");
@@ -130,7 +123,7 @@ function LoginPage() {
     },
   };
 
-  const isIPhone = device === "ios";
+  const isIPhone = isIOS();
   const showTopText = !isIPhone && ratio !== null && ratio >= 1.75;
   const showBottomText = ratio !== null && ratio >= 1.55;
 

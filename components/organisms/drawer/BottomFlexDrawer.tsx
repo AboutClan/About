@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { IModal } from "../../../types/components/modalTypes";
-import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export const DRAWER_MIN_HEIGHT = 103;
@@ -114,8 +113,8 @@ export default function BottomFlexDrawer({
         zindex={zIndex}
         isdrawerup={isDrawerUp ? "true" : "false"}
         as={motion.div}
-        initial={{ height: DRAWER_MIN_HEIGHT + iPhoneNotchSize() }}
-        animate={{ height: drawerHeight + iPhoneNotchSize() }}
+        initial={{ height: `calc(${DRAWER_MIN_HEIGHT}px + env(safe-area-inset-bottom, 0px))` }}
+        animate={{ height: `calc(${drawerHeight}px + env(safe-area-inset-bottom, 0px))` }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
         <Flex justify="center" py={3} w="full" cursor="grab" onPointerDown={handlePointerDown}>
@@ -133,7 +132,7 @@ export default function BottomFlexDrawer({
         )}
         {drawerHeight > 100 && children}
         {drawerOptions?.footer && drawerHeight > 100 && (
-          <Box py={2} w="100%" mt="auto" mb={`${iPhoneNotchSize()}px`}>
+          <Box py={2} w="100%" mt="auto" mb="env(safe-area-inset-bottom, 0px)">
             <Button
               w="100%"
               mt="auto"

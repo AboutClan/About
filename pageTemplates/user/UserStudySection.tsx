@@ -17,13 +17,6 @@ function UserStudySection() {
 
   const { data, isLoading } = useStudyMineQuery();
 
-  // const a = detectAppDevice();
-  // const b = detectDevice2();
-  // const toast = useToast();
-  // useEffect(() => {
-  //   toast("success", a + b);
-  // }, [a, b]);
-
   useEffect(() => {
     if (!data?.length) return;
 

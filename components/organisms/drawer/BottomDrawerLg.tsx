@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { IModal } from "../../../types/components/modalTypes";
-import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export interface IBottomDrawerLgOptions {
@@ -111,7 +110,7 @@ const Layout = styled(motion.div)<{
   height: number;
   isxpadding: string;
 }>`
-  height: ${(props) => props.height + iPhoneNotchSize()}px;
+  height: ${(props) => `calc(${props.height}px + env(safe-area-inset-bottom, 0px))`};
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -123,8 +122,9 @@ const Layout = styled(motion.div)<{
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
   padding-bottom: ${(props) =>
     props.isxpadding === "true" && props?.paddingoptions?.bottom !== 0
-      ? `${8 + iPhoneNotchSize()}px`
-      : iPhoneNotchSize()};
+      ? "calc(8px + env(safe-area-inset-bottom, 0px))"
+      : "env(safe-area-inset-bottom, 0px)"};
+
   touch-action: none; /* 터치 스크롤을 막음 */
   display: flex;
   flex-direction: column;

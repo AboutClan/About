@@ -1,5 +1,4 @@
 import { IDailyCheckWinList } from "../constants/serviceConstants/dailyCheckConstatns";
-import { detectDevice } from "./validationUtils";
 
 export const getDistributionArr = (winList: IDailyCheckWinList[], size: number) => {
   const arr = new Array(size).fill(null);
@@ -38,13 +37,6 @@ export const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
 
 const deg2rad = (deg) => {
   return deg * (Math.PI / 180);
-};
-
-export const getBottomNavSize = () => {
-  const deviceType = detectDevice();
-  if (deviceType === "ios") {
-    return 95;
-  } else return 77;
 };
 
 export const getRandomIdx = (totalCnt: number) => {

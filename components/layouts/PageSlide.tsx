@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
 import { slideDirectionState } from "../../recoils/navigationRecoils";
-import { detectDevice } from "../../utils/validationUtils";
+import { isIOS } from "../../utils/validationUtils";
 interface IPageLayout {
   isFixed?: boolean;
   posZero?: "top";
@@ -12,8 +12,6 @@ interface IPageLayout {
 }
 
 function Slide({ children, isFixed, posZero, isNoPadding }: IPageLayout) {
-  const deviceType = detectDevice();
-
   const [slideDirection, setSlideDirection] = useRecoilState(slideDirectionState);
 
   useEffect(() => {
@@ -43,7 +41,7 @@ function Slide({ children, isFixed, posZero, isNoPadding }: IPageLayout) {
 
   return (
     <>
-      {deviceType === "ios" ? (
+      {isIOS() ? (
         <div
           style={{
             paddingLeft: !isNoPadding && !isFixed ? "20px" : 0,

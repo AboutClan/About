@@ -57,89 +57,58 @@ export const selectRandomWinners = (
 };
 
 export const isIOS = (): boolean => {
-  const hasNavigator = typeof navigator !== "undefined";
-  const hasWindow = typeof window !== "undefined";
-
-  // SSR
-  if (!hasNavigator) return false;
+  if (typeof navigator === "undefined") return false;
 
   const ua = navigator.userAgent || "";
+  const hasWindow = typeof window !== "undefined";
 
-  // 1️⃣ Bridge 기반 (앱)
+  // 1️⃣ App Bridge (앱)
   const bridgePlatform = hasWindow ? window.AboutAppBridge?.platform : null;
+  if (typeof bridgePlatform === "string") {
+    if (/ios|iphone|ipad/i.test(bridgePlatform)) return true;
+  }
 
-  if (bridgePlatform === "ios") return true;
+  // 2️⃣ UA 기반 (웹)
+  return /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+};
+
+export type DeviceOS = "iOS" | "Android" | "Other";
+
+export const getDeviceOS = (): DeviceOS => {
+  if (typeof navigator === "undefined") return "Other";
+
+  const ua = navigator.userAgent || "";
+  const hasWindow = typeof window !== "undefined";
+
+  // 1️⃣ App Bridge 우선 (앱/WebView)
+  const bridgePlatform = hasWindow ? window.AboutAppBridge?.platform : null;
+  if (typeof bridgePlatform === "string") {
+    if (/ios|iphone|ipad/i.test(bridgePlatform)) return "iOS";
+    if (/android/i.test(bridgePlatform)) return "Android";
+  }
 
   // 2️⃣ UA 기반 (웹 포함)
-  return (
-    /iPhone|iPad|iPod/i.test(ua) ||
-    // iPadOS (Macintosh로 위장하는 케이스)
-    (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1)
-  );
+  if (/iPhone|iPad|iPod/i.test(ua)) return "iOS";
+  // iPadOS (Macintosh로 위장)
+  if (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1) return "iOS";
+  if (/Android/i.test(ua)) return "Android";
+
+  return "Other";
 };
 
-export const detectDevice = () => {
-  if (typeof window !== "undefined" && window.AboutAppBridge?.platform) {
-    return window.AboutAppBridge.platform;
-  }
-  if (typeof navigator === "undefined") return null;
-  const ua = navigator.userAgent;
-  if (/iPhone/i.test(ua)) return "iPhone";
-  if (/Android/i.test(ua) && /mobile/i.test(ua)) return "Android";
-  return "PC";
+export const isApp = (): boolean => {
+  if (typeof window === "undefined") return false;
+
+  // 1️⃣ 네이티브 App WebView (Bridge 존재)
+  if (typeof window.AboutAppBridge !== "undefined") return true;
+
+  // 2️⃣ iOS PWA (홈화면 설치)
+  if (window.matchMedia?.("(display-mode: standalone)")?.matches) return true;
+
+  // 3️⃣ iOS Safari legacy (navigator.standalone) — 타입 안전하게 처리
+  const navWithStandalone = navigator as Navigator & { standalone?: boolean };
+  if (navWithStandalone.standalone === true) return true;
+
+  return false;
 };
-
-export const detectDeviceFromGlobal = () => {
-  if (typeof window !== "undefined") {
-    return window?.AboutAppBridge?.platform || null;
-  }
-  return null;
-};
-
-export const detectAppDevice = () => {
-  const hasWindow = typeof window !== "undefined";
-
-  if (hasWindow && window.AboutAppBridge?.platform) {
-    return window.AboutAppBridge.platform;
-  }
-
-  if (typeof navigator === "undefined") return null;
-
-  const ua = navigator.userAgent || "";
-
-  // ① 앱 설치 버전 (WebView)에서만 감지
-  const isAboutApp =
-    /AboutApp/i.test(ua) || (hasWindow && typeof window.AboutAppBridge !== "undefined");
-
-  if (!isAboutApp) {
-    return null;
-  }
-
-  // ② 플랫폼 구분 (UA 기준만 사용)
-  if (/iPhone/i.test(ua)) {
-    return "iPhone";
-  } else if (/Android/i.test(ua)) {
-    return "Android";
-  } else {
-    return "Unknown";
-  }
-};
-
-export const isNil = <T>(val: T | undefined | null): val is null | undefined => {
-  return val == null;
-};
-
-export const isEmpty = <T>(value: T | undefined | null): boolean => {
-  return (
-    isNil(value) ||
-    (Array.isArray(value) && value.length === 0) ||
-    (typeof value === "object" && Object.keys(value).length === 0)
-  );
-};
-
-export const iPhoneNotchSize = () => {
-  if (typeof window === "undefined" || typeof navigator === "undefined") return 0;
-  const isStandalone = window.matchMedia?.("(display-mode: standalone)")?.matches ?? false;
-  const ua = navigator.userAgent || "";
-  return /iPhone/i.test(ua) && isStandalone ? 34 : 0;
-};
+``;

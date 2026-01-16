@@ -5,7 +5,6 @@ import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
 import KakaoAdfit from "../../../components/KakaoAdfit";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { StudyPlaceFilter } from "../../../types/models/studyTypes/study-entity.types";
-import { iPhoneNotchSize } from "../../../utils/validationUtils";
 
 interface TopNavProps {
   handleLocationRefetch: () => void;
@@ -174,7 +173,7 @@ function TopNav({
         <Flex
           flexDir="column"
           pos="absolute"
-          bottom={`${iPhoneNotchSize() + 80}px`}
+          bottom="calc(env(safe-area-inset-bottom, 0px) + 80px)"
           right="20px"
           zIndex={300}
         >

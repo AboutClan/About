@@ -21,7 +21,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { detectAppDevice } from "../../utils/validationUtils";
+import { isIOS } from "../../utils/validationUtils";
 
 const Login: NextPage<{
   providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>;
@@ -180,7 +180,7 @@ const Login: NextPage<{
             left="50%"
             transform="translate(-50%,0)"
           >
-            {detectAppDevice() !== "ios" && ratio >= 1.75 && (
+            {!isIOS() && ratio >= 1.75 && (
               <Box mb={5} color="white" fontSize="12px" lineHeight="16px" opacity={0.6}>
                 Sign up with Social Networks
               </Box>
@@ -207,7 +207,7 @@ const Login: NextPage<{
               <span>카카오톡으로 5초만에 시작하기</span>
               <div />
             </Button>
-            {detectAppDevice() === "ios" && (
+            {isIOS() && (
               <Button
                 variant="unstyled"
                 maxW="calc(var(--max-width) - 2 * 20px)"

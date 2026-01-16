@@ -2,7 +2,6 @@ import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-import { iPhoneNotchSize } from "../../utils/validationUtils";
 import Slide from "./PageSlide";
 
 interface IBottomNav {
@@ -33,7 +32,7 @@ function BottomNav({
       <Button
         position="fixed"
         left="50%"
-        bottom={`calc(8px + ${iPhoneNotchSize()}px)`}
+        bottom="calc(8px + env(safe-area-inset-bottom, 0px))"
         maxW="var(--view-max-width)"
         transform="translate(-50%,0)"
         width="calc(100% - 2*var(--gap-4))"

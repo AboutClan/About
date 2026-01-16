@@ -5,7 +5,6 @@ import { useKeypadHeight } from "../../hooks/custom/useKeypadHeight";
 import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
-import { iPhoneNotchSize } from "../../utils/validationUtils";
 import UserCommentInput from "../molecules/UserCommentInput";
 
 interface BottomCommentInputProps {
@@ -38,7 +37,7 @@ function BottomCommentInput({
       w="100%"
       backgroundColor="white"
       maxW="var(--max-width)"
-      pb={`${keypadHeight === 0 ? iPhoneNotchSize() : 0}px`}
+      pb={keypadHeight === 0 ? "env(safe-area-inset-bottom, 0px)" : "0px"}
     >
       <Box py={2} borderBottom="var(--border)" px={5}>
         <UserCommentInput
