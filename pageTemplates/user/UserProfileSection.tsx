@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signOut, useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -35,7 +35,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
   const searchParams = useSearchParams();
   const modalParam = searchParams.get("modal") as ModalType;
   const [modalType, setModalType] = useState<ModalType>();
-
+  console.log(user);
   useEffect(() => {
     if (!modalParam) {
       setModalType(null);

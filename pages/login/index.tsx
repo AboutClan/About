@@ -1,8 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -14,12 +13,13 @@ import { isIOS } from "../../utils/validationUtils";
 
 function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const { status, page } = router.query;
   const { data: session } = useSession();
   const toast = useToast();
 
   // 화면 비율 계산 (SSR-safe)
   const [ratio, setRatio] = useState<number | null>(null);
+  const [isIPhone, setIsIPhone] = useState(false);
   // 디바이스 타입 (iPhone 여부 등)
 
   useEffect(() => {
@@ -37,8 +37,8 @@ function LoginPage() {
     return () => window.removeEventListener("resize", updateRatio);
   }, []);
 
-  const statusParam = searchParams.get("status");
-  const pageParam = searchParams.get("page");
+  const statusParam = typeof status === "string" ? status : null;
+  const pageParam = typeof page === "string" ? page : null;
 
   const [isWaitingModal, setIsWaitingModal] = useState(false);
   const [loadingType, setLoadingType] = useState<"kakao" | "guest" | "apple" | null>(null);
@@ -123,7 +123,9 @@ function LoginPage() {
     },
   };
 
-  const isIPhone = isIOS();
+  useEffect(() => {
+    setIsIPhone(isIOS()); // 클라에서만 계산
+  }, []);
   const showTopText = !isIPhone && ratio !== null && ratio >= 1.75;
   const showBottomText = ratio !== null && ratio >= 1.55;
 

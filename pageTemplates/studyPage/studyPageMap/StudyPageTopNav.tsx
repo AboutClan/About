@@ -53,6 +53,8 @@ export function StudyPageTopNav({
     }
   };
 
+  const isAppDevice = isApp();
+
   return (
     <>
       {!isFocus && (
@@ -95,11 +97,9 @@ export function StudyPageTopNav({
                 <AboutLogo />
               </Button>
               <Flex align="center" mr={1}>
-                {isApp() && (
-                  <Button mr={3} h="32px" w="64px" colorScheme="mint" onClick={handleAppOpen}>
-                    앱 열기
-                  </Button>
-                )}
+                <Button mr={3} h="32px" w="64px" colorScheme="mint" onClick={handleAppOpen}>
+                  {isAppDevice ? "앱 열기" : "앱 설치"}
+                </Button>
 
                 <Button variant="unstyled" p={2} onClick={openMenu}>
                   <MenuIcon />
