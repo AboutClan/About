@@ -128,6 +128,8 @@ export function ModalLayout({
                 mt={2.5}
                 w="16px"
                 h="16px"
+                   _focus={{ boxShadow: "none" }}
+    _focusVisible={{ boxShadow: "none" }}
               />
             )}
           </>
