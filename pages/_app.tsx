@@ -17,6 +17,7 @@ import Layout from "../pageTemplates/layout/Layout";
 import theme from "../theme";
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
