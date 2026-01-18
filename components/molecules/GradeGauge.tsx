@@ -35,9 +35,11 @@ export default function MiniSemiGaugeNeedle({
 }: MiniSemiGaugeNeedleProps) {
   const v = clamp(value, min, max);
 
+  const isBig = size > 60;
+
   // --- geometry (size 60 기준) ---
   const w = size;
-  const strokeWidth = 6;
+  const strokeWidth = isBig ? 12 : 6;
   const padding = 6;
 
   const r = w / 2 - padding;
@@ -65,7 +67,7 @@ export default function MiniSemiGaugeNeedle({
 
   // --- needle ---
   const needleLen = r * 0.78;
-  const needleWidth = 3;
+  const needleWidth = isBig ? 6 : 3;
 
   const tip = polarToCartesian(cx, cy, needleLen, needleAngle);
   const left = polarToCartesian(cx, cy, needleWidth, needleAngle - 90);
@@ -112,10 +114,10 @@ export default function MiniSemiGaugeNeedle({
       <Text
         position="absolute"
         left={`${minX}px`}
-        top={`${rowY - 2}px`}
+        top={`${rowY - (isBig ? -2 : 2)}px`}
         transform="translate(-15%, -50%)"
-        fontSize="9px"
-        color="gray.400"
+        fontSize={isBig ? "13px" : "9px"}
+        color={isBig ? "gray.500" : "gray.400"}
         fontWeight="600"
         lineHeight="1"
         whiteSpace="nowrap"
@@ -126,9 +128,9 @@ export default function MiniSemiGaugeNeedle({
       <Text
         position="absolute"
         left={`${cx}px`}
-        top={`${rowY}px`}
+        top={`${rowY - (isBig ? -4 : 0)}px`}
         transform="translate(-50%, -50%)"
-        fontSize="10px"
+        fontSize={isBig ? "13px" : "9px"}
         fontWeight="800"
         lineHeight="1"
         whiteSpace="nowrap"
@@ -139,9 +141,9 @@ export default function MiniSemiGaugeNeedle({
       <Text
         position="absolute"
         left={`${maxX}px`}
-        top={`${rowY - 2}px`}
+        top={`${rowY - (isBig ? -2 : 2)}px`}
         transform="translate(-85%, -50%)"
-        fontSize="9px"
+        fontSize={isBig ? "13px" : "9px"}
         color="gray.400"
         fontWeight="600"
         lineHeight="1"
@@ -155,9 +157,9 @@ export default function MiniSemiGaugeNeedle({
         <Text
           position="absolute"
           left={`${cx}px`}
-          top={`${labelY}px`}
+          top={`${labelY + (isBig ? 16 : 0)}px`}
           transform="translate(-50%, -50%)"
-          fontSize="8px"
+          fontSize={isBig ? "12px" : "8px"}
           color="gray.500"
           lineHeight="1"
           whiteSpace="nowrap"

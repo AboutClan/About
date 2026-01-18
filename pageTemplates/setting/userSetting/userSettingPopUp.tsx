@@ -6,6 +6,7 @@ import FAQModal from "../../../components/overlay/FAQModal";
 import GatherRecordDrawer from "../../../components/overlay/GatherRecordDrawer";
 import KakaoFriendModal from "../../../components/overlay/KakaoFriendModal";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
+import NewbeBenefitModal from "../../../components/overlay/NewBeBenefitModal";
 import NewMemberModal from "../../../components/overlay/NewMemberModal";
 import PointLowModal from "../../../components/overlay/PointLowModal";
 import SelfIntroduceModal from "../../../components/overlay/SelfIntroduceModal";
@@ -58,6 +59,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
   const studyRecord = JSON.parse(studyRecordStr);
   const { data: hasKakaoCuopon, isLoading } = usePointCuoponLogQuery();
 
+  console.log(33, hasKakaoCuopon);
   useEffect(() => {
     if (data === undefined || !session || isLoading) return;
     if (
@@ -103,6 +105,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
 
   return (
     <>
+      {true && <NewbeBenefitModal />}
       {Object.entries(MODAL_COMPONENTS).map(([key, Component]) => {
         const type = key as PopUpType;
         const props =

@@ -1,6 +1,6 @@
 import { Box, Button, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
@@ -8,6 +8,7 @@ import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuBut
 import InfoList from "../../../components/atoms/lists/InfoList";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
+import GradeGauge from "../../../components/molecules/GradeGauge";
 import TabNav from "../../../components/molecules/navs/TabNav";
 import TextCheckButton from "../../../components/molecules/TextCheckButton";
 import ValueBoxCol, { ValueBoxColItemProps } from "../../../components/molecules/ValueBoxCol";
@@ -15,11 +16,15 @@ import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import {
   useGroupDepositMutation,
   useGroupParticipationMutation,
 } from "../../../hooks/groupStudy/mutations";
+import { useGroupIdMannerQuery } from "../../../hooks/groupStudy/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { IFooterOptions, ModalLayout } from "../../../modals/Modals";
+import { calculateGrade } from "../../../pages/group/[id]/manner";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { setLocalStorageObj } from "../../../utils/storageUtils";
 import {
@@ -30,7 +35,6 @@ import {
   MemberMinusIcon,
 } from "../../gather/detail/GatherHeader";
 import RegisterOverview from "../../register/RegisterOverview";
-
 interface IGroupHeader {
   group: IGroup;
 }
@@ -43,10 +47,7 @@ function GroupHeader({ group }: IGroupHeader) {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const isAdmin =
-    session?.user.uid === "2259633694" ||
-    session?.user.uid === "3224546232" ||
-    group?.organizer.uid === session?.user.uid;
+  const isAdmin = false;
   const isMember =
     session?.user.uid === "2259633694" ||
     session?.user.uid === "3224546232" ||
@@ -58,6 +59,7 @@ function GroupHeader({ group }: IGroupHeader) {
 
   const [isSettigModal, setIsSettingModal] = useState(false);
   const [isDepositDrawer, setIsDepositDrawer] = useState(false);
+  const [isMannerModal, setIsMannerModal] = useState(false);
 
   const { mutate } = useGroupParticipationMutation("delete", group?.id, {
     onSuccess: () => {
@@ -81,6 +83,12 @@ function GroupHeader({ group }: IGroupHeader) {
     mutate();
     setIsSettingModal(false);
   };
+
+  const { data } = useGroupIdMannerQuery(group?.id + "", "private", { enabled: !!group?.id });
+  console.log(data);
+  const myGrade = data?.[userInfo?.uid];
+
+  const { total } = calculateGrade(myGrade);
 
   const menuArr: MenuProps[] = group
     ? [
@@ -150,6 +158,20 @@ function GroupHeader({ group }: IGroupHeader) {
         ...(isMember && !isAdmin
           ? [
               {
+                text: "내 멤버 지표 확인하기",
+                icon: <MemberHeartIcon />,
+                func: () => {
+                  if (total < 5) {
+                    toast(
+                      "info",
+                      `현재 받은 멤버 평가가 5건 미만입니다. 5명 이상의 멤버 후기가 존재해야 확인 가능합니다.`,
+                    );
+                    return;
+                  }
+                  setIsMannerModal(true);
+                },
+              },
+              {
                 text: "소모임 탈퇴하기",
                 icon: <MemberOutIcon />,
                 func: () => {
@@ -185,6 +207,7 @@ function GroupHeader({ group }: IGroupHeader) {
           handleSubmit={handleSubmit}
         />
       )}
+      {isMannerModal && <MannerModal id={group?.id} onClose={() => setIsMannerModal(false)} />}
     </>
   );
 }
@@ -313,6 +336,34 @@ function DepositRightDrawer({
     </RightDrawer>
   );
 }
+
+export const MannerModal = ({ id, onClose }: { id: number; onClose: () => void }) => {
+  const userInfo = useUserInfo();
+
+  const { data } = useGroupIdMannerQuery(id + "", "private", { enabled: !!id });
+  console.log(32, data);
+  const myGrade = data?.[userInfo?.uid];
+
+  const { total, value } = calculateGrade(myGrade);
+
+  const footerOptions: IFooterOptions = {
+    main: {},
+  };
+
+  return (
+    <ModalLayout title="내 멤버 지표" setIsModal={onClose} footerOptions={footerOptions}>
+      <Box as="p">
+        소모임 멤버들이 평가한 내 멤버 지표입니다.
+        <br />
+        멤버 평가는 익명을 보장하며, <br />
+        5명 단위로 한번에 업데이트 됩니다.
+      </Box>
+      <Flex justify="center" align="center" p={4} mt={3} mb={2}>
+        <GradeGauge value={value} label={total + ""} size={150} />
+      </Flex>
+    </ModalLayout>
+  );
+};
 
 function MoneyIcon() {
   return (

@@ -12,7 +12,7 @@ export default function Manner() {
 
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id });
 
-  const { data } = useGroupIdMannerQuery(id, { enabled: !!id });
+  const { data } = useGroupIdMannerQuery(id, null, { enabled: !!id });
 
   const mergedParticipants =
     groupData &&
@@ -40,32 +40,6 @@ export default function Manner() {
             {mergedParticipants
               ?.sort((a, b) => (!a.user || !b.user ? 1 : a.user.name > b.user.name ? 1 : -1))
               .map((who, idx) => {
-                const calculateGrade = (grade: {
-                  great: number;
-                  good: number;
-                  soso: number;
-                  block: number;
-                }) => {
-                  if (!grade) {
-                    return { total: 0, value: 50 };
-                  }
-                  const { great, good, soso, block } = grade;
-                  const total = great + good + soso + block;
-
-                  let value;
-
-                  const greatPer = (great / total) * 100;
-                  const goodPer = ((great + good) / total) * 100;
-
-                  if (greatPer >= 70 && goodPer >= 90) value = 100;
-                  else if (goodPer >= 85) value = 75;
-                  else if (goodPer >= 75) value = 50;
-                  else if ((block / total) * 100 < 20) {
-                    value = 25;
-                  } else value = 0;
-
-                  return { total, value };
-                };
                 const { total, value } = calculateGrade(who?.grade);
 
                 return (
@@ -91,3 +65,30 @@ export default function Manner() {
     </>
   );
 }
+
+export const calculateGrade = (grade: {
+  great: number;
+  good: number;
+  soso: number;
+  block: number;
+}) => {
+  if (!grade) {
+    return { total: 0, value: 50 };
+  }
+  const { great, good, soso, block } = grade;
+  const total = great + good + soso + block;
+
+  let value;
+
+  const greatPer = (great / total) * 100;
+  const goodPer = ((great + good) / total) * 100;
+
+  if (greatPer >= 70 && goodPer >= 90) value = 100;
+  else if (goodPer >= 85) value = 75;
+  else if (goodPer >= 75) value = 50;
+  else if ((block / total) * 100 < 20) {
+    value = 25;
+  } else value = 0;
+
+  return { total, value };
+};

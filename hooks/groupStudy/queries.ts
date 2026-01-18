@@ -126,13 +126,14 @@ export interface GradeProps {
 
 export const useGroupIdMannerQuery = (
   groupStudyId?: string,
+  type?: "private" | null,
   options?: QueryOptions<GradeProps[]>,
 ) =>
   useQuery<GradeProps[], AxiosError, GradeProps[]>(
-    [GROUP_STUDY, "manner", groupStudyId],
+    [GROUP_STUDY, "manner", groupStudyId, type],
     async () => {
       const res = await axios.get<GradeProps[]>(`${SERVER_URI}/groupStudy/manner`, {
-        params: { groupStudyId },
+        params: { groupStudyId, type },
       });
 
       const data = res.data;

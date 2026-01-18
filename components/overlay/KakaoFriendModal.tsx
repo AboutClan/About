@@ -16,6 +16,7 @@ function KakaoFriendModal({ onClose }: CloseProps) {
             navigateExternalLink("https://pf.kakao.com/_SaWXn/friend");
           },
         },
+        sub: {},
       }}
       setIsModal={onClose}
     >

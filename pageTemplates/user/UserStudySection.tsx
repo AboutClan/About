@@ -16,7 +16,7 @@ function UserStudySection() {
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
 
   const { data, isLoading } = useStudyMineQuery();
-
+  console.log(25, data);
   useEffect(() => {
     if (!data?.length) return;
 

@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Box } from "@chakra-ui/react";
-import { useParams, useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -67,10 +67,7 @@ function GroupDetail() {
   const findMyInfo =
     group?.participants && group.participants.find((who) => who?.user?._id === session?.user?.id);
 
-  const isAdmin =
-    userInfo?.role === "previliged" ||
-    findMyInfo?.role === "admin" ||
-    findMyInfo?.role === "manager";
+  const isAdmin = false;
 
   const handleGatheringButton = () => {
     setGatherWriting({
