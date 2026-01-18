@@ -1,11 +1,10 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
 
 import { GATHER_COVER_IMAGE_ARR, GATHER_MAIN_IMAGE_ARR } from "../../../assets/gather";
-import { Input } from "../../../components/atoms/Input";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -24,7 +23,6 @@ import {
   IGather,
   IGatherWriting,
 } from "../../../types/models/gatherTypes/gatherTypes";
-import { processFile } from "../../../utils/imageUtils";
 
 interface ImageProps {
   imageUrl: string;
@@ -47,6 +45,7 @@ function GatherWritingImagePage() {
     main: [],
     cover: [],
   });
+  const [image, setImage] = useState<Blob>();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const groupId = searchParams.get("groupId");
@@ -69,8 +68,9 @@ function GatherWritingImagePage() {
   ].map((item) => ({
     imageUrl: item,
     func: () => {
-      if (fileInputRef.current) {
+      if (fileInputRef.current||image) {
         fileInputRef.current.value = null;
+        setImage(null);
       }
       setImageProps((old) => ({ ...old, mainImage: item }));
     },
@@ -114,7 +114,7 @@ function GatherWritingImagePage() {
   }, []);
 
   const onClickNext = async () => {
-    if (!imageProps?.mainImage || !imageProps?.coverImage) {
+    if ((!imageProps?.mainImage&&!image) || !imageProps?.coverImage) {
       toast("error", "이미지를 선택해 주세요.");
       return;
     }
@@ -150,26 +150,32 @@ function GatherWritingImagePage() {
     onError: errorToast,
   });
 
-  const handleCameraBtn = () => {
-    fileInputRef.current?.click();
-  };
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  // const handleCameraBtn = () => {
+  //   fileInputRef.current?.click();
+  // };
+  // const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (!file) return;
 
-    try {
-      const image = await processFile(file); // ✅ 기존 유틸 그대로 사용
+  //   try {
+  //     const image = await processFile(file); // ✅ 기존 유틸 그대로 사용
+  //   setImage(image.blob);
+  //   } catch (error) {
+  //     console.error("이미지 처리 실패", error);
+  //   }
+  // };
 
-      setImageProps((old) => ({
-        ...old,
-        mainImage: image.url, // 👉 바로 썸네일로 반영
-      }));
-    } catch (error) {
-      console.error("이미지 처리 실패", error);
-    }
-  };
-
-  console.log(5, imageProps, fileInputRef);
+  const handleSubmit=( data: {
+    gather: IGatherWriting;
+})=>{
+  createGather(data)
+    // const formData = new FormData();
+    // formData.append("gather",JSON.stringify(data.gather))
+    // formData.append('image',image)
+    // createGather(formData)
+  }
+          
+  
   return (
     <>
       <Slide isFixed={true}>
@@ -190,7 +196,7 @@ function GatherWritingImagePage() {
               hasTextSkeleton={false}
               aspect={1}
             />
-            <Input
+            {/* <Input
               ref={fileInputRef}
               type="file"
               accept="image/*"
@@ -206,7 +212,7 @@ function GatherWritingImagePage() {
               onClick={handleCameraBtn}
             >
               {fileInputRef?.current?.value ? "이미지 등록 완료" : "이미지 직접 등록"}
-            </Button>
+            </Button> */}
           </Box>{" "}
           <Box px={5} mt={5}>
             <RegisterOverview isShort>
@@ -226,7 +232,7 @@ function GatherWritingImagePage() {
       <BottomNav onClick={() => onClickNext()} text="완료" isLoading={isLoading1 || isLoading2} />
       {isConfirmModal && (
         <GatherWritingConfirmModal
-          createGather={(data) => createGather(data)}
+          createGather={(data) => { handleSubmit(data)} }
           updateGather={(data) => updateGather(data)}
           setIsModal={setIsConfirmModal}
           gatherData={{
@@ -242,14 +248,14 @@ function GatherWritingImagePage() {
 
 export default GatherWritingImagePage;
 
-const CameraIcon = ({ color }: { color: "black" | "white" }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="18px"
-    viewBox="0 -960 960 960"
-    width="18px"
-    fill={color === "black" ? "var(--gray-800)" : "white"}
-  >
-    <path d="M480-260q75 0 127.5-52.5T660-440q0-75-52.5-127.5T480-620q-75 0-127.5 52.5T300-440q0 75 52.5 127.5T480-260Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM160-120q-33 0-56.5-23.5T80-200v-480q0-33 23.5-56.5T160-760h126l50-54q11-12 26.5-19t32.5-7h170q17 0 32.5 7t26.5 19l50 54h126q33 0 56.5 23.5T880-680v480q0 33-23.5 56.5T800-120H160Z" />
-  </svg>
-);
+// const CameraIcon=({ color }: { color: "black" | "white" })=> {
+//   return <svg
+//     xmlns="http://www.w3.org/2000/svg"
+//     height="18px"
+//     viewBox="0 -960 960 960"
+//     width="18px"
+//     fill={color === "black" ? "var(--gray-800)" : "white"}
+//   >
+//     <path d="M480-260q75 0 127.5-52.5T660-440q0-75-52.5-127.5T480-620q-75 0-127.5 52.5T300-440q0 75 52.5 127.5T480-260Zm0-80q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM160-120q-33 0-56.5-23.5T80-200v-480q0-33 23.5-56.5T160-760h126l50-54q11-12 26.5-19t32.5-7h170q17 0 32.5 7t26.5 19l50 54h126q33 0 56.5 23.5T880-680v480q0 33-23.5 56.5T800-120H160Z" />
+//   </svg>
+// }
