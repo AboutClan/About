@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signOut, useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -245,7 +245,13 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
 
 export default UserProfileSection;
 
-export function CameraIcon({ size, color }: { size?: "md" | "lg"; color: "black" | "white" }) {
+export function CameraIcon({
+  size,
+  color = "black",
+}: {
+  size?: "md" | "lg";
+  color?: "black" | "white";
+}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
