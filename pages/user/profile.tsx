@@ -108,7 +108,7 @@ function Profile() {
                   // setIsProfileModal(true);
                 }}
               >
-                <CameraIcon size="lg" />
+                <CameraIcon size="lg" color="black" />
               </IconWrapper>
             </Box>
           </Flex>
