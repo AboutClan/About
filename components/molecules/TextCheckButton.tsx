@@ -6,9 +6,17 @@ interface TextCheckButtonProps {
   text: string;
   isChecked: boolean;
   toggleCheck: () => void;
+  buttonText?: string;
+  handleBtn?: () => void;
 }
 
-function TextCheckButton({ text, isChecked, toggleCheck }: TextCheckButtonProps) {
+function TextCheckButton({
+  text,
+  isChecked,
+  toggleCheck,
+  buttonText,
+  handleBtn,
+}: TextCheckButtonProps) {
   return (
     <Flex
       onClick={toggleCheck}
@@ -36,16 +44,34 @@ function TextCheckButton({ text, isChecked, toggleCheck }: TextCheckButtonProps)
       >
         {text}
       </Box>
-      <Button
-        as="div"
-        borderRadius="8px"
-        w="54px"
-        size="sm"
-        bg={isChecked ? "mint" : "gray.400"}
-        color="white"
-      >
-        확 인
-      </Button>
+      {buttonText ? (
+        <Button
+          as="div"
+          borderRadius="8px"
+          px={4}
+          size="sm"
+          variant="subtle"
+          colorScheme="mint"
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            handleBtn();
+          }}
+        >
+          {buttonText}
+        </Button>
+      ) : (
+        <Button
+          as="div"
+          borderRadius="8px"
+          px={4}
+          size="sm"
+          bg={isChecked ? "mint" : "gray.400"}
+          color="white"
+        >
+          확 인
+        </Button>
+      )}
     </Flex>
   );
 }

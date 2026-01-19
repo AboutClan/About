@@ -1,10 +1,11 @@
-import { Box, } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
 
 import { GATHER_COVER_IMAGE_ARR, GATHER_MAIN_IMAGE_ARR } from "../../../assets/gather";
+import { Input } from "../../../components/atoms/Input";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -17,12 +18,14 @@ import { useGatherWritingMutation } from "../../../hooks/gather/mutations";
 import GatherWritingConfirmModal from "../../../modals/gather/GatherWritingConfirmModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
+import { CameraIcon } from "../../../pageTemplates/user/UserProfileSection";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import {
   GatherCategory,
   IGather,
   IGatherWriting,
 } from "../../../types/models/gatherTypes/gatherTypes";
+import { processFile } from "../../../utils/imageUtils";
 
 interface ImageProps {
   imageUrl: string;
@@ -68,7 +71,7 @@ function GatherWritingImagePage() {
   ].map((item) => ({
     imageUrl: item,
     func: () => {
-      if (fileInputRef.current||image) {
+      if (fileInputRef.current || image) {
         fileInputRef.current.value = null;
         setImage(null);
       }
@@ -114,7 +117,7 @@ function GatherWritingImagePage() {
   }, []);
 
   const onClickNext = async () => {
-    if ((!imageProps?.mainImage&&!image) || !imageProps?.coverImage) {
+    if ((!imageProps?.mainImage && !image) || !imageProps?.coverImage) {
       toast("error", "이미지를 선택해 주세요.");
       return;
     }
@@ -150,32 +153,28 @@ function GatherWritingImagePage() {
     onError: errorToast,
   });
 
-  // const handleCameraBtn = () => {
-  //   fileInputRef.current?.click();
-  // };
-  // const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (!file) return;
+  const handleCameraBtn = () => {
+    fileInputRef.current?.click();
+  };
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  //   try {
-  //     const image = await processFile(file); // ✅ 기존 유틸 그대로 사용
-  //   setImage(image.blob);
-  //   } catch (error) {
-  //     console.error("이미지 처리 실패", error);
-  //   }
-  // };
+    try {
+      const image = await processFile(file); // ✅ 기존 유틸 그대로 사용
+      setImage(image.blob);
+    } catch (error) {
+      console.error("이미지 처리 실패", error);
+    }
+  };
 
-  const handleSubmit=( data: {
-    gather: IGatherWriting;
-})=>{
-  createGather(data)
-    // const formData = new FormData();
-    // formData.append("gather",JSON.stringify(data.gather))
-    // formData.append('image',image)
-    // createGather(formData)
-  }
-          
-  
+  const handleSubmit = (data: { gather: IGatherWriting }) => {
+    const formData = new FormData();
+    formData.append("gather", JSON.stringify(data.gather));
+    formData.append("image", image);
+    createGather(formData);
+  };
+
   return (
     <>
       <Slide isFixed={true}>
@@ -196,7 +195,7 @@ function GatherWritingImagePage() {
               hasTextSkeleton={false}
               aspect={1}
             />
-            {/* <Input
+            <Input
               ref={fileInputRef}
               type="file"
               accept="image/*"
@@ -212,7 +211,7 @@ function GatherWritingImagePage() {
               onClick={handleCameraBtn}
             >
               {fileInputRef?.current?.value ? "이미지 등록 완료" : "이미지 직접 등록"}
-            </Button> */}
+            </Button>
           </Box>{" "}
           <Box px={5} mt={5}>
             <RegisterOverview isShort>
@@ -232,7 +231,9 @@ function GatherWritingImagePage() {
       <BottomNav onClick={() => onClickNext()} text="완료" isLoading={isLoading1 || isLoading2} />
       {isConfirmModal && (
         <GatherWritingConfirmModal
-          createGather={(data) => { handleSubmit(data)} }
+          createGather={(data) => {
+            handleSubmit(data);
+          }}
           updateGather={(data) => updateGather(data)}
           setIsModal={setIsConfirmModal}
           gatherData={{

@@ -23,15 +23,15 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
     newbie: [
       {
         type: "일일 출석체크",
-        value: "+ 20%",
+        value: "+ 20% 포인트",
       },
       {
         type: "공부 인증 리워드",
-        value: "+ 20%",
+        value: "+ 20% 포인트",
       },
       {
         type: "스터디 참여 리워드",
-        value: "+ 20%",
+        value: "+ 20% 포인트",
       },
       {
         type: "번개 참여권",
@@ -45,15 +45,15 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
     studySupporters: [
       {
         type: "일일 출석체크",
-        value: "+ 20%",
+        value: "+ 20% 포인트",
       },
       {
         type: "공부 인증 리워드",
-        value: "+ 20%",
+        value: "+ 20% 포인트",
       },
       {
         type: "스터디 참여 리워드",
-        value: "+ 20%",
+        value: "+ 20% 포인트",
       },
       {
         type: "스토어 상품 할인",
@@ -63,7 +63,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
     gatherSupporters: [
       {
         type: "일일 출석체크",
-        value: "+ 20%",
+        value: "+ 20% 포인트",
       },
       {
         type: "번개 개설 리워드",
@@ -90,15 +90,15 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
     manager: [
       {
         type: "일일 출석체크",
-        value: "+ 20%",
+        value: "+ 20% 포인트",
       },
       {
         type: "공부 인증 리워드",
-        value: "+ 20%",
+        value: "+ 20% 포인트",
       },
       {
         type: "스터디 참여 리워드",
-        value: "+ 20%",
+        value: "+ 20% 포인트",
       },
       {
         type: "번개 개설 리워드",

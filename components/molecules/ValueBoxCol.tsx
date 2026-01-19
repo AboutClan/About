@@ -17,7 +17,7 @@ function ValueBoxCol({ items }: ValueBoxColProps) {
       direction="column"
       bg="rgba(0,194,179,0.02)"
       borderRadius="16px"
-      border="1px solid rgba(0,194,179,0.08)"
+      border="1px solid rgba(0,194,179,0.1)"
       px={5}
       py={4}
       fontSize="12px"

@@ -14,7 +14,7 @@ function HomeGatherSection() {
   const firstData = gathers?.slice(0, 6);
   const secondData = gathers?.slice(6, 12);
   const thirdData = gathers?.slice(12, 18);
-
+  console.log(3, gathers);
   return (
     <>
       <AnimatePresence initial={false}>
@@ -33,13 +33,16 @@ function HomeGatherSection() {
             title="오늘 뭐하지? About 번개"
             subTitle="20대를 위한 편하고 즐거운 만남"
           >
-            <HomeGatherCol gathers={firstData?.slice(0, 3)} isPriority />
+            <HomeGatherCol gathers={firstData?.slice(0, 3)?.filter((data) => !!data)} isPriority />
           </SlideSectionCol>
           <SlideSectionCol
             title="오늘 뭐하지? About 번개"
             subTitle="20대를 위한 편하고 즐거운 만남"
           >
-            <HomeGatherCol gathers={firstData?.slice(3, 6)} isPriority={false} />
+            <HomeGatherCol
+              gathers={firstData?.slice(3, 6)?.filter((data) => !!data)}
+              isPriority={false}
+            />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>

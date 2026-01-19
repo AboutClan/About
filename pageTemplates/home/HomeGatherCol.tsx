@@ -21,17 +21,17 @@ interface HomeGatherColProps {
   isPriority: boolean;
 }
 
-export default function HomeGatherCol({ gathers, isPriority }: HomeGatherColProps) {
+export default function HomeGatherCol({ gathers: prevGathers, isPriority }: HomeGatherColProps) {
   const setBackUrl = useSetRecoilState(backUrlState);
-
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 
   useEffect(() => {
-    if (!gathers) return;
+    if (!prevGathers) return;
+    const gathers = prevGathers?.filter((gather) => !!gather);
     setCardDataArr(
       setGatherDataToCardCol(gathers.slice(0, 3), isPriority, () => setBackUrl("/home")),
     );
-  }, [gathers]);
+  }, [prevGathers]);
 
   return (
     <Box my={3}>

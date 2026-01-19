@@ -1,4 +1,4 @@
-import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
+import { Box, Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
@@ -6,16 +6,21 @@ import { useEffect, useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import IconTextColButton from "../../components/atoms/buttons/IconTextColButton";
+import Textarea from "../../components/atoms/Textarea";
 import { XCircleIcon } from "../../components/Icons/CircleIcons";
 import { ClockIcon } from "../../components/Icons/ClockIcons";
 import Slide from "../../components/layouts/PageSlide";
 import { BottomFlexDrawerOptions } from "../../components/organisms/drawer/BottomFlexDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyMutations } from "../../hooks/custom/StudyHooks";
+import { useStudyAttendChangeMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { ModalLayout } from "../../modals/Modals";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
 import { LocationProps } from "../../types/common";
+import { CloseProps } from "../../types/components/modalTypes";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
@@ -78,6 +83,7 @@ function StudyNavigation({
   const [voteTime, setVoteTime] = useState<DayjsTimeProps>();
   const [isAbsentModal, setIsAbsentModal] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
+  const [isCommentModal, setIsCommentModal] = useState(false);
 
   const [drawerType, setDrawerType] = useState<
     "apply" | "applyChange" | "realTimesVote" | DirectAction
@@ -98,12 +104,18 @@ function StudyNavigation({
       console.log(33);
       return null;
     }
-    
-    if ((myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type) {
+
+    if (
+      (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type &&
+      studyType !== "soloRealTimes"
+    ) {
       return {
-        text: "출석 완료",
+        text: "출석 메세지 변경",
         type: "multi",
         colorScheme: "black",
+        func: () => {
+          setIsCommentModal(true);
+        },
       };
     }
     switch (studyType) {
@@ -328,46 +340,9 @@ function StudyNavigation({
     },
   };
 
-  // const onClickStudyVote = (voteTime: IStudyVoteTime) => {
-  //   if (myStudyParticipation) {
-  //     setVoteTime(voteTime);
-  //     setAlertModalInfo({
-  //       title: "스터디 장소 변경",
-  //       subTitle: "장소를 변경하는 경우 기존에 투표 장소는 취소됩니다.",
-  //       text: "변경합니다",
-  //       func: () => {
-  //         handleVote(voteTime);
-  //         setAlertModalInfo(null);
-  //       },
-  //       subFunc: () => {
-  //         setModalType(null);
-  //         setAlertModalInfo(null);
-  //       },
-  //     });
-  //     return;
-  //   }
-  //   handleVote(voteTime);
-  // };
-  // const handleVote = (time?: IStudyVoteTime) => {
-  //   if (studyType === "public") {
-  //     studyVote({
-  //       place: id,
-  //       subPlace: subArr.map((sub) => sub.place._id),
-  //       start: time?.start || voteTime?.start,
-  //       end: time?.end || voteTime?.end,
-  //     });
-  //   } else {
-  //     realTimeStudyVote({
-  //       place,
-  //       time: {
-  //         start: time?.start || voteTime?.start,
-  //         end: time?.end || voteTime?.end,
-  //       },
-  //     });
-  //   }
-  // };
-
   const navigationProps = getNavigationProps(studyType, myStudyStatus);
+
+  const myMessage = (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.memo;
 
   return (
     <>
@@ -452,6 +427,9 @@ function StudyNavigation({
           setIsModal={() => setAlertModalInfo(null)}
         />
       )}
+      {isCommentModal && (
+        <CommentModal onClose={() => setIsCommentModal(false)} message={myMessage} />
+      )}
       {(drawerType === "openRealTimesVote" ||
         drawerType === "dailyVote" ||
         drawerType === "expectedVote" ||
@@ -488,6 +466,54 @@ function StudyNavigation({
         />
       )}
     </>
+  );
+}
+
+interface CommentModalProps extends CloseProps {
+  message: string;
+}
+
+function CommentModal({ message, onClose }: CommentModalProps) {
+  const toast = useToast();
+  const resetStudy = useResetStudyQuery();
+  const { mutate, isLoading } = useStudyAttendChangeMutation({
+    onSuccess() {
+      resetStudy();
+      toast("success", "변경 완료!");
+      onClose();
+    },
+  });
+
+  const [text, setText] = useState(message);
+
+  useEffect(() => {
+    setText(message);
+  }, [message]);
+
+  return (
+    <ModalLayout
+      footerOptions={{
+        main: {
+          text: "변 경",
+          func: () => {
+            if (!text?.length) {
+              toast("error", "텍스트를 입력해 주세요!");
+            } else {
+              mutate({ memo: text });
+            }
+          },
+          isLoading,
+        },
+      }}
+      setIsModal={onClose}
+      title="출석 메세지 변경"
+    >
+      <Box as="p" mb={3}>
+        스터디 멤버가 나를 찾을 수 있도록 작성!
+        <br /> (내 위치 및 인상착의)
+      </Box>
+      <Textarea defaultValue={text} onChange={(e) => setText(e.target.value)} minH="80px" />
+    </ModalLayout>
   );
 }
 

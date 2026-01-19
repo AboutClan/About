@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Box } from "@chakra-ui/react";
-import { signIn, useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -11,7 +11,6 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import ControlButton from "../../../components/ControlButton";
 import Slide from "../../../components/layouts/PageSlide";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import { useGatherGroupQuery, useGroupFeedsQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
@@ -33,7 +32,6 @@ export type GroupSectionCategory = "정 보" | "모 임" | "피 드";
 
 function GroupDetail() {
   const { data: session } = useSession();
-  const userInfo = useUserInfo();
   const router = useRouter();
   const toast = useToast();
   const setBackUrl = useSetRecoilState(backUrlState);

@@ -43,15 +43,17 @@ function ForceUpdateModal({ onClose }: CloseProps) {
       text: "업데이트 하러가기",
       func: openStore,
     },
+    sub: {
+      text: "닫 기",
+    },
     isFull: true,
   };
 
   return (
     <ModalLayout title="새로운 버전 업데이트" footerOptions={footerOptions} setIsModal={onClose}>
       <Text mb={5}>
-        더 안정적이고 편리해진 서비스를 이용하기 위해
-        <br />
-        최신 버전으로 업데이트가 필요합니다.
+        더 안정적이고 편리한 서비스 이용을 위해
+        <br /> 최신 버전 업데이트가 필요합니다.
       </Text>
 
       <Box bg="#f5f5f5" border="1px solid" borderColor="#eeeeee" borderRadius={12} p={4}>
@@ -64,7 +66,7 @@ function ForceUpdateModal({ onClose }: CloseProps) {
             •
           </Text>
           <Text flex={1} fontSize={12} lineHeight="18px" textAlign="left">
-            알림(푸시) 클릭 시 해당 페이지로 바로 이동
+            앱 알림(푸시) 클릭 시 화면 바로 이동
           </Text>
         </Flex>
 

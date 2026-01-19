@@ -134,6 +134,16 @@ export const useStudyAttendCheckMutation = (
       }),
     options,
   );
+export const useStudyAttendChangeMutation = (options?: MutationOptions<{ memo: string }, void>) =>
+  useMutation<void, AxiosError, { memo: string }>(
+    (param) =>
+      requestServer<{ memo: string }, void>({
+        method: "patch",
+        url: `vote2/${dayjsToStr(dayjs())}/arriveMemo`,
+        body: param,
+      }),
+    options,
+  );
 
 export const useStudyAbsenceMutation = (
   date: string,
