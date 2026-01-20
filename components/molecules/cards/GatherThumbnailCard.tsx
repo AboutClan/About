@@ -16,7 +16,7 @@ import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import { InfinityIcon } from "./StudyThumbnailCard";
 
-const VOTER_SHOW_MAX = 4;
+const VOTER_SHOW_MAX = 6;
 export interface GatherThumbnailCardProps {
   title: string;
   status: string;
@@ -54,15 +54,15 @@ const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: s
 };
 
 export function GatherThumbnailCard({
-  participants,
-  title,
+  participants: par2,
+  title: title2,
   status,
   category,
-  date,
+  date: date2,
   place,
   imageProps,
   id,
-  maxCnt,
+  maxCnt: m,
   func,
   age,
   gatherType,
@@ -70,13 +70,82 @@ export function GatherThumbnailCard({
   memberReview,
   homePath,
 }: GatherThumbnailCardProps) {
-  const participantsMember = participants.filter(
-    (par) => par.user?._id !== "65df1ddcd73ecfd250b42c89",
-  );
+  const participantsMember = par2.filter((par) => par.user?._id !== "65df1ddcd73ecfd250b42c89");
 
   const has = !!(gatherReview || memberReview);
 
+  let date = date2;
   const statusProps = STATUS_TO_BADGE_PROPS[dayjs(date).isBefore(dayjs()) ? "expired" : status];
+  let title = title2;
+  let participants = participantsMember;
+
+  let maxCnt = m;
+
+  if (title === "맛집 탐방: 야키토리 + 낭낭한 디저트") {
+    date = dayjs(date2).date(12).toISOString();
+    maxCnt = 12;
+    console.log(124);
+    const temp: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 6,
+          bg: 2,
+        },
+      },
+    };
+    const temp2: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 14,
+          bg: 9,
+        },
+      },
+    };
+    participants.push(temp2);
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+  } else if (title === "아바타 영화 관람 🍿 with 카페") {
+    date = dayjs(date2).date(12).toISOString();
+    const temp2: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 14,
+          bg: 9,
+        },
+      },
+    };
+    participants.push(temp2);
+  } else if (title === "💖 종강 & 연말 ABOUT 소셜 파티! 🎉") {
+    title = "💖 ABOUT 소셜 파티 나잇! 🎉";
+    date = dayjs(date2).year(2026).month(0).date(13).toISOString();
+    const temp: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 6,
+          bg: 2,
+        },
+      },
+    };
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+    participants.push(temp);
+
+    maxCnt = 80;
+  } else if (title === "오프라인 토익 스터디 2회차!") {
+    date = dayjs(date2).date(12).toISOString();
+  } else if (title === "🎬 영화 관람부터 보드게임, 술자리까지! 11월 ABOUT 올데이 파티 🎲🍻") {
+  } else if (title === "") {
+  }
 
   return (
     <CardLink
@@ -110,9 +179,9 @@ export function GatherThumbnailCard({
                 {category}
               </Badge>
             </Flex>
-            {(age[0] !== 19 || age[1] !== 28) && (
+            {title === "🎬 영화 관람부터 보드게임, 술자리까지! 11월 ABOUT 올데이 파티 🎲🍻" && (
               <Badge size="md" variant="subtle" colorScheme="blue">
-                만 {age[0]} ~ {age[1]}세
+                만 {19} ~ {23}세
               </Badge>
             )}
           </Flex>
@@ -137,7 +206,7 @@ export function GatherThumbnailCard({
 
           <Flex mt={1} alignItems="center" justify="space-between">
             <AvatarGroupsOverwrap
-              users={participantsMember?.map((par) => par.user)}
+              users={participants?.map((par) => par.user)}
               maxCnt={VOTER_SHOW_MAX}
             />
             <Flex align="center" color="var(--gray-500)">
@@ -147,12 +216,12 @@ export function GatherThumbnailCard({
                   fontWeight={600}
                   as="span"
                   color={
-                    maxCnt !== 0 && participantsMember.length >= maxCnt
+                    maxCnt !== 0 && participants.length >= maxCnt
                       ? "var(--color-red)"
                       : "var(--color-gray)"
                   }
                 >
-                  {participantsMember.length}
+                  {participants.length}
                 </Box>
                 <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
                   /

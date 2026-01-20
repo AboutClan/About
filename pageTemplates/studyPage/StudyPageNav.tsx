@@ -15,12 +15,14 @@ function StudyPageNav({ tab, changeTab }: StudyPageNavProps) {
         <TabNav
           selected={tab}
           tabOptionsArr={[
-            { text: "About 스터디", func: () => changeTab("About 스터디") },
-            { text: "카공 지도.ZIP 🔥", func: () => changeTab("카공 지도.ZIP 🔥") },
+            { text: "스터디", func: () => changeTab("스터디") },
+            { text: "랭킹", func: () => changeTab("카공 지도.ZIP 🔥") },
+            { text: "챌린지", func: () => changeTab("카공 지도.ZIP 🔥") },
+            { text: "카공 지도", func: () => changeTab("카공 지도.ZIP 🔥") },
           ]}
           isBlack
-          size="xl"
           isMain
+          size="lg"
         />
       </Flex>
     </>

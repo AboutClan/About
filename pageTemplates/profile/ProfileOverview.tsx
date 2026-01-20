@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -49,7 +49,7 @@ function ProfileOverview({ user, gatherCount }: IProfileOverview) {
                 <SocialingScoreBadge user={user} size="md" />
               </Box>
             </Flex>
-            <Button
+            {/* <Button
               borderRadius="full"
               leftIcon={<ChatIcon />}
               border="var(--border)"
@@ -69,7 +69,7 @@ function ProfileOverview({ user, gatherCount }: IProfileOverview) {
               }}
             >
               {isIntroduce ? "자기소개 닫기" : "자기소개 보기"}
-            </Button>
+            </Button> */}
             {isIntroduce && (
               <Box
                 mt={3}
@@ -82,11 +82,16 @@ function ProfileOverview({ user, gatherCount }: IProfileOverview) {
                 px={4}
                 py={3}
               >
-                {user?.introduceText}
+                "기록하는 걸 좋아해서 어딜 가든 카메라부터 들고 보는 대학생입니다. 📸 제가 찍은
+                사진으로 동아리 친구들 인생샷 남겨주는 게 제 행복이에요! 팝업스토어나 감성 넘치는
+                공간 투어하는 거 좋아하시는 분들 저랑 같이 다녀요. About에서 예쁜 추억 많이 남겨보고
+                싶습니다!"
               </Box>
             )}
-            <Box fontSize="13px" mt={4}>
-              {user?.comment}
+            <Box fontSize="12px" mt={4}>
+              기록하는 걸 좋아해서 어딜 가든 카메라부터 들고 보는 스타일이에요! 📸 제가 찍은
+              사진으로 동아리 사람들 인생샷 남겨주는 게 제 소소한 행복입니다. 팝업스토어나 감성
+              넘치는 공간 투어하는 거 좋아하시는 분들 저랑 같이 다녀요 ✨
             </Box>
           </Flex>
           <Flex justify="space-between" align="center" mt={6}>

@@ -1,6 +1,6 @@
 import { Box, Flex, Switch, Text } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -14,7 +14,6 @@ import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useGatherRequestMutation } from "../../hooks/gather/mutations";
 import { ModalLayout } from "../../modals/Modals";
-import GatherHeader from "../../pageTemplates/gather/GatherHeader";
 import GatherMain from "../../pageTemplates/gather/GatherMain";
 import GatherPick from "../../pageTemplates/gather/GatherPick";
 import SquareLoungeSection from "../../pageTemplates/square/SquareLoungeSection";
@@ -79,7 +78,7 @@ function Gather() {
 
   return (
     <>
-      <GatherHeader tab={tab} />
+      {/* <GatherHeader tab={tab} /> */}
       <Slide isNoPadding>
         <Box fontSize="16px" mb={3} bgColor="white" borderBottom="var(--border)" px={5}>
           <TabNav tabOptionsArr={tabNavOptions} selected={tab} isBlack />

@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -324,13 +324,13 @@ function Layout({ children }: ILayout) {
             style={{
               ...(NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
-                    paddingTop: `calc(56px + env(safe-area-inset-top, 0px))`,
+                    paddingTop: `calc(12px + env(safe-area-inset-top, 0px))`,
                   }
                 : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
                   !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
                   !(currentSegment?.[0] === "user" && currentSegment?.[1])
                 ? {
-                    paddingTop: `calc(56px + env(safe-area-inset-top, 0px))`,
+                    paddingTop: `calc(12px + env(safe-area-inset-top, 0px))`,
                     paddingBottom: `calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px))`,
                   }
                 : {}),

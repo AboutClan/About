@@ -15,7 +15,7 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
   const dateRefs: React.MutableRefObject<(HTMLDivElement | null)[]> = useRef([]);
   const containerRef = useRef<HTMLDivElement>();
   const calendarArr = getCalendarDates("week", dayjs(selectedDate));
- 
+
   useEffect(() => {
     if (!calendarArr || !selectedDate) return;
     const selectedIdx = calendarArr.findIndex((obj) => obj.date === selectedDate);
@@ -38,7 +38,7 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
         maxW="var(--max-width)"
         pb={3}
         css={css`
-          @media (max-width: 400px) {
+          @media (max-width: 500px) {
             &::-webkit-scrollbar {
               display: none;
             }

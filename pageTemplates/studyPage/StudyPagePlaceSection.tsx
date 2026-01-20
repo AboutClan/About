@@ -18,7 +18,6 @@ import { DispatchString } from "../../types/hooks/reactTypes";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
 import { getNewDateBySwipe } from "../../utils/animateUtils";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
-import StudyPagePlaceSectionFilterBar from "./studyPageDrawer/StudyPagePlaceBlockFilterBar";
 
 interface StudyPagePlaceSectionProps {
   studySet: StudySetProps;
@@ -65,30 +64,25 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
   return (
     <Flex flexDir="column" mb={8}>
       <Box>
-        {thumbnailCardInfoArr?.length ? (
-          <StudyPagePlaceSectionFilterBar
-            sortedOption={sortedOption}
-            setSortedOption={setSortedOption}
-            placeCnt={thumbnailCardInfoArr?.length}
-            date={date}
-          />
-        ) : (
-          <Box my={4} />
-        )}
+        <Box my={4} />
         <Box overflowY="scroll" overscrollBehaviorY="contain">
           <AnimatePresence initial={false}>
-            <motion.div
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.3}
-              onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
-            >
+            <motion.div>
               {thumbnailCardInfoArr?.length && !isLoading
-                ? thumbnailCardInfoArr.slice(0, 6).map((thumbnailCardInfo, idx) => (
-                    <Box key={idx} mb={3}>
-                      <StudyThumbnailCard {...thumbnailCardInfo} />
-                    </Box>
-                  ))
+                ? thumbnailCardInfoArr
+                    .slice(0, 6)
+                    .sort((a, b) =>
+                      a.place.name === "셀렉티드닉스" && b.place.name !== "실시간 공부 인증"
+                        ? -1
+                        : a.place.name === "실시간 공부 인증"
+                        ? -1
+                        : 1,
+                    )
+                    .map((thumbnailCardInfo, idx) => (
+                      <Box key={idx} mb={3}>
+                        <StudyThumbnailCard {...thumbnailCardInfo} />
+                      </Box>
+                    ))
                 : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
             </motion.div>
             {thumbnailCardInfoArr?.length && (

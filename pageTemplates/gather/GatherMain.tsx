@@ -2,7 +2,6 @@ import { Box, Flex, Text, useCheckbox } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import Select from "../../components/atoms/Select";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
@@ -26,8 +25,19 @@ export default function GatherMain() {
 
   const sortKey = sortBy === "기본순" ? "basic" : sortBy === "최신 개설 순" ? "createdAt" : "date";
 
-  const { data: gatherData, isLoading } = useGatherQuery(cursor, checkType, sortKey);
-  console.log(5, checkType, gatherData, cursor);
+  const { data: gathers2 } = useGatherQuery(-1);
+  console.log(gathers2);
+
+  const gatherData: IGather[] = [
+    gathers2?.[5],
+    gathers2?.[1],
+    gathers2?.[7],
+    gathers2?.[12],
+    gathers2?.[14],
+  ];
+
+  const { data: gatherData3, isLoading } = useGatherQuery(cursor, checkType, sortKey);
+
   // 필터 / 정렬 변경 시 리스트 & 커서 초기화
   useEffect(() => {
     setGathers([]);
@@ -36,7 +46,7 @@ export default function GatherMain() {
 
   // 페이지네이션 데이터 합치기
   useEffect(() => {
-    if (!gatherData) return;
+    if (!gatherData || !gatherData?.length) return;
 
     firstLoad.current = false;
 
@@ -44,7 +54,7 @@ export default function GatherMain() {
       if (cursor === 0) return gatherData;
       return [...prev, ...gatherData];
     });
-  }, [gatherData, cursor]);
+  }, [gathers2, cursor]);
 
   // gathers → 카드 데이터로 변환 (파생 데이터이므로 useMemo)
   const cardDataArr: GatherThumbnailCardProps[] = useMemo(
@@ -73,7 +83,7 @@ export default function GatherMain() {
 
   return (
     <Box mb="50px">
-      <Flex py={1} mb={2} justify="space-between" align="center">
+      {/* <Flex py={1} mb={2} justify="space-between" align="center">
         <Flex>
           <Box mr={4}>
             <CheckBox
@@ -115,7 +125,7 @@ export default function GatherMain() {
           options={["기본순", "최신 개설 순", "일정 빠른 순"] as SortedType[]}
           setValue={setSortBy}
         />
-      </Flex>
+      </Flex> */}
 
       <Box position="relative">
         <Box minH="1000px">
@@ -193,13 +203,15 @@ export function CheckBox({ text, isChecked, onChange }: Props) {
 }
 
 function CheckIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="20px"
-    viewBox="0 -960 960 960"
-    width="20px"
-    fill="white"
-  >
-    <path d="m382-373.22 328.83-328.82Q726.78-718 748.43-718q21.66 0 37.61 15.96Q802-686.09 802-664.22t-15.96 37.83L419.61-259.52q-15.96 15.96-37.61 15.96t-37.61-15.96L173.52-430.39q-15.96-15.96-15.74-37.83.22-21.87 16.18-37.82Q189.91-522 211.78-522t37.83 15.96L382-373.22Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20px"
+      viewBox="0 -960 960 960"
+      width="20px"
+      fill="white"
+    >
+      <path d="m382-373.22 328.83-328.82Q726.78-718 748.43-718q21.66 0 37.61 15.96Q802-686.09 802-664.22t-15.96 37.83L419.61-259.52q-15.96 15.96-37.61 15.96t-37.61-15.96L173.52-430.39q-15.96-15.96-15.74-37.83.22-21.87 16.18-37.82Q189.91-522 211.78-522t37.83 15.96L382-373.22Z" />
+    </svg>
+  );
 }

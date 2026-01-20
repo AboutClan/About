@@ -23,7 +23,7 @@ function StudyPageCalendar({ date, setDate }: StudyPageCalendarProps) {
   };
 
   return (
-    <Box mt={5}>
+    <Box mt={4}>
       <StudyPagePlaceSectionHeader date={date} setDate={setDate} />
       <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
     </Box>

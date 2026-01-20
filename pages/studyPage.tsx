@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
@@ -10,7 +10,6 @@ import { useTypeToast } from "../hooks/custom/CustomToast";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../hooks/study/queries";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageChallenge from "../pageTemplates/studyPage/StudyPageChallenge";
-import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
 import StudyPageMap, {
   LocationAddDrawer,
 } from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
@@ -86,9 +85,9 @@ export default function StudyPage() {
 
   return (
     <>
-      <StudyPageHeader />
+      {/* <StudyPageHeader /> */}
       <Slide isNoPadding>
-        <StudyPageNav tab={tab} changeTab={changeTab} />
+        <StudyPageNav tab={"스터디"} changeTab={changeTab} />
       </Slide>
       <>
         {tab === "About 스터디" ? (

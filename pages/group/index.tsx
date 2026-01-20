@@ -5,11 +5,7 @@ import { useSetRecoilState } from "recoil";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import SectionHeader from "../../components/atoms/SectionHeader";
-import Select from "../../components/atoms/Select";
-import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import InfoModalButton from "../../components/modalButtons/InfoModalButton";
 import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { GatherCategoryMain } from "../../constants/contentsText/GatherContents";
@@ -17,11 +13,9 @@ import { GROUP_CURSOR_NUM } from "../../constants/keys/localStorage";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
-import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import { backUrlState } from "../../recoils/navigationRecoils";
 import { GroupStatus, IGroup } from "../../types/models/groupTypes/group";
-import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 
 type Status = "모집중" | "종료" | "오픈 예정";
 
@@ -82,14 +76,23 @@ function GroupPage() {
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
-  const { data: groups, isLoading } = useGroupQuery(
+  const { data: groups2, isLoading } = useGroupQuery(
     status === "모집중" ? "pending" : status === "오픈 예정" ? "planned" : "end",
     category,
-    cursor,
+    0,
     {
       enabled: !!status,
     },
   );
+
+  let groups = groups2?.[0] && [
+    groups2?.[3],
+    groups2?.[4],
+    groups2?.[22],
+    groups2?.[12],
+    groups2?.[10],
+  ];
+  console.log(3, groups);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -198,12 +201,12 @@ function GroupPage() {
     if (!groups) return;
     firstLoad.current = false;
 
-    const newArray = shuffleArray(groups);
+    const newArray = groups;
     setGroupStudies((old) => [
       ...old,
       ...newArray.filter((item) => !old.some((existingItem) => existingItem.id === item.id)),
     ]);
-  }, [groups]);
+  }, [groups2]);
 
   const mainTabOptionsArr: ITabNavOptions[] = categoryArr.map((cat, idx) => ({
     text: cat.title,
@@ -225,17 +228,17 @@ function GroupPage() {
 
   return (
     <>
-      <Header title="소모임" isBack={false}>
+      {/* <Header title="소모임" isBack={false}>
         <InfoModalButton type="group" />
-      </Header>
+      </Header> */}
       <Slide isNoPadding>
         <Box minH="100vh" pb="60px">
-          {!isGuest && (
+          {/* {!isGuest && (
             <Box minH="108px">
               <GroupMine />
             </Box>
-          )}
-          <Box px={5} mt={isGuest ? 2 : 5} mb={3}>
+          )} */}
+          {/* <Box px={5} mt={isGuest ? 2 : 5} mb={3}>
             <SectionHeader title="ABOUT 소모임" subTitle="관심사로 연결되는 지속성 모임">
               <Select
                 size="sm"
@@ -245,7 +248,7 @@ function GroupPage() {
                 setValue={setStatus}
               />
             </SectionHeader>
-          </Box>
+          </Box> */}
           {status === "모집중" && (
             <Box borderBottom="var(--border)" px={5} mb={2}>
               <TabNav isBlack selected={category} tabOptionsArr={mainTabOptionsArr} isMain />

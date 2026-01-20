@@ -1,8 +1,8 @@
-import { Box, Button, Flex, HStack } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -13,13 +13,11 @@ import Divider from "../../components/atoms/Divider";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import Textarea from "../../components/atoms/Textarea";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
-import TabNav from "../../components/molecules/navs/TabNav";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useGatherCountQuery, useGatherMyStatusQuery } from "../../hooks/gather/queries";
@@ -31,7 +29,6 @@ import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { setGatherDataToCardCol } from "../../pageTemplates/home/HomeGatherCol";
 import DetailInfo from "../../pageTemplates/profile/DetailInfo";
 import ProfileOverview from "../../pageTemplates/profile/ProfileOverview";
-import UserReviewBar from "../../pageTemplates/user/UserReviewBar";
 import { transferUserName } from "../../recoils/transferRecoils";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { IUserRequest } from "../../types/models/userTypes/userRequestTypes";
@@ -141,7 +138,7 @@ function ProfilePage() {
 
   return (
     <>
-      <Header title="">
+      {/* <Header title="">
         <HStack spacing={3}>
           {session?.user.id !== userId && (
             <>
@@ -165,7 +162,7 @@ function ProfilePage() {
             </>
           )}
         </HStack>
-      </Header>
+      </Header> */}
       {user && (
         <>
           <Slide>
@@ -179,19 +176,19 @@ function ProfilePage() {
           </Slide>
           <Slide isNoPadding>
             <Divider type={200} />
-            <TabNav
+            {/* <TabNav
               tabOptionsArr={[
                 { text: "후 기", func: () => setTab("후 기") },
                 { text: "모 임", func: () => setTab("모 임") },
               ]}
               isFullSize
               isBlack
-            />
+            /> */}
             {tab === "후 기" ? (
               <>
-                <UserReviewBar user={user} />
-                <Box h="1px" my={3} mt={4} bg="gray.100" />
-                <Box mt={5} mx={5} mb={0}>
+                {/* <UserReviewBar user={user} /> */}
+                {/* <Box h="1px" my={3} mt={4} bg="gray.100" /> */}
+                <Box mt={4} mx={5} mb={0}>
                   <SectionHeader
                     title={`받은 모임 후기 ${reviewArr?.reviewArr?.length || ""}`}
                     size="sm"

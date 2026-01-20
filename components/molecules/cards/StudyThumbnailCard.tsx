@@ -15,7 +15,7 @@ import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import PlaceImage from "../PlaceImage";
 
-const VOTER_SHOW_MAX = 4;
+const VOTER_SHOW_MAX = 6;
 export const STUDY_MAX_CNT = 8;
 
 export interface StudyThumbnailCardProps {
@@ -54,7 +54,90 @@ export function StudyThumbnailCard({
   hasReview,
   hasAttend,
 }: StudyThumbnailCardProps) {
+  const pa2 = participants;
+  let badge;
+  let location;
+
+  if (place?.name === "크레스타운 잠실점") {
+    const temp: UserSimpleInfoProps = {
+      avatar: {
+        type: 5,
+        bg: 2,
+      },
+    };
+    pa2.push(temp);
+    pa2.push(temp);
+    pa2.push(temp);
+    pa2.push(temp);
+
+    badge = {
+      bg: "mint",
+      text: "공식 스터디",
+    };
+  } else if (place?.name === "디벙크") {
+    const temp: UserSimpleInfoProps = {
+      avatar: {
+        type: 2,
+        bg: 3,
+      },
+    };
+
+    badge = {
+      bg: "blue",
+      text: "모임장 스터디",
+    };
+    pa2.push(temp);
+    const temp2: UserSimpleInfoProps = {
+      avatar: {
+        type: 26,
+        bg: 1,
+      },
+    };
+    pa2.push(temp2);
+    pa2.push(temp);
+  } else if (place?.name === "셀렉티드닉스") {
+    const temp: UserSimpleInfoProps = {
+      avatar: {
+        type: 17,
+        bg: 7,
+      },
+    };
+    badge = {
+      bg: "mint",
+      text: "공식 스터디",
+    };
+    pa2.push(temp);
+    const temp2: UserSimpleInfoProps = {
+      avatar: {
+        type: 22,
+        bg: 5,
+      },
+    };
+    pa2.push(temp2);
+    pa2.push(temp);
+    pa2.push(temp);
+    pa2.push(temp);
+  } else if (place?.name === "실시간 공부 인증") {
+    const temp: UserSimpleInfoProps = {
+      avatar: {
+        type: 2,
+        bg: 3,
+      },
+    };
+
+    for (let i = 0; i < 41; i++) {
+      pa2.push(temp);
+    }
+  } else {
+    badge = {
+      bg: "blue",
+      text: "모임장 스터디",
+    };
+    location = "경기도 수원시 영통구";
+  }
+
   const router = useRouter();
+
   return (
     <CardLink
       href={url}
@@ -72,7 +155,7 @@ export function StudyThumbnailCard({
                   <LocationDotIcon size="md" />
                 </Box>
                 <Box as="span" ml={1} mt="0.5px" color="var(--gray-600)">
-                  {place.branch}
+                  {location || place.branch}
                 </Box>
               </Flex>
               <Title>{place.name}</Title>{" "}
@@ -85,10 +168,10 @@ export function StudyThumbnailCard({
               )}
               <Badge
                 mr="auto"
-                colorScheme={getStudyBadge(studyType, isFutureDate).colorScheme}
+                colorScheme={badge?.bg || getStudyBadge(studyType, isFutureDate).colorScheme}
                 size="md"
               >
-                {getStudyBadge(studyType, isFutureDate).text}
+                {badge?.text || getStudyBadge(studyType, isFutureDate).text}
               </Badge>
             </Flex>
           </Flex>

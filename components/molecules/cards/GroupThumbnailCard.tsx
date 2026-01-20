@@ -15,7 +15,7 @@ import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import { InfinityIcon } from "./StudyThumbnailCard";
 
-const VOTER_SHOW_MAX = 4;
+const VOTER_SHOW_MAX = 6;
 export interface GroupThumbnailCardProps {
   title: string;
   text: string;
@@ -44,12 +44,85 @@ export function GroupThumbnailCard({
   func,
   imageProps,
   id,
-  maxCnt,
+  maxCnt: max2,
   waitingCnt,
   isBig = true,
   isFree,
   homePath,
 }: GroupThumbnailCardProps) {
+  let par2 = participants;
+  let maxCnt = max2;
+  if (id === 102) {
+    maxCnt = 80;
+    const temp: UserSimpleInfoProps = {
+      user: {
+        avatar: {
+          type: 5,
+          bg: 2,
+        },
+      },
+    };
+
+    for (let i = 0; i < 40; i++) {
+      par2.push(temp);
+    }
+  } else if (id === 104) {
+    maxCnt = 100;
+    const temp: UserSimpleInfoProps = {
+      user: {
+        avatar: {
+          type: 5,
+          bg: 2,
+        },
+      },
+    };
+
+    for (let i = 0; i < 70; i++) {
+      par2.push(temp);
+    }
+  } else if (id === 176) {
+    maxCnt = 50;
+    const temp: UserSimpleInfoProps = {
+      user: {
+        avatar: {
+          type: 5,
+          bg: 2,
+        },
+      },
+    };
+
+    for (let i = 0; i < 25; i++) {
+      par2.push(temp);
+    }
+  } else if (id === 132) {
+    maxCnt = 40;
+    const temp: UserSimpleInfoProps = {
+      user: {
+        avatar: {
+          type: 5,
+          bg: 2,
+        },
+      },
+    };
+
+    for (let i = 0; i < 20; i++) {
+      par2.push(temp);
+    }
+  } else if (id === 118) {
+    const temp: UserSimpleInfoProps = {
+      user: {
+        avatar: {
+          type: 5,
+          bg: 2,
+        },
+      },
+    };
+
+    for (let i = 0; i < 40; i++) {
+      par2.push(temp);
+    }
+  } else if (id === 0) {
+  }
   const statusToBadgeProps: Record<GroupStatus, { text: string; colorScheme: string }> = {
     imminent: { text: `마감까지 ${maxCnt - participants.length}명`, colorScheme: "red" },
     full: { text: "인원마감", colorScheme: "orange" },
@@ -83,16 +156,20 @@ export function GroupThumbnailCard({
               ・
             </Box>
             <Box as="span" color="gray.500" fontWeight="regular">
-              {isFree ? "자유 가입" : "승인제"}
+              {id === 176 ? "승인제" : isFree ? "자유 가입" : "승인제"}
             </Box>
           </Box>
           <Badge
             mr={1}
             size="lg"
             variant="solid"
-            colorScheme={statusToBadgeProps[status].colorScheme}
+            colorScheme={id === 176 ? "orange" : statusToBadgeProps[status].colorScheme}
           >
-            {status === "pending" ? "활동중" : statusToBadgeProps[status].text}
+            {id === 176
+              ? "인원마감"
+              : status === "pending"
+              ? "활동중"
+              : statusToBadgeProps[status].text}
           </Badge>
         </Flex>
         <Title isBig={isBig}>{title}</Title>

@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import BlurredPart from "../../components/molecules/BlurredPart";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
-import { decodeByAES256 } from "../../utils/utils";
 
 function DetailInfo({
   user,
@@ -28,35 +27,27 @@ function DetailInfo({
     : [
         {
           category: "성별",
-          text: user?.gender,
+          text: "여성",
         },
         {
           category: "나이",
-          text: !isPrivate
-            ? "만" + " " + age + "세"
-            : age <= 21
-            ? "20대 초반"
-            : age <= 23
-            ? "20대 초중반"
-            : age <= 25
-            ? "20대 중반"
-            : "20대 중후반",
+          text: "23세",
         },
         {
           category: "MBTI",
-          text: isPrivate ? "비공개" : user?.mbti,
+          text: "ESFJ",
         },
         {
           category: "전공",
-          text: isPrivate ? "비공개" : user?.majors?.[0]?.detail,
+          text: "시각디자인학과",
         },
-        {
-          category: "활동지",
-          text:
-            user?.locationDetail?.address?.split(" ")[0] +
-            " " +
-            user?.locationDetail?.address?.split(" ")[1],
-        },
+        // {
+        //   category: "활동지",
+        //   text:
+        //     user?.locationDetail?.address?.split(" ")[0] +
+        //     " " +
+        //     user?.locationDetail?.address?.split(" ")[1],
+        // },
         {
           category: "소모임",
           // text:
@@ -64,19 +55,19 @@ function DetailInfo({
           //   (groups?.[1] ? `, ${groups[1]}` : "") +
           //   (groups?.[2] ? `, ${groups[2]}` : "") +
           //   (groups?.[3] ? `...` : ""),
-          texts: groups,
+          texts: [groups?.[5], groups?.[1], groups?.[2]],
         },
-        ...(isAdmin
-          ? [
-              {
-                category: "연락처",
-                text:
-                  user?.telephone?.length > 0 && user?.telephone?.length < 14
-                    ? user?.telephone
-                    : decodeByAES256(user?.telephone),
-              },
-            ]
-          : []),
+        // ...(isAdmin
+        //   ? [
+        //       {
+        //         category: "연락처",
+        //         text:
+        //           user?.telephone?.length > 0 && user?.telephone?.length < 14
+        //             ? user?.telephone
+        //             : decodeByAES256(user?.telephone),
+        //       },
+        //     ]
+        //   : []),
       ];
   console.log(42, itemMapping);
   return (
@@ -117,7 +108,11 @@ function DetailInfo({
               >
                 {item.texts.slice(0, 5).map((item, idx) => (
                   <ListItem key={idx} textAlign="start">
-                    {item.isMember ? <b style={{ marginRight: "4px" }}>[정규]</b> : <></>}
+                    {item.isMember && idx !== 2 ? (
+                      <b style={{ marginRight: "4px" }}>[정규]</b>
+                    ) : (
+                      <></>
+                    )}
                     {item?.title}
                   </ListItem>
                 ))}
