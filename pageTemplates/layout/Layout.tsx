@@ -324,13 +324,13 @@ function Layout({ children }: ILayout) {
             style={{
               ...(NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
-                    paddingTop: `calc(12px + env(safe-area-inset-top, 0px))`,
+                    paddingTop: `calc(0px + env(safe-area-inset-top, 0px))`,
                   }
                 : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
                   !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
                   !(currentSegment?.[0] === "user" && currentSegment?.[1])
                 ? {
-                    paddingTop: `calc(12px + env(safe-area-inset-top, 0px))`,
+                    paddingTop: `calc(0px + env(safe-area-inset-top, 0px))`,
                     paddingBottom: `calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px))`,
                   }
                 : {}),

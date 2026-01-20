@@ -7,14 +7,16 @@ import HomeGatherCol from "./HomeGatherCol";
 
 function HomeGatherSection() {
   const { data: gathers } = useGatherQuery(-1);
-
+  console.log(4, gathers);
   const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
   const width = windowWidth - 70;
 
   const firstData = gathers?.slice(0, 6);
   const secondData = gathers?.slice(6, 12);
   const thirdData = gathers?.slice(12, 18);
-  console.log(3, gathers);
+
+  const { data: gatherData3, isLoading } = useGatherQuery(0, null, "basic");
+  console.log(42, gatherData3);
   return (
     <>
       <AnimatePresence initial={false}>
@@ -33,16 +35,13 @@ function HomeGatherSection() {
             title="오늘 뭐하지? About 번개"
             subTitle="20대를 위한 편하고 즐거운 만남"
           >
-            <HomeGatherCol gathers={firstData?.slice(0, 3)?.filter((data) => !!data)} isPriority />
+            <HomeGatherCol gathers={[gatherData3?.[1], firstData?.[3]]} isPriority />
           </SlideSectionCol>
           <SlideSectionCol
             title="오늘 뭐하지? About 번개"
             subTitle="20대를 위한 편하고 즐거운 만남"
           >
-            <HomeGatherCol
-              gathers={firstData?.slice(3, 6)?.filter((data) => !!data)}
-              isPriority={false}
-            />
+            <HomeGatherCol gathers={gatherData3?.slice(5, 8)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>

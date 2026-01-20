@@ -25,20 +25,21 @@ function ProfileOverview({ user, gatherCount }: IProfileOverview) {
   const [isIntroduce, setIsIntroduce] = useState(false);
   const isFriend = user?.friend.includes(session?.user.uid);
   const isGuest = session ? session.user.name === "guest" : false;
+  let u: IUser = { ...user, avatar: { type: 17, bg: 113 } };
   return (
     <Flex flexDir="column" my={3}>
       {user ? (
         <>
           <Flex flexDir="column">
             <Flex align="center">
-              <Avatar user={user} size="lg1" />
+              <Avatar user={u} size="lg1" />
               <Flex ml={3} direction="column">
                 <Flex mb={0.5} align="center">
                   <Box mr={1} fontSize="16px" fontWeight="bold">
-                    {user?.name || session?.user.name}
+                    {"박서하" || session?.user.name}
                   </Box>
                   <Box mb={0.5}>
-                    <UserBadge badgeIdx={user?.badge?.badgeIdx} />
+                    <UserBadge badgeIdx={11} />
                   </Box>
                 </Flex>
                 <Box fontSize="10px" color="gray.500">
@@ -82,16 +83,16 @@ function ProfileOverview({ user, gatherCount }: IProfileOverview) {
                 px={4}
                 py={3}
               >
-                "기록하는 걸 좋아해서 어딜 가든 카메라부터 들고 보는 대학생입니다. 📸 제가 찍은
+                기록하는 걸 좋아해서 어딜 가든 카메라부터 들고 보는 대학생입니다. 📸 제가 찍은
                 사진으로 동아리 친구들 인생샷 남겨주는 게 제 행복이에요! 팝업스토어나 감성 넘치는
                 공간 투어하는 거 좋아하시는 분들 저랑 같이 다녀요. About에서 예쁜 추억 많이 남겨보고
-                싶습니다!"
+                싶습니다!
               </Box>
             )}
             <Box fontSize="12px" mt={4}>
-              기록하는 걸 좋아해서 어딜 가든 카메라부터 들고 보는 스타일이에요! 📸 제가 찍은
-              사진으로 동아리 사람들 인생샷 남겨주는 게 제 소소한 행복입니다. 팝업스토어나 감성
-              넘치는 공간 투어하는 거 좋아하시는 분들 저랑 같이 다녀요 ✨
+              새로운 경험 하는 걸 좋아해서 이것저것 배우러 잘 다녀요! 🙋‍♀️ 사진 찍는 게 취미라 앨범에
+              풍경이랑 공간 사진이 진짜 많습니다. 처음엔 낯 가리는 것처럼 보여도 알고 보면 꽤
+              활발하고 장난도 많이 쳐요 🫢
             </Box>
           </Flex>
           <Flex justify="space-between" align="center" mt={6}>
@@ -102,15 +103,18 @@ function ProfileOverview({ user, gatherCount }: IProfileOverview) {
               </RelationItem>
               <RelationItem>
                 <span>모임</span>
-                <span>{gatherCount || 0}</span>
+                <span>{13 || 0}</span>
               </RelationItem>
               <RelationItem>
                 <span>스터디</span>
                 <span>
-                  {Math.floor(
-                    (user.studyRecord.accumulationCnt * 3 + user.studyRecord.accumulationMinutes) /
-                      3,
-                  ) || 0}
+                  {9 ||
+                    Math.floor(
+                      (user.studyRecord.accumulationCnt * 3 +
+                        user.studyRecord.accumulationMinutes) /
+                        3,
+                    ) ||
+                    0}
                 </span>
               </RelationItem>
             </Flex>

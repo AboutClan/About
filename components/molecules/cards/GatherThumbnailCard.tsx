@@ -73,14 +73,70 @@ export function GatherThumbnailCard({
   const participantsMember = par2.filter((par) => par.user?._id !== "65df1ddcd73ecfd250b42c89");
 
   const has = !!(gatherReview || memberReview);
-
+  let image;
   let date = date2;
   const statusProps = STATUS_TO_BADGE_PROPS[dayjs(date).isBefore(dayjs()) ? "expired" : status];
   let title = title2;
   let participants = participantsMember;
 
   let maxCnt = m;
+  if (title === "강남 보드게임 + 저녁") {
+    title = "보드게임 + 맛집 탐방 !";
+    const temp2: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 14,
+          bg: 9,
+        },
+      },
+    };
+    participants = participants.slice(0, 4);
+    participants.push(temp2);
+    participants.push(temp2);
+    participants.push(temp2);
+    participants.push(temp2);
+    participants.push(temp2);
+    participants.push(temp2);
+    participants.push(temp2);
+    maxCnt = 12;
+  } else {
+    date = dayjs(date2).month(0).date(20).toISOString();
+    title = "오랑주리 오르세미술관 🎨 미술 전시";
+    image =
+      "https://d15r8f9iey54a4.cloudfront.net/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%AC%B8%ED%99%94%ED%83%90%EB%B0%A9.jpg";
+    const temp2: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 14,
+          bg: 9,
+        },
+      },
+    };
+    const temp: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 8,
+          bg: 3,
+        },
+      },
+    };
+    const temp3: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 17,
+          bg: 102,
+        },
+      },
+    };
 
+    participants.push(temp);
+    participants.push(temp2);
+    participants.push(temp3);
+    participants.push(temp2);
+    participants.push(temp2);
+    participants.push(temp2);
+    maxCnt = 8;
+  }
   if (title === "맛집 탐방: 야키토리 + 낭낭한 디저트") {
     date = dayjs(date2).date(12).toISOString();
     maxCnt = 12;
@@ -154,7 +210,7 @@ export function GatherThumbnailCard({
       onClick={func}
     >
       <Flex justify="space-between">
-        <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
+        <PlaceImage src={id === 4573 ? image : imageProps.image} priority={imageProps.isPriority} />
         <Flex direction="column" ml="12px" flex={1}>
           <Flex justify="space-between">
             <Flex>
@@ -162,21 +218,13 @@ export function GatherThumbnailCard({
                 mr={1}
                 size="md"
                 variant="solid"
-                colorScheme={
-                  gatherType === "event" || gatherType === "official"
-                    ? "yellow"
-                    : statusProps.colorScheme
-                }
+                colorScheme={category === "소셜 게임" ? "mint" : "red"}
               >
-                {gatherType === "event"
-                  ? "이벤트"
-                  : gatherType === "official"
-                  ? "공식 행사"
-                  : statusProps.text}
+                {category === "소셜 게임" ? "모집중" : "모집 종료"}
               </Badge>
 
               <Badge size="md" colorScheme="gray" color="var(--gray-600)">
-                {category}
+                {id === 4573 ? "감상" : category}
               </Badge>
             </Flex>
             {title === "🎬 영화 관람부터 보드게임, 술자리까지! 11월 ABOUT 올데이 파티 🎲🍻" && (
@@ -194,7 +242,7 @@ export function GatherThumbnailCard({
                   ・
                 </Box>
                 <Box as="span" fontWeight={600}>
-                  {place || "온라인"}
+                  {id === 4573 ? "예술의 전당" : place || "온라인"}
                 </Box>
               </>
             ) : (

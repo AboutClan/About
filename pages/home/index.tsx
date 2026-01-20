@@ -3,26 +3,24 @@ import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
 import HomeFooter from "../../pageTemplates/home/HomeFooter";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeGroupSection from "../../pageTemplates/home/HomeGroupSection";
-import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
 import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
-import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 
 function Home() {
   return (
     <>
       <HomeInitialSetting />
-      <HomeHeader />
+      {/* <HomeHeader /> */}
       <Slide isNoPadding>
         <HomeBannerSlide />
       </Slide>
       <Slide>
         <HomeNav />
       </Slide>
-      <Slide isNoPadding>
+      {/* <Slide isNoPadding>
         <HomeStudySection />
-      </Slide>
+      </Slide> */}
       <Slide isNoPadding>
         <HomeGatherSection />
       </Slide>

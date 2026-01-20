@@ -168,6 +168,7 @@ const AvatarContainer = styled.div<{
 }>`
   overflow: hidden;
   position: relative;
+  border: var(--border);
   border-radius: ${(props) => (props.isSquare ? "12px" : "50%")};
   background-color: white;
   width: ${(props) => `${props.size}px`};
