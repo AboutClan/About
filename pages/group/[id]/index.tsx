@@ -65,7 +65,11 @@ function GroupDetail() {
   const findMyInfo =
     group?.participants && group.participants.find((who) => who?.user?._id === session?.user?.id);
 
-  const isAdmin = false;
+  const isAdmin =
+    findMyInfo?.role === "admin" ||
+    findMyInfo?.role === "manager" ||
+    session?.user.name === "어바웃" ||
+    session?.user.uid === "2259633694";
 
   const handleGatheringButton = () => {
     setGatherWriting({

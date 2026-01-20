@@ -46,16 +46,20 @@ function GroupHeader({ group }: IGroupHeader) {
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
+  const findMyInfo = group?.participants.find((par) => {
+    return par.user._id === userInfo?._id;
+  });
 
-  const isAdmin = false;
+  const isAdmin =
+    findMyInfo?.role === "admin" ||
+    findMyInfo?.role === "manager" ||
+    session?.user.name === "어바웃" ||
+    session?.user.uid === "2259633694";
   const isMember =
     session?.user.uid === "2259633694" ||
     session?.user.uid === "3224546232" ||
     group?.participants.some((par) => par.user?.uid === session?.user.uid);
 
-  const findMyInfo = group?.participants.find((par) => {
-    return par.user._id === userInfo?._id;
-  });
 
   const [isSettigModal, setIsSettingModal] = useState(false);
   const [isDepositDrawer, setIsDepositDrawer] = useState(false);
