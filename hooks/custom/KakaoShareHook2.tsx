@@ -23,7 +23,9 @@ export function useKakaoShare() {
     date?: string;
     extraCnt?: number;
   }) => {
+    console.log(1, url);
     if (isWebView()) {
+      console.log(2, url);
       nativeMethodUtils.share(url);
       return;
     }
