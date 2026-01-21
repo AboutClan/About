@@ -60,7 +60,6 @@ function GroupHeader({ group }: IGroupHeader) {
     session?.user.uid === "3224546232" ||
     group?.participants.some((par) => par.user?.uid === session?.user.uid);
 
-
   const [isSettigModal, setIsSettingModal] = useState(false);
   const [isDepositDrawer, setIsDepositDrawer] = useState(false);
   const [isMannerModal, setIsMannerModal] = useState(false);
@@ -156,7 +155,7 @@ function GroupHeader({ group }: IGroupHeader) {
             title: group?.title,
             subtitle: group?.guide,
             img: group?.image,
-            url: "https://study-about.club" + router.asPath,
+            url: "https://about20s.club" + router.asPath,
           },
         },
         ...(isMember && !isAdmin

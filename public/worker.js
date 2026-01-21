@@ -14,7 +14,7 @@ self.addEventListener("push", (event) => {
     vibrate: data?.vibrate,
     actions: data?.actions || [
       {
-        action: "https://study-about.club/home",
+        action: "https://about20s.club/home",
         title: "ABOUT",
         icon: data.icon,
       },

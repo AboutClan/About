@@ -140,7 +140,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
         date: gatherData.date,
         subtitle: gatherData?.content,
         img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
-        url: "https://study-about.club" + router.asPath,
+        url: "https://about20s.club" + router.asPath,
       },
     },
   ];

@@ -128,7 +128,7 @@ function SecretSquareDetailPage() {
         subtitle: squareDetail?.content,
         img: "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0.jpg",
 
-        url: "https://study-about.club" + router.asPath,
+        url: "https://about20s.club" + router.asPath,
       },
     },
   ];
@@ -394,15 +394,17 @@ function SecretSquareDetailPage() {
 }
 
 function DeleteIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="16px"
-    viewBox="0 -960 960 960"
-    width="16px"
-    fill="var(--color-gray)"
-  >
-    <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm80-160h80v-360h-80v360Zm160 0h80v-360h-80v360Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="16px"
+      viewBox="0 -960 960 960"
+      width="16px"
+      fill="var(--color-gray)"
+    >
+      <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm80-160h80v-360h-80v360Zm160 0h80v-360h-80v360Z" />
+    </svg>
+  );
 }
 
 export default SecretSquareDetailPage;

@@ -39,7 +39,7 @@ function StudyHeader({ placeInfo, date }: IStudyHeader) {
             ? "스터디 멤버 모집중"
             : placeInfo?.location.address,
         img: placeInfo?.image || getRandomImage(STUDY_COVER_IMAGES),
-        url: "https://study-about.club" + router.asPath,
+        url: "https://about20s.club" + router.asPath,
       },
     },
   ];

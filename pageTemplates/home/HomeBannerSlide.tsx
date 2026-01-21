@@ -16,7 +16,7 @@ function HomeBannerSlide() {
           "https://docs.google.com/forms/d/1ghBI8sizrq19T9kwEsM_kBBjdPDnrzFtlZnhxPeUobc",
         );
       } else if (category === "faq") {
-        router.push(`https://study-about.club/faq`);
+        router.push(`https://about20s.club/faq`);
       } else if (category === "friendInvite") {
         navigateExternalLink("https://pf.kakao.com/_SaWXn/chat");
       } else if (category == "study") {
