@@ -1,0 +1,61 @@
+{
+  "ORD-1769015359936-1f3669522aecc8": {
+    "orderNo": "ORD-1769015359936-1f3669522aecc8",
+    "tid": "260122020935GU00N3e7",
+    "amount": "2000",
+    "paymethod": "CARD",
+    "acceptDate": "20260122021000",
+    "status": "SUCCESS",
+    "raw": {
+      "RESULTCODE": "0000",
+      "RESULTMSG": "성공",
+      "dec": {
+        "RESULTCODE": "0000",
+        "RESULTMSG": "성공",
+        "decryptData": {
+          "PAY_METHOD": "CARD",
+          "RESULTCODE": "0000",
+          "RESULTMSG": "결제성공",
+          "ORDERNO": "ORD-1769015359936-1f3669522aecc8",
+          "AMOUNT": "2000",
+          "TID": "260122020935GU00N3e7",
+          "ACCEPTDATE": "20260122021000",
+          "ACCEPTNO": "",
+          "TRNO": "2026012202093400637100",
+          "MOBILE_COMPANY": "",
+          "CARDCODE": "KAKAO",
+          "CARDNAME": "",
+          "QUOTA": "00",
+          "ETC1": "",
+          "ETC2": "",
+          "ETC3": "",
+          "ETC4": "",
+          "ETC5": ""
+        }
+      },
+      "cert": {
+        "RESULTCODE": "0000",
+        "RESULTMSG": "결제성공",
+        "ORDERNO": "ORD-1769015359936-1f3669522aecc8",
+        "AMOUNT": "2000",
+        "BUYERNAME": "테스터",
+        "BUYEREMAIL": "",
+        "PRODUCTNAME": "어바웃 결제 테스트",
+        "PRODUCTCODE": "637100",
+        "PAYMETHOD": "CARD",
+        "BUYERID": "guest",
+        "ACCEPTNO": "",
+        "ACCEPTDATE": "20260122021000",
+        "TID": "260122020935GU00N3e7",
+        "CANCELDATE": "",
+        "CANCELMSG": "",
+        "ACCOUNTNO": "",
+        "RECEIVERNAME": "",
+        "DEPOSITENDDATE": "",
+        "CARDNAME": "",
+        "CARDCODE": "KAKAO"
+      }
+    },
+    "updatedAt": "2026-01-21T17:10:01.679Z"
+  }
+}
