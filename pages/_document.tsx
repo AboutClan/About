@@ -51,7 +51,6 @@ export default class MyDocument extends Document {
           />
           <link rel="manifest" href="/manifest.json" />
           <meta property="og:type" content="website" key="og:type" />
-
           <meta property="og:locale" content="ko_KR" key="og:locale" />
           <meta
             property="og:site_name"
@@ -59,7 +58,12 @@ export default class MyDocument extends Document {
             key="og:site_name"
           />
           <meta charSet="utf-8" key="charset" />
-          <Script src="https://kit.fontawesome.com/4071928605.js" crossOrigin="anonymous"></Script>
+          <Script
+            src="https://kit.fontawesome.com/4071928605.js"
+            crossOrigin="anonymous"
+          ></Script>{" "}
+          {/* <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+         <script src="https://sandbox.cookiepayments.com/js/cookiepayments-1.1.4.js"></script> */}
         </Head>
         <body>
           <Main />
