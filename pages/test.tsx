@@ -15,7 +15,7 @@ export default function CookiePayTest() {
   useEffect(() => {
     if (typeof cookiepayments === "undefined") return;
     console.log(process.env.NEXT_PUBLIC_COOKIEPAY_API_ID);
-    cookiepayments.init({ api_id: " jadr5ul2hnr" as string });
+    cookiepayments.init({ api_id: "jadr5ul2hnr" as string });
     setReady(true);
   }, []);
 
