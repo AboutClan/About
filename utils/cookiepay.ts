@@ -24,15 +24,16 @@ export async function cookiepayDecrypt(encData: string) {
   });
 
   const text = await r.text();
-  const json = JSON.parse(text);
-  return json;
+  return JSON.parse(text);
 }
 
+// ✅ 여기부터만 바뀜
 export async function cookiepayToken() {
-  const pay2_id = process.env.COOKIEPAY_PAY2_ID;
-  const pay2_key = process.env.COOKIEPAY_PAY2_KEY;
+  const pay2_id = process.env.COOKIEPAY_API_ID;
+  const pay2_key = process.env.COOKIEPAY_API_KEY;
+
   if (!pay2_id || !pay2_key) {
-    throw new Error("Missing env: COOKIEPAY_PAY2_ID / COOKIEPAY_PAY2_KEY");
+    throw new Error("Missing env: COOKIEPAY_API_ID / COOKIEPAY_API_KEY");
   }
 
   const url = `${cookiepayBaseUrl()}/payAuth/token`;
@@ -43,7 +44,11 @@ export async function cookiepayToken() {
   });
 
   const text = await r.text();
-  return JSON.parse(text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(`TOKEN non-JSON: ${text}`);
+  }
 }
 
 export async function cookiepayPaycert(tid: string) {
@@ -63,6 +68,9 @@ export async function cookiepayPaycert(tid: string) {
   });
 
   const text = await r.text();
-  const json = JSON.parse(text);
-  return json;
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(`paycert non-JSON: ${text}`);
+  }
 }
