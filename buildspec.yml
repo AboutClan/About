@@ -22,6 +22,7 @@ phases:
       - export NEXT_PUBLIC_NEXTAUTH_URL=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_NEXTAUTH_URL')
       - export NEXT_PUBLIC_TOSS_CLIENT_KEY=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_TOSS_CLIENT_KEY')
       - export NEXT_PUBLIC_COOKIEPAY_API_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_COOKIEPAY_API_ID')
+      - export NEXTAUTH_SECRET=$(echo "$SECRETS" | jq -r '.NEXTAUTH_SECRET')
 
       # ✅ 서버 전용(비공개) - Next build에 굳이 넣을 필요 없지만, 네 Dockerfile에서 build 단계에 쓰면 같이 넘겨도 됨
       - export COOKIEPAY_API_ID=$(echo "$SECRETS" | jq -r '.COOKIEPAY_API_ID')
@@ -60,6 +61,7 @@ phases:
           --build-arg COOKIEPAY_API_KEY="$COOKIEPAY_API_KEY" \
           --build-arg COOKIEPAY_MODE="$COOKIEPAY_MODE" \
           --build-arg COOKIEPAY_BASE_URL="$COOKIEPAY_BASE_URL" \
+          --build-arg NEXTAUTH_SECRET="$NEXTAUTH_SECRET" \
           -t next-app .
 
       - docker tag next-app 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
