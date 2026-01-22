@@ -55,11 +55,10 @@ export const nativeMethodUtils = {
     );
   },
   exitApp: () => {
-    return;
-    // window.ReactNativeWebView?.postMessage(
-    //   JSON.stringify({
-    //     type: NATIVE_CUSTOM_EVENTS.EXIT_APP,
-    //   }),
-    // );
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        type: NATIVE_CUSTOM_EVENTS.EXIT_APP,
+      }),
+    );
   },
 };

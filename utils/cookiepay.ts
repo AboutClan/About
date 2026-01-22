@@ -29,9 +29,11 @@ export async function cookiepayDecrypt(encData: string) {
 }
 
 export async function cookiepayToken() {
-  const pay2_id = process.env.COOKIEPAY_API_ID;
-  const pay2_key = process.env.COOKIEPAY_API_KEY;
-  if (!pay2_id || !pay2_key) throw new Error("Missing env: COOKIEPAY_API_ID / COOKIEPAY_API_KEY");
+  const pay2_id = process.env.COOKIEPAY_PAY2_ID;
+  const pay2_key = process.env.COOKIEPAY_PAY2_KEY;
+  if (!pay2_id || !pay2_key) {
+    throw new Error("Missing env: COOKIEPAY_PAY2_ID / COOKIEPAY_PAY2_KEY");
+  }
 
   const url = `${cookiepayBaseUrl()}/payAuth/token`;
   const r = await fetch(url, {
@@ -41,8 +43,7 @@ export async function cookiepayToken() {
   });
 
   const text = await r.text();
-  const json = JSON.parse(text);
-  return json;
+  return JSON.parse(text);
 }
 
 export async function cookiepayPaycert(tid: string) {

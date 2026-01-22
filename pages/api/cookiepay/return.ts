@@ -22,6 +22,7 @@ function readRawBody(req: NextApiRequest): Promise<string> {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log("cookiepay return content-type:", req.headers["content-type"]);
   try {
     const query = (req.query ?? {}) as Record<string, any>;
 

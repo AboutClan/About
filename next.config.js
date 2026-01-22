@@ -1,9 +1,11 @@
 /** @type {import('next').NextConfig} */
+import withPWAInit from "next-pwa";
+
 const isProduction = process.env.NODE_ENV === "production";
 
-const withPWA = require("next-pwa")({
+const withPWA = withPWAInit({
   dest: "public",
-  disable: !isProduction, // ✅ 서버 빌드/배포에서는 prod면 켜짐
+  disable: !isProduction,
   sourcemap: !isProduction,
 });
 
