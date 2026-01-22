@@ -30,7 +30,7 @@ export default function CookiePayTest() {
             AMOUNT: "2000",
             BUYERNAME: "테스터",
             PAYMETHOD: "CARD",
-            RETURNURL: "http://localhost:3000/api/cookiepay/return",
+            RETURNURL: "https://study-about.club/api/cookiepay/return",
           });
         }}
       >
