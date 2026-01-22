@@ -23,6 +23,7 @@ phases:
       - export NEXT_PUBLIC_TOSS_CLIENT_KEY=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_TOSS_CLIENT_KEY')
       - export NEXT_PUBLIC_COOKIEPAY_API_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_COOKIEPAY_API_ID')
       - export NEXTAUTH_SECRET=$(echo "$SECRETS" | jq -r '.NEXTAUTH_SECRET')
+      --build-arg NEXT_PUBLIC_SERVER_URI=https://about-back.kro.kr
 
       # ✅ 서버 전용(비공개) - Next build에 굳이 넣을 필요 없지만, 네 Dockerfile에서 build 단계에 쓰면 같이 넘겨도 됨
       - export COOKIEPAY_API_ID=$(echo "$SECRETS" | jq -r '.COOKIEPAY_API_ID')
