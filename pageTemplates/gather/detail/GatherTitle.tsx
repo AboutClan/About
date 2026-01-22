@@ -9,9 +9,10 @@ interface IGatherTitle {
   type: GatherCategory;
   age: number[];
   isFree: boolean;
+  isGroupGather: boolean;
 }
 
-function GatherTitle({ title, category, type, age, isFree }: IGatherTitle) {
+function GatherTitle({ title, category, type, age, isFree, isGroupGather }: IGatherTitle) {
   const isDefault = age[0] === 19 && age[1] === 28;
 
   return (
@@ -23,6 +24,22 @@ function GatherTitle({ title, category, type, age, isFree }: IGatherTitle) {
           />
         </Box>
         <MainBadge text={isFree ? "선착순" : "승인제"} type="sub" />
+        {isGroupGather && (
+          <Badge
+            px={2}
+            py={1}
+            fontSize="10px"
+            fontWeight={400}
+            borderRadius="4px"
+            ml={1}
+            size="md"
+            variant="subtle"
+            bg="blue.50"
+            color="blue.500"
+          >
+            소모임 연동
+          </Badge>
+        )}
         {!isDefault && (
           <Badge
             px={2}

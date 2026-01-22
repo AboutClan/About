@@ -62,8 +62,7 @@ export default class MyDocument extends Document {
             src="https://kit.fontawesome.com/4071928605.js"
             crossOrigin="anonymous"
           ></Script>{" "}
-          {/* <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-         <script src="https://sandbox.cookiepayments.com/js/cookiepayments-1.1.4.js"></script> */}
+       
         </Head>
         <body>
           <Main />

@@ -4,9 +4,9 @@ import "../styles/variable.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
@@ -45,7 +45,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       <Script src="https://code.jquery.com/jquery-1.12.4.min.js"></Script>
 
       {/* ✅ 가이드 그대로: cookiepayments 다음 */}
-      <Script src="https://sandbox.cookiepayments.com/js/cookiepayments-1.1.4.js"></Script>
+      <Script src="https://www.cookiepayments.com/js/cookiepayments-1.1.4.js"></Script>
 
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>

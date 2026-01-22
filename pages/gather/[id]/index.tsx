@@ -1,18 +1,20 @@
 import "dayjs/locale/ko";
 
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import Divider from "../../../components/atoms/Divider";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
+import { GroupThumbnailCard } from "../../../components/molecules/cards/GroupThumbnailCard";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
+import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
+import { createGroupThumbnailProps } from "../../../pages/group/index";
 import GatherBottomNav from "../../../pageTemplates/gather/detail/GatherBottomNav";
 import GatherComments from "../../../pageTemplates/gather/detail/GatherComments";
 import GatherContent from "../../../pageTemplates/gather/detail/GatherContent";
@@ -43,6 +45,10 @@ function GatherDetail() {
     },
   });
 
+  const groupId = gather?.groupId;
+  const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
+  console.log(3, groupId, group);
+  console.log(gather);
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||
     gather?.participants.some((who) => who?.user.uid === session?.user.uid);
@@ -82,6 +88,7 @@ function GatherDetail() {
                 category={gather.type.title}
                 age={gather.age}
                 isFree={!gather.isApprovalRequired}
+                isGroupGather={!!groupId}
               />
               <GatherDetailInfo data={gather} isMember={isMember} />
               <GatherContent
@@ -92,6 +99,16 @@ function GatherDetail() {
               />
               <Divider />
               <GatherParticipation data={gather} />
+              {group && (
+                <Box px={5} mt={8}>
+                  <Box mb={2} fontSize="16px" fontWeight="semibold">
+                    연동된 소모임
+                  </Box>
+                  <GroupThumbnailCard
+                    {...createGroupThumbnailProps(group, "pending", null, null, true)}
+                  />
+                </Box>
+              )}
               <GatherGuide
                 isAdmin={(gather?.user as UserSimpleInfoProps)?._id === session?.user.id}
               />
