@@ -108,7 +108,7 @@ function DetailInfo({
               >
                 {item.texts.slice(0, 5).map((item, idx) => (
                   <ListItem key={idx} textAlign="start">
-                    {item.isMember && idx !== 2 ? (
+                    {item?.isMember && idx !== 2 ? (
                       <b style={{ marginRight: "4px" }}>[정규]</b>
                     ) : (
                       <></>

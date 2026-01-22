@@ -71,7 +71,7 @@ export function GatherThumbnailCard({
   homePath,
 }: GatherThumbnailCardProps) {
   const participantsMember = par2.filter((par) => par.user?._id !== "65df1ddcd73ecfd250b42c89");
-
+  console.log(35, id);
   const has = !!(gatherReview || memberReview);
   let image;
   let date = date2;
@@ -99,7 +99,7 @@ export function GatherThumbnailCard({
     participants.push(temp2);
     participants.push(temp2);
     maxCnt = 12;
-  } else {
+  } else if (id === 4705) {
     date = dayjs(date2).month(0).date(20).toISOString();
     title = "오랑주리 오르세미술관 🎨 미술 전시";
     image =
@@ -132,10 +132,38 @@ export function GatherThumbnailCard({
     participants.push(temp);
     participants.push(temp2);
     participants.push(temp3);
-    participants.push(temp2);
-    participants.push(temp2);
-    participants.push(temp2);
+
     maxCnt = 8;
+  } else {
+    date = dayjs(date2).month(0).date(21).hour(13).toISOString();
+    const temp2: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 14,
+          bg: 9,
+        },
+      },
+    };
+    const temp: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 8,
+          bg: 3,
+        },
+      },
+    };
+    const temp3: IGatherParticipants = {
+      user: {
+        avatar: {
+          type: 17,
+          bg: 102,
+        },
+      },
+    };
+
+    participants.push(temp);
+    participants.push(temp2);
+    participants.push(temp3);
   }
   if (title === "맛집 탐방: 야키토리 + 낭낭한 디저트") {
     date = dayjs(date2).date(12).toISOString();
@@ -210,7 +238,10 @@ export function GatherThumbnailCard({
       onClick={func}
     >
       <Flex justify="space-between">
-        <PlaceImage src={id === 4573 ? image : imageProps.image} priority={imageProps.isPriority} />
+        <PlaceImage
+          src={id === 4705 || id === 4705 ? image : imageProps.image}
+          priority={imageProps.isPriority}
+        />
         <Flex direction="column" ml="12px" flex={1}>
           <Flex justify="space-between">
             <Flex>
@@ -224,7 +255,7 @@ export function GatherThumbnailCard({
               </Badge>
 
               <Badge size="md" colorScheme="gray" color="var(--gray-600)">
-                {id === 4573 ? "감상" : category}
+                {id === 4705 || id === 4705 ? "감상" : category}
               </Badge>
             </Flex>
             {title === "🎬 영화 관람부터 보드게임, 술자리까지! 11월 ABOUT 올데이 파티 🎲🍻" && (
@@ -242,7 +273,7 @@ export function GatherThumbnailCard({
                   ・
                 </Box>
                 <Box as="span" fontWeight={600}>
-                  {id === 4573 ? "예술의 전당" : place || "온라인"}
+                  {id === 4705 ? "예술의 전당" : place || "온라인"}
                 </Box>
               </>
             ) : (

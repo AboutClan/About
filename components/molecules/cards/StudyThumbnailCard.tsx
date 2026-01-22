@@ -54,9 +54,10 @@ export function StudyThumbnailCard({
   hasReview,
   hasAttend,
 }: StudyThumbnailCardProps) {
-  const pa2 = participants;
+  let pa2 = participants;
   let badge;
   let location;
+  let name;
 
   if (place?.name === "크레스타운 잠실점") {
     const temp: UserSimpleInfoProps = {
@@ -133,7 +134,30 @@ export function StudyThumbnailCard({
       bg: "blue",
       text: "모임장 스터디",
     };
-    location = "경기도 수원시 영통구";
+    name = "카페카탈로그";
+    location = "경기도 수원시 팔달구";
+    pa2 = pa2.slice(0, 1);
+    const temp2: UserSimpleInfoProps = {
+      avatar: {
+        type: 24,
+        bg: 7,
+      },
+    };
+    const temp3: UserSimpleInfoProps = {
+      avatar: {
+        type: 17,
+        bg: 104,
+      },
+    };
+    const temp4: UserSimpleInfoProps = {
+      avatar: {
+        type: 12,
+        bg: 0,
+      },
+    };
+    pa2.push(temp2);
+    pa2.push(temp3);
+    pa2.push(temp4);
   }
 
   const router = useRouter();
@@ -158,7 +182,7 @@ export function StudyThumbnailCard({
                   {location || place.branch}
                 </Box>
               </Flex>
-              <Title>{place.name}</Title>{" "}
+              <Title>{name || place.name}</Title>{" "}
             </Box>
             <Flex align="center" mb="auto">
               {isMyStudy && (
@@ -203,13 +227,13 @@ export function StudyThumbnailCard({
                   WebkitBoxOrient: "vertical",
                 }}
               >
-                {place.address}
+                {pa2.length < 5 ? "경기 수원시 팔달구 아주로 47번길 13" : place.address}
               </Box>
             </Flex>
           </Subtitle>
           <Flex mb={1} mt="auto" alignItems="center" justify="space-between">
             <Box>
-              <AvatarGroupsOverwrap users={participants} maxCnt={status ? 8 : VOTER_SHOW_MAX} />
+              <AvatarGroupsOverwrap users={pa2} maxCnt={status ? 8 : VOTER_SHOW_MAX} />
             </Box>
             <Flex align="center" color="var(--gray-500)">
               <UserIcon size="sm" />
@@ -225,7 +249,7 @@ export function StudyThumbnailCard({
                       : "var(--color-gray)"
                   }
                 >
-                  {participants.length}
+                  {pa2.length}
                 </Box>
                 <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
                   /

@@ -35,13 +35,13 @@ function HomeGatherSection() {
             title="오늘 뭐하지? About 번개"
             subTitle="20대를 위한 편하고 즐거운 만남"
           >
-            <HomeGatherCol gathers={[gatherData3?.[1], firstData?.[3]]} isPriority />
+            <HomeGatherCol gathers={[gathers?.[12], firstData?.[3], gathers?.[0]]} isPriority />
           </SlideSectionCol>
           <SlideSectionCol
             title="오늘 뭐하지? About 번개"
             subTitle="20대를 위한 편하고 즐거운 만남"
           >
-            <HomeGatherCol gathers={gatherData3?.slice(5, 8)} isPriority={false} />
+            <HomeGatherCol gathers={gathers?.slice(5, 8)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>

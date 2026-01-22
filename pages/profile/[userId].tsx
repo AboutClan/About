@@ -218,8 +218,9 @@ function ProfilePage() {
                           </Box>
                         </Flex>
                         <Box mb={2} as="p" fontWeight="light" fontSize="12px" lineHeight="18px">
-                          낯 가린다는 말 다 거짓말이에요.ㅋㅋㅋ 한마디 하면 열 마디로 반응해주는
-                          리액션 장인이라 금방 친해졌어요! 👍
+                          {idx === 0
+                            ? "낯 가린다는 말 다 거짓말이에요.ㅋㅋㅋ 한마디 하면 열 마디로 반응해주는 리액션 장인이라 금방 친해졌어요! 👍"
+                            : "덕분에 오늘 재밌었어요! 🙂"}
                         </Box>{" "}
                         <Flex h="16px" align="center" fontSize="10px" color="gray.600">
                           <Box color="gray.600" fontWeight="500">
