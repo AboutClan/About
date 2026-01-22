@@ -1,69 +1,23 @@
 /** @type {import('next').NextConfig} */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-
 const isProduction = process.env.NODE_ENV === "production";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+
 const withPWA = require("next-pwa")({
   dest: "public",
-  disable: typeof window === "undefined" || !isProduction,
+  disable: !isProduction, // ✅ 서버 빌드/배포에서는 prod면 켜짐
   sourcemap: !isProduction,
 });
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const baseNextConfig = {
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: "/:path*",
-  //       has: [
-  //         {
-  //           type: "host",
-  //           value: "studyabout.herokuapp.com",
-  //         },
-  //       ],
-  //       destination: "https://about-front.kro.kr/:path*",
-  //       permanent: true,
-  //     },
-  //     {
-  //       source: "/:path*",
-  //       has: [
-  //         {
-  //           type: "host",
-  //           value: "about-front.kro.kr",
-  //         },
-  //       ],
-  //       destination: "/:path*",
-  //       permanent: false, // 기존 요청 유지
-  //     },
-  //   ];
-  // },
+const nextConfig = withPWA({
+  // ✅ env: {} 블록은 제거 권장
+  // - NEXT_PUBLIC_* 는 빌드 타임에 박히고
+  // - 서버 전용 변수는 런타임에 process.env로 읽는 게 안전함
 
-  env: {
-    NEXT_PUBLIC_KAKAO_CLIENT_ID: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID,
-    NEXT_PUBLIC_KAKAO_JS_KEY: process.env.NEXT_PUBLIC_KAKAO_JS_KEY,
-    NEXT_PUBLIC_KAKAO_JS: process.env.NEXT_PUBLIC_KAKAO_JS,
-    NEXT_PUBLIC_PWA_KEY: process.env.NEXT_PUBLIC_PWA_KEY,
-    NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
-    NEXT_PUBLIC_SERVER_URI: process.env.NEXT_PUBLIC_SERVER_URI,
-    NEXT_PUBLIC_NEXTAUTH_URL: process.env.NEXT_PUBLIC_NEXTAUTH_URL,
-    NEXT_PUBLIC_NAVER_AI_CLIENT_ID: process.env.NEXT_PUBLIC_NAVER_AI_CLIENT_ID,
-    NEXT_PUBLIC_TOSS_CLIENT_KEY: process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY,
-    NEXT_PUBLIC_COOKIEPAY_API_ID: process.env.NEXT_PUBLIC_COOKIEPAY_API_ID,
-    COOKIEPAY_API_ID: process.env.COOKIEPAY_API_ID,
-    COOKIEPAY_API_KEY: process.env.COOKIEPAY_API_KEY,
-    COOKIEPAY_MODE: process.env.COOKIEPAY_MODE,
-    COOKIEPAY_BASE_URL: process.env.COOKIEPAY_BASE_URL,
-  },
-  // output: "standalone",
   images: {
     unoptimized: true,
-
-    // 2) 최신 포맷으로 자동 변환 (용량↓)
     formats: ["image/avif", "image/webp"],
-
     domains: [
       "study-about.club",
-      "localhost:3000",
+      "localhost",
       "studyabout.s3.ap-northeast-2.amazonaws.com",
       "p.kakaocdn.net",
       "k.kakaocdn.net",
@@ -75,76 +29,31 @@ const baseNextConfig = {
       {
         protocol: "https",
         hostname: "studyabout.s3.ap-northeast-2.amazonaws.com",
-        pathname: "/**", // 모든 경로 허용
+        pathname: "/**",
       },
-      {
-        protocol: "https",
-        hostname: "localhost:3000",
-        pathname: "/**", // 모든 경로 허용
-      },
-      {
-        protocol: "https",
-        hostname: "user-images.githubusercontent.com",
-        pathname: "/**", // 모든 경로 허용
-      },
-      {
-        protocol: "https",
-        hostname: "p.kakaocdn.net",
-        pathname: "/**", // 모든 경로 허용
-      },
-      {
-        protocol: "http",
-        hostname: "p.kakaocdn.net",
-        pathname: "/**", // 모든 경로 허용
-      },
-      {
-        protocol: "https",
-        hostname: "k.kakaocdn.net",
-        pathname: "/**", // 모든 경로 허용
-      },
-      {
-        protocol: "http",
-        hostname: "k.kakaocdn.net",
-        pathname: "/**", // 모든 경로 허용
-      },
-      {
-        protocol: "http",
-        hostname: "t1.kakaocdn.net",
-        pathname: "/**", // 모든 경로 허용
-      },
-      {
-        protocol: "http",
-        hostname: "img1.kakaocdn.net",
-        pathname: "/**", // 모든 경로 허용
-      },
-      {
-        protocol: "https",
-        hostname: "*.cloudfront.net",
-        pathname: "/**", // 모든 경로 허용
-      },
+      { protocol: "https", hostname: "user-images.githubusercontent.com", pathname: "/**" },
+      { protocol: "https", hostname: "p.kakaocdn.net", pathname: "/**" },
+      { protocol: "http", hostname: "p.kakaocdn.net", pathname: "/**" },
+      { protocol: "https", hostname: "k.kakaocdn.net", pathname: "/**" },
+      { protocol: "http", hostname: "k.kakaocdn.net", pathname: "/**" },
+      { protocol: "http", hostname: "t1.kakaocdn.net", pathname: "/**" },
+      { protocol: "http", hostname: "img1.kakaocdn.net", pathname: "/**" },
+      { protocol: "https", hostname: "*.cloudfront.net", pathname: "/**" },
     ],
-    deviceSizes: [320, 450], // 반응형은 모바일 maxW까지만
+    deviceSizes: [320, 450],
     imageSizes: [16, 32, 40, 48, 60, 72, 80, 120, 240, 300, 360, 450, 600],
   },
 
   compiler: {
     styledComponents: true,
   },
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "Set-Cookie",
-            value: "cookieName=cookieValue; Path=/; HttpOnly; Secure; SameSite=None;",
-          },
-        ],
-      },
-    ];
-  },
-};
 
-const nextConfig = withPWA(baseNextConfig);
+  // ⚠️ Set-Cookie를 headers()로 박는 건 보통 역효과가 많아서 추천 안 함.
+  // 지금 네가 쿠키 처리 때문에 넣은 거라면, 실제로 원하는 쿠키를 여기서 "고정값"으로 넣으면 의미가 없음.
+  // 필요하면 API 응답(NextAuth/서버)에서 Set-Cookie로 내려야 함.
+  async headers() {
+    return [];
+  },
+});
 
 module.exports = nextConfig;

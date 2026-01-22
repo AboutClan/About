@@ -1,70 +1,86 @@
 #!/bin/bash
+set -euo pipefail
 
-set -e  # 오류 발생 시 즉시 종료
+APP_DIR="/home/ubuntu/frontend"
+ENV_FILE="$APP_DIR/.env"
+IMAGE="294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest"
+CONTAINER="next-app"
+SECRET_ID="about/frontend"
+REGION="ap-northeast-2"
 
-# 디렉토리 권한 설정
-sudo chmod -R 775 /home/ubuntu/frontend
-sudo chown -R ubuntu:ubuntu /home/ubuntu/frontend
+echo "==> [1] Prepare directory"
+sudo mkdir -p "$APP_DIR"
+sudo chown -R ubuntu:ubuntu "$APP_DIR"
+sudo chmod -R 775 "$APP_DIR"
 
-# 디렉토리 이동
-cd /home/ubuntu/frontend
+cd "$APP_DIR"
 
-# ECR 로그인
-aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
+echo "==> [2] Ensure jq exists"
+if ! command -v jq >/dev/null 2>&1; then
+  echo "jq not found. installing..."
+  sudo apt-get update -y
+  sudo apt-get install -y jq
+fi
 
-# SecretsManager에서 모든 값 가져오기
-SECRETS=$(aws secretsmanager get-secret-value --secret-id about/frontend --query SecretString --output text)
+echo "==> [3] Login to ECR"
+aws ecr get-login-password --region "$REGION" | docker login --username AWS --password-stdin 294951093594.dkr.ecr.$REGION.amazonaws.com
 
-# .env 파일 생성
-sudo cat <<EOF > /home/ubuntu/frontend/.env
-EDGE_AWS_ACCESS_KEY_ID=$(echo "$SECRETS" | jq -r '.EDGE_AWS_ACCESS_KEY_ID')
-EDGE_AWS_SECRET_ACCESS_KEY=$(echo "$SECRETS" | jq -r '.EDGE_AWS_SECRET_ACCESS_KEY')
-EDGE_DISTRIBUTION_ID=$(echo "$SECRETS" | jq -r '.EDGE_DISTRIBUTION_ID')
-EDGE_URL=$(echo "$SECRETS" | jq -r '.EDGE_URL')
-KAKAO_CLIENT_ID=$(echo "$SECRETS" | jq -r '.KAKAO_CLIENT_ID')
-KAKAO_CLIENT_SECRET=$(echo "$SECRETS" | jq -r '.KAKAO_CLIENT_SECRET')
-MONGODB_URI=$(echo "$SECRETS" | jq -r '.MONGODB_URI')
-NEXTAUTH_SECRET=$(echo "$SECRETS" | jq -r '.NEXTAUTH_SECRET')
+echo "==> [4] Fetch secrets"
+SECRETS=$(aws secretsmanager get-secret-value --secret-id "$SECRET_ID" --query SecretString --output text)
+
+echo "==> [5] Write .env"
+cat > "$ENV_FILE" <<EOF
+# ===== Runtime ENV (container) =====
+NODE_ENV=production
+
 NEXTAUTH_URL=$(echo "$SECRETS" | jq -r '.NEXTAUTH_URL')
 NEXT_PUBLIC_NEXTAUTH_URL=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_NEXTAUTH_URL')
+NEXTAUTH_SECRET=$(echo "$SECRETS" | jq -r '.NEXTAUTH_SECRET')
+
+NEXT_PUBLIC_SERVER_URI=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_SERVER_URI')
+
 NEXT_PUBLIC_GA_MEASUREMENT_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_GA_MEASUREMENT_ID')
+
 NEXT_PUBLIC_KAKAO_CLIENT_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_KAKAO_CLIENT_ID')
 NEXT_PUBLIC_KAKAO_JS=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_KAKAO_JS')
 NEXT_PUBLIC_KAKAO_JS_KEY=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_KAKAO_JS_KEY')
+
 NEXT_PUBLIC_NAVER_CLIENT_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_NAVER_CLIENT_ID')
 NEXT_PUBLIC_NAVER_CLIENT_SECRET=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_NAVER_CLIENT_SECRET')
-NEXT_PUBLIC_PWA_KEY=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_PWA_KEY')
-NEXT_PUBLIC_SENTRY_DSN=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_SENTRY_DSN')
-NEXT_PUBLIC_SENTRY_ORGANIZATION=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_SENTRY_ORGANIZATION')
-NEXT_PUBLIC_SENTRY_PROJECT=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_SENTRY_PROJECT')
-NEXT_PUBLIC_SERVER_URI=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_SERVER_URI')
-SENTRY_AUTH_TOKEN=$(echo "$SECRETS" | jq -r '.SENTRY_AUTH_TOKEN')
-APPLE_ID=$(echo "$SECRETS" | jq -r '.APPLE_ID')
-APPLE_KEY_ID=$(echo "$SECRETS" | jq -r '.APPLE_KEY_ID')
-APPLE_PRIVATE_KEY=$(echo "$SECRETS" | jq -r '.APPLE_PRIVATE_KEY' | sed ':a;N;$!ba;s/\n/\\n/g')
-APPLE_TEAM_ID=$(echo "$SECRETS" | jq -r '.APPLE_TEAM_ID')
 NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_NAVER_AI_CLIENT_ID')
-NAVER_AI_CLIENT_ID=$(echo "$SECRETS" | jq -r '.NAVER_AI_CLIENT_ID')
-NAVER_AI_CLIENT_SECRET=$(echo "$SECRETS" | jq -r '.NAVER_AI_CLIENT_SECRET')
-NAVER_DEVELOP_CLIENT_ID=$(echo "$SECRETS" | jq -r '.NAVER_DEVELOP_CLIENT_ID')
-NAVER_DEVELOP_CLIENT_SECRET=$(echo "$SECRETS" | jq -r '.NAVER_DEVELOP_CLIENT_SECRET')
+
+NEXT_PUBLIC_PWA_KEY=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_PWA_KEY')
 NEXT_PUBLIC_TOSS_CLIENT_KEY=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_TOSS_CLIENT_KEY')
+
+# CookiePay (public)
 NEXT_PUBLIC_COOKIEPAY_API_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_COOKIEPAY_API_ID')
+
+# CookiePay (secret - server only)
 COOKIEPAY_API_ID=$(echo "$SECRETS" | jq -r '.COOKIEPAY_API_ID')
 COOKIEPAY_API_KEY=$(echo "$SECRETS" | jq -r '.COOKIEPAY_API_KEY')
 COOKIEPAY_MODE=$(echo "$SECRETS" | jq -r '.COOKIEPAY_MODE')
 COOKIEPAY_BASE_URL=$(echo "$SECRETS" | jq -r '.COOKIEPAY_BASE_URL')
 EOF
 
-# Docker 이미지 pull
-docker pull 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
+chmod 600 "$ENV_FILE"
+echo "✅ .env written to $ENV_FILE"
 
-# 기존 컨테이너 중지 및 삭제
-docker stop next-app || true
-docker rm next-app || true
+echo "==> [6] Pull latest image"
+docker pull "$IMAGE"
 
-# 새 컨테이너 실행
-docker run -d --name next-app \
-  --env-file /home/ubuntu/frontend/.env \
+echo "==> [7] Stop old container (if exists)"
+docker stop "$CONTAINER" >/dev/null 2>&1 || true
+docker rm "$CONTAINER" >/dev/null 2>&1 || true
+
+echo "==> [8] Run new container"
+docker run -d --name "$CONTAINER" \
+  --restart always \
+  --env-file "$ENV_FILE" \
   -p 3000:3000 \
-  294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
+  "$IMAGE"
+
+echo "==> [9] Health check (quick)"
+docker ps --filter "name=$CONTAINER"
+docker logs --tail 30 "$CONTAINER" || true
+
+echo "✅ Deploy finished"

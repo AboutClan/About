@@ -3,37 +3,70 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
+      - set -e
+
+      - echo "✅ Fetch secrets from AWS Secrets Manager..."
+      - SECRETS=$(aws secretsmanager get-secret-value --secret-id about/frontend --query SecretString --output text)
+
+      # ✅ (중요) NEXT_PUBLIC_* 는 Next.js 빌드 시점에 필요 → CodeBuild에서 export 해야 함
+      - export NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_NAVER_AI_CLIENT_ID')
+      - export NEXT_PUBLIC_KAKAO_CLIENT_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_KAKAO_CLIENT_ID')
+      - export NEXT_PUBLIC_KAKAO_JS=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_KAKAO_JS')
+      - export NEXT_PUBLIC_KAKAO_JS_KEY=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_KAKAO_JS_KEY')
+      - export NEXT_PUBLIC_NAVER_CLIENT_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_NAVER_CLIENT_ID')
+      - export NEXT_PUBLIC_NAVER_CLIENT_SECRET=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_NAVER_CLIENT_SECRET')
+      - export NEXT_PUBLIC_PWA_KEY=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_PWA_KEY')
+      - export NEXT_PUBLIC_GA_MEASUREMENT_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_GA_MEASUREMENT_ID')
+      - export NEXT_PUBLIC_SERVER_URI=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_SERVER_URI')
+      - export NEXTAUTH_URL=$(echo "$SECRETS" | jq -r '.NEXTAUTH_URL')
+      - export NEXT_PUBLIC_NEXTAUTH_URL=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_NEXTAUTH_URL')
+      - export NEXT_PUBLIC_TOSS_CLIENT_KEY=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_TOSS_CLIENT_KEY')
+      - export NEXT_PUBLIC_COOKIEPAY_API_ID=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_COOKIEPAY_API_ID')
+
+      # ✅ 서버 전용(비공개) - Next build에 굳이 넣을 필요 없지만, 네 Dockerfile에서 build 단계에 쓰면 같이 넘겨도 됨
+      - export COOKIEPAY_API_ID=$(echo "$SECRETS" | jq -r '.COOKIEPAY_API_ID')
+      - export COOKIEPAY_API_KEY=$(echo "$SECRETS" | jq -r '.COOKIEPAY_API_KEY')
+      - export COOKIEPAY_MODE=$(echo "$SECRETS" | jq -r '.COOKIEPAY_MODE')
+      - export COOKIEPAY_BASE_URL=$(echo "$SECRETS" | jq -r '.COOKIEPAY_BASE_URL')
+
+      # ✅ 값이 들어왔는지 최소 체크 (민감정보는 출력 X)
+      - echo "NEXT_PUBLIC_SERVER_URI=$NEXT_PUBLIC_SERVER_URI"
+      - echo "NEXTAUTH_URL=$NEXTAUTH_URL"
+      - echo "NEXT_PUBLIC_COOKIEPAY_API_ID=$NEXT_PUBLIC_COOKIEPAY_API_ID"
+      - echo "COOKIEPAY_MODE=$COOKIEPAY_MODE"
+
+      - echo "✅ Logging in to Amazon ECR..."
       - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
 
   build:
     commands:
-      - echo Building the Docker image...
+      - echo "✅ Building the Docker image..."
       - |
         docker build \
-           --build-arg NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$NEXT_PUBLIC_NAVER_AI_CLIENT_ID \
-            --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=$NEXT_PUBLIC_KAKAO_CLIENT_ID \
-            --build-arg NEXT_PUBLIC_KAKAO_JS=$NEXT_PUBLIC_KAKAO_JS \
-            --build-arg NEXT_PUBLIC_NAVER_CLIENT_ID=$NEXT_PUBLIC_NAVER_CLIENT_ID \
-            --build-arg NEXT_PUBLIC_NAVER_CLIENT_SECRET=$NEXT_PUBLIC_NAVER_CLIENT_SECRET \
-            --build-arg NEXT_PUBLIC_KAKAO_JS_KEY=$NEXT_PUBLIC_KAKAO_JS_KEY \
-            --build-arg NEXT_PUBLIC_PWA_KEY=$NEXT_PUBLIC_PWA_KEY \
-            --build-arg NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID \
-            --build-arg NEXT_PUBLIC_SERVER_URI=https://about-back.kro.kr \
-            --build-arg NEXTAUTH_URL=$NEXTAUTH_URL \
-            --build-arg NEXT_PUBLIC_NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL \
-            --build-arg NEXT_PUBLIC_TOSS_CLIENT_KEY=$NEXT_PUBLIC_TOSS_CLIENT_KEY \
-            --build-arg NEXT_PUBLIC_COOKIEPAY_API_ID=$NEXT_PUBLIC_COOKIEPAY_API_ID \
-            --build-arg COOKIEPAY_API_ID=$COOKIEPAY_API_ID \
-            --build-arg COOKIEPAY_API_KEY=$COOKIEPAY_API_KEY \
-            --build-arg COOKIEPAY_MODE=$COOKIEPAY_MODE \
-            --build-arg COOKIEPAY_BASE_URL=$COOKIEPAY_BASE_URL \
-            -t next-app .
+          --build-arg NEXT_PUBLIC_NAVER_AI_CLIENT_ID="$NEXT_PUBLIC_NAVER_AI_CLIENT_ID" \
+          --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID="$NEXT_PUBLIC_KAKAO_CLIENT_ID" \
+          --build-arg NEXT_PUBLIC_KAKAO_JS="$NEXT_PUBLIC_KAKAO_JS" \
+          --build-arg NEXT_PUBLIC_NAVER_CLIENT_ID="$NEXT_PUBLIC_NAVER_CLIENT_ID" \
+          --build-arg NEXT_PUBLIC_NAVER_CLIENT_SECRET="$NEXT_PUBLIC_NAVER_CLIENT_SECRET" \
+          --build-arg NEXT_PUBLIC_KAKAO_JS_KEY="$NEXT_PUBLIC_KAKAO_JS_KEY" \
+          --build-arg NEXT_PUBLIC_PWA_KEY="$NEXT_PUBLIC_PWA_KEY" \
+          --build-arg NEXT_PUBLIC_GA_MEASUREMENT_ID="$NEXT_PUBLIC_GA_MEASUREMENT_ID" \
+          --build-arg NEXT_PUBLIC_SERVER_URI="$NEXT_PUBLIC_SERVER_URI" \
+          --build-arg NEXTAUTH_URL="$NEXTAUTH_URL" \
+          --build-arg NEXT_PUBLIC_NEXTAUTH_URL="$NEXT_PUBLIC_NEXTAUTH_URL" \
+          --build-arg NEXT_PUBLIC_TOSS_CLIENT_KEY="$NEXT_PUBLIC_TOSS_CLIENT_KEY" \
+          --build-arg NEXT_PUBLIC_COOKIEPAY_API_ID="$NEXT_PUBLIC_COOKIEPAY_API_ID" \
+          --build-arg COOKIEPAY_API_ID="$COOKIEPAY_API_ID" \
+          --build-arg COOKIEPAY_API_KEY="$COOKIEPAY_API_KEY" \
+          --build-arg COOKIEPAY_MODE="$COOKIEPAY_MODE" \
+          --build-arg COOKIEPAY_BASE_URL="$COOKIEPAY_BASE_URL" \
+          -t next-app .
+
       - docker tag next-app 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
 
   post_build:
     commands:
-      - echo Pushing the Docker image to ECR...
+      - echo "✅ Pushing the Docker image to ECR..."
       - docker push 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
 
 artifacts:
