@@ -9,6 +9,8 @@ phases:
   build:
     commands:
       - echo Building the Docker image...
+      - echo "COOKIEPAY exists? -> $([ -n "$NEXT_PUBLIC_COOKIEPAY_API_ID" ] && echo yes || echo no)"
+      - echo "COOKIEPAY len -> ${#NEXT_PUBLIC_COOKIEPAY_API_ID}"
       - |
         docker build \
         --build-arg NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$NEXT_PUBLIC_NAVER_AI_CLIENT_ID \
