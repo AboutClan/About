@@ -6,6 +6,40 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
 
+      - echo Fetching secrets from Secrets Manager...
+      - yum install -y jq
+      - |
+        set -e
+
+        SECRETS_JSON=$(aws secretsmanager get-secret-value \
+          --secret-id "about/frontend" \
+          --query SecretString \
+          --output text)
+
+        export NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_NAVER_AI_CLIENT_ID // empty')
+        export NEXT_PUBLIC_COOKIEPAY_API_ID=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_COOKIEPAY_API_ID // empty')
+
+        export NEXT_PUBLIC_KAKAO_CLIENT_ID=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_KAKAO_CLIENT_ID // empty')
+        export NEXT_PUBLIC_KAKAO_JS=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_KAKAO_JS // empty')
+        export NEXT_PUBLIC_KAKAO_JS_KEY=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_KAKAO_JS_KEY // empty')
+
+        export NEXT_PUBLIC_NAVER_CLIENT_ID=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_NAVER_CLIENT_ID // empty')
+        export NEXT_PUBLIC_NAVER_CLIENT_SECRET=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_NAVER_CLIENT_SECRET // empty')
+
+        export NEXT_PUBLIC_PWA_KEY=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_PWA_KEY // empty')
+        export NEXT_PUBLIC_GA_MEASUREMENT_ID=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_GA_MEASUREMENT_ID // empty')
+
+        export NEXT_PUBLIC_NEXTAUTH_URL=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_NEXTAUTH_URL // empty')
+        export NEXT_PUBLIC_TOSS_CLIENT_KEY=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_TOSS_CLIENT_KEY // empty')
+
+        export COOKIEPAY_API_ID=$(echo "$SECRETS_JSON" | jq -r '.COOKIEPAY_API_ID // empty')
+        export COOKIEPAY_API_KEY=$(echo "$SECRETS_JSON" | jq -r '.COOKIEPAY_API_KEY // empty')
+        export COOKIEPAY_MODE=$(echo "$SECRETS_JSON" | jq -r '.COOKIEPAY_MODE // empty')
+        export COOKIEPAY_BASE_URL=$(echo "$SECRETS_JSON" | jq -r '.COOKIEPAY_BASE_URL // empty')
+
+        echo "NEXT_PUBLIC_COOKIEPAY_API_ID exists? -> $([ -n "$NEXT_PUBLIC_COOKIEPAY_API_ID" ] && echo yes || echo no)"
+        echo "NEXT_PUBLIC_COOKIEPAY_API_ID len -> ${#NEXT_PUBLIC_COOKIEPAY_API_ID}"
+
   build:
     commands:
       - echo Building the Docker image...
