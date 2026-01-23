@@ -3,24 +3,16 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo ----------------------
-      - echo Logging in to Amazon ECR...
+      - echo "Logging in to Amazon ECR..."
       - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
-      - echo ----------------------
-      - echo Fetching secrets from Secrets Manager...
 
+      - echo "Fetching secrets from Secrets Manager..."
       - yum install -y jq
 
       - |
         set -e
+        SECRETS_JSON=$(aws secretsmanager get-secret-value --secret-id "about/frontend" --query SecretString --output text)
 
-        # Fetch full JSON secrets
-        SECRETS_JSON=$(aws secretsmanager get-secret-value \
-          --secret-id "about/frontend" \
-          --query SecretString \
-          --output text)
-
-        # Export needed values for build args
         export NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_NAVER_AI_CLIENT_ID // empty')
         export NEXT_PUBLIC_COOKIEPAY_API_ID=$(echo "$SECRETS_JSON" | jq -r '.NEXT_PUBLIC_COOKIEPAY_API_ID // empty')
 
@@ -42,46 +34,39 @@ phases:
         export COOKIEPAY_MODE=$(echo "$SECRETS_JSON" | jq -r '.COOKIEPAY_MODE // empty')
         export COOKIEPAY_BASE_URL=$(echo "$SECRETS_JSON" | jq -r '.COOKIEPAY_BASE_URL // empty')
 
-        # Optional logs (no secret values shown, just existence & length)
-        echo "NEXT_PUBLIC_COOKIEPAY_API_ID exists? -> $([ -n \"$NEXT_PUBLIC_COOKIEPAY_API_ID\" ] && echo yes || echo no)"
-        echo "NEXT_PUBLIC_COOKIEPAY_API_ID len -> ${#NEXT_PUBLIC_COOKIEPAY_API_ID}"
+        echo "COOKIEPAY exists? -> $([ -n "$NEXT_PUBLIC_COOKIEPAY_API_ID" ] && echo yes || echo no)"
+        echo "COOKIEPAY len -> ${#NEXT_PUBLIC_COOKIEPAY_API_ID}"
 
   build:
     commands:
-      - echo ----------------------
-      - echo Building the Docker image...
-      - export DOCKER_BUILDKIT=0
-      - |
-        docker build \
-          -t next-app \
-          --build-arg NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$NEXT_PUBLIC_NAVER_AI_CLIENT_ID \
-          --build-arg NEXT_PUBLIC_COOKIEPAY_API_ID=$NEXT_PUBLIC_COOKIEPAY_API_ID \
-          --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=$NEXT_PUBLIC_KAKAO_CLIENT_ID \
-          --build-arg COOKIEPAY_API_ID=$COOKIEPAY_API_ID \
-          --build-arg COOKIEPAY_API_KEY=$COOKIEPAY_API_KEY \
-          --build-arg COOKIEPAY_MODE=$COOKIEPAY_MODE \
-          --build-arg COOKIEPAY_BASE_URL=$COOKIEPAY_BASE_URL \
-          --build-arg NEXT_PUBLIC_KAKAO_JS=$NEXT_PUBLIC_KAKAO_JS \
-          --build-arg NEXT_PUBLIC_NAVER_CLIENT_ID=$NEXT_PUBLIC_NAVER_CLIENT_ID \
-          --build-arg NEXT_PUBLIC_NAVER_CLIENT_SECRET=$NEXT_PUBLIC_NAVER_CLIENT_SECRET \
-          --build-arg NEXT_PUBLIC_KAKAO_JS_KEY=$NEXT_PUBLIC_KAKAO_JS_KEY \
-          --build-arg NEXT_PUBLIC_PWA_KEY=$NEXT_PUBLIC_PWA_KEY \
-          --build-arg NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID \
-          --build-arg NEXT_PUBLIC_SERVER_URI=https://about-back.kro.kr \
-          --build-arg NEXT_PUBLIC_NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL \
-          --build-arg NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL \
-          --build-arg NEXT_PUBLIC_TOSS_CLIENT_KEY=$NEXT_PUBLIC_TOSS_CLIENT_KEY \
-          .
-      - echo ----------------------
-      - echo Tagging the image...
+      - echo "Building Docker image..."
+      - >
+        docker build
+        -t next-app
+        --build-arg NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$NEXT_PUBLIC_NAVER_AI_CLIENT_ID
+        --build-arg NEXT_PUBLIC_COOKIEPAY_API_ID=$NEXT_PUBLIC_COOKIEPAY_API_ID
+        --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=$NEXT_PUBLIC_KAKAO_CLIENT_ID
+        --build-arg NEXT_PUBLIC_KAKAO_JS=$NEXT_PUBLIC_KAKAO_JS
+        --build-arg NEXT_PUBLIC_KAKAO_JS_KEY=$NEXT_PUBLIC_KAKAO_JS_KEY
+        --build-arg NEXT_PUBLIC_NAVER_CLIENT_ID=$NEXT_PUBLIC_NAVER_CLIENT_ID
+        --build-arg NEXT_PUBLIC_NAVER_CLIENT_SECRET=$NEXT_PUBLIC_NAVER_CLIENT_SECRET
+        --build-arg NEXT_PUBLIC_PWA_KEY=$NEXT_PUBLIC_PWA_KEY
+        --build-arg NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID
+        --build-arg NEXT_PUBLIC_SERVER_URI=https://about-back.kro.kr
+        --build-arg NEXT_PUBLIC_NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL
+        --build-arg NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL
+        --build-arg NEXT_PUBLIC_TOSS_CLIENT_KEY=$NEXT_PUBLIC_TOSS_CLIENT_KEY
+        --build-arg COOKIEPAY_API_ID=$COOKIEPAY_API_ID
+        --build-arg COOKIEPAY_API_KEY=$COOKIEPAY_API_KEY
+        --build-arg COOKIEPAY_MODE=$COOKIEPAY_MODE
+        --build-arg COOKIEPAY_BASE_URL=$COOKIEPAY_BASE_URL
+        .
       - docker tag next-app 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
 
   post_build:
     commands:
-      - echo ----------------------
-      - echo Pushing the Docker image to ECR...
+      - echo "Pushing Docker image..."
       - docker push 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
-      - echo "Build & Push completed"
 
 artifacts:
   files:
