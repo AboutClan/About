@@ -47,29 +47,33 @@ phases:
       - echo "COOKIEPAY len -> ${#NEXT_PUBLIC_COOKIEPAY_API_ID}"
       - |
         docker build \
-        --build-arg NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$NEXT_PUBLIC_NAVER_AI_CLIENT_ID \
-        --build-arg NEXT_PUBLIC_COOKIEPAY_API_ID=$NEXT_PUBLIC_COOKIEPAY_API_ID \
-        --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=$NEXT_PUBLIC_KAKAO_CLIENT_ID \
-        --build-arg COOKIEPAY_API_ID=$COOKIEPAY_API_ID \
-        --build-arg COOKIEPAY_API_KEY=$COOKIEPAY_API_KEY \
-        --build-arg COOKIEPAY_MODE=$COOKIEPAY_MODE \
-        --build-arg COOKIEPAY_BASE_URL=$COOKIEPAY_BASE_URL \
-        --build-arg NEXT_PUBLIC_KAKAO_JS=$NEXT_PUBLIC_KAKAO_JS \
-        --build-arg NEXT_PUBLIC_NAVER_CLIENT_ID=$NEXT_PUBLIC_NAVER_CLIENT_ID \
-        --build-arg NEXT_PUBLIC_NAVER_CLIENT_SECRET=$NEXT_PUBLIC_NAVER_CLIENT_SECRET \
-        --build-arg NEXT_PUBLIC_KAKAO_JS_KEY=$NEXT_PUBLIC_KAKAO_JS_KEY \
-        --build-arg NEXT_PUBLIC_PWA_KEY=$NEXT_PUBLIC_PWA_KEY \
-        --build-arg NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID \
-        --build-arg NEXT_PUBLIC_SERVER_URI=https://about-back.kro.kr \
-        --build-arg NEXT_PUBLIC_NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL \
-        --build-arg NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL \
-        --build-arg NEXT_PUBLIC_TOSS_CLIENT_KEY=$NEXT_PUBLIC_TOSS_CLIENT_KEY \
-        -t next-app .
+          -t next-app \
+          --build-arg NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$NEXT_PUBLIC_NAVER_AI_CLIENT_ID \
+          --build-arg NEXT_PUBLIC_COOKIEPAY_API_ID=$NEXT_PUBLIC_COOKIEPAY_API_ID \
+          --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=$NEXT_PUBLIC_KAKAO_CLIENT_ID \
+          --build-arg COOKIEPAY_API_ID=$COOKIEPAY_API_ID \
+          --build-arg COOKIEPAY_API_KEY=$COOKIEPAY_API_KEY \
+          --build-arg COOKIEPAY_MODE=$COOKIEPAY_MODE \
+          --build-arg COOKIEPAY_BASE_URL=$COOKIEPAY_BASE_URL \
+          --build-arg NEXT_PUBLIC_KAKAO_JS=$NEXT_PUBLIC_KAKAO_JS \
+          --build-arg NEXT_PUBLIC_NAVER_CLIENT_ID=$NEXT_PUBLIC_NAVER_CLIENT_ID \
+          --build-arg NEXT_PUBLIC_NAVER_CLIENT_SECRET=$NEXT_PUBLIC_NAVER_CLIENT_SECRET \
+          --build-arg NEXT_PUBLIC_KAKAO_JS_KEY=$NEXT_PUBLIC_KAKAO_JS_KEY \
+          --build-arg NEXT_PUBLIC_PWA_KEY=$NEXT_PUBLIC_PWA_KEY \
+          --build-arg NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID \
+          --build-arg NEXT_PUBLIC_SERVER_URI=https://about-back.kro.kr \
+          --build-arg NEXT_PUBLIC_NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL \
+          --build-arg NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL \
+          --build-arg NEXT_PUBLIC_TOSS_CLIENT_KEY=$NEXT_PUBLIC_TOSS_CLIENT_KEY \
+          .
       - docker tag next-app 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
 
   post_build:
     commands:
       - echo Pushing the Docker image to ECR...
+      - |
+        docker image inspect 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest >/dev/null 2>&1 || \
+        (echo "Image not found, skipping push" && exit 1)
       - docker push 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
 
 artifacts:
