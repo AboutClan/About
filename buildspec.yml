@@ -5,9 +5,7 @@ phases:
     commands:
       - echo ----------------------
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region ap-northeast-2 \
-          | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
-
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
       - echo ----------------------
       - echo Fetching secrets from Secrets Manager...
 
