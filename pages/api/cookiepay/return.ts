@@ -23,12 +23,25 @@ function readRawBody(req: NextApiRequest): Promise<string> {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log("cookiepay return content-type:", req.headers["content-type"]);
+
+  console.log("ENV check:", {
+    NEXT_PUBLIC_COOKIEPAY_API_ID: !!process.env.NEXT_PUBLIC_COOKIEPAY_API_ID,
+    COOKIEPAY_API_ID: !!process.env.COOKIEPAY_API_ID,
+    COOKIEPAY_API_KEY: !!process.env.COOKIEPAY_API_KEY,
+  });
+  console.log("cookiepay return content-type:", req.headers["content-type"]);
+  console.log("method:", req.method);
   try {
     const query = (req.query ?? {}) as Record<string, any>;
 
     let bodyObj: Record<string, any> = {};
+    console.log("method:", req.method);
+    console.log("cookiepay return content-type:", req.headers["content-type"]);
+    console.log("query keys:", Object.keys(req.query ?? {}));
     if (req.method === "POST") {
       const raw = await readRawBody(req);
+      console.log("raw head:", raw.slice(0, 300)); // 앞부분만
+      console.log("raw includes ENC_DATA:", raw.includes("ENC_DATA"));
       const ct = String(req.headers["content-type"] ?? "").toLowerCase();
 
       if (ct.includes("application/x-www-form-urlencoded")) bodyObj = (parseQs(raw) ?? {}) as any;
@@ -40,7 +53,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const RESULTCODE = String(payload.RESULTCODE ?? "");
     const RESULTMSG = String(payload.RESULTMSG ?? "");
     const ENC_DATA = payload.ENC_DATA ? String(payload.ENC_DATA) : "";
-
+    console.log("payload flags:", {
+      RESULTCODE,
+      RESULTMSG,
+      has_ENC_DATA: !!ENC_DATA,
+      enc_len: ENC_DATA?.length ?? 0,
+    });
     // 성공이든 실패든 최소 저장(PENDING/FAIL)
     // orderNo는 decrypt 후에 알 수 있어서, 우선은 결과페이지만 보냄
     if (!ENC_DATA) {
@@ -52,6 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // 1) decrypt
     const dec = await cookiepayDecrypt(ENC_DATA);
+    console.log("decrypt:", { rc: dec?.RESULTCODE, msg: dec?.RESULTMSG });
     if (dec?.RESULTCODE !== "0000" || !dec?.decryptData) {
       return res.redirect(
         302,
@@ -77,6 +96,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // 2) paycert(검증)
     const cert = await cookiepayPaycert(tid);
+    console.log("paycert:", { rc: cert?.RESULTCODE, msg: cert?.RESULTMSG });
     if (cert?.RESULTCODE !== "0000") {
       upsertPayment({
         orderNo,

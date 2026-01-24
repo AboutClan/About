@@ -10,6 +10,7 @@ import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { useAllUserDataQuery } from "../../hooks/admin/quries";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { useRealtimeInviteMutation } from "../../hooks/realtime/mutations";
 import { useStudyInviteMutation } from "../../hooks/study/mutations";
 import { RealTimeVoteProps } from "../../types/models/studyTypes/requestTypes";
@@ -36,6 +37,7 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
   const typeToast = useTypeToast();
   const toast = useToast();
   const resetStudy = useResetStudyQuery();
+  const userInfo = useUserInfo();
   const [isModal, setIsModal] = useState(false);
 
   const { mutate: inviteStudy, isLoading: isLoading1 } = useStudyInviteMutation(date, {
@@ -53,7 +55,7 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
     },
   });
 
-  const { data: usersAll, isLoading } = useAllUserDataQuery(null, { enabled: isModal });
+  const { data: usersAll, isLoading } = useAllUserDataQuery("study", { enabled: isModal });
 
   const [inviteUser, setInviteUser] = useState<UserSimpleInfoProps>(null);
   const [users, setUsers] = useState<UserSimpleInfoProps[]>(null);
@@ -99,9 +101,11 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
   }, [inviteUser]);
 
   const handleClick = () => {
+    console.log(userInfo);
     if (
-      studyType !== "openRealTimes" ||
-      dayjs(date).startOf("day").isBefore(dayjs().subtract(1, "day"))
+      userInfo?.role !== "previliged" &&
+      (studyType !== "openRealTimes" ||
+        dayjs(date).startOf("day").isBefore(dayjs().subtract(1, "day")))
     ) {
       toast("warning", "확정된 모임장 스터디에서만 초대가 가능합니다.");
       return;

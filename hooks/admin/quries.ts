@@ -28,7 +28,7 @@ export interface UserStudyDataProps extends UserSimpleInfoProps {
 type AllUserDataParam<T> = T extends "study" ? UserStudyDataProps[] : IUser[];
 
 export const useAllUserDataQuery = <T extends "study" | "null">(
-  type: "study" | "temperature" | "monthScore",
+  type: "study" | "temperature" | "monthScore" | "studyGroup",
   options?: QueryOptions<AllUserDataParam<T>>,
 ) =>
   useQuery<AllUserDataParam<T>, AxiosError, AllUserDataParam<T>>(
