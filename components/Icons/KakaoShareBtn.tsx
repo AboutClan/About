@@ -7,7 +7,7 @@ import { isWebView } from "../../utils/appEnvUtils";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 
-const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
+const kakaoAppKey = "05926725a12017416a7d5059eb8e3af4";
 
 interface IKakaoShareBtn {
   title: string;
@@ -100,7 +100,8 @@ function KakaoShareBtn({
     const formattedDate = date ? ` (${dayjsToFormat(dayjs(date), "M월 D일")})` : "";
     const buttonTitle = extraCnt && extraCnt < 4 ? `${extraCnt}자리 남음!` : "모임 확인하기";
     const link = buildKakaoLink(url);
-
+    console.log("KAKAO LINK OBJ", link);
+    console.log("KAKAO APPKEY", kakaoAppKey);
     const el = document.getElementById(containerId);
     if (el) el.innerHTML = ""; // ✅ 여기서만 비우기
 
