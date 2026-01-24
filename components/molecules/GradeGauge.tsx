@@ -60,9 +60,9 @@ export default function MiniSemiGaugeNeedle({
 
   // ✅ 게이지는 항상 3구간 "꽉 참"
   const segments = [
-    { from: 180, to: 240, color: "#F2994A" },
-    { from: 240, to: 300, color: "#F2C94C" },
-    { from: 300, to: 360, color: "#27AE60" },
+    { from: 180, to: 240, color: "var(--color-orange)" },
+    { from: 240, to: 300, color: "var(--color-yellow)" },
+    { from: 300, to: 360, color: "var(--color-green)" },
   ];
 
   // --- needle ---

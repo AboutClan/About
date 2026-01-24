@@ -49,7 +49,13 @@ function KakaoShareBtn({
   const toPathFromUrl = (rawUrl: string) => {
     try {
       const u = new URL(rawUrl);
-      const hostOk = u.host === "study-about.club" || u.host === "www.study-about.club";
+
+      const hostOk =
+        u.host === "study-about.club" ||
+        u.host === "www.study-about.club" ||
+        u.host === "about20s.club" || // ✅ 단축 도메인도 허용
+        u.host === "www.about20s.club"; // ✅
+
       if (!hostOk) return null;
 
       const path = u.pathname.replace(/^\/+/, "");
