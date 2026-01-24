@@ -12,7 +12,7 @@ import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { useRealtimeInviteMutation } from "../../hooks/realtime/mutations";
-import { useStudyInviteMutation } from "../../hooks/study/mutations";
+import { useStudyInviteMutation, useStudyVoteArrMutation } from "../../hooks/study/mutations";
 import { RealTimeVoteProps } from "../../types/models/studyTypes/requestTypes";
 import {
   StudyConfirmedMemberProps,
@@ -21,7 +21,7 @@ import {
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { searchName } from "../../utils/stringUtils";
 
 interface IStudyDateBar {
@@ -39,6 +39,23 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
   const resetStudy = useResetStudyQuery();
   const userInfo = useUserInfo();
   const [isModal, setIsModal] = useState(false);
+
+  const [dateArr, setDateArr] = useState<string[]>([]);
+  const { mutate: voteDateArr } = useStudyVoteArrMutation(dateArr, {
+    onSuccess() {
+      // if (selectedDates.length) {
+      //   if (canChange) {
+      //     toast("success", "스터디 변경 완료!");
+      //   } else {
+      //     toast("success", "스터디 신청 완료!");
+      //   }
+      // } else {
+      //   toast("success", "스터디 취소 완료!");
+      // }
+      // resetStudy();
+      // onClose();
+    },
+  });
 
   const { mutate: inviteStudy, isLoading: isLoading1 } = useStudyInviteMutation(date, {
     onSuccess() {
@@ -59,16 +76,37 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
 
   const [inviteUser, setInviteUser] = useState<UserSimpleInfoProps>(null);
   const [users, setUsers] = useState<UserSimpleInfoProps[]>(null);
-  const [existUsers, setExistUsers] = useState<string[]>(memberIdArr);
   const [nameValue, setNameValue] = useState("");
+  const [placeIndex, setPlaceIndex] = useState<0 | 1 | 2 | 3>(null);
 
   useEffect(() => {
     if (nameValue) setUsers(searchName(usersAll as UserSimpleInfoProps[], nameValue));
     else setUsers(usersAll as UserSimpleInfoProps[]);
   }, [nameValue, usersAll]);
-  console.log(dayjs().hour(2));
+  console.log(dateArr);
   useEffect(() => {
     if (!inviteUser) return;
+    if (placeIndex !== null) {
+      let props;
+
+      if (placeIndex === 0) {
+        props = {
+          locationDetail: "서울특별시 강남구 역삼동 827-13 1층",
+          latitude: 37.496193,
+          longitude: 127.030907,
+        };
+      }
+
+      voteDateArr({
+        ...props,
+        userId: inviteUser._id,
+        start: dayjs(date).hour(14).minute(0),
+        end: dayjs(date).hour(18).minute(0),
+        eps: 1,
+      });
+      return;
+    }
+
     if (studyType === "soloRealTimes" || studyType === "openRealTimes") {
       const voteInfo: RealTimeVoteProps = {
         place: {
@@ -96,14 +134,14 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
       inviteStudy({ userId: inviteUser._id, ...voteInfo });
     }
     setUsers((old) => old.filter((who) => who.uid !== inviteUser.uid));
-    setExistUsers((old) => [...old, inviteUser._id]);
     setInviteUser(null);
   }, [inviteUser]);
 
+  const isAdmin = userInfo?.role === "previliged";
+
   const handleClick = () => {
-    console.log(userInfo);
     if (
-      userInfo?.role !== "previliged" &&
+      !isAdmin &&
       (studyType !== "openRealTimes" ||
         dayjs(date).startOf("day").isBefore(dayjs().subtract(1, "day")))
     ) {
@@ -135,6 +173,65 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
       </Box>
       {isModal && (
         <RightDrawer title="인원 초대" onClose={() => setIsModal(false)}>
+          {isAdmin && (
+            <>
+              <Flex mb={2}>
+                {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+                  <Button
+                    key={n}
+                    onClick={() => {
+                      if (dateArr.includes(dayjsToStr(dayjs(date).add(n, "day")))) {
+                        setDateArr((old) =>
+                          old.filter((o) => o !== dayjsToStr(dayjs(date).add(n, "day"))),
+                        );
+                      } else {
+                        setDateArr((old) => [...old, dayjsToStr(dayjs(date).add(n, "day"))]);
+                      }
+                    }}
+                    colorScheme={
+                      dateArr.includes(dayjsToStr(dayjs(date).add(n, "day"))) ? "mint" : "gray"
+                    }
+                  >
+                    {dayjsToFormat(dayjs(date).add(n, "day"), "D(ddd)")}
+                  </Button>
+                ))}
+              </Flex>
+              <Flex justify="space-between">
+                <Button
+                  colorScheme={placeIndex === 0 ? "mint" : "gray"}
+                  onClick={() => {
+                    setPlaceIndex(0);
+                  }}
+                >
+                  강남 셀렉
+                </Button>
+                <Button
+                  colorScheme={placeIndex === 1 ? "mint" : "gray"}
+                  onClick={() => {
+                    setPlaceIndex(1);
+                  }}
+                >
+                  강남 셀렉
+                </Button>
+                <Button
+                  colorScheme={placeIndex === 2 ? "mint" : "gray"}
+                  onClick={() => {
+                    setPlaceIndex(2);
+                  }}
+                >
+                  강남 셀렉
+                </Button>
+                <Button
+                  colorScheme={placeIndex === 3 ? "mint" : "gray"}
+                  onClick={() => {
+                    setPlaceIndex(3);
+                  }}
+                >
+                  강남 셀렉
+                </Button>
+              </Flex>
+            </>
+          )}
           <Box mt="16px">
             <Input
               placeholder="이름 검색"
@@ -152,11 +249,7 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
             }}
           >
             {!isLoading && !isLoading1 && !isLoading2 && users ? (
-              <InviteUserGroups
-                users={users}
-                inviteUser={(who) => setInviteUser(who)}
-                existUsers={existUsers}
-              />
+              <InviteUserGroups users={users} inviteUser={(who) => setInviteUser(who)} />
             ) : (
               <MainLoadingAbsolute />
             )}

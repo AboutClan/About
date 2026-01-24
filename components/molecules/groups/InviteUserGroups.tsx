@@ -7,7 +7,7 @@ interface IInviteUserGroups {
   users: IUserSummary[] | UserSimpleInfoProps[];
   inviteUser: (who: IUserSummary) => void;
   existUsers?: string[];
-  type?: "exile";
+  type?: "exile" | "study";
 }
 
 export default function InviteUserGroups({

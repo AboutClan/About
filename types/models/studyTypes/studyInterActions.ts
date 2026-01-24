@@ -5,6 +5,7 @@ import { IUserSummary } from "../userTypes/userInfoTypes";
 import { StudyPlaceProps } from "./study-entity.types";
 
 export interface StudyVoteProps {
+  userId?: string;
   latitude: number;
   longitude: number;
   locationDetail: string;

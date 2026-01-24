@@ -93,19 +93,17 @@ function KakaoShareBtn({
 
   // ✅ 버튼 생성 (브라우저에서만) + 생성 직전에 container 비우기
   useEffect(() => {
-    console.log(1);
+    
     if (typeof window === "undefined") return;
-    console.log(2);
+    
     if (isWebView()) return;
-    console.log(3);
     if (!window.Kakao) return;
-    console.log(4);
+
 
     const formattedDate = date ? ` (${dayjsToFormat(dayjs(date), "M월 D일")})` : "";
     const buttonTitle = extraCnt && extraCnt < 4 ? `${extraCnt}자리 남음!` : "모임 확인하기";
     const link = buildKakaoLink(url);
-    console.log("KAKAO LINK OBJ", link);
-    console.log("KAKAO APPKEY", kakaoAppKey);
+  
     const el = document.getElementById(containerId);
     if (el) el.innerHTML = ""; // ✅ 여기서만 비우기
 

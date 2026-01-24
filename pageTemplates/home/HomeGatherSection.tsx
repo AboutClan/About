@@ -14,7 +14,7 @@ function HomeGatherSection() {
   const firstData = gathers?.slice(0, 6);
   const secondData = gathers?.slice(6, 12);
   const thirdData = gathers?.slice(12, 18);
-  console.log(3, gathers);
+
   return (
     <>
       <AnimatePresence initial={false}>

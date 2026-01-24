@@ -27,7 +27,7 @@ export default function GatherMain() {
   const sortKey = sortBy === "기본순" ? "basic" : sortBy === "최신 개설 순" ? "createdAt" : "date";
 
   const { data: gatherData, isLoading } = useGatherQuery(cursor, checkType, sortKey);
-  console.log(5, checkType, gatherData, cursor);
+
   // 필터 / 정렬 변경 시 리스트 & 커서 초기화
   useEffect(() => {
     setGathers([]);

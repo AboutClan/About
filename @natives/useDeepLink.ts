@@ -7,9 +7,6 @@ export const useDeepLink = ({ token }: { token?: string | null }) => {
   const router = useRouter();
   const pendingRef = useRef<string | null>(null);
 
-
-  
-
   useEffect(() => {
     // 토큰 생기면, pending 있으면 그때 이동
     if (token && pendingRef.current) {
@@ -36,12 +33,19 @@ export const useDeepLink = ({ token }: { token?: string | null }) => {
       if (data?.name !== "deeplink") return;
 
       const path = typeof data?.path === "string" ? data.path : "";
-      const params = data?.params && typeof data.params === "object" ? data.params : {};
+
+      const rawParams = data?.params && typeof data.params === "object" ? data.params : {};
       if (!path) return;
+      const cleanedParams: Record<string, string> = {};
+      Object.entries(rawParams).forEach(([k, v]) => {
+        const key = k.startsWith("?") ? k.slice(1) : k; // ✅ 핵심
+        if (!key) return;
+        cleanedParams[key] = String(v ?? "");
+      });
 
       const qs =
-        Object.keys(params).length > 0
-          ? `?${new URLSearchParams(params as Record<string, string>).toString()}`
+        Object.keys(cleanedParams).length > 0
+          ? `?${new URLSearchParams(cleanedParams).toString()}`
           : "";
       const target = `${path}${qs}`;
 

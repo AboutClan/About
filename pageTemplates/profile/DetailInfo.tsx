@@ -78,7 +78,7 @@ function DetailInfo({
             ]
           : []),
       ];
-  console.log(42, itemMapping);
+ 
   return (
     <BlurredPart isBlur={isGuest} text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}>
       <Flex flexDir="column" py={2}>

@@ -31,7 +31,7 @@ function UserAbsenceBoard({ gatherData, users, handleDelete }: UserAbsenceBoardP
     }
   }, [users]);
 
-  console.log(gatherData.title.slice(0, 16));
+ 
 
   const title =
     gatherData.title.length > 16 ? gatherData.title.slice(0, 16) + "..." : gatherData.title;

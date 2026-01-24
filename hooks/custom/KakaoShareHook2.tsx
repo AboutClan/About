@@ -70,7 +70,7 @@ export function useKakaoShare() {
     const buttonTitle = extraCnt && extraCnt < 4 ? `${extraCnt}자리 남음!` : "모임 확인하기";
 
     const link = buildKakaoLink(url);
-    console.log(link);
+  
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window.Kakao.Link as any).sendDefault({
       objectType: "feed",

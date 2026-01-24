@@ -48,7 +48,7 @@ function GatherDetail() {
 
   const groupId = gather?.groupId;
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
-  console.log(3, groupId, group);
+
   console.log(gather);
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||

@@ -21,13 +21,13 @@ interface UserInviteBoardProps {
   members: string[];
   gatherId?: string;
   groupId: string;
-  handleStudyInvite?: () => void;
+  
 }
 
-function UserInviteBoard({ gatherId, members, groupId, handleStudyInvite }: UserInviteBoardProps) {
+function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
   const typeToast = useTypeToast();
   const queryClient = useQueryClient();
-  console.log(3, handleStudyInvite);
+
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
   const [users, setUsers] = useState<IUserSummary[] | UserSimpleInfoProps[]>(null);
   const [existUsers, setExistUsers] = useState<string[]>(members);
@@ -59,7 +59,7 @@ function UserInviteBoard({ gatherId, members, groupId, handleStudyInvite }: User
     setExistUsers((old) => [...old, inviteUser._id]);
     setInviteUser(null);
   }, [inviteUser]);
-  console.log(5, users);
+
   return (
     <>
       <Flex mt={5}>
