@@ -143,7 +143,6 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
               func={handleClickDate}
               passedDisabled
               mintDateArr={myStudyDateArr?.map((study) => study.date)}
-              isTodayInclude
             />
             {myStudyDateArr?.length ? (
               <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">

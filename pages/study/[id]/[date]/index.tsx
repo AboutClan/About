@@ -154,7 +154,7 @@ export default function Page() {
   }, [myStudyStatus]);
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
-  
+
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
@@ -194,7 +194,6 @@ export default function Page() {
                   members={members}
                   studyType={studyType}
                   placeInfo={placeInfo}
-                  dateDayjs={dateDayjs}
                 />
                 {isOpenStudy && <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />}
                 <Box h="1px" bg="gray.100" my={4} />

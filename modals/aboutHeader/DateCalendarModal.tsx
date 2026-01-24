@@ -135,7 +135,6 @@ function DateCalendarModal({
               selectedDates={[dayjsToStr(date)]}
               func={onDayClick}
               mintDateArr={[dayjsToStr(dayjs())]}
-              isTodayInclude
             />
           </SwiperSlide>
         ))}

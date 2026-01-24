@@ -237,7 +237,6 @@ function StudyApplyDrawer({
               func={handleClickDate}
               passedDisabled
               mintDateArr={canChange ? [] : defaultDates}
-              isTodayInclude={dayjs().hour() < STUDY_RESULT_HOUR ? true : false}
             />
             <Box h={3} />
             {canChange ? (
@@ -251,7 +250,11 @@ function StudyApplyDrawer({
                 </Box>{" "}
                 숫자는 이미 참여중인 스터디 날짜입니다.
               </Box>
-            ) : null}
+            ) : (
+              <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+                스터디 매칭 신청은 전 날 오후 9시까지만 가능합니다.
+              </Box>
+            )}
           </>
         ) : (
           <>

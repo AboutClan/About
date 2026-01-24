@@ -87,7 +87,6 @@ export const getCalendarDates = (
   selectedDate: Dayjs,
   passedDisabled?: boolean,
   mintDateArr?: string[],
-  isTodayInclude?: boolean,
 ) => {
   const calendar: CalendarDateProps[] = [];
 
@@ -112,14 +111,19 @@ export const getCalendarDates = (
       if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {
         calendar.push(null);
       } else {
+        const now = dayjs();
+
+        // 21시 이후면 "내일"까지 막아야 하므로 cutoffDay를 내일로 잡음
+        const cutoffDay = (now.hour() >= 21 ? now.add(1, "day") : now).startOf("day");
+
+        // current가 cutoffDay와 "같거나 이전"이면 disabled
+        const isCutoffDisabled =
+          current.isBefore(cutoffDay, "day") || current.isSame(cutoffDay, "day");
         calendar.push({
           date: dayjsToStr(current),
           isDisabled: dayjs().add(6, "day").isAfter(current)
-            ? passedDisabled &&
-              dayjs()
-                .subtract(dayjs().hour() >= 9 ? (isTodayInclude ? 1 : 0) : 1, "day")
-                .isAfter(current)
-              ? true
+            ? passedDisabled
+              ? isCutoffDisabled
               : false
             : true,
 
