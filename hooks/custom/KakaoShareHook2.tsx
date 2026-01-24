@@ -11,7 +11,6 @@ const toPathFromUrl = (rawUrl: string) => {
   try {
     const u = new URL(rawUrl);
 
-    // 원본/단축 둘 다 허용
     const hostOk =
       u.host === "study-about.club" ||
       u.host === "www.study-about.club" ||
@@ -29,20 +28,14 @@ const toPathFromUrl = (rawUrl: string) => {
 };
 
 const buildKakaoLink = (url: string) => {
-  const path = toPathFromUrl(url);
-
-  // fallback: 도메인 이상하면 그냥 웹만
+  const path = toPathFromUrl(url); // group/149
   if (!path) return { mobileWebUrl: url, webUrl: url };
 
-  // 카카오가 앱 실행할 때 넘겨주는 파라미터
-  // kakao{NATIVE_APP_KEY}://kakaolink?path=... 형태로 들어감
-  const exec = `path=${encodeURIComponent(path)}`;
+  const openUrl = `https://about20s.club/_open?path=${encodeURIComponent(path)}`;
 
   return {
-    mobileWebUrl: url,
-    webUrl: url,
-    androidExecutionParams: exec,
-    iosExecutionParams: exec,
+    mobileWebUrl: openUrl,
+    webUrl: openUrl,
   };
 };
 
@@ -88,12 +81,7 @@ export function useKakaoShare() {
         imageHeight: 200,
         link, // ✅ 여기
       },
-      buttons: [
-        {
-          title: buttonTitle,
-          link, // ✅ 여기
-        },
-      ],
+      buttons: [{ title: buttonTitle, link }], // ✅ 여기
     });
   };
 
