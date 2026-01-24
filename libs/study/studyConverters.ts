@@ -44,7 +44,9 @@ export const setStudyWeekData = (
       if (realTimes?.length) {
         const { soloUsers, openUsers } = realTimes.reduce(
           (b, u) => {
-            if (u.status === "solo") b.soloUsers.push(u);
+            if (u?.user?.uid === "3224546232") {
+              console.log(1);
+            } else if (u.status === "solo") b.soloUsers.push(u);
             else b.openUsers.push(u);
             return b;
           },
