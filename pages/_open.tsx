@@ -27,9 +27,10 @@ export default function OpenPage() {
     // ✅ 너희 앱 스킴 (확정)
     const APP_SCHEME = "about20s://";
     const t = Date.now();
-    const sep = path.includes("?") ? "&" : "?";
-    const appUrl = APP_SCHEME + path + `${sep}__t=${t}`;
 
+    const cleanPath = String(path || "").replace(/^\/+/, ""); // <- 이게 핵심
+    const sep = cleanPath.includes("?") ? "&" : "?";
+    const appUrl = `${APP_SCHEME}${cleanPath}${sep}__t=${t}`;
     // iOS/안드 공통으로 "앱 열기 시도 → 실패하면 웹" 패턴
     // - iOS Safari는 스킴 열 때 "앱을 열려고 합니다" 팝업이 뜨는 게 정상
     // - 카카오 인앱브라우저에서도 대부분 비슷하게 동작
