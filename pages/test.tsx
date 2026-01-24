@@ -30,7 +30,7 @@ export default function CookiePayTest() {
           cookiepayments.payrequest({
             ORDERNO: orderNo,
             PRODUCTNAME: "어바웃 결제 테스트",
-            AMOUNT: "20",
+            AMOUNT: "1000",
             BUYERNAME: "테스터",
             PAYMETHOD: "CARD",
             RETURNURL: "https://study-about.club/api/cookiepay/return",
