@@ -30,21 +30,28 @@ function Birthday() {
   const [info, setInfo] = useState<IUserRegisterFormWriting | null>(null);
 
   const getBirth = (birth: string) => {
-    const defaultBirth =
-      Number(birth?.slice(0, 2)) < 50 ? "20" + birth : birth ? "19" + birth : null;
+    const safe = (birth || "").trim();
 
-    return new Date(
-      +defaultBirth?.slice(0, 4),
-      +defaultBirth?.slice(4, 6) - 1,
-      +defaultBirth?.slice(6),
-    );
+    // 기존 의도: YYMMDD를 19xx/20xx로 보정
+    // 안정화: 형식이 이상하면 기본값으로
+    if (safe.length < 6) return new Date(2000, 0, 1);
+
+    const defaultBirth = Number(safe.slice(0, 2)) < 50 ? "20" + safe : "19" + safe;
+
+    const y = Number(defaultBirth.slice(0, 4));
+    const m = Number(defaultBirth.slice(4, 6)) - 1;
+    const d = Number(defaultBirth.slice(6, 8));
+
+    const dt = new Date(y, m, d);
+    if (Number.isNaN(dt.getTime())) return new Date(2000, 0, 1);
+    return dt;
   };
 
   // ✅ 마운트 이후에만 localStorage 읽기 (hydration 방지)
   useEffect(() => {
     setIsClient(true);
 
-    const stored: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
+    const stored: IUserRegisterFormWriting | null = getLocalStorageObj(REGISTER_INFO);
     setInfo(stored);
 
     // 기존과 동일: info.birth 있으면 그걸로, 없으면 010101 기본값
@@ -77,22 +84,23 @@ function Birthday() {
 
     const age = birthToAge(dayjs(birthday).format("YYMMDD"));
 
-    if (dayjs(birthday).year() > dayjs().year() - 19) {
-      setErrorMessage("죄송합니다. 만 19 ~ 28세의 인원만 가입이 가능합니다.");
-      e.preventDefault();
+    if (dayjs(birthday).year() > dayjs().year() - 18) {
+      setErrorMessage("죄송합니다. 만 18 ~ 28세의 인원만 가입이 가능합니다.");
+      e?.preventDefault?.();
       return;
     }
 
     if (age > 28) {
-      setErrorMessage("죄송합니다. 만 19 ~ 28세의 인원만 가입이 가능합니다.");
-      e.preventDefault();
+      setErrorMessage("죄송합니다. 만 18 ~ 28세의 인원만 가입이 가능합니다.");
+      e?.preventDefault?.();
       return;
     }
 
-    const stored: IUserRegisterFormWriting = info ?? getLocalStorageObj(REGISTER_INFO);
+    const stored: IUserRegisterFormWriting | null = info ?? getLocalStorageObj(REGISTER_INFO);
 
+    // ✅ stored가 null이어도 절대 터지지 않게
     setLocalStorageObj(REGISTER_INFO, {
-      ...stored,
+      ...(stored ?? {}),
       birth: dayjs(birthday).format("YYMMDD"),
     });
   };
@@ -122,6 +130,9 @@ function Birthday() {
   );
   CustomButton.displayName = "CustomButton";
 
+  // ✅ 이벤트/하이드레이션 꼬임 방지: 클라 준비 전엔 렌더하지 않음
+  if (!isClient) return null;
+
   return (
     <>
       <ProgressHeader title="회원가입" value={30} />
@@ -143,18 +154,14 @@ function Birthday() {
             {myBirth}
           </Box>
 
-          <Button
+          {/* ✅ Button as="div" 제거: 중첩 인터랙션/터치 씹힘 방지 */}
+          <PickerWrapper
             mt={1}
-            px={0}
-            borderRadius="8px"
-            size="md"
-            as="div"
+            w="160px"
             bg="gray.800"
             border="var(--border-main)"
-            _focus={{ bg: "var(--gray-500)" }}
-            _hover={{ bg: "var(--gray-500)" }}
+            borderRadius="8px"
           >
-            {/* ✅ birthday 준비되기 전엔 렌더 안 함 (hydration 안정) */}
             {birthday && (
               <StyledDatePicker
                 locale="ko"
@@ -162,23 +169,22 @@ function Birthday() {
                 onChange={(date) => setBirthday(date as Date)}
                 dateFormat="출생연도 / 월 선택"
                 showMonthYearPicker
-                onFocus={(e) => e.target.blur()}
+                // ✅ iOS/WebView 안정화: blur로 이벤트 끊지 않기
+                // onFocus={(e) => e.target.blur()}
+                preventOpenOnFocus
+                shouldCloseOnSelect
+                popperPlacement="bottom"
                 customInput={<CustomButton value="연도 / 월 선택" />}
               />
             )}
-          </Button>
+          </PickerWrapper>
 
-          <Button
-            size="md"
-            borderRadius="8px"
-            px={0}
+          <PickerWrapper
             mt={3}
-            as="div"
             w="160px"
-            bgColor="gray.800"
+            bg="gray.800"
             border="var(--border-main)"
-            _focus={{ bg: "var(--gray-500)" }}
-            _hover={{ bg: "var(--gray-500)" }}
+            borderRadius="8px"
           >
             {birthday && (
               <StyledDatePicker
@@ -186,7 +192,11 @@ function Birthday() {
                 selected={birthday}
                 onChange={(date) => setBirthday(date as Date)}
                 dateFormat="날짜 선택"
-                onFocus={(e) => e.target.blur()}
+                // ✅ 제거
+                // onFocus={(e) => e.target.blur()}
+                preventOpenOnFocus
+                shouldCloseOnSelect
+                popperPlacement="bottom"
                 customInput={<CustomButton value="날짜 선택" />}
                 renderCustomHeader={({ date }) => (
                   <div
@@ -201,7 +211,7 @@ function Birthday() {
                 )}
               />
             )}
-          </Button>
+          </PickerWrapper>
         </DateContainer>
       </RegisterLayout>
 
@@ -217,6 +227,25 @@ const StyledDatePicker = styled(DatePicker)`
   font-weight: 600;
   color: var(--gray-700);
   outline: none;
+`;
+
+/**
+ * 기존 UI 의도 유지:
+ * - hover/focus 시 배경색 바뀌는 느낌 유지
+ * - Chakra Button 래핑 대신 Box로 안전하게
+ */
+const PickerWrapper = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: var(--gray-500);
+  }
+
+  &:focus-within {
+    background: var(--gray-500);
+  }
 `;
 
 const DateContainer = styled.div`
