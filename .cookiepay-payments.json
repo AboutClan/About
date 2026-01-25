@@ -116,5 +116,64 @@
       }
     },
     "updatedAt": "2026-01-24T10:11:56.614Z"
+  },
+  "ORD-1769345352374-0f7465db8cd3a8": {
+    "orderNo": "ORD-1769345352374-0f7465db8cd3a8",
+    "tid": "260125214952GU00A6wY",
+    "amount": "1000",
+    "paymethod": "CARD",
+    "acceptDate": "20260125215016",
+    "status": "SUCCESS",
+    "raw": {
+      "RESULTCODE": "0000",
+      "RESULTMSG": "성공",
+      "dec": {
+        "RESULTCODE": "0000",
+        "RESULTMSG": "성공",
+        "decryptData": {
+          "PAY_METHOD": "CARD",
+          "RESULTCODE": "0000",
+          "RESULTMSG": "결제성공",
+          "ORDERNO": "ORD-1769345352374-0f7465db8cd3a8",
+          "AMOUNT": "1000",
+          "TID": "260125214952GU00A6wY",
+          "ACCEPTDATE": "20260125215016",
+          "ACCEPTNO": "",
+          "TRNO": "2026012521495137041900",
+          "MOBILE_COMPANY": "",
+          "CARDCODE": "KAKAO",
+          "CARDNAME": "",
+          "QUOTA": "00",
+          "ETC1": "",
+          "ETC2": "",
+          "ETC3": "",
+          "ETC4": "",
+          "ETC5": ""
+        }
+      },
+      "cert": {
+        "RESULTCODE": "0000",
+        "RESULTMSG": "결제성공",
+        "ORDERNO": "ORD-1769345352374-0f7465db8cd3a8",
+        "AMOUNT": "1000",
+        "BUYERNAME": "테스터",
+        "BUYEREMAIL": "",
+        "PRODUCTNAME": "어바웃 결제 테스트",
+        "PRODUCTCODE": "041900",
+        "PAYMETHOD": "CARD",
+        "BUYERID": "guest",
+        "ACCEPTNO": "",
+        "ACCEPTDATE": "20260125215016",
+        "TID": "260125214952GU00A6wY",
+        "CANCELDATE": "",
+        "CANCELMSG": "",
+        "ACCOUNTNO": "",
+        "RECEIVERNAME": "",
+        "DEPOSITENDDATE": "",
+        "CARDNAME": "",
+        "CARDCODE": "KAKAO"
+      }
+    },
+    "updatedAt": "2026-01-25T12:50:18.944Z"
   }
 }
