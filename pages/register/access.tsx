@@ -54,6 +54,7 @@ function Access() {
 
   const [tab, setTab] = useState<"가입 안내" | "자주 묻는 질문">("가입 안내");
   const [isChecked, setIsChecked] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
 
   // 가입 승인/결제리턴 처리 중복 방지
   const approveOnceRef = useRef(false);
@@ -185,7 +186,6 @@ function Access() {
       if (approveOnceRef.current) return;
       approveOnceRef.current = true;
 
-      toast("success", "결제가 완료됐어요. 가입 처리 중...");
       approve(session.user.uid);
       return;
     }
@@ -233,6 +233,7 @@ function Access() {
       toast("error", "결제 모듈을 불러오는 중이에요. 잠시만 기다려주세요.");
       return;
     }
+    setIsLoading2(true);
 
     cookiepayments.payrequest({
       ORDERNO: orderNo,
@@ -318,7 +319,7 @@ function Access() {
 
       <BottomNav
         isActive={isChecked} // ✅ UI/기능 동일 유지(활성 조건 변경 없음)
-        isLoading={isLoading}
+        isLoading={isLoading || isLoading2}
         onClick={onClickNext}
         text="결제하고 가입 완료하기"
       />
