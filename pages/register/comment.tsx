@@ -65,7 +65,7 @@ function Comment() {
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={70} />
+      <ProgressHeader title="회원가입" value={77} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>

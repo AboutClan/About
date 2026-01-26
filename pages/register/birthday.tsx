@@ -200,7 +200,7 @@ function Birthday() {
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={30} />
+      <ProgressHeader title="회원가입" value={33} />
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>생년월일을 입력해 주세요</span>

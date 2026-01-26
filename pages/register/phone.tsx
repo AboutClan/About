@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { KakaoProfile } from "next-auth/providers/kakao";
 import { useEffect, useRef, useState } from "react";
 
@@ -5,13 +6,19 @@ import { Input } from "../../components/atoms/Input";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
+import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
 import { useUserKakaoInfoQuery } from "../../hooks/user/queries";
+import { gaEvent } from "../../libs/gtag";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Phone() {
+  const toast = useToast();
+  const router = useRouter();
+  const errorToast = useErrorToast();
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
   const { data, type } = useUserKakaoInfoQuery();
@@ -20,6 +27,26 @@ function Phone() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState(info?.telephone || "");
+  const [isModal, setIsModal] = useState(false);
+
+  const { mutate: changeRole } = useUserInfoFieldMutation("role");
+
+  const { mutate, isLoading } = useUserRegisterMutation({
+    onSuccess() {
+      const moving = localStorage.getItem("moving");
+      if (moving) gaEvent("register_complete_by_cafe_map");
+      else gaEvent("register_complete");
+      changeRole({ role: "waiting" });
+
+      setLocalStorageObj(REGISTER_INFO, null);
+      toast("success", "신청 완료! 최종 가입 페이지로 이동합니다.");
+      setIsModal(true);
+      setTimeout(() => {
+        router.push("/register/access");
+      }, 1000);
+    },
+    onError: errorToast,
+  });
 
   const formatKoreanPhoneNumber = (phone: string): string => {
     const cleaned = phone.replace("+82", "0").replace(/\s+/g, "");
@@ -47,7 +74,7 @@ function Phone() {
   const phoneRegex = /^010-\d{4}-\d{4}$/;
 
   const onClickNext = (e) => {
-    if (value === "") {
+    if (value === "" || value.length < 11) {
       setErrorMessage("핸드폰 번호를 입력해 주세요.");
       e.preventDefault();
       return;
@@ -57,13 +84,15 @@ function Phone() {
       e.preventDefault();
       return;
     }
-
     setLocalStorageObj(REGISTER_INFO, { ...info, telephone: value });
+    console.log(info);
+
+    mutate(info);
   };
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={90} />
+      <ProgressHeader title="회원가입" value={100} />
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>핸드폰 번호를 입력해 주세요</span>
@@ -79,7 +108,9 @@ function Phone() {
           />
         </div>
       </RegisterLayout>
-      <BottomNav onClick={onClickNext} url="/register/fee" />
+      {!isModal && (
+        <BottomNav isLoading={isLoading || isModal} onClick={onClickNext} text="가입 신청 완료" />
+      )}
     </>
   );
 }

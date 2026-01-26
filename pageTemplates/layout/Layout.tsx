@@ -88,20 +88,21 @@ function Layout({ children }: ILayout) {
 
     // 토큰이 이미 있다면 (이론상 status도 authenticated겠지만, 방어적으로 한 번 더 체크)
     if (token) return;
-
+    console.log(23, segment);
     // 비로그인 허용 페이지(로그인/회원가입/정책/FAQ)는 자동 게스트 로그인 안 함
+    
+    // 이미 시도했으면 다시 시도하지 않음
+    if (guestSignInTriedRef.current) return;
+    guestSignInTriedRef.current = true;
     if (
       PUBLIC_SEGMENT.includes(segment) ||
       pathname === "/user/info/policy" ||
       pathname === "/user/info/privacy" ||
       pathname === "/faq"
     ) {
+      signIn("kakao", { redirect: false })
       return;
     }
-
-    // 이미 시도했으면 다시 시도하지 않음
-    if (guestSignInTriedRef.current) return;
-    guestSignInTriedRef.current = true;
 
     // ⚡ 여기서 게스트 로그인 (redirect: false)
     signIn("guest", {

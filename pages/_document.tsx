@@ -6,7 +6,6 @@ import Document, {
   Main,
   NextScript,
 } from "next/document";
-import Script from "next/script";
 import { Fragment } from "react";
 import { ServerStyleSheet } from "styled-components";
 
@@ -58,19 +57,18 @@ export default class MyDocument extends Document {
             key="og:site_name"
           />
           <meta charSet="utf-8" key="charset" />
-          <Script
-            src="https://kit.fontawesome.com/4071928605.js"
-            crossOrigin="anonymous"
-          ></Script>{" "}
-       
+
+          <script src="https://www.cookiepayments.com/js/cookiepayments-1.1.4.js" defer></script>
+          {/* <script src="https://sandbox.cookiepayments.com/js/cookiepayments-1.1.4.js"></script> */}
+
+          <script
+            defer
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=kyi1yirf4s&submodules=geocoder"
+          ></script>
         </Head>
         <body>
           <Main />
           <NextScript />
-          <Script
-            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=kyi1yirf4s&submodules=geocoder"
-            strategy="beforeInteractive"
-          ></Script>
         </body>
       </Html>
     );

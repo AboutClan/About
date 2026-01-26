@@ -16,7 +16,7 @@ function Name() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { data } = useUserKakaoInfoQuery();
-
+  console.log(data);
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState<string>(info?.name ?? "");
 
@@ -56,7 +56,7 @@ function Name() {
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={10} url="/login" />
+      <ProgressHeader title="회원가입" value={11} url="/login" />
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>이름을 입력해 주세요</span>

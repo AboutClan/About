@@ -42,7 +42,7 @@ function Gender() {
 
   return (
     <>
-      <ProgressHeader value={20} title="회원가입" />
+      <ProgressHeader value={22} title="회원가입" />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>

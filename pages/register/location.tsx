@@ -39,7 +39,7 @@ function RegisterLocation() {
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={40} />
+      <ProgressHeader title="회원가입" value={44} />
       <RegisterLocationLayout
         handleButton={onClickNext}
         url="/register/mbti"

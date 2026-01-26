@@ -36,6 +36,7 @@ export default function TabNav({
         colorScheme={!isBlack ? "mint" : "black"}
         bgColor="white"
         height="44px"
+        id="tabs-default"
       >
         <TabList
           height="44px"

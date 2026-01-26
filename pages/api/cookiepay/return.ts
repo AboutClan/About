@@ -8,7 +8,7 @@ import { upsertPayment } from "../../../libs/paymentStore";
 import { cookiepayDecrypt, cookiepayPaycert } from "../../../utils/cookiepay";
 
 export const config = {
-  api: { bodyParser: false }, // Form Data 받으려고
+  api: { bodyParser: false },
 };
 
 function readRawBody(req: NextApiRequest): Promise<string> {
@@ -30,7 +30,6 @@ function pickFirst(v: any): any {
 }
 
 function normalizePayload(obj: Record<string, any>) {
-  // querystring.parse는 string|string[]로 줄 때가 있어 정규화
   const out: Record<string, any> = {};
   for (const [k, v] of Object.entries(obj ?? {})) out[k] = pickFirst(v);
   return out;
@@ -39,6 +38,9 @@ function normalizePayload(obj: Record<string, any>) {
 function encodeMsg(msg: string) {
   return encodeURIComponent(msg || "");
 }
+
+// ✅ 결제 완료 후 돌아갈 페이지(고정)
+const RESULT_PATH = "/register/access";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log("cookiepay return content-type:", req.headers["content-type"]);
@@ -84,17 +86,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       enc_len: ENC_DATA?.length ?? 0,
     });
 
-    // 공통: 실패 코드면 바로 실패 처리(암호화/평문 관계없이)
-    // (단, 일부 PG가 실패여도 ENC_DATA를 줄 수 있는데, 너는 성공만 처리하면 된다고 봐서 단순화)
+    // 1) 리턴 단계 실패
     if (RESULTCODE && RESULTCODE !== "0000") {
       redirect(
         res,
-        `/pay/cookiepay/result?status=fail&msg=${encodeMsg(RESULTMSG || "payment fail")}`,
+        `${RESULT_PATH}?status=fail&reason=RETURN_FAIL&msg=${encodeMsg(
+          RESULTMSG || "payment fail",
+        )}`,
       );
       return;
     }
 
-    // ---- A) 평문 리턴 케이스 (배포에서 관측됨) ----
+    // ---- A) 평문 리턴 ----
     if (!ENC_DATA) {
       const orderNo = String(payload.ORDERNO ?? "");
       const tid = String(payload.TID ?? "");
@@ -103,13 +106,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const acceptDate = String(payload.ACCEPTDATE ?? "");
 
       if (!orderNo || !tid) {
-        redirect(res, `/pay/cookiepay/result?status=fail&msg=${encodeMsg("missing ORDERNO/TID")}`);
+        redirect(
+          res,
+          `${RESULT_PATH}?status=fail&reason=MISSING_KEYS&msg=${encodeMsg("missing ORDERNO/TID")}`,
+        );
         return;
       }
 
       const cert = await cookiepayPaycert(tid);
       console.log("paycert:", { rc: cert?.RESULTCODE, msg: cert?.RESULTMSG });
 
+      // 2) paycert 실패(최종 실패)
       if (cert?.RESULTCODE !== "0000") {
         upsertPayment({
           orderNo,
@@ -123,13 +130,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         redirect(
           res,
-          `/pay/cookiepay/result?status=fail&orderNo=${encodeURIComponent(orderNo)}&msg=${encodeMsg(
-            cert?.RESULTMSG ?? "paycert fail",
-          )}`,
+          `${RESULT_PATH}?status=fail&reason=PAYCERT_FAIL&orderNo=${encodeURIComponent(
+            orderNo,
+          )}&msg=${encodeMsg(cert?.RESULTMSG ?? "paycert fail")}`,
         );
         return;
       }
 
+      // ✅ 성공
       upsertPayment({
         orderNo,
         tid,
@@ -140,18 +148,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         raw: { payload, cert },
       });
 
-      redirect(res, `/pay/cookiepay/result?status=success&orderNo=${encodeURIComponent(orderNo)}`);
+      redirect(res, `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}`);
       return;
     }
 
-    // ---- B) 암호화 리턴 케이스 (로컬에서 관측됨) ----
+    // ---- B) 암호화 리턴 ----
     const dec = await cookiepayDecrypt(ENC_DATA);
     console.log("decrypt:", { rc: dec?.RESULTCODE, msg: dec?.RESULTMSG });
 
     if (dec?.RESULTCODE !== "0000" || !dec?.decryptData) {
       redirect(
         res,
-        `/pay/cookiepay/result?status=fail&msg=${encodeMsg(dec?.RESULTMSG ?? "decrypt fail")}`,
+        `${RESULT_PATH}?status=fail&reason=DECRYPT_FAIL&msg=${encodeMsg(
+          dec?.RESULTMSG ?? "decrypt fail",
+        )}`,
       );
       return;
     }
@@ -164,7 +174,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const acceptDate = String(d.ACCEPTDATE ?? "");
 
     if (!orderNo || !tid) {
-      redirect(res, `/pay/cookiepay/result?status=fail&msg=${encodeMsg("missing ORDERNO/TID")}`);
+      redirect(
+        res,
+        `${RESULT_PATH}?status=fail&reason=MISSING_KEYS&msg=${encodeMsg("missing ORDERNO/TID")}`,
+      );
       return;
     }
 
@@ -184,9 +197,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       redirect(
         res,
-        `/pay/cookiepay/result?status=fail&orderNo=${encodeURIComponent(orderNo)}&msg=${encodeMsg(
-          cert?.RESULTMSG ?? "paycert fail",
-        )}`,
+        `${RESULT_PATH}?status=fail&reason=PAYCERT_FAIL&orderNo=${encodeURIComponent(
+          orderNo,
+        )}&msg=${encodeMsg(cert?.RESULTMSG ?? "paycert fail")}`,
       );
       return;
     }
@@ -201,8 +214,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       raw: { payload, dec, cert },
     });
 
-    redirect(res, `/pay/cookiepay/result?status=success&orderNo=${encodeURIComponent(orderNo)}`);
+    redirect(res, `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}`);
   } catch (e: any) {
-    redirect(res, `/pay/cookiepay/result?status=fail&msg=${encodeMsg(e?.message ?? String(e))}`);
+    redirect(
+      res,
+      `${RESULT_PATH}?status=fail&reason=SERVER_ERROR&msg=${encodeMsg(e?.message ?? String(e))}`,
+    );
   }
 }

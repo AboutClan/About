@@ -21,17 +21,20 @@ interface IAccordion {
   contentArr: IAccordionContent[];
   isFull?: boolean;
   isQ?: boolean;
+  defaultIndex?: number;
 }
 
-function Accordion({ contentArr, isFull, isQ = true }: IAccordion) {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+function Accordion({ contentArr, isFull, isQ = true, defaultIndex }: IAccordion) {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(defaultIndex ?? null);
   const handleAccordionChange = (index: number | null) => {
     setSelectedIndex(index);
   };
+  console.log(2, selectedIndex);
   return (
     <ChakraAccordion
       allowToggle
       fontSize="13px"
+      index={selectedIndex}
       onChange={(index) => handleAccordionChange(index as number | null)}
     >
       {contentArr?.map((item, idx) => {

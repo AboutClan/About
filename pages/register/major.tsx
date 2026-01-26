@@ -39,7 +39,7 @@ function Major() {
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={60} />
+      <ProgressHeader title="회원가입" value={66} />
       <MajorLayout majors={majors} setMajors={setMajors} />
       <BottomNav onClick={onClickNext} url="/register/comment" />
     </>

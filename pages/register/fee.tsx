@@ -23,18 +23,18 @@ import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils
 
 export const VALUE_BOX_COL_ITEMS: ValueBoxCol2ItemProps[] = [
   {
-    left: `가입비`,
+    left: `동아리 가입비`,
     right: "10,000원",
     lineThroughText: "15,000원",
     leftSub: `(${dayjs().add(1, "month").month() + 1}월 중 인상 예정)`,
   },
   {
-    left: "포인트",
+    left: "포인트 충전",
     right: "10,000원",
-    leftSub: "(모임 참여 등 활동에 쓰이는 재화)",
+    leftSub: "(활동에 쓰이는 재화)",
   },
   {
-    left: "총 금액",
+    left: "최종 결제 금액",
     right: "= 20,000원",
     isFinal: true,
   },

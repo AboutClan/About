@@ -56,7 +56,7 @@ function LoginPage() {
         toast("error", "동아리에 소속되어 있지 않습니다.");
         break;
       case "waiting":
-        toast("warning", "카카오 로그인을 눌러 최종 가입을 완료해 주세요!");
+        toast("warning", "카카오 로그인을 통해 가입을 완료할 수 있습니다.");
         break;
     }
   }, [statusParam, toast]);

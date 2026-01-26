@@ -1,17 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 
-function RegisterOverview({ children, isShort }: { children: React.ReactNode; isShort?: boolean }) {
-  return <Layout isshort={isShort}>{children}</Layout>;
+function RegisterOverview({
+  children,
+  isShort,
+  isNoTop,
+}: {
+  children: React.ReactNode;
+  isShort?: boolean;
+  isNoTop?: boolean;
+}) {
+  return (
+    <Layout isshort={isShort} isNoTop={isNoTop}>
+      {children}
+    </Layout>
+  );
 }
 
-const Layout = styled.div<{ isshort: boolean }>`
+const Layout = styled.div<{ isshort: boolean; isNoTop: boolean }>`
   display: flex;
 
   flex-direction: column;
   line-height: 1.8;
-  margin-top: 20px;
-  margin-bottom: ${(props) => (props.isshort ? "20px" : "40px")};
+  margin-top: ${(props) => (props?.isNoTop ? "8px" : "20px")};
+  margin-bottom: ${(props) => (props.isshort || props?.isNoTop ? "20px" : "40px")};
   > span:last-child {
     font-weight: light;
     font-size: 13px;

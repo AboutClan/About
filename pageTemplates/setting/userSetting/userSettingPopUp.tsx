@@ -13,7 +13,6 @@ import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
   FAQ_MODAL_AT,
   GATHER_REVIEW_MODAL_ID,
-  KAKAO_FRIEND_AT,
   NEW_MEMBER_MODAL_AT,
   POINT_RECEIVE_AT,
 } from "../../../constants/keys/localStorage";
@@ -68,10 +67,10 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
       setPopUpType((old) => [...old, "newMember"]);
       return;
     }
-    if (!hasKakaoCuopon && !checkAndSetLocalStorage(KAKAO_FRIEND_AT, 20)) {
-      setPopUpType((old) => [...old, "kakaoFriend"]);
-      return;
-    }
+    // if (!hasKakaoCuopon && !checkAndSetLocalStorage(KAKAO_FRIEND_AT, 20)) {
+    //   setPopUpType((old) => [...old, "kakaoFriend"]);
+    //   return;
+    // }
     if (data && localStorage.getItem(GATHER_REVIEW_MODAL_ID) !== data.id + "") {
       localStorage.setItem(GATHER_REVIEW_MODAL_ID, data.id + "");
 

@@ -16,7 +16,7 @@ const theme = extendTheme({
           content: '"•"', // 마커 심볼
           position: "absolute",
           left: "8px",
-          top: "50%",
+          top: "46%",
           transform: "translateY(-50%)", // 수직 중앙 정렬
           fontSize: "10px", // 마커 크기
           fontWeight: "800",

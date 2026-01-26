@@ -14,12 +14,12 @@ const REGISTER_WRITING_SEQUENCE = {
   location: 4,
   mbti: 5,
   major: 6,
-  interest: 7,
-  comment: 8,
-  introduce: 9,
-  phone: 10,
-  fee: 11,
-  access: 12,
+  // interest: 7,
+  comment: 7,
+  introduce: 8,
+  phone: 9,
+  // fee: 10,
+  access: 10,
 };
 
 const GATHER_WRITING_SEQUENCE = {

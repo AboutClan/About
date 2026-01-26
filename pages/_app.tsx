@@ -13,8 +13,6 @@ import { RecoilRoot } from "recoil";
 
 dayjs.locale("ko");
 
-import Script from "next/script";
-
 import Layout from "../pageTemplates/layout/Layout";
 import theme from "../theme";
 
@@ -41,11 +39,6 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"
         />
       </Head>
-      {/* ✅ 가이드 그대로: jQuery 먼저 */}
-      <Script src="https://code.jquery.com/jquery-1.12.4.min.js"></Script>
-
-      {/* ✅ 가이드 그대로: cookiepayments 다음 */}
-      <Script src="https://www.cookiepayments.com/js/cookiepayments-1.1.4.js"></Script>
 
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>

@@ -11,6 +11,12 @@ function BaseScript() {
         strategy="afterInteractive"
       />
       <Script src="https://t1.daumcdn.net/kas/static/ba.min.js" async strategy="afterInteractive" />
+
+      {/* <Script
+        src="https://sandbox.cookiepayments.com/js/cookiepayments-1.1.4.js"
+        strategy="beforeInteractive"
+        crossOrigin="anonymous"
+      ></Script> */}
     </>
   );
 }

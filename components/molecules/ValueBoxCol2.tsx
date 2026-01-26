@@ -21,7 +21,7 @@ function ValueBoxCol2({ items }: ValueBoxCol2Props) {
       border="1px solid rgba(0,194,179,0.08)"
       px={5}
       py={4}
-      fontSize="13px"
+      fontSize="12px"
       fontWeight="light"
     >
       <Box>
@@ -32,7 +32,7 @@ function ValueBoxCol2({ items }: ValueBoxCol2Props) {
             pt={item?.isFinal ? 2 : 1}
             pb={item?.isFinal ? 0 : 1}
             justify="space-between"
-            lineHeight="20px"
+            lineHeight="16px"
             fontWeight="semibold"
             borderTop={item?.isFinal ? "1px solid var(--gray-200)" : "none"}
           >
