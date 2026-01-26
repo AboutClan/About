@@ -85,9 +85,7 @@ function Phone() {
       return;
     }
     setLocalStorageObj(REGISTER_INFO, { ...info, telephone: value });
-    console.log(info);
-
-    mutate(info);
+    mutate({ ...info, telephone: value });
   };
 
   return (
