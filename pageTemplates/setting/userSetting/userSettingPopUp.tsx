@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { ComponentType, useEffect, useState } from "react";
 
@@ -6,6 +5,7 @@ import FAQModal from "../../../components/overlay/FAQModal";
 import GatherRecordDrawer from "../../../components/overlay/GatherRecordDrawer";
 import KakaoFriendModal from "../../../components/overlay/KakaoFriendModal";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
+import NewbieBenefitModal from "../../../components/overlay/NewbieBenefitModal";
 import NewMemberModal from "../../../components/overlay/NewMemberModal";
 import PointLowModal from "../../../components/overlay/PointLowModal";
 import SelfIntroduceModal from "../../../components/overlay/SelfIntroduceModal";
@@ -13,12 +13,12 @@ import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
   FAQ_MODAL_AT,
   GATHER_REVIEW_MODAL_ID,
-  NEW_MEMBER_MODAL_AT,
+  MEMBERSHIP_AT,
   POINT_RECEIVE_AT,
 } from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
-import { usePointCuoponLogQuery } from "../../../hooks/user/queries";
+import { useUserMembershipLogQuery } from "../../../hooks/user/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
@@ -31,7 +31,8 @@ export type PopUpType =
   | "introduce"
   | "newMember"
   | "pointReceive"
-  | "kakaoFriend";
+  | "kakaoFriend"
+  | "membership";
 
 interface PopUpProps extends CloseProps {}
 
@@ -44,6 +45,7 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
   newMember: NewMemberModal,
   pointReceive: PointLowModal,
   kakaoFriend: KakaoFriendModal,
+  membership: NewbieBenefitModal,
 };
 
 export default function UserSettingPopUp({ user }: { user: IUser }) {
@@ -55,16 +57,20 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
 
   const studyRecordStr = localStorage.getItem(STUDY_RECORD_MODAL_AT);
   const studyRecord = JSON.parse(studyRecordStr);
-  const { data: hasKakaoCuopon, isLoading } = usePointCuoponLogQuery();
 
-  console.log(33, hasKakaoCuopon);
+  const { data: membershipLog, isLoading: isLoading2 } = useUserMembershipLogQuery();
+  console.log(membershipLog);
   useEffect(() => {
-    if (data === undefined || !session || isLoading) return;
-    if (
-      dayjs(user.registerDate).diff(dayjs(), "d") >= -30 &&
-      !checkAndSetLocalStorage(NEW_MEMBER_MODAL_AT, 3)
-    ) {
-      setPopUpType((old) => [...old, "newMember"]);
+    if (data === undefined || !session) return;
+    // if (
+    //   dayjs(user.registerDate).diff(dayjs(), "d") >= -30 &&
+    //   !checkAndSetLocalStorage(NEW_MEMBER_MODAL_AT, 3)
+    // ) {
+    //   setPopUpType((old) => [...old, "newMember"]);
+    //   return;
+    // }
+    if (!isLoading2 && !membershipLog?.length && !checkAndSetLocalStorage(MEMBERSHIP_AT, 30)) {
+      setPopUpType((old) => [...old, "membership"]);
       return;
     }
     // if (!hasKakaoCuopon && !checkAndSetLocalStorage(KAKAO_FRIEND_AT, 20)) {
@@ -95,7 +101,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
       setPopUpType((old) => [...old, "faq"]);
       return;
     }
-  }, [data, session, user, isLoading]);
+  }, [data, session, user, isLoading2]);
 
   const filterPopUpType = (type: PopUpType) => {
     setPopUpType((popUps) => popUps.filter((popUp) => popUp !== type));
@@ -103,7 +109,6 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
 
   return (
     <>
-      {/* {true && <NewbieBenefitModal />} */}
       {Object.entries(MODAL_COMPONENTS).map(([key, Component]) => {
         const type = key as PopUpType;
         const props =

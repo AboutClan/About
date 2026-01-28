@@ -15,6 +15,18 @@ import {
 } from "../../types/models/userTypes/userInfoTypes";
 import { IPointSystem } from "../../types/services/pointSystem";
 
+export const useUserChangeMembershipMutation = (
+  options?: MutationOptions<{ type: "create" | "decay" }>,
+) =>
+  useMutation<void, AxiosError, { type: "create" | "decay" }>(
+    (param) =>
+      requestServer<{ type: "create" | "decay" }>({
+        method: "patch",
+        url: `user/membership`,
+        body: param,
+      }),
+    options,
+  );
 export const useUserRegisterMutation = (options?: MutationOptions<IUserRegisterFormWriting>) =>
   useMutation<void, AxiosError, IUserRegisterFormWriting>(
     (param) =>

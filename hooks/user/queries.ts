@@ -22,6 +22,24 @@ export const useUserKakaoInfoQuery = (): {
   };
 };
 
+export const useUserMembershipLogQuery = (
+  options?: QueryOptions<{ type: "decay" | "create"; userId: string }[]>,
+) =>
+  useQuery<
+    { type: "decay" | "create"; userId: string }[],
+    AxiosError,
+    { type: "decay" | "create"; userId: string }[]
+  >(
+    [USER_INFO, "membershipLog"],
+    async () => {
+      const res = await axios.get<{ type: "decay" | "create"; userId: string }[]>(
+        `${SERVER_URI}/user/membership/log`,
+      );
+
+      return res.data;
+    },
+    options,
+  );
 export const useUserInfoQuery = (options?: QueryOptions<IUser>) =>
   useQuery<IUser, AxiosError, IUser>(
     [USER_INFO],

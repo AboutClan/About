@@ -1,6 +1,10 @@
 import { Badge, Box } from "@chakra-ui/react";
 import { useState } from "react";
+import { useQueryClient } from "react-query";
 
+import { USER_INFO } from "../../constants/keys/queryKeys";
+import { useToast } from "../../hooks/custom/CustomToast";
+import { useUserChangeMembershipMutation } from "../../hooks/user/mutations";
 import { ModalLayout } from "../../modals/Modals";
 import { CloseProps } from "../../types/components/modalTypes";
 import { navigateExternalLink } from "../../utils/navigateUtils";
@@ -8,10 +12,29 @@ import TextCheckButton from "../molecules/TextCheckButton";
 import ValueBoxCol from "../molecules/ValueBoxCol";
 
 function NewbieBenefitModal({ onClose }: CloseProps) {
+  const toast = useToast();
+  const queryClient = useQueryClient();
   const [isCheckInsta, setIsCheckInsta] = useState(false);
   const [isCheckKakao, setIsCheckKakao] = useState(false);
 
-  const getMembership = () => {};
+  const { mutate } = useUserChangeMembershipMutation({
+    onSuccess() {
+      toast("success", "적용되었습니다.");
+      onClose();
+      queryClient.invalidateQueries([USER_INFO]);
+    },
+  });
+
+  const getMembership = () => {
+    if (!isCheckInsta) {
+      toast("warning", "인스타 팔로우 후 수령할 수 있습니다.");
+      return;
+    } else if (!isCheckKakao) {
+      toast("warning", "카카오 채널 추가 후 수령할 수 있습니다.");
+      return;
+    }
+    mutate({ type: "create" });
+  };
 
   return (
     <ModalLayout
