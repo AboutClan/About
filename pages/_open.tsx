@@ -16,14 +16,12 @@ export default function OpenPage() {
 
     // ✅ 핵심: about20s://{path} 로 만든다 (/// 금지)
     const cleanPath = String(path || "").replace(/^\/+/, "") || "home";
-
     // 캐시/중복 방지용
     const t = Date.now();
     const sep = cleanPath.includes("?") ? "&" : "?";
 
     // ✅ 딥링크는 반드시 about20s:// 로
     const appUrl = `about20s://${cleanPath}${sep}__t=${t}`;
-
     const t0 = Date.now();
     let didHide = false;
 
