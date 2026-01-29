@@ -7,20 +7,24 @@ export default function OpenPage() {
   useEffect(() => {
     if (!router.isReady) return;
 
-    // 1. 경로 추출 및 정규화 (앞의 슬래시 제거)
+    // 1. 쿼리 파라미터에서 path 추출 (예: gather/123)
     const rawPath = Array.isArray(router.query.path) ? router.query.path[0] : router.query.path;
-    const cleanPath = String(rawPath || "").replace(/^\/+/, "") || "home";
+
+    // 2. 경로 정규화: 앞뒤 공백 제거 및 맨 앞의 슬래시(/)를 완전히 제거
+    // 앱의 정규식이 about20s:// 바로 뒤에 경로가 오는 것을 기대하므로 슬래시가 없어야 합니다.
+    const cleanPath =
+      typeof rawPath === "string" && rawPath.trim() ? rawPath.trim().replace(/^\/+/, "") : "home";
 
     const WEB_BASE = "https://study-about.club/";
     const webUrl = WEB_BASE + cleanPath;
 
-    // 2. 딥링크 생성 (앱 정규식 /^about20s:\/\/([^?]+)(\?.*)?$/ 통과용)
+    // 3. 딥링크 생성 (앱 내부 정규식 최적화)
     const t = Date.now();
     const sep = cleanPath.includes("?") ? "&" : "?";
 
-    // ✅ 포인트: 'about20s://' 바로 다음에 'link'라는 호스트를 넣어
-    // 시스템이 슬래시를 추가하더라도 경로가 깨지지 않게 방어합니다.
-    const appUrl = `about20s://link/${cleanPath}${sep}__t=${t}`;
+    // ✅ 핵심: about20s:// 뒤에 슬래시 없이 바로 경로를 붙입니다.
+    // 시스템이 슬래시를 자동으로 추가하는 것을 방지하기 위해 가장 단순한 구조를 유지합니다.
+    const appUrl = `about20s://${cleanPath}${sep}__t=${t}`;
 
     let didHide = false;
     const onVisibility = () => {
@@ -28,13 +32,14 @@ export default function OpenPage() {
     };
     document.addEventListener("visibilitychange", onVisibility);
 
-    // 3. 리다이렉트 실행
+    // 4. 앱 실행 시도
     window.location.replace(appUrl);
 
-    // 4. Fallback 처리
+    // 5. Fallback: 앱이 실행되지 않을 경우 웹으로 리다이렉트
     const FALLBACK_MS = 1500;
     const timer = window.setTimeout(() => {
       document.removeEventListener("visibilitychange", onVisibility);
+      // 앱이 실행되어 백그라운드로 전환(didHide)되지 않은 경우에만 웹으로 이동
       if (!didHide) {
         window.location.replace(webUrl);
       }
