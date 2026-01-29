@@ -11,8 +11,10 @@ import { useAllUserDataQuery } from "../../hooks/admin/quries";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
+import { useGroupIdQuery } from "../../hooks/groupStudy/queries";
 import { useRealtimeInviteMutation } from "../../hooks/realtime/mutations";
 import { useStudyInviteMutation, useStudyVoteArrMutation } from "../../hooks/study/mutations";
+import { DispatchType } from "../../types/hooks/reactTypes";
 import { RealTimeVoteProps } from "../../types/models/studyTypes/requestTypes";
 import {
   StudyConfirmedMemberProps,
@@ -20,7 +22,7 @@ import {
 } from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+import { IUserSummary, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { searchName } from "../../utils/stringUtils";
 
@@ -30,6 +32,12 @@ interface IStudyDateBar {
   studyType: StudyType;
   placeInfo: StudyPlaceProps;
 }
+interface PlaceProps {
+  locationDetail: string;
+  latitude: number;
+  longitude: number;
+}
+
 function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
   const memberIdArr = members?.map(
     (member) => (member as StudyConfirmedMemberProps)?.user._id || "",
@@ -40,7 +48,25 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
   const userInfo = useUserInfo();
   const [isModal, setIsModal] = useState(false);
 
+  const [placeProps, setPlaceProps] = useState<PlaceProps>();
+
+  const [inviteUser, setInviteUser] = useState<UserSimpleInfoProps>(null);
   const [dateArr, setDateArr] = useState<string[]>([]);
+
+  const { mutate: inviteStudy } = useStudyInviteMutation(date, {
+    onSuccess() {
+      resetStudy();
+      typeToast("invite");
+      setIsModal(false);
+    },
+  });
+  const { mutate: inviteRealTimes } = useRealtimeInviteMutation(date, {
+    onSuccess() {
+      resetStudy();
+      typeToast("invite");
+      setIsModal(false);
+    },
+  });
   const { mutate: voteDateArr } = useStudyVoteArrMutation(dateArr, {
     onSuccess() {
       // if (selectedDates.length) {
@@ -57,48 +83,11 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
     },
   });
 
-  const { mutate: inviteStudy, isLoading: isLoading1 } = useStudyInviteMutation(date, {
-    onSuccess() {
-      resetStudy();
-      typeToast("invite");
-      setIsModal(false);
-    },
-  });
-  const { mutate: inviteRealTimes, isLoading: isLoading2 } = useRealtimeInviteMutation(date, {
-    onSuccess() {
-      resetStudy();
-      typeToast("invite");
-      setIsModal(false);
-    },
-  });
-
-  const { data: usersAll, isLoading } = useAllUserDataQuery("study", { enabled: isModal });
-
-  const [inviteUser, setInviteUser] = useState<UserSimpleInfoProps>(null);
-  const [users, setUsers] = useState<UserSimpleInfoProps[]>(null);
-  const [nameValue, setNameValue] = useState("");
-  const [placeIndex, setPlaceIndex] = useState<0 | 1 | 2 | 3>(null);
-
-  useEffect(() => {
-    if (nameValue) setUsers(searchName(usersAll as UserSimpleInfoProps[], nameValue));
-    else setUsers(usersAll as UserSimpleInfoProps[]);
-  }, [nameValue, usersAll]);
-  console.log(dateArr);
   useEffect(() => {
     if (!inviteUser) return;
-    if (placeIndex !== null) {
-      let props;
-
-      if (placeIndex === 0) {
-        props = {
-          locationDetail: "서울특별시 강남구 역삼동 827-13 1층",
-          latitude: 37.496193,
-          longitude: 127.030907,
-        };
-      }
-
+    if (placeProps) {
       voteDateArr({
-        ...props,
+        ...placeProps,
         userId: inviteUser._id,
         start: dayjs(date).hour(14).minute(0),
         end: dayjs(date).hour(18).minute(0),
@@ -133,7 +122,7 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
       };
       inviteStudy({ userId: inviteUser._id, ...voteInfo });
     }
-    setUsers((old) => old.filter((who) => who.uid !== inviteUser.uid));
+
     setInviteUser(null);
   }, [inviteUser]);
 
@@ -172,91 +161,149 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
         </Box>
       </Box>
       {isModal && (
-        <RightDrawer title="인원 초대" onClose={() => setIsModal(false)}>
-          {isAdmin && (
-            <>
-              <Flex mb={2}>
-                {[1, 2, 3, 4, 5, 6, 7].map((n) => (
-                  <Button
-                    key={n}
-                    onClick={() => {
-                      if (dateArr.includes(dayjsToStr(dayjs(date).add(n, "day")))) {
-                        setDateArr((old) =>
-                          old.filter((o) => o !== dayjsToStr(dayjs(date).add(n, "day"))),
-                        );
-                      } else {
-                        setDateArr((old) => [...old, dayjsToStr(dayjs(date).add(n, "day"))]);
-                      }
-                    }}
-                    colorScheme={
-                      dateArr.includes(dayjsToStr(dayjs(date).add(n, "day"))) ? "mint" : "gray"
-                    }
-                  >
-                    {dayjsToFormat(dayjs(date).add(n, "day"), "D(ddd)")}
-                  </Button>
-                ))}
-              </Flex>
-              <Flex justify="space-between">
-                <Button
-                  colorScheme={placeIndex === 0 ? "mint" : "gray"}
-                  onClick={() => {
-                    setPlaceIndex(0);
-                  }}
-                >
-                  강남 셀렉
-                </Button>
-                <Button
-                  colorScheme={placeIndex === 1 ? "mint" : "gray"}
-                  onClick={() => {
-                    setPlaceIndex(1);
-                  }}
-                >
-                  강남 셀렉
-                </Button>
-                <Button
-                  colorScheme={placeIndex === 2 ? "mint" : "gray"}
-                  onClick={() => {
-                    setPlaceIndex(2);
-                  }}
-                >
-                  강남 셀렉
-                </Button>
-                <Button
-                  colorScheme={placeIndex === 3 ? "mint" : "gray"}
-                  onClick={() => {
-                    setPlaceIndex(3);
-                  }}
-                >
-                  강남 셀렉
-                </Button>
-              </Flex>
-            </>
-          )}
-          <Box mt="16px">
-            <Input
-              placeholder="이름 검색"
-              value={nameValue}
-              onChange={(e) => setNameValue(e.target.value)}
-              size="md"
-            />
-          </Box>
-          <Box
-            mb={5}
-            overflowY="auto"
-            css={{
-              "&::-webkit-scrollbar": { display: "none" },
-              scrollbarWidth: "none",
-            }}
-          >
-            {!isLoading && !isLoading1 && !isLoading2 && users ? (
-              <InviteUserGroups users={users} inviteUser={(who) => setInviteUser(who)} />
-            ) : (
-              <MainLoadingAbsolute />
-            )}
-          </Box>
-        </RightDrawer>
+        <InviteDrawer
+          onClose={() => setIsModal(false)}
+          handleClick={(who, place) => {
+            setInviteUser(who);
+            setPlaceProps(place);
+          }}
+          date={date}
+          dateArr={dateArr}
+          setDateArr={setDateArr}
+          isAdmin={isAdmin}
+        />
       )}
     </>
+  );
+}
+
+interface InviteDrawerProps {
+  isAdmin: boolean;
+  onClose: () => void;
+  handleClick: (who: IUserSummary, place: PlaceProps) => void;
+  dateArr: string[];
+  setDateArr: DispatchType<string[]>;
+  date: string;
+}
+
+type PlaceType = "강남" | "홍대" | "사당";
+
+function InviteDrawer({
+  isAdmin,
+  onClose,
+  handleClick,
+  dateArr,
+  setDateArr,
+  date,
+}: InviteDrawerProps) {
+  const [users, setUsers] = useState<UserSimpleInfoProps[]>(null);
+  const [nameValue, setNameValue] = useState("");
+  const [placeName, setPlaceName] = useState<PlaceType>();
+
+  const { data: group } = useGroupIdQuery("118");
+
+  const { data: usersAll, isLoading } = useAllUserDataQuery("study");
+
+  const placeArr: PlaceType[] = ["강남", "홍대", "사당"];
+
+  useEffect(() => {
+    if (!usersAll || !group) return;
+    const groupUsers = group.participants.map((par) => par.user);
+    const totalUsers = Array.from(
+      new Map([...groupUsers, ...usersAll].map((user) => [user.uid, user])).values(),
+    );
+
+    if (nameValue) setUsers(searchName(totalUsers as UserSimpleInfoProps[], nameValue));
+    else setUsers(totalUsers as UserSimpleInfoProps[]);
+  }, [nameValue, usersAll, group]);
+
+  const PLACE_MAPPING: Record<PlaceType, PlaceProps> = {
+    강남: {
+      locationDetail: "서울특별시 강남구 역삼동 827-13 1층",
+      latitude: 37.496193,
+      longitude: 127.030907,
+    },
+    홍대: {
+      locationDetail: "서울특별시 강남구 역삼동 827-13 1층",
+      latitude: 37.496193,
+      longitude: 127.030907,
+    },
+    사당: {
+      locationDetail: "서울특별시 강남구 역삼동 827-13 1층",
+      latitude: 37.496193,
+      longitude: 127.030907,
+    },
+  };
+
+  return (
+    <RightDrawer title="인원 초대" onClose={onClose}>
+      {isAdmin && (
+        <>
+          <Flex mb={2}>
+            {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+              <Button
+                key={n}
+                onClick={() => {
+                  if (dateArr.includes(dayjsToStr(dayjs(date).add(n, "day")))) {
+                    setDateArr((old) =>
+                      old.filter((o) => o !== dayjsToStr(dayjs(date).add(n, "day"))),
+                    );
+                  } else {
+                    setDateArr((old) => [...old, dayjsToStr(dayjs(date).add(n, "day"))]);
+                  }
+                }}
+                colorScheme={
+                  dateArr.includes(dayjsToStr(dayjs(date).add(n, "day"))) ? "mint" : "gray"
+                }
+              >
+                {dayjsToFormat(dayjs(date).add(n, "day"), "D(ddd)")}
+              </Button>
+            ))}
+          </Flex>
+          <Flex justify="space-between">
+            {placeArr.map((place) => (
+              <Button
+                key={place}
+                colorScheme={placeName === place ? "mint" : "gray"}
+                onClick={() => {
+                  setPlaceName(place);
+                }}
+              >
+                {place}
+              </Button>
+            ))}
+          </Flex>
+        </>
+      )}
+      <Box mt="16px">
+        <Input
+          placeholder="이름 검색"
+          value={nameValue}
+          onChange={(e) => setNameValue(e.target.value)}
+          size="md"
+        />
+      </Box>
+      <Box
+        mb={5}
+        overflowY="auto"
+        css={{
+          "&::-webkit-scrollbar": { display: "none" },
+          scrollbarWidth: "none",
+        }}
+      >
+        {!isLoading && users ? (
+          <InviteUserGroups
+            users={users}
+            inviteUser={(who) => {
+              handleClick(who, PLACE_MAPPING[placeName]);
+              setUsers((old) => old.filter((who) => who.uid !== who.uid));
+            }}
+          />
+        ) : (
+          <MainLoadingAbsolute />
+        )}
+      </Box>
+    </RightDrawer>
   );
 }
 

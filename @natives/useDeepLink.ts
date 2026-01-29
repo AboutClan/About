@@ -33,7 +33,11 @@ export const useDeepLink = ({ token }: { token?: string | null }) => {
       if (data?.name !== "deeplink") return;
 
       const path = typeof data?.path === "string" ? data.path : "";
-
+      const normalizedPath = path.startsWith("link/")
+        ? "/" + path.replace("link/", "")
+        : path.startsWith("/")
+        ? path
+        : "/" + path;
       const rawParams = data?.params && typeof data.params === "object" ? data.params : {};
       if (!path) return;
       const cleanedParams: Record<string, string> = {};
@@ -47,12 +51,13 @@ export const useDeepLink = ({ token }: { token?: string | null }) => {
         Object.keys(cleanedParams).length > 0
           ? `?${new URLSearchParams(cleanedParams).toString()}`
           : "";
-      const target = `${path}${qs}`;
+      const target = `${normalizedPath}${qs}`;
 
       log("deeplink:", target);
 
       // ✅ 토큰 없으면 일단 보관 (화면 렌더 조건 때문에)
-      if (!token) {
+      if (!token && !target.includes("login")) {
+        log("Waiting for token, saved to pending");
         pendingRef.current = target;
         return;
       }
