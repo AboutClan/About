@@ -43,12 +43,9 @@ export default function Member() {
   console.log(data);
   return (
     <>
-      <Header title="멤버 관리" />
+      <Header title="모임 참여 횟수" />
       <Slide>
         <Box>
-          <Box p="12px 0" fontSize="16px" fontWeight={800}>
-            멤버 참여 횟수
-          </Box>
           <Flex direction="column">
             {users
               ?.slice()
