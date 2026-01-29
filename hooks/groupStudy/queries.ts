@@ -78,7 +78,7 @@ export const useGroupsMemberActivityQuery = (
     AxiosError,
     { user: string; monthGatherCount: number; totalGatherCount: number }[]
   >(
-    [GROUP_STUDY, "memberActivity"],
+    [GROUP_STUDY, "memberActivity", groupStudyId],
     async () => {
       const res = await axios.get<
         { user: string; monthGatherCount: number; totalGatherCount: number }[]
