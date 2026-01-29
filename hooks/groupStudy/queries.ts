@@ -69,6 +69,26 @@ export const useGroupQuery = (
     },
     options,
   );
+export const useGroupsMemberActivityQuery = (
+  groupStudyId: string,
+  options?: QueryOptions<{ user: string; monthGatherCount: number; totalGatherCount: number }[]>,
+) =>
+  useQuery<
+    { user: string; monthGatherCount: number; totalGatherCount: number }[],
+    AxiosError,
+    { user: string; monthGatherCount: number; totalGatherCount: number }[]
+  >(
+    [GROUP_STUDY, "memberActivity"],
+    async () => {
+      const res = await axios.get<
+        { user: string; monthGatherCount: number; totalGatherCount: number }[]
+      >(`${SERVER_URI}/groupStudy/memberActivity`, {
+        params: { groupStudyId },
+      });
+      return res.data;
+    },
+    options,
+  );
 export const useGroupsMineQuery = (status: "pending" | "all", options?: QueryOptions<IGroup[]>) =>
   useQuery<IGroup[], AxiosError, IGroup[]>(
     [GROUP_STUDY, status],

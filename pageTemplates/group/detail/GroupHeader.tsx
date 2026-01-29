@@ -30,6 +30,7 @@ import { setLocalStorageObj } from "../../../utils/storageUtils";
 import {
   CheckCircleIcon,
   EditIcon,
+  MemberActivity,
   MemberCheckIcon,
   MemberHeartIcon,
   MemberMinusIcon,
@@ -139,6 +140,13 @@ function GroupHeader({ group }: IGroupHeader) {
                 icon: <MemberHeartIcon />,
                 func: () => {
                   router.push(`/group/${group.id}/manner`);
+                },
+              },
+              {
+                text: "멤버 활동 지표",
+                icon: <MemberActivity />,
+                func: () => {
+                  router.push(`/group/${group.id}/activity`);
                 },
               },
               {
