@@ -31,7 +31,7 @@ const buildKakaoLink = (url: string) => {
   const path = toPathFromUrl(url);
   if (!path) return { mobileWebUrl: url, webUrl: url };
 
-  const openUrl = `https://about20s.club/_open?path=${encodeURIComponent(path)}`;
+  const openUrl = `https://about20s.club/_open?dl=${encodeURIComponent(path)}`;
 
   return {
     mobileWebUrl: openUrl,
@@ -39,8 +39,8 @@ const buildKakaoLink = (url: string) => {
 
     // ✅ 카카오톡이 앱 실행할 때 넘겨줄 파라미터
     // (kakao{NATIVE_APP_KEY}://kakaolink?{androidExecutionParams} 형태로 호출됨)
-    androidExecutionParams: `path=${encodeURIComponent(path)}`,
-    iosExecutionParams: `path=${encodeURIComponent(path)}`,
+    androidExecutionParams: `dl=${encodeURIComponent(path)}`,
+    iosExecutionParams: `dl=${encodeURIComponent(path)}`,
   };
 };
 

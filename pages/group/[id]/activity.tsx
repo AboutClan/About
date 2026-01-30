@@ -49,7 +49,21 @@ export default function Member() {
           <Flex direction="column">
             {users
               ?.slice()
-              ?.sort((a, b) => (!a.user || !b.user ? 1 : a.user.name > b.user.name ? 1 : -1))
+              ?.sort((a, b) => {
+                // 1순위: 이번달 모임 참여 횟수
+                if ((b.gatherCount || 0) !== (a.gatherCount || 0)) {
+                  return (b.gatherCount || 0) - (a.gatherCount || 0);
+                }
+
+                // 2순위: 전체 모임 참여 횟수
+                if ((b.totalCount || 0) !== (a.totalCount || 0)) {
+                  return (b.totalCount || 0) - (a.totalCount || 0);
+                }
+
+                // 3순위: 이름 오름차순
+                if (!a.user || !b.user) return 1;
+                return a.user.name.localeCompare(b.user.name);
+              })
               .map((who, idx) => (
                 <Box key={idx}>
                   <ProfileCommentCard

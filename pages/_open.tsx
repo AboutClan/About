@@ -8,8 +8,7 @@ export default function OpenPage() {
     if (!router.isReady) return;
 
     // 1. 쿼리 파라미터에서 path 추출 (예: gather/123)
-    const rawPath = Array.isArray(router.query.path) ? router.query.path[0] : router.query.path;
-
+    const rawPath = Array.isArray(router.query.dl) ? router.query.dl[0] : router.query.dl;
     // 2. 경로 정규화: 앞뒤 공백 제거 및 맨 앞의 슬래시(/)를 완전히 제거
     // 앱의 정규식이 about20s:// 바로 뒤에 경로가 오는 것을 기대하므로 슬래시가 없어야 합니다.
     const cleanPath =
