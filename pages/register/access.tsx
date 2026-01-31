@@ -84,6 +84,7 @@ function Access() {
     onError() {
       // 요구사항: 실패는 toast만 띄우고 UI 유지
       toast("error", "가입 처리에 실패했어요. 잠시 후 다시 시도해 주세요.");
+      setIsLoading2(false);
       // 재시도 가능
       approveOnceRef.current = false;
     },
@@ -170,7 +171,7 @@ function Access() {
 
     if (handledReturnRef.current) return;
     handledReturnRef.current = true;
-
+    setIsLoading2(false);
     // query에서 reason/msg/orderNo는 토스트에만 사용
     const reason = first(router.query.reason);
     const msg = safeDecode(first(router.query.msg));
@@ -208,7 +209,7 @@ function Access() {
   }, [router.isReady, session, router.query, session?.user?.uid, approve, toast, router]);
 
   const [ready, setReady] = useState(false);
-  const orderNo = useMemo(() => `ORD-${Date.now()}-${Math.random().toString(16).slice(2)}`, []);
+  // const orderNo = useMemo(() => `ORD-${Date.now()}-${Math.random().toString(16).slice(2)}`, []);
 
   useEffect(() => {
     if (typeof cookiepayments === "undefined") return;
@@ -220,6 +221,7 @@ function Access() {
     cookiepayments.init({ api_id: apiId as string });
     setReady(true);
   }, []);
+  const makeOrderNo = () => `ORD-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
   const onClickNext = () => {
     if (!session?.user.uid) {
@@ -234,7 +236,7 @@ function Access() {
       return;
     }
     setIsLoading2(true);
-
+    const orderNo = makeOrderNo(); // ✅ 매번 새로 생성
     cookiepayments.payrequest({
       ORDERNO: orderNo,
       PRODUCTNAME: "회원가입",
@@ -242,6 +244,8 @@ function Access() {
       BUYERNAME: session.user.name,
       PAYMETHOD: "CARD",
       RETURNURL: "https://study-about.club/api/cookiepay/return",
+      BUYERID: session.user.uid,
+      BUYEREMAIL: session.user.name,
     });
   };
   const [isBackModal, setIsBackModal] = useState(false);
