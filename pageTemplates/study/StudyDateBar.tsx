@@ -229,9 +229,9 @@ function InviteDrawer({
       longitude: 127.030907,
     },
     사당: {
-      locationDetail: "서울특별시 강남구 역삼동 827-13 1층",
-      latitude: 37.496193,
-      longitude: 127.030907,
+      locationDetail: "서울특별시 관악구 남현동 1060-4",
+      latitude: 37.476183,
+      longitude: 126.980677,
     },
   };
 
@@ -295,8 +295,9 @@ function InviteDrawer({
           <InviteUserGroups
             users={users}
             inviteUser={(who) => {
+              console.log(3, who, PLACE_MAPPING[placeName]);
               handleClick(who, PLACE_MAPPING[placeName]);
-              setUsers((old) => old.filter((who) => who.uid !== who.uid));
+              setUsers((old) => old.filter((old) => old.uid !== who.uid));
             }}
           />
         ) : (
