@@ -71,6 +71,7 @@ export const useGroupQuery = (
   );
 export const useGroupsMemberActivityQuery = (
   groupStudyId: string,
+  month: "last" | "this",
   options?: QueryOptions<{ user: string; monthGatherCount: number; totalGatherCount: number }[]>,
 ) =>
   useQuery<
@@ -78,12 +79,12 @@ export const useGroupsMemberActivityQuery = (
     AxiosError,
     { user: string; monthGatherCount: number; totalGatherCount: number }[]
   >(
-    [GROUP_STUDY, "memberActivity", groupStudyId],
+    [GROUP_STUDY, "memberActivity", groupStudyId, month],
     async () => {
       const res = await axios.get<
         { user: string; monthGatherCount: number; totalGatherCount: number }[]
       >(`${SERVER_URI}/groupStudy/memberActivity`, {
-        params: { groupStudyId },
+        params: { groupStudyId, month },
       });
       return res.data;
     },

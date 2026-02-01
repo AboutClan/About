@@ -5,13 +5,17 @@ import { useEffect, useState } from "react";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
+import TabNav from "../../../components/molecules/navs/TabNav";
 import { useGroupIdQuery, useGroupsMemberActivityQuery } from "../../../hooks/groupStudy/queries";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
 export default function Member() {
   const { id } = useParams<{ id: string }>() || {};
 
-  const { data } = useGroupsMemberActivityQuery(id, { enabled: !!id });
+  const [tab, setTab] = useState<"이번 달" | "지난 달">("이번 달");
+  const { data } = useGroupsMemberActivityQuery(id, tab === "이번 달" ? "this" : "last", {
+    enabled: !!id,
+  });
 
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id });
 
@@ -41,11 +45,21 @@ export default function Member() {
   }, [data, groupData]);
 
   console.log(data);
+
   return (
     <>
       <Header title="모임 참여 횟수" />
       <Slide>
-        <Box>
+        <TabNav
+          size="xl"
+          isBlack
+          tabOptionsArr={[
+            { text: "지난 달", func: () => setTab("지난 달") },
+            { text: "이번 달", func: () => setTab("이번 달") },
+          ]}
+          selected={tab}
+        />
+        <Box mt={3}>
           <Flex direction="column">
             {users
               ?.slice()
@@ -74,7 +88,8 @@ export default function Member() {
                     isNoBorder
                     rightComponent={
                       <Box fontSize="12px" mr={3}>
-                        이번 달 <b>{who?.gatherCount}회</b> / 누적 <b>{who?.totalCount}회</b>
+                        {tab} <b>{who?.gatherCount}회</b> {tab === "이번 달" ? "/ 누적" : "참여"}
+                        {tab === "이번 달" && <b>{who?.totalCount}회</b>}
                       </Box>
                     }
                   />
