@@ -72,26 +72,34 @@ function HomeGatherSection() {
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence> */}
-      <AnimatePresence initial={false}>
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: -width, right: 0 }}
-          dragElastic={0.3}
-          style={{
-            marginLeft: "20px",
-            display: "flex",
-            width: "100%",
-            gap: "12px",
-          }}
-        >
-          <SlideSectionCol title="마감 임박! 막차 탑승하기" subTitle="곧 마감되는 인기 모임 리스트">
-            <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
-          </SlideSectionCol>
-          <SlideSectionCol title="마감 임박! 막차 탑승하기" subTitle="곧 마감되는 인기 모임 리스트">
-            <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
-          </SlideSectionCol>
-        </motion.div>
-      </AnimatePresence>
+      {secondData?.length > 4 && (
+        <AnimatePresence initial={false}>
+          <motion.div
+            drag="x"
+            dragConstraints={{ left: -width, right: 0 }}
+            dragElastic={0.3}
+            style={{
+              marginLeft: "20px",
+              display: "flex",
+              width: "100%",
+              gap: "12px",
+            }}
+          >
+            <SlideSectionCol
+              title="마감 임박! 막차 탑승하기"
+              subTitle="곧 마감되는 인기 모임 리스트"
+            >
+              <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
+            </SlideSectionCol>
+            <SlideSectionCol
+              title="마감 임박! 막차 탑승하기"
+              subTitle="곧 마감되는 인기 모임 리스트"
+            >
+              <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
+            </SlideSectionCol>
+          </motion.div>
+        </AnimatePresence>
+      )}
       <AnimatePresence initial={false}>
         <motion.div
           drag="x"

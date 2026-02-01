@@ -5,7 +5,11 @@ import styled from "styled-components";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { ModalLayout } from "../../../modals/Modals";
 import { CommentProps } from "../../../types/models/commonTypes";
-import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import {
+  IUser,
+  IUserSummary,
+  UserSimpleInfoProps,
+} from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
 import Textarea from "../../atoms/Textarea";
@@ -23,6 +27,7 @@ export interface IProfileCommentCard {
   size?: "md" | "lg";
   isNoBorder?: boolean;
   crownType?: "main" | "sub";
+  isStudy?: boolean;
 }
 
 export default function ProfileCommentCard({
@@ -35,6 +40,7 @@ export default function ProfileCommentCard({
   comment,
   isNoBorder,
   crownType,
+  isStudy,
 }: IProfileCommentCard) {
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -64,7 +70,26 @@ export default function ProfileCommentCard({
               {user?.name || "익명"}
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
-
+            {isStudy && (
+              <Flex
+                ml={1}
+                fontWeight={600}
+                fontSize="9px"
+                h="20px"
+                bg="red.50"
+                pl={1}
+                pr={1.5}
+                py="1px"
+                borderRadius="8px"
+                justify="center"
+                align="center"
+                color="gray.800"
+              >
+                🔥
+                {(user as IUser)?.studyRecord?.accumulationCnt +
+                  (user as IUser)?.studyRecord?.accumulationMinutes}
+              </Flex>
+            )}
             {crownType && (
               <Flex justify="center" align="center" ml={1}>
                 <CrownIcon color={crownType === "main" ? "yellow" : "gray"} />

@@ -60,7 +60,7 @@ export default function StudyMembers({
   const { mutate: setVoteComment } = useStudyCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
   });
-
+  console.log(3, members);
   const handleSuccessChange = () => {
     typeToast("change");
     resetStudy();
@@ -266,7 +266,7 @@ export default function StudyMembers({
       };
     }
   });
-
+  console.log(userCardArr);
   return (
     <>
       {userCardArr?.length ? (
@@ -276,6 +276,7 @@ export default function StudyMembers({
               isOpen || studyType !== "participations" ? userCardArr : userCardArr?.slice(0, 10)
             }
             hasCommentButton={studyType !== "participations" && isAttend}
+            isStudy={true}
           />
           {!isOpen && userCardArr.length > 10 && (
             <Button

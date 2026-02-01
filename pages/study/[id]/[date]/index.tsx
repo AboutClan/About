@@ -130,7 +130,7 @@ export default function Page() {
       : findTodayStudy?.type === studyType
       ? "participation"
       : "otherParticipation";
-
+  console.log(4, studyData);
   const members =
     studyType === "participations"
       ? shortenParticipations(participationsSet)

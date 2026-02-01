@@ -88,9 +88,8 @@ function Layout({ children }: ILayout) {
 
     // 토큰이 이미 있다면 (이론상 status도 authenticated겠지만, 방어적으로 한 번 더 체크)
     if (token) return;
-    console.log(23, segment);
     // 비로그인 허용 페이지(로그인/회원가입/정책/FAQ)는 자동 게스트 로그인 안 함
-    
+
     // 이미 시도했으면 다시 시도하지 않음
     if (guestSignInTriedRef.current) return;
     guestSignInTriedRef.current = true;
@@ -100,7 +99,7 @@ function Layout({ children }: ILayout) {
       pathname === "/user/info/privacy" ||
       pathname === "/faq"
     ) {
-      signIn("kakao", { redirect: false })
+      signIn("kakao", { redirect: false });
       return;
     }
 
@@ -325,13 +324,13 @@ function Layout({ children }: ILayout) {
             style={{
               ...(NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
-                    paddingTop: `calc(56px + env(safe-area-inset-top, 0px))`,
+                    paddingTop: `56px`,
                   }
                 : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
                   !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
                   !(currentSegment?.[0] === "user" && currentSegment?.[1])
                 ? {
-                    paddingTop: `calc(56px + env(safe-area-inset-top, 0px))`,
+                    paddingTop: `56px`,
                     paddingBottom: `calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px))`,
                   }
                 : {}),
