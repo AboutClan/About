@@ -78,10 +78,9 @@ const HeaderContainer = styled.header<{
 
   background-color: ${(props) => (props.isTransparent ? "transparent" : "white")};
   /* ✅ safe-area 반영 */
-  padding-top: env(safe-area-inset-top, 0px);
 
   /* ✅ 헤더 전체 높이 = 기존 헤더 높이 + safe-area */
-  height: calc(var(--header-h) + env(safe-area-inset-top, 0px));
+  height: var(--header-h);
   font-size: 16px;
 
   display: flex;

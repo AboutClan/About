@@ -346,7 +346,7 @@ function StudyNavigation({
 
   return (
     <>
-      <Slide isFixed={true} posZero="top">
+      <Slide isFixed={true} posZero="top" zIndex={200}>
         {navigationProps && (
           <Flex
             borderTop="var(--border)"
