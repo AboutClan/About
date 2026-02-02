@@ -31,6 +31,7 @@ import { StudyType } from "../../types/models/studyTypes/study-set.types";
 // import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
 import { DayjsTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { getSafeAreaBottom } from "../../utils/validationUtils";
 import StudyApplyDrawer from "../vote/voteDrawer/StudyApplyDrawer";
 
 interface IStudyNavigation {
