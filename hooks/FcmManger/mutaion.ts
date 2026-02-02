@@ -1,84 +1,101 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useEffect } from "react";
 
 import { isWebView } from "../../utils/appEnvUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
+import { useToast } from "../custom/CustomToast";
 import { registerPushServiceWithApp } from "./apis";
 import { DeviceInfo } from "./types";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
+  const toast = useToast(); // ✅ 훅은 여기서만 호출
+
   useEffect(() => {
     const initializePushService = async () => {
-      if (isWebView()) {
-        try {
-          await waitForDeviceInfo(uid);
-        } catch (e) {
-          console.error("error");
-        }
+      if (!isWebView()) return;
+
+      try {
+        await waitForDeviceInfo(uid, toast);
+      } catch (e) {
+        toast("error", "deviceInfo 수신 실패"); // ✅ 실패 토스트
       }
     };
 
     initializePushService();
-  }, [uid]);
+  }, [uid, toast]);
 };
-const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
+
+const waitForDeviceInfo = (
+  uid: string | undefined,
+  toast: (status: any, title: string, desc?: any, persist?: boolean) => void,
+): Promise<DeviceInfo> => {
   return new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      toast("error", "deviceInfo 타임아웃", "RN에서 응답이 없어요");
+      cleanup();
+      reject(new Error("deviceInfo timeout"));
+    }, 5000); // ✅ 5초만 기다리고 실패로 처리
+
+    const cleanup = () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("message", handleDeviceInfo as any);
+      document.removeEventListener("message", handleDeviceInfo as any);
+    };
+
     const handleDeviceInfo = async (event: MessageEvent) => {
       try {
-        const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
-        if (data.name !== "deviceInfo") return;
+        const raw = event.data;
+        if (typeof raw !== "string") return;
 
-        const deviceInfo = data;
+        // ✅ 토스트로 '받고 있다'부터 확인 (너 uid만 보이게 하고 싶으면 조건 걸어도 됨)
+        if (uid === "2259633694") {
+          toast("info", "message 수신", raw.slice(0, 80) + "...");
+        }
+
+        let data: any;
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          return; // JSON 아니면 무시
+        }
+
+        if (data?.name !== "deviceInfo") return;
+
+        // ✅ deviceInfo 도착 토스트
+        toast(
+          "success",
+          "deviceInfo 도착",
+          `platform=${data?.platform}, ver=${data?.appVersion ?? "?"}`,
+        );
 
         await registerPushServiceWithApp({
           uid,
-          fcmToken: deviceInfo.fcmToken,
-          platform: deviceInfo?.platform || "web", // platform: "ios" | "android" | "windows" | "macos" | "web"
+          fcmToken: data.fcmToken,
+          platform: data?.platform || "web",
         });
 
         if (typeof window !== "undefined") {
-          if (!window.AboutAppBridge) {
-            window.AboutAppBridge = {};
-          }
-          window.AboutAppBridge.platform = deviceInfo?.platform || "web";
+          (window as any).AboutAppBridge = (window as any).AboutAppBridge || {};
+          (window as any).AboutAppBridge.platform = data?.platform || "web";
         }
 
-        resolve(deviceInfo); // deviceInfo 반환 가능
-        window.removeEventListener("message", handleDeviceInfo);
+        cleanup();
+        resolve(data as DeviceInfo);
       } catch (e) {
+        toast("error", "deviceInfo 처리 중 에러");
+        cleanup();
         reject(e);
-        window.removeEventListener("message", handleDeviceInfo);
       }
     };
 
-    window.addEventListener("message", handleDeviceInfo);
-    document.addEventListener("message", handleDeviceInfo);
+    window.addEventListener("message", handleDeviceInfo as any);
+    document.addEventListener("message", handleDeviceInfo as any);
+
+    // ✅ RN에 요청
     nativeMethodUtils.getDeviceInfo();
+
+    // ✅ 요청 보냈다는 토스트 (선택)
+    if (uid === "2259633694") toast("info", "getDeviceInfo 요청 보냄");
   });
 };
-// const initializePWAPushService = async () => {
-//   try {
-//     const hasPermission = await requestNotificationPermission();
-
-//     if (!hasPermission) return;
-//     const registration =
-//       (await navigator.serviceWorker.getRegistration()) ||
-//       (await navigator.serviceWorker.register("/worker.js", { scope: "/" }));
-
-//     let subscription = await registration.pushManager.getSubscription();
-
-//     if (!subscription) {
-//       const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
-//       if (!publicVapidKey) throw new Error("Missing NEXT_PUBLIC_PWA_KEY");
-
-//       subscription = await registration.pushManager.subscribe({
-//         userVisibleOnly: true,
-//         applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-//       });
-//     }
-
-//     // 서버에 구독 정보 전송
-//     await registerPushServiceWithPWA(subscription);
-//   } catch (error) {
-//     console.error("Failed to initialize PWA push service:", error);
-//   }
-// };
