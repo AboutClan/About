@@ -309,7 +309,7 @@ function StudyNavigation({
           locationDetail: findStudy.place.location.address,
           start: voteTime.start,
           end: voteTime.end,
-          eps: 3,
+          eps: 2,
         });
         break;
       case "openRealTimesVote":

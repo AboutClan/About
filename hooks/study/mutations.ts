@@ -10,7 +10,7 @@ import { IStudyVoteTime, StudyVoteProps } from "../../types/models/studyTypes/st
 import { DayjsTimeProps, StringTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-type StudyVoteParam<T> = T extends "`p`ost"
+type StudyVoteParam<T> = T extends "post"
   ? StudyVoteProps
   : T extends "patch"
   ? DayjsTimeProps
