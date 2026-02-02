@@ -41,15 +41,16 @@ const waitForDeviceInfo = (
       window.removeEventListener("message", handleDeviceInfo as any);
       document.removeEventListener("message", handleDeviceInfo as any);
     };
-
+    let sawAnyMessage = false;
     const handleDeviceInfo = async (event: MessageEvent) => {
       try {
         const raw = event.data;
         if (typeof raw !== "string") return;
 
         // ✅ 토스트로 '받고 있다'부터 확인 (너 uid만 보이게 하고 싶으면 조건 걸어도 됨)
-        if (uid === "2259633694") {
-          toast("info", "message 수신", raw.slice(0, 80) + "...");
+        if (!sawAnyMessage && uid === "2259633694") {
+          sawAnyMessage = true;
+          toast("info", "message 이벤트 수신됨", typeof event.data);
         }
 
         let data: any;
@@ -91,9 +92,9 @@ const waitForDeviceInfo = (
 
     window.addEventListener("message", handleDeviceInfo as any);
     document.addEventListener("message", handleDeviceInfo as any);
-
-    // ✅ RN에 요청
+    toast("info", "deviceInfo 리스너 등록됨");
     nativeMethodUtils.getDeviceInfo();
+    toast("info", "getDeviceInfo 요청 보냄");
 
     // ✅ 요청 보냈다는 토스트 (선택)
     if (uid === "2259633694") toast("info", "getDeviceInfo 요청 보냄");
