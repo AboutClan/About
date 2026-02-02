@@ -357,9 +357,9 @@ function StudyNavigation({
             borderTop="var(--border)"
             align="center"
             bg="white"
-            h="calc(64px + env(safe-area-inset-bottom))"
+            h="64px"
             pt={2}
-            pb="calc(8px + env(safe-area-inset-bottom))"
+            pb={getSafeAreaBottom(8)}
             px={5}
           >
             {navigationProps.type === "multi" && (

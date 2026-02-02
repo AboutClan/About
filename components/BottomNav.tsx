@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { useHandleMove } from "../@natives/useHandleBottomNav";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { dayjsToStr } from "../utils/dateTimeUtils";
+import { getSafeAreaBottom } from "../utils/validationUtils";
 import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon } from "./Icons/BottomNavIcons";
 import { UserIcon } from "./Icons/UserIcons";
 
@@ -35,10 +36,10 @@ export default function BottomNav({ hasBottomNav }: { hasBottomNav: boolean }) {
       w="full"
       pos="fixed"
       bottom="0"
-      h="calc(52px + env(safe-area-inset-bottom))"
+      h={getSafeAreaBottom(52)}
       bg="white"
       zIndex={600}
-      pb="env(safe-area-inset-bottom)"
+      pb={getSafeAreaBottom(0)}
       borderTop={hasBottomNav ? "var(--border-main)" : "var(--border)"}
       maxW="var(--max-width)"
       m="0 auto"

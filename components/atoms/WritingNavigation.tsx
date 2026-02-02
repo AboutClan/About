@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
+import { getSafeAreaBottom } from "../../utils/validationUtils";
 import Slide from "../layouts/PageSlide";
 
 interface WritingNavigationProps extends React.PropsWithChildren {}
@@ -35,7 +36,7 @@ function WritingNavigation({ children }: WritingNavigationProps) {
   }, []);
 
   // bottom: max(keyboardHeight, safe-area) — 키보드가 없으면 safe-area만 적용
-  const bottomStyle = `max(${keyboardBottomPx}, env(safe-area-inset-bottom))`;
+  const bottomStyle = `max(${keyboardBottomPx}, ${getSafeAreaBottom(0)})`;
 
   return (
     <Slide isFixed={true}>
@@ -53,7 +54,7 @@ function WritingNavigation({ children }: WritingNavigationProps) {
         px={3}
         // Chakra prop으로 전달이 안 되면 sx로도 가능
         sx={{
-          paddingBottom: `calc(12px + env(safe-area-inset-bottom))`,
+          paddingBottom: getSafeAreaBottom(12),
         }}
       >
         {children}

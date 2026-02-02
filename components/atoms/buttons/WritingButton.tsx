@@ -1,6 +1,8 @@
 import Link from "next/link";
 import styled from "styled-components";
 
+import { getSafeAreaBottom } from "../../../utils/validationUtils";
+
 interface IWritingIcon {
   url?: string;
   isBottomNav?: boolean;
@@ -38,9 +40,7 @@ const Layout = styled.button<{ isBottomNav: boolean }>`
   font-size: 16px;
   position: fixed;
   bottom: ${(props) =>
-    props.isBottomNav
-      ? "calc(var(--bottom-nav-height) + 20px + env(safe-area-inset-bottom, 0px))"
-      : "20px"};
+    props.isBottomNav ? `calc(var(--bottom-nav-height) + ${getSafeAreaBottom(20)})` : "20px"};
 
   right: 20px;
   background-color: var(--color-mint);

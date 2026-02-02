@@ -1,6 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { signIn, signOut } from "next-auth/react";
 
+import { getSafeAreaBottom } from "../../../utils/validationUtils";
+
 function GuestBottomNav() {
   const customSignin = async () => {
     await signOut({ redirect: false });
@@ -11,7 +13,7 @@ function GuestBottomNav() {
     <Flex
       position="fixed"
       bottom="0"
-      transform="translateY(calc(-1 * var(--bottom-nav-height) + 1px - env(safe-area-inset-bottom)))"
+      transform={`translateY(calc(-1 * var(--bottom-nav-height) + 1px - ${getSafeAreaBottom(0)}))`}
       w="100%"
       maxW="var(--max-width)"
       bg="gray.50" // 기존 흰색 대신 살짝 밝은 톤으로 구분 강화

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { IModal } from "../../../types/components/modalTypes";
+import { getSafeAreaBottom } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export interface IBottomDrawerLgOptions {
@@ -110,7 +111,7 @@ const Layout = styled(motion.div)<{
   height: number;
   isxpadding: string;
 }>`
-  height: ${(props) => `calc(${props.height}px + env(safe-area-inset-bottom, 0px))`};
+  height: ${(props) => `${props.height}px`};
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -122,8 +123,8 @@ const Layout = styled(motion.div)<{
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
   padding-bottom: ${(props) =>
     props.isxpadding === "true" && props?.paddingoptions?.bottom !== 0
-      ? "calc(8px + env(safe-area-inset-bottom, 0px))"
-      : "env(safe-area-inset-bottom, 0px)"};
+      ? getSafeAreaBottom(8)
+      : getSafeAreaBottom(0)};
 
   touch-action: none; /* 터치 스크롤을 막음 */
   display: flex;

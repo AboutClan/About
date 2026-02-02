@@ -1,6 +1,8 @@
 import { Box, Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import { ReactElement } from "react";
 
+import { getSafeAreaBottom } from "../utils/validationUtils";
+
 interface ControlButtonProps {
   colorScheme?: ThemeTypings["colorSchemes"];
   rightIcon: ReactElement;
@@ -25,9 +27,9 @@ function ControlButton({
       fontSize="12px"
       lineHeight="24px"
       fontWeight="bold"
-      bottom={`calc(${
-        hasBottomNav ? "var(--bottom-nav-height)" : "8px"
-      } + env(safe-area-inset-bottom, 0px) + 12px)`}
+      bottom={`calc(${hasBottomNav ? "var(--bottom-nav-height)" : "8px"} + ${getSafeAreaBottom(
+        12,
+      )})`}
       right="20px"
     >
       <Button

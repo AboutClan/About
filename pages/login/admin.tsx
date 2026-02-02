@@ -21,7 +21,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { isIOS } from "../../utils/validationUtils";
+import { getSafeAreaBottom, isIOS } from "../../utils/validationUtils";
 
 const Login: NextPage<{
   providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>;
@@ -176,7 +176,7 @@ const Login: NextPage<{
             width="100%"
             maxW="var(--max-width)"
             px="20px"
-            bottom={`calc(40px + env(safe-area-inset-bottom))`}
+            bottom={getSafeAreaBottom(40)}
             left="50%"
             transform="translate(-50%,0)"
           >

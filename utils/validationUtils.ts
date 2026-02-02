@@ -112,3 +112,15 @@ export const isApp = (): boolean => {
   return false;
 };
 ``;
+
+export const getSafeAreaBottom = (basePx = 0) => {
+  const os = getDeviceOS();
+
+  // iOS "모바일 웹"에서만 env를 더함
+  if (os === "iOS" && !isApp()) {
+    return `calc(${basePx}px + env(safe-area-inset-bottom, 0px))`;
+  }
+
+  // 앱(WebView)이나 Android/Other는 base만
+  return `${basePx}px`;
+};

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { IModal } from "../../../types/components/modalTypes";
+import { getSafeAreaBottom } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export const DRAWER_MIN_HEIGHT = 103;
@@ -113,8 +114,8 @@ export default function BottomFlexDrawer({
         zindex={zIndex}
         isdrawerup={isDrawerUp ? "true" : "false"}
         as={motion.div}
-        initial={{ height: `calc(${DRAWER_MIN_HEIGHT}px + env(safe-area-inset-bottom, 0px))` }}
-        animate={{ height: `calc(${drawerHeight}px + env(safe-area-inset-bottom, 0px))` }}
+        initial={{ height: `${DRAWER_MIN_HEIGHT}px` }}
+        animate={{ height: `${drawerHeight}px` }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
         <Flex justify="center" py={3} w="full" cursor="grab" onPointerDown={handlePointerDown}>
@@ -132,7 +133,7 @@ export default function BottomFlexDrawer({
         )}
         {drawerHeight > 100 && children}
         {drawerOptions?.footer && drawerHeight > 100 && (
-          <Box py={2} w="100%" mt="auto" mb="env(safe-area-inset-bottom, 0px)">
+          <Box py={2} w="100%" mt="auto" mb={getSafeAreaBottom(0)}>
             <Button
               w="100%"
               mt="auto"
@@ -166,7 +167,8 @@ const Layout = styled.div<{
   background-color: white;
   z-index: ${(props) => props.zindex || (props.ishide === "true" ? 700 : 500)};
   padding: 0 20px;
-  padding-bottom: ${(props) => props.isdrawerup === "false" && "12px"};
+  padding-bottom: ${(props) =>
+    props.isdrawerup === "false" ? getSafeAreaBottom(12) : getSafeAreaBottom(0)};
   padding-top: 0;
   display: flex;
   flex-direction: column;

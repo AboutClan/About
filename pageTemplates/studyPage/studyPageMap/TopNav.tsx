@@ -5,6 +5,7 @@ import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
 import KakaoAdfit from "../../../components/KakaoAdfit";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { StudyPlaceFilter } from "../../../types/models/studyTypes/study-entity.types";
+import { getSafeAreaBottom } from "../../../utils/validationUtils";
 
 interface TopNavProps {
   handleLocationRefetch: () => void;
@@ -173,7 +174,7 @@ function TopNav({
         <Flex
           flexDir="column"
           pos="absolute"
-          bottom="calc(env(safe-area-inset-bottom, 0px) + 80px)"
+          bottom={getSafeAreaBottom(80)}
           right="20px"
           zIndex={300}
         >

@@ -15,6 +15,7 @@ import { useKeypadHeight } from "../../hooks/custom/useKeypadHeight";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { transferUserName } from "../../recoils/transferRecoils";
 import { getDateDiff } from "../../utils/dateTimeUtils";
+import { getSafeAreaBottom } from "../../utils/validationUtils";
 
 interface Chat {
   message: string;
@@ -163,7 +164,7 @@ function Uid() {
         w="100%"
         backgroundColor="white"
         maxW="var(--max-width)"
-        pb={keypadHeight === 0 ? "env(safe-area-inset-bottom, 0px)" : "0px"}
+        pb={keypadHeight === 0 ? getSafeAreaBottom(0) : "0px"}
       >
         <Box py={4} borderBottom="var(--border)" px={5}>
           <UserCommentInput

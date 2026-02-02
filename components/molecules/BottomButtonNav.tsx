@@ -1,6 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 
 import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { getSafeAreaBottom } from "../../utils/validationUtils";
 
 interface BottomButtonNavProps {
   text: string;
@@ -28,9 +29,9 @@ function BottomButtonNav({
       borderTop="var(--border-main)"
       align="center"
       bg="white"
-      h="calc(72px + env(safe-area-inset-bottom))"
+      h="72px"
       pt={3}
-      pb="calc(12px + env(safe-area-inset-bottom))"
+      pb={getSafeAreaBottom(12)}
       px={5}
       zIndex={10}
     >
