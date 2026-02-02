@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 
-import { isWebView } from "../../utils/appEnvUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { useToast } from "../custom/CustomToast";
 import { registerPushServiceWithApp } from "./apis";
@@ -13,7 +12,7 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
 
   useEffect(() => {
     const initializePushService = async () => {
-      if (!isWebView()) return;
+      // if (!isWebView()) return;
 
       try {
         await waitForDeviceInfo(uid, toast);
@@ -78,6 +77,7 @@ const waitForDeviceInfo = (
         if (typeof window !== "undefined") {
           (window as any).AboutAppBridge = (window as any).AboutAppBridge || {};
           (window as any).AboutAppBridge.platform = data?.platform || "web";
+          toast("success", "AboutAppBridge 세팅됨", window.AboutAppBridge.platform);
         }
 
         cleanup();

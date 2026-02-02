@@ -7,7 +7,16 @@ const getUserAgent = () => {
   return window.navigator.userAgent || "";
 };
 
-export const isWebView = () => RegExp(APP_USER_AGENT).test(getUserAgent());
+export const isWebView = () => {
+  if (typeof window === "undefined") return false;
+
+  // RN WebView에서 deviceInfo를 받으면 세팅됨
+  // window.AboutAppBridge.platform = "android" | "ios"
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const platform = (window as any)?.AboutAppBridge?.platform;
+
+  return platform === "android" || platform === "ios";
+};
 export const isAndroid = () => RegExp(ANDROID).test(getUserAgent());
 export const isIOS = () => RegExp(IOS).test(getUserAgent());
 
