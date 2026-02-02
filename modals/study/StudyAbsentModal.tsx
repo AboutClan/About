@@ -95,6 +95,7 @@ function StudyAbsentModal({ type, setIsModal }: StudyAbsentModalProps) {
           </Box>
           <Box w="full">
             <Textarea
+              minH="80px"
               value={value}
               placeholder="불참 사유를 적어주시면, 벌금이 완화될 수 있습니다."
               onChange={(e) => setValue(e.target.value)}

@@ -213,6 +213,7 @@ function StudyNavigation({
         }
         break;
       case "results":
+        console.log(89, myStatus, resultStatus);
         if (myStatus === "pending") {
           if (myStudyStatus === "otherParticipation") {
             return {
@@ -223,9 +224,12 @@ function StudyNavigation({
           }
           if (resultStatus === "expected") {
             return {
-              text: "스터디 매칭 예정",
+              text: "이 장소로 스터디 매칭 신청",
               type: "single",
-              colorScheme: "black",
+              colorScheme: "mint",
+              func: () => {
+                setDrawerType("expectedVote");
+              },
             };
           }
           return {
@@ -237,6 +241,7 @@ function StudyNavigation({
             },
           };
         } else if (myStatus === "participation") {
+          console.log(88);
           if (resultStatus === "expected") {
             return {
               text: "참여 날짜 변경/취소",
