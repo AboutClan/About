@@ -59,8 +59,8 @@ const waitForDeviceInfo = (
         } catch {
           return; // JSON 아니면 무시
         }
-
-        if (data?.name !== "deviceInfo") return;
+        toast("info", "deviceInfo raw", JSON.stringify(data));
+        if (data?.name !== "deviceInfo" && data?.type !== "deviceInfo") return;
 
         // ✅ deviceInfo 도착 토스트
         toast(
@@ -92,6 +92,9 @@ const waitForDeviceInfo = (
 
     window.addEventListener("message", handleDeviceInfo as any);
     document.addEventListener("message", handleDeviceInfo as any);
+
+    // ✅ 이것 추가
+    document.addEventListener("message", handleDeviceInfo); // Android RN WebView 전통 방식
     toast("info", "deviceInfo 리스너 등록됨");
     nativeMethodUtils.getDeviceInfo();
     toast("info", "getDeviceInfo 요청 보냄");
