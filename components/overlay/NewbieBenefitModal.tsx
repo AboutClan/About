@@ -83,6 +83,14 @@ function NewbieBenefitModal({ onClose }: CloseProps) {
               "70%": { left: "130%" },
               "100%": { left: "130%" },
             },
+            _focus: {
+              outline: "none",
+              boxShadow: "none",
+            },
+            _hover: {
+              boxShadow: "none", // Hover 시 boxShadow 제거
+              outline: "none",
+            },
           }}
         >
           뉴비 멤버십 혜택

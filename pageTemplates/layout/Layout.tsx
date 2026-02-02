@@ -331,7 +331,7 @@ function Layout({ children }: ILayout) {
                   !(currentSegment?.[0] === "user" && currentSegment?.[1])
                 ? {
                     paddingTop: `56px`,
-                    paddingBottom: `calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px))`,
+                    paddingBottom: `var(--bottom-nav-height)`,
                   }
                 : {}),
             }}

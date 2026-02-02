@@ -107,7 +107,7 @@ export function StudyPageTopNav({
               </Flex>
             </>
           ) : (
-            <>
+            <Box w="full">
               <Header
                 title="카공 지도"
                 func={() => {
@@ -115,7 +115,7 @@ export function StudyPageTopNav({
                 }}
                 isSlide={false}
               ></Header>
-            </>
+            </Box>
           )}
         </Flex>{" "}
         <Box px={5} pb={3} bg="white">

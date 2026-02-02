@@ -74,6 +74,8 @@ const HeaderContainer = styled.header<{
   isBack?: boolean;
   isTransparent: boolean;
 }>`
+  width: full;
+
   background-color: ${(props) => (props.isTransparent ? "transparent" : "white")};
   /* ✅ safe-area 반영 */
   padding-top: env(safe-area-inset-top, 0px);
