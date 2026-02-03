@@ -100,7 +100,7 @@ export const getSafeAreaBottom = (basePx = 0) => {
 
   // iOS "모바일 웹"에서만 env를 더함
   // && !isApp()
-  if (os === "iOS") {
+  if (os === "iOS" && !isApp()) {
     return `calc(${basePx}px + env(safe-area-inset-bottom, 0px))`;
   }
 

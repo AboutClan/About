@@ -42,8 +42,6 @@ function HomeInitialSetting() {
     const onMessage = (event: MessageEvent) => {
       if (typeof event.data !== "string") return;
       if (!isApp()) return;
-      setIsLegacyApp(true);
-      return;
       let data: any;
       try {
         data = JSON.parse(event.data);

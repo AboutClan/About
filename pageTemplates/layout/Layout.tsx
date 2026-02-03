@@ -217,7 +217,8 @@ function Layout({ children }: ILayout) {
     };
   }, [pathname, router, toast]);
   const path = router.asPath.split("?")[0];
-  const first = path.split("/")[1];
+  const second = path.split("/")[2];
+
   const { title, description, url, image } =
     pathname === "/cafe-map"
       ? {
@@ -243,7 +244,7 @@ function Layout({ children }: ILayout) {
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
         }
-      : first === "gather"
+      : second === "gather"
       ? {
           title: "번개 모임",
           description: "해당 번개로 바로 이동!",
