@@ -31,6 +31,7 @@ function HomeInitialSetting() {
       if (data.isActive === false) {
         toast("warning", "신규 가입 페이지로 이동합니다.");
         router.push("/register/name");
+        return;
       }
       if (data.role === "secede") {
         toast("warning", "탈퇴한 회원입니다. 재가입 페이지로 이동합니다.");

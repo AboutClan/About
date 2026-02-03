@@ -2,7 +2,6 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
-import dayjs from "dayjs";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
@@ -16,7 +15,7 @@ import PageTracker from "../../components/layouts/PageTracker";
 import ForceUpdateModal from "../../components/overlay/UpdateModal";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
+import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
 import { isApp } from "../../utils/validationUtils";
@@ -28,9 +27,6 @@ export const NOT_PADDING_NAV_SEGMENT = ["login"];
 export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote", "ranking", "board", "studyPageMap"];
 
 const EXIT_DELAY = 2000;
-
-const MIN_ANDROID_VERSION = "1.3.31";
-const MIN_IOS_VERSION = "1.1.2"; // 필요시 수정
 
 interface BackActionMessage {
   name: string;
@@ -46,8 +42,7 @@ function Layout({ children }: ILayout) {
   const toast = useToast();
   const router = useRouter();
   const pathname = usePathname();
-  const segments = pathname?.split("/");
-  const segment = segments?.[1];
+  const segment = pathname?.split("/")?.[1];
 
   const PUBLIC_SEGMENT = ["register", "login"];
 
@@ -226,31 +221,10 @@ function Layout({ children }: ILayout) {
 
   const [needUpdate, setneedUpdate] = useState(false);
 
-  const compareSemver = (a, b) => {
-    const pa = String(a || "")
-      .split(".")
-      .map((v) => parseInt(v, 10));
-    const pb = String(b || "")
-      .split(".")
-      .map((v) => parseInt(v, 10));
-
-    const len = Math.max(pa.length, pb.length);
-    for (let i = 0; i < len; i++) {
-      const va = pa[i] || 0;
-      const vb = pb[i] || 0;
-      if (va > vb) return 1;
-      if (va < vb) return -1;
-    }
-    return 0;
-  };
-
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const onMessage = (event) => {
-      if (session?.user?.name === "이승주") {
-        toast("success", event.data);
-      }
       const raw = event?.data;
       if (!raw || typeof raw !== "string") return;
 
@@ -262,43 +236,19 @@ function Layout({ children }: ILayout) {
       }
 
       // RN -> Web에서 보내는 형태: { name: "deviceInfo", ... }
+      if (data?.name !== "deviceInfo") return;
 
-      if (data?.name !== "deviceInfo") {
-        if (session?.user?.name === "이승주") {
-          toast("success", data?.name, data);
-        }
-        return;
-      }
+      // ✅ 이전 앱: appVersion이 아예 없음
+      const hasAppVersion =
+        typeof data?.appVersion === "string" && data.appVersion.trim().length > 0;
 
-      const appVersion = data?.appVersion;
-      const platform = data?.platform; // "android" | "ios"
-      if (session?.user?.name === "이승주") {
-        toast("success", platform, data);
-      }
-      if (!appVersion || typeof appVersion !== "string") {
-        setneedUpdate(true);
-        return;
-      }
-      let minRequired;
-
-      if (platform === "android") {
-        if (session?.user?.name === "이승주") {
-          toast("info", appVersion, compareSemver(appVersion, minRequired));
-          minRequired = "1.3.32";
-        } else {
-          minRequired = MIN_ANDROID_VERSION;
-        }
-      } else if (platform === "ios") {
-        minRequired = MIN_IOS_VERSION;
-      } else {
-        // 플랫폼 모르면 안전하게 업데이트 유도
+      if (!hasAppVersion) {
         setneedUpdate(true);
         return;
       }
 
-      const isLower = compareSemver(appVersion, minRequired) < 0;
-
-      setneedUpdate(isLower);
+      // ✅ 최신 앱: appVersion이 있음 (업데이트 필요 false로 내리기 원하면)
+      setneedUpdate(false);
     };
 
     window.addEventListener("message", onMessage);
@@ -308,7 +258,7 @@ function Layout({ children }: ILayout) {
       window.removeEventListener("message", onMessage);
       document.removeEventListener("message", onMessage);
     };
-  }, [session]);
+  }, []);
 
   /**
    * 게스트 뷰어 안내 토스트
@@ -339,8 +289,6 @@ function Layout({ children }: ILayout) {
   /**
    * OG 메타 태그 설정 (기존 그대로)
    */
-
-  console.log(52, pathname, segments?.[0], segments?.[1]);
   const { title, description, url, image } =
     pathname === "/cafe-map"
       ? {
@@ -349,16 +297,6 @@ function Layout({ children }: ILayout) {
           url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/cafe-map`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/cafe-map.png",
-        }
-      : segments?.[1] === "study" && segments?.[2] === "participations"
-      ? {
-          title: "카공 스터디 라운지",
-          description: "스터디 확인, 신청, 변경 모두 이 곳에서!",
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/study/participatins/${dayjsToStr(
-            dayjs(),
-          )}?type=participations`,
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A7%A4%EC%B9%AD-%EB%9D%BC%EC%9A%B4%EC%A7%80.png",
         }
       : {
           title: "About",

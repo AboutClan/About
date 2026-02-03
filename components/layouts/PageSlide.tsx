@@ -65,7 +65,7 @@ function Slide({ children, isFixed, posZero, isNoPadding, zIndex }: IPageLayout)
             paddingLeft: !isNoPadding && !isFixed ? "20px" : 0,
             paddingRight: !isNoPadding && !isFixed ? "20px" : 0,
             position: isFixed ? "fixed" : "static",
-            zIndex: isFixed ? 50 : 0,
+            zIndex: zIndex || (isFixed ? 50 : 0),
             width: "100%",
             maxWidth: "var(--max-width)",
             height: isFixed ? "min-content" : "max-content",
