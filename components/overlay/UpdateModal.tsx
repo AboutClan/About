@@ -2,12 +2,13 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import { CloseProps } from "../../types/components/modalTypes";
+import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { getDeviceOS } from "../../utils/validationUtils";
 
-const ANDROID_STORE_APP_URL =
-  "https://play.google.com/store/apps/details?id=com.about.studyaboutclubapp";
+// const ANDROID_STORE_APP_URL =
+//   "https://play.google.com/store/apps/details?id=com.about.studyaboutclubapp";
 
-const IOS_STORE_APP_URL = "https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83/id6737145787";
+// const IOS_STORE_APP_URL = "https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83/id6737145787";
 
 function ForceUpdateModal({ onClose }: CloseProps) {
   const openStore = () => {
@@ -16,12 +17,12 @@ function ForceUpdateModal({ onClose }: CloseProps) {
     const os = getDeviceOS();
 
     if (os === "iOS") {
-      window.location.href = IOS_STORE_APP_URL;
+      nativeMethodUtils.openExternalLink("itms-apps://apps.apple.com/kr/app/id6737145787");
       return;
     }
 
     if (os === "Android") {
-      window.location.href = ANDROID_STORE_APP_URL;
+      nativeMethodUtils.openExternalLink("market://details?id=com.about.studyaboutclubapp");
       return;
     }
   };
