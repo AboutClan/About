@@ -55,11 +55,18 @@ const toOpenLink = (rawUrl: string) => {
 
     if (!hostOk) return rawUrl;
 
-    const path = u.pathname.replace(/^\/+/, ""); // 앞의 / 제거
+    const path = u.pathname.replace(/^\/+/, ""); // gather/234
     const qs = u.search.replace(/^\?/, "");
-
     const dl = qs ? `${path}?${qs}` : path;
 
+    const firstSegment = path.split("/")[0];
+
+    // ✅ gather만 /s/gather 로
+    if (firstSegment === "gather") {
+      return `https://study-about.club/s/${dl}`;
+    }
+
+    // ✅ 나머지는 기존 _open
     return `https://about20s.club/_open?dl=${encodeURIComponent(dl)}`;
   } catch {
     return rawUrl;

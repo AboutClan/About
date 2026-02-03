@@ -42,6 +42,8 @@ function HomeInitialSetting() {
     const onMessage = (event: MessageEvent) => {
       if (typeof event.data !== "string") return;
       if (!isApp()) return;
+      setIsLegacyApp(true);
+      return;
       let data: any;
       try {
         data = JSON.parse(event.data);
@@ -189,7 +191,7 @@ function HomeInitialSetting() {
     <>
       {userInfo && !isGuest && !isLegacyApp && <UserSettingPopUp user={userInfo} />}
       <GlobalStyle />
-      {!isLegacyApp && isApp() && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
+      {isLegacyApp && isApp() && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
 
       {/* <Joyride
         hideCloseButton={true}
