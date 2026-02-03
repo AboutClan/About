@@ -184,7 +184,7 @@ function HomeInitialSetting() {
     <>
       {userInfo && !isGuest && <UserSettingPopUp user={userInfo} />}
       <GlobalStyle />
-      {!isLegacyApp && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
+      {isLegacyApp && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
 
       {/* <Joyride
         hideCloseButton={true}
