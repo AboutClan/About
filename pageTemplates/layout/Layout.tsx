@@ -248,6 +248,9 @@ function Layout({ children }: ILayout) {
     if (typeof window === "undefined") return;
 
     const onMessage = (event) => {
+      if (session?.user?.name === "이승주") {
+        toast("success", event.data);
+      }
       const raw = event?.data;
       if (!raw || typeof raw !== "string") return;
 
@@ -262,7 +265,7 @@ function Layout({ children }: ILayout) {
 
       if (data?.name !== "deviceInfo") {
         if (session?.user?.name === "이승주") {
-          console.log(data?.name, data);
+          toast("success", data?.name, data);
         }
         return;
       }
@@ -270,7 +273,7 @@ function Layout({ children }: ILayout) {
       const appVersion = data?.appVersion;
       const platform = data?.platform; // "android" | "ios"
       if (session?.user?.name === "이승주") {
-        console.log(platform, data);
+        toast("success", platform, data);
       }
       if (!appVersion || typeof appVersion !== "string") {
         setneedUpdate(true);
