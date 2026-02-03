@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -297,6 +297,14 @@ function Layout({ children }: ILayout) {
           url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/cafe-map`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/cafe-map.png",
+        }
+      : pathname === "/s/lounge"
+      ? {
+          title: "카공 스터디 라운지",
+          description: "스터디 확인, 신청, 변경 모두 이 곳에서!",
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/lounge`,
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A7%A4%EC%B9%AD-%EB%9D%BC%EC%9A%B4%EC%A7%80.png",
         }
       : {
           title: "About",
