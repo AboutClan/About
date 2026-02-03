@@ -66,10 +66,10 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
       },
     },
     {
-      text: " 실시간 공부 인증",
+      text: "실시간 공부 인증",
       icon: <StudyUserCheckIcon color="gray" />,
       func: () => {
-        router.push(`/vote/attend/certification?date=${dayjsToStr(dayjs())}&type=soloRealTimes`);
+        router.push(`/vote/attend/configuration?date=${dayjsToStr(dayjs())}&type=soloRealTimes`);
       },
     },
   ];

@@ -44,7 +44,7 @@ export const getStudyBadge = (studyType: StudyType, isFutureDate: boolean) => {
     case "soloRealTimes":
       return { text: "공부 인증", colorScheme: "red" };
     case "openRealTimes":
-      if (isFutureDate) return { text: "진행 확정", colorScheme: "purple" };
+      if (isFutureDate) return { text: "모임장 개설", colorScheme: "purple" };
       return { text: "모임장 스터디", colorScheme: "mint" };
     case "results":
       if (isFutureDate) return { text: "진행 예정", colorScheme: "purple" };

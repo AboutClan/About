@@ -240,19 +240,29 @@ function StudyApplyDrawer({
             />
             <Box h={3} />
             {canChange ? (
-              <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
-                스터디를 취소하는 경우 선택된 날짜를 해제해 주세요.
-              </Box>
+              <>
+                <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+                  스터디를 취소하는 경우 선택된 날짜를 해제해 주세요.
+                </Box>
+                <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+                  스터디 매칭은 전날 오후 9시까지만 신청 가능합니다.
+                </Box>
+              </>
             ) : !canChange && defaultDates.length ? (
-              <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
-                <Box as="span" color="mint">
-                  민트색
-                </Box>{" "}
-                숫자는 이미 참여중인 스터디 날짜입니다.
-              </Box>
+              <>
+                <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+                  <Box as="span" color="mint">
+                    민트색
+                  </Box>{" "}
+                  숫자는 이미 참여중인 스터디 날짜입니다.
+                </Box>
+                <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+                  스터디 매칭은 전날 오후 9시까지만 신청 가능합니다.
+                </Box>
+              </>
             ) : (
               <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
-                스터디 매칭 신청은 전 날 오후 9시까지만 가능합니다.
+                스터디 매칭은 전날 오후 9시까지만 신청 가능합니다.
               </Box>
             )}
           </>

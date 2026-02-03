@@ -151,9 +151,14 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
                 </Box>{" "}
                 숫자는 이미 참여중인 스터디 날짜입니다.
               </Box>
-            ) : null}
-            <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
-              최대 일주일 이내의 스터디만 개설할 수 있습니다.
+            ) : (
+              <Box h={3} />
+            )}
+            <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+              최대 일주일 이내의 스터디를 개설할 수 있습니다.
+            </Box>
+            <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+              스터디 개설은 전날 오후 9시까지 가능합니다.
             </Box>
           </>
         ) : (
