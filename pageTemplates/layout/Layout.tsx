@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -270,7 +270,11 @@ function Layout({ children }: ILayout) {
       let minRequired;
 
       if (platform === "android") {
-        minRequired = MIN_ANDROID_VERSION;
+        if (session?.user?.name === "이승주") {
+          minRequired = "1.3.32";
+        } else {
+          minRequired = MIN_ANDROID_VERSION;
+        }
       } else if (platform === "ios") {
         minRequired = MIN_IOS_VERSION;
       } else {
