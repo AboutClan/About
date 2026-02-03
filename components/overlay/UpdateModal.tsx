@@ -5,35 +5,25 @@ import { CloseProps } from "../../types/components/modalTypes";
 import { getDeviceOS } from "../../utils/validationUtils";
 
 const ANDROID_STORE_APP_URL = "market://details?id=com.about.studyaboutclubapp";
-const ANDROID_STORE_WEB_URL =
-  "https://play.google.com/store/apps/details?id=com.about.studyaboutclubapp";
 
-const IOS_STORE_URL = "https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83/id6737145787";
+const IOS_STORE_APP_URL = "itms-apps://apps.apple.com/kr/app/id6737145787";
 
 function ForceUpdateModal({ onClose }: CloseProps) {
   const openStore = () => {
     if (typeof window === "undefined") return;
+
     const os = getDeviceOS();
-    // ✅ iOS: 앱스토어 웹 링크로 이동 (사파리/인앱/웹뷰 모두 동작)
+
     if (os === "iOS") {
-      window.location.href = IOS_STORE_URL;
+      window.location.href = IOS_STORE_APP_URL;
       return;
     }
 
-    // ✅ Android: 앱이면 market:// 우선 시도, 아니면 웹 링크
     if (os === "Android") {
-      // market://가 막히면 그냥 웹 링크로 한번 더 보내는 방식
       window.location.href = ANDROID_STORE_APP_URL;
-      setTimeout(() => {
-        window.location.href = ANDROID_STORE_WEB_URL;
-      }, 500);
       return;
     }
-
-    // Android 웹
-    window.location.href = ANDROID_STORE_WEB_URL;
   };
-
   const footerOptions: IFooterOptions = {
     main: {
       text: "업데이트 하러가기",
