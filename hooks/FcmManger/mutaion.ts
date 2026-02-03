@@ -8,14 +8,24 @@ import { DeviceInfo } from "./types";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {
-    if (!uid) return;
+    console.log("[PushInit] effect enter", { uid, isWebView: isWebView() });
+
+    if (!uid) {
+      console.log("[PushInit] no uid -> skip");
+      return;
+    }
+
+    if (!isWebView()) {
+      console.log("[PushInit] not webview -> skip");
+      return;
+    }
+
     const initializePushService = async () => {
-      if (isWebView()) {
-        try {
-          await waitForDeviceInfo(uid);
-        } catch (e) {
-          console.error("error");
-        }
+      try {
+        console.log("[PushInit] calling waitForDeviceInfo...");
+        await waitForDeviceInfo(uid);
+      } catch (e) {
+        console.error("[PushInit] waitForDeviceInfo error", e);
       }
     };
 
