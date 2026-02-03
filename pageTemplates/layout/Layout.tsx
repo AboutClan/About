@@ -271,6 +271,7 @@ function Layout({ children }: ILayout) {
 
       if (platform === "android") {
         if (session?.user?.name === "이승주") {
+          toast("info", appVersion, compareSemver(appVersion, minRequired));
           minRequired = "1.3.32";
         } else {
           minRequired = MIN_ANDROID_VERSION;
