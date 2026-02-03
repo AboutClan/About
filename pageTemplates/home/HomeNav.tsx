@@ -51,7 +51,6 @@ export function HomeIcon({ title, image, bgColor }: HomeIconProps) {
       {title && (
         <Box fontSize="11px" color="222222" mt={2}>
           {title}
-          {title === "랭킹" && " / 상품"}
         </Box>
       )}
     </Flex>

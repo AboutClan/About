@@ -12,13 +12,11 @@ import { useDeepLink } from "../../@natives/useDeepLink";
 import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
-import ForceUpdateModal from "../../components/overlay/UpdateModal";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
-import { isApp } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 
@@ -219,76 +217,6 @@ function Layout({ children }: ILayout) {
     };
   }, [pathname, router, toast]);
 
-  const [needUpdate, setneedUpdate] = useState(false);
-
-  // useEffect(() => {
-  //   if (typeof window === "undefined") return;
-
-  //   const onMessage = (event) => {
-  //     const raw = event?.data;
-  //     if (!raw || typeof raw !== "string") return;
-
-  //     let data;
-  //     try {
-  //       data = JSON.parse(raw);
-  //     } catch {
-  //       return;
-  //     }
-
-  //     // RN -> Web에서 보내는 형태: { name: "deviceInfo", ... }
-  //     if (data?.name !== "deviceInfo") return;
-
-  //     // ✅ 이전 앱: appVersion이 아예 없음
-  //     const hasAppVersion =
-  //       typeof data?.appVersion === "string" && data.appVersion.trim().length > 0;
-
-  //     if (!hasAppVersion) {
-  //       setneedUpdate(true);
-  //       return;
-  //     }
-
-  //     // ✅ 최신 앱: appVersion이 있음 (업데이트 필요 false로 내리기 원하면)
-  //     setneedUpdate(false);
-  //   };
-
-  //   window.addEventListener("message", onMessage);
-  //   document.addEventListener("message", onMessage);
-
-  //   return () => {
-  //     window.removeEventListener("message", onMessage);
-  //     document.removeEventListener("message", onMessage);
-  //   };
-  // }, []);
-
-  /**
-   * 게스트 뷰어 안내 토스트
-   * (기존 로직을 유지하되, guest 세션이 잡힌 뒤 동작)
-   */
-  // useEffect(() => {
-  //   if (status === "loading" || session === undefined) return;
-
-  //   if (
-  //     PUBLIC_SEGMENT.includes(segment) ||
-  //     pathname === "/user/info/policy" ||
-  //     pathname === "/user/info/privacy" ||
-  //     pathname === "/faq"
-  //   ) {
-  //     return;
-  //   }
-  //   console.log("ABOUT", pathname);
-  //   if (
-  //     !isBottomNavCondition &&
-  //     isGuest &&
-  //     pathname !== "/cafe-map" &&
-  //     pathname !== "/payment/join-fee"
-  //   ) {
-  //     toast("info", "현재 게스트 뷰어를 이용중입니다.", null, true);
-  //   }
-  // }, [status, isBottomNavCondition, isGuest, pathname]);
-
-  /**
-   * OG 메타 태그 설정 (기존 그대로)
-   */
   const { title, description, url, image } =
     pathname === "/cafe-map"
       ? {
@@ -305,6 +233,14 @@ function Layout({ children }: ILayout) {
           url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/lounge`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A7%A4%EC%B9%AD-%EB%9D%BC%EC%9A%B4%EC%A7%80.png",
+        }
+      : pathname === "/s/result"
+      ? {
+          title: "오늘의 카공 스터디",
+          description: "오늘 참여중인 스터디로 바로 이동!",
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/lounge`,
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
         }
       : {
           title: "About",
@@ -353,7 +289,7 @@ function Layout({ children }: ILayout) {
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}
-      {needUpdate && isApp() && <ForceUpdateModal onClose={() => setneedUpdate(false)} />}
+
       <BaseScript />
     </>
   );

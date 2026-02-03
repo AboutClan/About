@@ -2,167 +2,82 @@
 
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
+import ForceUpdateModal from "../../components/overlay/UpdateModal";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { isPWA } from "../../utils/appEnvUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getDeviceOS } from "../../utils/validationUtils";
 
 function HomeInitialSetting() {
   const { data: session } = useSession();
   const toast = useToast();
+
+  const [isLegacyApp, setIsLegacyApp] = useState(false);
+  const compareSemver = (a: string, b: string) => {
+    const pa = a.split(".").map(Number);
+    const pb = b.split(".").map(Number);
+
+    const len = Math.max(pa.length, pb.length);
+    for (let i = 0; i < len; i++) {
+      const va = pa[i] || 0;
+      const vb = pb[i] || 0;
+      if (va > vb) return 1;
+      if (va < vb) return -1;
+    }
+    return 0;
+  };
   usePushServiceInitialize({
     uid: session?.user?.uid,
   });
-
-  const { mutate } = useUserRequestMutation();
-
   useEffect(() => {
-    if (session?.user.name !== "이승주") return;
+    if (typeof window === "undefined") return;
 
-    let sentEnvInitial = false;
-    let sentEnvAfterDevice = false;
-    let sentFirstMsg = false;
-    let sentDeviceInfo = false;
+    const onMessage = (event: MessageEvent) => {
+      if (typeof event.data !== "string") return;
 
-    const send = (title: string, content: string) => {
-      mutate({
-        category: "건의",
-        title,
-        content,
-      });
-    };
-
-    const hasRNWV =
-      typeof window !== "undefined" && typeof (window as any).ReactNativeWebView !== "undefined";
-
-    const envSnapshot = (label: string) => {
-      const ua = typeof navigator !== "undefined" ? navigator.userAgent : "null";
-      const os = getDeviceOS(); // 네 최신 로직(bridge/platform 우선 포함)으로 바꾸는 걸 권장
-      const aboutBridgeType =
-        typeof window !== "undefined" ? typeof (window as any).AboutAppBridge : "undefined";
-      const aboutBridgePlatform =
-        typeof window !== "undefined" ? (window as any).AboutAppBridge?.platform ?? "null" : "null";
-      const aboutPlatform =
-        typeof window !== "undefined" ? (window as any).__ABOUT_PLATFORM__ ?? "null" : "null";
-
-      send(
-        `앱접속-환경-${label}`,
-        [
-          `os(getDeviceOS)=${os}`,
-          `ua=${ua}`,
-          `hasReactNativeWebView=${hasRNWV}`,
-          `__ABOUT_PLATFORM__=${aboutPlatform}`,
-          `typeof AboutAppBridge=${aboutBridgeType}`,
-          `AboutAppBridge.platform=${aboutBridgePlatform}`,
-          `href=${typeof location !== "undefined" ? location.href : "null"}`,
-        ].join(" / "),
-      );
-    };
-
-    // 1) 접속 즉시: 초기 환경 리포트 1회
-    if (!sentEnvInitial) {
-      sentEnvInitial = true;
-      envSnapshot("초기");
-    }
-
-    const onMessage = (event: any) => {
-      const raw = event?.data;
-
-      // ✅ raw가 string이 아닐 수도 있음 (일부 브릿지/브라우저)
-      const rawString =
-        typeof raw === "string" ? raw : raw && typeof raw === "object" ? JSON.stringify(raw) : "";
-
-      if (!rawString || rawString === "undefined") return;
-
-      const rawTrimmed = rawString.length > 2000 ? rawString.slice(0, 2000) + "..." : rawString;
-
-      // 첫 메시지 1회는 무조건 기록
-      if (!sentFirstMsg) {
-        sentFirstMsg = true;
-        send("앱접속-첫메시지", rawTrimmed);
-      }
-
-      // deviceInfo면 별도로 파싱
-      let data: any = null;
+      let data: any;
       try {
-        data = JSON.parse(rawString);
+        data = JSON.parse(event.data);
       } catch {
         return;
       }
 
       if (data?.name !== "deviceInfo") return;
-      if (sentDeviceInfo) return;
-      sentDeviceInfo = true;
 
-      // ✅ 여기서라도 platform을 전역에 세팅해서 이후 getDeviceOS가 확정되게
-      if (typeof window !== "undefined") {
-        const platform = data.platform ?? null; // "android" | "ios"
-        (window as any).__ABOUT_PLATFORM__ = platform;
+      const { platform, appVersion } = data;
 
-        (window as any).AboutAppBridge = (window as any).AboutAppBridge || {};
-        (window as any).AboutAppBridge.platform = platform;
+      if (!platform || !appVersion) return;
+
+      // ✅ Android <= 1.3.32
+      if (platform === "android" && compareSemver(appVersion, "1.3.32") <= 0) {
+        setIsLegacyApp(true);
+        return;
       }
+      if(session?.user.name==="이승주")
 
-      send(
-        "앱접속-deviceInfo",
-        [
-          `platform=${data.platform ?? "null"}`,
-          `appVersion=${data.appVersion ?? "null"}`,
-          `buildNumber=${data.buildNumber ?? "null"}`,
-          `deviceId=${data.deviceId ?? "null"}`,
-          `hasFcmToken=${typeof data.fcmToken === "string" && data.fcmToken.length > 0}`,
-        ].join(" / "),
-      );
+      // ✅ iOS <= 1.8
+      // if (platform === "ios" && compareSemver(appVersion, "1.1.5") <= 0) {
+      //   setIsLegacyApp(true);
+      //   return;
+      // }
 
-      // 2) deviceInfo 수신 직후: 확정 환경 리포트 1회
-      if (!sentEnvAfterDevice) {
-        sentEnvAfterDevice = true;
-        envSnapshot("deviceInfo후");
-      }
+      setIsLegacyApp(false);
     };
 
     window.addEventListener("message", onMessage);
     document.addEventListener("message", onMessage);
 
-    const timeout = setTimeout(() => {
-      if (!sentDeviceInfo) {
-        send(
-          "앱접속-deviceInfo-미수신",
-          [
-            `6s timeout`,
-            `ua=${typeof navigator !== "undefined" ? navigator.userAgent : "null"}`,
-            `hasRNWV=${hasRNWV}`,
-            `__ABOUT_PLATFORM__=${
-              typeof window !== "undefined" ? (window as any).__ABOUT_PLATFORM__ ?? "null" : "null"
-            }`,
-            `AboutAppBridge.platform=${
-              typeof window !== "undefined"
-                ? (window as any).AboutAppBridge?.platform ?? "null"
-                : "null"
-            }`,
-          ].join(" / "),
-        );
-      }
-
-      window.removeEventListener("message", onMessage);
-      document.removeEventListener("message", onMessage);
-    }, 6000);
-
     return () => {
-      clearTimeout(timeout);
       window.removeEventListener("message", onMessage);
       document.removeEventListener("message", onMessage);
     };
-  }, [session, mutate, toast]);
-
+  }, []);
   const router = useRouter();
 
   const isGuest = session
@@ -271,6 +186,7 @@ function HomeInitialSetting() {
     <>
       {userInfo && !isGuest && <UserSettingPopUp user={userInfo} />}
       <GlobalStyle />
+      {isLegacyApp && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
 
       {/* <Joyride
         hideCloseButton={true}

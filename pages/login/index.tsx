@@ -9,7 +9,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getSafeAreaBottom, isIOS } from "../../utils/validationUtils";
+import { getSafeAreaBottom, isApp, isIOS } from "../../utils/validationUtils";
 
 function LoginPage() {
   const router = useRouter();
@@ -124,7 +124,7 @@ function LoginPage() {
   };
 
   useEffect(() => {
-    setIsIPhone(isIOS()); // 클라에서만 계산
+    setIsIPhone(isApp() && isIOS()); // 클라에서만 계산
   }, []);
   const showTopText = !isIPhone && ratio !== null && ratio >= 1.75;
   const showBottomText = ratio !== null && ratio >= 1.55;
