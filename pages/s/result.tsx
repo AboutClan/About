@@ -1,9 +1,12 @@
 import dayjs from "dayjs";
 import { useEffect } from "react";
 
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { useStudySetQuery } from "../../hooks/study/queries";
+import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
 
-export default function ShareParticipations() {
+export default function ShareParticipationsStudyResult() {
+  const { data: studySet } = useStudySetQuery(getTodayStr());
+  console.log(studySet);
   useEffect(() => {
     const openUrl =
       "https://about20s.club/_open" +
