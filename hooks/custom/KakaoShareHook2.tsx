@@ -62,7 +62,7 @@ const toOpenLink = (rawUrl: string) => {
     const firstSegment = path.split("/")[0];
 
     // ✅ gather만 /s/gather 로
-    if (firstSegment === "gather") {
+    if (firstSegment === "gather" || firstSegment === "group") {
       return `https://study-about.club/s/${dl}`;
     }
 
