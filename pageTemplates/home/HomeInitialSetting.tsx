@@ -59,13 +59,11 @@ function HomeInitialSetting() {
         setIsLegacyApp(true);
         return;
       }
-      if(session?.user.name==="이승주")
 
-      // ✅ iOS <= 1.8
-      // if (platform === "ios" && compareSemver(appVersion, "1.1.5") <= 0) {
-      //   setIsLegacyApp(true);
-      //   return;
-      // }
+      if (platform === "ios" && compareSemver(appVersion, "1.1.5") <= 0) {
+        setIsLegacyApp(true);
+        return;
+      }
 
       setIsLegacyApp(false);
     };
