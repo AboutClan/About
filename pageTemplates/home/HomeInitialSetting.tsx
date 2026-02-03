@@ -182,7 +182,7 @@ function HomeInitialSetting() {
 
   return (
     <>
-      {userInfo && !isGuest && <UserSettingPopUp user={userInfo} />}
+      {userInfo && !isGuest && !isLegacyApp && <UserSettingPopUp user={userInfo} />}
       <GlobalStyle />
       {isLegacyApp && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
 
