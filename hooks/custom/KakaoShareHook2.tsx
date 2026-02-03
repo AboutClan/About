@@ -43,6 +43,28 @@ const buildKakaoLink = (url: string) => {
     iosExecutionParams: `dl=${encodeURIComponent(path)}`,
   };
 };
+const toOpenLink = (rawUrl: string) => {
+  try {
+    const u = new URL(rawUrl);
+
+    const hostOk =
+      u.host === "study-about.club" ||
+      u.host === "www.study-about.club" ||
+      u.host === "about20s.club" ||
+      u.host === "www.about20s.club";
+
+    if (!hostOk) return rawUrl;
+
+    const path = u.pathname.replace(/^\/+/, ""); // 앞의 / 제거
+    const qs = u.search.replace(/^\?/, "");
+
+    const dl = qs ? `${path}?${qs}` : path;
+
+    return `https://about20s.club/_open?dl=${encodeURIComponent(dl)}`;
+  } catch {
+    return rawUrl;
+  }
+};
 
 export function useKakaoShare() {
   const shareToKakao = ({
@@ -61,7 +83,8 @@ export function useKakaoShare() {
     extraCnt?: number;
   }) => {
     if (isWebView()) {
-      nativeMethodUtils.share(url);
+      const openUrl = toOpenLink(url);
+      nativeMethodUtils.share(openUrl);
       return;
     }
 
