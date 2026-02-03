@@ -258,11 +258,19 @@ function Layout({ children }: ILayout) {
       }
 
       // RN -> Web에서 보내는 형태: { name: "deviceInfo", ... }
-      if (data?.name !== "deviceInfo") return;
+
+      if (data?.name !== "deviceInfo") {
+        if (session?.user?.name === "이승주") {
+          console.log(data?.name, data);
+        }
+        return;
+      }
 
       const appVersion = data?.appVersion;
       const platform = data?.platform; // "android" | "ios"
-
+      if (session?.user?.name === "이승주") {
+        console.log(platform, data);
+      }
       if (!appVersion || typeof appVersion !== "string") {
         setneedUpdate(true);
         return;
