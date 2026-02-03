@@ -72,7 +72,7 @@ function HomeGatherSection() {
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence> */}
-      {secondData?.length > 4 && (
+      {secondData?.filter((data) => !!data)?.length > 4 && (
         <AnimatePresence initial={false}>
           <motion.div
             drag="x"

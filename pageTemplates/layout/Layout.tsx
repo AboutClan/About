@@ -28,6 +28,9 @@ export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote", "ranking", "board", "stud
 
 const EXIT_DELAY = 2000;
 
+const MIN_ANDROID_VERSION = "1.3.31";
+const MIN_IOS_VERSION = "1.1.2"; // 필요시 수정
+
 interface BackActionMessage {
   name: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -221,8 +224,27 @@ function Layout({ children }: ILayout) {
 
   const [needUpdate, setneedUpdate] = useState(false);
 
+  const compareSemver = (a, b) => {
+    const pa = String(a || "")
+      .split(".")
+      .map((v) => parseInt(v, 10));
+    const pb = String(b || "")
+      .split(".")
+      .map((v) => parseInt(v, 10));
+
+    const len = Math.max(pa.length, pb.length);
+    for (let i = 0; i < len; i++) {
+      const va = pa[i] || 0;
+      const vb = pb[i] || 0;
+      if (va > vb) return 1;
+      if (va < vb) return -1;
+    }
+    return 0;
+  };
+
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (session?.user.name !== "이승주") return;
 
     const onMessage = (event) => {
       const raw = event?.data;
@@ -238,17 +260,28 @@ function Layout({ children }: ILayout) {
       // RN -> Web에서 보내는 형태: { name: "deviceInfo", ... }
       if (data?.name !== "deviceInfo") return;
 
-      // ✅ 이전 앱: appVersion이 아예 없음
-      const hasAppVersion =
-        typeof data?.appVersion === "string" && data.appVersion.trim().length > 0;
+      const appVersion = data?.appVersion;
+      const platform = data?.platform; // "android" | "ios"
 
-      if (!hasAppVersion) {
+      if (!appVersion || typeof appVersion !== "string") {
+        setneedUpdate(true);
+        return;
+      }
+      let minRequired;
+
+      if (platform === "android") {
+        minRequired = MIN_ANDROID_VERSION;
+      } else if (platform === "ios") {
+        minRequired = MIN_IOS_VERSION;
+      } else {
+        // 플랫폼 모르면 안전하게 업데이트 유도
         setneedUpdate(true);
         return;
       }
 
-      // ✅ 최신 앱: appVersion이 있음 (업데이트 필요 false로 내리기 원하면)
-      setneedUpdate(false);
+      const isLower = compareSemver(appVersion, minRequired) < 0;
+
+      setneedUpdate(isLower);
     };
 
     window.addEventListener("message", onMessage);
@@ -258,7 +291,7 @@ function Layout({ children }: ILayout) {
       window.removeEventListener("message", onMessage);
       document.removeEventListener("message", onMessage);
     };
-  }, []);
+  }, [session]);
 
   /**
    * 게스트 뷰어 안내 토스트
