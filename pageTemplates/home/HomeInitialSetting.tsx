@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
@@ -23,19 +25,106 @@ function HomeInitialSetting() {
   const { mutate } = useUserRequestMutation();
 
   useEffect(() => {
-    if (session?.user.name === "이승주") {
-      const os = getDeviceOS();
-      toast("info", os);
+    if (session?.user.name !== "이승주") return;
 
+    let sentEnv = false;
+    let sentFirstMsg = false;
+    let sentDeviceInfo = false;
+
+    const send = (title: string, content: string) => {
       mutate({
         category: "건의",
-        title: "테스트",
-        content: `${typeof navigator} / ${navigator.userAgent} / ${typeof window} / ${
-          window.AboutAppBridge
-        } / ${window.AboutAppBridge?.platform}`,
+        title,
+        content,
       });
+    };
+
+    // 1) 접속 즉시: 웹 환경 리포트 1회
+    if (!sentEnv) {
+      sentEnv = true;
+
+      // ✅ AppBridge는 현재 RN에서 주입 안하니 undefined가 정상
+      const hasRNWV = typeof (window as any).ReactNativeWebView !== "undefined";
+
+      const os = getDeviceOS(); // 네 기존 로직 (다만 AppBridge 의존이면 앱인데도 iOS/Other로 나올 수 있음)
+      toast("info", os);
+
+      send(
+        "앱접속-환경",
+        [
+          `os(getDeviceOS)=${os}`,
+          `typeof navigator=${typeof navigator}`,
+          `ua=${navigator.userAgent}`,
+          `typeof window=${typeof window}`,
+          `hasReactNativeWebView=${hasRNWV}`,
+          `typeof AboutAppBridge=${typeof (window as any).AboutAppBridge}`,
+          `AboutAppBridge.platform=${(window as any).AboutAppBridge?.platform ?? "null"}`,
+          `href=${typeof location !== "undefined" ? location.href : "null"}`,
+        ].join(" / "),
+      );
     }
-  }, [session]);
+
+    // 2) 앱 -> 웹 postMessage 수신: 6초 동안만 감시
+    const onMessage = (event: any) => {
+      const raw = event?.data;
+      if (!raw || typeof raw !== "string" || raw === "undefined") return;
+
+      // 너무 긴 메시지 방지 (서버 저장/로깅 안전)
+      const rawTrimmed = raw.length > 2000 ? raw.slice(0, 2000) + "..." : raw;
+
+      // 첫 메시지 1회는 무조건 기록 (디버깅에 가장 도움 됨)
+      if (!sentFirstMsg) {
+        sentFirstMsg = true;
+        send("앱접속-첫메시지", rawTrimmed);
+      }
+
+      // deviceInfo면 별도로 파싱해서 핵심 필드만 1회 전송
+      try {
+        const data = JSON.parse(raw);
+
+        if (data?.name === "deviceInfo" && !sentDeviceInfo) {
+          sentDeviceInfo = true;
+
+          send(
+            "앱접속-deviceInfo",
+            [
+              `platform=${data.platform ?? "null"}`,
+              `appVersion=${data.appVersion ?? "null"}`,
+              `buildNumber=${data.buildNumber ?? "null"}`,
+              `deviceId=${data.deviceId ?? "null"}`,
+              `hasFcmToken=${typeof data.fcmToken === "string" && data.fcmToken.length > 0}`,
+            ].join(" / "),
+          );
+        }
+      } catch {
+        // JSON 아니면 무시 (첫메시지 raw는 이미 보냄)
+      }
+    };
+
+    window.addEventListener("message", onMessage);
+    document.addEventListener("message", onMessage);
+
+    const timeout = setTimeout(() => {
+      // 6초 안에 deviceInfo 못 받으면 그 사실을 기록
+      if (!sentDeviceInfo) {
+        send(
+          "앱접속-deviceInfo-미수신",
+          `6s timeout / ua=${navigator.userAgent} / hasRNWV=${
+            typeof (window as any).ReactNativeWebView !== "undefined"
+          }`,
+        );
+      }
+
+      window.removeEventListener("message", onMessage);
+      document.removeEventListener("message", onMessage);
+    }, 6000);
+
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("message", onMessage);
+      document.removeEventListener("message", onMessage);
+    };
+  }, [session, mutate, toast]);
 
   const router = useRouter();
 
