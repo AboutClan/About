@@ -111,7 +111,6 @@ export const isApp = (): boolean => {
 
   return false;
 };
-``;
 
 export const getSafeAreaBottom = (basePx = 0) => {
   const os = getDeviceOS();
