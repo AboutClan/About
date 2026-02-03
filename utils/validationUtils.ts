@@ -63,34 +63,31 @@ export const isNativeAppWebView = (): boolean => {
   return !!(window as any).ReactNativeWebView;
 };
 
-export const isIOS = (): boolean => {
-  if (typeof navigator === "undefined") return false;
-
-  const ua = navigator.userAgent || "";
-
-  // iPhone / iPad / iPod
-  if (/iPhone|iPad|iPod/i.test(ua)) return true;
-
-  // iPadOS (Macintosh로 위장)
-  if (/Macintosh/i.test(ua) && (navigator as any).maxTouchPoints > 1) {
-    return true;
-  }
-
-  return false;
-};
-
 export type DeviceOS = "iOS" | "Android" | "Other";
 
 export const getDeviceOS = (): DeviceOS => {
-  if (typeof navigator === "undefined") return "Other";
+  // ✅ 1) 앱(WebView)에서는 deviceInfo 기반 값이 최우선
+  if (typeof window !== "undefined") {
+    const p = (window as any).__ABOUT_PLATFORM__ ?? (window as any).AboutAppBridge?.platform;
 
+    if (typeof p === "string") {
+      if (/android/i.test(p)) return "Android";
+      if (/ios/i.test(p)) return "iOS";
+    }
+  }
+
+  // ✅ 2) 웹에서는 UA로 판별
+  if (typeof navigator === "undefined") return "Other";
   const ua = navigator.userAgent || "";
 
   if (/Android/i.test(ua)) return "Android";
-  if (isIOS()) return "iOS";
+  if (/iPhone|iPad|iPod/i.test(ua)) return "iOS";
+  if (/Macintosh/i.test(ua) && (navigator as any).maxTouchPoints > 1) return "iOS";
 
   return "Other";
 };
+
+export const isIOS = () => getDeviceOS() === "iOS";
 export const isApp = (): boolean => {
   if (typeof window === "undefined") return false;
 

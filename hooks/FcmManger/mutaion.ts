@@ -126,6 +126,7 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
           (window as any).AboutAppBridge = (window as any).AboutAppBridge || {};
           (window as any).AboutAppBridge.platform = (deviceInfo as any)?.platform || "web";
           console.log(TAG, "AboutAppBridge.platform set:", (window as any).AboutAppBridge.platform);
+          (window as any).__ABOUT_PLATFORM__ = (deviceInfo as any)?.platform || null;
         }
 
         finishResolve(deviceInfo);

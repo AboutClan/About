@@ -27,7 +27,8 @@ function HomeInitialSetting() {
   useEffect(() => {
     if (session?.user.name !== "이승주") return;
 
-    let sentEnv = false;
+    let sentEnvInitial = false;
+    let sentEnvAfterDevice = false;
     let sentFirstMsg = false;
     let sentDeviceInfo = false;
 
@@ -39,65 +40,92 @@ function HomeInitialSetting() {
       });
     };
 
-    // 1) 접속 즉시: 웹 환경 리포트 1회
-    if (!sentEnv) {
-      sentEnv = true;
+    const hasRNWV =
+      typeof window !== "undefined" && typeof (window as any).ReactNativeWebView !== "undefined";
 
-      // ✅ AppBridge는 현재 RN에서 주입 안하니 undefined가 정상
-      const hasRNWV = typeof (window as any).ReactNativeWebView !== "undefined";
-
-      const os = getDeviceOS(); // 네 기존 로직 (다만 AppBridge 의존이면 앱인데도 iOS/Other로 나올 수 있음)
-      toast("info", os);
+    const envSnapshot = (label: string) => {
+      const ua = typeof navigator !== "undefined" ? navigator.userAgent : "null";
+      const os = getDeviceOS(); // 네 최신 로직(bridge/platform 우선 포함)으로 바꾸는 걸 권장
+      const aboutBridgeType =
+        typeof window !== "undefined" ? typeof (window as any).AboutAppBridge : "undefined";
+      const aboutBridgePlatform =
+        typeof window !== "undefined" ? (window as any).AboutAppBridge?.platform ?? "null" : "null";
+      const aboutPlatform =
+        typeof window !== "undefined" ? (window as any).__ABOUT_PLATFORM__ ?? "null" : "null";
 
       send(
-        "앱접속-환경",
+        `앱접속-환경-${label}`,
         [
           `os(getDeviceOS)=${os}`,
-          `typeof navigator=${typeof navigator}`,
-          `ua=${navigator.userAgent}`,
-          `typeof window=${typeof window}`,
+          `ua=${ua}`,
           `hasReactNativeWebView=${hasRNWV}`,
-          `typeof AboutAppBridge=${typeof (window as any).AboutAppBridge}`,
-          `AboutAppBridge.platform=${(window as any).AboutAppBridge?.platform ?? "null"}`,
+          `__ABOUT_PLATFORM__=${aboutPlatform}`,
+          `typeof AboutAppBridge=${aboutBridgeType}`,
+          `AboutAppBridge.platform=${aboutBridgePlatform}`,
           `href=${typeof location !== "undefined" ? location.href : "null"}`,
         ].join(" / "),
       );
+    };
+
+    // 1) 접속 즉시: 초기 환경 리포트 1회
+    if (!sentEnvInitial) {
+      sentEnvInitial = true;
+      envSnapshot("초기");
     }
 
-    // 2) 앱 -> 웹 postMessage 수신: 6초 동안만 감시
     const onMessage = (event: any) => {
       const raw = event?.data;
-      if (!raw || typeof raw !== "string" || raw === "undefined") return;
 
-      // 너무 긴 메시지 방지 (서버 저장/로깅 안전)
-      const rawTrimmed = raw.length > 2000 ? raw.slice(0, 2000) + "..." : raw;
+      // ✅ raw가 string이 아닐 수도 있음 (일부 브릿지/브라우저)
+      const rawString =
+        typeof raw === "string" ? raw : raw && typeof raw === "object" ? JSON.stringify(raw) : "";
 
-      // 첫 메시지 1회는 무조건 기록 (디버깅에 가장 도움 됨)
+      if (!rawString || rawString === "undefined") return;
+
+      const rawTrimmed = rawString.length > 2000 ? rawString.slice(0, 2000) + "..." : rawString;
+
+      // 첫 메시지 1회는 무조건 기록
       if (!sentFirstMsg) {
         sentFirstMsg = true;
         send("앱접속-첫메시지", rawTrimmed);
       }
 
-      // deviceInfo면 별도로 파싱해서 핵심 필드만 1회 전송
+      // deviceInfo면 별도로 파싱
+      let data: any = null;
       try {
-        const data = JSON.parse(raw);
-
-        if (data?.name === "deviceInfo" && !sentDeviceInfo) {
-          sentDeviceInfo = true;
-
-          send(
-            "앱접속-deviceInfo",
-            [
-              `platform=${data.platform ?? "null"}`,
-              `appVersion=${data.appVersion ?? "null"}`,
-              `buildNumber=${data.buildNumber ?? "null"}`,
-              `deviceId=${data.deviceId ?? "null"}`,
-              `hasFcmToken=${typeof data.fcmToken === "string" && data.fcmToken.length > 0}`,
-            ].join(" / "),
-          );
-        }
+        data = JSON.parse(rawString);
       } catch {
-        // JSON 아니면 무시 (첫메시지 raw는 이미 보냄)
+        return;
+      }
+
+      if (data?.name !== "deviceInfo") return;
+      if (sentDeviceInfo) return;
+      sentDeviceInfo = true;
+
+      // ✅ 여기서라도 platform을 전역에 세팅해서 이후 getDeviceOS가 확정되게
+      if (typeof window !== "undefined") {
+        const platform = data.platform ?? null; // "android" | "ios"
+        (window as any).__ABOUT_PLATFORM__ = platform;
+
+        (window as any).AboutAppBridge = (window as any).AboutAppBridge || {};
+        (window as any).AboutAppBridge.platform = platform;
+      }
+
+      send(
+        "앱접속-deviceInfo",
+        [
+          `platform=${data.platform ?? "null"}`,
+          `appVersion=${data.appVersion ?? "null"}`,
+          `buildNumber=${data.buildNumber ?? "null"}`,
+          `deviceId=${data.deviceId ?? "null"}`,
+          `hasFcmToken=${typeof data.fcmToken === "string" && data.fcmToken.length > 0}`,
+        ].join(" / "),
+      );
+
+      // 2) deviceInfo 수신 직후: 확정 환경 리포트 1회
+      if (!sentEnvAfterDevice) {
+        sentEnvAfterDevice = true;
+        envSnapshot("deviceInfo후");
       }
     };
 
@@ -105,13 +133,22 @@ function HomeInitialSetting() {
     document.addEventListener("message", onMessage);
 
     const timeout = setTimeout(() => {
-      // 6초 안에 deviceInfo 못 받으면 그 사실을 기록
       if (!sentDeviceInfo) {
         send(
           "앱접속-deviceInfo-미수신",
-          `6s timeout / ua=${navigator.userAgent} / hasRNWV=${
-            typeof (window as any).ReactNativeWebView !== "undefined"
-          }`,
+          [
+            `6s timeout`,
+            `ua=${typeof navigator !== "undefined" ? navigator.userAgent : "null"}`,
+            `hasRNWV=${hasRNWV}`,
+            `__ABOUT_PLATFORM__=${
+              typeof window !== "undefined" ? (window as any).__ABOUT_PLATFORM__ ?? "null" : "null"
+            }`,
+            `AboutAppBridge.platform=${
+              typeof window !== "undefined"
+                ? (window as any).AboutAppBridge?.platform ?? "null"
+                : "null"
+            }`,
+          ].join(" / "),
         );
       }
 
