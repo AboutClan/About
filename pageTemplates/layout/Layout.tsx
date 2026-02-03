@@ -2,6 +2,7 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import dayjs from "dayjs";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
@@ -15,7 +16,7 @@ import PageTracker from "../../components/layouts/PageTracker";
 import ForceUpdateModal from "../../components/overlay/UpdateModal";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { getTodayStr } from "../../utils/dateTimeUtils";
+import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
 import { isApp } from "../../utils/validationUtils";
@@ -45,7 +46,8 @@ function Layout({ children }: ILayout) {
   const toast = useToast();
   const router = useRouter();
   const pathname = usePathname();
-  const segment = pathname?.split("/")?.[1];
+  const segments = pathname?.split("/");
+  const segment = segments?.[1];
 
   const PUBLIC_SEGMENT = ["register", "login"];
 
@@ -244,7 +246,6 @@ function Layout({ children }: ILayout) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (session?.user.name !== "이승주") return;
 
     const onMessage = (event) => {
       const raw = event?.data;
@@ -335,6 +336,8 @@ function Layout({ children }: ILayout) {
   /**
    * OG 메타 태그 설정 (기존 그대로)
    */
+
+  console.log(52, pathname, segments?.[0], segments?.[1]);
   const { title, description, url, image } =
     pathname === "/cafe-map"
       ? {
@@ -343,6 +346,16 @@ function Layout({ children }: ILayout) {
           url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/cafe-map`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/cafe-map.png",
+        }
+      : segments?.[1] === "study" && segments?.[2] === "participations"
+      ? {
+          title: "카공 스터디 라운지",
+          description: "스터디 확인, 신청, 변경 모두 이 곳에서!",
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/study/participatins/${dayjsToStr(
+            dayjs(),
+          )}?type=participations`,
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A7%A4%EC%B9%AD-%EB%9D%BC%EC%9A%B4%EC%A7%80.png",
         }
       : {
           title: "About",
