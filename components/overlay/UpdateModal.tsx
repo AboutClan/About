@@ -4,9 +4,10 @@ import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import { CloseProps } from "../../types/components/modalTypes";
 import { getDeviceOS } from "../../utils/validationUtils";
 
-const ANDROID_STORE_APP_URL = "market://details?id=com.about.studyaboutclubapp";
+const ANDROID_STORE_APP_URL =
+  "https://play.google.com/store/apps/details?id=com.about.studyaboutclubapp";
 
-const IOS_STORE_APP_URL = "itms-apps://apps.apple.com/kr/app/id6737145787";
+const IOS_STORE_APP_URL = "https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83/id6737145787";
 
 function ForceUpdateModal({ onClose }: CloseProps) {
   const openStore = () => {
