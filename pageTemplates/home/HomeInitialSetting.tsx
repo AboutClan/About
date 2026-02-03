@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -13,6 +13,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { isPWA } from "../../utils/appEnvUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
+import { isApp } from "../../utils/validationUtils";
 
 function HomeInitialSetting() {
   const { data: session } = useSession();
@@ -40,7 +41,7 @@ function HomeInitialSetting() {
 
     const onMessage = (event: MessageEvent) => {
       if (typeof event.data !== "string") return;
-
+      if (!isApp()) return;
       let data: any;
       try {
         data = JSON.parse(event.data);
@@ -52,7 +53,11 @@ function HomeInitialSetting() {
 
       const { platform, appVersion } = data;
 
-      if (!platform || !appVersion) return;
+      if (!platform) return;
+      if (!appVersion) {
+        setIsLegacyApp(true);
+        return;
+      }
 
       // ✅ Android <= 1.3.32
       if (platform === "android" && compareSemver(appVersion, "1.3.32") <= 0) {
@@ -184,7 +189,7 @@ function HomeInitialSetting() {
     <>
       {userInfo && !isGuest && !isLegacyApp && <UserSettingPopUp user={userInfo} />}
       <GlobalStyle />
-      {isLegacyApp && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
+      {isLegacyApp && isApp() && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
 
       {/* <Joyride
         hideCloseButton={true}

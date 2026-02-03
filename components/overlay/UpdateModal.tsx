@@ -1,9 +1,8 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useCallback, useMemo } from "react";
 
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import { CloseProps } from "../../types/components/modalTypes";
-import { isApp, isIOS } from "../../utils/validationUtils";
+import { getDeviceOS } from "../../utils/validationUtils";
 
 const ANDROID_STORE_APP_URL = "market://details?id=com.about.studyaboutclubapp";
 const ANDROID_STORE_WEB_URL =
@@ -12,20 +11,17 @@ const ANDROID_STORE_WEB_URL =
 const IOS_STORE_URL = "https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83/id6737145787";
 
 function ForceUpdateModal({ onClose }: CloseProps) {
-  const ios = useMemo(() => isIOS(), []);
-  const app = useMemo(() => isApp(), []);
-
-  const openStore = useCallback(() => {
+  const openStore = () => {
     if (typeof window === "undefined") return;
-
+    const os = getDeviceOS();
     // ✅ iOS: 앱스토어 웹 링크로 이동 (사파리/인앱/웹뷰 모두 동작)
-    if (ios) {
+    if (os === "iOS") {
       window.location.href = IOS_STORE_URL;
       return;
     }
 
     // ✅ Android: 앱이면 market:// 우선 시도, 아니면 웹 링크
-    if (app) {
+    if (os === "Android") {
       // market://가 막히면 그냥 웹 링크로 한번 더 보내는 방식
       window.location.href = ANDROID_STORE_APP_URL;
       setTimeout(() => {
@@ -36,7 +32,7 @@ function ForceUpdateModal({ onClose }: CloseProps) {
 
     // Android 웹
     window.location.href = ANDROID_STORE_WEB_URL;
-  }, [ios, app]);
+  };
 
   const footerOptions: IFooterOptions = {
     main: {
