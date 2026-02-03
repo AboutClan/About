@@ -7,18 +7,37 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { isPWA } from "../../utils/appEnvUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
+import { getDeviceOS } from "../../utils/validationUtils";
 
 function HomeInitialSetting() {
   const { data: session } = useSession();
+  const toast = useToast();
   usePushServiceInitialize({
     uid: session?.user?.uid,
   });
 
+  const { mutate } = useUserRequestMutation();
+
+  useEffect(() => {
+    if (session?.user.name === "이승주") {
+      const os = getDeviceOS();
+      toast("info", os);
+
+      mutate({
+        category: "건의",
+        title: "테스트",
+        content: `${typeof navigator} / ${navigator.userAgent} / ${typeof window} / ${
+          window.AboutAppBridge
+        } / ${window.AboutAppBridge?.platform}`,
+      });
+    }
+  }, [session]);
+
   const router = useRouter();
-  const toast = useToast();
 
   const isGuest = session
     ? session.user.name === "guest" || session.user.name === "게스트"
