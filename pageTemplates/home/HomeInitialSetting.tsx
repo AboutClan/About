@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -184,7 +184,7 @@ function HomeInitialSetting() {
     <>
       {userInfo && !isGuest && <UserSettingPopUp user={userInfo} />}
       <GlobalStyle />
-      {isLegacyApp && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
+      {!isLegacyApp && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
 
       {/* <Joyride
         hideCloseButton={true}

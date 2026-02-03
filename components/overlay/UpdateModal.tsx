@@ -70,6 +70,14 @@ function ForceUpdateModal({ onClose }: CloseProps) {
           </Text>
         </Flex>
 
+        <Flex gap={2} align="flex-start" color="#424242" mb={1}>
+          <Text fontSize={12} lineHeight="18px">
+            •
+          </Text>
+          <Text flex={1} fontSize={12} lineHeight="18px" textAlign="left">
+            카카오톡 링크를 통한 앱 연결 가능
+          </Text>
+        </Flex>
         <Flex gap={2} align="flex-start" color="#424242">
           <Text fontSize={12} lineHeight="18px">
             •
