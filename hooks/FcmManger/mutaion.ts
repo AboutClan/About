@@ -52,7 +52,6 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
 
     window.addEventListener("message", handleDeviceInfo);
     document.addEventListener("message", handleDeviceInfo);
-
     nativeMethodUtils.getDeviceInfo();
   });
 };
