@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -306,6 +306,7 @@ function Layout({ children }: ILayout) {
                     paddingBottom: `var(--bottom-nav-height)`,
                   }
                 : {}),
+              boxShadow: "0 1px 0 rgba(0,0,0,0.05)",
             }}
           >
             {children}
