@@ -20,7 +20,6 @@ import {
 } from "../../libs/study/thumbnailCardLibs";
 import { backUrlState } from "../../recoils/navigationRecoils";
 import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
-import { isMobileWeb } from "../../utils/validationUtils";
 
 type StudyTab = "오늘 날짜 스터디" | "진행 예정 스터디";
 
@@ -79,7 +78,7 @@ function HomeStudySection() {
       },
     },
     {
-      text: isMobileWeb() ? "진행 예정 스터디" : navigator.userAgent.toLowerCase(),
+      text: "진행 예정 스터디",
       func: () => {
         setTab("진행 예정 스터디");
       },

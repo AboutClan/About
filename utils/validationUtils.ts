@@ -116,7 +116,9 @@ export const isMobileWeb = (): boolean => {
   const ua = navigator.userAgent.toLowerCase();
 
   // 모바일 기기 브라우저
-  const isMobileDevice = /iphone|ipad|ipod|android/.test(ua);
+  const isMobileUA = /iphone|ipad|ipod|android/.test(ua);
 
-  return isMobileDevice;
+  const isIOSDesktopMode = ua.includes("macintosh") && navigator.maxTouchPoints > 1;
+
+  return isMobileUA || isIOSDesktopMode;
 };
