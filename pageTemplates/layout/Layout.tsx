@@ -14,6 +14,7 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { GROUP_OG_MAPPING } from "../../pages/s/group/[id]";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
@@ -217,7 +218,9 @@ function Layout({ children }: ILayout) {
     };
   }, [pathname, router, toast]);
   const path = router.asPath.split("?")[0];
-  const second = path.split("/")[2];
+  const first = path.split("/")[1];
+  const second = path.split("/")?.[2];
+  const third = path.split("/")?.[3];
 
   const { title, description, url, image } =
     pathname === "/cafe-map"
@@ -251,6 +254,11 @@ function Layout({ children }: ILayout) {
           url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/attend`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
+        }
+      : first === "s" && second === "group"
+      ? {
+          ...GROUP_OG_MAPPING[third],
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/group/${third}`,
         }
       : second === "gather"
       ? {
