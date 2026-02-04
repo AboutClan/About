@@ -5,8 +5,9 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
+import { MainLoading } from "../components/atoms/loaders/MainLoading";
 import Slide from "../components/layouts/PageSlide";
-import { useTypeToast } from "../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../hooks/custom/CustomToast";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../hooks/study/queries";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageChallenge from "../pageTemplates/studyPage/StudyPageChallenge";
@@ -17,12 +18,14 @@ import StudyPageMap, {
 import StudyPageNav from "../pageTemplates/studyPage/StudyPageNav";
 import StudyPagePlaceSection from "../pageTemplates/studyPage/StudyPagePlaceSection";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
+import { StudyConfirmedMemberProps } from "../types/models/studyTypes/study-entity.types";
 import { getTodayStr } from "../utils/dateTimeUtils";
 
 export type StudyPageTab = "About 스터디" | "카공 지도.ZIP 🔥";
 
 export default function StudyPage() {
   const typeToast = useTypeToast();
+  const toast = useToast();
   const router = useRouter();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
@@ -31,12 +34,14 @@ export default function StudyPage() {
   const tabParam = searchParams.get("tab") as "study" | "map";
   const dateParam = searchParams.get("date");
   const modalParam = searchParams.get("modal");
+  const resultParam = searchParams.get("result");
 
   const isGuest = session?.user.role === "guest";
 
   const [tab, setTab] = useState<StudyPageTab>("About 스터디");
   const [date, setDate] = useState<string>(null);
   const [modal, setModal] = useState<"cafe">(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const isPassedDate = !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
 
@@ -45,6 +50,45 @@ export default function StudyPage() {
   const { data: passedStudyData } = useStudyPassedDayQuery(date, {
     enabled: !!date && !!isPassedDate,
   });
+  console.log(4, resultParam);
+  useEffect(() => {
+    if (!resultParam || !session) return;
+    if (!studySet) {
+      setIsLoading(true);
+      return;
+    }
+    let myStudy: StudyConfirmedMemberProps;
+    let openUrl;
+
+    studySet.results.forEach((result) => {
+      if (result.date === getTodayStr()) {
+        const study = result.study;
+        myStudy = study.members.find((member) => member.user.uid === session?.user.uid);
+        if (myStudy) {
+          openUrl = `/study/${study.place._id}/${getTodayStr()}?type=results`;
+        }
+        return;
+      }
+    });
+    studySet.openRealTimes.forEach((realTimes) => {
+      if (realTimes.date === getTodayStr()) {
+        const study = realTimes.study;
+        myStudy = study.members.find((member) => member.user.uid === session?.user.uid);
+        if (myStudy) {
+          openUrl = `/study/${study.place._id}/${getTodayStr()}?type=openRealTimes`;
+        }
+        return;
+      }
+    });
+
+    if (openUrl) {
+      router.replace(openUrl);
+    } else {
+      toast("info", "오늘 참석중인 스터디가 없습니다.");
+      newSearchParams.delete("result");
+    }
+    setIsLoading(false);
+  }, [resultParam, studySet, session]);
 
   useEffect(() => {
     if (!tabParam) return;
@@ -137,6 +181,7 @@ export default function StudyPage() {
           </Slide>
         )}
       </>
+      {isLoading && <MainLoading />}
       {modal === "cafe" && (
         <LocationAddDrawer
           onClose={() => {
