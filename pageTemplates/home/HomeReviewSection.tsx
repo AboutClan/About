@@ -12,7 +12,7 @@ import { FeedProps } from "../../types/models/feed";
 export default function HomeReviewSection() {
   const router = useRouter();
 
-  const { data: feeds } = useFeedsQuery("gather", null, 0, true);
+  const { data: feeds } = useFeedsQuery(null, null, 0, true);
 
   const imageArr: IImageTileData[] = (feeds as FeedProps[])
     ?.map((feed) => ({

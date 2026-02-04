@@ -27,13 +27,13 @@ function HomeGroupSection() {
           }}
         >
           <SlideSectionCol
-            title="겨울 시즌 시작! About 취미 소모임"
+            title="겨울 시즌! About 취미 소모임"
             subTitle="겨울 내내 함께 즐기는 취미 활동 모임"
           >
             <HomeGroupCol threeGroups={groups?.hobby.slice(0, 3)} type="hobby" />
           </SlideSectionCol>
           <SlideSectionCol
-            title="겨울 시즌 시작! About 취미 소모임"
+            title="겨울 시즌! About 취미 소모임"
             subTitle="겨울 내내 함께 즐기는 취미 활동 모임"
           >
             <HomeGroupCol threeGroups={groups?.hobby.slice(3, 6)} type="hobby" />

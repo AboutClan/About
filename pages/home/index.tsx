@@ -26,12 +26,12 @@ function Home() {
       <Slide isNoPadding>
         <HomeGatherSection />
       </Slide>
-      <Slide isNoPadding>
-        <HomeGroupSection />
-      </Slide>
       <Slide>
         <HomeReviewSection />
       </Slide>{" "}
+      <Slide isNoPadding>
+        <HomeGroupSection />
+      </Slide>
       {/* <Slide isNoPadding>
         <HomeGroupSection2 />
       </Slide> */}

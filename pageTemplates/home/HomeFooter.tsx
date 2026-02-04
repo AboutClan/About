@@ -2,9 +2,9 @@ import { Box, Link, Stack, Text } from "@chakra-ui/react";
 
 function HomeFooter() {
   return (
-    <Box bg="gray.100" color="gray.600" mt={40} py={6} px={4}>
+    <Box bg="gray.100" color="gray.500" mt={40} py={6} px={4}>
       <Box mx="auto">
-        <Stack spacing={1} fontSize="sm">
+        <Stack spacing={1} fontSize="12px">
           <Text>상호명: About | 대표자: 이승주</Text>
           <Text>사업자등록번호: 260-48-00924</Text>
           <Text>통신판매업신고번호: 2025-부천원미-2462</Text>
@@ -13,10 +13,10 @@ function HomeFooter() {
         </Stack>
 
         <Stack direction="row" spacing={4} mt={4}>
-          <Link href="/user/info/policy" fontSize="sm" _hover={{ textDecoration: "underline" }}>
+          <Link href="/user/info/policy" fontSize="12px" _hover={{ textDecoration: "underline" }}>
             이용약관
           </Link>
-          <Link href="/user/info/privacy" fontSize="sm" _hover={{ textDecoration: "underline" }}>
+          <Link href="/user/info/privacy" fontSize="12px" _hover={{ textDecoration: "underline" }}>
             개인정보처리방침
           </Link>
         </Stack>
