@@ -264,7 +264,12 @@ function Access() {
   return (
     <>
       <Script src={JQ_SRC} strategy="afterInteractive" />
-      <Header title="" func={handleBack} />
+      <Header title="" func={handleBack}>
+        <Flex fontSize="10px" color="gray.500">
+          uid:
+          <Box w="55px">{session?.user.uid || "NULL"}</Box>
+        </Flex>
+      </Header>
 
       <RegisterLayout>
         <RegisterOverview isNoTop>

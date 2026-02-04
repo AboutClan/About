@@ -14,7 +14,6 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { GROUP_OG_MAPPING } from "../../pages/s/group/[id]";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
@@ -217,17 +216,13 @@ function Layout({ children }: ILayout) {
       document.removeEventListener("message", handleMessage);
     };
   }, [pathname, router, toast]);
-  const path = router.asPath.split("?")[0];
-  const first = path.split("/")[1];
-  const second = path.split("/")?.[2];
-  const third = path.split("/")?.[3];
-  console.log(first, second, third);
+
   const { title, description, url, image } =
     pathname === "/cafe-map"
       ? {
           title: "ABOUT 카공 지도",
           description: "카공러들을 위한 진짜 카공 지도",
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/cafe-map`,
+          url: `about20s.club/cafe-map`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/cafe-map.png",
         }
@@ -235,7 +230,7 @@ function Layout({ children }: ILayout) {
       ? {
           title: "카공 스터디 라운지",
           description: "스터디 확인, 신청, 변경 모두 여기서!",
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/lounge`,
+          url: `about20s.club/s/lounge`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A7%A4%EC%B9%AD-%EB%9D%BC%EC%9A%B4%EC%A7%80.png",
         }
@@ -243,7 +238,7 @@ function Layout({ children }: ILayout) {
       ? {
           title: "내 카공 스터디",
           description: "오늘 참여중인 스터디로 바로 이동!",
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/result`,
+          url: `about20s.club/s/result`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
         }
@@ -251,27 +246,14 @@ function Layout({ children }: ILayout) {
       ? {
           title: "실시간 공부 인증",
           description: "개인 공부 인증하고 포인트 받자!",
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/attend`,
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
-        }
-      : first === "s" && second === "group"
-      ? {
-          ...GROUP_OG_MAPPING[third],
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/group/${third}`,
-        }
-      : second === "gather"
-      ? {
-          title: "번개 모임",
-          description: "해당 번개로 바로 이동!",
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/gather`,
+          url: `about20s.club/s/attend`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
         }
       : {
           title: "About",
           description: "20대를 위한 모임 플랫폼",
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}`,
+          url: `about20s.club`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
         };

@@ -26,7 +26,14 @@ export default function ShareParticipationsGroup({ id, og }) {
           content={og?.description ?? "20대를 위한 모임 플랫폼"}
           key="og:description"
         />
-        <meta property="og:image" content={og?.image ?? "기본이미지"} key="og:image" />
+        <meta
+          property="og:image"
+          content={
+            og?.image ??
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg"
+          }
+          key="og:image"
+        />
         <meta property="og:url" content={`https://about20s.club/s/group/${id}`} key="og:url" />
       </Head>
     </>
