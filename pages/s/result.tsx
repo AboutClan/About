@@ -6,7 +6,7 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 export default function ShareParticipations() {
   useEffect(() => {
     const openUrl =
-      "https://about20s.club/_open" + `?dl=studyPage?date=${dayjsToStr(dayjs())}&result=on`;
+      "https://about20s.club/_open" + `?dl=studyPage?date=${dayjsToStr(dayjs())}%26result=on`;
 
     window.location.replace(openUrl);
   }, []);
