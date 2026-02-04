@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -238,9 +238,17 @@ function Layout({ children }: ILayout) {
         }
       : pathname === "/s/result"
       ? {
-          title: "오늘의 카공 스터디",
+          title: "내 카공 스터디",
           description: "오늘 참여중인 스터디로 바로 이동!",
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/lounge`,
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/result`,
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
+        }
+      : pathname === "/s/attend"
+      ? {
+          title: "실시간 공부 인증",
+          description: "개인 공부 인증하고 포인트 받자!",
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/attend`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
         }
