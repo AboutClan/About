@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudySetQuery } from "../../hooks/study/queries";
+import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
 import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
 
 export default function ShareParticipationsStudyResult() {
@@ -13,49 +14,48 @@ export default function ShareParticipationsStudyResult() {
 
   useEffect(() => {
     if (!studySet || !session) return;
+    let myStudy: StudyConfirmedMemberProps;
+    let openUrl;
 
-    const today = getTodayStr();
-    const uid = session.user.uid;
+    studySet.results.forEach((result) => {
+      if (result.date === getTodayStr()) {
+        const study = result.study;
+        myStudy = study.members.find((member) => member.user.uid === session?.user.uid);
+        if (myStudy) {
+          openUrl =
+            "https://about20s.club/_open" +
+            `?dl=study/${study.place._id}/${getTodayStr()}?type=results`;
+        }
+        return;
+      }
+    });
+    studySet.openRealTimes.forEach((realTimes) => {
+      if (realTimes.date === getTodayStr()) {
+        const study = realTimes.study;
+        myStudy = study.members.find((member) => member.user.uid === session?.user.uid);
+        if (myStudy) {
+          openUrl =
+            "https://about20s.club/_open" +
+            `?dl=study/${study.place._id}/${getTodayStr()}?type=openRealTimes`;
+        }
+        return;
+      }
+    });
 
-    const fallbackUrl = `https://about20s.club/_open` + `?dl=studyPage?date=${dayjsToStr(dayjs())}`;
-
-    // ✅ 무조건 fallback은 예약해 둔다 (보장)
-    const fallbackTimer = window.setTimeout(() => {
-      toast("info", "오늘 참석중인 스터디가 없습니다.");
-      window.location.replace(fallbackUrl);
-    }, 120);
-
-    const go = (url: string) => {
-      window.clearTimeout(fallbackTimer); // ✅ 성공하면 fallback 취소
-      window.location.replace(url);
-    };
-
-    // 1) results 우선
-    const r = studySet.results.find(
-      (result) => result.date === today && result.study.members.some((m) => m.user.uid === uid),
-    );
-
-    if (r) {
-      const id = r.study.place._id;
-      go(`https://about20s.club/_open?dl=study/${id}/${today}?type=results`);
+    if (openUrl) {
+      window.location.replace(openUrl);
       return;
     }
 
-    // 2) openRealTimes
-    const o = studySet.openRealTimes.find(
-      (rt) => rt.date === today && rt.study.members.some((m) => m.user.uid === uid),
-    );
+    toast("info", "오늘 참석중인 스터디가 없습니다.");
 
-    if (o) {
-      const id = o.study.place._id;
-      go(`https://about20s.club/_open?dl=study/${id}/${today}?type=openRealTimes`);
-      return;
-    }
+    setTimeout(() => {
+      const openUrl =
+        "https://about20s.club/_open" +
+        `?dl=study/participations/${dayjsToStr(dayjs())}?type=participations`;
 
-    // ✅ 여기서 아무것도 안 해도 됨: fallback 예약이 이미 있음
-    return () => {
-      window.clearTimeout(fallbackTimer);
-    };
+      window.location.replace(openUrl);
+    }, 1000);
   }, [studySet, session]);
 
   return <></>;
