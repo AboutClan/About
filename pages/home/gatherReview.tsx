@@ -162,7 +162,7 @@ function GatherReview() {
   const { data: gather } = useGatherIDQuery(+id, {
     enabled: !!id,
   });
-
+  console.log(23, gather);
   const { data: userInfo } = useUserInfoQuery();
   const queryClient = useQueryClient();
 
@@ -327,7 +327,6 @@ function GatherReview() {
                 );
               })}
           </Box>
-
           <BottomNavButton
             text="멤버 리뷰 완료"
             color="black"

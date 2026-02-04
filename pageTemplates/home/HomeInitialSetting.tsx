@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
+import AppDownloadModal from "../../components/overlay/AppDownloadModal";
 import ForceUpdateModal from "../../components/overlay/UpdateModal";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
@@ -13,7 +14,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { isPWA } from "../../utils/appEnvUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { isApp } from "../../utils/validationUtils";
+import { isApp, isMobileWeb } from "../../utils/validationUtils";
 
 function HomeInitialSetting() {
   const { data: session } = useSession();
@@ -185,12 +186,29 @@ function HomeInitialSetting() {
   //   }
   // };
 
+  const [isWeb, setIsWeb] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const dismissed = sessionStorage.getItem("dismiss_app_download_modal") === "1";
+    console.log(32, dismissed);
+    if (dismissed) return;
+    console.log(43);
+    setIsWeb(isMobileWeb());
+  }, []);
+
+  const closeModal = () => {
+    sessionStorage.setItem("dismiss_app_download_modal", "1");
+    setIsWeb(false);
+  };
+
   return (
     <>
       {userInfo && !isGuest && !isLegacyApp && <UserSettingPopUp user={userInfo} />}
       <GlobalStyle />
       {isLegacyApp && isApp() && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
-
+      {isWeb && <AppDownloadModal onClose={closeModal} />}
       {/* <Joyride
         hideCloseButton={true}
         callback={handleJoyrideCallback}

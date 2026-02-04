@@ -107,3 +107,16 @@ export const getSafeAreaBottom = (basePx = 0) => {
   // 앱(WebView)이나 Android/Other는 base만
   return `${basePx}px`;
 };
+export const isMobileWeb = (): boolean => {
+  if (typeof window === "undefined") return false;
+
+  // 앱이면 모바일웹 아님
+  if ((window as any).ReactNativeWebView) return false;
+
+  const ua = navigator.userAgent.toLowerCase();
+
+  // 모바일 기기 브라우저
+  const isMobileDevice = /iphone|ipad|ipod|android/.test(ua);
+
+  return isMobileDevice;
+};

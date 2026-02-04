@@ -43,6 +43,7 @@ interface IAvatar {
     profileImage?: string;
   };
   isSquare?: boolean;
+  isWhite?: boolean;
 }
 
 function AvatarComponent({
@@ -52,6 +53,7 @@ function AvatarComponent({
   isLink = true,
   user = ABOUT_USER_SUMMARY,
   isSquare,
+  isWhite,
 }: IAvatar) {
   const avatar = user?.avatar;
   const userId = user?._id;
@@ -92,12 +94,14 @@ function AvatarComponent({
       >
         <ImageContainer
           bg={
-            (!shadowAvatar && bgImage) ||
-            (shadowAvatar
-              ? "var(--gray-200)"
-              : avatar?.bg === -1
-              ? "mint"
-              : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg])
+            isWhite
+              ? "white"
+              : (!shadowAvatar && bgImage) ||
+                (shadowAvatar
+                  ? "var(--gray-200)"
+                  : avatar?.bg === -1
+                  ? "mint"
+                  : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg])
           }
           hasType={hasAvatar && avatar.type < 100}
           color="var(--gray-500)"
