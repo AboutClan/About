@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -259,13 +259,13 @@ function Layout({ children }: ILayout) {
       : first === "s" && second === "group"
       ? {
           ...GROUP_OG_MAPPING[third],
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/group/${third}`,
+          url: `about20s.club/s/results/group/${third}`,
         }
       : second === "gather"
       ? {
           title: "번개 모임",
           description: "해당 번개로 바로 이동!",
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/s/gather`,
+          url: `about20s.club/s/results/gather`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
         }
