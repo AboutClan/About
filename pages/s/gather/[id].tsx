@@ -43,12 +43,12 @@ export default function ShareParticipationsGroup({ id, og, groupId }) {
   return (
     <>
       <Head>
-        <meta property="og:title" content={og.title} key="og:title" />
+        <meta property="og:title" content={og.title} key="og:title2" />
 
-        <meta property="og:description" content={og.description} key="og:description" />
+        <meta property="og:description" content={og.description} key="og:description2" />
 
-        <meta property="og:image" content={og.image} key="og:image" />
-        <meta property="og:url" content={og.url} key="og:url" />
+        <meta property="og:image" content={og.image} key="og:image2" />
+        <meta property="og:url" content={og.url} key="og:url2" />
       </Head>
     </>
   );
