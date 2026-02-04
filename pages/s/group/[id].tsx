@@ -1,16 +1,36 @@
-import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
+import Head from "next/head";
 import { useEffect } from "react";
 
-export default function ShareParticipationsGroup() {
-  const router = useRouter();
-  const { id } = router.query;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const id = String(ctx.params?.id ?? "");
+  const og = GROUP_OG_MAPPING[id] ?? null;
+
+  return {
+    props: { id, og },
+  };
+};
+
+export default function ShareParticipationsGroup({ id, og }) {
   useEffect(() => {
     if (!id) return;
-    const openUrl = `https://about20s.club/_open?dl=group/${id}`;
-    window.location.replace(openUrl);
+    window.location.replace(`https://about20s.club/_open?dl=group/${id}`);
   }, [id]);
 
-  return <></>;
+  return (
+    <>
+      <Head>
+        <meta property="og:title" content={og?.title ?? "About"} key="og:title" />
+        <meta
+          property="og:description"
+          content={og?.description ?? "20대를 위한 모임 플랫폼"}
+          key="og:description"
+        />
+        <meta property="og:image" content={og?.image ?? "기본이미지"} key="og:image" />
+        <meta property="og:url" content={`https://about20s.club/s/group/${id}`} key="og:url" />
+      </Head>
+    </>
+  );
 }
 
 export const GROUP_OG_MAPPING: Record<

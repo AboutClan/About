@@ -221,7 +221,7 @@ function Layout({ children }: ILayout) {
   const first = path.split("/")[1];
   const second = path.split("/")?.[2];
   const third = path.split("/")?.[3];
-
+  console.log(first, second, third);
   const { title, description, url, image } =
     pathname === "/cafe-map"
       ? {
