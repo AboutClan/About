@@ -30,12 +30,12 @@ import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
-  StudyParticipationProps,
+  StudyParticipationProps
 } from "../../../../types/models/studyTypes/study-entity.types";
 import {
   StudyConfirmedSetProps,
   StudyParticipationsSetProps,
-  StudyType,
+  StudyType
 } from "../../../../types/models/studyTypes/study-set.types";
 import { dayjsToStr, getHour, getTodayStr } from "../../../../utils/dateTimeUtils";
 
@@ -130,7 +130,7 @@ export default function Page() {
       : findTodayStudy?.type === studyType
       ? "participation"
       : "otherParticipation";
-  console.log(4, findTodayStudy, studyType, myStudyStatus, studyData);
+ 
   const members =
     studyType === "participations"
       ? shortenParticipations(participationsSet)

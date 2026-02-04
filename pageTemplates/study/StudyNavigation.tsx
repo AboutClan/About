@@ -100,14 +100,15 @@ function StudyNavigation({
   // const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
 
   const getNavigationProps = (studyType: StudyType, myStatus: MyStudyStatus): NavigationProps => {
-    console.log(studyType, myStatus);
     if (dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))) {
-      console.log(33);
       return null;
     }
 
+    if ((myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type === "absenced") {
+      return;
+    }
     if (
-      (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type &&
+      (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type === "arrived" &&
       studyType !== "soloRealTimes"
     ) {
       return {

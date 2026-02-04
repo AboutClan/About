@@ -99,6 +99,14 @@ function StudyAbsentModal({ type, setIsModal }: StudyAbsentModalProps) {
               value={value}
               placeholder="불참 사유를 적어주시면, 벌금이 완화될 수 있습니다."
               onChange={(e) => setValue(e.target.value)}
+              _focus={{
+                boxShadow: "0 0 0 1px var(--color-red)",
+                borderColor: "var(--color-red)",
+              }}
+              _hover={{
+                boxShadow: "0 0 0 1px var(--color-red)",
+                borderColor: "var(--color-red)",
+              }}
             />
           </Box>
         </>
