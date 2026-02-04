@@ -79,7 +79,7 @@ function HomeStudySection() {
       },
     },
     {
-      text: isMobileWeb() ? "진행 예정 스터디" : "진행 예정 스터디2",
+      text: isMobileWeb() ? "진행 예정 스터디" : navigator.userAgent.toLowerCase(),
       func: () => {
         setTab("진행 예정 스터디");
       },

@@ -24,6 +24,9 @@ body {
   font-size: 14px;
   background-color: white;
   color: var(--gray-800);
+  margin: 0;
+  padding: 0;
+  padding-top: 0 !important;
 }
 b {
   color: #00c2b3;
@@ -51,6 +54,7 @@ a {
   background-color: white;
 
   overflow-x: hidden;
+  padding-top: 0 !important;
 }
 @media (min-width: 628px) {
   #__next {

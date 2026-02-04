@@ -280,6 +280,7 @@ function Layout({ children }: ILayout) {
   return (
     <>
       <Head>
+        <title>어바웃: 20대를 위한 모임 플랫폼</title>
         {title && <meta property="og:title" content={title} />}
         {description && <meta property="og:description" content={description} />}
         {url && <meta property="og:url" content={url} />}
