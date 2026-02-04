@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -144,7 +144,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
         url:
           "https://about20s.club" +
           router.asPath +
-          (isApp() && gatherData?.groupId ? `groupId=${gatherData.groupId}` : ""),
+          (isApp() && gatherData?.groupId ? `?groupId=${gatherData.groupId}` : ""),
       },
     },
   ];

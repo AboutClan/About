@@ -36,10 +36,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 export default function ShareParticipationsGroup({ id, og, groupId }) {
   useEffect(() => {
     if (!id) return;
-
-    const dl = groupId ? `gather/${id}%3FgroupId=${encodeURIComponent(groupId)}` : `gather/${id}`;
-
-    window.location.replace(`https://about20s.club/_open?dl=${dl}`);
+  window.location.replace(`https://about20s.club/_open?dl=gather/${id}`);
   }, [id, groupId]);
 
   return (
