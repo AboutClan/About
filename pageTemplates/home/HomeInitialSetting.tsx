@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -60,12 +60,12 @@ function HomeInitialSetting() {
       }
 
       // ✅ Android <= 1.3.32
-      if (platform === "android" && compareSemver(appVersion, "1.3.32") <= 0) {
+      if (platform === "android" && compareSemver(appVersion, "1.3.32") < 0) {
         setIsLegacyApp(true);
         return;
       }
 
-      if (platform === "ios" && compareSemver(appVersion, "1.1.5") <= 0) {
+      if (platform === "ios" && compareSemver(appVersion, "1.1.5") < 0) {
         setIsLegacyApp(true);
         return;
       }
