@@ -48,7 +48,7 @@ export default function OpenPage() {
       document.removeEventListener("visibilitychange", onVisibility);
       window.clearTimeout(timer);
     };
-  }, [router.isReady, router.query.path]);
+  }, [router.isReady, router.query.dl]);
 
   return (
     <>

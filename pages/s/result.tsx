@@ -50,9 +50,7 @@ export default function ShareParticipationsStudyResult() {
     toast("info", "오늘 참석중인 스터디가 없습니다.");
 
     setTimeout(() => {
-      const openUrl =
-        "https://about20s.club/_open" +
-        `?dl=study/participations/${dayjsToStr(dayjs())}?type=participations`;
+      const openUrl = "https://about20s.club/_open" + `?dl=studyPage?date=${dayjsToStr(dayjs())}`;
 
       window.location.replace(openUrl);
     }, 1000);
