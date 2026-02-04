@@ -17,9 +17,7 @@ export default function ShareParticipationsStudyResult() {
     const today = getTodayStr();
     const uid = session.user.uid;
 
-    const fallbackUrl =
-      `https://about20s.club/_open` +
-      `?dl=study/participations/${dayjsToStr(dayjs())}?type=participations`;
+    const fallbackUrl = `https://about20s.club/_open` + `?dl=studyPage?date=${dayjsToStr(dayjs())}`;
 
     // ✅ 무조건 fallback은 예약해 둔다 (보장)
     const fallbackTimer = window.setTimeout(() => {
