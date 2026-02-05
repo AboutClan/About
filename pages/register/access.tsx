@@ -264,17 +264,12 @@ function Access() {
   return (
     <>
       <Script src={JQ_SRC} strategy="afterInteractive" />
-      <Header title="" func={handleBack}>
-        <Flex fontSize="10px" color="gray.500">
-          uid:
-          <Box w="55px">{session?.user.uid || "NULL"}</Box>
-        </Flex>
-      </Header>
+      <Header title="" func={handleBack} />
 
       <RegisterLayout>
         <RegisterOverview isNoTop>
           <span>최종 가입 안내</span>
-          <span>결제 완료 후, 바로 동아리 활동을 시작할 있습니다.</span>
+          <span>결제 완료 후, 바로 동아리 활동을 시작할 수 있어요!</span>
         </RegisterOverview>
 
         <TabNav
@@ -295,16 +290,18 @@ function Access() {
 
               <UnorderedList fontSize="12px" color="gray.600" mt="10px" ml={0}>
                 <ListItem textAlign="start">
-                  7일 이내 탈퇴 및 미이용 시, 가입비는 전액 환불됩니다.
+                  7일 이내 탈퇴 시, 이용 이력이 없으면 전액 환불! (포인트 제외)
+                  {/* 7일 이내 탈퇴 및
+                  미이용 시, 가입비는 전액 환불됩니다. (포인트 제외) */}
                 </ListItem>
-                <ListItem textAlign="start">
+                {/* <ListItem textAlign="start">
                   포인트는 서비스 이용 재화로 환불되지 않습니다.
-                </ListItem>
+                </ListItem> */}
               </UnorderedList>
 
               <Flex flexDir="column" mt={8}>
                 <Flex align="center" ml={0.5} fontSize="14px" mb={2} fontWeight="semibold">
-                  ✅ 가입 즉시
+                  ✅ 가입을 완료하면! ✅
                 </Flex>
 
                 <InfoList items={INFO_ARR2} />
@@ -369,9 +366,9 @@ function Access() {
 }
 
 const INFO_ARR2 = [
-  "10,000명 이상의 멤버가 활동중인 어바웃 멤버가 됩니다.",
-  "스터디·취미·친목 등 취향에 맞는 모임에 참여할 수 있습니다.",
-  "뉴비 멤버십이 적용되어 다양한 혜택을 받을 수 있습니다.",
+  "10,000명 이상의 멤버가 활동중인 어바웃 멤버가 돼요!",
+  "공부·취미·친목 등 수백 개의 모임에 참여할 수 있어요!",
+  "뉴비 멤버십이 적용되고, 다양한 혜택을 받을 수 있어요!",
 ];
 
 export default Access;
