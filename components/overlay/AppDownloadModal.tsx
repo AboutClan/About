@@ -7,10 +7,9 @@ import { getDeviceOS } from "../../utils/validationUtils";
 
 function AppDownloadModal({ onClose }: CloseProps) {
   const toast = useToast();
+  const os = getDeviceOS();
   const openStore = () => {
     if (typeof window === "undefined") return;
-
-    const os = getDeviceOS();
 
     if (os === "iOS") {
       window.location.href = "itms-apps://apps.apple.com/kr/app/id6737145787";
@@ -48,7 +47,7 @@ function AppDownloadModal({ onClose }: CloseProps) {
       boxShadow="0 -6px 20px rgba(0,0,0,0.08)"
       overflow="hidden"
       // ✅ iOS 하단 홈바/가림 대비 (CSS env 지원 브라우저에서만 적용)
-      pb="env(safe-area-inset-bottom)"
+      pb={os === "iOS" && "env(safe-area-inset-bottom)"}
     >
       {/* ✅ 배경 이미지 레이어: 클릭/터치 가림 방지 */}
       <Box
