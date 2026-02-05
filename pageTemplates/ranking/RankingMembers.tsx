@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import Avatar from "../../components/atoms/Avatar";
 import { RankingNumIcon } from "../../components/Icons/RankingIcons";
+import { StudyBadge } from "../../components/molecules/cards/ProfileCommentCard";
 import SocialingScoreBadge from "../../components/molecules/SocialingScoreBadge";
 import { RANKING_ANONYMOUS_USERS } from "../../constants/storage/anonymous";
 import { ModalLayout } from "../../modals/Modals";
@@ -83,7 +84,14 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
               </Box>
             </Flex>
             <Flex align="center">
-              {fieldName !== "temperature" ? (
+              {fieldName === "study" ? (
+                <Box mr={2}>
+                  <StudyBadge cnt={value as number} />
+                </Box>
+              ) : // <Box fontSize="14px" mt="2px" lineHeight="20px" mr={2} fontWeight="bold">
+              //   {value}점
+              // </Box>
+              fieldName !== "temperature" ? (
                 <Box fontSize="14px" mt="2px" lineHeight="20px" mr={2} fontWeight="bold">
                   {value}점
                 </Box>

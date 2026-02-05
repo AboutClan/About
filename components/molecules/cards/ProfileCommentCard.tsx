@@ -71,24 +71,12 @@ export default function ProfileCommentCard({
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
             {isStudy && (
-              <Flex
-                ml={1}
-                fontWeight={600}
-                fontSize="9px"
-                h="20px"
-                bg="red.50"
-                pl={1}
-                pr={1.5}
-                py="1px"
-                borderRadius="8px"
-                justify="center"
-                align="center"
-                color="gray.800"
-              >
-                🔥
-                {(user as IUser)?.studyRecord?.accumulationCnt +
-                  (user as IUser)?.studyRecord?.accumulationMinutes}
-              </Flex>
+              <StudyBadge
+                cnt={
+                  (user as IUser)?.studyRecord?.accumulationCnt +
+                  (user as IUser)?.studyRecord?.accumulationMinutes
+                }
+              />
             )}
             {crownType && (
               <Flex justify="center" align="center" ml={1}>
@@ -166,6 +154,26 @@ const CommentText = styled.span`
 const RightComponentContainer = styled.div`
   margin-left: auto;
 `;
+
+export function StudyBadge({ cnt }: { cnt: number }) {
+  return <Flex
+    ml={1}
+    fontWeight={600}
+    fontSize="9px"
+    h="20px"
+    bg="red.50"
+    pl={1}
+    pr={1.5}
+    py="1px"
+    borderRadius="8px"
+    justify="center"
+    align="center"
+    color="gray.800"
+  >
+    🔥
+    {cnt}
+  </Flex>
+}
 
 function EditIcon2() {
   return (

@@ -17,7 +17,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import RankingMembers from "../../pageTemplates/ranking/RankingMembers";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 
-export type RankingTab = "월간 활동 랭킹" | "누적 인기 랭킹" | "월간 스터디 랭킹";
+export type RankingTab = "월간 활동 랭킹" | "누적 인기 랭킹" | "스터디 랭킹";
 
 interface RankingProps {
   rank: number;
@@ -48,24 +48,24 @@ function Ranking() {
   const [users2, setUsers2] = useState<UserRankingProps[]>();
 
   const [tab, setTab] = useState<RankingTab>("월간 활동 랭킹");
-  const [medal, setMedal] = useState<MedalType>("골드");
+  const [medal, setMedal] = useState<MedalType>("브론즈");
 
   const { data: userInfo } = useUserInfoQuery();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const fieldName =
-    tab === "월간 스터디 랭킹" ? "study" : tab === "월간 활동 랭킹" ? "monthScore" : "temperature";
+    tab === "스터디 랭킹" ? "study" : tab === "월간 활동 랭킹" ? "monthScore" : "temperature";
 
   const { data: allUserData } = useAllUserDataQuery(fieldName, {
     enabled: !!fieldName,
   });
-
+  console.log(allUserData);
   useEffect(() => {
     if (tabParam) {
       setTab(
         tabParam === "study"
-          ? "월간 스터디 랭킹"
+          ? "스터디 랭킹"
           : tabParam === "monthScore"
           ? "월간 활동 랭킹"
           : "누적 인기 랭킹",
@@ -90,9 +90,9 @@ function Ranking() {
       const temp = [...users];
 
       return temp.sort((a, b) => {
-        if (tab === "월간 스터디 랭킹") {
-          const aSum = a.studyRecord.accumulationCnt * 3 + a.studyRecord.accumulationMinutes;
-          const bSum = b.studyRecord.accumulationCnt * 3 + b.studyRecord.accumulationMinutes;
+        if (tab === "스터디 랭킹") {
+          const aSum = a.studyRecord.accumulationCnt + a.studyRecord.accumulationMinutes;
+          const bSum = b.studyRecord.accumulationCnt + b.studyRecord.accumulationMinutes;
           return bSum - aSum; // 숫자가 클수록 앞에 오게
         } else if (tab === "월간 활동 랭킹") {
           return b.monthScore - a.monthScore;
@@ -110,8 +110,8 @@ function Ranking() {
     const rankedUsers: UserRankingProps[] = [...sortedData]
       .sort((a, b) => {
         if (fieldName === "study") {
-          const aSum = a.studyRecord.accumulationCnt * 3 + a.studyRecord.accumulationMinutes;
-          const bSum = b.studyRecord.accumulationCnt * 3 + b.studyRecord.accumulationMinutes;
+          const aSum = a.studyRecord.accumulationCnt + a.studyRecord.accumulationMinutes;
+          const bSum = b.studyRecord.accumulationCnt + b.studyRecord.accumulationMinutes;
 
           return bSum - aSum;
         }
@@ -121,7 +121,7 @@ function Ranking() {
       })
       .map((data) => {
         if (fieldName === "study") {
-          const sum = data.studyRecord.accumulationCnt * 3 + data.studyRecord.accumulationMinutes;
+          const sum = data.studyRecord.accumulationCnt + data.studyRecord.accumulationMinutes;
 
           if (!valueToRank.has(sum)) {
             valueToRank.set(sum, currentRank);
@@ -131,8 +131,7 @@ function Ranking() {
           return {
             user: { ...data },
             value: sum,
-            valueText:
-              data.studyRecord.accumulationCnt * 3 + data.studyRecord.accumulationMinutes + "",
+            valueText: data.studyRecord.accumulationCnt + data.studyRecord.accumulationMinutes + "",
             rank: valueToRank.get(sum)!,
           };
         }
@@ -170,9 +169,9 @@ function Ranking() {
       },
     },
     {
-      text: "월간 스터디 랭킹",
+      text: "스터디 랭킹",
       func: () => {
-        setTab("월간 스터디 랭킹");
+        setTab("스터디 랭킹");
         setSortedUsers(null);
       },
     },
@@ -352,14 +351,14 @@ function Ranking() {
           </Flex>
         ) : (
           <Flex h="52px" align="center" mx={5} color="gray.500" fontSize="12px">
-            ※ 점수 계산: 그룹 스터디 = 3점 / 개인 스터디 = 1점
+            ※ 카공 스터디와 개인 공부 인증을 합친 횟수입니다.
           </Flex>
         )}
         {isLoading ? (
           <Box pos="relative" mt="80px">
             <MainLoadingAbsolute size="sm" />
           </Box>
-        ) : tab === "월간 스터디 랭킹" ? (
+        ) : tab === "스터디 랭킹" ? (
           <Box>
             <RankingMembers users={sortedUsers} fieldName={fieldName} />
           </Box>
