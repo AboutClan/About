@@ -87,6 +87,7 @@ export const getCalendarDates = (
   selectedDate: Dayjs,
   passedDisabled?: boolean,
   mintDateArr?: string[],
+  selectedDates?: string[],
 ) => {
   const calendar: CalendarDateProps[] = [];
 
@@ -105,7 +106,7 @@ export const getCalendarDates = (
     const endOfMonth = selectedDate.endOf("month");
     const startCalendar = startOfMonth.weekday(0);
     const endCalendar = endOfMonth.weekday(6);
-
+    console.log(312, mintDateArr, passedDisabled);
     let current = startCalendar;
     while (current.isBefore(endCalendar) || current.isSame(endCalendar)) {
       if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {
@@ -121,7 +122,9 @@ export const getCalendarDates = (
           current.isBefore(cutoffDay, "day") || current.isSame(cutoffDay, "day");
         calendar.push({
           date: dayjsToStr(current),
-          isDisabled: dayjs().add(6, "day").isAfter(current)
+          isDisabled: selectedDates.includes(dayjsToStr(current))
+            ? false
+            : dayjs().add(6, "day").isAfter(current)
             ? passedDisabled
               ? isCutoffDisabled
               : false
