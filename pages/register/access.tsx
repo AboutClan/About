@@ -62,13 +62,17 @@ function Access() {
   const handledReturnRef = useRef(false);
 
   useEffect(() => {
+    if (!router.isReady) return;
     if (session === undefined) return;
 
-    if (!session?.user.uid) {
+    const status = first(router.query.status);
+    if (status) return;
+
+    if (!session?.user?.uid) {
       toast("error", "계정 확인을 위해 다시 로그인해주세요.");
       router.push("/login?status=access");
     }
-  }, [session, toast, router]);
+  }, [router.isReady, router.query.status, session, toast, router]);
 
   useEffect(() => {
     if (isApp()) {
@@ -80,6 +84,7 @@ function Access() {
   const { mutate: approve, isLoading } = useUserRegisterControlMutation("post", {
     onSuccess() {
       gaEvent("sign_up_complete");
+      router.replace("/register/access", undefined, { shallow: true });
       setTimeout(() => {
         toast("success", "가입이 완료되었습니다!");
         queryClient.resetQueries([USER_INFO]);
@@ -95,6 +100,7 @@ function Access() {
       setIsLoading2(false);
       // 재시도 가능
       approveOnceRef.current = false;
+      handledReturnRef.current = false; // 🔥 이거 추가
     },
   });
 
@@ -172,48 +178,45 @@ function Access() {
 
   // ✅ 결제 리턴 처리: 성공이면 approve, 실패면 toast만 (UI는 그대로 유지)
   useEffect(() => {
-    if (!router.isReady || session === undefined) return;
+    if (!router.isReady) return;
 
     const status = first(router.query.status);
     if (!status) return; // 결제 리턴 아님
 
+    if (!session?.user?.uid) return;
+
     if (handledReturnRef.current) return;
-    handledReturnRef.current = true;
-    setIsLoading2(false);
-    // query에서 reason/msg/orderNo는 토스트에만 사용
+
     const reason = first(router.query.reason);
-    const msg = safeDecode(first(router.query.msg));
-    console.log("msg", msg);
-    // 먼저 query 제거 (새로고침/뒤로가기 중복 토스트/approve 방지)
-    router.replace("/register/access", undefined, { shallow: true });
 
-    if (status === "success") {
-      if (!session?.user.uid) {
-        toast("error", "유저 정보를 확인할 수 없습니다.");
-        return;
-      }
-      if (approveOnceRef.current) return;
-      approveOnceRef.current = true;
+    if (status !== "success") {
+      handledReturnRef.current = true;
+      setIsLoading2(false);
+      const title =
+        reason === "RETURN_FAIL"
+          ? "결제가 완료되지 않았어요."
+          : reason === "PAYCERT_FAIL"
+          ? "승인 확인에 실패했어요."
+          : reason === "DECRYPT_FAIL"
+          ? "결제 확인에 실패했어요."
+          : reason === "MISSING_KEYS"
+          ? "결제 정보가 누락됐어요."
+          : reason === "SERVER_ERROR"
+          ? "일시적인 오류가 발생했어요."
+          : "결제가 실패했어요.";
 
-      approve(session.user.uid);
+      toast("error", title);
+
+      // ✅ 실패 케이스는 바로 query 제거(중복 토스트 방지)
+      router.replace("/register/access", undefined, { shallow: true });
       return;
     }
+    if (approveOnceRef.current) return;
+    approveOnceRef.current = true;
+    handledReturnRef.current = true;
+    setIsLoading2(false);
 
-    // ❌ 실패면 toast만
-    const title =
-      reason === "RETURN_FAIL"
-        ? "결제가 완료되지 않았어요."
-        : reason === "PAYCERT_FAIL"
-        ? "승인 확인에 실패했어요."
-        : reason === "DECRYPT_FAIL"
-        ? "결제 확인에 실패했어요."
-        : reason === "MISSING_KEYS"
-        ? "결제 정보가 누락됐어요."
-        : reason === "SERVER_ERROR"
-        ? "일시적인 오류가 발생했어요."
-        : "결제가 실패했어요.";
-
-    toast("error", title);
+    approve(session.user.uid);
   }, [router.isReady, session, router.query, session?.user?.uid, approve, toast, router]);
 
   const [ready, setReady] = useState(false);
