@@ -80,7 +80,7 @@ function SecretSquareComments({ author, comments, refetch, isSecret }: SecretSqu
       ...(Array.isArray(item.subComments) ? item.subComments.map((sub) => sub.user) : []),
     ])
     .forEach((user) => {
-      const userId = user as unknown as string;
+      const userId = user._id;
       if (!uniqueUsers[userId]) {
         if (userId === author) {
           uniqueUsers[userId] = -1;
@@ -90,7 +90,7 @@ function SecretSquareComments({ author, comments, refetch, isSecret }: SecretSqu
         }
       }
     });
-
+  console.log(24, commentArr);
   return (
     <>
       <Slide isNoPadding>
@@ -109,10 +109,10 @@ function SecretSquareComments({ author, comments, refetch, isSecret }: SecretSqu
                     : {
                         ...SECRET_USER_SUMMARY,
                         name:
-                          uniqueUsers[item.user as unknown as string] === -1
+                          uniqueUsers[item.user._id] === -1
                             ? "익명(글쓴이)"
-                            : `익명 ${uniqueUsers[item.user as unknown as string] || ""}`,
-                        _id: item.user as unknown as string,
+                            : `익명 ${uniqueUsers[item.user._id] || ""}`,
+                        _id: item.user._id,
                       },
                   subComments: (commentProps.subComments || []).map((sub) => ({
                     ...sub,
@@ -121,15 +121,15 @@ function SecretSquareComments({ author, comments, refetch, isSecret }: SecretSqu
                       : {
                           ...SECRET_USER_SUMMARY,
                           name:
-                            uniqueUsers[sub.user as unknown as string] === -1
+                            uniqueUsers[sub.user._id] === -1
                               ? "익명(글쓴이)"
-                              : `익명 ${uniqueUsers[sub.user as unknown as string] || ""}`,
-                          _id: sub.user as unknown as string,
+                              : `익명 ${uniqueUsers[sub.user._id] || ""}`,
+                          _id: sub.user._id,
                         },
                   })),
                 }}
                 setCommentArr={setCommentArr}
-                hasAuthority={(item.user as unknown as string) !== userInfo?._id}
+                hasAuthority={item.user._id !== userInfo?._id}
                 setReplyProps={setReplyProps}
               />
             );

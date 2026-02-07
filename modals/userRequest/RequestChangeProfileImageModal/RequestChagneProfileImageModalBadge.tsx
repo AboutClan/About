@@ -51,6 +51,9 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
       <Grid h="140px" overflow="auto" gridTemplateColumns="repeat(3,1fr)" gap={2} p={3}>
         {USER_BADGE_ARR.map((badge, idx) => {
           const hasBadge =
+            (badge === "열공러" &&
+              userInfo?.studyRecord?.accumulationMinutes + userInfo?.studyRecord?.accumulationCnt >
+                10) ||
             userInfo?.badge.badgeList.includes(badge) ||
             ["대학생", "휴학생", "졸업생"].includes(badge) ||
             (badge === "뉴비" && dayjs(userInfo?.registerDate).add(3, "month").isAfter(dayjs()));
