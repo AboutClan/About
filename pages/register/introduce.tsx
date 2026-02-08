@@ -28,7 +28,7 @@ function Comment() {
   const [text, setText] = useState(info?.introduceText || "");
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (text.length < 40) {
+    if (text.length < 30) {
       setErrorMessage("조금만 더 적어주세요!");
       e.preventDefault();
       return;
@@ -60,12 +60,12 @@ function Comment() {
           />
           <Flex ml="auto" mt={1} w="max-content" fontSize="12px" color="gray.500">
             <Box
-              color={text.length >= 90 ? "red" : text.length < 40 ? "gray.500" : "gray.800"}
+              color={text.length >= 90 ? "red" : text.length < 30 ? "gray.500" : "gray.800"}
               mr={1}
             >
               {text.length}
             </Box>{" "}
-            / {text.length >= 90 ? "최대 90자" : "최소 40자"}
+            / {text.length >= 90 ? "최대 90자" : "최소 30자"}
           </Flex>
           <Box
             fontSize="13px"
