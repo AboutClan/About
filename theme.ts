@@ -363,6 +363,7 @@ const theme = extendTheme({
           h: "42px",
           fontWeight: 700,
           fontSize: "12px",
+          borderRadius: "8px",
         },
         lg: {
           h: "48px",

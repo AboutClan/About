@@ -62,7 +62,7 @@ function GroupStudyTicketLogSection() {
                 toast("info", "2월 1일부터 구매 가능");
               }}
             >
-              <div>참여권 구매하기</div>
+              티켓 구매
             </Button>
           </Flex>
           <Box>

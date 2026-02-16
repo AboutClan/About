@@ -104,7 +104,7 @@ function PageTracker() {
           break;
 
         case "store":
-          if (prevSegments[0] === "home") {
+          if (prevSegments[0] === "home" || prevSegments[0] === "random-roulette") {
             setRightSlide();
             break;
           }

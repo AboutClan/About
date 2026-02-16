@@ -30,6 +30,7 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
     badgeIdx: number;
     badgeList: string[];
   };
+  randomTicket?: number;
   role: UserRole;
   rest: IRest;
   deposit: number;

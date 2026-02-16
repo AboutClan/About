@@ -6,7 +6,7 @@ import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import IconButton from "../atoms/buttons/IconButton";
 import InfoList from "../atoms/lists/InfoList";
 
-type InfoType = "study" | "gather" | "group" | "gatherRequest" | "ranking" | "map";
+type InfoType = "study" | "gather" | "group" | "gatherRequest" | "ranking" | "map" | "roullete";
 
 interface InfoModalButtonProps {
   type: InfoType;
@@ -87,7 +87,13 @@ export function InfoModal({ type, onClose }: InfoModalProps) {
 function InfoModalSubTitle({ type }: { type: InfoType }) {
   return (
     <Box mb={3}>
-      {type === "study" ? (
+      {type === "roullete" ? (
+        <>
+          뽑기권을 획득해 이벤트 룰렛을 돌려보세요!
+          <br />
+          여태 누적 100만원 이상의 혜택이 제공됐어요.
+        </>
+      ) : type === "study" ? (
         <>
           <b>동네 친구</b>와 함께하는 <b>카공 스터디 !</b>
           <br /> 공부도 하고, 기록도 쌓고, 상품도 받아가세요!
@@ -129,6 +135,14 @@ function InfoModalSubTitle({ type }: { type: InfoType }) {
 }
 
 const INFO_MODAL_CONTENTS: Record<InfoType, { title: string; items: string[] }> = {
+  roullete: {
+    title: "뽑기권 획득 방법",
+    items: [
+      "스터디 출석 시 일정 확률로 얻을 수 있어요.",
+      "소모임 활동을 통해 획득할 수 있어요.",
+      "소모임장이 직접 뽑기권을 줄 수도 있어요.",
+    ],
+  },
   ranking: {
     title: "랭킹 가이드",
     items: [
