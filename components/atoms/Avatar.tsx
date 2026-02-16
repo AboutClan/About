@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -55,10 +56,12 @@ function AvatarComponent({
   isSquare,
   isWhite,
 }: IAvatar) {
+  const router = useRouter();
+  const isPublic = router.query.isPublic === "true";
   const avatar = user?.avatar;
   const userId = user?._id;
   const profileImage = user?.profileImage;
-
+  console.log(5, isPublic);
   const image =
     typeof profileImage === "string"
       ? profileImage.startsWith("http://")
@@ -147,7 +150,7 @@ function AvatarComponent({
         </Box>
       ) : (
         <Link
-          href={`/profile/${userId}`}
+          href={!isPublic ? `/profile/${userId}` : `/profile/${userId}?isPublic=true`}
           style={{ outline: "none" }}
           onClickCapture={(e) => {
             // 부모로 클릭이 버블링되어 또 push/상태전환 되는 것을 차단
