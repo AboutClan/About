@@ -1,4 +1,5 @@
 import { Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
 import BlurredPart from "../../components/molecules/BlurredPart";
@@ -13,11 +14,17 @@ function DetailInfo({
   user: IUser;
   groups: { title: string; isMember: boolean }[];
 }) {
+  const router = useRouter();
+  const isPublic = router.query.isPublic === "true";
+
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
 
   const isPrivate =
-    user?.isPrivate && !user?.friend.includes(session?.user.uid) && user?.uid !== session?.user.uid;
+    !isPublic &&
+    user?.isPrivate &&
+    !user?.friend.includes(session?.user.uid) &&
+    user?.uid !== session?.user.uid;
 
   const age = birthToAge(user?.birth);
 
@@ -78,7 +85,7 @@ function DetailInfo({
             ]
           : []),
       ];
- 
+
   return (
     <BlurredPart isBlur={isGuest} text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}>
       <Flex flexDir="column" py={2}>

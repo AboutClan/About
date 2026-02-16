@@ -175,7 +175,7 @@ function ProfilePage() {
             <Divider type={200} />
           </Slide>
           <Slide>
-            <DetailInfo user={user as IUser} groups={data} />
+            <DetailInfo user={user as IUser} groups={data}  />
           </Slide>
           <Slide isNoPadding>
             <Divider type={200} />

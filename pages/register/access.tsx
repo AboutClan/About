@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
+import { Box, Button, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import Script from "next/script";
 import { useSession } from "next-auth/react";
@@ -267,7 +267,19 @@ function Access() {
   return (
     <>
       <Script src={JQ_SRC} strategy="afterInteractive" />
-      <Header title="" func={handleBack} />
+      <Header title="" func={handleBack}>
+        <Button
+          p={1}
+          color="gray.500"
+          fontWeight={600}
+          variant="unstyled"
+          onClick={() => {
+            navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
+          }}
+        >
+          문의하기
+        </Button>
+      </Header>
 
       <RegisterLayout>
         <RegisterOverview isNoTop>
