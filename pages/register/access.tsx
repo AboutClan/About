@@ -76,10 +76,10 @@ function Access() {
 
   useEffect(() => {
     if (isWebView()) {
-      toast("info", "결제를 위해 웹사이트로 전환합니다.");
+      toast("info", "원활한 가입 기능 동작을 위해 웹사이트로 전환합니다.");
       setTimeout(() => {
         navigateExternalLink("https://study-about.club/register/access");
-      }, 1000);
+      }, 2000);
     }
   }, []);
 
