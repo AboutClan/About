@@ -77,7 +77,9 @@ function Access() {
   useEffect(() => {
     if (isWebView()) {
       toast("info", "결제를 위해 웹사이트로 전환합니다.");
-      navigateExternalLink("https://study-about.club/register/access");
+      setTimeout(() => {
+        navigateExternalLink("https://study-about.club/register/access");
+      }, 1000);
     }
   }, []);
 
