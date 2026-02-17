@@ -27,6 +27,18 @@ export const useUserChangeMembershipMutation = (
       }),
     options,
   );
+export const useUserRandomTicketMutation = (
+  options?: MutationOptions<{ userId: string; number: number }>,
+) =>
+  useMutation<void, AxiosError, { userId: string; number: number }>(
+    (param) =>
+      requestServer<{ userId: string; number: number }>({
+        method: "post",
+        url: `user/randomTicket`,
+        body: param,
+      }),
+    options,
+  );
 export const useUserRegisterMutation = (options?: MutationOptions<IUserRegisterFormWriting>) =>
   useMutation<void, AxiosError, IUserRegisterFormWriting>(
     (param) =>

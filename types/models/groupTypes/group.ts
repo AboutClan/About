@@ -11,6 +11,7 @@ export interface IGroup extends IGroupWriting {
   comments: UserCommentProps[];
   notionUrl?: string;
   requiredTicket: number;
+  randomTicket: number;
 }
 
 export type GroupMemberRole = "member" | "manager" | "admin" | "regularMember";

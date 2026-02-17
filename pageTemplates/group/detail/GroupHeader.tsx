@@ -27,14 +27,7 @@ import { IFooterOptions, ModalLayout } from "../../../modals/Modals";
 import { calculateGrade } from "../../../pages/group/[id]/manner";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { setLocalStorageObj } from "../../../utils/storageUtils";
-import {
-  CheckCircleIcon,
-  EditIcon,
-  MemberActivity,
-  MemberCheckIcon,
-  MemberHeartIcon,
-  MemberMinusIcon,
-} from "../../gather/detail/GatherHeader";
+import { AdminManageIcon, EditIcon, MemberHeartIcon } from "../../gather/detail/GatherHeader";
 import RegisterOverview from "../../register/RegisterOverview";
 interface IGroupHeader {
   group: IGroup;
@@ -122,40 +115,40 @@ function GroupHeader({ group }: IGroupHeader) {
                 },
               },
               {
-                text: "신청 인원 확인",
-                icon: <MemberCheckIcon />,
+                text: "관리자 페이지",
+                icon: <AdminManageIcon />,
                 func: () => {
                   router.push(`/group/${group.id}/admin`);
                 },
               },
-              {
-                text: "참여 인원 관리",
-                icon: <MemberMinusIcon />,
-                func: () => {
-                  router.push(`/group/${group.id}/member`);
-                },
-              },
-              {
-                text: "멤버 후기 지표",
-                icon: <MemberHeartIcon />,
-                func: () => {
-                  router.push(`/group/${group.id}/manner`);
-                },
-              },
-              {
-                text: "멤버 활동 지표",
-                icon: <MemberActivity />,
-                func: () => {
-                  router.push(`/group/${group.id}/activity`);
-                },
-              },
-              {
-                text: "월간 출석체크",
-                icon: <CheckCircleIcon />,
-                func: () => {
-                  router.push(`/group/${group.id}/month`);
-                },
-              },
+              // {
+              //   text: "멤버 활동 요약",
+              //   icon: <MemberHeartIcon />,
+              //   func: () => {
+              //     router.push(`/group/${group.id}/member`);
+              //   },
+              // },
+              // {
+              //   text: "멤버 후기 지표",
+              //   icon: <MemberHeartIcon />,
+              //   func: () => {
+              //     router.push(`/group/${group.id}/manner`);
+              //   },
+              // },
+              // {
+              //   text: "멤버 활동 요약",
+              //   icon: <MemberActivity />,
+              //   func: () => {
+              //     router.push(`/group/${group.id}/activity`);
+              //   },
+              // },
+              // {
+              //   text: "월간 출석체크",
+              //   icon: <CheckCircleIcon />,
+              //   func: () => {
+              //     router.push(`/group/${group.id}/month`);
+              //   },
+              // },
             ]
           : []),
         {
@@ -203,7 +196,7 @@ function GroupHeader({ group }: IGroupHeader) {
 
   return (
     <>
-      <Header title="모임 정보" url="/group">
+      <Header title="소모임 정보" url="/group">
         <MenuButton menuArr={menuArr} />
       </Header>
       {isSettigModal && (

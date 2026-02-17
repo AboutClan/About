@@ -91,6 +91,7 @@ export default function Member() {
     <>
       <Header title="멤버 관리" />
       <Slide>
+        
         <Box>
           <Box p="12px 0" fontSize="16px" fontWeight={800}>
             정규 멤버

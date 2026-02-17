@@ -49,17 +49,16 @@ interface IExileUserParam extends ParamProps {
   id: number;
 }
 interface ParamProps {
-  toUid: string;
-  randomId?: number;
+  userId: string;
 }
 
 export const useGroupExileUserMutation = (id: number, options?: MutationOptions<ParamProps>) =>
   useMutation<void, AxiosError, ParamProps>(
-    ({ toUid, randomId }) =>
+    ({ userId }) =>
       requestServer<IExileUserParam>({
         method: "delete",
         url: "groupStudy/participate/exile",
-        body: { id, toUid, randomId },
+        body: { id, userId },
       }),
     options,
   );
@@ -114,6 +113,18 @@ export const useGroupMemberRoleMutation = (
         body: {
           groupId,
           ...params,
+        },
+      }),
+    options,
+  );
+export const useGroupRandomTicketMutation = (groupId: string, options?: MutationOptions<void>) =>
+  useMutation<void, AxiosError, void>(
+    () =>
+      requestServer<{ id: string }>({
+        method: "post",
+        url: "groupStudy/randomTicket",
+        body: {
+          id: groupId,
         },
       }),
     options,

@@ -385,6 +385,7 @@ export default function TicketWheelRoulette() {
               variant="ghost"
               borderRadius="xl"
               rightIcon={isProbOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+              color="gray.600"
             >
               당첨 확률 확인
             </Button>
