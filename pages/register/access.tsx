@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Box, Button, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Script from "next/script";
-import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -22,8 +22,8 @@ import { gaEvent } from "../../libs/gtag";
 import { ModalLayout } from "../../modals/Modals";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
+import { isWebView } from "../../utils/appEnvUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { isApp } from "../../utils/validationUtils";
 import { VALUE_BOX_COL_ITEMS } from "./fee";
 
 const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
@@ -75,7 +75,7 @@ function Access() {
   }, [router.isReady, router.query.status, session, toast, router]);
 
   useEffect(() => {
-    if (isApp()) {
+    if (isWebView()) {
       toast("info", "결제를 위해 웹사이트로 전환합니다.");
       navigateExternalLink("https://study-about.club/register/access");
     }
