@@ -247,7 +247,7 @@ export default function TicketWheelRoulette() {
             <Box py={4} mx={2}>
               <Box fontSize="11px">{userInfo?.name}님의 보유 뽑기권</Box>
               <Box fontSize="20px" fontWeight="semibold">
-                {userInfo?.randomTicket} 장
+                {ticketCount} 장
               </Box>
             </Box>
             <Button
