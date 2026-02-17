@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -58,7 +58,7 @@ export default function Member() {
       if (!deleteUser.user) {
         toast("info", "외부인은 모두 제거됩니다. 인원에 맞게 다시 추가해주세요!");
       }
-      await mutate({ toUid: deleteUser?.user?._id, randomId: deleteUser?.randomId });
+      await mutate({ userId: deleteUser?.user?._id });
       // setUsers((old) => ({
       //   ...old,
       //   participants: old.participants.filter((par) =>
@@ -91,7 +91,6 @@ export default function Member() {
     <>
       <Header title="멤버 관리" />
       <Slide>
-        
         <Box>
           <Box p="12px 0" fontSize="16px" fontWeight={800}>
             정규 멤버
