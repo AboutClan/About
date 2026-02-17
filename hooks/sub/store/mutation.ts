@@ -12,3 +12,12 @@ export const useStoreMutation = (options?: MutationOptions<{ storeId: string; cn
       body: params,
     });
   }, options);
+
+export const usePrizeMutation = (options?: MutationOptions<{ userId: string; gift: string }>) =>
+  useMutation<void, AxiosError, { userId: string; gift: string }>(async (params) => {
+    return requestServer<{ userId: string; gift: string }>({
+      method: "post",
+      url: `prize/randomRoulette`,
+      body: params,
+    });
+  }, options);

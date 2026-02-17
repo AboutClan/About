@@ -57,9 +57,12 @@ function Ranking() {
   const fieldName =
     tab === "스터디 랭킹" ? "study" : tab === "월간 활동 랭킹" ? "monthScore" : "temperature";
 
-  const { data: allUserData } = useAllUserDataQuery(fieldName, {
+  const { data: allUserData2 } = useAllUserDataQuery(fieldName, {
     enabled: !!fieldName,
   });
+  const allUserData = allUserData2?.filter(
+    (user) => user?.uid !== "2259633694" && user?.uid !== "4531549696",
+  );
   console.log(allUserData);
   useEffect(() => {
     if (tabParam) {
