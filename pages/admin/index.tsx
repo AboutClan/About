@@ -47,6 +47,7 @@ function Admin() {
               <div>
                 <BlockName>유저 응답</BlockName>
                 <NavBlock>
+                  <button onClick={() => router.push(`/test`)}>테스트</button>
                   <button onClick={() => onClick(`register`)}>가입신청 확인</button>
                   <button onClick={() => onClick(`subsidy`)}>지원금 신청 확인</button>
                   <button onClick={() => onClick(`badge`, false)}>유저에게 배지 부여</button>

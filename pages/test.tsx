@@ -1,44 +1,32 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button } from "@chakra-ui/react";
+import { useEffect } from "react";
 
-import { useEffect, useMemo, useState } from "react";
+import { useToast } from "../hooks/custom/CustomToast";
+import { isWebView } from "../utils/appEnvUtils";
+import { navigateExternalLink } from "../utils/navigateUtils";
 
-declare const cookiepayments: {
-  init: (args: { api_id: string }) => void;
-  payrequest: (args: Record<string, any>) => void;
-};
-
-export default function CookiePayTest() {
-  const [ready, setReady] = useState(false);
-  const orderNo = useMemo(() => `ORD-${Date.now()}-${Math.random().toString(16).slice(2)}`, []);
-
+function Test() {
+  const toast = useToast();
   useEffect(() => {
-    if (typeof cookiepayments === "undefined") return;
-
-    const apiId = process.env.NEXT_PUBLIC_COOKIEPAY_API_ID;
-    console.log("cookiepay apiId exists:", apiId);
-
-    cookiepayments.init({ api_id: apiId as string });
-    setReady(true);
+    if (isWebView()) {
+      toast("info", "원활한 가입 기능 동작을 위해 웹사이트로 전환합니다.");
+      setTimeout(() => {
+        navigateExternalLink("https://study-about.club/register/access");
+      }, 2000);
+    }
   }, []);
   return (
-    <div style={{ padding: 24 }}>
-      <p>ready: {String(ready)}</p>
-      <button
-        disabled={!ready}
+    <>
+      <Button
         onClick={() => {
-          cookiepayments.payrequest({
-            ORDERNO: orderNo,
-            PRODUCTNAME: "어바웃 결제 테스트",
-            AMOUNT: "1000",
-            BUYERNAME: "테스터",
-            PAYMETHOD: "CARD",
-            RETURNURL: "https://study-about.club/api/cookiepay/return",
-          });
+          toast("success", "성공");
+          navigateExternalLink("https://study-about.club/register/access");
         }}
       >
-        결제하기
-      </button>
-    </div>
+        테스트
+      </Button>
+    </>
   );
 }
+
+export default Test;
