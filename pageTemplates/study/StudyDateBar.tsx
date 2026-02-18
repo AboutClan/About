@@ -295,7 +295,6 @@ function InviteDrawer({
           <InviteUserGroups
             users={users}
             inviteUser={(who) => {
-              console.log(3, who, PLACE_MAPPING[placeName]);
               handleClick(who, PLACE_MAPPING[placeName]);
               setUsers((old) => old.filter((old) => old.uid !== who.uid));
             }}

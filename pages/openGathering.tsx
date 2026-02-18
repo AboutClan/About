@@ -8,7 +8,6 @@ function OpenGathering() {
   const { data: allUserData } = useAllUserDataQuery(null, {
     enabled: true,
   });
-  console.log(1, allUserData);
 
   const arr = [
     "68739f5babe1521d350ad30e",

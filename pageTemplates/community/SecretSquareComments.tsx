@@ -90,7 +90,7 @@ function SecretSquareComments({ author, comments, refetch, isSecret }: SecretSqu
         }
       }
     });
-  console.log(24, commentArr);
+
   return (
     <>
       <Slide isNoPadding>

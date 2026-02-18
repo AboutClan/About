@@ -59,7 +59,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
   const studyRecord = JSON.parse(studyRecordStr);
 
   const { data: membershipLog, isLoading: isLoading2 } = useUserMembershipLogQuery();
-  console.log(membershipLog);
+
   useEffect(() => {
     if (data === undefined || !session) return;
     // if (

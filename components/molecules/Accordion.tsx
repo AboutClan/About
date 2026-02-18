@@ -29,7 +29,7 @@ function Accordion({ contentArr, isFull, isQ = true, defaultIndex }: IAccordion)
   const handleAccordionChange = (index: number | null) => {
     setSelectedIndex(index);
   };
-  console.log(2, selectedIndex);
+ 
   return (
     <ChakraAccordion
       allowToggle

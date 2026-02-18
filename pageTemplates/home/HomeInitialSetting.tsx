@@ -192,9 +192,9 @@ function HomeInitialSetting() {
     if (typeof window === "undefined") return;
 
     const dismissed = sessionStorage.getItem("dismiss_app_download_modal") === "1";
-    console.log(32, dismissed);
+   
     if (dismissed) return;
-    console.log(43);
+   
     setIsWeb(isMobileWeb());
   }, []);
 

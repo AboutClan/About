@@ -210,7 +210,6 @@ export default function TicketWheelRoulette() {
     setIsWinModal(true);
 
     setSpinning(false);
-    console.log({ pickedIndex, actualIdx, signed, offset: OFFSET_REF.current, rot });
   };
 
   const [textArr, setTextArr] = useState<

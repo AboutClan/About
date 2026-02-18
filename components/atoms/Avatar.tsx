@@ -61,7 +61,7 @@ function AvatarComponent({
   const avatar = user?.avatar;
   const userId = user?._id;
   const profileImage = user?.profileImage;
-  console.log(5, isPublic);
+ 
   const image =
     typeof profileImage === "string"
       ? profileImage.startsWith("http://")

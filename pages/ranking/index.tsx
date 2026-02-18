@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Avatar from "../../components/atoms/Avatar";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
@@ -60,10 +60,14 @@ function Ranking() {
   const { data: allUserData2 } = useAllUserDataQuery(fieldName, {
     enabled: !!fieldName,
   });
-  const allUserData = allUserData2?.filter(
-    (user) => user?.uid !== "2259633694" && user?.uid !== "4531549696",
+
+  const allUserData = useMemo(
+    () =>
+      allUserData2?.filter((user) => user?.uid !== "2259633694" && user?.uid !== "4531549696") ??
+      [],
+    [allUserData2],
   );
-  console.log(allUserData);
+
   useEffect(() => {
     if (tabParam) {
       setTab(
@@ -85,9 +89,9 @@ function Ranking() {
     }, 200);
     return () => clearTimeout(timeout);
   }, [tab]);
-
+  console.log(7);
   useEffect(() => {
-    if (!allUserData || !session) return;
+    if (!allUserData?.length || !session) return;
 
     const sortUserByTab = (users: UserStudyDataProps[], tab: RankingTab) => {
       const temp = [...users];

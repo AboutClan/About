@@ -82,7 +82,7 @@ function GroupHeader({ group }: IGroupHeader) {
   };
 
   const { data } = useGroupIdMannerQuery(group?.id + "", "private", { enabled: !!group?.id });
-  console.log(data);
+
   const myGrade = data?.[userInfo?.uid];
 
   const { total } = calculateGrade(myGrade);
@@ -345,7 +345,7 @@ export function MannerModal({ id, onClose }: { id: number; onClose: () => void }
   const userInfo = useUserInfo();
 
   const { data } = useGroupIdMannerQuery(id + "", "private", { enabled: !!id });
-  console.log(32, data);
+
   const myGrade = data?.[userInfo?.uid];
 
   const { total, value } = calculateGrade(myGrade);

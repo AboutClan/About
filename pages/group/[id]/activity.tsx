@@ -44,8 +44,6 @@ export default function Member() {
     setUsers(groupMembers);
   }, [data, groupData]);
 
-  console.log(data);
-
   return (
     <>
       <Header title="모임 참여 횟수" />

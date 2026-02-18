@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -6,12 +6,12 @@ import styled from "styled-components";
 
 import { AboutIcon } from "../../components/atoms/AboutIcons";
 import Avatar from "../../components/atoms/Avatar";
-import UserBadge from "../../components/atoms/badges/UserBadge";
 import IconButton from "../../components/atoms/buttons/IconButton";
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
+import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { useAlphabetCompletedMutation } from "../../hooks/user/sub/collection/mutations";
 import {
@@ -33,11 +33,35 @@ function CollectionAlphabet() {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const { data: alphabets } = useCollectionAlphabetQuery();
+  const { mutate } = usePointSystemMutation("point");
+
+  const { data: alphabets, refetch, isLoading: isLoading1 } = useCollectionAlphabetQuery();
+  const {
+    data: userAlphabetAll,
+    isLoading: isLoading2,
+    refetch: refetch2,
+  } = useCollectionAlphabetAllQuery();
+  const isLoading = isLoading1 || isLoading2;
 
   const { mutate: mutate2, isLoading: completeLoading } = useAlphabetCompletedMutation({
     onSuccess() {
-      toast("success", "교환이 완료되었어요! 상품은 확인하는대로 보내드려요!");
+      const COUNT_MAPPING = {
+        0: 2000,
+        1: 2500,
+        2: 3000,
+      };
+      if (alphabets.collectCnt <= 2) {
+        mutate({
+          value: COUNT_MAPPING[alphabets.collectCnt],
+          message: "알파벳 교환 보상",
+          sub: "alphabet",
+        });
+        toast("success", "교환에 성공했습니다! 포인트가 적립되었어요!");
+      } else {
+        toast("success", "교환이 완료되었어요! 상품은 확인하는대로 보내드릴게요!");
+      }
+      refetch();
+      refetch2();
     },
     /* eslint-disable @typescript-eslint/no-explicit-any */
     onError(err: AxiosError<{ message: string }, any>) {
@@ -47,7 +71,6 @@ function CollectionAlphabet() {
       }
     },
   });
-  const { data: userAlphabetAll, isLoading } = useCollectionAlphabetAllQuery();
 
   const [isModal, setIsModal] = useState(false);
   const [members, setMembers] = useState<ICollectionAlphabet[]>();
@@ -152,22 +175,50 @@ function CollectionAlphabet() {
                 });
                 return (
                   <Item key={user.uid}>
-                    <ProfileWrapper>
+                    <Flex flexDir="column" alignItems="center">
                       <Avatar size="md1" user={user} />{" "}
-                    </ProfileWrapper>
+                      <Box mt={2} fontSize="12px">
+                        {user.name}
+                      </Box>
+                    </Flex>
                     <Info>
-                      <Name>
+                      {/* <Name>
                         <Box as="span" mr={1}>
                           {user.name}
                         </Box>
                         <UserBadge badgeIdx={user?.badge?.badgeIdx} />
-                      </Name>
+                      </Name> */}
                       <AlphabetContainer>
-                        <AboutIcon alphabet="A" isActive={alphabets?.includes("A")} size="sm" />
-                        <AboutIcon alphabet="B" isActive={alphabets?.includes("B")} size="sm" />
-                        <AboutIcon alphabet="O" isActive={alphabets?.includes("O")} size="sm" />
-                        <AboutIcon alphabet="U" isActive={alphabets?.includes("U")} size="sm" />
-                        <AboutIcon alphabet="T" isActive={alphabets?.includes("T")} size="sm" />
+                        <AboutIcon
+                          alphabet="A"
+                          isActive={alphabets?.includes("A")}
+                          size="sm"
+                          cnt={alphabets.filter((a) => a === "A").length}
+                        />
+                        <AboutIcon
+                          alphabet="B"
+                          isActive={alphabets?.includes("B")}
+                          size="sm"
+                          cnt={alphabets.filter((a) => a === "B").length}
+                        />
+                        <AboutIcon
+                          alphabet="O"
+                          isActive={alphabets?.includes("O")}
+                          size="sm"
+                          cnt={alphabets.filter((a) => a === "O").length}
+                        />
+                        <AboutIcon
+                          alphabet="U"
+                          isActive={alphabets?.includes("U")}
+                          size="sm"
+                          cnt={alphabets.filter((a) => a === "U").length}
+                        />
+                        <AboutIcon
+                          alphabet="T"
+                          isActive={alphabets?.includes("T")}
+                          size="sm"
+                          cnt={alphabets.filter((a) => a === "T").length}
+                        />
                       </AlphabetContainer>
                     </Info>
 
@@ -248,7 +299,6 @@ const Item = styled.div`
   align-items: center;
   border-bottom: var(--border-main);
 `;
-const ProfileWrapper = styled.div``;
 
 const Info = styled.div`
   height: 100%;
@@ -258,13 +308,6 @@ const Info = styled.div`
   flex-direction: column;
 
   justify-content: space-between;
-`;
-const Name = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-  font-size: 13px;
-  margin-bottom: var(--gap-1);
 `;
 
 export default CollectionAlphabet;

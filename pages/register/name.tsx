@@ -16,7 +16,7 @@ function Name() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { data } = useUserKakaoInfoQuery();
-  console.log(data);
+
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState<string>(info?.name ?? "");
 

@@ -170,7 +170,7 @@ export function AlphabetChangeGuideModal({ setIsModal }: IModal) {
       <InfoBoxCol
         infoBoxPropsArr={[
           { category: "1회차 상품 교환", text: "2,000 Point" },
-          { category: "2회차 상품 교환", text: "커피 기프티콘" },
+          { category: "2회차 상품 교환", text: "2,500 Point" },
           { category: "3회차 상품 교환", text: "3,000 Point" },
           { category: "4회차 상품 교환", text: "올리브영 5,000원권" },
           { category: "5회차 상품 교환", text: "배달의 민족 10,000원권" },
