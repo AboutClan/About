@@ -92,13 +92,14 @@ function Layout({ children }: ILayout) {
     // 이미 시도했으면 다시 시도하지 않음
     if (guestSignInTriedRef.current) return;
     guestSignInTriedRef.current = true;
+
     if (
       PUBLIC_SEGMENT.includes(segment) ||
       pathname === "/user/info/policy" ||
       pathname === "/user/info/privacy" ||
       pathname === "/faq"
     ) {
-      signIn("kakao", { redirect: false });
+      // signIn("kakao", { redirect: false });
       return;
     }
 

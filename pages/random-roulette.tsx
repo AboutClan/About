@@ -19,7 +19,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { isValidMotionProp, motion, useAnimation, useReducedMotion } from "framer-motion";
-import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import Header from "../components/layouts/Header";
@@ -78,7 +77,7 @@ function pct(n: number) {
 }
 
 export default function TicketWheelRoulette() {
-  const router = useRouter();
+  // const router = useRouter();
   const toast = useToast();
   const reduceMotion = useReducedMotion();
   const wheelControls = useAnimation();
@@ -253,10 +252,13 @@ export default function TicketWheelRoulette() {
               colorScheme="mint"
               size="md"
               onClick={() => {
-                router.push("/store");
+                toast(
+                  "info",
+                  "받을 수 있는 뽑기권이 없습니다. 어바웃 활동을 통해 티켓을 받을 수 있어요!",
+                );
               }}
             >
-              스토어로 이동
+              뽑기권 받기
             </Button>
           </Flex>
           <Box mb={8} w="full">
