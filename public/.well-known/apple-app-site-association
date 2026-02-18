@@ -4,8 +4,14 @@
     "details": [
       {
         "appID": "38Y2U9AM86.com.about.studyaboutapp",
-        "paths": [
-          "*"
+        "components": [
+          {
+            "/": "/register/access",
+            "exclude": true
+          },
+          {
+            "/": "*"
+          }
         ]
       }
     ]
