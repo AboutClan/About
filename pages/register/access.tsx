@@ -3,7 +3,7 @@
 import { Box, Button, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import Script from "next/script";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -69,19 +69,14 @@ function Access() {
     if (status) return;
 
     if (!session?.user?.uid) {
-      toast("error", "계정 확인을 위해 다시 로그인해주세요.");
-      router.push("/login?status=access");
+      toast("error", "안전한 정보 확인을 위해 다시 한번만 로그인해주세요!");
+      setTimeout(() => {
+        signIn("kakao", {
+          callbackUrl: `${window.location.origin}/register/access`,
+        });
+      }, 1000);
     }
   }, [router.isReady, router.query.status, session, toast, router]);
-
-  useEffect(() => {
-    if (isWebView()) {
-      toast("info", "원활한 가입 기능 동작을 위해 웹사이트로 전환합니다.");
-      setTimeout(() => {
-        navigateExternalLink("https://study-about.club/register/access");
-      }, 2000);
-    }
-  }, []);
 
   const { mutate: approve, isLoading } = useUserRegisterControlMutation("post", {
     onSuccess() {
@@ -237,6 +232,12 @@ function Access() {
   const makeOrderNo = () => `ORD-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
   const onClickNext = () => {
+    if (isWebView()) {
+      toast("info", "원활한 가입 완료를 위해 웹사이트로 전환합니다.");
+      navigateExternalLink("https://study-about.club/register/access");
+      return;
+    }
+
     if (!session?.user.uid) {
       toast("error", "계정 확인을 위해 다시 로그인해주세요.");
       router.push("/login?status=access");
