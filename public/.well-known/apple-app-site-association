@@ -6,11 +6,19 @@
         "appID": "38Y2U9AM86.com.about.studyaboutapp",
         "components": [
           {
-            "/": "/register/access",
+            "/": "/api/*",
             "exclude": true
           },
           {
-            "/": "/api/auth/*",
+            "/": "/register/*",
+            "exclude": true
+          },
+          {
+            "/": "/login*",
+            "exclude": true
+          },
+          {
+            "/": "/auth*",
             "exclude": true
           },
           {
