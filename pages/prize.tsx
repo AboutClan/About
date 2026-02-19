@@ -19,7 +19,7 @@ function Prize() {
   const [cards, setCards] = useState([]);
 
   const { data, isLoading } = usePrizeQuery(cursor, null);
-
+  console.log(data);
   useEffect(() => {
     if (data && firstLoad.current) firstLoad.current = false;
     if (data) {
@@ -80,7 +80,7 @@ function Prize() {
                           ? "월간 랭킹 상품"
                           : log.category === "store"
                           ? "스토어 당첨 선물"
-                          : ""
+                          : "스토어 당첨 선물"
                       }
                       leftChildren={
                         <HomeIcon
@@ -90,7 +90,7 @@ function Prize() {
                               ? StoreIconImage
                               : log.category === "ranking"
                               ? RankingIconImage
-                              : null
+                              : StoreIconImage
                           }
                           bgColor={
                             log.category === "store"
@@ -124,7 +124,7 @@ function Prize() {
                         ? "월간 랭킹 상품"
                         : log.category === "store"
                         ? "스토어 당첨 선물"
-                        : ""
+                        : "스토어 당첨 선물"
                     }
                     rightChildren={
                       <Flex flexDir="column" align="center">
@@ -143,7 +143,7 @@ function Prize() {
                             ? StoreIconImage
                             : log.category === "ranking"
                             ? RankingIconImage
-                            : null
+                            : StoreIconImage
                         }
                         bgColor={
                           log.category === "store"
