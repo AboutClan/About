@@ -44,6 +44,7 @@ export default function Header({
           fontSize="16px"
           textAlign="center"
           whiteSpace="nowrap"
+          transform="translateY(px)"
         >
           {title}
         </Box>

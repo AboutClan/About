@@ -43,7 +43,7 @@ export function HomeIcon({ title, image, bgColor }: HomeIconProps) {
           src={image}
           width={36}
           height={36}
-          alt={title}
+          alt={title + image}
           priority
           style={{ width: "36px", height: "36px", objectFit: "contain" }}
         />
