@@ -71,7 +71,6 @@ function DigitColumn({ digit, delay = 0 }: { digit: number; delay?: number }) {
               color="white"
               lineHeight="1"
               userSelect="none"
-              transform="translateY(4px)"
             >
               {n}
             </Text>
