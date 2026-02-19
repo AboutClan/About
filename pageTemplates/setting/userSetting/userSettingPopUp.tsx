@@ -11,7 +11,6 @@ import PointLowModal from "../../../components/overlay/PointLowModal";
 import SelfIntroduceModal from "../../../components/overlay/SelfIntroduceModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
-  FAQ_MODAL_AT,
   GATHER_REVIEW_MODAL_ID,
   MEMBERSHIP_AT,
   POINT_RECEIVE_AT,
@@ -97,10 +96,10 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
     //   setPopUpType((old) => [...old, "monthlyScore"]);
     //   return;
     // }
-    if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 30)) {
-      setPopUpType((old) => [...old, "faq"]);
-      return;
-    }
+    // if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 30)) {
+    //   setPopUpType((old) => [...old, "faq"]);
+    //   return;
+    // }
   }, [data, session, user, isLoading2]);
 
   const filterPopUpType = (type: PopUpType) => {
