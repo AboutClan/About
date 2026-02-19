@@ -29,13 +29,21 @@ function Accordion({ contentArr, isFull, isQ = true, defaultIndex }: IAccordion)
   const handleAccordionChange = (index: number | null) => {
     setSelectedIndex(index);
   };
- 
+
   return (
     <ChakraAccordion
       allowToggle
       fontSize="13px"
       index={selectedIndex}
       onChange={(index) => handleAccordionChange(index as number | null)}
+      sx={{
+        "& .chakra-accordion__item": {
+          borderBottomWidth: "0px",
+        },
+        "& .chakra-accordion__item:last-of-type": {
+          borderBottomWidth: "0px",
+        },
+      }}
     >
       {contentArr?.map((item, idx) => {
         const content = item.content;
@@ -46,7 +54,7 @@ function Accordion({ contentArr, isFull, isQ = true, defaultIndex }: IAccordion)
             lineHeight="20px"
             key={idx}
             borderTop="none"
-            borderBottom="var(--border)"
+            borderBottom={idx === contentArr.length - 1 ? null : "var(--border) !important"}
           >
             <AccordionButton
               _focus={{ outline: "none", bg: "none", boxShadow: "none" }}

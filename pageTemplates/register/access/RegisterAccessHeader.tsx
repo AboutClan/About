@@ -5,9 +5,7 @@ import { useState } from "react";
 import Header from "../../../components/layouts/Header";
 import { ModalLayout } from "../../../modals/Modals";
 
-interface RegisterAccessHeaderProps {}
-
-function RegisterAccessHeader({}: RegisterAccessHeaderProps) {
+function RegisterAccessHeader() {
   const router = useRouter();
   const [isBackModal, setIsBackModal] = useState(false);
   const handleBack = () => {

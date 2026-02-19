@@ -91,20 +91,10 @@ function DigitColumn({ digit, delay = 0 }: { digit: number; delay?: number }) {
 }
 
 export default function RegisterGatherCount() {
-  // ✅ 고정 숫자: 1 2 7 (3개)
-  const digits = [1, 2, 7];
+  const digits = [0, 9, 3];
 
   return (
-    <Flex
-      flexDir="column"
-      align="center"
-      bg="gray.800"
-      pt={4}
-      pb={5}
-      //   w="max-content"
-      px={5}
-      //   borderRadius="24px"
-    >
+    <Flex flexDir="column" align="center" bg="gray.800" pt={4} pb={5} px={5}>
       <Box color="white" mb={3} fontWeight={600} fontSize="16px">
         최근 한달간 진행된 모임
       </Box>

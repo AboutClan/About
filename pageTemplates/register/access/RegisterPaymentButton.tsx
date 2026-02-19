@@ -13,8 +13,6 @@ import { gaEvent } from "../../../libs/gtag";
 import { isWebView } from "../../../utils/appEnvUtils";
 import { navigateExternalLink } from "../../../utils/navigateUtils";
 
-interface RegisterPaymentButtonProps {}
-
 function first(v: string | string[] | undefined) {
   return Array.isArray(v) ? v[0] : v;
 }
@@ -33,7 +31,7 @@ function safeDecode(v: string | undefined) {
   }
 }
 
-function RegisterPaymentButton({}: RegisterPaymentButtonProps) {
+function RegisterPaymentButton() {
   const { data: session } = useSession();
   const toast = useToast();
   const router = useRouter();
