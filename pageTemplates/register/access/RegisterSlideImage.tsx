@@ -70,7 +70,7 @@ function RegisterSlideImage() {
   );
 }
 
-const StyledSwiper = styled(Swiper)<{ index: number }>`
+const StyledSwiper = styled(Swiper)`
   .swiper-wrapper {
     display: -webkit-inline-box;
   }
@@ -84,7 +84,7 @@ const StyledSwiper = styled(Swiper)<{ index: number }>`
   .swiper-pagination-bullet-active {
     background-color: var(--color-mint);
   }
-  .swiper-pagination-bullet:nth-child(${(props) => props.index}) {
+  .swiper-pagination-bullet {
     width: 12px; /* 첫 번째 원의 가로 길이 */
     height: 4px;
     border-radius: 16px;
