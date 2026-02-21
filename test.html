@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>NICE 본인인증 테스트</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 50px;
+        text-align: center;
+      }
+      #result {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        background: #f9f9f9;
+        white-space: pre-wrap;
+        text-align: left;
+        display: inline-block;
+        min-width: 300px;
+      }
+      button {
+        padding: 12px 24px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>NICE 본인인증 테스트</h1>
+    <button onclick="startAuth()">본인인증 시작하기</button>
+
+    <div id="result-container" style="display: none">
+      <h3>인증 결과:</h3>
+      <div id="result">데이터 대기 중...</div>
+    </div>
+
+    <script>
+      let currentRequestNo = "";
+      const BACKEND_URL = "http://localhost:3001";
+      const USER_JWT =
+        "eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..WJagu5bPBlvwCG-P.cC-yAHgAQmAqhN6tes9hdLe8uFS1rx8cvwsKRmzIFheYam5ZEvin2DS7P1TrWpBDKmByieT5mXHPv9SI-n_O296VX0hJXx0k4cxg1hMoB3xEeALetOZiOcO9NBl7mTZXv9yea5XfjDiHOqFjaGR6nqVtL-x40nLbpLtFY3vprildqxnfqNkOnGW85RO4CPGsvOQjZGCfaX41xWcyHQrotIAOOAnaUdT-zxIDdPoMtFbpyRHumARhAtSc3jhamI0xFFNnRl1XaVwSOsQ_BVzXO0kZX3LUUAFg3BYt7kcs3XYa-VTanNZwpnsIq4p-jQKt7R3Gp3uhPo3_IoBcHwwQwJ-qRm4aBhW-Z_VJuIrrhxwRKEYmxKDDxOgP0CXQALZ58q_FfndA-mCVHbhfhQVcYgdF-97vZhbwkPmQeaNu3U0WIfCbBXJp1idR1OIWYkIw7sIejSaFC_cQ3PS0OBMVmrz9Z9B6bBpySaRy2ufBdXtusQCooeaieFFmOTPt2pk2NKClj1Hcdz9Ati8_Z19xjco_fp8AkzuGNNgyrZ10PMy_acEkIOfZVfIkaYMH25xXz2JQz1C_gKeHt9qQyrDqVMj37w5OlprGS2vWIaIR26ebgk7fZY7fKY-6-FrMYXc652ZI1RD-f5vw_9ZCSKJmLBWQtTgszywElPf-Iu5Cv6lM.eWrMB8E9-tPxkhNs8hVg_A"; // 실제 유효한 JWT
+
+      // [핵심] 메시지 리스너는 항상 켜져 있어야 합니다.
+      window.addEventListener("message", async (event) => {
+        console.log("메시지 수신됨! 출처:", event.origin);
+        console.log("수신 데이터:", event.data);
+
+        if (event.data && event.data.web_transaction_id) {
+          document.getElementById("result-container").style.display = "block";
+          document.getElementById("result").innerText = "서버에서 복호화 중...";
+
+          try {
+            const res = await fetch(`${BACKEND_URL}/auth/nice/result`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${USER_JWT}`,
+              },
+              body: JSON.stringify({
+                web_transaction_id: event.data.web_transaction_id,
+                request_no: currentRequestNo,
+              }),
+            });
+
+            const finalData = await res.json();
+            console.log("복호화 성공:", finalData);
+            document.getElementById("result").innerText = JSON.stringify(
+              finalData.data || finalData,
+              null,
+              2,
+            );
+          } catch (err) {
+            console.error("복호화 요청 실패:", err);
+            document.getElementById("result").innerText = "에러: " + err.message;
+          }
+        }
+      });
+
+      async function startAuth() {
+        try {
+          const response = await fetch(`${BACKEND_URL}/auth/nice/request`, {
+            headers: { Authorization: `Bearer ${USER_JWT}` },
+          });
+          const data = await response.json();
+
+          if (!data.auth_url) throw new Error("인증 URL 생성 실패");
+
+          currentRequestNo = data.request_no;
+          console.log("발급된 RequestNo:", currentRequestNo);
+
+          // 팝업 열기
+          window.open(data.auth_url, "niceAuthPopup", "width=500,height=700");
+        } catch (err) {
+          alert("인증 시작 에러: " + err.message);
+        }
+      }
+    </script>
+  </body>
+</html>
