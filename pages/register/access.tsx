@@ -10,6 +10,7 @@ import RegisterFAQ from "../../pageTemplates/register/access/RegisterFAQ";
 import RegisterFee from "../../pageTemplates/register/access/RegisterFee";
 import RegisterGatherCount from "../../pageTemplates/register/access/RegisterGatherCount";
 import RegisterPaymentButton from "../../pageTemplates/register/access/RegisterPaymentButton";
+import RegisterReview from "../../pageTemplates/register/access/RegisterReview";
 import RegisterSlideImage from "../../pageTemplates/register/access/RegisterSlideImage";
 
 const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
@@ -26,6 +27,7 @@ function Access() {
         <RegisterComparation />
         <RegisterSlideImage />
         <RegisterFee />
+        <RegisterReview />
         <RegisterFAQ />
         <Box h={20} />
       </Slide>

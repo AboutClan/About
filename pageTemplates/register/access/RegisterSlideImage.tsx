@@ -74,22 +74,6 @@ const StyledSwiper = styled(Swiper)`
   .swiper-wrapper {
     display: -webkit-inline-box;
   }
-  .swiper-pagination-bullet {
-    background-color: white;
-    width: 4px;
-    height: 4px;
-    opacity: 0.8;
-  }
-
-  .swiper-pagination-bullet-active {
-    background-color: var(--color-mint);
-  }
-  .swiper-pagination-bullet {
-    width: 12px; /* 첫 번째 원의 가로 길이 */
-    height: 4px;
-    border-radius: 16px;
-    opacity: 0.6;
-  }
 `;
 
 export default RegisterSlideImage;
