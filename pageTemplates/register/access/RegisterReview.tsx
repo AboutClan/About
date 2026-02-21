@@ -9,7 +9,7 @@ import { Autoplay, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Avatar from "../../../components/atoms/Avatar";
-function RegisterReview({ isShort }: { isShort: boolean }) {
+function RegisterReview({ isShort }: { isShort?: boolean }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
