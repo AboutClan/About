@@ -18,7 +18,7 @@ function Test() {
       <Button
         onClick={() => {
           toast("success", "성공");
-          navigateExternalLink("https://study-about.club/register/access");
+          navigateExternalLink("https://study-about.club/register/auth");
         }}
       >
         테스트

@@ -1,6 +1,12 @@
+// pages/nice-auth/callback.tsx
+// ✅ PC(팝업): opener로 postMessage 후 close
+// ✅ 모바일/인앱(redirect): /register/auth?web_transaction_id=... 로 redirect
+
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect } from "react";
+
+const AUTH_RETURN_TO = "/register/auth"; // ✅ 인증 시작 페이지로 통일
 
 export default function NiceAuthCallbackPage() {
   useEffect(() => {
@@ -11,22 +17,23 @@ export default function NiceAuthCallbackPage() {
 
     if (!webTransactionId) {
       alert("잘못된 접근입니다.");
-      window.close();
+      window.location.replace("/");
       return;
     }
 
+    const payload = { web_transaction_id: webTransactionId };
+    const targetOrigin = window.location.origin;
+
     if (window.opener && !window.opener.closed) {
-      window.opener.postMessage(
-        { web_transaction_id: webTransactionId },
-        "*",
-      );
-      setTimeout(() => {
-        window.close();
-      }, 300);
-    } else {
-      alert("부모 창을 찾을 수 없습니다. 인증 창을 닫고 다시 시도해 주세요.");
-      window.close();
+      window.opener.postMessage(payload, targetOrigin);
+      setTimeout(() => window.close(), 200);
+      return;
     }
+
+    const returnUrl = `${AUTH_RETURN_TO}?web_transaction_id=${encodeURIComponent(
+      webTransactionId,
+    )}`;
+    window.location.replace(returnUrl);
   }, []);
 
   return (
