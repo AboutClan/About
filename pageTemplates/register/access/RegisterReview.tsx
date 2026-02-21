@@ -1,39 +1,68 @@
+import "swiper/css";
 import "swiper/css/autoplay";
+import "swiper/css/scrollbar";
 
 import { Badge, Box, Flex, Heading, Stack, Text, VStack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Autoplay, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Avatar from "../../../components/atoms/Avatar";
-function RegisterReview() {
+function RegisterReview({ isShort }: { isShort: boolean }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) return null;
   return (
     <>
       <Flex flexDir="column" alignItems="center" mt={10} textAlign="center">
-        <Stack spacing={2} mb={5}>
-          <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
-            04
-          </Badge>
+        {!isShort && (
+          <Stack spacing={2} mb={5}>
+            <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
+              04
+            </Badge>
 
-          <Heading fontSize="2xl">생생한 리얼 후기</Heading>
-          <Text color="gray.500">
-            10명 중 9명이 재참여 하는 <b>실제 동아리원 후기</b>
-          </Text>
-        </Stack>
+            <Heading fontSize="2xl">생생한 리얼 후기</Heading>
+            <Text color="gray.500">
+              10명 중 9명이 재참여 하는 <b>실제 동아리원 후기</b>
+            </Text>
+          </Stack>
+        )}
         <StyledSwiper
+          modules={[Autoplay, Scrollbar]}
           scrollbar={{ draggable: true, el: ".swiper-scrollbar" }}
           style={{
             width: "100%",
             height: "auto",
             position: "relative",
           }}
-          slidesPerView={1.3}
+          slidesPerView={1.2}
           spaceBetween={20}
           autoplay={{
-            delay: 0,
+            delay: 1,
             disableOnInteraction: false,
+            pauseOnMouseEnter: false,
           }}
           speed={4000} // 숫자 클수록 천천히
           loop={true}
+          onSwiper={(swiper) => {
+            const kick = () => {
+              swiper.update();
+              swiper.autoplay?.stop();
+              swiper.autoplay?.start();
+            };
+
+            // 1프레임은 부족한 경우가 많아서 2~3번 보강
+            requestAnimationFrame(() => {
+              kick();
+              requestAnimationFrame(() => {
+                kick();
+                setTimeout(kick, 50);
+              });
+            });
+          }}
         >
           {REVIEW_ARR.map((item, index) => {
             const cnt = index % 2;
@@ -50,7 +79,6 @@ function RegisterReview() {
                   border={bg === "white" ? "1px solid var(--color-mint)" : null}
                 >
                   <VStack align="start" spacing={4} h="370px">
-                    {/* 제목 */}
                     <Text
                       fontSize="18px"
                       fontWeight="bold"
@@ -191,5 +219,22 @@ const REVIEW_ARR: {
 거의 MC를 하시더라구요ㅋㅋㅋㅋ 덕분에 다른 분들과 빨리 친해지고 어색한거도 금방 풀렸어요 ㅎㅎ
 
 그리구 운영자님 엄청 꼼꼼하신 거 같아요! 단톡방 관리도 자주 해주시고 특히 맴버관리... 철저하셔서 너무 좋았어용`,
+  },
+  {
+    title: "여기서 연애 시작했어요 🥰",
+    avatar: {
+      name: "김*우",
+      type: 19,
+      bg: 1,
+    },
+    text: `
+이건 진짜 비밀인데요...🤫
+저 동아리 가입 2년차 커플이에요! 
+
+예전에 가입했던 동아리는 다 놀기만 하는 분위기였는데, 어바웃은 관심사 기반으로 활동을 하다 보니 괜찮은 사람도 많고 커플도 많이 생겨요 ㅎㅎ
+
+지금도 소모임에서 같이 활동하고 있어요!
+결과적으로는 제일 큰 수확(?)이었네요
+`,
   },
 ];
