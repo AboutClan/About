@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
+import AppDownloadModal from "../../components/overlay/AppDownloadModal";
 import ForceUpdateModal from "../../components/overlay/UpdateModal";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
@@ -201,13 +202,13 @@ function HomeInitialSetting() {
     sessionStorage.setItem("dismiss_app_download_modal", "1");
     setIsWeb(false);
   };
-  console.log(isLegacyApp, closeModal, isWeb);
+
   return (
     <>
       {userInfo && !isGuest && !isLegacyApp && <UserSettingPopUp user={userInfo} />}
       <GlobalStyle />
       {isLegacyApp && isApp() && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
-      {/* {isWeb && <AppDownloadModal onClose={closeModal} />} */}
+      {isWeb && !isGuest && <AppDownloadModal onClose={closeModal} />}
       {/* <Joyride
         hideCloseButton={true}
         callback={handleJoyrideCallback}
