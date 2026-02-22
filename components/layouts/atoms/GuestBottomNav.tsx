@@ -10,7 +10,7 @@ function GuestBottomNav() {
   const { data: session } = useSession();
   const toast = useToast();
   const customSignin = async () => {
-    if (isWebView() && !session) {
+    if (isWebView() && (!session || session?.user?.role === "guest")) {
       toast("info", "원활한 가입 진행를 위해 웹사이트로 전환합니다.");
       setTimeout(() => {
         navigateExternalLink("https://study-about.club/login/confirm");
