@@ -48,7 +48,7 @@ export default class MyDocument extends Document {
             as="font"
             crossOrigin="anonymous"
           />
-          <link rel="manifest" href="/manifest.json" />
+          {/* <link rel="manifest" href="/manifest.json" /> */}
           <meta property="og:type" content="website" key="og:type" />
           <meta property="og:locale" content="ko_KR" key="og:locale" />
           <meta

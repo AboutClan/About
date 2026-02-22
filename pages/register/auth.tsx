@@ -5,6 +5,7 @@
 
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useRef } from "react";
 
 import BottomNav from "../../components/layouts/BottomNav";
@@ -68,6 +69,7 @@ export default function Auth() {
       const jwt = token ?? "";
       if (!jwt) {
         toast("error", "로그인이 필요합니다.");
+        signIn("kakao");
         return;
       }
 
@@ -154,6 +156,7 @@ export default function Auth() {
     const jwt = token ?? "";
     if (!jwt) {
       toast("error", "로그인이 필요합니다");
+      signIn("kakao");
       return;
     }
 

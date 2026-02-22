@@ -232,9 +232,23 @@ function GatherWritingImagePage() {
       {isConfirmModal && (
         <GatherWritingConfirmModal
           createGather={(data) => {
-            handleSubmit(data);
+            const { user, ...gatherData } = data.gather;
+            handleSubmit({
+              gather: {
+                ...gatherData,
+                user: user === "62a44519f4a6968c58fedb88" ? "65df1ddcd73ecfd250b42c89" : user,
+              },
+            });
           }}
-          updateGather={(data) => updateGather(data)}
+          updateGather={(data) => {
+            const { user, ...gatherData } = data.gather;
+            updateGather({
+              gather: {
+                ...gatherData,
+                user: user === "62a44519f4a6968c58fedb88" ? "65df1ddcd73ecfd250b42c89" : user,
+              },
+            });
+          }}
           setIsModal={setIsConfirmModal}
           gatherData={{
             ...gatherContent,
