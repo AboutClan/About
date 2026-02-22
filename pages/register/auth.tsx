@@ -5,7 +5,7 @@
 
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import BottomNav from "../../components/layouts/BottomNav";
 import Slide from "../../components/layouts/PageSlide";
@@ -48,20 +48,14 @@ export default function Auth() {
   const toast = useToast();
   const token = useToken();
 
-  const [resultVisible, setResultVisible] = useState(false);
-  const [resultText, setResultText] = useState("데이터 대기 중...");
-
   // PC 팝업 플로우에서 바로 이어가려고 ref도 유지
   const currentRequestNoRef = useRef("");
 
   const handleWebTransactionId = useCallback(
     async (webTransactionId: string) => {
-      setResultVisible(true);
-      setResultText("서버에서 복호화 중...");
-
       const jwt = token ?? "";
       if (!jwt) {
-        setResultText("에러: 로그인이 필요합니다. (JWT 없음)");
+        toast("error", "로그인이 필요합니다.");
         return;
       }
 
@@ -69,7 +63,7 @@ export default function Auth() {
         currentRequestNoRef.current || sessionStorage.getItem(NICE_REQUEST_NO_KEY) || "";
 
       if (!requestNo) {
-        setResultText("에러: request_no가 없습니다. 인증을 다시 시작해 주세요.");
+        toast("error", "재인증이 필요합니다.");
         return;
       }
 
@@ -107,7 +101,7 @@ export default function Auth() {
         router.push(`/register/location`);
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
-        setResultText("에러: " + message);
+        toast("error", `인증 실패: ${message}`);
       }
     },
     [token, router, toast],
@@ -153,12 +147,11 @@ export default function Auth() {
     }
 
     try {
-      toast("info", "인증 요청 중...");
       const response = await fetch(`${BACKEND_URL}/auth/nice/request`, {
         method: "GET",
         headers: { Authorization: `Bearer ${jwt}` },
       });
-      toast("info", `응답 수신: ${response.status}`);
+
       const text = await response.text(); // ✅ 먼저 text로 받기 (JSON 파싱 실패 대비)
       let data = null;
       try {
@@ -197,24 +190,14 @@ export default function Auth() {
   return (
     <>
       <Slide>
-        <Box mt={5}>
+        <Box my={5}>
           <Box fontSize="24px" fontWeight="semibold" lineHeight="32px" w="max-content">
             안전한 모임 이용을 위해 <br /> 본인인증을 진행할게요
           </Box>
           <Box color="gray.600" fontSize="14px" mt={1.5}>
             어바웃은 신뢰 기반의 프로필로 활동하는 동아리에요!
           </Box>
-          <Box mt={2} fontSize="12px" color="gray.500">
-            BACKEND_URL: {BACKEND_URL}
-          </Box>
-          {/* 디버그용(원하면 제거) */}
-          {resultVisible && (
-            <Box mt={4} fontSize="12px" color="gray.500" whiteSpace="pre-wrap">
-              {resultText}
-            </Box>
-          )}
         </Box>
-
         <RegisterReview isShort />
       </Slide>
       <BottomNav onClick={startAuth} text="30초 만에 인증하기" />
