@@ -8,6 +8,7 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
+import { isWebView } from "../../utils/appEnvUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
 import { getSafeAreaBottom, isApp, isIOS } from "../../utils/validationUtils";
 
@@ -62,6 +63,12 @@ function LoginPage() {
   }, [statusParam, toast]);
 
   const customSignin = async (type: "kakao" | "guest" | "apple") => {
+    if (type === "kakao" && isWebView() && !session) {
+      toast("info", "원활한 가입 진행를 위해 웹사이트로 전환합니다.");
+      navigateExternalLink("https://study-about.club/login/confirm");
+
+      return;
+    }
     if (type === "guest") {
       router.push(`/login/guest`);
       return;

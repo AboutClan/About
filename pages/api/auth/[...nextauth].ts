@@ -198,6 +198,11 @@ export const authOptions: NextAuthOptions = {
               );
             }
           }
+          if (user.role === "newUser") {
+            return "/register/auth";
+          } else if (user.role === "waiting") {
+            return "/register/access";
+          }
 
           return true;
         }
