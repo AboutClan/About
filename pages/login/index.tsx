@@ -66,7 +66,6 @@ function LoginPage() {
     if (type === "kakao" && isWebView() && !session) {
       toast("info", "원활한 가입 진행를 위해 웹사이트로 전환합니다.");
       navigateExternalLink("https://study-about.club/login/confirm");
-
       return;
     }
     if (type === "guest") {

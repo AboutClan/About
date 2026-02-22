@@ -1,10 +1,20 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
+import { useToast } from "../../../hooks/custom/CustomToast";
+import { isWebView } from "../../../utils/appEnvUtils";
+import { navigateExternalLink } from "../../../utils/navigateUtils";
 import { getSafeAreaBottom } from "../../../utils/validationUtils";
 
 function GuestBottomNav() {
+  const { data: session } = useSession();
+  const toast = useToast();
   const customSignin = async () => {
+    if (isWebView() && !session) {
+      toast("info", "원활한 가입 진행를 위해 웹사이트로 전환합니다.");
+      navigateExternalLink("https://study-about.club/login/confirm");
+      return;
+    }
     await signOut({ redirect: false });
     await signIn("kakao", { callbackUrl: "/home" });
   };
