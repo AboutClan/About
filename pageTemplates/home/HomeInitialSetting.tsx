@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -103,7 +103,7 @@ function HomeInitialSetting() {
         return;
       }
       if (data.role === "newUser") {
-        router.push("/register/auth");
+        router.push("/login");
         return;
       }
       if (data.role === "waiting") {
