@@ -155,29 +155,41 @@ export default function Auth() {
     try {
       const response = await fetch(`${BACKEND_URL}/auth/nice/request`, {
         method: "GET",
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
+        headers: { Authorization: `Bearer ${jwt}` },
       });
 
-      const data = await response.json();
+      const text = await response.text(); // ✅ 먼저 text로 받기 (JSON 파싱 실패 대비)
+      let data = null;
+      try {
+        data = text ? JSON.parse(text) : null;
+      } catch {
+        // JSON 아니면 그대로 둠
+      }
 
-      if (!data.auth_url) throw new Error("인증 URL 생성 실패");
-      if (!data.request_no) throw new Error("request_no 누락");
+      if (!response.ok) {
+        toast(
+          "error",
+          `인증 시작 실패 (${response.status}) ${
+            typeof data === "object" ? data?.message ?? "" : text
+          }`,
+        );
+        return;
+      }
+
+      if (!data?.auth_url) throw new Error("auth_url 누락");
+      if (!data?.request_no) throw new Error("request_no 누락");
 
       sessionStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no);
       currentRequestNoRef.current = data.request_no;
 
-      // ✅ 팝업 시도 (PC)
       const popup = window.open(data.auth_url, "niceAuthPopup", "width=500,height=700");
-
-      // ✅ 팝업 실패 → 모바일/인앱 redirect
       if (!popup || popup.closed) {
         window.location.href = data.auth_url;
         return;
       }
     } catch (err) {
-      toast("error", "인증 시작 오류");
+      const msg = err instanceof Error ? err.message : String(err);
+      toast("error", `인증 시작 오류: ${msg}`);
     }
   }, [token, toast]);
 
