@@ -161,11 +161,11 @@ export default function Auth() {
       const url = new URL(`${BACKEND_URL}/auth/nice/request`);
       const isApp = isWebView();
       if (isApp) {
-        url.searchParams.set("returnUrl", `study-about.club/_open?dl=nice-auth/callback`);
-        url.searchParams.set("closeUrl", "study-about.club/_open?dl=nice-auth/callback");
+        url.searchParams.set("returnUrl", `https://study-about.club/_open?dl=nice-auth/callback`);
+        url.searchParams.set("closeUrl", "https://study-about.club/_open?dl=nice-auth/callback");
       } else {
-        url.searchParams.set("returnUrl", `study-about.club/nice-auth/callback`);
-        url.searchParams.set("closeUrl", "study-about.club/nice-auth/callback");
+        url.searchParams.set("returnUrl", `https://study-about.club/nice-auth/callback`);
+        url.searchParams.set("closeUrl", "https://study-about.club/nice-auth/callback");
       }
 
       // url.searchParams.set("returnUrl", "localhost:3000/_open?dl=nice-auth/callback");
