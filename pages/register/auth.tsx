@@ -48,6 +48,17 @@ export default function Auth() {
   const toast = useToast();
   const token = useToken();
 
+  const getStoredRequestNo = () =>
+    currentRequestNoRef.current ||
+    sessionStorage.getItem(NICE_REQUEST_NO_KEY) ||
+    localStorage.getItem(NICE_REQUEST_NO_KEY) ||
+    "";
+
+  const clearStoredRequestNo = () => {
+    sessionStorage.removeItem(NICE_REQUEST_NO_KEY);
+    localStorage.removeItem(NICE_REQUEST_NO_KEY);
+  };
+
   // PC 팝업 플로우에서 바로 이어가려고 ref도 유지
   const currentRequestNoRef = useRef("");
 
@@ -59,9 +70,7 @@ export default function Auth() {
         return;
       }
 
-      const requestNo =
-        currentRequestNoRef.current || sessionStorage.getItem(NICE_REQUEST_NO_KEY) || "";
-
+      const requestNo = getStoredRequestNo();
       if (!requestNo) {
         toast("error", "재인증이 필요합니다.");
         return;
@@ -99,6 +108,7 @@ export default function Auth() {
         sessionStorage.removeItem(NICE_REQUEST_NO_KEY);
 
         router.push(`/register/location`);
+        clearStoredRequestNo();
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
         toast("error", `인증 실패: ${message}`);
@@ -174,6 +184,7 @@ export default function Auth() {
       if (!data?.request_no) throw new Error("request_no 누락");
 
       sessionStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no);
+      localStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no); // ✅ 추가
       currentRequestNoRef.current = data.request_no;
 
       const popup = window.open(data.auth_url, "niceAuthPopup", "width=500,height=700");

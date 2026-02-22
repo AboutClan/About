@@ -3,126 +3,135 @@ import "swiper/css/autoplay";
 import "swiper/css/scrollbar";
 
 import { Badge, Box, Flex, Heading, Stack, Text, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Autoplay, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Avatar from "../../../components/atoms/Avatar";
-function RegisterReview({ isShort }: { isShort?: boolean }) {
+
+function RegisterReview({
+  isShort,
+  startDelayMs = 1200,
+}: {
+  isShort?: boolean;
+  startDelayMs?: number;
+}) {
   const [mounted, setMounted] = useState(false);
+  const swiperRef = useRef(null);
+  const startedRef = useRef(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // ✅ 원하는 타이밍(예: auth 넘어온 뒤 체감 시간)만큼 대기 후 autoplay 시작
+  useEffect(() => {
+    if (!mounted) return;
+
+    const t = setTimeout(() => {
+      const swiper = swiperRef.current;
+      if (!swiper || startedRef.current) return;
+
+      startedRef.current = true;
+      swiper.update();
+      swiper.autoplay?.start();
+    }, startDelayMs);
+
+    return () => clearTimeout(t);
+  }, [mounted, startDelayMs]);
+
   if (!mounted) return null;
+
   return (
-    <>
-      <Flex flexDir="column" alignItems="center" mt={10} textAlign="center">
-        {!isShort && (
-          <Stack spacing={2} mb={5}>
-            <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
-              04
-            </Badge>
+    <Flex flexDir="column" alignItems="center" mt={10} textAlign="center">
+      {!isShort && (
+        <Stack spacing={2} mb={5}>
+          <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
+            04
+          </Badge>
+          <Heading fontSize="2xl">생생한 리얼 후기</Heading>
+          <Text color="gray.500">
+            10명 중 9명이 재참여 하는 <b>실제 동아리원 후기</b>
+          </Text>
+        </Stack>
+      )}
 
-            <Heading fontSize="2xl">생생한 리얼 후기</Heading>
-            <Text color="gray.500">
-              10명 중 9명이 재참여 하는 <b>실제 동아리원 후기</b>
-            </Text>
-          </Stack>
-        )}
-        <StyledSwiper
-          modules={[Autoplay, Scrollbar]}
-          scrollbar={{ draggable: true, el: ".swiper-scrollbar" }}
-          style={{
-            width: "100%",
-            height: "auto",
-            position: "relative",
-          }}
-          slidesPerView={1.2}
-          spaceBetween={20}
-          autoplay={{
-            delay: 1,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: false,
-          }}
-          speed={4000} // 숫자 클수록 천천히
-          loop={true}
-          onSwiper={(swiper) => {
-            const kick = () => {
-              swiper.update();
-              swiper.autoplay?.stop();
-              swiper.autoplay?.start();
-            };
+      <StyledSwiper
+        modules={[Autoplay, Scrollbar]}
+        scrollbar={{ draggable: true, el: ".swiper-scrollbar" }}
+        style={{ width: "100%", height: "auto", position: "relative" }}
+        slidesPerView={1.2}
+        spaceBetween={20}
+        // ✅ 핵심: 초기엔 autoplay를 "false"로 두고, 나중에 start()
+        autoplay={false}
+        speed={4000}
+        loop
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
 
-            // 1프레임은 부족한 경우가 많아서 2~3번 보강
-            requestAnimationFrame(() => {
-              kick();
-              requestAnimationFrame(() => {
-                kick();
-                setTimeout(kick, 50);
-              });
-            });
-          }}
-        >
-          {REVIEW_ARR.map((item, index) => {
-            const cnt = index % 2;
-            const bg = cnt === 0 ? "gray.800" : cnt === 1 ? "white" : "green";
-            return (
-              <SwiperSlide key={index}>
-                <Box
-                  bg={bg}
-                  borderRadius="2xl"
-                  pt={6}
-                  pb={6}
-                  px={5}
-                  color={bg === "white" ? "gray.800" : "white"}
-                  border={bg === "white" ? "1px solid var(--color-mint)" : null}
-                >
-                  <VStack align="start" spacing={4} h="370px">
-                    <Text
-                      fontSize="18px"
-                      fontWeight="bold"
-                      lineHeight="1.4"
-                      whiteSpace="pre-line"
-                      textAlign="start"
-                    >
-                      {`"${item.title}"`}
+          // ✅ 혹시 iOS/웹뷰에서 초기 레이아웃 때문에 튀면 update 한 번만
+          requestAnimationFrame(() => swiper.update());
+        }}
+      >
+        {REVIEW_ARR.map((item, index) => {
+          const cnt = index % 2;
+          const bg = cnt === 0 ? "gray.800" : "white";
+          return (
+            <SwiperSlide key={index}>
+              <Box
+                bg={bg}
+                borderRadius="2xl"
+                pt={6}
+                pb={6}
+                px={5}
+                color={bg === "white" ? "gray.800" : "white"}
+                border={bg === "white" ? "1px solid var(--color-mint)" : undefined}
+              >
+                <VStack align="start" spacing={4} h="370px">
+                  <Text
+                    fontSize="18px"
+                    fontWeight="bold"
+                    lineHeight="1.4"
+                    whiteSpace="pre-line"
+                    textAlign="start"
+                  >
+                    {`"${item.title}"`}
+                  </Text>
+
+                  <Text
+                    whiteSpace="pre-wrap"
+                    wordBreak="break-word"
+                    fontSize="14px"
+                    opacity={0.9}
+                    lineHeight="1.6"
+                    textAlign="start"
+                  >
+                    {item.text}
+                  </Text>
+
+                  <Flex alignItems="center" mt="auto">
+                    <Avatar user={{ avatar: item.avatar }} size="xs1" />
+                    <Text ml={2} fontSize="14px" opacity={0.7}>
+                      {item.avatar.name}
                     </Text>
-
-                    {/* 본문 */}
-                    <Text
-                      whiteSpace="pre-wrap"
-                      wordBreak="break-word"
-                      fontSize="14px"
-                      opacity={0.9}
-                      lineHeight="1.6"
-                      textAlign="start"
-                    >
-                      {item.text}
-                    </Text>
-
-                    {/* 작성자 */}
-                    <Flex alignItems="center" mt="auto">
-                      <Avatar user={{ avatar: item.avatar }} size="xs1" />
-                      <Text ml={2} fontSize="14px" opacity={0.7}>
-                        {item.avatar.name}
-                      </Text>
-                    </Flex>
-                  </VStack>
-                </Box>
-              </SwiperSlide>
-            );
-          })}
-        </StyledSwiper>
-      </Flex>
-    </>
+                  </Flex>
+                </VStack>
+              </Box>
+            </SwiperSlide>
+          );
+        })}
+      </StyledSwiper>
+    </Flex>
   );
 }
+
 const StyledSwiper = styled(Swiper)`
   .swiper-wrapper {
     display: -webkit-inline-box;
   }
 `;
+
 export default RegisterReview;
 
 const REVIEW_ARR: {
