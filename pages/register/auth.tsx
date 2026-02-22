@@ -15,7 +15,7 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import RegisterReview from "../../pageTemplates/register/access/RegisterReview";
 import { setLocalStorageObj } from "../../utils/storageUtils";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_NICE_BACKEND_URL ?? "http://localhost:3001";
+const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URI ?? "http://localhost:3001";
 const NICE_REQUEST_NO_KEY = "nice_request_no";
 
 export function formatKoreanPhone(raw: string) {
@@ -153,11 +153,12 @@ export default function Auth() {
     }
 
     try {
+      toast("info", "인증 요청 중...");
       const response = await fetch(`${BACKEND_URL}/auth/nice/request`, {
         method: "GET",
         headers: { Authorization: `Bearer ${jwt}` },
       });
-
+      toast("info", `응답 수신: ${response.status}`);
       const text = await response.text(); // ✅ 먼저 text로 받기 (JSON 파싱 실패 대비)
       let data = null;
       try {
@@ -189,7 +190,7 @@ export default function Auth() {
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      toast("error", `인증 시작 오류: ${msg}`);
+      toast("error", `인증 시작 오류: ${msg || "Failed to fetch (네트워크/CORS/HTTPS 가능)"}`);
     }
   }, [token, toast]);
 
