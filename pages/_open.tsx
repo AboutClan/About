@@ -62,7 +62,7 @@ export default function OpenPage() {
           gap: "10px",
         }}
       >
-        <p style={{ fontSize: "16px", fontWeight: "bold" }}>앱으로 이동 중입니다...</p>
+        <p style={{ fontSize: "16px", fontWeight: "bold" }}>앱 사용 유무를 확인중입니다...</p>
         <p style={{ color: "#666" }}>이동이 되지 않으면 잠시만 기다려 주세요.</p>
       </div>
     </>

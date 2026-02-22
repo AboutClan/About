@@ -13,6 +13,7 @@ import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import RegisterReview from "../../pageTemplates/register/access/RegisterReview";
+import { isWebView } from "../../utils/appEnvUtils";
 import { setLocalStorageObj } from "../../utils/storageUtils";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URI ?? "http://localhost:3001";
@@ -157,7 +158,20 @@ export default function Auth() {
     }
 
     try {
-      const response = await fetch(`${BACKEND_URL}/auth/nice/request`, {
+      const url = new URL(`${BACKEND_URL}/auth/nice/request`);
+      const isApp = isWebView();
+      if (isApp) {
+        url.searchParams.set("returnUrl", `study-about.club/_open?dl=nice-auth/callback`);
+        url.searchParams.set("closeUrl", "study-about.club/_open?dl=nice-auth/callback");
+      } else {
+        url.searchParams.set("returnUrl", `study-about.club/nice-auth/callback`);
+        url.searchParams.set("closeUrl", "study-about.club/nice-auth/callback");
+      }
+
+      // url.searchParams.set("returnUrl", "localhost:3000/_open?dl=nice-auth/callback");
+      // url.searchParams.set("closeUrl", "localhost:3000/_open?dl=nice-auth/callback");
+
+      const response = await fetch(url.toString(), {
         method: "GET",
         headers: { Authorization: `Bearer ${jwt}` },
       });
