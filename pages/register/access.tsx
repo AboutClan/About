@@ -27,7 +27,7 @@ function Access() {
         <RegisterComparation />
         <RegisterSlideImage />
         <RegisterFee />
-        <RegisterReview />
+        <RegisterReview isShort={false} />
         <RegisterFAQ />
         <Box h={20} />
       </Slide>

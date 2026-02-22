@@ -94,16 +94,16 @@ function HomeInitialSetting() {
     onSuccess(data) {
       if (data.isActive === false) {
         toast("warning", "신규 가입 페이지로 이동합니다.");
-        router.push("/register/name");
+        router.push("/register/auth");
         return;
       }
       if (data.role === "secede") {
         toast("warning", "탈퇴한 회원입니다. 재가입 페이지로 이동합니다.");
-        router.push("/register/name");
+        router.push("/register/auth");
         return;
       }
       if (data.role === "newUser") {
-        router.push("/register/name");
+        router.push("/register/auth");
         return;
       }
       if (data.role === "waiting") {
@@ -139,7 +139,7 @@ function HomeInitialSetting() {
     }
 
     if (userInfo?.role === "newUser") {
-      router.push("/register/name");
+      router.push("/register/auth");
       return;
     }
 
@@ -192,9 +192,9 @@ function HomeInitialSetting() {
     if (typeof window === "undefined") return;
 
     const dismissed = sessionStorage.getItem("dismiss_app_download_modal") === "1";
-   
+
     if (dismissed) return;
-   
+
     setIsWeb(isMobileWeb());
   }, []);
 

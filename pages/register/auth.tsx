@@ -197,7 +197,7 @@ export default function Auth() {
   return (
     <>
       <Slide>
-        <Box mt={8}>
+        <Box mt={5}>
           <Box fontSize="24px" fontWeight="semibold" lineHeight="32px" w="max-content">
             안전한 모임 이용을 위해 <br /> 본인인증을 진행할게요
           </Box>

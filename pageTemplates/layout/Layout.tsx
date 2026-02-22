@@ -295,7 +295,9 @@ function Layout({ children }: ILayout) {
           <div
             id="root-modal"
             style={{
-              ...(NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
+              ...(currentSegment?.[0] === "register" && currentSegment?.[1] === "auth"
+                ? {}
+                : NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
                     paddingTop: `56px`,
                   }

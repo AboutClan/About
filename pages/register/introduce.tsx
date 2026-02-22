@@ -1,17 +1,44 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { MouseEvent, useRef, useState } from "react";
 
 import Textarea from "../../components/atoms/Textarea";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
+import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
+import { gaEvent } from "../../libs/gtag";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Comment() {
+  const toast = useToast();
+  const router = useRouter();
+  const errorToast = useErrorToast();
   const info = getLocalStorageObj(REGISTER_INFO);
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const { mutate: changeRole } = useUserInfoFieldMutation("role");
+  const [isModal, setIsModal] = useState(false);
+
+  const { mutate, isLoading } = useUserRegisterMutation({
+    onSuccess() {
+      const moving = localStorage.getItem("moving");
+      if (moving) gaEvent("register_complete_by_cafe_map");
+      else gaEvent("register_complete");
+      changeRole({ role: "waiting" });
+
+      setLocalStorageObj(REGISTER_INFO, null);
+      toast("success", "신청 완료! 최종 가입 페이지로 이동합니다.");
+      setIsModal(true);
+      setTimeout(() => {
+        router.push("/register/access");
+      }, 1000);
+    },
+    onError: errorToast,
+  });
 
   const scrollToInput = () => {
     if (!containerRef.current) return;
@@ -39,11 +66,13 @@ function Comment() {
       return;
     }
     setLocalStorageObj(REGISTER_INFO, { ...info, introduceText: text });
+
+    mutate({ ...info, introduceText: text });
   };
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={88} />
+      <ProgressHeader title="회원가입" value={100} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
@@ -83,7 +112,9 @@ function Comment() {
         </Box>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} url="/register/phone" />
+      {!isModal && (
+        <BottomNav isLoading={isLoading || isModal} onClick={onClickNext} text="가입 신청 완료" />
+      )}
     </>
   );
 }

@@ -137,7 +137,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/home",
     error: "/login",
-    newUser: "/register/name",
+    newUser: "/register/auth",
   },
 
   callbacks: {

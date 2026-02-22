@@ -29,7 +29,7 @@ function Mbti() {
 
   return (
     <>
-      <ProgressHeader title="회원가입 " value={55} />
+      <ProgressHeader title="회원가입 " value={63} />
       <MBTILayout mbti={mbti} setMbti={setMbti} errorMessage={errorMessage} />
 
       <BottomNav onClick={onClickNext} url="/register/major" />

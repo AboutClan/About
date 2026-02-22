@@ -8,18 +8,16 @@ import { slideDirectionState } from "../../recoils/navigationRecoils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
 
 const REGISTER_WRITING_SEQUENCE = {
-  name: 1,
-  gender: 2,
-  birthday: 3,
-  location: 4,
-  mbti: 5,
-  major: 6,
+  auth: 1,
+  location: 2,
+  mbti: 3,
+  major: 4,
   // interest: 7,
-  comment: 7,
-  introduce: 8,
-  phone: 9,
+  comment: 5,
+  introduce: 6,
+  // phone: 9,
   // fee: 10,
-  access: 10,
+  access: 7,
 };
 
 const GATHER_WRITING_SEQUENCE = {
