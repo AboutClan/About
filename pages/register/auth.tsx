@@ -203,7 +203,9 @@ export default function Auth() {
           <Box color="gray.600" fontSize="14px" mt={1.5}>
             어바웃은 신뢰 기반의 프로필로 활동하는 동아리에요!
           </Box>
-
+          <Box mt={2} fontSize="12px" color="gray.500">
+            BACKEND_URL: {BACKEND_URL}
+          </Box>
           {/* 디버그용(원하면 제거) */}
           {resultVisible && (
             <Box mt={4} fontSize="12px" color="gray.500" whiteSpace="pre-wrap">
