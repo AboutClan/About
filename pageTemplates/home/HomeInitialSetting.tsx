@@ -103,7 +103,7 @@ function HomeInitialSetting() {
         return;
       }
       if (data.role === "newUser") {
-        router.push("/login");
+        router.push("/register/auth");
         return;
       }
       if (data.role === "waiting") {

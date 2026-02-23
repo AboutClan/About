@@ -18,6 +18,7 @@ function GuestBottomNav() {
       return;
     }
     await signOut({ redirect: false });
+  
     await signIn("kakao", { callbackUrl: "/home" });
   };
 

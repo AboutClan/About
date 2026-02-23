@@ -165,7 +165,7 @@ export const authOptions: NextAuthOptions = {
 
           if (findUser) {
             user.role = findUser.role;
-            account.role = findUser.role;
+            // account.role = findUser.role;
             user.name = findUser.name ?? user.name;
             user.uid = findUser.uid ?? user.uid;
             user.id = findUser.id ?? user.id;
@@ -198,11 +198,12 @@ export const authOptions: NextAuthOptions = {
               );
             }
           }
-          if (user.role === "newUser") {
-            return "/register/auth";
-          } else if (user.role === "waiting") {
-            return "/register/access";
-          }
+
+          // if (user.role === "newUser") {
+          //   return "/register/auth";
+          // } else if (user.role === "waiting") {
+          //   return "/register/access";
+          // }
 
           return true;
         }
