@@ -32,7 +32,7 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
     .map((par, idx) => {
       const roleText = GROUP_STUDY_ROLE[par.role];
       if (isSecret) {
-        if (idx === 0) {
+        if (idx === 0 && !isTemp) {
           return {
             user: { ...SECRET_USER_SUMMARY, name: `익명 (모임장)` },
             comment: { comment: `비공개` },
