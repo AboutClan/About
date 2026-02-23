@@ -62,8 +62,9 @@ function GuestBottomNav() {
           footerOptions={{
             main: {
               text: "기존 멤버 로그인",
-              func: () => {
-                signIn("kakao", { callbackUrl: "/home" });
+              func: async () => {
+                await signOut({ redirect: false });
+                await signIn("kakao", { callbackUrl: "/home" });
               },
             },
             sub: {
