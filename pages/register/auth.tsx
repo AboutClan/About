@@ -5,7 +5,7 @@
 
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useRef } from "react";
 
 import BottomNav from "../../components/layouts/BottomNav";
@@ -46,7 +46,6 @@ type NiceResultData = {
 };
 
 export default function Auth() {
-  const { data: session } = useSession();
   const router = useRouter();
   const toast = useToast();
   const token = useToken();
@@ -226,7 +225,6 @@ export default function Auth() {
           <Box color="gray.600" fontSize="14px" mt={1.5}>
             어바웃은 신뢰 기반의 프로필로 활동하는 동아리에요!
           </Box>
-          <Box color="gray.500">uid: {session?.user?.uid}</Box>
         </Box>
         <RegisterReview isShort />
       </Slide>
