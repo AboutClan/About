@@ -61,13 +61,12 @@ function LoginPage() {
         break;
     }
   }, [statusParam, toast]);
+
+  const [isModal, setIsModal] = useState(false);
   console.log(session, userInfo);
   const customSignin = async (type: "kakao" | "guest" | "apple") => {
     if (type === "kakao" && isWebView() && !session) {
-      toast("info", "원활한 가입 진행를 위해 웹사이트로 전환합니다.");
-      setTimeout(() => {
-        navigateExternalLink("https://study-about.club/login/confirm");
-      }, 1000);
+      setIsModal(true);
       return;
     }
     if (type === "guest") {
@@ -302,7 +301,6 @@ function LoginPage() {
           <ForceLogoutDialog />
         </Flex>
       </Box>
-
       {/* {isModal && <GuestLoginModal setIsModal={setIsModal} customSignin={customSignin} />} */}
       {isWaitingModal && (
         <ModalLayout
@@ -314,6 +312,33 @@ function LoginPage() {
           <Box>
             <b>카카오 채널</b>을 통해 가입을 완료해 주세요!
           </Box>
+        </ModalLayout>
+      )}{" "}
+      {isModal && (
+        <ModalLayout
+          setIsModal={setIsModal}
+          title="로그인"
+          footerOptions={{
+            main: {
+              text: "기존 멤버 로그인",
+              func: async () => {
+                await signOut({ redirect: false });
+                await signIn("kakao", { callbackUrl: "/home" });
+              },
+            },
+            sub: {
+              text: "신규 멤버 가입",
+              func: () => {
+                toast("info", "원활한 가입 진행를 위해 웹사이트로 전환합니다.");
+                setTimeout(() => {
+                  navigateExternalLink("https://study-about.club/login/confirm");
+                }, 1000);
+                return;
+              },
+            },
+          }}
+        >
+          로그인 방식을 선택해 주세요!
         </ModalLayout>
       )}
     </>
