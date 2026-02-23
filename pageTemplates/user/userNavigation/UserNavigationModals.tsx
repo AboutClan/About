@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -35,6 +35,7 @@ interface IUserNavigationModals {
 const CUOPON_VALUE = "196643625581";
 
 function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals) {
+  const { data: session } = useSession();
   const router = useRouter();
   const [isModal, setIsModal] = useState<boolean>();
   const toast = useToast();
@@ -143,9 +144,9 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
             color="gray.600"
           >
             <Box mr={3} as="span" fontWeight="semibold">
-              {userInfo?.uid}
+              {session?.user?.uid}
             </Box>
-            <CopyBtn text={userInfo?.uid} />
+            <CopyBtn text={session?.user?.uid} />
           </Flex>
         </ModalLayout>
       )}
