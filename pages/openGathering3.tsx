@@ -10,16 +10,10 @@ function OpenGathering() {
   });
 
   const arr = [
-    "67e6c0d32f9b47cb765be84f",
-    "67bed937082b160ceb6374fc",
-    "6846426a75cb2f22f3270c20",
-    "6858be891381d7148d531ab0",
-    "69899769820b1ccc239867c0",
-    "68063be5b8770ad6100aa4ac",
-    "6613a57eb63eed0688b48ab4",
-    "693f8e639bfd1441253bf533",
-    "674aadf46f28da51807e0afb",
-    "68ee59c3346d8af2023cbab1",
+    "6996054f5318db174430873f",
+    "699605195318db174430873d",
+    "675eaa4162a9b9a9d70d02aa",
+    "683f92e2c470fb74df5215f1",
   ];
 
   const filterUsers = allUserData
