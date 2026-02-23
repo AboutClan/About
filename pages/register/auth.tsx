@@ -4,8 +4,8 @@
 // ✅ 둘 다 handleWebTransactionId() 하나로 처리
 
 import { Box } from "@chakra-ui/react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useRef } from "react";
 
 import BottomNav from "../../components/layouts/BottomNav";

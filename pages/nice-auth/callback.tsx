@@ -12,28 +12,48 @@ export default function NiceAuthCallbackPage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    let moved = false;
+    const go = (url: string) => {
+      if (moved) return;
+      moved = true;
+      window.location.replace(url);
+    };
+
     const urlParams = new URLSearchParams(window.location.search);
     const webTransactionId = urlParams.get("web_transaction_id");
 
     if (!webTransactionId) {
       alert("잘못된 접근입니다.");
-      window.location.replace("/");
+      go("/");
       return;
     }
 
+    const nextUrl = `${AUTH_RETURN_TO}?web_transaction_id=${encodeURIComponent(webTransactionId)}`;
     const payload = { web_transaction_id: webTransactionId };
     const targetOrigin = window.location.origin;
 
     if (window.opener && !window.opener.closed) {
-      window.opener.postMessage(payload, targetOrigin);
-      setTimeout(() => window.close(), 200);
+      try {
+        window.opener.postMessage(payload, targetOrigin);
+      } catch (e) {
+        console.error(e);
+      }
+
+      setTimeout(() => {
+        try {
+          window.close();
+        } catch (e) {
+          console.error(e);
+        }
+
+        // close가 막히면 이동
+        setTimeout(() => go(nextUrl), 300);
+      }, 150);
+
       return;
     }
 
-    const returnUrl = `${AUTH_RETURN_TO}?web_transaction_id=${encodeURIComponent(
-      webTransactionId,
-    )}`;
-    window.location.replace(returnUrl);
+    go(nextUrl);
   }, []);
 
   return (
