@@ -26,7 +26,8 @@ function UserStudySection() {
       );
 
       const place = findStudy?.placeId;
-      const textArr = place.location?.address.split(" ");
+      if (!place) return null;
+      const textArr = place?.location?.address.split(" ");
       const members = findStudy.members.map((userId) => userId.userId);
       return {
         place: {
@@ -58,11 +59,13 @@ function UserStudySection() {
         <Box position="relative" minH="1000px">
           {thumbnailCardInfoArr?.length ? (
             <>
-              {thumbnailCardInfoArr?.map((thumbnailCardInfo, idx) => (
-                <Box mb={3} key={idx} mx={5}>
-                  <StudyThumbnailCard {...thumbnailCardInfo} hasReviewBtn />
-                </Box>
-              ))}
+              {thumbnailCardInfoArr
+                ?.filter((t) => !!t?.place)
+                .map((thumbnailCardInfo, idx) => (
+                  <Box mb={3} key={idx} mx={5}>
+                    <StudyThumbnailCard {...thumbnailCardInfo} hasReviewBtn />
+                  </Box>
+                ))}
             </>
           ) : isLoading ? (
             <>
