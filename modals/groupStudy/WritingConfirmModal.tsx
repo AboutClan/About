@@ -50,7 +50,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
     },
     onError: errorToast,
   });
-
+  console.log(5, groupWriting);
   const onSubmit = () => {
     if (groupWriting?.id) {
       updateGroup({ groupStudy: groupWriting as IGroup });

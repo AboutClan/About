@@ -1,7 +1,6 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
-import { Box, Button, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { Box, Flex } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
@@ -15,11 +14,12 @@ import InfoList from "../../../components/atoms/lists/InfoList";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import ControlButton from "../../../components/ControlButton";
 import Slide from "../../../components/layouts/PageSlide";
+import MiniSemiGaugeNeedle from "../../../components/molecules/GradeGauge";
 import ValueBoxCol, { ValueBoxColItemProps } from "../../../components/molecules/ValueBoxCol";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import { useGatherGroupQuery, useGroupFeedsQuery } from "../../../hooks/gather/queries";
-import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
+import { useGroupIdMannerQuery, useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { IFooterOptions, ModalLayout } from "../../../modals/Modals";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
 import GroupComments from "../../../pageTemplates/group/detail/GroupComment";
@@ -35,8 +35,10 @@ import { backUrlState } from "../../../recoils/navigationRecoils";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { GroupMemberRole } from "../../../types/models/groupTypes/group";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { shuffleArray } from "../../../utils/convertUtils/convertDatas";
 import { ThunderIcon } from "../../gather";
+import { calculateGrade } from "./manner";
 
 export type GroupSectionCategory = "정 보" | "모 임" | "피 드";
 
@@ -54,10 +56,10 @@ function GroupDetail() {
   const setGatherWriting = useSetRecoilState(sharedGatherWritingState);
 
   const { data: group } = useGroupIdQuery(id, { enabled: !!id });
-
   const { data: gathers } = useGatherGroupQuery(id, {
     enabled: !!id,
   });
+  console.log(5, gathers);
   useEffect(() => {
     if (!gathers) return;
     if (isResult) {
@@ -174,7 +176,12 @@ function GroupDetail() {
       {!group && <MainLoading />}
       {group && !findMyInfo && !isGuest && !isAdmin ? <GroupBottomNav data={group} /> : null}
       {isModal && (
-        <ResultModal onClose={() => setIsModal(false)} gathers={gathers} role={findMyInfo?.role} />
+        <ResultModal
+          onClose={() => setIsModal(false)}
+          gathers={gathers}
+          role={findMyInfo?.role}
+          id={id}
+        />
       )}
     </>
   );
@@ -184,26 +191,33 @@ export function ResultModal({
   onClose,
   gathers,
   role,
+  id,
 }: {
   onClose: () => void;
   gathers: IGather[];
   role: GroupMemberRole;
+  id: string;
 }) {
-  const lastMonthGathers = gathers.filter(
-    (gather) =>
-      dayjs(gather.date).isAfter(dayjs().subtract(1, "month").startOf("month")) &&
-      dayjs(gather.date).isBefore(dayjs().startOf("month")),
-  );
-  const monthGathers = gathers.filter((gather) =>
-    dayjs(gather.date).isAfter(dayjs().startOf("month")),
-  );
+  // const lastMonthGathers = gathers.filter(
+  //   (gather) =>
+  //     dayjs(gather.date).isAfter(dayjs().subtract(1, "month").startOf("month")) &&
+  //     dayjs(gather.date).isBefore(dayjs().startOf("month")),
+  // );
+  // const monthGathers = gathers.filter((gather) =>
+  //   dayjs(gather.date).isAfter(dayjs().startOf("month")),
+  // );
 
   const userInfo = useUserInfo();
-  const lastMine = lastMonthGathers.filter((gather) =>
-    gather.participants?.some((par) => par.user._id === userInfo?._id),
-  );
-  const monthMine = monthGathers.filter((gather) =>
-    gather.participants?.some((par) => par.user._id === userInfo?._id),
+  // const lastMine = lastMonthGathers.filter((gather) =>
+  //   [gather?.user, ...gather.participants]?.some(
+  //     (par) => par.user._id === "65ffd07ddffb1dfbc9ec6107",
+  //   ),
+  // );
+
+  const monthMine = gathers.filter((gather) =>
+    [{ user: gather?.user as UserSimpleInfoProps }, ...gather.participants]?.some(
+      (par) => par.user._id === userInfo?._id,
+    ),
   );
 
   const [isPenaltyModal, setIsPenaltyModal] = useState(false);
@@ -220,32 +234,35 @@ export function ResultModal({
   ];
 
   const valueArr: ValueBoxColItemProps[] = gathers && [
-    {
-      left: "이번 달 개설 모임",
-      right: `${lastMonthGathers.length}회`,
-    },
-    {
-      left: "내가 참여한 모임",
-      right: `${lastMine.length}회`,
-      color: "mint",
-    },
-    {
-      left: "지난 달 개설 모임",
-      right: `${monthGathers.length}회`,
-    },
+    // {
+    //   left: "이번 달 개설 모임",
+    //   right: `${lastMonthGathers.length}회`,
+    // },
+    // {
+    //   left: "내가 참여한 모임",
+    //   right: `${lastMine.length}회`,
+    //   color: "mint",
+    // },
+    // {
+    //   left: "지난 달 개설 모임",
+    //   right: `${monthGathers.length}회`,
+    // },
     {
       left: "내가 참여한 모임",
       right: `${monthMine.length}회`,
       color: "mint",
     },
   ];
+
+  const { data } = useGroupIdMannerQuery(id + "", "private", { enabled: !!id });
+
+  const myGrade = data?.[userInfo?.uid];
+
+  const { total, value } = calculateGrade(myGrade);
+
   return (
     <>
-      <ModalLayout
-        title={`${dayjs().month() + 1}월 활동 점수표`}
-        footerOptions={footerOptions}
-        setIsModal={onClose}
-      >
+      <ModalLayout title="소모임 활동 종합" footerOptions={footerOptions} setIsModal={onClose}>
         <Box minH="240px">
           <Flex align="center">
             <Avatar user={userInfo} size="md1" />
@@ -272,8 +289,19 @@ export function ResultModal({
           </Flex>
           <Box my={3} h="1px" bg="gray.100" />
 
-          <Box minH="130px"><ValueBoxCol items={valueArr} /></Box>
-          <Button
+          <Box>
+            <ValueBoxCol items={valueArr} />
+          </Box>
+          <Box as="p" mt={5}>
+            소모임 멤버들이 평가한 내 멤버 지표입니다.
+            <br />
+            멤버 평가는 익명을 보장하며, <br />
+            5명 단위로 한번에 업데이트 됩니다.
+          </Box>
+          <Flex justify="center" align="center" p={4} mt={3} mb={2}>
+            <MiniSemiGaugeNeedle value={value} label={total + ""} size={150} />
+          </Flex>
+          {/* <Button
             variant="unstyled"
             bg="gray.800"
             borderRadius="20px"
@@ -287,7 +315,7 @@ export function ResultModal({
             onClick={() => setIsPenaltyModal(true)}
           >
             월간 점수 가이드
-          </Button>
+          </Button> */}
         </Box>{" "}
       </ModalLayout>
       {isPenaltyModal && (
