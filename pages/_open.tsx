@@ -20,7 +20,7 @@ export default function OpenPage() {
     params.delete("dl");
 
     // 3) 트래킹/캐시버스트 추가
-    params.set("__t", String(Date.now()));
+    // params.set("__t", String(Date.now()));
 
     // ✅ dl 제외한 나머지 쿼리(= web_transaction_id 등)를 붙여서 전달
     const queryString = params.toString();
