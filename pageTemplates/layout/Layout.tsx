@@ -228,7 +228,7 @@ function Layout({ children }: ILayout) {
     pathname === "/random-roulette"
       ? {
           title: "🔥 열활 멤버 🔥 이벤트 룰렛",
-          description: "소모임 열활 멤버에게 제공하는 이벤트 티켓! 접속해서 확인하세요!",
+          description: "소모임 열활 멤버에게 드리는 이벤트 티켓! 접속해서 확인하세요!",
           url: `about20s.club/cafe-map`,
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%9D%B4%EB%B2%A4%ED%8A%B8+%EB%A1%A4%EB%A0%9B.png",
