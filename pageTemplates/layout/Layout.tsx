@@ -63,7 +63,7 @@ function Layout({ children }: ILayout) {
     pathname === "/user/info/privacy" ||
     pathname === "/faq";
 
-  const isGuest = useMemo(() => session?.user?.name === "guest", [session]);
+  const isGuest = session?.user.name === "guest";
   const [isErrorModal, setIsErrorModal] = useState(false);
 
   // 전역 자동 게스트 로그인 시도 여부
@@ -325,7 +325,6 @@ function Layout({ children }: ILayout) {
           <PageTracker />
           {isBottomNavCondition && <BottomNav hasBottomNav={isGuest && isBottomNavCondition} />}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
-
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}
