@@ -99,7 +99,7 @@ export default function Auth() {
           toast("info", "현재 운영 정책상 국내 국적자만 가입이 가능합니다.");
           return;
         }
-
+        console.log(5, resultData);
         setLocalStorageObj(REGISTER_INFO, {
           name: resultData?.name ?? "",
           gender: resultData?.gender === "1" ? "남성" : resultData?.gender === "2" ? "여성" : "",
