@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -227,11 +227,11 @@ function Layout({ children }: ILayout) {
   const { title, description, url, image } =
     pathname === "/random-roulette"
       ? {
-          title: "이벤트 룰렛",
-          description: "열활 멤버에게 제공하는 랜덤 이벤트 티켓!",
+          title: "🔥 열활 멤버 🔥 이벤트 룰렛",
+          description: "소모임 열활 멤버에게 제공하는 이벤트 티켓! 접속해서 확인하세요!",
           url: `about20s.club/cafe-map`,
           image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%97%B4%ED%99%9C%ED%8B%B0%EC%BC%93.png",
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%9D%B4%EB%B2%A4%ED%8A%B8+%EB%A1%A4%EB%A0%9B.png",
         }
       : pathname === "/cafe-map"
       ? {
