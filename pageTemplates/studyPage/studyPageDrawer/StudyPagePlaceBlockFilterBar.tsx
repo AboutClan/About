@@ -23,7 +23,7 @@ function StudyPagePlaceSectionFilterBar({
   const lastStudyHours = dayjs(date).hour(9).startOf("hour").diff(dayjs(), "m");
 
   return (
-    <Flex justify="space-between" lineHeight="16px" my={4}>
+    <Flex justify="space-between" lineHeight="16px"  my={4}>
       <Flex fontSize="12px">
         <Box mr={1}>{dayjs(date).startOf("day").isBefore(dayjs()) ? "진행" : "예정"} 스터디</Box>
         <b>{placeCnt}개</b>

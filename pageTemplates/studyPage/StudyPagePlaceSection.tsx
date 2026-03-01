@@ -72,7 +72,7 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
             date={date}
           />
         ) : (
-          <Box my={4} />
+          <Box my={4} h={4} />
         )}
         <Box>
           {thumbnailCardInfoArr?.length && !isLoading

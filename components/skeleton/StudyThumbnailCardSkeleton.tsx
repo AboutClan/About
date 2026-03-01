@@ -2,7 +2,7 @@ import { Box, Flex, Skeleton } from "@chakra-ui/react";
 
 export function StudyThumbnailCardSkeleton() {
   return (
-    <Box h="88px" mb={3} borderBottom="var(--border)">
+    <Box h="92px" mb={3} borderBottom="var(--border)">
       <Flex pr={3} bg="white" justify="space-between">
         {/* 이미지 자리 */}
         <Skeleton isLoaded={false} w="80px" h="80px" borderRadius="8px" />
