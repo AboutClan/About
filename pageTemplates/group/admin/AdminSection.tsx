@@ -10,13 +10,13 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
-import { CrownIcon } from "../../../components/Icons/icons";
 import MiniSemiGaugeNeedle from "../../../components/molecules/GradeGauge";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
@@ -35,6 +35,7 @@ import { IFooterOptions, ModalLayout } from "../../../modals/Modals";
 import { calculateGrade } from "../../../pages/group/[id]/manner";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { GroupParicipantProps } from "../../../types/models/groupTypes/group";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 const pillProps = {
   variant: "outline" as const,
@@ -200,6 +201,7 @@ function UserBlock({
   function Divider() {
     return <Box w="1px" h="40px" bg="gray.200" />;
   }
+  console.log(2, who);
   return (
     <>
       <Flex flexDir="column" borderBottom="var(--border)" pb={3}>
@@ -224,14 +226,18 @@ function UserBlock({
                 {role === "member" ? "임시 멤버" : "정규 멤버"}
               </Badge>
 
-              {(role === "admin" || role === "manager") && (
+              {/* {(role === "admin" || role === "manager") && (
                 <Flex justify="center" align="center" ml={1}>
                   <CrownIcon color={role === "admin" ? "yellow" : "gray"} />
                 </Flex>
-              )}
+              )} */}
             </Flex>
             <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
-              <CommentText>2026년 2월 17일 가입</CommentText>
+              <CommentText>
+                {who?.registerDate
+                  ? dayjsToFormat(dayjs(who.registerDate), "YY년 M월 D일 가입")
+                  : "26년 2월 이전 가입"}
+              </CommentText>
             </Flex>
           </Flex>
           <Flex align="center" ml="auto">

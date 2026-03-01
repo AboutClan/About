@@ -12,6 +12,7 @@ export interface IGroup extends IGroupWriting {
   notionUrl?: string;
   requiredTicket: number;
   randomTicket: number;
+  meetingType: "online" | "offline" | "hybrid";
 }
 
 export type GroupMemberRole = "member" | "manager" | "admin" | "regularMember";
@@ -23,6 +24,7 @@ export interface GroupParicipantProps {
   deposit: number;
   lastMonthAttendance: boolean;
   monthAttendance: boolean;
+  registerDate?: string;
 }
 
 export interface IGroupWriting extends TimeStampProps {

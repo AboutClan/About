@@ -156,7 +156,9 @@ function GroupDetail() {
                     isPlanned={false}
                   />
                 )}
-                <GroupGathering gatherData={gatherData} />
+                {(gatherData.length > 1 || group.meetingType !== "online") && (
+                  <GroupGathering gatherData={gatherData} />
+                )}
                 <GroupReview feeds={gatherFeeds} />
               </>
             ) : null}

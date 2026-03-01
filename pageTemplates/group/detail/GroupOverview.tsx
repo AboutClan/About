@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 
 import MainBadge from "../../../components/atoms/MainBadge";
 import BlurredLink from "../../../components/molecules/BlurredLink";
@@ -13,6 +14,7 @@ interface GroupOverviewProps {
 }
 
 function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverviewProps) {
+  console.log(group);
   return (
     <Flex direction="column" px={5} pt={4} pb={2}>
       <Flex mb={2}>
@@ -32,12 +34,20 @@ function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverview
               group?.participants?.length >= 3 ? `총 ${group?.participants?.length}명` : `모집중`,
           },
           {
-            category: "활 동",
-            text: gatherCnt === 0 ? "시작 전" : `모임 ${gatherCnt}번 / 후기 ${reviewCnt}개`,
+            category: group.meetingType === "online" ? "방 식" : "활 동",
+            text:
+              group.meetingType === "online"
+                ? `온라인 진행`
+                : gatherCnt === 0
+                ? "시작 전"
+                : `모임 ${gatherCnt}번 / 후기 ${reviewCnt}개`,
           },
           {
-            category: "티 켓",
-            text: `월 ${group.requiredTicket}장 소모`,
+            category: group.meetingType === "online" ? "최근 활동 날짜" : "티 켓",
+            text:
+              group.meetingType === "online"
+                ? `${dayjs().subtract(1, "day").format("YY년 M월 D일")}`
+                : `월 ${group.requiredTicket}장 소모`,
           },
           {
             category: "단톡방",
