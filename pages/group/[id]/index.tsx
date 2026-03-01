@@ -1,9 +1,9 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Box, Flex } from "@chakra-ui/react";
+import { signIn, useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -143,7 +143,7 @@ function GroupDetail() {
               text={group.participants?.length >= 3 ? "정규 멤버" : "오픈 대기 멤버"}
               isPlanned={group.participants.length <= 3}
             />
-            {group.participants.length >= 2 ? (
+            {group?.participants?.length >= 2 ? (
               <>
                 {subFilterMembers?.length > 2 && subFilterMembers?.length && (
                   <GroupParticipation
@@ -156,7 +156,7 @@ function GroupDetail() {
                     isPlanned={false}
                   />
                 )}
-                {(gatherData.length > 1 || group.meetingType !== "online") && (
+                {(gatherData?.length > 1 || group.meetingType !== "online") && (
                   <GroupGathering gatherData={gatherData} />
                 )}
                 <GroupReview feeds={gatherFeeds} />
