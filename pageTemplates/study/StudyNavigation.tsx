@@ -107,6 +107,7 @@ function StudyNavigation({
     if ((myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type === "absenced") {
       return;
     }
+
     if (
       (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type === "arrived" &&
       studyType !== "soloRealTimes"
@@ -399,7 +400,13 @@ function StudyNavigation({
               size="lg"
               flex={1}
               colorScheme={navigationProps.colorScheme}
-              onClick={navigationProps?.func}
+              onClick={
+                userInfo?.temperature?.cnt > 2 && userInfo?.temperature?.temperature < 36
+                  ? () => {
+                      toast("warning", "소셜링 온도 36.0°C 이상만 참여 가능합니다.");
+                    }
+                  : navigationProps?.func
+              }
               isDisabled={!navigationProps?.func}
               isLoading={isLoading}
             >
