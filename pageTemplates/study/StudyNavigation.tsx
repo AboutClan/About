@@ -401,7 +401,9 @@ function StudyNavigation({
               flex={1}
               colorScheme={navigationProps.colorScheme}
               onClick={
-                userInfo?.temperature?.cnt > 2 && userInfo?.temperature?.temperature < 36
+                studyType !== "soloRealTimes" &&
+                userInfo?.temperature?.cnt > 2 &&
+                userInfo?.temperature?.temperature < 36
                   ? () => {
                       toast("warning", "소셜링 온도 36.0°C 이상만 참여 가능합니다.");
                     }
