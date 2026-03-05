@@ -67,7 +67,7 @@ export function GroupThumbnailCard({
       par2.push(temp);
     }
   } else if (id === 104) {
-    maxCnt = 100;
+    maxCnt = 70;
     const temp: UserSimpleInfoProps = {
       user: {
         avatar: {
@@ -77,7 +77,7 @@ export function GroupThumbnailCard({
       },
     };
 
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < 30; i++) {
       par2.push(temp);
     }
   } else if (id === 176) {
@@ -95,7 +95,7 @@ export function GroupThumbnailCard({
       par2.push(temp);
     }
   } else if (id === 132) {
-    maxCnt = 40;
+    maxCnt = 50;
     const temp: UserSimpleInfoProps = {
       user: {
         avatar: {
@@ -118,10 +118,23 @@ export function GroupThumbnailCard({
       },
     };
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 30; i++) {
       par2.push(temp);
     }
-  } else if (id === 0) {
+    maxCnt = 120;
+  } else if (id === 245) {
+    const temp: UserSimpleInfoProps = {
+      user: {
+        avatar: {
+          type: 5,
+          bg: 2,
+        },
+      },
+    };
+    maxCnt = 20;
+    for (let i = 0; i < 10; i++) {
+      par2.push(temp);
+    }
   }
   const statusToBadgeProps: Record<GroupStatus, { text: string; colorScheme: string }> = {
     imminent: { text: `마감까지 ${maxCnt - participants.length}명`, colorScheme: "red" },

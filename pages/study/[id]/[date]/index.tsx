@@ -18,7 +18,6 @@ import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyDateControl from "../../../../pageTemplates/study/StudyDateControl";
-import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyNearMap from "../../../../pageTemplates/study/StudyNearMap";
@@ -131,7 +130,7 @@ export default function Page() {
       ? "participation"
       : "otherParticipation";
 
-  const members =
+  const members2 =
     studyType === "participations"
       ? shortenParticipations(participationsSet)
       : studyType === "soloRealTimes"
@@ -139,6 +138,17 @@ export default function Page() {
           ...study.study.members[0],
         }))
       : findStudy?.members;
+  const members = members2?.length && [
+    members2?.[5],
+    members2?.[2],
+    members2?.[4],
+    members2?.[3],
+    members2?.[8],
+    members2?.[0],
+    members2?.[6],
+    members2?.[7],
+    members2?.[1],
+  ];
   const placeInfo = findStudy?.place;
 
   const studyLinkCondition =
@@ -159,7 +169,7 @@ export default function Page() {
     <>
       {isPassedSolo || studyPassedData || studySet ? (
         <>
-          <StudyHeader date={date} placeInfo={placeInfo} />
+          {/* <StudyHeader date={date} placeInfo={placeInfo} /> */}
           <Box mb={20}>
             <Slide isNoPadding>
               <StudyCover studyType={studyType} coverImage={placeInfo?.coverImage} />

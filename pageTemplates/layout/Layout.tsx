@@ -9,7 +9,6 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
-import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import ForceUpdateModal from "../../components/overlay/UpdateModal";
@@ -339,7 +338,7 @@ function Layout({ children }: ILayout) {
             {children}
           </div>
           <PageTracker />
-          {isBottomNavCondition && <BottomNav hasBottomNav={isGuest && isBottomNavCondition} />}
+          {/* {isBottomNavCondition && <BottomNav hasBottomNav={isGuest && isBottomNavCondition} />} */}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
 
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />

@@ -72,7 +72,7 @@ function GroupPage() {
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
   const [cursor, setCursor] = useState(status === "모집중" ? localStorageCursorNum : 0);
   const [category, setCategory] = useState<GatherCategoryMain | "전체">("전체");
-
+  console.log(2, groupStudies);
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
@@ -86,11 +86,12 @@ function GroupPage() {
   );
 
   let groups = groups2?.[0] && [
-    groups2?.[3],
-    groups2?.[4],
-    groups2?.[22],
-    groups2?.[12],
-    groups2?.[10],
+    groups2?.find((g) => g?.id === 102),
+    groups2?.find((g) => g?.id === 104),
+    groups2?.find((g) => g?.id === 245),
+    groups2?.find((g) => g?.id === 132),
+    groups2?.find((g) => g?.id === 118),
+    groups2?.find((g) => g?.id === 136),
   ];
   console.log(3, groups);
 
@@ -262,9 +263,10 @@ function GroupPage() {
               <Flex direction="column">
                 {groupStudies?.slice()?.map((group, idx) => {
                   const status =
-                    group.memberCnt.max !== 0 && group.memberCnt.max <= group.participants.length
+                    group?.memberCnt?.max !== 0 &&
+                    group?.memberCnt?.max <= group?.participants?.length
                       ? "full"
-                      : group.status;
+                      : group?.status;
 
                   return (
                     <Box key={group.id} pb={3} mb={3} borderBottom="var(--border)">

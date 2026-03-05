@@ -15,7 +15,6 @@ import StudyPageMap, {
 } from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 import StudyPageNav from "../pageTemplates/studyPage/StudyPageNav";
 import StudyPagePlaceSection from "../pageTemplates/studyPage/StudyPagePlaceSection";
-import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import { getTodayStr } from "../utils/dateTimeUtils";
 
 export type StudyPageTab = "About 스터디" | "카공 지도.ZIP 🔥";
@@ -93,7 +92,7 @@ export default function StudyPage() {
         {tab === "About 스터디" ? (
           <>
             <Slide>
-              <StudyPageCalendar date={date} setDate={setDate} />
+              <StudyPageCalendar date={"2026-03-04"} setDate={setDate} />
               <StudyPagePlaceSection
                 studySet={isPassedDate ? passedStudyData : studySet}
                 date={date}
@@ -144,11 +143,11 @@ export default function StudyPage() {
           }}
         />
       )}
-      {!isGuest && (
+      {/* {!isGuest && (
         <Box mb={20} mt={5}>
           <StudyControlButton date={date} />
         </Box>
-      )}
+      )} */}
     </>
   );
 }

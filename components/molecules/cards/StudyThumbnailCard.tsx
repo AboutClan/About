@@ -155,9 +155,17 @@ export function StudyThumbnailCard({
         bg: 0,
       },
     };
+    const temp5: UserSimpleInfoProps = {
+      avatar: {
+        type: 5,
+        bg: 13,
+      },
+    };
     pa2.push(temp2);
     pa2.push(temp3);
     pa2.push(temp4);
+    pa2.push(temp5);
+    pa2.push(temp5);
   }
 
   const router = useRouter();
@@ -203,7 +211,7 @@ export function StudyThumbnailCard({
             <Flex>
               {place.date && (
                 <Box as="span" fontWeight={600}>
-                  {dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}
+                  {dayjsToFormat(dayjs(place.date).month(2).date(4).locale("ko"), "M.D(ddd)")}
                 </Box>
               )}
               {place.date && (
@@ -227,7 +235,7 @@ export function StudyThumbnailCard({
                   WebkitBoxOrient: "vertical",
                 }}
               >
-                {pa2.length < 5 ? "경기 수원시 팔달구 아주로 47번길 13" : place.address}
+                {name === "카페카탈로그" ? "경기 수원시 팔달구 아주로 47번길 13" : place.address}
               </Box>
             </Flex>
           </Subtitle>
