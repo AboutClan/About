@@ -1,12 +1,9 @@
 import { Box, Flex, Text, useCheckbox } from "@chakra-ui/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import dayjs from "dayjs";
+import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import Select from "../../components/atoms/Select";
-import {
-  GatherThumbnailCard,
-  GatherThumbnailCardProps,
-} from "../../components/molecules/cards/GatherThumbnailCard";
+import { GatherThumbnailCard } from "../../components/molecules/cards/GatherThumbnailCard";
 import { GatherFilterType, useGatherQuery } from "../../hooks/gather/queries";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
@@ -26,17 +23,95 @@ export default function GatherMain() {
 
   const sortKey = sortBy === "기본순" ? "basic" : sortBy === "최신 개설 순" ? "createdAt" : "date";
 
-  const { data: gatherData, isLoading } = useGatherQuery(cursor, checkType, sortKey);
+  const { data: s, isLoading } = useGatherQuery(cursor, checkType, sortKey);
+  const ARR: number[] = [4760, 4761, 4776, 4786, , 4789, 4783, 4785];
+
+  const ARR2: number[] = [4788, 4787, 4785, 4790, 47860];
+  const gatherData3 = s?.filter((g) => ARR2.includes(g.id));
+
+  const gatherData2 = s
+    ?.filter((g) => ARR.includes(g.id))
+    .sort((a, b) => ARR.indexOf(a.id) - ARR.indexOf(b.id));
+
+  const gatherData = gatherData2?.map((gather, idx) => {
+    let temp: IGather = gather;
+    temp.status = idx === 5 ? "expired" : "pending";
+    temp.date = dayjs(temp.date)
+      .month(2)
+      .date(idx < 3 ? 6 : 7)
+      .toISOString();
+
+    switch (gather.id) {
+      case 4760: {
+        temp.title = "🎲 건대 보드게임 & 마피아🎲";
+        temp.participants = [
+          ...gatherData3[2].participants,
+          ...temp.participants,
+          ...temp.participants,
+        ].slice(0, 11);
+        temp.memberCnt.max = 12;
+        break;
+      }
+      case 4761: {
+        // temp.participants = [...gatherData3[0].participants, ...temp.participants];
+        break;
+      }
+      case 4776: {
+        // temp.participants = [...gatherData3[0].participants, ...temp.participants];
+        break;
+      }
+      case 4786: {
+        temp.title = "🌼 어바웃 개강총회 🌼";
+        temp.participants = [
+          ...gatherData3[3].participants,
+          ...temp.participants,
+          ...gatherData3[2].participants,
+
+          ...gatherData3[1].participants,
+        ];
+        temp.memberCnt.max = 130;
+        break;
+      }
+      case 4789: {
+        temp.participants = [...gatherData3[1].participants, ...temp.participants].slice(0, 11);
+        temp.memberCnt.max = 12;
+        break;
+      }
+      case 4783: {
+        temp.participants = [...gatherData3[0].participants, ...temp.participants].slice(0, 5);
+        temp.memberCnt.max = 6;
+        break;
+      }
+      case 4785: {
+        temp.status = "expired";
+      }
+    }
+
+    let title = gather.title;
+    let date = gather.date;
+    let par = gather.participants;
+    let maxCnt = gather.memberCnt.max;
+    let status = "pending";
+    console.log(temp);
+    switch (gather.id) {
+      case 4789:
+        return {
+          ...temp,
+        };
+      default:
+        return temp;
+    }
+  });
 
   // 필터 / 정렬 변경 시 리스트 & 커서 초기화
-  useEffect(() => {
-    setGathers([]);
-    setCursor(0);
-  }, [checkType, sortBy]);
+  // useEffect(() => {
+  //   setGathers([]);
+  //   setCursor(0);
+  // }, [checkType, sortBy]);
 
   // 페이지네이션 데이터 합치기
   useEffect(() => {
-    if (!gatherData) return;
+    if (!s) return;
 
     firstLoad.current = false;
 
@@ -44,36 +119,39 @@ export default function GatherMain() {
       if (cursor === 0) return gatherData;
       return [...prev, ...gatherData];
     });
-  }, [gatherData, cursor]);
+  }, [s, cursor]);
 
   // gathers → 카드 데이터로 변환 (파생 데이터이므로 useMemo)
-  const cardDataArr: GatherThumbnailCardProps[] = useMemo(
-    () => setGatherDataToCardCol(gathers, true),
-    [gathers],
-  );
+
+  const cardDataArr = setGatherDataToCardCol(gathers, true);
+
+  // const cardDataArr: GatherThumbnailCardProps[] = useMemo(
+  //   () => setGatherDataToCardCol(gathers, true),
+  //   [gathers],
+  // );
 
   // 무한 스크롤 옵저버
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !firstLoad.current && !isLoading) {
-          setCursor((prev) => prev + 1);
-        }
-      },
-      { threshold: 1.0 },
-    );
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       if (entries[0].isIntersecting && !firstLoad.current && !isLoading) {
+  //         // setCursor((prev) => prev + 1);
+  //       }
+  //     },
+  //     { threshold: 1.0 },
+  //   );
 
-    if (loader.current) observer.observe(loader.current);
+  //   if (loader.current) observer.observe(loader.current);
 
-    return () => {
-      if (loader.current) observer.unobserve(loader.current);
-      observer.disconnect();
-    };
-  }, [isLoading]);
+  //   return () => {
+  //     if (loader.current) observer.unobserve(loader.current);
+  //     observer.disconnect();
+  //   };
+  // }, [isLoading]);
 
   return (
-    <Box mb="50px">
-      <Flex py={1} mb={2} justify="space-between" align="center">
+    <Box mb="50px" mt={5}>
+      {/* <Flex py={1} mb={2} justify="space-between" align="center">
         <Flex>
           <Box mr={4}>
             <CheckBox
@@ -115,7 +193,7 @@ export default function GatherMain() {
           options={["기본순", "최신 개설 순", "일정 빠른 순"] as SortedType[]}
           setValue={setSortBy}
         />
-      </Flex>
+      </Flex> */}
 
       <Box position="relative">
         <Box minH="1000px">
@@ -193,13 +271,15 @@ export function CheckBox({ text, isChecked, onChange }: Props) {
 }
 
 function CheckIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="20px"
-    viewBox="0 -960 960 960"
-    width="20px"
-    fill="white"
-  >
-    <path d="m382-373.22 328.83-328.82Q726.78-718 748.43-718q21.66 0 37.61 15.96Q802-686.09 802-664.22t-15.96 37.83L419.61-259.52q-15.96 15.96-37.61 15.96t-37.61-15.96L173.52-430.39q-15.96-15.96-15.74-37.83.22-21.87 16.18-37.82Q189.91-522 211.78-522t37.83 15.96L382-373.22Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20px"
+      viewBox="0 -960 960 960"
+      width="20px"
+      fill="white"
+    >
+      <path d="m382-373.22 328.83-328.82Q726.78-718 748.43-718q21.66 0 37.61 15.96Q802-686.09 802-664.22t-15.96 37.83L419.61-259.52q-15.96 15.96-37.61 15.96t-37.61-15.96L173.52-430.39q-15.96-15.96-15.74-37.83.22-21.87 16.18-37.82Q189.91-522 211.78-522t37.83 15.96L382-373.22Z" />
+    </svg>
+  );
 }

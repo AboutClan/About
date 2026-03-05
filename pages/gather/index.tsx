@@ -1,20 +1,17 @@
 import { Box, Flex, Switch, Text } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
 import { Input } from "../../components/atoms/Input";
 import Textarea from "../../components/atoms/Textarea";
-import ControlButton from "../../components/ControlButton";
-import { Writing2Icon } from "../../components/Icons/ControlButtonIcon";
 import Slide from "../../components/layouts/PageSlide";
-import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
+import { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useGatherRequestMutation } from "../../hooks/gather/mutations";
 import { ModalLayout } from "../../modals/Modals";
-import GatherHeader from "../../pageTemplates/gather/GatherHeader";
 import GatherMain from "../../pageTemplates/gather/GatherMain";
 import GatherPick from "../../pageTemplates/gather/GatherPick";
 import SquareLoungeSection from "../../pageTemplates/square/SquareLoungeSection";
@@ -79,12 +76,12 @@ function Gather() {
 
   return (
     <>
-      <GatherHeader tab={tab} />
+      {/* <GatherHeader tab={tab} />
       <Slide isNoPadding>
         <Box fontSize="16px" mb={3} bgColor="white" borderBottom="var(--border)" px={5}>
           <TabNav tabOptionsArr={tabNavOptions} selected={tab} isBlack />
         </Box>
-      </Slide>
+      </Slide> */}
       <Slide isNoPadding={tab !== "번개"}>
         {tab === "번개" ? (
           <GatherMain />
@@ -95,7 +92,7 @@ function Gather() {
         )}
       </Slide>
 
-      {!isGuest && (
+      {/* {!isGuest && (
         <ControlButton
           text={tab === "번개" ? "모임 개설" : tab === "라운지" ? "후기 작성" : "모임 제안"}
           rightIcon={
@@ -122,7 +119,7 @@ function Gather() {
           }}
           isDisabled={isGuest}
         />
-      )}
+      )} */}
       {/*       
       {!isGuest && tab === "번개" && (
         <WritingButton url="/gather/writing/category" type="thunder" />

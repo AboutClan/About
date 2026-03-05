@@ -2,14 +2,13 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
-import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
@@ -307,13 +306,13 @@ function Layout({ children }: ILayout) {
                 ? {}
                 : NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
-                    paddingTop: `56px`,
+                    // paddingTop: `56px`,
                   }
                 : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
                   !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
                   !(currentSegment?.[0] === "user" && currentSegment?.[1])
                 ? {
-                    paddingTop: `56px`,
+                    // paddingTop: `56px`,
                     paddingBottom: `var(--bottom-nav-height)`,
                   }
                 : {}),
@@ -323,7 +322,7 @@ function Layout({ children }: ILayout) {
             {children}
           </div>
           <PageTracker />
-          {isBottomNavCondition && <BottomNav hasBottomNav={isGuest && isBottomNavCondition} />}
+          {/* {isBottomNavCondition && <BottomNav hasBottomNav={isGuest && isBottomNavCondition} />} */}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>

@@ -16,7 +16,7 @@ import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import { InfinityIcon } from "./StudyThumbnailCard";
 
-const VOTER_SHOW_MAX = 4;
+const VOTER_SHOW_MAX = 6;
 export interface GatherThumbnailCardProps {
   title: string;
   status: string;
@@ -71,12 +71,13 @@ export function GatherThumbnailCard({
   homePath,
 }: GatherThumbnailCardProps) {
   const participantsMember = participants.filter(
-    (par) => par.user?._id !== "65df1ddcd73ecfd250b42c89",
+    (par) =>
+      par.user?._id !== "65df1ddcd73ecfd250b42c89" && par.user?._id !== "62a44519f4a6968c58fedb88",
   );
 
   const has = !!(gatherReview || memberReview);
 
-  const statusProps = STATUS_TO_BADGE_PROPS[dayjs(date).isBefore(dayjs()) ? "expired" : status];
+  const statusProps = STATUS_TO_BADGE_PROPS[status];
 
   return (
     <CardLink
