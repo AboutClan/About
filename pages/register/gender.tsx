@@ -42,7 +42,7 @@ function Gender() {
 
   return (
     <>
-      <ProgressHeader value={22} title="회원가입" />
+      <ProgressHeader value={50} title="회원가입" />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
@@ -58,7 +58,7 @@ function Gender() {
           </Button>
         </ButtonNav>
       </RegisterLayout>
-      <BottomNav onClick={onClickNext} url="/register/birthday" />
+      <BottomNav onClick={onClickNext} url="/register/location" />
     </>
   );
 }

@@ -110,7 +110,7 @@ export default function Auth() {
         // 1회성 값 정리(선택)
         sessionStorage.removeItem(NICE_REQUEST_NO_KEY);
 
-        router.push(`/register/location`);
+        router.push(`/register/gender`);
         clearStoredRequestNo();
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
