@@ -25,8 +25,21 @@ export default function StudyVoteTimeRulletDrawer({
   defaultVoteTime,
 }: IStudyVoteTimeRulletDrawer) {
   const [isFirst, setIsFirst] = useState(true);
-  const [isOpen, setIsOpen] = useState(true);
   const [selectedPreset, setSelectedPreset] = useState<"lunch" | "dinner" | null>("lunch");
+
+  useEffect(() => {
+    if (selectedPreset === "lunch") {
+      setVoteTime({
+        start: parseTimeToDayjs("14:00"),
+        end: parseTimeToDayjs("18:00"),
+      });
+    } else if (selectedPreset === "dinner") {
+      setVoteTime({
+        start: parseTimeToDayjs("18:00"),
+        end: parseTimeToDayjs("22:00"),
+      });
+    }
+  }, [selectedPreset]);
 
   return (
     <>
@@ -65,6 +78,10 @@ export default function StudyVoteTimeRulletDrawer({
               py={3}
               border="var(--border-main)"
               borderRadius="12px"
+              onClick={() => {
+                setSelectedPreset(null);
+                setIsFirst(false);
+              }}
             >
               <Flex>
                 <Box mr={2}>

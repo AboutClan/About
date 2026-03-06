@@ -32,6 +32,7 @@ interface StudyDateDrawerProps {
   defaultDate?: string;
   location?: LocationProps;
   canChange?: boolean;
+  isLocation?: boolean;
   // date: string;
   // handleStudyVote: (voteData: StudyVoteProps | RealTimeVoteProps) => void;
 }
@@ -41,6 +42,7 @@ function StudyApplyDrawer({
   defaultDate,
   location,
   canChange = false,
+  isLocation,
 }: StudyDateDrawerProps) {
   const toast = useToast();
 
@@ -95,6 +97,7 @@ function StudyApplyDrawer({
         toast("success", "스터디 취소 완료!");
       }
       resetStudy();
+
       onClose();
     },
   });
@@ -111,6 +114,16 @@ function StudyApplyDrawer({
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
   const [date, setDate] = useState(dayjs());
 
+  useEffect(() => {
+    const preloadImage = (src: string) => {
+      const img = new Image();
+      img.src = src;
+    };
+    preloadImage("/icons/lunch.png");
+    preloadImage("/icons/dinner.png");
+    preloadImage("/icons/selectIcon.png");
+  }, []);
+
   const handleBottomNav = () => {
     if (!selectedDates.length) {
       if (canChange) {
@@ -119,6 +132,11 @@ function StudyApplyDrawer({
       }
 
       toast("warning", "날짜를 선택해 주세요");
+      return;
+    }
+
+    if (isLocation) {
+      setIsTimeDrawer(true);
       return;
     }
     if (isFirstPage) {
@@ -137,7 +155,7 @@ function StudyApplyDrawer({
       }
     });
   };
-
+  console.log(voteTime);
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
       title: "예상 참여 시간을 선택해 주세요",
@@ -154,7 +172,7 @@ function StudyApplyDrawer({
           longitude: voteLocation ? voteLocation.longitude : userInfo.locationDetail.longitude,
           start: voteTime.start,
           end: voteTime.end,
-          eps: rangeNum + 1,
+          eps: isLocation ? 1 : rangeNum + 1,
         });
       },
       loading: isLoading,

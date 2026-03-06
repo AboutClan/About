@@ -97,13 +97,13 @@ function GroupPage() {
     const resolved = !Number.isNaN(idx) && categoryArr[idx] ? categoryArr[idx].title : "전체";
     setCategory(resolved as GatherCategoryMain | "전체");
   }, [router.isReady, categoryIdx]);
-
+  console.log(2, cursor);
   useEffect(() => {
     return () => {
       if (typeof window === "undefined") return;
       if (status === "모집중" && category === "전체") {
         // 0~3 사이에서만 다음 시작점을 돌리기
-        const next = ((cursor % 4) + 1) % 4;
+        const next = ((cursor % 5) + 1) % 5;
         // cursor: 0 → 1, 1 → 2, 2 → 3, 3 → 0, 4 → 1
         window.localStorage.setItem(GROUP_CURSOR_NUM, String(next));
       }
@@ -176,6 +176,8 @@ function GroupPage() {
                 ? 3
                 : prevCursor === 3
                 ? 4
+                : prevCursor === 4
+                ? 5
                 : 0;
 
             return nextCursor;

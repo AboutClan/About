@@ -1,23 +1,5 @@
 import { Button, Flex, Image, Text, VStack } from "@chakra-ui/react";
 
-type TimePreset = "lunch" | "dinner" | null;
-
-interface TimeSelectModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  selectedPreset: TimePreset;
-  onSelectPreset: (preset: Exclude<TimePreset, null>) => void;
-  onManualSelect: () => void;
-  onSubmit: () => void;
-}
-
-const CARD_BORDER = "1px solid";
-const CARD_BORDER_COLOR = "#E7ECEF";
-const ACTIVE_BG = "#EEF8F8";
-const PRIMARY = "#12C7C1";
-const TEXT_MAIN = "#2F3437";
-const TEXT_SUB = "#8B9298";
-
 export function TimeOptionCard({
   title,
   time,
@@ -37,16 +19,16 @@ export function TimeOptionCard({
       variant="unstyled"
       h="auto"
       borderRadius="20px"
-      border={CARD_BORDER}
-      borderColor={isSelected ? "#BFEDEC" : CARD_BORDER_COLOR}
-      bg={isSelected ? ACTIVE_BG : "white"}
+      border="1px solid"
+      borderColor={isSelected ? "mint" : "var(--gray-200)"}
+      bg={isSelected ? "var(--color-mint-light)" : "white"}
       py={4}
-      _hover={{ bg: isSelected ? ACTIVE_BG : "#FAFAFA" }}
+      _hover={{ bg: isSelected ? "var(--color-mint-light)" : "#FAFAFA" }}
       _active={{ transform: "scale(0.99)" }}
       flex={1}
     >
       <VStack spacing="8px" w="full">
-        <Text fontSize="17px" lineHeight="1" color={TEXT_MAIN}>
+        <Text fontSize="17px" lineHeight="1" color="gray.800">
           {title}
         </Text>
         <Flex align="center" justify="center" w="72px" h="72px">

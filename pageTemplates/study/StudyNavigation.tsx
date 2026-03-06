@@ -30,7 +30,7 @@ import {
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 // import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
 import { DayjsTimeProps } from "../../types/utils/timeAndDate";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
 import StudyApplyDrawer from "../vote/voteDrawer/StudyApplyDrawer";
 
@@ -69,6 +69,7 @@ function StudyNavigation({
   const router = useRouter();
   const searchParams = useSearchParams();
   const modalParam = searchParams.get("modal") as ModalParam;
+  const isLocation = searchParams.get("location") === "true";
 
   const toast = useToast();
 
@@ -474,11 +475,18 @@ function StudyNavigation({
       {(drawerType === "apply" || drawerType === "applyChange") && (
         <StudyApplyDrawer
           onClose={() => {
-            router.back();
+            if (isLocation) {
+              router.push(
+                `/study/participations/${getTodayStr()}?type=participations&studyLocation=true`,
+              );
+            } else {
+              router.back();
+            }
           }}
           defaultDate={date}
           location={location}
           canChange={drawerType === "applyChange"}
+          isLocation={isLocation}
         />
       )}
     </>

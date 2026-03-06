@@ -6,9 +6,11 @@ import { useEffect, useState } from "react";
 import Divider from "../../../../components/atoms/Divider";
 import { MainLoading, MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
+import { GroupThumbnailCard } from "../../../../components/molecules/cards/GroupThumbnailCard";
 import TabNav from "../../../../components/molecules/navs/TabNav";
 import { useToast } from "../../../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
+import { useGroupIdQuery } from "../../../../hooks/groupStudy/queries";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/study/queries";
 import { shortenParticipations } from "../../../../libs/study/studyConverters";
 import { getMyStudyDateArr } from "../../../../libs/study/studyHelpers";
@@ -37,6 +39,7 @@ import {
   StudyType,
 } from "../../../../types/models/studyTypes/study-set.types";
 import { dayjsToStr, getHour, getTodayStr } from "../../../../utils/dateTimeUtils";
+import { createGroupThumbnailProps } from "../../../group";
 
 export default function Page() {
   const toast = useToast();
@@ -45,6 +48,7 @@ export default function Page() {
   const userInfo = useUserInfo();
 
   const studyType = searchParams.get("type") as StudyType;
+  const studyLocation = searchParams.get("studyLocation") as "true";
 
   const [dateDayjs, setDateDayjs] = useState(
     studyType === "soloRealTimes"
@@ -74,6 +78,12 @@ export default function Page() {
   );
 
   const [modalType, setModalType] = useState<"studyLink" | "review">();
+
+  useEffect(() => {
+    if (studyLocation === "true") {
+      setTab("스터디 크루");
+    }
+  }, [studyLocation]);
 
   // useEffect(() => {
   //   const handlePopState = () => {
@@ -134,7 +144,7 @@ export default function Page() {
       ? "participation"
       : "otherParticipation";
 
-  const members =
+  const members2 =
     studyType === "participations"
       ? shortenParticipations(participationsSet)
       : studyType === "soloRealTimes"
@@ -143,7 +153,13 @@ export default function Page() {
         }))
       : findStudy?.members;
 
-  console.log(3, members);
+  const members =
+    tab === "스터디 크루"
+      ? (members2 as StudyParticipationProps[])?.filter(
+          (member) => member?.user?.belong === userInfo?.belong,
+        )
+      : members2;
+
   const placeInfo = findStudy?.place;
 
   const studyLinkCondition =
@@ -160,6 +176,17 @@ export default function Page() {
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
 
+  const removeBrackets = (str: string) => str.slice(1, -1);
+
+  const belong = userInfo?.belong ? removeBrackets(userInfo.belong) : null;
+  const STUDY_GROUP = {
+    "수원/용인": "270",
+  };
+  console.log(3, belong);
+  const groupId = !belong ? null : STUDY_GROUP?.[belong];
+
+  const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
+  console.log(141, group, groupId);
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
@@ -180,6 +207,7 @@ export default function Page() {
               )}
               <Box borderBottom="var(--border)" px={5}>
                 <TabNav
+                  selected={tab}
                   isFullSize
                   isBlack
                   tabOptionsArr={[
@@ -252,6 +280,19 @@ export default function Page() {
                 <Box h={2} bg="gray.100" my={4} />
                 <Slide>
                   <StudyPendingSection studySet={studySet} />
+                </Slide>
+              </>
+            ) : null}
+            {studyType === "participations" && tab === "스터디 크루" && group ? (
+              <>
+                <Box h={2} bg="gray.100" my={4} />
+                <Slide>
+                  <Box mb={2} fontSize="16px" fontWeight="semibold">
+                    연동된 소모임
+                  </Box>
+                  <GroupThumbnailCard
+                    {...createGroupThumbnailProps(group, "pending", null, null, true)}
+                  />
                 </Slide>
               </>
             ) : null}

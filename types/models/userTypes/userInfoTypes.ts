@@ -83,6 +83,7 @@ export interface UserSimpleInfoProps {
     cnt: number;
     sum?: number;
   };
+  belong?: string;
 }
 
 export interface LocationDetailProps {
