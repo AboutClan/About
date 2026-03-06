@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -13,7 +13,6 @@ import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { isPWA } from "../../utils/appEnvUtils";
-import { navigateExternalLink } from "../../utils/navigateUtils";
 import { isApp, isMobileWeb } from "../../utils/validationUtils";
 
 function HomeInitialSetting() {
@@ -109,12 +108,6 @@ function HomeInitialSetting() {
       if (data.role === "waiting") {
         router.push("/register/access");
         return;
-      }
-      if (!data?.gender) {
-        toast("error", "유저 정보에 오류가 존재합니다. 관리자에게 메세지를 남겨주세요.");
-        setTimeout(() => {
-          navigateExternalLink("https://pf.kakao.com/_SaWXn/chat");
-        }, 1500);
       }
     },
     onError() {
