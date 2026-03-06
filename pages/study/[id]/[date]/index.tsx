@@ -6,9 +6,8 @@ import { useEffect, useState } from "react";
 import Divider from "../../../../components/atoms/Divider";
 import { MainLoading, MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
-import Accordion from "../../../../components/molecules/Accordion";
 import TabNav from "../../../../components/molecules/navs/TabNav";
-import { ACCORDION_STUDY_FAQ } from "../../../../constants/contentsText/accordionContents";
+import { useToast } from "../../../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/study/queries";
 import { shortenParticipations } from "../../../../libs/study/studyConverters";
@@ -30,16 +29,17 @@ import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
-  StudyParticipationProps
+  StudyParticipationProps,
 } from "../../../../types/models/studyTypes/study-entity.types";
 import {
   StudyConfirmedSetProps,
   StudyParticipationsSetProps,
-  StudyType
+  StudyType,
 } from "../../../../types/models/studyTypes/study-set.types";
 import { dayjsToStr, getHour, getTodayStr } from "../../../../utils/dateTimeUtils";
 
 export default function Page() {
+  const toast = useToast();
   const searchParams = useSearchParams();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const userInfo = useUserInfo();
@@ -53,7 +53,7 @@ export default function Page() {
       ? dayjs(date).add(1, "day")
       : dayjs(date),
   );
-  const [tab, setTab] = useState<"스터디" | "가이드">("스터디");
+  const [tab, setTab] = useState<"일반 스터디" | "스터디 크루">("일반 스터디");
 
   const isPassedDate =
     studyType !== "soloRealTimes" &&
@@ -106,6 +106,9 @@ export default function Page() {
     studyType !== "participations" &&
     confirmedSet?.find((set) => set.study.place._id === id)?.study;
 
+  const myBelong = userInfo?.belong;
+  console.log(5, userInfo, myBelong);
+
   const myStudyInfo =
     studyType === "soloRealTimes"
       ? studySet?.soloRealTimes
@@ -130,7 +133,7 @@ export default function Page() {
       : findTodayStudy?.type === studyType
       ? "participation"
       : "otherParticipation";
- 
+
   const members =
     studyType === "participations"
       ? shortenParticipations(participationsSet)
@@ -139,6 +142,8 @@ export default function Page() {
           ...study.study.members[0],
         }))
       : findStudy?.members;
+
+  console.log(3, members);
   const placeInfo = findStudy?.place;
 
   const studyLinkCondition =
@@ -179,50 +184,59 @@ export default function Page() {
                   isBlack
                   tabOptionsArr={[
                     {
-                      text: "스터디",
-                      func: () => setTab("스터디"),
+                      text: "일반 스터디",
+                      func: () => setTab("일반 스터디"),
                     },
-                    { text: "가이드", func: () => setTab("가이드") },
+                    {
+                      text: "스터디 크루",
+                      func: () => {
+                        if (!myBelong) {
+                          toast("info", "가입중인 스터디 크루가 없습니다.");
+                          return;
+                        }
+                        setTab("스터디 크루");
+                      },
+                    },
                   ]}
                 />
               </Box>
             </Slide>
-            {tab === "스터디" ? (
-              <Slide>
-                <StudyDateBar
-                  date={date}
-                  members={members}
-                  studyType={studyType}
-                  placeInfo={placeInfo}
-                />
-                {isOpenStudy && <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />}
-                <Box h="1px" bg="gray.100" my={4} />
-                <Box pb={2} pos="relative">
-                  {(studyType === "soloRealTimes" || studyType === "participations") && (
-                    <StudyDateControl
-                      date={dateDayjs}
-                      setDate={setDateDayjs}
-                      isStudy={studyType === "soloRealTimes"}
+
+            <Slide>
+              <StudyDateBar
+                date={date}
+                members={members}
+                studyType={studyType}
+                placeInfo={placeInfo}
+              />
+              {isOpenStudy && <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />}
+              <Box h="1px" bg="gray.100" my={4} />
+              <Box pb={2} pos="relative">
+                {(studyType === "soloRealTimes" || studyType === "participations") && (
+                  <StudyDateControl
+                    date={dateDayjs}
+                    setDate={setDateDayjs}
+                    isStudy={studyType === "soloRealTimes"}
+                  />
+                )}
+                <Box minH="240px">
+                  {isPassedSolo && !studyPassedData ? (
+                    <Box pos="relative" minH="140px">
+                      <MainLoadingAbsolute size="sm" />
+                    </Box>
+                  ) : (
+                    <StudyMembers
+                      date={dayjsToStr(dateDayjs)}
+                      members={members || []}
+                      studyType={studyType}
+                      // hasStudyLink={
+                      //   myStudyStatus === "participation" && studyType !== "soloRealTimes"
+                      // }
                     />
                   )}
-                  <Box minH="240px">
-                    {isPassedSolo && !studyPassedData ? (
-                      <Box pos="relative" minH="140px">
-                        <MainLoadingAbsolute size="sm" />
-                      </Box>
-                    ) : (
-                      <StudyMembers
-                        date={dayjsToStr(dateDayjs)}
-                        members={members || []}
-                        studyType={studyType}
-                        // hasStudyLink={
-                        //   myStudyStatus === "participation" && studyType !== "soloRealTimes"
-                        // }
-                      />
-                    )}
-                  </Box>
                 </Box>
-                {/* {studyType === "participations" && members?.length && (
+              </Box>
+              {/* {studyType === "participations" && members?.length && (
                   <>
                     <Box h={2} bg="gray.100" my={4} />
                     <StudyNearMemberSection
@@ -231,14 +245,8 @@ export default function Page() {
                     />
                   </>
                 )} */}
-              </Slide>
-            ) : (
-              <Slide>
-                <Box mt={5}>
-                  <Accordion contentArr={ACCORDION_STUDY_FAQ} />
-                </Box>
-              </Slide>
-            )}
+            </Slide>
+
             {studyType === "participations" && studySet.results.length ? (
               <>
                 <Box h={2} bg="gray.100" my={4} />

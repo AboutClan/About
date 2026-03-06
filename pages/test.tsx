@@ -1,30 +1,29 @@
 import { Button } from "@chakra-ui/react";
+import { useState } from "react";
+import TimeSelectModal from "../pageTemplates/community/TestClock";
 
-import { useToast } from "../hooks/custom/CustomToast";
-import { navigateExternalLink } from "../utils/navigateUtils";
+export default function ExamplePage() {
+  const [isOpen, setIsOpen] = useState(true);
+  const [selectedPreset, setSelectedPreset] = useState<"lunch" | "dinner" | null>(null);
 
-function Test() {
-  const toast = useToast();
-  // useEffect(() => {
-  //   if (isWebView()) {
-  //     toast("info", "원활한 가입 기능 동작을 위해 웹사이트로 전환합니다.");
-  //     setTimeout(() => {
-  //       navigateExternalLink("https://study-about.club/register/access");
-  //     }, 2000);
-  //   }
-  // }, []);
   return (
     <>
-      <Button
-        onClick={() => {
-          toast("success", "성공");
-          navigateExternalLink("https://study-about.club/register/auth");
+      <Button onClick={() => setIsOpen(true)}>모달 열기</Button>
+
+      <TimeSelectModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        selectedPreset={selectedPreset}
+        onSelectPreset={(preset) => setSelectedPreset(preset)}
+        onManualSelect={() => {
+          // 기존 수동 시간 선택 모달/화면으로 이동
+          console.log("직접 시간 선택");
         }}
-      >
-        테스트
-      </Button>
+        onSubmit={() => {
+          console.log("선택된 값:", selectedPreset);
+          setIsOpen(false);
+        }}
+      />
     </>
   );
 }
-
-export default Test;

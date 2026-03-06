@@ -6,6 +6,7 @@ import { UserItem } from "../../../components/molecules/UserItem";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
+import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import GroupAdminInvitation from "../../../pageTemplates/group/admin/GroupAdminInvitation";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
@@ -20,12 +21,21 @@ export function InviteSection({ group }: InviteSecionProps) {
 
   const [isInviteTab, setIsInviteTab] = useState(false);
 
+  function getRegionPrefix(text: string): string | null {
+    const match = text.match(/^\[[^\]]+\]/);
+    return match ? match[0] : null;
+  }
+  const isStudy = group?.title.includes("크루");
+  const title = getRegionPrefix(group?.title);
+  console.log(isStudy, title);
   const { mutate, isLoading } = useGroupWaitingStatusMutation(+group.id, {
     onSuccess() {
       toast("success", "완료되었습니다.");
       resetGroup();
     },
   });
+
+  const { mutate: changeBelong } = useUserInfoFieldMutation("belong");
 
   const onClick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -35,6 +45,11 @@ export function InviteSection({ group }: InviteSecionProps) {
     e.stopPropagation();
     setDeletedUser((old) => [...old, user._id]);
     mutate({ status, userId: user._id });
+    console.log(24, isStudy);
+    if (isStudy) {
+      console.log(5);
+      changeBelong({ uid: user.uid, belong: title });
+    }
   };
   return (
     <>
@@ -95,7 +110,7 @@ export function InviteSection({ group }: InviteSecionProps) {
           isChecked={isInviteTab}
         />
       </Title>
-      {isInviteTab && <GroupAdminInvitation />}
+      {isInviteTab && <GroupAdminInvitation group={group} />}
     </>
   );
 }

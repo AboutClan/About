@@ -1,7 +1,10 @@
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
+import Image from "next/image";
 import { Dispatch, useEffect, useState } from "react";
 
 import { STUDY_VOTE_HOUR_ARR } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
+import { TimeOptionCard } from "../../../pageTemplates/community/TestClock";
 import { IModal } from "../../../types/components/modalTypes";
 import { createTimeArr, parseTimeToDayjs } from "../../../utils/dateTimeUtils";
 import RulletPickerTwo from "../../molecules/picker/RulletPickerTwo";
@@ -21,6 +24,10 @@ export default function StudyVoteTimeRulletDrawer({
   zIndex,
   defaultVoteTime,
 }: IStudyVoteTimeRulletDrawer) {
+  const [isFirst, setIsFirst] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
+  const [selectedPreset, setSelectedPreset] = useState<"lunch" | "dinner" | null>("lunch");
+
   return (
     <>
       <BottomFlexDrawer
@@ -28,11 +35,55 @@ export default function StudyVoteTimeRulletDrawer({
         isHideBottom
         isDrawerUp
         zIndex={zIndex || 5000}
-        height={402}
+        height={400}
         setIsModal={setIsModal}
         drawerOptions={drawerOptions}
       >
-        <StudyVoteTimeRullets defaultVoteTime={defaultVoteTime} setVoteTime={setVoteTime} />
+        {isFirst ? (
+          <>
+            <Flex w="full" mb={3}>
+              <TimeOptionCard
+                title="점심"
+                time="14:00 - 18:00"
+                iconSrc="/icons/lunch.png"
+                isSelected={selectedPreset === "lunch"}
+                onClick={() => setSelectedPreset("lunch")}
+              />
+              <Box w={3} />
+              <TimeOptionCard
+                title="저녁"
+                time="18:00 - 22:00"
+                iconSrc="/icons/dinner.png"
+                isSelected={selectedPreset === "dinner"}
+                onClick={() => setSelectedPreset("dinner")}
+              />
+            </Flex>
+            <Button
+              variant="unstyled"
+              w="full"
+              px={3}
+              py={3}
+              border="var(--border-main)"
+              borderRadius="12px"
+            >
+              <Flex>
+                <Box mr={2}>
+                  <Image src="/icons/selectIcon.png" width={40} height={40} alt="select" />
+                </Box>
+                <Flex flexDir="column" textAlign="start">
+                  <Box fontSize="14px" mb={1} color="gray.800" lineHeight="20px">
+                    직접 시간 선택
+                  </Box>
+                  <Box fontSize="11px" fontWeight={400} color="gray.500" lineHeight="12px">
+                    세부 시간을 직접 선택할 수 있습니다.
+                  </Box>
+                </Flex>
+              </Flex>
+            </Button>
+          </>
+        ) : (
+          <StudyVoteTimeRullets defaultVoteTime={defaultVoteTime} setVoteTime={setVoteTime} />
+        )}
       </BottomFlexDrawer>
     </>
   );
