@@ -240,7 +240,7 @@ function InviteDrawer({
       {isAdmin && (
         <>
           <Flex mb={2}>
-            {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+            {[0, 1, 2, 3, 4, 5, 6, 7].map((n) => (
               <Button
                 key={n}
                 onClick={() => {

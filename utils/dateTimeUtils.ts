@@ -115,7 +115,9 @@ export const getCalendarDates = (
         const now = dayjs();
 
         // 21시 이후면 "내일"까지 막아야 하므로 cutoffDay를 내일로 잡음
-        const cutoffDay = (now.hour() >= 21 ? now.add(1, "day") : now).startOf("day");
+        const cutoffDay = (now.hour() >= 21 ? now.add(1, "day") : now.subtract(1, "day")).startOf(
+          "day",
+        );
 
         // current가 cutoffDay와 "같거나 이전"이면 disabled
         const isCutoffDisabled =
