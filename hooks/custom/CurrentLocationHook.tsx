@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { CoordinatesProps } from "../../types/common";
 import { useToast } from "./CustomToast";
@@ -47,10 +47,10 @@ export function useUserCurrentLocation() {
     });
   };
 
-  // ✅ 초기 1회 호출
-  useEffect(() => {
-    getCurrentLocation();
-  }, []);
+  // // ✅ 초기 1회 호출
+  // useEffect(() => {
+  //   getCurrentLocation();
+  // }, []);
 
   return {
     currentLocation: coordinate,
