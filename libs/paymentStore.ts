@@ -4,7 +4,7 @@
 import fs from "fs";
 import path from "path";
 
-type PayStatus = "PENDING" | "SUCCESS" | "FAIL";
+type PayStatus = "PENDING" | "SUCCESS" | "FAIL" | "VERIFY_PENDING";
 
 export type PaymentRecord = {
   orderNo: string;
@@ -34,11 +34,18 @@ function writeAll(data: Record<string, PaymentRecord>) {
 
 export function upsertPayment(rec: Omit<PaymentRecord, "updatedAt">) {
   const all = readAll();
+  const existing = all[rec.orderNo];
+
+  if (existing?.status === "SUCCESS" && rec.status !== "SUCCESS") {
+    return existing;
+  }
+
   all[rec.orderNo] = {
-    ...(all[rec.orderNo] ?? {}),
+    ...(existing ?? {}),
     ...rec,
     updatedAt: new Date().toISOString(),
   };
+
   writeAll(all);
   return all[rec.orderNo];
 }

@@ -21,6 +21,27 @@ function readRawBody(req: NextApiRequest): Promise<string> {
   });
 }
 
+async function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function paycertWithRetry(tid: string, retryCount = 3) {
+  let lastCert: any = null;
+
+  for (let i = 0; i < retryCount; i++) {
+    const cert = await cookiepayPaycert(tid);
+    lastCert = cert;
+
+    if (cert?.RESULTCODE === "0000") return cert;
+
+    if (i < retryCount - 1) {
+      await sleep(1000 * (i + 1));
+    }
+  }
+
+  return lastCert;
+}
+
 function redirect(res: NextApiResponse, url: string) {
   res.redirect(302, url);
 }
@@ -113,7 +134,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return;
       }
 
-      const cert = await cookiepayPaycert(tid);
+      const cert = await paycertWithRetry(tid);
       console.log("paycert:", { rc: cert?.RESULTCODE, msg: cert?.RESULTMSG });
 
       // 2) paycert 실패(최종 실패)
@@ -124,7 +145,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           amount,
           paymethod,
           acceptDate,
-          status: "FAIL",
+          status: "VERIFY_PENDING",
           raw: { payload, cert },
         });
 
@@ -181,7 +202,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
-    const cert = await cookiepayPaycert(tid);
+    const cert = await paycertWithRetry(tid);
     console.log("paycert:", { rc: cert?.RESULTCODE, msg: cert?.RESULTMSG });
 
     if (cert?.RESULTCODE !== "0000") {
@@ -191,7 +212,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         amount,
         paymethod,
         acceptDate,
-        status: "FAIL",
+        status: "VERIFY_PENDING",
         raw: { payload, dec, cert },
       });
 

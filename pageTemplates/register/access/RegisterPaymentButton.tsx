@@ -132,10 +132,10 @@ function RegisterPaymentButton() {
         };
       case "PAYCERT_FAIL":
         return {
-          type: "fail",
-          title: "승인 확인에 실패했어요",
-          desc: msg || "승인 확인이 되지 않았어요. 다시 결제하거나 다른 수단을 이용해 주세요.",
-          action: "retry",
+          type: "pending",
+          title: "결제 확인 중이에요",
+          desc: "결제 확인에 일시적인 문제가 발생했어요. 이미 결제가 완료되었을 수 있으니 바로 다시 결제하지 말아주세요.",
+          action: "none",
           orderNo,
         };
       case "SERVER_ERROR":
@@ -173,11 +173,15 @@ function RegisterPaymentButton() {
     if (status !== "success") {
       handledReturnRef.current = true;
       setIsLoading2(false);
+
+      if (reason === "PAYCERT_FAIL") {
+        toast("info", "결제 확인 중이에요. 바로 다시 결제하지 말아주세요.");
+        return;
+      }
+
       const title =
         reason === "RETURN_FAIL"
           ? "결제가 완료되지 않았어요."
-          : reason === "PAYCERT_FAIL"
-          ? "승인 확인에 실패했어요."
           : reason === "DECRYPT_FAIL"
           ? "결제 확인에 실패했어요."
           : reason === "MISSING_KEYS"
