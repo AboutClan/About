@@ -225,7 +225,15 @@ function Layout({ children }: ILayout) {
   const third = path.split("/")?.[3];
 
   const { title, description, url, image } =
-    pathname === "/random-roulette"
+    pathname === "/home/gatherReview"
+      ? {
+          title: "멤버 리뷰",
+          description: "함께 참여했던 멤버들에 대한 후기를 익명으로 평가할 수 있어요!",
+          url: `about20s.club`,
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
+        }
+      : pathname === "/random-roulette"
       ? {
           title: "🔥 열활 멤버 🔥 이벤트 룰렛",
           description: "소모임 열활 멤버에게 드리는 이벤트 티켓! 접속해서 확인하세요!",
