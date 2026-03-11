@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
 import Avatar from "../../components/atoms/Avatar";
@@ -48,7 +48,7 @@ function Ranking() {
   const [users2, setUsers2] = useState<UserRankingProps[]>();
 
   const [tab, setTab] = useState<RankingTab>("월간 활동 랭킹");
-  const [medal, setMedal] = useState<MedalType>("브론즈");
+  const [medal, setMedal] = useState<MedalType>("골드");
 
   const { data: userInfo } = useUserInfoQuery();
 
