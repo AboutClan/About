@@ -117,7 +117,6 @@ export default function Page() {
     confirmedSet?.find((set) => set.study.place._id === id)?.study;
 
   const myBelong = userInfo?.belong;
-  console.log(5, userInfo, myBelong);
 
   const myStudyInfo =
     studyType === "soloRealTimes"
@@ -325,6 +324,7 @@ export default function Page() {
               studyType={studyType}
               location={placeInfo?.location}
               findStudy={findStudy}
+              myStudyDateArr={myStudyArr?.map((s) => s?.date)}
               tempCheck={
                 !members?.some((member) => member.user._id === userInfo?._id) &&
                 studyType === "participations"

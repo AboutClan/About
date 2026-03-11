@@ -60,6 +60,7 @@ interface RegisterLocationLayoutProps {
   text?: string;
   isSlide?: boolean;
   type?: "location" | "study";
+  isLoading?: boolean;
 }
 
 export function RegisterLocationLayout({
@@ -71,6 +72,7 @@ export function RegisterLocationLayout({
   text,
   isSlide = true,
   type = "location",
+  isLoading,
 }: RegisterLocationLayoutProps) {
   return (
     <>
@@ -97,7 +99,13 @@ export function RegisterLocationLayout({
           />
         </Box>
       </RegisterLayout>
-      <BottomNav onClick={handleButton} url={url} text={text} isSlide={isSlide} />
+      <BottomNav
+        isLoading={isLoading}
+        onClick={handleButton}
+        url={url}
+        text={text}
+        isSlide={isSlide}
+      />
     </>
   );
 }

@@ -315,38 +315,23 @@ function StudyApplyDrawer({
         />
       )}
       {isModal && (
-        <ModalLayout
-          title="스터디 취소 확인"
-          setIsModal={setIsModal}
-          footerOptions={{
-            main: {
-              text: "취소할게요",
-              func: async () => {
-                await setSelectedDates([]);
-
-                await voteDateArr({
-                  locationDetail: location
-                    ? location.address
-                    : getLocationSimpleText(userInfo.locationDetail.address),
-                  latitude: location ? location.latitude : userInfo.locationDetail.latitude,
-                  longitude: location ? location.longitude : userInfo.locationDetail.longitude,
-                  start: dayjs(),
-                  end: dayjs(),
-                  eps: 2,
-                });
-              },
-              isLoading,
-            },
-            sub: {
-              text: "닫 기",
-              func: () => {
-                setIsModal(false);
-              },
-            },
+        <StudyCancelModal
+          onClose={() => setIsModal(false)}
+          handleCancel={async () => {
+            await setSelectedDates([]);
+            await voteDateArr({
+              locationDetail: location
+                ? location.address
+                : getLocationSimpleText(userInfo.locationDetail.address),
+              latitude: location ? location.latitude : userInfo.locationDetail.latitude,
+              longitude: location ? location.longitude : userInfo.locationDetail.longitude,
+              start: dayjs(),
+              end: dayjs(),
+              eps: 2,
+            });
           }}
-        >
-          스터디 신청을 완전히 취소하시겠어요?
-        </ModalLayout>
+          isLoading={isLoading}
+        />
       )}
 
       {isStudyPlaceModal && (
@@ -360,14 +345,18 @@ function StudyApplyDrawer({
   );
 }
 
-function PlaceDrawer({
+export function PlaceDrawer({
   defaultLocation,
   setVoteLocation,
   onClose,
+  handleVote,
+  isLoading,
 }: {
   onClose: () => void;
   defaultLocation: LocationDetailProps;
   setVoteLocation: DispatchType<LocationDetailProps>;
+  handleVote?: (placeInfo: LocationProps) => void;
+  isLoading?: boolean;
 }) {
   const [placeInfo, setPlaceInfo] = useState<LocationProps>(defaultLocation);
   const [errorMessage, setErrorMessage] = useState("");
@@ -377,12 +366,16 @@ function PlaceDrawer({
       setErrorMessage("정확한 장소를 입력해 주세요.");
       return;
     }
+    if (handleVote) {
+      handleVote(placeInfo);
+      return;
+    }
     setVoteLocation(placeInfo);
     onClose();
     //  changeLocationDetail(placeInfo);
   };
   return (
-    <RightDrawer title="위치 설정" px={false} onClose={onClose}>
+    <RightDrawer title={handleVote ? "장소 변경" : "위치 설정"} px={false} onClose={onClose}>
       <RegisterLocationLayout
         handleButton={handleButton}
         placeInfo={placeInfo}
@@ -391,6 +384,7 @@ function PlaceDrawer({
         errorMessage={errorMessage}
         isSlide={false}
         type="study"
+        isLoading={isLoading}
       />
     </RightDrawer>
   );
@@ -401,6 +395,36 @@ function RightTriangleIcon() {
     <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
       <path d="M6 5L0.75 0.669872L0.75 9.33013L6 5Z" fill="var(--gray-200)" />
     </svg>
+  );
+}
+
+interface StudyCancelModalProps {
+  onClose: () => void;
+  handleCancel: () => void;
+  isLoading: boolean;
+}
+
+export function StudyCancelModal({ onClose, handleCancel, isLoading }: StudyCancelModalProps) {
+  return (
+    <ModalLayout
+      title="스터디 취소 확인"
+      setIsModal={onClose}
+      footerOptions={{
+        main: {
+          text: "취소할게요",
+          func: handleCancel,
+          isLoading,
+        },
+        sub: {
+          text: "닫 기",
+          func: () => {
+            onClose();
+          },
+        },
+      }}
+    >
+      스터디 신청을 완전히 취소하시겠어요?
+    </ModalLayout>
   );
 }
 

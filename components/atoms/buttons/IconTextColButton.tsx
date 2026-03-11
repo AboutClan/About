@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 
 interface IconTextColButtonProps {
   icon: React.ReactNode;
@@ -19,9 +19,11 @@ function IconTextColButton({ icon, text, func }: IconTextColButtonProps) {
       color="gray.500"
       onClick={func}
     >
-      {icon}
+      <Flex justify="center" align="center" w="26px" h="26px">
+        {icon}
+      </Flex>
 
-      <Box mt={0.5} fontSize="11px" fontWeight="medium">
+      <Box mt={0.5} fontSize="11px" fontWeight="medium" lineHeight="12px">
         {text}
       </Box>
     </Button>

@@ -8,14 +8,14 @@ import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import IconTextColButton from "../../components/atoms/buttons/IconTextColButton";
 import Textarea from "../../components/atoms/Textarea";
 import { XCircleIcon } from "../../components/Icons/CircleIcons";
-import { ClockIcon } from "../../components/Icons/ClockIcons";
+import { ClockIcon, PlaceChangeIcon } from "../../components/Icons/ClockIcons";
 import Slide from "../../components/layouts/PageSlide";
 import { BottomFlexDrawerOptions } from "../../components/organisms/drawer/BottomFlexDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyMutations } from "../../hooks/custom/StudyHooks";
-import { useStudyAttendChangeMutation } from "../../hooks/study/mutations";
+import { useStudyAttendChangeMutation, useStudyVoteArrMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { ModalLayout } from "../../modals/Modals";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
@@ -32,7 +32,10 @@ import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { DayjsTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
-import StudyApplyDrawer from "../vote/voteDrawer/StudyApplyDrawer";
+import StudyApplyDrawer, {
+  PlaceDrawer,
+  StudyCancelModal,
+} from "../vote/voteDrawer/StudyApplyDrawer";
 
 interface IStudyNavigation {
   myStudyInfo: StudyConfirmedMemberProps | StudyParticipationProps[];
@@ -43,6 +46,7 @@ interface IStudyNavigation {
   myStudyStatus: MyStudyStatus;
   findStudy: StudyConfirmedProps;
   tempCheck: boolean;
+  myStudyDateArr: string[];
 }
 
 interface NavigationProps {
@@ -65,6 +69,7 @@ function StudyNavigation({
   studyType,
   findStudy,
   tempCheck,
+  myStudyDateArr,
 }: IStudyNavigation) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -86,6 +91,7 @@ function StudyNavigation({
   const [isAbsentModal, setIsAbsentModal] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
   const [isCommentModal, setIsCommentModal] = useState(false);
+  const [isModal, setIsModal] = useState(false);
 
   const [drawerType, setDrawerType] = useState<
     "apply" | "applyChange" | "realTimesVote" | DirectAction
@@ -142,8 +148,8 @@ function StudyNavigation({
           };
         } else {
           return {
-            text: "참여 날짜 변경/취소",
-            type: "single",
+            text: "참여 날짜 변경",
+            type: "multi",
             colorScheme: "mint",
             func: () => {
               setDrawerType("applyChange");
@@ -217,7 +223,6 @@ function StudyNavigation({
         }
         break;
       case "results":
-        console.log(89, myStatus, resultStatus);
         if (myStatus === "pending") {
           if (myStudyStatus === "otherParticipation") {
             return {
@@ -245,11 +250,10 @@ function StudyNavigation({
             },
           };
         } else if (myStatus === "participation") {
-          console.log(88);
           if (resultStatus === "expected") {
             return {
-              text: "참여 날짜 변경/취소",
-              type: "single",
+              text: "참여 날짜 변경",
+              type: "multi",
               colorScheme: "mint",
               func: () => {
                 setDrawerType("applyChange");
@@ -351,7 +355,28 @@ function StudyNavigation({
 
   const navigationProps = getNavigationProps(studyType, myStudyStatus);
 
+  const [isPlaceDrawer, setIsPlaceDrawer] = useState(false);
+
   const myMessage = (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.memo;
+
+  const resetStudy = useResetStudyQuery();
+  const { mutate: voteDateArr, isLoading: isLoading2 } = useStudyVoteArrMutation([], {
+    onSuccess() {
+      toast("success", "스터디 취소 완료!");
+      resetStudy();
+      setIsModal(false);
+    },
+  });
+
+  const { mutate: voteDateArr2, isLoading: isLoading3 } = useStudyVoteArrMutation(myStudyDateArr, {
+    onSuccess() {
+      toast("success", "스터디 신청 장소가 변경되었습니다.");
+      resetStudy();
+      setIsPlaceDrawer(false);
+    },
+  });
+
+  const [voteLocation, setVoteLocation] = useState<LocationProps>(location);
 
   return (
     <>
@@ -366,37 +391,46 @@ function StudyNavigation({
             pb={getSafeAreaBottom(8)}
             px={5}
           >
-            {navigationProps.type === "multi" && (
-              <>
-                <IconTextColButton
-                  icon={<XCircleIcon size="md" />}
-                  text="당일 불참"
-                  func={() => {
-                    // if (myStudyStatus === "arrived" || myStudyStatus === "absenced") {
-                    //   toast(
-                    //     "info",
-                    //     myStudyStatus === "arrived"
-                    //       ? "이미 출석 처리되었습니다."
-                    //       : "이미 결석 처리되었습니다.",
-                    //   );
-                    //   return;
-                    // }
-                    setIsAbsentModal(true);
-                  }}
-                />
-                <IconTextColButton
-                  icon={<ClockIcon />}
-                  text="시간 변경"
-                  func={() => {
-                    if (!myStudyInfo || studyType === "participations") {
-                      toast("error", "참여 정보를 찾을 수 없습니다.");
-                      return;
-                    }
-                    setDrawerType("timeChange");
-                  }}
-                />
-              </>
-            )}
+            {navigationProps.type === "multi" &&
+              (navigationProps.text === "참여 날짜 변경" ? (
+                <>
+                  <IconTextColButton
+                    icon={<XCircleIcon size="md" />}
+                    text="신청 취소"
+                    func={() => {
+                      setIsModal(true);
+                    }}
+                  />
+                  <IconTextColButton
+                    icon={<PlaceChangeIcon />}
+                    text="장소 변경"
+                    func={() => {
+                      setIsPlaceDrawer(true);
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <IconTextColButton
+                    icon={<XCircleIcon size="md" />}
+                    text="당일 불참"
+                    func={() => {
+                      setIsAbsentModal(true);
+                    }}
+                  />
+                  <IconTextColButton
+                    icon={<ClockIcon />}
+                    text="시간 변경"
+                    func={() => {
+                      if (!myStudyInfo || studyType === "participations") {
+                        toast("error", "참여 정보를 찾을 수 없습니다.");
+                        return;
+                      }
+                      setDrawerType("timeChange");
+                    }}
+                  />
+                </>
+              ))}
             <Button
               size="lg"
               flex={1}
@@ -487,6 +521,41 @@ function StudyNavigation({
           location={location}
           canChange={drawerType === "applyChange"}
           isLocation={isLocation}
+        />
+      )}
+      {isPlaceDrawer && (
+        <PlaceDrawer
+          isLoading={isLoading3}
+          defaultLocation={voteLocation}
+          setVoteLocation={setVoteLocation}
+          onClose={() => setIsPlaceDrawer(false)}
+          handleVote={(placeInfo: LocationProps) => {
+            voteDateArr2({
+              locationDetail: placeInfo?.address,
+              latitude: placeInfo?.latitude,
+              longitude: placeInfo?.longitude,
+              start: dayjs((myStudyInfo as StudyParticipationProps[])?.[0]?.times?.start),
+              end: dayjs((myStudyInfo as StudyParticipationProps[])?.[0]?.times?.end),
+              eps: 2,
+            });
+            console.log(placeInfo);
+          }}
+        />
+      )}
+      {isModal && (
+        <StudyCancelModal
+          onClose={() => setIsModal(false)}
+          isLoading={isLoading2}
+          handleCancel={() => {
+            voteDateArr({
+              locationDetail: null,
+              latitude: null,
+              longitude: null,
+              start: dayjs(),
+              end: dayjs(),
+              eps: 2,
+            });
+          }}
         />
       )}
     </>

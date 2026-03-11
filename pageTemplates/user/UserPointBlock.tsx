@@ -16,13 +16,13 @@ function UserPointBlock() {
 
   const [isModal, setIsModal] = useState(false);
 
-  const handleGuestClick = () => {
+  const handleGuestClick = (e) => {
     console.log(isGuest, typeToast);
-    // if (isGuest) {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    //   typeToast("guest");
-    // }
+    if (isGuest) {
+      e.preventDefault();
+      e.stopPropagation();
+      typeToast("guest");
+    }
   };
 
   return (

@@ -317,6 +317,10 @@ export default function StudyMembers({
           bg="white"
           w="full"
           onClick={() => {
+            if (isGuest) {
+              typeToast("guest");
+              return;
+            }
             navigateExternalLink("https://open.kakao.com/o/gCRegnOh");
           }}
         >

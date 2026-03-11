@@ -88,8 +88,9 @@ function UserStudySection() {
               borderRadius="8px"
               color="gray.600"
               border="var(--border)"
+              mx={5}
             >
-              현재 참여중인 모임이 없습니다.
+              참여한 스터디 기록이 없습니다.
             </Flex>
           )}
         </Box>

@@ -20,7 +20,7 @@ const DEFAULT_PROFILE_IMAGE =
   "http://img1.kakaocdn.net/thumb/R110x110.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg";
 
 const GUEST_USER = {
-  id: "66f29811e0f0564ae35c52a4",
+  id: "66f29811e0f0564ae35c52a5",
   uid: "1234567890",
   name: "guest",
   role: "guest",
@@ -41,7 +41,7 @@ const TEST_USER = {
 const MEMBER_GUEST_USER = {
   ...GUEST_USER,
   name: "게스트",
-  role: "member",
+  role: "guest",
   isActive: true,
   profileImage: DEFAULT_PROFILE_IMAGE,
 };
@@ -149,10 +149,12 @@ export const authOptions: NextAuthOptions = {
         if (["kakao", "apple"].includes(account.provider)) {
           await dbConnect();
         }
-
+        if (user.uid === "1234567890" || (profile as KakaoProfile).id + "" === "1234567890") {
+          return false;
+        }
         if (account.provider === "kakao" || account.provider === "apple") {
           const findUser = await User.findOneAndUpdate(
-            { uid: user.uid },
+            { uid: (profile as KakaoProfile).id + "" || user.uid },
             {
               $set: {
                 profileImage:
@@ -162,7 +164,6 @@ export const authOptions: NextAuthOptions = {
               },
             },
           );
-
           if (findUser) {
             user.role = findUser.role;
             // account.role = findUser.role;
