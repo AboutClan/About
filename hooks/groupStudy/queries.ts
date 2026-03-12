@@ -13,6 +13,7 @@ export interface GroupShapShotProps {
   hobby: IGroup[];
   hobby2: IGroup[];
   develop: IGroup[];
+  crew: IGroup[];
   waiting: IGroup[];
 }
 

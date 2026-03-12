@@ -50,6 +50,7 @@ const categoryArr = [
   { title: "푸드" },
   // { title: "힐링" },
   { title: "친목" },
+  { title: "크루" },
   // { title: "파티" },
 ];
 

@@ -11,7 +11,7 @@ function HomeGroupSection() {
 
   const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
   const width = windowWidth - 70;
-
+  console.log(12, groups);
   return (
     <Box>
       <AnimatePresence initial={false}>
@@ -27,14 +27,14 @@ function HomeGroupSection() {
           }}
         >
           <SlideSectionCol
-            title="겨울 시즌! About 취미 소모임"
-            subTitle="겨울 내내 함께 즐기는 취미 활동 모임"
+            title="새 학기! About 취미 소모임"
+            subTitle="설레는 맘으로 즐기는 취미 활동 모임"
           >
             <HomeGroupCol threeGroups={groups?.hobby.slice(0, 3)} type="hobby" />
           </SlideSectionCol>
           <SlideSectionCol
-            title="겨울 시즌! About 취미 소모임"
-            subTitle="겨울 내내 함께 즐기는 취미 활동 모임"
+            title="새 학기! About 취미 소모임"
+            subTitle="설레는 맘으로 즐기는 취미 활동 모임"
           >
             <HomeGroupCol threeGroups={groups?.hobby.slice(3, 6)} type="hobby" />
           </SlideSectionCol>
@@ -64,6 +64,33 @@ function HomeGroupSection() {
             subTitle="공부·자기계발·루틴까지 함께 쌓아가는 스터디 모임"
           >
             <HomeGroupCol threeGroups={groups?.develop.slice(3)} type="self" />
+          </SlideSectionCol>
+        </motion.div>
+      </AnimatePresence>
+      <AnimatePresence initial={false}>
+        <motion.div
+          drag="x"
+          dragConstraints={{ left: -width, right: 0 }}
+          dragElastic={0.3}
+          style={{
+            marginLeft: "20px",
+            display: "flex",
+            width: "100%",
+            rowGap: "12px",
+            columnGap: "16px",
+          }}
+        >
+          <SlideSectionCol
+            title="우리 동네 스터디 크루"
+            subTitle="집 근처에서 편하게 모여 같이 카공하는 모임"
+          >
+            <HomeGroupCol threeGroups={groups?.crew.slice(0, 3)} type="study1" />
+          </SlideSectionCol>
+          <SlideSectionCol
+            title="우리 동네 스터디 크루"
+            subTitle="집 근처에서 편하게 모여 같이 카공하는 모임"
+          >
+            <HomeGroupCol threeGroups={groups?.crew.slice(3)} type="self" />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
