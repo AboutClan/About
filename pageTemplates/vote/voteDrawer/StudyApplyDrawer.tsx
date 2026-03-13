@@ -14,6 +14,7 @@ import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useStudyVoteArrMutation } from "../../../hooks/study/mutations";
 import { useStudySetQuery } from "../../../hooks/study/queries";
+import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
 import { ModalLayout } from "../../../modals/Modals";
@@ -360,11 +361,19 @@ export function PlaceDrawer({
 }) {
   const [placeInfo, setPlaceInfo] = useState<LocationProps>(defaultLocation);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isChangeLocation, setIsChangeLocation] = useState(false);
+
+  const { mutate: changeLocationDetail } = useUserInfoFieldMutation("locationDetail", {
+    onSuccess() {},
+  });
 
   const handleButton = () => {
     if (!placeInfo) {
       setErrorMessage("정확한 장소를 입력해 주세요.");
       return;
+    }
+    if (isChangeLocation) {
+      changeLocationDetail(placeInfo);
     }
     if (handleVote) {
       handleVote(placeInfo);
@@ -375,18 +384,22 @@ export function PlaceDrawer({
     //  changeLocationDetail(placeInfo);
   };
   return (
-    <RightDrawer title={handleVote ? "장소 변경" : "위치 설정"} px={false} onClose={onClose}>
-      <RegisterLocationLayout
-        handleButton={handleButton}
-        placeInfo={placeInfo}
-        setPlaceInfo={setPlaceInfo}
-        text="변 경"
-        errorMessage={errorMessage}
-        isSlide={false}
-        type="study"
-        isLoading={isLoading}
-      />
-    </RightDrawer>
+    <>
+      <RightDrawer title={handleVote ? "장소 변경" : "위치 설정"} px={false} onClose={onClose}>
+        <RegisterLocationLayout
+          handleButton={handleButton}
+          placeInfo={placeInfo}
+          setPlaceInfo={setPlaceInfo}
+          text="변 경"
+          errorMessage={errorMessage}
+          isSlide={false}
+          type="study"
+          isLoading={isLoading}
+          isChangeLocation={isChangeLocation}
+          setIsChangeLocation={setIsChangeLocation}
+        />
+      </RightDrawer>
+    </>
   );
 }
 

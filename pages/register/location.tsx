@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Switch } from "@chakra-ui/react";
 import { MouseEvent, useState } from "react";
 
 import BottomNav from "../../components/layouts/BottomNav";
@@ -8,7 +8,7 @@ import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { LocationProps } from "../../types/common";
-import { DispatchType } from "../../types/hooks/reactTypes";
+import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
@@ -61,6 +61,8 @@ interface RegisterLocationLayoutProps {
   isSlide?: boolean;
   type?: "location" | "study";
   isLoading?: boolean;
+  isChangeLocation?: boolean | null;
+  setIsChangeLocation?: DispatchBoolean;
 }
 
 export function RegisterLocationLayout({
@@ -73,6 +75,8 @@ export function RegisterLocationLayout({
   isSlide = true,
   type = "location",
   isLoading,
+  isChangeLocation = null,
+  setIsChangeLocation = null,
 }: RegisterLocationLayoutProps) {
   return (
     <>
@@ -98,6 +102,26 @@ export function RegisterLocationLayout({
             placeHolder="ex) 강남역, 홍대입구역 등"
           />
         </Box>
+        {isChangeLocation !== null && (
+          <Flex mt={2} align="center">
+            <Box ml="auto" mr={2} fontSize="10px" color="gray.500">
+              고정 스터디 기본 위치도 함께 변경
+            </Box>
+            <Switch
+              size="sm"
+              mr="var(--gap-1)"
+              colorScheme="mint"
+              isChecked={isChangeLocation}
+              onChange={() => setIsChangeLocation((old) => !old)}
+              sx={{
+                "& input:focus + span": {
+                  boxShadow: "none !important",
+                  outline: "none !important",
+                },
+              }}
+            />
+          </Flex>
+        )}
       </RegisterLayout>
       <BottomNav
         isLoading={isLoading}
