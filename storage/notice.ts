@@ -1055,4 +1055,14 @@ export const NOTICE_ARR: INoticeArr[] = [
       "알파벳 [상품 교환] 기능이 제대로 동작하지 않는 오류를 확인했습니다. 현재는 수정하여 정상적으로 교환 가능합니다.",
     date: "2026-02-18",
   },
+  {
+    id: "133",
+    title: "📢 ABOUT 개강 MT",
+    category: "main",
+    content:
+      "신청 안 한 사람은 다 후회했다는 어바웃 MT! 진짜 재밌는 시간과 기억에 남는 추억. 도파민 넘치는 게임과 이벤트. 새로운 또래 친구들을 만나고 싶나요? 1년에 딱 두 번 있는 이번 기회를 놓치지 마세요!",
+    date: "2026-03-13",
+    linkTitle: "상세 내용 및 신청 링크",
+    link: "https://docs.google.com/forms/d/e/1FAIpQLScR7yt0eRvI7BsORii64sdrhZilE_Uw5eBslOZs3WC6PTe_9w/viewform",
+  },
 ];

@@ -151,7 +151,7 @@ export default function Page() {
           ...study.study.members[0],
         }))
       : findStudy?.members;
-
+  console.log(24, members2);
   const members =
     tab === "스터디 크루"
       ? (members2 as StudyParticipationProps[])?.filter(
@@ -180,6 +180,10 @@ export default function Page() {
   const belong = userInfo?.belong ? removeBrackets(userInfo.belong) : null;
   const STUDY_GROUP = {
     "수원/용인": "270",
+    "성북/동대문/노원": "275",
+    "마포/당산/영등포": "274",
+    "성수/왕십리/건대": "273",
+    "강남/서초": "272",
   };
   console.log(3, belong);
   const groupId = !belong ? null : STUDY_GROUP?.[belong];
