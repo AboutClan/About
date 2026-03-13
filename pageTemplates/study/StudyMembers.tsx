@@ -30,6 +30,7 @@ interface IStudyMembers {
   members: StudyConfirmedMemberProps[] | StudyParticipationProps[];
   studyType: StudyType;
   isAttend?: boolean;
+  isCrew: boolean;
 }
 
 export default function StudyMembers({
@@ -37,6 +38,7 @@ export default function StudyMembers({
   date,
   members: prevMembers,
   isAttend,
+  isCrew,
 }: IStudyMembers) {
   const userInfo = useUserInfo();
   const isGuest = userInfo?.role === "guest";
@@ -112,7 +114,7 @@ export default function StudyMembers({
   };
 
   const filterMembers =
-    studyType !== "participations"
+    studyType !== "participations" || isCrew
       ? members
       : isOpen
       ? (members as StudyParticipationProps[])?.filter((member) => member.dates.includes(date))

@@ -198,7 +198,7 @@ export default function Page() {
           (member) => member?.user?.belong === userInfo?.belong,
         )
       : members2;
-
+  console.log(8, members);
   const placeInfo = findStudy?.place;
 
   const studyLinkCondition =
@@ -225,8 +225,8 @@ export default function Page() {
     "성수/왕십리/건대": "273",
     "강남/서초": "272",
   };
-
   const groupId = !belong ? null : STUDY_GROUP?.[belong];
+  console.log(2323, belong, groupId);
 
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
 
@@ -283,13 +283,14 @@ export default function Page() {
               {isOpenStudy && <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />}
               <Box h="1px" bg="gray.100" my={4} />
               <Box pb={2} pos="relative">
-                {(studyType === "soloRealTimes" || studyType === "participations") && (
-                  <StudyDateControl
-                    date={dateDayjs}
-                    setDate={setDateDayjs}
-                    isStudy={studyType === "soloRealTimes"}
-                  />
-                )}
+                {(studyType === "soloRealTimes" || studyType === "participations") &&
+                  tab === "일반 스터디" && (
+                    <StudyDateControl
+                      date={dateDayjs}
+                      setDate={setDateDayjs}
+                      isStudy={studyType === "soloRealTimes"}
+                    />
+                  )}
                 <Box minH="240px">
                   {isPassedSolo && !studyPassedData ? (
                     <Box pos="relative" minH="140px">
@@ -300,6 +301,7 @@ export default function Page() {
                       date={dayjsToStr(dateDayjs)}
                       members={members || []}
                       studyType={studyType}
+                      isCrew={tab === "스터디 크루"}
                       // hasStudyLink={
                       //   myStudyStatus === "participation" && studyType !== "soloRealTimes"
                       // }
