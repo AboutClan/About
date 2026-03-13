@@ -68,7 +68,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
     //   setPopUpType((old) => [...old, "newMember"]);
     //   return;
     // }
-    if (!isLoading2 && !membershipLog?.length && !checkAndSetLocalStorage(MEMBERSHIP_AT, 30)) {
+    if (!isLoading2 && !membershipLog?.length && !checkAndSetLocalStorage(MEMBERSHIP_AT, 5)) {
       setPopUpType((old) => [...old, "membership"]);
       return;
     }
