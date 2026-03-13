@@ -89,7 +89,7 @@ function Ranking() {
     }, 200);
     return () => clearTimeout(timeout);
   }, [tab]);
-  console.log(7);
+
   useEffect(() => {
     if (!allUserData?.length || !session) return;
 

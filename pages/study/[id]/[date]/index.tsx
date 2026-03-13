@@ -118,30 +118,70 @@ export default function Page() {
 
   const myBelong = userInfo?.belong;
 
-  const myStudyInfo =
-    studyType === "soloRealTimes"
-      ? studySet?.soloRealTimes
+  const userId = userInfo?._id;
+
+  const getMyStudyInfo = () => {
+    switch (studyType) {
+      case "soloRealTimes":
+        return studySet?.soloRealTimes
           ?.flatMap((solo) => solo.study)
-          ?.flatMap((a) => a.members)
-          ?.find((solo) => solo.user._id === userInfo?._id)
-      : studyType !== "participations"
-      ? findStudy?.members.find((member) => member.user._id === userInfo?._id)
-      : participationsSet
-          ?.find((par) => par.study.some((study) => study.user._id === userInfo?._id))
-          ?.study?.find((who) => who.user._id === userInfo?._id);
+          ?.flatMap((study) => study.members)
+          ?.find((member) => member.user._id === userId);
+
+      case "participations":
+        return participationsSet
+          ?.find((par) => par.study.some((member) => member.user._id === userId))
+          ?.study?.find((member) => member.user._id === userId);
+
+      case "openRealTimes":
+      case "results":
+        return findStudy?.members.find((member) => member.user._id === userId);
+    }
+  };
+
+  const myStudyInfo = getMyStudyInfo();
 
   const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
+  const findTodayStudy = myStudyArr?.filter((myStudy) => myStudy.date === date);
 
-  const findTodayStudy = myStudyArr?.find((myStudy) => myStudy.date === date);
+  let myStudyStatus: MyStudyStatus;
 
-  const myStudyStatus: MyStudyStatus =
-    (!findTodayStudy && studyType !== "participations") ||
-    (studyType === "participations" &&
-      !shortenParticipations(participationsSet).some((par) => par.user._id === userInfo?._id))
-      ? "pending"
-      : findTodayStudy?.type === studyType
-      ? "participation"
-      : "otherParticipation";
+  switch (studyType) {
+    case "participations": {
+      const hasParticipationStudy = shortenParticipations(participationsSet).some(
+        (par) => par.user._id === userInfo?._id,
+      );
+      if (!hasParticipationStudy) {
+        myStudyStatus = "pending";
+        break;
+      }
+      myStudyStatus = findTodayStudy?.some((f) => f.type === studyType)
+        ? "participation"
+        : "otherParticipation";
+      break;
+    }
+
+    case "soloRealTimes":
+    case "openRealTimes":
+    case "results": {
+      if (!findTodayStudy?.length) {
+        myStudyStatus = "pending";
+        break;
+      }
+      myStudyStatus = findTodayStudy.some((f) => f?.placeId === id)
+        ? "participation"
+        : "otherParticipation";
+      break;
+    }
+  }
+
+  if (studySet) {
+    console.log("studyType:", studyType);
+    console.log("myStudyInfo:", myStudyInfo);
+    console.log("myStudyArr:", myStudyArr);
+    console.log("findTodayStudy:", findTodayStudy);
+    console.log("myStudyStatus:", myStudyStatus);
+  }
 
   const members2 =
     studyType === "participations"
@@ -151,7 +191,7 @@ export default function Page() {
           ...study.study.members[0],
         }))
       : findStudy?.members;
-  console.log(24, members2);
+
   const members =
     tab === "스터디 크루"
       ? (members2 as StudyParticipationProps[])?.filter(
@@ -185,11 +225,11 @@ export default function Page() {
     "성수/왕십리/건대": "273",
     "강남/서초": "272",
   };
-  console.log(3, belong);
+
   const groupId = !belong ? null : STUDY_GROUP?.[belong];
 
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
-  console.log(141, group, groupId);
+
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (

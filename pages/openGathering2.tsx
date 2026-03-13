@@ -18,7 +18,7 @@ function OpenGathering() {
 
   const users = allUserData?.map((a) => ({ ...a._doc, telephone: a.telephone }));
   const data = users?.map((user) => ({ name: user.name, phone: user.telephone, _id: user._id }));
-  console.log(data);
+
   const findMine = users?.find((user) => user.uid === "4756703725");
 
   const AGroup = users?.filter((user) =>

@@ -63,7 +63,7 @@ function LoginPage() {
   }, [statusParam, toast]);
 
   const [isModal, setIsModal] = useState(false);
-  console.log(session, userInfo);
+
   const customSignin = async (type: "kakao" | "guest" | "apple") => {
     if (type === "kakao" && isWebView() && !session) {
       setIsModal(true);

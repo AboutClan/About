@@ -20,7 +20,6 @@ interface IStudyOverview {
 function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
   const { currentLocation } = useUserCurrentLocation();
 
-  console.log(14, studyType);
   const { text: badgeText, colorScheme: badgeColorScheme } = getStudyBadge(
     studyType,
     dayjs(date).startOf("day").isAfter(dayjs()),

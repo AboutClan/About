@@ -60,7 +60,7 @@ export default function StudyMembers({
   const { mutate: setVoteComment } = useStudyCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
   });
-  console.log(3, members);
+
   const handleSuccessChange = () => {
     typeToast("change");
     resetStudy();
@@ -266,7 +266,7 @@ export default function StudyMembers({
       };
     }
   });
-  console.log(userCardArr);
+
   return (
     <>
       {userCardArr?.length ? (

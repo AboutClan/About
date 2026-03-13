@@ -8,9 +8,9 @@ import {
 export const getMyStudyDateArr = (
   studySet: StudySetProps,
   myId: string,
-): { date: string; type: StudyType }[] => {
+): { date: string; type: StudyType; placeId?: string }[] => {
   if (!studySet || !myId) return null;
-  const dateArr: { date: string; type: StudyType }[] = [];
+  const dateArr: { date: string; type: StudyType; placeId?: string }[] = [];
   (["participations", "openRealTimes", "results", "soloRealTimes"] as StudyType[]).forEach(
     (key) => {
       (studySet[key] as StudyConfirmedSetProps[] | StudyParticipationsSetProps[]).forEach(
@@ -26,7 +26,7 @@ export const getMyStudyDateArr = (
             const study2: StudyConfirmedSetProps = study;
             study2.study.members.forEach((props) => {
               if (props.user._id === myId) {
-                dateArr.push({ date: study2.date, type: key });
+                dateArr.push({ date: study2.date, type: key, placeId: study2.study.place._id });
               }
             });
           }

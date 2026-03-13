@@ -19,7 +19,7 @@ function Prize() {
   const [cards, setCards] = useState([]);
 
   const { data, isLoading } = usePrizeQuery(cursor, null);
-  console.log(data);
+
   useEffect(() => {
     if (data && firstLoad.current) firstLoad.current = false;
     if (data) {

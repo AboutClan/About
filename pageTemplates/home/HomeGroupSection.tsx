@@ -11,7 +11,7 @@ function HomeGroupSection() {
 
   const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
   const width = windowWidth - 70;
-  console.log(12, groups);
+
   return (
     <Box>
       <AnimatePresence initial={false}>

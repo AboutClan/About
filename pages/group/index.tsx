@@ -98,7 +98,7 @@ function GroupPage() {
     const resolved = !Number.isNaN(idx) && categoryArr[idx] ? categoryArr[idx].title : "전체";
     setCategory(resolved as GatherCategoryMain | "전체");
   }, [router.isReady, categoryIdx]);
-  console.log(2, cursor);
+
   useEffect(() => {
     return () => {
       if (typeof window === "undefined") return;

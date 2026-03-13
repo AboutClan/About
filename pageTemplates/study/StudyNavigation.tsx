@@ -128,6 +128,7 @@ function StudyNavigation({
         },
       };
     }
+
     switch (studyType) {
       case "participations":
         if (myStatus === "pending" || tempCheck) {
@@ -223,20 +224,35 @@ function StudyNavigation({
         }
         break;
       case "results":
+        if (myStatus === "otherParticipation") {
+          return {
+            text: "다른 스터디에 참여중입니다",
+            type: "single",
+            colorScheme: "black",
+          };
+        }
         if (myStatus === "pending") {
-          if (myStudyStatus === "otherParticipation") {
-            return {
-              text: "다른 스터디에 참여중입니다",
-              type: "single",
-              colorScheme: "black",
-            };
-          }
           if (resultStatus === "expected") {
             return {
               text: "이 장소로 스터디 매칭 신청",
               type: "single",
               colorScheme: "mint",
               func: () => {
+                let temp = 0;
+
+                findStudy?.members?.forEach((m) => {
+                  if (m?.attendance?.type === "absenced") {
+                    temp += 1;
+                  }
+                });
+
+                if (findStudy?.members?.length - temp >= 8) {
+                  toast(
+                    "info",
+                    "참여 가능한 자리가 없습니다. 불참자를 기다리거나 다른 스터디를 신청해 주세요!",
+                  );
+                  return;
+                }
                 setDrawerType("expectedVote");
               },
             };
@@ -257,6 +273,13 @@ function StudyNavigation({
               colorScheme: "mint",
               func: () => {
                 setDrawerType("applyChange");
+                router.push(
+                  { pathname: router.pathname, query: { ...router.query, modal: "applyChange" } },
+                  undefined,
+                  {
+                    shallow: true,
+                  },
+                );
               },
             };
           }
@@ -270,14 +293,14 @@ function StudyNavigation({
         }
         break;
       case "soloRealTimes":
+        if (myStatus === "otherParticipation") {
+          return {
+            text: "다른 스터디에 참여중입니다",
+            type: "single",
+            colorScheme: "black",
+          };
+        }
         if (myStatus === "pending") {
-          if (myStudyStatus === "otherParticipation") {
-            return {
-              text: "다른 스터디에 참여중입니다",
-              type: "single",
-              colorScheme: "black",
-            };
-          }
           return {
             text: "공부 인증",
             type: "single",
@@ -538,7 +561,6 @@ function StudyNavigation({
               end: dayjs((myStudyInfo as StudyParticipationProps[])?.[0]?.times?.end),
               eps: 2,
             });
-            console.log(placeInfo);
           }}
         />
       )}

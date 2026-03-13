@@ -80,7 +80,6 @@ export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) 
     async () => {
       const { data } = await axios.get<StudySetInitialDataProps[]>(`${SERVER_URI}/vote2/week`);
 
-      console.log(51, data);
       return data;
     },
     {

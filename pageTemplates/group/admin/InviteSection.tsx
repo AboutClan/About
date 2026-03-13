@@ -27,7 +27,7 @@ export function InviteSection({ group }: InviteSecionProps) {
   }
   const isStudy = group?.title.includes("크루");
   const title = getRegionPrefix(group?.title);
-  console.log(isStudy, title);
+
   const { mutate, isLoading } = useGroupWaitingStatusMutation(+group.id, {
     onSuccess() {
       toast("success", "완료되었습니다.");
@@ -45,9 +45,9 @@ export function InviteSection({ group }: InviteSecionProps) {
     e.stopPropagation();
     setDeletedUser((old) => [...old, user._id]);
     mutate({ status, userId: user._id });
-    console.log(24, isStudy);
+  
     if (isStudy) {
-      console.log(5);
+    
       changeBelong({ uid: user.uid, belong: title });
     }
   };

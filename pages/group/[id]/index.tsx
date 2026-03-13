@@ -59,7 +59,7 @@ function GroupDetail() {
   const { data: gathers } = useGatherGroupQuery(id, {
     enabled: !!id,
   });
-  console.log(5, gathers);
+
   useEffect(() => {
     if (!gathers) return;
     if (isResult) {

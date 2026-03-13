@@ -201,7 +201,7 @@ function UserBlock({
   function Divider() {
     return <Box w="1px" h="40px" bg="gray.200" />;
   }
-  console.log(2, who);
+ 
   return (
     <>
       <Flex flexDir="column" borderBottom="var(--border)" pb={3}>
