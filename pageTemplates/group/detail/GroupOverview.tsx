@@ -39,7 +39,7 @@ function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverview
               group.meetingType === "online"
                 ? `온라인 진행`
                 : gatherCnt === 0
-                ? "시작 전"
+                ? "진행중"
                 : `모임 ${gatherCnt}번 / 후기 ${reviewCnt}개`,
           },
           {
