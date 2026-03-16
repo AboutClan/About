@@ -18,7 +18,7 @@ import { DispatchType } from "../../types/hooks/reactTypes";
 import { RealTimeVoteProps } from "../../types/models/studyTypes/requestTypes";
 import {
   StudyConfirmedMemberProps,
-  StudyPlaceProps,
+  StudyPlaceProps
 } from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
@@ -204,7 +204,7 @@ function InviteDrawer({
 
   const { data: usersAll, isLoading } = useAllUserDataQuery(null);
 
-  const placeArr: PlaceType[] = ["강남", "홍대", "사당", "건대", "노원"];
+  const placeArr: PlaceType[] = ["강남", "홍대", "사당", "건대","노원"];
 
   useEffect(() => {
     if (!usersAll || !group) return;
