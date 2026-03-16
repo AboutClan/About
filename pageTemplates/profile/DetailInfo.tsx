@@ -1,4 +1,4 @@
-import { Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
+import { Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
@@ -118,14 +118,21 @@ function DetailInfo({
                 fontSize="12px"
                 lineHeight="24px"
                 fontWeight="light"
-                whiteSpace="nowrap"
                 color="gray.800"
                 w="full"
               >
                 {item.texts.slice(0, 5).map((item, idx) => (
                   <ListItem key={idx} textAlign="start">
-                    {item.isMember ? <b style={{ marginRight: "4px" }}>[정규]</b> : <></>}
-                    {item?.title}
+                    <Box display="flex" alignItems="center" minW={0}>
+                      {item.isMember && (
+                        <Box as="b" mr="4px" flexShrink={0}>
+                          [정규]
+                        </Box>
+                      )}
+                      <Text flex={1} minW={0} isTruncated>
+                        {item?.title}
+                      </Text>
+                    </Box>
                   </ListItem>
                 ))}
               </UnorderedList>

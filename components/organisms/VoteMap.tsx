@@ -169,7 +169,7 @@ IVoteMap) {
           : circle2?.size === "md"
           ? 3000
           : 4000;
-
+        console.log(radius);
         const circle = new naver.maps.Circle({
           map: mapInstanceRef.current,
           center: new naver.maps.LatLng(circle2.lat, circle2.lon),

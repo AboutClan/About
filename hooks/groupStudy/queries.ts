@@ -91,11 +91,23 @@ export const useGroupsMemberActivityQuery = (
     },
     options,
   );
-export const useGroupsMineQuery = (status: "pending" | "all", options?: QueryOptions<IGroup[]>) =>
-  useQuery<IGroup[], AxiosError, IGroup[]>(
+
+interface GroupMineProps {
+  title: string;
+  isMember: boolean;
+  id: string;
+  requiredTicket: number;
+  squareImage: string;
+}
+
+export const useGroupsMineQuery = (
+  status: "pending" | "all",
+  options?: QueryOptions<GroupMineProps[]>,
+) =>
+  useQuery<GroupMineProps[], AxiosError, GroupMineProps[]>(
     [GROUP_STUDY, status],
     async () => {
-      const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy/mine`, {
+      const res = await axios.get<GroupMineProps[]>(`${SERVER_URI}/groupStudy/mine`, {
         params: { status },
       });
       return res.data;

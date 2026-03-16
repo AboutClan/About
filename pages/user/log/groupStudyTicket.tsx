@@ -1,31 +1,32 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import Image from "next/image";
+/* eslint-disable */
+
+import { Box, Button, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { useState } from "react";
 
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useGroupsMineQuery } from "../../../hooks/groupStudy/queries";
 import { usePointSystemMutation, useUserTicketMutation } from "../../../hooks/user/mutations";
-import { useTicketSystemLogQuery, useUserInfoQuery } from "../../../hooks/user/queries";
-import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
+import UserSocialGuideDrawer2 from "../../../pageTemplates/user/UserSocialGuideDrawer2";
 
 function GroupStudyTicketLogSection() {
   const toast = useToast();
   const { data: userInfo, refetch: refetch2 } = useUserInfoQuery();
 
-  const { data: logsData, refetch } = useTicketSystemLogQuery("groupStudy");
-  let stepDate: string;
+  const { data } = useGroupsMineQuery("pending");
+  console.log(52, data);
 
   const [isModal, setIsModal] = useState(false);
+  const [isDrawer, setIsDrawer] = useState(false);
 
   const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate, isLoading } = useUserTicketMutation({
     onSuccess() {
       toast("success", "티켓이 추가되었습니다.");
       setIsModal(false);
-      refetch();
+      // refetch();
       refetch2();
     },
   });
@@ -42,14 +43,19 @@ function GroupStudyTicketLogSection() {
     });
   };
 
+  const sum = data?.slice()?.reduce((acc, cur) => {
+    return acc + (cur.isMember ? 0 : cur.requiredTicket);
+  }, 0);
+  console.log(24, sum);
+
   return (
     <>
-      <Header title="소모임 참여권 사용 기록" />
+      <Header title="소모임 참여권" />
       <Slide isNoPadding>
         <Box mt="56px">
           <Flex px={5} justify="space-between" align="center">
             <Box py={4}>
-              <Box fontSize="11px">{userInfo?.name.slice(1)}님의 보유 티켓</Box>
+              <Box fontSize="11px">매월 받는 참여권</Box>
               <Box fontSize="20px" fontWeight="semibold">
                 {userInfo?.ticket?.groupStudyTicket}개
               </Box>
@@ -59,183 +65,96 @@ function GroupStudyTicketLogSection() {
               colorScheme="mint"
               size="md"
               onClick={() => {
-                toast("info", "2월 1일부터 구매 가능");
+                setIsDrawer(true);
               }}
             >
-              티켓 구매
+              참여권 정보 확인
             </Button>
           </Flex>
-          <Box>
-            {logsData
-              ?.reverse()
-              .slice()
-              ?.map((log, idx) => {
-                const timeStamp = dayjs(log.timestamp);
-                const timeStr = dayjsToStr(timeStamp);
+          <Flex flexDir="column" mt={2} mx={5} mb={20}>
+            <Box
+              borderWidth="1px"
+              borderColor="gray.300"
+              borderRadius="2xl"
+              boxShadow="md"
+              overflow="hidden"
+            >
+              <Box px={4} py={3} borderBottomWidth="1px" borderColor="gray.300">
+                <Text fontSize="12px" color="mint" fontWeight={600}>
+                  정규 멤버는 참여권이 소모되지 않습니다.
+                </Text>
+              </Box>
 
-                if (!stepDate || timeStr !== stepDate) {
-                  const isFirst = !stepDate;
-                  stepDate = timeStr;
-                  return (
-                    <>
-                      <Box
-                        mt={!isFirst && 5}
-                        pt={5}
-                        borderTop={!isFirst && "var(--border-main)"}
-                        fontSize="11px"
-                        lineHeight="12px"
-                        color="gray.500"
-                        px={5}
-                        key={idx}
-                      >
-                        {dayjsToFormat(dayjs(log.timestamp).locale("ko"), "M월 D일 (ddd)")}
-                      </Box>
-                      <Block
-                        text={log.message}
-                        time={dayjsToFormat(timeStamp, "HH:mm")}
-                        iconType="store"
-                        value={log.meta.value}
-                      />
-                    </>
-                  );
-                } else {
-                  return (
-                    <Block
-                      text={log.message}
-                      time={dayjsToFormat(timeStamp, "HH:mm")}
-                      iconType="store"
-                      value={log.meta.value}
-                      key={idx}
-                    />
-                  );
-                }
-              })}
-          </Box>
+              <Box p={3} py={2}>
+                <Table size="sm" variant="simple">
+                  <Thead>
+                    <Tr>
+                      <Th px={1} pb={2}>
+                        <Text textAlign="start" color="gray.500" fontSize="11px">
+                          이름
+                        </Text>
+                      </Th>
+                      <Th px={1} pb={2}>
+                        <Text textAlign="center" color="gray.500" fontSize="11px">
+                          멤버
+                        </Text>
+                      </Th>
+                      <Th px={0} pb={2}>
+                        <Text textAlign="center" color="gray.500" fontSize="11px">
+                          소모
+                        </Text>
+                      </Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody color="gray.600">
+                    {data?.map((it, idx) => (
+                      <Tr key={idx} w="full">
+                        <Td px={1} py={3} fontSize="12px" color="gray.700" maxW="210px" pr={2}>
+                          <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
+                            {it.title}
+                          </Text>
+                        </Td>
+                        <Td fontSize="12px" px={1} color="gray.600">
+                          <Text textAlign="center">{it.isMember ? "정규" : "임시"}</Text>
+                        </Td>
+                        <Td fontSize="12px" px={0} color="gray.600" fontWeight={600}>
+                          <Text textAlign="center">{it.isMember ? 0 : it.requiredTicket}장</Text>
+                        </Td>
+                      </Tr>
+                    ))}
+                    <Tr w="full">
+                      <Td px={1} py={3} fontSize="12px" color="mint" maxW="210px" pr={2}>
+                        <Text
+                          overflow="hidden"
+                          whiteSpace="nowrap"
+                          fontWeight={600}
+                          textOverflow="ellipsis"
+                        >
+                          월간 소모 참여권 합계
+                        </Text>
+                      </Td>
+                      <Td fontSize="12px" px={1} color="gray.600">
+                        <Text textAlign="center"></Text>
+                      </Td>
+                      <Td fontSize="12px" px={0} color="mint" fontWeight={600}>
+                        <Text textAlign="center">{sum}장</Text>
+                      </Td>
+                    </Tr>
+                  </Tbody>
+                </Table>{" "}
+                <Box px={1} py={3} pb={1}>
+                  <Text fontSize="12px" color="gray.600">
+                    참여권이 부족한 경우{" "}
+                    <b style={{ color: "var(--color-red)" }}>티켓 수 x 1,000 Point</b>가 차감됩니다.
+                  </Text>
+                </Box>
+              </Box>
+            </Box>
+          </Flex>
         </Box>
       </Slide>
-      {isModal && (
-        <BottomFlexDrawer
-          isDrawerUp
-          isOverlay
-          height={400}
-          isHideBottom
-          setIsModal={() => setIsModal(false)}
-        >
-          <Box
-            py={3}
-            pb={0}
-            lineHeight="32px"
-            w="100%"
-            fontWeight="semibold"
-            fontSize="20px"
-            textAlign="start"
-          >
-            번개 참여권을 구매하시겠어요?
-          </Box>
-          <Box color="gray.500" mr="auto" fontSize="12px">
-            매월 1일에 참여권이 초기화 됩니다.
-          </Box>
-          <Box
-            mr="auto"
-            mt={3}
-            fontWeight="extrabold"
-            fontSize="20px"
-            lineHeight="24px"
-            color="mint"
-            mb={8}
-          >
-            비용: 2,000 Point
-          </Box>
-          <Image
-            src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/%EB%B2%88%EA%B0%9C+%ED%8B%B0%EC%BC%932.png"
-            alt="ticket1"
-            width={120}
-            height={120}
-          />
-          <Flex py={2} w="full" mt="auto">
-            <Button
-              color="mint"
-              border="var(--border)"
-              borderColor="mint"
-              size="lg"
-              mr={3}
-              flex={1}
-              onClick={() => setIsModal(false)}
-            >
-              취 소
-            </Button>
-            <Button
-              onClick={() => {
-                handleBuyTicket();
-              }}
-              size="lg"
-              flex={1}
-              colorScheme="mint"
-              isLoading={isLoading}
-            >
-              구 매
-            </Button>
-          </Flex>
-        </BottomFlexDrawer>
-      )}
+      {isDrawer && <UserSocialGuideDrawer2 onClose={() => setIsDrawer(false)} />}
     </>
-  );
-}
-
-interface BlockProps {
-  text: string;
-  time: string;
-  iconType: "store";
-  value: number;
-}
-
-function Block({ text, time, value }: BlockProps) {
-  return (
-    <Flex px={5} mt={4} justify="space-between" align="center">
-      <Flex
-        justify="center"
-        align="center"
-        w="48px"
-        h="48px"
-        borderRadius="50%"
-        position="relative"
-        mr={2}
-      >
-        <Box
-          position="absolute"
-          w="100%"
-          h="100%"
-          opacity={0.08}
-          bgColor="var(--color-gray)"
-          borderRadius="50%"
-        ></Box>
-        <Image
-          src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EA%B9%83%EB%B0%9C2.png"
-          width={36}
-          height={36}
-          alt="test"
-          priority
-          style={{ width: "36px", height: "36px", objectFit: "contain" }}
-        />
-      </Flex>
-      <Box flex={1}>
-        <Box mb={1} fontWeight="bold" fontSize="14px" lineHeight="20px">
-          {text}
-        </Box>
-        <Box color="gray.500" fontSize="11px" lineHeight="12px">
-          {time}
-        </Box>
-      </Box>
-      <Box textAlign="end">
-        <Box mb={1} fontWeight="bold" fontSize="13px" lineHeight="20px" color="mint">
-          {value > 0 && "+"}
-          {value}개
-        </Box>
-        {/* <Box color="gray.500" fontSize="11px" lineHeight="12px">
-          {currentValue}개
-        </Box> */}
-      </Box>
-    </Flex>
   );
 }
 

@@ -15,12 +15,11 @@ function GroupMine() {
   const { data } = useGroupsMineQuery("pending");
   const typeToast = useTypeToast();
   const isGuest = session?.user.role === "guest";
-
+  console.log(23, data);
   const imageTileArr: IImageTile[] = useMemo(
     () =>
       data
-        ?.filter((group) => group.status !== "end")
-        .sort(() => Math.random() - 0.5)
+        ?.sort(() => Math.random() - 0.5)
         .map((group) => ({
           imageUrl: group?.squareImage || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]),
           text: group.title,

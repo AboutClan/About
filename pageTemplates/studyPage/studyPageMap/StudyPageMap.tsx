@@ -300,11 +300,10 @@ function StudyPageMap({
               handleMarker={handleMarker}
               zoomChange={(zoom: number) => setZoomNumber(zoom)}
               isMapExpansion={isMapExpansion}
-              // circleCenter={
-              //   isMapExpansion && !placeData
-              //     ? studyVoteData?.results?.map((props) => props?.center)
-              //     : null
-              // }
+              circleCenter={placeData?.map((p) => ({
+                lat: p.location.latitude,
+                lon: p.location.longitude,
+              }))}
             />
             {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
             {((isLoading && !isLoading2) || (isLoadingLocation && tempToggle)) && (

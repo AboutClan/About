@@ -179,7 +179,7 @@ function StudyApplyDrawer({
       loading: isLoading,
     },
   };
-
+  console.log(55, rangeNum, isLocation);
   const typeToast = useTypeToast();
   const locationTextArr = voteLocation?.name?.split(" ");
 

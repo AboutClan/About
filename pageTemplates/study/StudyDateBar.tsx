@@ -186,7 +186,7 @@ interface InviteDrawerProps {
   date: string;
 }
 
-type PlaceType = "강남" | "홍대" | "사당";
+type PlaceType = "강남" | "홍대" | "사당" | "건대" | "노원";
 
 function InviteDrawer({
   isAdmin,
@@ -202,9 +202,9 @@ function InviteDrawer({
 
   const { data: group } = useGroupIdQuery("118");
 
-  const { data: usersAll, isLoading } = useAllUserDataQuery("study");
+  const { data: usersAll, isLoading } = useAllUserDataQuery(null);
 
-  const placeArr: PlaceType[] = ["강남", "홍대", "사당"];
+  const placeArr: PlaceType[] = ["강남", "홍대", "사당", "건대", "노원"];
 
   useEffect(() => {
     if (!usersAll || !group) return;
@@ -224,14 +224,24 @@ function InviteDrawer({
       longitude: 127.030907,
     },
     홍대: {
-      locationDetail: "서울특별시 강남구 역삼동 827-13 1층",
-      latitude: 37.496193,
-      longitude: 127.030907,
+      locationDetail: "서울특별시 마포구 합정동 366-1 더보이드빌딩 지하1층",
+      latitude: 37.547935,
+      longitude: 126.915129,
     },
     사당: {
       locationDetail: "서울특별시 관악구 남현동 1060-4",
       latitude: 37.476183,
       longitude: 126.980677,
+    },
+    건대: {
+      locationDetail: "서울특별시 광진구 화양동 5-3 지하1층",
+      latitude: 37.542149,
+      longitude: 127.071458,
+    },
+    노원: {
+      locationDetail: "서울특별시 성북구 하월곡동 21-1 카페어바웃 1F, B1",
+      latitude: 37.60461,
+      longitude: 127.042699,
     },
   };
 
