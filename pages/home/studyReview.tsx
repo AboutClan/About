@@ -168,7 +168,11 @@ function StudyReview() {
   });
   const { data: userInfo } = useUserInfoQuery();
 
-  const study = studyPassedData?.results?.find((result) => result.study.place._id === id);
+  const study = studyPassedData?.results?.find((result) =>
+    id
+      ? result.study.place._id === id
+      : result.study.members.some((m) => m?.user?._id === userInfo?.id),
+  );
   const myStudyInfo = study?.study?.members?.find((member) => member.user._id === userInfo?._id);
 
   const { mutate, isLoading } = useUserStudyReviewMutation({

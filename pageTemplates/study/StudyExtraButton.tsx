@@ -9,6 +9,7 @@ import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import ReviewForm from "../../components/organisms/StarRatingForm";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { usePointToast, useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { usePlaceReviewMutation, useStudyPlaceChangeMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
@@ -43,6 +44,7 @@ function StudyExtraButton({
 }: StudyExtraButtonProps) {
   const router = useRouter();
   const toast = useToast();
+  const userInfo = useUserInfo();
   const [isReviewModal, setIsReviewModal] = useState(false);
 
   const isAttend = myStudyInfo?.attendance?.type === "arrived";
@@ -53,6 +55,8 @@ function StudyExtraButton({
   const [isGuideModal, setIsGuideModal] = useState(false);
 
   const handleCondition = () => {
+    if (userInfo?.role === "previliged") return true;
+
     if (myStudyStatus !== "participation") {
       toast("info", "스터디 참여자만 이용 가능합니다.");
       return false;

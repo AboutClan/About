@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { ComponentType, useEffect, useState } from "react";
 
@@ -15,7 +16,7 @@ import {
   MEMBERSHIP_AT,
   POINT_RECEIVE_AT,
 } from "../../../constants/keys/localStorage";
-import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
+import { STUDY_ATTEND_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
 import { useUserMembershipLogQuery } from "../../../hooks/user/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
@@ -54,9 +55,9 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
 
   const { data } = useGatherReviewOneQuery();
 
-  const studyRecordStr = localStorage.getItem(STUDY_RECORD_MODAL_AT);
+  const studyRecordStr = localStorage.getItem(STUDY_ATTEND_AT);
   const studyRecord = JSON.parse(studyRecordStr);
-
+  console.log(52, studyRecordStr, studyRecord);
   const { data: membershipLog, isLoading: isLoading2 } = useUserMembershipLogQuery();
 
   useEffect(() => {
@@ -87,10 +88,15 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
       return;
     }
 
-    // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
-    //   setPopUpType((old) => [...old, "studyRecord"]);
-    //   if (++popUpCnt < 2) return;
-    // }
+    if (
+      studyRecord &&
+      dayjs(studyRecord)?.isBefore(dayjs().startOf("day")) &&
+      dayjs(studyRecord)?.add(1, "week").isAfter(dayjs())
+    ) {
+      localStorage.setItem(STUDY_ATTEND_AT, null);
+      setPopUpType((old) => [...old, "studyRecord"]);
+      return;
+    }
 
     // if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
     //   setPopUpType((old) => [...old, "monthlyScore"]);

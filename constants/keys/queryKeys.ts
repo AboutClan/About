@@ -16,6 +16,7 @@ export const STUDY_VOTE = "studyVote";
 export const STUDY_PLACE = "studyPlace";
 export const STUDY_START_TIME = "studyStartTime";
 export const STUDY_RECORD_MODAL_AT = "studyAttendRecord";
+export const STUDY_ATTEND_AT = "studyAttendAt";
 export const STUDY_ARRIVED_CNT = "studyArrivedCnt";
 export const STUDY_PREFERENCE = "studyPreference";
 export const STUDY_VOTE_CNT = "studyVoteCnt";

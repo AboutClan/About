@@ -36,7 +36,7 @@ function StudyRecordDrawer({ date = dayjsToStr(dayjs()), onClose }: StudyRecordD
       </Box>
 
       <Flex direction="column" mt="8px" w="100%" mb="auto">
-        <Link href={`/study/result?date=${date}`} style={{ width: "100%" }}>
+        <Link href={`/home/studyReview?date=${date}`} style={{ width: "100%" }}>
           <Button as="div" w="full" size="lg" colorScheme="black">
             확인 하러가기
           </Button>
@@ -52,7 +52,7 @@ function StudyRecordDrawer({ date = dayjsToStr(dayjs()), onClose }: StudyRecordD
             localStorage.setItem(STUDY_RECORD_MODAL_AT, null);
           }}
         >
-          무시하고 넘기기
+          나중에
         </Button>
       </Flex>
     </BottomFlexDrawer>

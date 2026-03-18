@@ -262,6 +262,21 @@ function StudyNavigation({
             type: "single",
             colorScheme: "mint",
             func: () => {
+              let temp = 0;
+
+              findStudy?.members?.forEach((m) => {
+                if (m?.attendance?.type === "absenced") {
+                  temp += 1;
+                }
+              });
+
+              if (findStudy?.members?.length - temp >= 8) {
+                toast(
+                  "info",
+                  "참여 가능한 자리가 없습니다. 불참자를 기다리거나 다른 스터디를 신청해 주세요!",
+                );
+                return;
+              }
               setDrawerType("dailyVote");
             },
           };

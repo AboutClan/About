@@ -12,6 +12,7 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
+import { STUDY_ATTEND_AT } from "../../../constants/keys/queryKeys";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
@@ -24,7 +25,8 @@ import {
   StudyType,
 } from "../../../types/models/studyTypes/study-set.types";
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import { dayjsToFormat, getTodayStr } from "../../../utils/dateTimeUtils";
+import { setLocalStorageObj } from "../../../utils/storageUtils";
 
 function Configuration() {
   const searchParams = useSearchParams();
@@ -97,6 +99,7 @@ function Configuration() {
   }
 
   const handleAttendSuccess = (data: PointInfoProps) => {
+    setLocalStorageObj(STUDY_ATTEND_AT, getTodayStr());
     resetStudy();
     setTimeout(() => {
       setTransferStudyReward(data);
