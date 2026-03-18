@@ -108,6 +108,19 @@ export const useStudyPlaceChangeMutation = (
     options,
   );
 
+export const useStudyParticipationTimeChangeMutation = (
+  voteDate: Dayjs,
+  options?: MutationOptions<DayjsTimeProps>,
+) => {
+  return useMutation<void, AxiosError, DayjsTimeProps>((voteInfo) => {
+    const { start, end } = voteInfo;
+    return requestServer<StringTimeProps>({
+      method: "patch",
+      url: `vote2/${dayjsToStr(voteDate)}/participation`,
+      body: { start: start.toISOString(), end: end.toISOString() },
+    });
+  }, options);
+};
 export const useStudyResultTimeChangeMutation = (
   voteDate: Dayjs,
   options?: MutationOptions<DayjsTimeProps>,

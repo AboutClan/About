@@ -10,6 +10,7 @@ import {
 import {
   useStudyAbsenceMutation,
   useStudyParticipateMutation,
+  useStudyParticipationTimeChangeMutation,
   useStudyResultTimeChangeMutation,
   useStudyVoteMutation,
 } from "../study/mutations";
@@ -53,6 +54,15 @@ export const useStudyMutations = (date: Dayjs) => {
       resetStudy();
     },
   });
+  const { mutate: changeTime, isLoading: isLoading13 } = useStudyParticipationTimeChangeMutation(
+    date,
+    {
+      onSuccess: () => {
+        typeToast("change");
+        resetStudy();
+      },
+    },
+  );
 
   const { mutate: cancel, isLoading: isLoading3 } = useStudyVoteMutation(date, "delete", {
     onSuccess: () => {
@@ -128,6 +138,7 @@ export const useStudyMutations = (date: Dayjs) => {
       change,
       cancel,
       absence,
+      change2: changeTime,
     },
     realTimeStudy: {
       vote: realTimeVote,
@@ -144,6 +155,7 @@ export const useStudyMutations = (date: Dayjs) => {
       isLoading6 ||
       isLoading7 ||
       isLoading8 ||
-      isLoading9,
+      isLoading9 ||
+      isLoading13,
   };
 };

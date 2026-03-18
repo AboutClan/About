@@ -1,5 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -15,7 +14,6 @@ import {
 } from "../../libs/study/thumbnailCardLibs";
 import { DispatchString } from "../../types/hooks/reactTypes";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyPagePlaceSectionFilterBar from "./studyPageDrawer/StudyPagePlaceBlockFilterBar";
 
 interface StudyPagePlaceSectionProps {
@@ -43,11 +41,7 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
       setThumbnailCardinfoArr(null);
       return;
     }
-    const getThumbnailCardInfoArr = setStudyThumbnailCard(
-      date,
-      studySet,
-      date === dayjsToStr(dayjs()) ? session?.user.id : null,
-    );
+    const getThumbnailCardInfoArr = setStudyThumbnailCard(date, studySet, session?.user.id);
     setThumbnailCardinfoArr(
       sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr, session?.user.id),
     );
@@ -60,7 +54,7 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
   //     setDate(newDate);
   //   }
   // };
-
+  console.log(15, thumbnailCardInfoArr);
   return (
     <Flex flexDir="column" mb={8}>
       <Box>

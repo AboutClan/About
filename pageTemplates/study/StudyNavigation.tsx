@@ -8,7 +8,7 @@ import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import IconTextColButton from "../../components/atoms/buttons/IconTextColButton";
 import Textarea from "../../components/atoms/Textarea";
 import { XCircleIcon } from "../../components/Icons/CircleIcons";
-import { ClockIcon, PlaceChangeIcon } from "../../components/Icons/ClockIcons";
+import { ClockIcon } from "../../components/Icons/ClockIcons";
 import Slide from "../../components/layouts/PageSlide";
 import { BottomFlexDrawerOptions } from "../../components/organisms/drawer/BottomFlexDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
@@ -80,7 +80,7 @@ function StudyNavigation({
 
   const { data: userInfo } = useUserInfoQuery();
   const {
-    voteStudy: { vote, participate, change },
+    voteStudy: { vote, participate, change, change2 },
     realTimeStudy: { vote: realTimesVote, change: realTimeChange, cancel: realTimeCancel },
     isLoading,
   } = useStudyMutations(dayjs(date));
@@ -149,7 +149,7 @@ function StudyNavigation({
           };
         } else {
           return {
-            text: "참여 날짜 변경",
+            text: "참여 날짜 / 장소 변경",
             type: "multi",
             colorScheme: "mint",
             func: () => {
@@ -283,7 +283,7 @@ function StudyNavigation({
         } else if (myStatus === "participation") {
           if (resultStatus === "expected") {
             return {
-              text: "참여 날짜 변경",
+              text: "참여 날짜 / 장소 변경",
               type: "multi",
               colorScheme: "mint",
               func: () => {
@@ -366,7 +366,11 @@ function StudyNavigation({
         break;
       case "timeChange":
         if (studyType === "results") {
-          change(voteTime);
+          if (dayjs().isBefore(dayjs(date).hour(9))) {
+            change2(voteTime);
+          } else {
+            change(voteTime);
+          }
         } else {
           realTimeChange(voteTime);
         }
@@ -430,7 +434,7 @@ function StudyNavigation({
             px={5}
           >
             {navigationProps.type === "multi" &&
-              (navigationProps.text === "참여 날짜 변경" ? (
+              (navigationProps.text === "참여 날짜 / 장소 변경" ? (
                 <>
                   <IconTextColButton
                     icon={<XCircleIcon size="md" />}
@@ -440,10 +444,14 @@ function StudyNavigation({
                     }}
                   />
                   <IconTextColButton
-                    icon={<PlaceChangeIcon />}
-                    text="장소 변경"
+                    icon={<ClockIcon />}
+                    text="시간 변경"
                     func={() => {
-                      setIsPlaceDrawer(true);
+                      if (!myStudyInfo || studyType === "participations") {
+                        toast("error", "참여 정보를 찾을 수 없습니다.");
+                        return;
+                      }
+                      setDrawerType("timeChange");
                     }}
                   />
                 </>
