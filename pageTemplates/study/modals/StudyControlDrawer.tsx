@@ -129,7 +129,7 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
   );
 }
 
-function StudyApplyIcon() {
+export function StudyApplyIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -143,7 +143,7 @@ function StudyApplyIcon() {
   );
 }
 
-function StudyOpenIcon() {
+export function StudyOpenIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -35,7 +35,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
   const searchParams = useSearchParams();
   const modalParam = searchParams.get("modal") as ModalType;
   const [modalType, setModalType] = useState<ModalType>();
-  console.log(user);
+
   useEffect(() => {
     if (!modalParam) {
       setModalType(null);

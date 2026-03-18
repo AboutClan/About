@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import Divider from "../../../../components/atoms/Divider";
@@ -19,6 +19,7 @@ import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyDateControl from "../../../../pageTemplates/study/StudyDateControl";
+import StudyExtraButton from "../../../../pageTemplates/study/StudyExtraButton";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
@@ -42,13 +43,13 @@ import { dayjsToStr, getHour, getTodayStr } from "../../../../utils/dateTimeUtil
 import { createGroupThumbnailProps } from "../../../group";
 
 export default function Page() {
-  const toast = useToast();
-  const searchParams = useSearchParams();
-  const { id, date } = useParams<{ id: string; date: string }>() || {};
-  const userInfo = useUserInfo();
+  const router = useRouter();
 
-  const studyType = searchParams.get("type") as StudyType;
-  const studyLocation = searchParams.get("studyLocation") as "true";
+  const toast = useToast();
+  const { id, date: date2, type, studyLocation } = router.query;
+  const userInfo = useUserInfo();
+  const date = date2 as string;
+  const studyType = type as StudyType;
 
   const [dateDayjs, setDateDayjs] = useState(
     studyType === "soloRealTimes"
@@ -107,7 +108,6 @@ export default function Page() {
     isPassedDate || isPassedSolo
       ? studyPassedData && studyPassedData[studyType]
       : studySet && studySet[studyType];
-
   const participationsSet =
     studyType === "participations" && (studyData as StudyParticipationsSetProps[]);
   const confirmedSet = studyType !== "participations" && (studyData as StudyConfirmedSetProps[]);
@@ -175,14 +175,6 @@ export default function Page() {
     }
   }
 
-  if (studySet) {
-    console.log("studyType:", studyType);
-    console.log("myStudyInfo:", myStudyInfo);
-    console.log("myStudyArr:", myStudyArr);
-    console.log("findTodayStudy:", findTodayStudy);
-    console.log("myStudyStatus:", myStudyStatus);
-  }
-
   const members2 =
     studyType === "participations"
       ? shortenParticipations(participationsSet)
@@ -198,7 +190,7 @@ export default function Page() {
           (member) => member?.user?.belong === userInfo?.belong,
         )
       : members2;
-  console.log(8, members);
+
   const placeInfo = findStudy?.place;
 
   const studyLinkCondition =
@@ -226,10 +218,9 @@ export default function Page() {
     "강남/서초": "272",
   };
   const groupId = !belong ? null : STUDY_GROUP?.[belong];
-  console.log(2323, belong, groupId);
 
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
-
+  if (!router.isReady) return null;
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
@@ -241,7 +232,11 @@ export default function Page() {
               <StudyOverview date={date} placeInfo={placeInfo} studyType={studyType} />
               <Divider />
             </Slide>
-            <Slide>{isOpenStudy && <StudyAddressMap location={placeInfo?.location} />}</Slide>
+            <Slide>
+              {isOpenStudy && placeInfo?.location && (
+                <StudyAddressMap location={placeInfo?.location} />
+              )}
+            </Slide>
             <Slide isNoPadding>
               {isOpenStudy && (
                 <Box mt={5}>
@@ -365,7 +360,7 @@ export default function Page() {
             <StudyNavigation
               myStudyInfo={myStudyInfo}
               date={isPassedSolo ? dayjsToStr(dateDayjs) : date}
-              id={id}
+              id={id as string}
               myStudyStatus={myStudyStatus}
               studyType={studyType}
               location={placeInfo?.location}
@@ -385,6 +380,18 @@ export default function Page() {
                 myStudyInfo={myStudyInfo as StudyConfirmedMemberProps}
               />
             )}
+          {(studyType === "openRealTimes" || studyType === "results") && (
+            <StudyExtraButton
+              placeId={placeInfo?._id}
+              myStudyInfo={myStudyInfo as StudyConfirmedMemberProps}
+              myStudyStatus={myStudyStatus}
+              studyType={studyType}
+              defaultLocation={{
+                lat: placeInfo?.location?.latitude,
+                lon: placeInfo?.location?.longitude,
+              }}
+            />
+          )}
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}
         </>
       ) : (

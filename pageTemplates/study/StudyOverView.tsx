@@ -81,12 +81,15 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
                 <Box mr={1}>
                   <MainBadge text="매칭 스터디" />
                 </Box>
-                <MainBadge text={getPlaceBranch(placeInfo.location.address, true)} type="sub" />
+                <MainBadge
+                  text={placeInfo && getPlaceBranch(placeInfo.location.address, true)}
+                  type="sub"
+                />
               </Flex>
             </Box>
             <Flex align="center" mb={3}>
               <Box mt={1} mr={2} fontSize="20px" fontWeight="bold">
-                {placeInfo.location.name}
+                {placeInfo?.location?.name}
               </Box>
               <StarRating rating={placeInfo?.rating || 4} size="lg" />
             </Flex>

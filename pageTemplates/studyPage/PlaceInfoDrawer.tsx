@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Grid } from "@chakra-ui/react";
+import { useState } from "react";
 
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import StarRating from "../../components/atoms/StarRating";
@@ -17,9 +18,16 @@ interface PlaceInfoDrawerProps {
   onClose: () => void;
   handleVotePick?: () => void;
   isDown?: boolean;
+  isChange?: boolean;
 }
 
-function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick, isDown }: PlaceInfoDrawerProps) {
+function PlaceInfoDrawer({
+  placeInfo,
+  onClose,
+  handleVotePick,
+  isDown,
+  isChange,
+}: PlaceInfoDrawerProps) {
   return (
     <>
       <BottomFlexDrawer
@@ -30,7 +38,12 @@ function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick, isDown }: PlaceIn
         height={!handleVotePick ? 213 : 269}
         setIsModal={onClose}
       >
-        <PlaceInfoBox placeInfo={placeInfo} isDown={isDown} handleVotePick={handleVotePick} />
+        <PlaceInfoBox
+          placeInfo={placeInfo}
+          isDown={isDown}
+          handleVotePick={handleVotePick}
+          isChange={isChange}
+        />
       </BottomFlexDrawer>
     </>
   );
@@ -42,14 +55,17 @@ export function PlaceInfoBox({
   placeInfo,
   isDown,
   handleVotePick,
+  isChange,
 }: {
   placeInfo: StudyPlaceProps;
   isDown: boolean;
   handleVotePick?: () => void;
+  isChange?: boolean;
 }) {
   const userInfo = useUserInfo();
   const typeToast = useTypeToast();
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const isGuest = userInfo?.role === "guest";
   const reviewCnt = Math.ceil(Math.random() * 30);
@@ -179,8 +195,20 @@ export function PlaceInfoBox({
         />
       </Box>
       {handleVotePick && (
-        <Button mb={2} colorScheme="black" size="lg" onClick={handleVotePick}>
-          이 장소로 스터디 개설
+        <Button
+          mb={2}
+          colorScheme="black"
+          size="lg"
+          isLoading={isLoading}
+          onClick={() => {
+            setIsLoading(true);
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 1000);
+            handleVotePick();
+          }}
+        >
+          이 장소로 스터디 {isChange ? "변경" : "개설"}
         </Button>
       )}
     </Flex>

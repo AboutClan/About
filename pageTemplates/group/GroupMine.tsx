@@ -15,7 +15,7 @@ function GroupMine() {
   const { data } = useGroupsMineQuery("pending");
   const typeToast = useTypeToast();
   const isGuest = session?.user.role === "guest";
-  console.log(23, data);
+
   const imageTileArr: IImageTile[] = useMemo(
     () =>
       data

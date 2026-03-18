@@ -94,6 +94,19 @@ export const useStudyInviteMutation = (
     },
   );
 };
+export const useStudyPlaceChangeMutation = (
+  beforeId: string,
+  options?: MutationOptions<{ placeId: string }, void>,
+) =>
+  useMutation<void, AxiosError, { placeId: string }>(
+    (param) =>
+      requestServer<{ beforeId: string; placeId: string }, void>({
+        method: "patch",
+        url: `vote2/${dayjsToStr(dayjs())}/studyPlace`,
+        body: { ...param, beforeId },
+      }),
+    options,
+  );
 
 export const useStudyResultTimeChangeMutation = (
   voteDate: Dayjs,

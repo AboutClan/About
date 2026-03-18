@@ -16,7 +16,6 @@ function GroupStudyTicketLogSection() {
   const { data: userInfo, refetch: refetch2 } = useUserInfoQuery();
 
   const { data } = useGroupsMineQuery("pending");
-  console.log(52, data);
 
   const [isModal, setIsModal] = useState(false);
   const [isDrawer, setIsDrawer] = useState(false);
@@ -46,7 +45,6 @@ function GroupStudyTicketLogSection() {
   const sum = data?.slice()?.reduce((acc, cur) => {
     return acc + (cur.isMember ? 0 : cur.requiredTicket);
   }, 0);
-  console.log(24, sum);
 
   return (
     <>

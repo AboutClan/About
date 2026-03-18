@@ -47,6 +47,7 @@ export const getStudyPlaceMarkersOptions = (
   selectedId: string,
   zoomNumber: number,
   centerLocation?: CoordinatesProps,
+  defaultLocation?: CoordinatesProps,
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined" || !placeData?.length) return;
   const temp = [];
@@ -58,6 +59,7 @@ export const getStudyPlaceMarkersOptions = (
     type: "cluster" | "noise";
     name: string;
     rating: number;
+    defaultLocationLat?: number;
   }
 
   const getClusterInfo = (placeData: StudyPlaceProps[], zoom: number): ClusterInfoProps[] => {
@@ -118,6 +120,7 @@ export const getStudyPlaceMarkersOptions = (
         type: "noise",
         name: data.location.name,
         rating: data.rating,
+        defaultLocationLat: data.location.latitude,
       };
     });
 
@@ -146,7 +149,7 @@ export const getStudyPlaceMarkersOptions = (
         position: new naver.maps.LatLng(cluster.center[0], cluster.center[1]),
         icon: {
           content:
-            selectedId === cluster._id
+            selectedId === cluster._id || cluster?.defaultLocationLat === defaultLocation?.lat
               ? getPlaceBasicIcon("orange", null)
               : cluster.count > 1
               ? getPlaceCountIcon(cluster.count)

@@ -106,7 +106,7 @@ export const getCalendarDates = (
     const endOfMonth = selectedDate.endOf("month");
     const startCalendar = startOfMonth.weekday(0);
     const endCalendar = endOfMonth.weekday(6);
-    console.log(312, mintDateArr, passedDisabled);
+
     let current = startCalendar;
     while (current.isBefore(endCalendar) || current.isSame(endCalendar)) {
       if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {

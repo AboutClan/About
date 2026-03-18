@@ -149,7 +149,7 @@ export const authOptions: NextAuthOptions = {
         if (["kakao", "apple"].includes(account.provider)) {
           await dbConnect();
         }
-        console.log(user, profile);
+
         if (user.uid === "1234567890" || (profile as KakaoProfile).id + "" === "1234567890") {
           return false;
         }

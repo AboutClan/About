@@ -18,7 +18,7 @@ import { useStudyAdditionMutation } from "../../../hooks/study/mutations";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
-import { LocationProps } from "../../../types/common";
+import { CoordinatesProps, LocationProps } from "../../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../../types/externals/naverMapTypes";
 import {
   StudyPlaceFilter,
@@ -40,6 +40,7 @@ interface StudyPageMapProps {
   isDown?: boolean;
   type?: "mainPlace";
   isCafeMap: boolean;
+  defaultLocation?: CoordinatesProps;
 }
 
 function StudyPageMap({
@@ -49,10 +50,17 @@ function StudyPageMap({
   isDown,
   type,
   isCafeMap,
+  defaultLocation,
 }: StudyPageMapProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
-  const { currentLocation, refetchCurrentLocation, isLoadingLocation } = useUserCurrentLocation();
+  const {
+    currentLocation: currentLocation2,
+    refetchCurrentLocation,
+    isLoadingLocation,
+  } = useUserCurrentLocation();
+
+  const currentLocation = defaultLocation || currentLocation2;
 
   /* 네이버 지도와 마커 옵션 */
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
@@ -94,12 +102,12 @@ function StudyPageMap({
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
     };
-    const zoom = mapOptions?.zoom || (isMapExpansion ? 11 : 14);
+    const zoom = defaultLocation ? 16 : mapOptions?.zoom || (isMapExpansion ? 11 : 14);
 
     const options = getMapOptions(currentLocation || myLocation, zoom);
     setZoomNumber(zoom);
     setMapOptions(options);
-  }, [userInfo, isMapExpansion, currentLocation]);
+  }, [userInfo, isMapExpansion, currentLocation, defaultLocation]);
 
   useEffect(() => {
     if (!placeData?.length) return;
@@ -109,7 +117,8 @@ function StudyPageMap({
         placeData,
         placeInfo ? placeInfo._id : null,
         zoomNumber,
-        isMapExpansion ? currentLocation : null,
+        isMapExpansion && !defaultLocation ? currentLocation : null,
+        defaultLocation,
       ),
     );
 
@@ -120,7 +129,7 @@ function StudyPageMap({
       );
       setMapOptions(options);
     }
-  }, [placeData, placeInfo, zoomNumber, currentLocation]);
+  }, [placeData, placeInfo, zoomNumber, currentLocation, defaultLocation]);
 
   const handleMarker = (id: string, currentZoom: number) => {
     setMapOptions({ ...mapOptions, zoom: currentZoom });
@@ -327,13 +336,13 @@ function StudyPageMap({
           placeInfo={placeInfo}
           onClose={() => setPlaceInfo(null)}
           isDown={isDown}
+          isChange={!!defaultLocation}
         />
       )}
       {drawerType === "menu" && (
         <RightMenuDrawer
           onClose={() => setDrawerType(null)}
-          handleButton={(type: "addCafe") => {
-            console.log(type);
+          handleButton={() => {
             setDrawerType(null);
             setIsAddCafeDrawer(true);
           }}
@@ -357,7 +366,7 @@ function StudyPageMap({
             ?.sort((a, b) => a._diffKm - b._diffKm)}
         />
       )}
-      {isLoading && (
+      {(isLoading || isLoading2) && (
         <>
           <ScreenOverlay zIndex={2000} />
           <MainLoading />

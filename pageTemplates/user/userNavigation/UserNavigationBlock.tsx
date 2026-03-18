@@ -37,7 +37,6 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
 
   //네비게이션 함수
   const onClickBlock = <T extends "page" | "modal">(type: T, content: ContentByType<T>): void => {
-    console.log(content);
     if (isGuest && (content as UserOverviewModal) !== "logout" && content !== "/faq") {
       failToast("guest");
       return;

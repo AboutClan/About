@@ -156,7 +156,7 @@ function StudyApplyDrawer({
       }
     });
   };
-  console.log(voteTime);
+
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
       title: "예상 참여 시간을 선택해 주세요",
@@ -179,7 +179,7 @@ function StudyApplyDrawer({
       loading: isLoading,
     },
   };
-  console.log(55, rangeNum, isLocation);
+
   const typeToast = useTypeToast();
   const locationTextArr = voteLocation?.name?.split(" ");
 
