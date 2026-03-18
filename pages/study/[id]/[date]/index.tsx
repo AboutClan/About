@@ -27,7 +27,6 @@ import StudyNearMap from "../../../../pageTemplates/study/StudyNearMap";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyPendingSection from "../../../../pageTemplates/study/StudyPendingSection";
 import StudyPlaceMap from "../../../../pageTemplates/study/StudyPlaceMap";
-import StudyReviewButton from "../../../../pageTemplates/study/StudyReviewButton";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import {
   MyStudyStatus,
@@ -220,7 +219,9 @@ export default function Page() {
   const groupId = !belong ? null : STUDY_GROUP?.[belong];
 
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
+
   if (!router.isReady) return null;
+
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
@@ -374,14 +375,15 @@ export default function Page() {
               }
             />
           )}
-          {date === dayjsToStr(dayjs()) &&
+          {/* {date === dayjsToStr(dayjs()) &&
             (studyType === "openRealTimes" || studyType === "results") &&
             (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type === "arrived" && (
               <StudyReviewButton
                 placeId={placeInfo?._id}
                 myStudyInfo={myStudyInfo as StudyConfirmedMemberProps}
               />
-            )}
+            )} */}
+
           {(studyType === "openRealTimes" || studyType === "results") && (
             <StudyExtraButton
               placeId={placeInfo?._id}
@@ -394,6 +396,7 @@ export default function Page() {
               }}
             />
           )}
+
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}
         </>
       ) : (

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 import InfoList from "../../components/atoms/lists/InfoList";
+import Slide from "../../components/layouts/PageSlide";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import ReviewForm from "../../components/organisms/StarRatingForm";
@@ -23,7 +24,7 @@ import { getTodayStr } from "../../utils/dateTimeUtils";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
 import StudyPageMap from "../studyPage/studyPageMap/StudyPageMap";
 import { CheckIcon } from "../vote/StudyControlButton";
-import { StudyOpenIcon } from "./modals/StudyControlDrawer";
+import { StudyApplyIcon, StudyOpenIcon } from "./modals/StudyControlDrawer";
 interface StudyExtraButtonProps {
   placeId: string;
 
@@ -49,6 +50,7 @@ function StudyExtraButton({
   const [isChangeModal, setIsChangeModal] = useState(false);
   const [isCafeMap, setIsCafeMap] = useState(false);
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
+  const [isGuideModal, setIsGuideModal] = useState(false);
 
   const handleCondition = () => {
     if (myStudyStatus !== "participation") {
@@ -68,6 +70,14 @@ function StudyExtraButton({
     func: () => void;
     isDisabled?: boolean;
   }[] = [
+    {
+      text: "출석 이후 가이드",
+      icon: <StudyApplyIcon />,
+      func: () => {
+        setIsModal(false);
+        setIsGuideModal(true);
+      },
+    },
     {
       text: "스터디 장소 변경",
       icon: <PlaceChangeIcon />,
@@ -109,33 +119,36 @@ function StudyExtraButton({
 
   return (
     <>
-      <Flex
-        position="fixed"
-        zIndex="100"
-        fontSize="12px"
-        lineHeight="24px"
-        fontWeight={700}
-        bottom={isAttend ? getSafeAreaBottom(76) : getSafeAreaBottom(76)}
-        right="20px"
-      >
-        <Button
+      <Slide isFixed zIndex={200}>
+        <Flex
+          position="fixed"
+          zIndex={100}
           fontSize="12px"
-          h="40px"
-          color="white"
-          px={4}
-          borderRadius="20px"
           lineHeight="24px"
-          iconSpacing={1}
-          colorScheme="black"
-          rightIcon={<CheckIcon />}
-          onClick={() => setIsModal(true)}
-          _hover={{
-            background: undefined,
-          }}
+          fontWeight={700}
+          bottom={isAttend ? getSafeAreaBottom(76) : getSafeAreaBottom(76)}
+          right="20px"
         >
-          추가 기능
-        </Button>
-      </Flex>
+          <Button
+            fontSize="12px"
+            h="40px"
+            color="white"
+            px={4}
+            borderRadius="20px"
+            lineHeight="24px"
+            iconSpacing={1}
+            colorScheme="black"
+            rightIcon={<CheckIcon />}
+            onClick={() => setIsModal(true)}
+            _hover={{
+              background: undefined,
+            }}
+          >
+            추가 기능
+          </Button>
+        </Flex>
+      </Slide>
+
       {isReviewModal && (
         <ModalLayout title="출석 이후 가이드" setIsModal={setIsReviewModal} footerOptions={{}}>
           <Box mb={3}>스터디 출석 후 난감해 하고 있는 당신을 위해 ...!</Box>
@@ -160,7 +173,7 @@ function StudyExtraButton({
           setIsModal={() => setIsModal(false)}
           isHideBottom
           drawerOptions={{ footer: { text: "닫 기", func: () => setIsModal(false) } }}
-          height={199}
+          height={251}
           zIndex={800}
         >
           {buttonProps.map((props, idx) => (
@@ -220,6 +233,28 @@ function StudyExtraButton({
       )}
       {isReviewDrawer && (
         <RightReviewDrawer placeId={placeId} onClose={() => setIsReviewDrawer(false)} />
+      )}
+      {isGuideModal && (
+        <ModalLayout
+          title="출석 이후 가이드"
+          setIsModal={() => {
+            setIsGuideModal(false);
+          }}
+          footerOptions={{}}
+        >
+          <Box mb={3}>스터디 출석 후 난감해 하고 있는 당신을 위해 ...!</Box>
+          <InfoList
+            items={[
+              "다른 사람의 출석 정보를 먼저 확인해요.",
+              "먼저 온 멤버를 찾아 가볍게 인사해 주세요!",
+              "못 찾겠다면, 스터디 톡방에 물어보면 됩니다.",
+              "같이 공부해도 되고, 혼자 공부해도 돼요!",
+              "식사 의향이 있다면, 같이 먹을지 물어봐요.",
+              "스터디를 마칠 때도 가볍게 인사해 주세요!",
+              "장소를 변경한다면, 톡방에도 알려주세요.",
+            ]}
+          />
+        </ModalLayout>
       )}
     </>
   );
