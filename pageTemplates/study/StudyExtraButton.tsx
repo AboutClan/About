@@ -101,8 +101,9 @@ function StudyExtraButton({
       setIsCafeMap(false);
       resetStudy();
       toast("success", "변경 완료");
-
-      router.push(`/study/${param?.placeId}/${getTodayStr()}?type=results`);
+      setTimeout(() => {
+        router.push(`/study/${param?.placeId}/${getTodayStr()}?type=results`);
+      }, 800);
     },
   });
 

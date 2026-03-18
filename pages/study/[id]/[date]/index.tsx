@@ -275,7 +275,9 @@ export default function Page() {
                 studyType={studyType}
                 placeInfo={placeInfo}
               />
-              {isOpenStudy && <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />}
+              {isOpenStudy && members?.length && (
+                <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
+              )}
               <Box h="1px" bg="gray.100" my={4} />
               <Box pb={2} pos="relative">
                 {(studyType === "soloRealTimes" || studyType === "participations") &&
