@@ -1,4 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -28,7 +29,7 @@ import { CheckIcon } from "../vote/StudyControlButton";
 import { StudyApplyIcon, StudyOpenIcon } from "./modals/StudyControlDrawer";
 interface StudyExtraButtonProps {
   placeId: string;
-
+  date: string;
   myStudyInfo: StudyConfirmedMemberProps;
   defaultLocation: CoordinatesProps;
   myStudyStatus: MyStudyStatus;
@@ -40,6 +41,7 @@ function StudyExtraButton({
   myStudyInfo,
   defaultLocation,
   myStudyStatus,
+  date,
   studyType,
 }: StudyExtraButtonProps) {
   const router = useRouter();
@@ -64,6 +66,14 @@ function StudyExtraButton({
     if (studyType !== "results") {
       toast("info", "매칭 스터디만 장소 변경이 가능합니다.");
       return false;
+    }
+    if (studyType !== "results") {
+      toast("info", "매칭 스터디만 장소 변경이 가능합니다.");
+      return false;
+    }
+    if (dayjs(date).hour(9).minute(0).isAfter(dayjs())) {
+      toast("info", "스터디 매칭 확정 후에 변경이 가능합니다.");
+      return;
     }
     return true;
   };

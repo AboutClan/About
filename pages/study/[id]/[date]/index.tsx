@@ -386,6 +386,7 @@ export default function Page() {
 
           {(studyType === "openRealTimes" || studyType === "results") && (
             <StudyExtraButton
+              date={date}
               placeId={placeInfo?._id}
               myStudyInfo={myStudyInfo as StudyConfirmedMemberProps}
               myStudyStatus={myStudyStatus}

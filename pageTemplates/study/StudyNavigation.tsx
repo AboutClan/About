@@ -366,7 +366,7 @@ function StudyNavigation({
         break;
       case "timeChange":
         if (studyType === "results") {
-          if (dayjs().isBefore(dayjs(date).hour(9))) {
+          if (dayjs().isBefore(dayjs(date).hour(9).minute(0))) {
             change2(voteTime);
           } else {
             change(voteTime);
