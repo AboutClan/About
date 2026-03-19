@@ -6,9 +6,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
 import BottomNav from "../../../components/layouts/BottomNav";
-import { USER_INFO } from "../../../constants/keys/queryKeys";
+import { USER_INFO, USER_POINT_SYSTEM } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useUserRegisterControlMutation } from "../../../hooks/user/mutations";
+import {
+  usePointSystemMutation,
+  useUserRegisterControlMutation,
+} from "../../../hooks/user/mutations";
 import { gaEvent } from "../../../libs/gtag";
 import { isWebView } from "../../../utils/appEnvUtils";
 import { navigateExternalLink } from "../../../utils/navigateUtils";
@@ -31,7 +34,12 @@ function safeDecode(v: string | undefined) {
   }
 }
 
-function RegisterPaymentButton() {
+interface RegisterPaymentButtonProps {
+  type: "register" | "point";
+  value: number;
+}
+
+function RegisterPaymentButton({ type, value }: RegisterPaymentButtonProps) {
   const { data: session } = useSession();
   const toast = useToast();
   const router = useRouter();
@@ -61,6 +69,23 @@ function RegisterPaymentButton() {
       }, 1000);
     }
   }, [router.isReady, router.query.status, session, toast, router]);
+
+  const { mutate: chargePoint } = usePointSystemMutation("point", {
+    onSuccess() {
+      queryClient.invalidateQueries([USER_INFO]);
+      queryClient.invalidateQueries({ queryKey: [USER_POINT_SYSTEM, "point"], exact: false });
+      toast("success", "충전이 완료되었습니다!");
+      setIsLoading2(false);
+      approveOnceRef.current = false;
+      handledReturnRef.current = false;
+    },
+    onError() {
+      toast("error", "충전에 실패했어요. 관리자에게 문의주세요!");
+      setIsLoading2(false);
+      approveOnceRef.current = false;
+      handledReturnRef.current = false;
+    },
+  });
 
   const { mutate: approve, isLoading } = useUserRegisterControlMutation("post", {
     onSuccess() {
@@ -100,7 +125,10 @@ function RegisterPaymentButton() {
       return {
         type: "success",
         title: "결제가 완료됐어요",
-        desc: "이제 바로 활동을 시작할 수 있어요.",
+        desc:
+          type === "point"
+            ? "충전된 포인트를 확인해 주세요."
+            : "이제 바로 활동을 시작할 수 있어요.",
         orderNo,
       };
     }
@@ -193,7 +221,10 @@ function RegisterPaymentButton() {
       toast("error", title);
 
       // ✅ 실패 케이스는 바로 query 제거(중복 토스트 방지)
-      router.replace("/register/access", undefined, { shallow: true });
+
+      router.replace(type === "point" ? "/user/point/charge" : "/register/access", undefined, {
+        shallow: true,
+      });
       return;
     }
     if (approveOnceRef.current) return;
@@ -201,8 +232,21 @@ function RegisterPaymentButton() {
     handledReturnRef.current = true;
     setIsLoading2(false);
 
-    approve(session.user.uid);
-  }, [router.isReady, session, router.query, session?.user?.uid, approve, toast, router]);
+    if (type === "point") {
+      chargePoint({ value, message: "포인트 충전", sub: "point" });
+    } else {
+      approve(session.user.uid);
+    }
+  }, [
+    router.isReady,
+    session,
+    router.query,
+    session?.user?.uid,
+    approve,
+    chargePoint,
+    toast,
+    router,
+  ]);
 
   const makeOrderNo = () => `ORD-${Date.now()}-${Math.random().toString(16).slice(2)}`;
   useEffect(() => {
@@ -218,8 +262,13 @@ function RegisterPaymentButton() {
 
   const onClickNext = () => {
     if (isWebView()) {
-      toast("info", "원활한 가입 완료를 위해 웹사이트로 전환합니다.");
-      navigateExternalLink("https://study-about.club/register/access");
+      if (type === "point") {
+        toast("info", "원활한 결제를 위해 웹사이트로 전환합니다.");
+        navigateExternalLink("https://study-about.club/user/point/charge");
+      } else {
+        toast("info", "원활한 가입 완료를 위해 웹사이트로 전환합니다.");
+        navigateExternalLink("https://study-about.club/register/access");
+      }
       return;
     }
 
@@ -236,16 +285,29 @@ function RegisterPaymentButton() {
     }
     setIsLoading2(true);
     const orderNo = makeOrderNo(); // ✅ 매번 새로 생성
-    cookiepayments.payrequest({
-      ORDERNO: orderNo,
-      PRODUCTNAME: "회원가입",
-      AMOUNT: "20000",
-      BUYERNAME: session.user.name,
-      PAYMETHOD: "CARD",
-      RETURNURL: "https://study-about.club/api/cookiepay/return",
-      BUYERID: session.user.uid,
-      BUYEREMAIL: session.user.name,
-    });
+    if (type === "point") {
+      cookiepayments.payrequest({
+        ORDERNO: orderNo,
+        PRODUCTNAME: "포인트 충전",
+        AMOUNT: value + "",
+        BUYERNAME: session.user.name,
+        PAYMETHOD: "CARD",
+        RETURNURL: "https://study-about.club/api/cookiepay/return2",
+        BUYERID: session.user.uid,
+        BUYEREMAIL: session.user.name,
+      });
+    } else {
+      cookiepayments.payrequest({
+        ORDERNO: orderNo,
+        PRODUCTNAME: "회원가입",
+        AMOUNT: "20000",
+        BUYERNAME: session.user.name,
+        PAYMETHOD: "CARD",
+        RETURNURL: "https://study-about.club/api/cookiepay/return",
+        BUYERID: session.user.uid,
+        BUYEREMAIL: session.user.name,
+      });
+    }
   };
 
   return (
@@ -253,7 +315,7 @@ function RegisterPaymentButton() {
       <BottomNav
         isLoading={isLoading || isLoading2}
         onClick={onClickNext}
-        text="결제하고 가입 완료하기"
+        text={type === "point" ? "포인트 충전하기" : "결제하고 가입 완료하기"}
       />
     </>
   );

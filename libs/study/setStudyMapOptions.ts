@@ -140,7 +140,7 @@ export const getStudyPlaceMarkersOptions = (
       },
     });
   }
-
+  console.log(14, defaultLocation);
   if (clusters) {
     clusters.forEach((cluster) => {
       temp.push({
@@ -149,7 +149,8 @@ export const getStudyPlaceMarkersOptions = (
         position: new naver.maps.LatLng(cluster.center[0], cluster.center[1]),
         icon: {
           content:
-            selectedId === cluster._id || cluster?.defaultLocationLat === defaultLocation?.lat
+            selectedId === cluster._id ||
+            (defaultLocation && cluster?.defaultLocationLat === defaultLocation?.lat)
               ? getPlaceBasicIcon("orange", null)
               : cluster.count > 1
               ? getPlaceCountIcon(cluster.count)

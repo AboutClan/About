@@ -31,7 +31,7 @@ function Access() {
         <RegisterFAQ />
         <Box h={20} />
       </Slide>
-      <RegisterPaymentButton />
+      <RegisterPaymentButton type="register" value={20000} />
     </>
   );
 }

@@ -20,7 +20,7 @@ function UserPointBlock() {
   const handleGuestClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    toast("info", "3월 16일 ~ 3월 18일 점검중");
+    toast("info", "3월 16일 ~ 3월 20일 점검중");
     if (isGuest) {
       e.preventDefault();
       e.stopPropagation();

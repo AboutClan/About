@@ -9,14 +9,11 @@ import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import ReviewForm from "../../components/organisms/StarRatingForm";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { usePointToast, useToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { usePlaceReviewMutation, useStudyPlaceChangeMutation } from "../../hooks/study/mutations";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
+import { useStudyPlaceChangeMutation } from "../../hooks/study/mutations";
 import { ModalLayout } from "../../modals/Modals";
 import { CoordinatesProps } from "../../types/common";
-import { PlaceReviewProps } from "../../types/models/studyTypes/entityTypes";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
@@ -111,8 +108,7 @@ function StudyExtraButton({
         if (!handleCondition()) {
           return;
         }
-        toast("info", "3월 20일 오픈");
-        return;
+
         setIsReviewDrawer(true);
       },
     },
@@ -291,29 +287,9 @@ function PlaceChangeIcon() {
 }
 
 function RightReviewDrawer({ placeId, onClose }: { placeId: string; onClose: () => void }) {
-  const resetStudy = useResetStudyQuery();
-  const pointToast = usePointToast();
-  const { data: userInfo } = useUserInfoQuery();
-
-  const { mutate: updatePoint } = usePointSystemMutation("point");
-  const { mutate } = usePlaceReviewMutation({
-    onSuccess() {
-      resetStudy();
-      onClose();
-    },
-  });
-
-  const handleSubmit = (data: PlaceReviewProps) => {
-    mutate({ ...data, placeId });
-    updatePoint({ value: data.isSecret ? 30 : 100, message: "카페 후기 작성", sub: "study" });
-    pointToast(data.isSecret ? 30 : 100);
-  };
-
   return (
     <RightDrawer title="카페 후기" onClose={onClose}>
-      <Box mt={5}>
-        <ReviewForm user={userInfo} onSubmit={handleSubmit} />
-      </Box>
+      <ReviewForm placeId={placeId} />
     </RightDrawer>
   );
 }

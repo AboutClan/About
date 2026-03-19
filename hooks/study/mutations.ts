@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import { useMutation } from "react-query";
 
+import { PlaceReviewProps2 } from "../../components/organisms/StarRatingForm";
 import { requestServer } from "../../libs/methodHelpers";
 import { PointInfoProps, PointValueProps } from "../../types/common";
 import { MutationOptions } from "../../types/hooks/reactTypes";
@@ -248,6 +249,23 @@ export const useStudyStatusMutation = (options?: MutationOptions<StudyStatusPara
         method: "post",
         url: `place/status`,
         body: params,
+      }),
+    options,
+  );
+
+interface StudyPlaceParam extends PlaceReviewProps2 {
+  placeId: string;
+}
+export const useStudyPlaceReviewMutation = (
+  placeId: string,
+  options?: MutationOptions<PlaceReviewProps2>,
+) =>
+  useMutation<void, AxiosError, PlaceReviewProps2>(
+    (params) =>
+      requestServer<StudyPlaceParam>({
+        method: "post",
+        url: `place/rating`,
+        body: { ...params, placeId },
       }),
     options,
   );

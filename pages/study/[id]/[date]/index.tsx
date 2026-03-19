@@ -221,7 +221,7 @@ export default function Page() {
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
 
   if (!router.isReady) return null;
-
+  console.log(32, placeInfo);
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (

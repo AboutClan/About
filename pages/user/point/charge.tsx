@@ -1,50 +1,20 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import { Box, Button, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
+import Script from "next/script";
 import { useState } from "react";
-import { useQueryClient } from "react-query";
 
-import CountNum from "../../../components/atoms/CountNum";
-import InfoList from "../../../components/atoms/lists/InfoList";
-import { CopyBtn } from "../../../components/Icons/CopyIcon";
-import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import TextCheckButton from "../../../components/molecules/TextCheckButton";
 import ValueBoxCol, { ValueBoxColItemProps } from "../../../components/molecules/ValueBoxCol";
-import { USER_INFO } from "../../../constants/keys/queryKeys";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
+import RegisterPaymentButton from "../../../pageTemplates/register/access/RegisterPaymentButton";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
-export const ACCOUNT_TEXT = "우리은행 1002364221277 (어바웃)";
+const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
 
 function Charge() {
-  const router = useRouter();
-  const toast = useToast();
-
-  const [isChecked, setIsChecked] = useState(false);
-
   const { data: userInfo } = useUserInfoQuery();
 
-  const [point, setPoint] = useState(5000);
-
-  const queryClient = useQueryClient();
-  const { mutate: updatePoint, isLoading: isLoading1 } = usePointSystemMutation("point", {
-    onSuccess() {
-      queryClient.invalidateQueries([USER_INFO]);
-      toast("success", "충전이 완료되었습니다.");
-    },
-  });
-
-  const { mutate, isLoading: isLoading2 } = useUserRequestMutation({
-    onSuccess() {
-      router.push("/user");
-    },
-  });
+  const [chargePoint, setChargePoint] = useState(3000);
 
   const valueBoxColItems: ValueBoxColItemProps[] = [
     {
@@ -53,105 +23,68 @@ function Charge() {
     },
     {
       left: `충전 포인트`,
-      right: point?.toLocaleString() + " Point",
+      right: chargePoint?.toLocaleString() + " Point",
     },
 
     {
       left: "최종 포인트",
-      right: (userInfo?.point + point)?.toLocaleString() + " Point",
+      right: (userInfo?.point + chargePoint)?.toLocaleString() + " Point",
       isFinal: true,
     },
   ];
 
-  const handleSubmit = () => {
-    if (!isChecked) {
-      toast("warning", "입금 여부를 체크해 주세요!");
-      return;
-    }
-    updatePoint({ value: point, message: "포인트 충전", sub: "charge" });
-
-    mutate({
-      category: "충전",
-      title: "포인트 충전",
-      content: dayjsToFormat(dayjs(), "M월 D일 H시 m분") + "/" + point.toLocaleString() + "원",
-    });
-  };
+  const pointArr = [3000, 5000, 10000];
 
   return (
     <>
+      <Script src={JQ_SRC} strategy="afterInteractive" />
       <Header title="" />
       <Slide>
         <Box h="54px" />
         <RegisterOverview>
           <>
             <span>포인트 충전</span>
-            <span>About 활동에 필요한 포인트를 충전할 수 있습니다</span>
+            <span>포인트는 어바웃 서비스 전반에서 사용되는 재화입니다.</span>
           </>
         </RegisterOverview>
 
         <>
-          <Box mt={5} mb={20}>
+          <Box mt={5} mb={20} minH="70dvh">
             <Flex direction="column">
-              <Flex justify="center">
-                <CountNum
-                  value={point}
-                  setValue={(newValue) => {
-                    setPoint(newValue);
-                  }}
-                  stepValue={1000}
-                  min={1000}
-                  unit="원"
-                  size="lg"
-                />
+              <Flex>
+                {pointArr.map((point, idx) => (
+                  <Button
+                    key={idx}
+                    mr={2}
+                    borderRadius="8px"
+                    size="lg"
+                    colorScheme={chargePoint === point ? "mint" : "gray"}
+                    onClick={() => {
+                      setChargePoint(point);
+                    }}
+                  >
+                    {point.toLocaleString()} Point
+                  </Button>
+                ))}
               </Flex>
-              <Box mt={5} w="full">
+              <Box mx="auto" mt={3} fontSize="12px" fontWeight={600} color="mint">
+                1,000 Point = 1,000원
+              </Box>
+              <Box mt={8} w="full">
                 <ValueBoxCol items={valueBoxColItems} />{" "}
+                <UnorderedList fontSize="12px" color="gray.500" mt="10px" ml={0}>
+                  <ListItem textAlign="start">
+                    포인트는 디지털 서비스 재화로 환불되지 않습니다.
+                  </ListItem>
+                </UnorderedList>
               </Box>
-              <Box fontSize="10px" ml="auto" mt={2} color="gray.500">
-                * 포인트는 결제일로부터 1년간 유효합니다.
-              </Box>
-              <Text mt={5} fontSize="11px" fontWeight="medium" color="gray.800" mb={2}>
-                입금 계좌
-              </Text>
-              <Flex
-                border="var(--border-main)"
-                fontSize="13px"
-                px={4}
-                py={3}
-                bg="gray.100"
-                borderRadius="8px"
-              >
-                <Box mr={2}>{ACCOUNT_TEXT}</Box>
-                <CopyBtn text={ACCOUNT_TEXT} />
-              </Flex>
-              <Box as="li" fontSize="12px" lineHeight="20px" mt="8px" color="mint">
-                위 계좌로 {point.toLocaleString()}원을 입금해 주세요!
-              </Box>
-              <Box my={5}>
-                <InfoList items={INFO_ARR} isLight />
-              </Box>
-              <TextCheckButton
-                text={`${point.toLocaleString()}원 입금을 완료하셨나요?`}
-                isChecked={isChecked}
-                toggleCheck={() => setIsChecked((old) => !old)}
-              />
             </Flex>
           </Box>
         </>
       </Slide>
-      <BottomNav
-        isActive={isChecked}
-        onClick={handleSubmit}
-        text="입금 완료"
-        isLoading={isLoading1 || isLoading2}
-      />
+      <RegisterPaymentButton type="point" value={chargePoint} />
     </>
   );
 }
-const INFO_ARR = [
-  "입금을 완료한 뒤에, [입금 완료] 버튼을 눌러주세요.",
-  "포인트는 모임 참여 등 서비스 이용 재화로, 환불되지 않습니다.",
-  "입금하지 않고 누르는 경우, 동아리에서 영구 제명됩니다.",
-];
 
 export default Charge;
