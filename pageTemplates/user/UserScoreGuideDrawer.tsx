@@ -127,7 +127,11 @@ function UserScoreGuideDrawer({ onClose }: UserScoreGuideDrawerProps) {
           <Box as="p" textAlign="end">
             월 최소 활동 점수는 <b>10점</b>이에요.
             <br />
-            최소 기준 미달 시 <b>1,000원</b>이 차감돼요.
+            출석, 모임, 공부 등 정말 쉽게 채울 수 있고,
+            <br />
+            최소 활동 미달 시 <b>1,000 Point</b>가 차감돼요.
+            <br />
+            활동이 어려울 땐 &#39;휴식 신청&#39;도 가능해요.
           </Box>
         </Flex>
       </Flex>{" "}

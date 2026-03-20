@@ -75,6 +75,9 @@ function RegisterPaymentButton({ type, value }: RegisterPaymentButtonProps) {
       queryClient.invalidateQueries([USER_INFO]);
       queryClient.invalidateQueries({ queryKey: [USER_POINT_SYSTEM, "point"], exact: false });
       toast("success", "충전이 완료되었습니다!");
+      setTimeout(() => {
+        router.push("/user");
+      }, 500);
       setIsLoading2(false);
       approveOnceRef.current = false;
       handledReturnRef.current = false;
@@ -91,9 +94,9 @@ function RegisterPaymentButton({ type, value }: RegisterPaymentButtonProps) {
     onSuccess() {
       gaEvent("sign_up_complete");
       router.replace("/register/access", undefined, { shallow: true });
+      toast("success", "가입이 완료되었습니다!");
+      queryClient.resetQueries([USER_INFO]);
       setTimeout(() => {
-        toast("success", "가입이 완료되었습니다!");
-        queryClient.resetQueries([USER_INFO]);
         router.push("/home");
       }, 500);
       setTimeout(() => {

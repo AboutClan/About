@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import InstagramCheckModal from "../../modals/InstagramCheckModal";
 
@@ -13,14 +13,10 @@ function UserPointBlock() {
   const isGuest = session?.user.role === "guest";
   const { data: userInfo } = useUserInfoQuery();
   const typeToast = useTypeToast();
-  const toast = useToast();
 
   const [isModal, setIsModal] = useState(false);
 
   const handleGuestClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toast("info", "3월 16일 ~ 3월 20일 점검중");
     if (isGuest) {
       e.preventDefault();
       e.stopPropagation();

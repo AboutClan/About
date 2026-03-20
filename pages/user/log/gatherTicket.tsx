@@ -17,7 +17,7 @@ function GatherTicketLogSection() {
 
   const [isModal, setIsModal] = useState(false);
   const { data: logsData, refetch } = useTicketSystemLogQuery("gather");
-
+  console.log(24, logsData);
   const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate, isLoading } = useUserTicketMutation({
     onSuccess() {
@@ -65,49 +65,46 @@ function GatherTicketLogSection() {
             </Button>
           </Flex>
           <Box>
-            {logsData
-              ?.slice()
-              ?.reverse()
-              .map((log, idx) => {
-                const timeStamp = dayjs(log.timestamp);
-                const timeStr = dayjsToStr(timeStamp);
+            {logsData?.map((log, idx) => {
+              const timeStamp = dayjs(log.timestamp);
+              const timeStr = dayjsToStr(timeStamp);
 
-                if (!stepDate || timeStr !== stepDate) {
-                  const isFirst = !stepDate;
-                  stepDate = timeStr;
-                  return (
-                    <Fragment key={idx}>
-                      <Box
-                        mt={!isFirst && 5}
-                        pt={5}
-                        borderTop={!isFirst && "var(--border-main)"}
-                        fontSize="11px"
-                        lineHeight="12px"
-                        color="gray.500"
-                        px={5}
-                      >
-                        {dayjsToFormat(dayjs(log.timestamp).locale("ko"), "M월 D일 (ddd)")}
-                      </Box>
-                      <Block
-                        text={log.message}
-                        time={dayjsToFormat(timeStamp, "HH:mm")}
-                        iconType="store"
-                        value={log.meta.value}
-                      />
-                    </Fragment>
-                  );
-                } else {
-                  return (
+              if (!stepDate || timeStr !== stepDate) {
+                const isFirst = !stepDate;
+                stepDate = timeStr;
+                return (
+                  <Fragment key={idx}>
+                    <Box
+                      mt={!isFirst && 5}
+                      pt={5}
+                      borderTop={!isFirst && "var(--border-main)"}
+                      fontSize="11px"
+                      lineHeight="12px"
+                      color="gray.500"
+                      px={5}
+                    >
+                      {dayjsToFormat(dayjs(log.timestamp).locale("ko"), "M월 D일 (ddd)")}
+                    </Box>
                     <Block
                       text={log.message}
                       time={dayjsToFormat(timeStamp, "HH:mm")}
                       iconType="store"
                       value={log.meta.value}
-                      key={idx}
                     />
-                  );
-                }
-              })}
+                  </Fragment>
+                );
+              } else {
+                return (
+                  <Block
+                    text={log.message}
+                    time={dayjsToFormat(timeStamp, "HH:mm")}
+                    iconType="store"
+                    value={log.meta.value}
+                    key={idx}
+                  />
+                );
+              }
+            })}
           </Box>
         </Box>
       </Slide>{" "}
