@@ -5,15 +5,17 @@ import styled from "styled-components";
 import InfoBoxCol, { InfoBoxProps } from "../../../components/molecules/InfoBoxCol";
 import { IGatherListItem, IGatherLocation } from "../../../types/models/gatherTypes/gatherTypes";
 import StudyAddressMap from "../../study/StudyAddressMap";
+import ProcessGuide from "./OpenGatherStep";
 
 interface IGather {
   content: string;
   gatherList: IGatherListItem[];
   postImage: string;
   location: IGatherLocation;
+  isOpenGather: boolean;
 }
 
-function GatherContent({ content, gatherList, postImage, location }: IGather) {
+function GatherContent({ content, gatherList, postImage, location, isOpenGather }: IGather) {
   const firstItem = gatherList?.[0];
   const secondItem = gatherList?.[1];
 
@@ -29,10 +31,10 @@ function GatherContent({ content, gatherList, postImage, location }: IGather) {
   ];
 
   return (
-    <Flex px={5} pt={4} pb={4} flexDir="column">
+    <Flex pt={4} pb={4} flexDir="column">
       <Content>{content}</Content>
       {postImage ? (
-        <Box mt={5} position="relative" w="fit-content">
+        <Box px={5} mt={5} position="relative" w="fit-content">
           <Image
             src={postImage}
             alt="postImage"
@@ -43,21 +45,25 @@ function GatherContent({ content, gatherList, postImage, location }: IGather) {
             unoptimized
           />
         </Box>
+      ) : isOpenGather ? (
+        <ProcessGuide />
       ) : (
-        <Box borderTop="var(--border)" mt={5}>
+        <Box px={5} borderTop="var(--border)" mt={5}>
           <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} highlightSide="right" />
         </Box>
       )}
-      {location?.latitude && (
-        <StudyAddressMap
-          location={{
-            name: location.main,
-            address: location.sub,
-            latitude: location.latitude,
-            longitude: location.longitude,
-          }}
-        />
-      )}
+      <Box px={5}>
+        {location?.latitude && (
+          <StudyAddressMap
+            location={{
+              name: location.main,
+              address: location.sub,
+              latitude: location.latitude,
+              longitude: location.longitude,
+            }}
+          />
+        )}
+      </Box>
     </Flex>
   );
 }
@@ -65,6 +71,7 @@ function GatherContent({ content, gatherList, postImage, location }: IGather) {
 const Content = styled.pre`
   min-height: 100px;
   background-color: white;
+  padding: 0 20px;
   white-space: pre-wrap;
   font-family: apple;
   color: var(--gray-800);

@@ -13,9 +13,10 @@ dayjs.locale("ko");
 interface IGatherDetailInfo {
   data: IGather;
   isMember: boolean;
+  isOpenGather: boolean;
 }
 
-function GatherDetailInfo({ data, isMember }: IGatherDetailInfo) {
+function GatherDetailInfo({ data, isMember, isOpenGather }: IGatherDetailInfo) {
   const { data: session } = useSession();
   const isOrganizer = (data?.user as IUserSummary)?.uid === session?.user?.uid;
 
@@ -38,14 +39,18 @@ function GatherDetailInfo({ data, isMember }: IGatherDetailInfo) {
               category: "날 짜",
               text: dayjsToFormat(dayjs(data?.date), "M.D(ddd) HH:mm"),
             },
-            {
-              category: "단톡방",
-              rightChildren: !data?.kakaoUrl ? (
-                <Box color="gray.600">미 개설</Box>
-              ) : (
-                <BlurredLink isBlur={!isMember} url={data?.kakaoUrl} />
-              ),
-            },
+            ...(!isOpenGather
+              ? [
+                  {
+                    category: "단톡방",
+                    rightChildren: !data?.kakaoUrl ? (
+                      <Box color="gray.600">미 개설</Box>
+                    ) : (
+                      <BlurredLink isBlur={!isMember} url={data?.kakaoUrl} />
+                    ),
+                  },
+                ]
+              : []),
             ...(isOrganizer
               ? [
                   {

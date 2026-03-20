@@ -1,9 +1,9 @@
 import "dayjs/locale/ko";
 
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -45,6 +45,8 @@ function GatherDetail() {
       router.back();
     },
   });
+
+  const isOpenGather = gather?.category !== "openGather";
 
   const groupId = gather?.groupId;
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
@@ -89,16 +91,18 @@ function GatherDetail() {
                 age={gather.age}
                 isFree={!gather.isApprovalRequired}
                 isGroupGather={!!groupId}
+                isOpenGather={isOpenGather}
               />
-              <GatherDetailInfo data={gather} isMember={isMember} />
+              <GatherDetailInfo data={gather} isMember={isMember} isOpenGather={isOpenGather} />
               <GatherContent
                 content={gather.content}
                 gatherList={gather.gatherList}
                 postImage={postImage}
                 location={gather.location}
+                isOpenGather={isOpenGather}
               />
               <Divider />
-              <GatherParticipation data={gather} />
+              <GatherParticipation data={gather} isOpenGather={isOpenGather} />
               {group && (
                 <Box px={5} mt={8}>
                   <Box mb={2} fontSize="16px" fontWeight="semibold">
@@ -111,11 +115,12 @@ function GatherDetail() {
               )}
               <GatherGuide
                 isAdmin={(gather?.user as UserSimpleInfoProps)?._id === session?.user.id}
+                isOpenGather={isOpenGather}
               />
               <GatherComments comments={gather.comments} />
             </Box>
           </Slide>
-          {!isGuest && <GatherBottomNav data={gather} />}
+          {!isGuest && <GatherBottomNav data={gather} isOpenGather={isOpenGather} />}
         </>
       ) : (
         <MainLoading />

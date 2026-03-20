@@ -4,9 +4,10 @@ import InfoList from "../../../components/atoms/lists/InfoList";
 
 interface GatherGuideProps {
   isAdmin: boolean;
+  isOpenGather: boolean;
 }
 
-function GatherGuide({ isAdmin }: GatherGuideProps) {
+function GatherGuide({ isAdmin, isOpenGather }: GatherGuideProps) {
   return (
     <>
       {isAdmin && (
@@ -28,22 +29,42 @@ function GatherGuide({ isAdmin }: GatherGuideProps) {
           />
         </Box>
       )}
-      <Box mt={10} mx={5}>
-        <Box mb={2} fontSize="16px" fontWeight="semibold">
-          번개 모임 안내
+      {isOpenGather ? (
+        <Box mt={10} mx={5}>
+          <Box mb={2} fontSize="16px" fontWeight="semibold">
+            오픈 번개 안내
+          </Box>
+          <InfoList
+            items={[
+              "최초 매칭 신청 시 1,000 Point가 소모됩니다.",
+              "인원이 부족해 취소된 경우 포인트는 반환됩니다.",
+              "멤버 선택은 100% 반영되어 최종 인원이 편성됩니다.",
+              "2단계에서 선택한 멤버는 공개되지 않습니다.",
+              "3단계에서 최종 참여 여부를 한번 더 결정할 수 있습니다.",
+              "최종 모임 참여 시 1,000 Point가 추가 소모됩니다.",
+              "모임 종료 후, 멤버 후기 평가를 할 수 있습니다.",
+            ]}
+            isLight
+          />
         </Box>
-        <InfoList
-          items={[
-            "모임 안내를 위해 모임장에게 연락처가 공개될 수 있습니다.",
-            "참여 시 티켓 1장이 소모됩니다. (취소 시 자동 반환)",
-            "모임 종료 후, 멤버 후기 평가를 할 수 있습니다.",
-            "승인제 모임의 경우, 승인 여부는 모임장이 결정합니다.",
-            "노쇼 패널티: 하루 전 취소 1,000원 / 당일 취소 2,000원",
-            "비매너 노쇼로 신고되면 최대 5,000원의 벌금이 발생할 수 있습니다.",
-          ]}
-          isLight
-        />
-      </Box>
+      ) : (
+        <Box mt={10} mx={5}>
+          <Box mb={2} fontSize="16px" fontWeight="semibold">
+            번개 모임 안내
+          </Box>
+          <InfoList
+            items={[
+              "모임 안내를 위해 모임장에게 연락처가 공개될 수 있습니다.",
+              "참여 시 티켓 1장이 소모됩니다. (취소 시 자동 반환)",
+              "모임 종료 후, 멤버 후기 평가를 할 수 있습니다.",
+              "승인제 모임의 경우, 승인 여부는 모임장이 결정합니다.",
+              "노쇼 패널티: 하루 전 취소 1,000원 / 당일 취소 2,000원",
+              "비매너 노쇼로 신고되면 패널티가 부여될 수 있습니다.",
+            ]}
+            isLight
+          />
+        </Box>
+      )}
     </>
   );
 }

@@ -10,11 +10,20 @@ interface IGatherTitle {
   age: number[];
   isFree: boolean;
   isGroupGather: boolean;
+  isOpenGather: boolean;
 }
 
-function GatherTitle({ title, category, type, age, isFree, isGroupGather }: IGatherTitle) {
+function GatherTitle({
+  title,
+  category,
+  type,
+  age,
+  isFree,
+  isGroupGather,
+  isOpenGather,
+}: IGatherTitle) {
   const isDefault = age[0] === 19 && age[1] === 28;
-
+  console.log(2, category);
   return (
     <Flex flexDir="column" px={5} pt={4} pb={0}>
       <Flex mb={2}>
@@ -23,7 +32,7 @@ function GatherTitle({ title, category, type, age, isFree, isGroupGather }: IGat
             text={type === "event" ? "이벤트" : type === "official" ? "공식 행사" : category}
           />
         </Box>
-        <MainBadge text={isFree ? "선착순" : "승인제"} type="sub" />
+        <MainBadge text={isOpenGather ? "매칭" : isFree ? "선착순" : "승인제"} type="sub" />
         {isGroupGather && (
           <Badge
             px={2}
@@ -37,7 +46,7 @@ function GatherTitle({ title, category, type, age, isFree, isGroupGather }: IGat
             bg="blue.50"
             color="blue.500"
           >
-            소모임 연동
+            {"소모임 연동"}
           </Badge>
         )}
         {!isDefault && (

@@ -42,7 +42,7 @@ export interface IGatherWriting {
   postImage?: string;
 }
 
-export type GatherCategory = "gather" | "event" | "group" | "official";
+export type GatherCategory = "gather" | "event" | "group" | "official" | "openGather";
 export type IGatherType = { title: GatherCategoryMain; subtitle?: string };
 
 export type GatherStatus = "open" | "close" | "end" | "pending" | "planned" | "expired";
