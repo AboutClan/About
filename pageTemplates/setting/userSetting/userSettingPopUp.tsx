@@ -93,7 +93,6 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
       dayjs(studyRecord)?.isBefore(dayjs().startOf("day")) &&
       dayjs(studyRecord)?.add(1, "week").isAfter(dayjs())
     ) {
-      localStorage.setItem(STUDY_ATTEND_AT, null);
       setPopUpType((old) => [...old, "studyRecord"]);
       return;
     }
@@ -111,7 +110,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
   const filterPopUpType = (type: PopUpType) => {
     setPopUpType((popUps) => popUps.filter((popUp) => popUp !== type));
   };
-
+  console.log(31, studyRecord);
   return (
     <>
       {Object.entries(MODAL_COMPONENTS).map(([key, Component]) => {
@@ -119,7 +118,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
         const props =
           type === "studyRecord"
             ? {
-                date: studyRecord?.date,
+                date: studyRecord,
               }
             : type === "gatherReview"
             ? { date: data?.date, id: data?.id }

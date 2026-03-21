@@ -24,7 +24,6 @@ export type UserMemberShip =
 type UserMemberShipKr = "뉴비" | "스터디 서포터즈" | "번개 서포터즈" | "운영진/소모임장";
 export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary {
   membership: UserMemberShip;
-  id: string;
   point: number;
   badge: {
     badgeIdx: number;

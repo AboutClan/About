@@ -2,17 +2,22 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 
-import { STUDY_RECORD_MODAL_AT } from "../../constants/keys/queryKeys";
+import { STUDY_ATTEND_AT, STUDY_RECORD_MODAL_AT } from "../../constants/keys/queryKeys";
 import { CloseProps } from "../../types/components/modalTypes";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import BottomFlexDrawer from "../organisms/drawer/BottomFlexDrawer";
 
 export interface StudyRecordDrawerProps extends CloseProps {
   date: string;
 }
 
-function StudyRecordDrawer({ date = dayjsToStr(dayjs()), onClose }: StudyRecordDrawerProps) {
+function StudyRecordDrawer({ date, onClose }: StudyRecordDrawerProps) {
+  useEffect(() => {
+    localStorage.setItem(STUDY_ATTEND_AT, null);
+  }, []);
+
   return (
     <BottomFlexDrawer isDrawerUp isOverlay height={412} isHideBottom setIsModal={onClose}>
       <Box

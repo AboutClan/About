@@ -46,7 +46,7 @@ function GatherTitle({
             bg="blue.50"
             color="blue.500"
           >
-            {"소모임 연동"}
+            소모임 연동
           </Badge>
         )}
         {!isDefault && (
