@@ -1,15 +1,11 @@
+import { CommunityCategory } from "../../pages/community";
 import { UserCommentProps } from "../components/propTypes";
 import { TimeStampProps } from "../utils/timeAndDate";
 import { IUserSummary } from "./userTypes/userInfoTypes";
 
-export type SecretSquareCategory = "일상" | "질문" | "고민" | "기타";
-export type InfoSquareCategory = "정보" | "팀원 모집" | "홍보" | "기타";
-export type SecretSquareCategoryWithAll = "전체" | SecretSquareCategory;
-export type InfoSquareCategoryWithAll = "전체" | InfoSquareCategory;
-
 interface BaseSecretSquareItem extends TimeStampProps {
   _id: string;
-  category: SecretSquareCategory;
+  category: CommunityCategory;
   title: string;
   content: string;
   viewers: string[];
@@ -42,7 +38,7 @@ export type SecretSquareType = "general" | "poll";
 export type SecretSquareItem = GeneralSecretSquareItem | PollSecretSquareItem;
 
 export type SecretSquareFormData = {
-  category: SecretSquareCategory|InfoSquareCategory;
+  category: CommunityCategory;
   title: string;
   content: string;
   pollItems: { name: string }[];

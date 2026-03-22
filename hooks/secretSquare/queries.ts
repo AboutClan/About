@@ -2,28 +2,25 @@ import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
 import { SERVER_URI } from "../../constants/system";
+import { CommunityCategory } from "../../pages/community";
 import { QueryOptions } from "../../types/hooks/reactTypes";
-import type {
-  InfoSquareCategoryWithAll,
-  SecretSquareCategory,
-  SecretSquareCategoryWithAll,
-  SecretSquareItem,
-  SecretSquareType,
-} from "../../types/models/square";
+import type { SecretSquareItem, SecretSquareType } from "../../types/models/square";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 
 export type SecretSquareListResponse = {
   squareList: {
     _id: string;
-    category: SecretSquareCategory;
+    category: CommunityCategory;
     title: string;
     content: string;
     type: SecretSquareType;
-    viewCount: number;
+    viewers: string[];
     thumbnail: string;
-    likeCount: number;
+    like: string[];
     commentsCount: number;
     createdAt: string;
-    author: string;
+    author: string | UserSimpleInfoProps;
+    viewCnt?: number;
   }[];
 };
 export const useSecretSquareListQuery = (
@@ -31,12 +28,7 @@ export const useSecretSquareListQuery = (
     category,
     cursor,
   }: {
-    category:
-      | SecretSquareCategoryWithAll
-      | InfoSquareCategoryWithAll
-      | "normalAll"
-      | "secretAll"
-      | "기타2";
+    category: CommunityCategory;
     cursor: number;
   },
   options?: QueryOptions<SecretSquareListResponse>,
@@ -44,17 +36,14 @@ export const useSecretSquareListQuery = (
   useQuery<SecretSquareListResponse, AxiosError, SecretSquareListResponse>(
     ["secretSquare", { category, cursor }],
     async () => {
-      const searchParams = new URLSearchParams();
-      if (category !== "전체") {
-        searchParams.set("category", category);
-      }
-      const res = await axios.get<SecretSquareListResponse>(
-        `${SERVER_URI}/square?${searchParams.toString()}`,
-        {
-          params: { cursor },
-        },
-      );
-    
+      // const searchParams = new URLSearchParams();
+      // if (category !== "전체") {
+      //   searchParams.set("category", category);
+      // }
+      const res = await axios.get<SecretSquareListResponse>(`${SERVER_URI}/square`, {
+        params: { category, cursor },
+      });
+
       return res.data;
     },
     options,

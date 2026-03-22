@@ -1,3 +1,5 @@
+import { Box } from "@chakra-ui/react";
+import Divider from "../../components/atoms/Divider";
 import Slide from "../../components/layouts/PageSlide";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
 import HomeFooter from "../../pageTemplates/home/HomeFooter";
@@ -17,9 +19,13 @@ function Home() {
       <Slide isNoPadding>
         <HomeBannerSlide />
       </Slide>
+      <Box h={5} />
       <Slide>
         <HomeNav />
       </Slide>
+      <Box>
+        <Divider />
+      </Box>
       <Slide isNoPadding>
         <HomeStudySection />
       </Slide>

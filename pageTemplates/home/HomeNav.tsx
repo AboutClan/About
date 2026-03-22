@@ -59,21 +59,26 @@ export function HomeIcon({ title, image, bgColor }: HomeIconProps) {
 
 function HomeNav() {
   return (
-    <Flex mb={3}>
-      {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => {
-        const style = { flex: 1, marginLeft: idx === 0 ? 0 : "8px" };
+    <>
+      <Box mr="auto" color="var(--gray-800)" fontSize={"18px"} mb={4} fontWeight={600}>
+        소모임 가입
+      </Box>
+      <Flex mb={3}>
+        {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => {
+          const style = { flex: 1, marginLeft: idx === 0 ? 0 : "8px" };
 
-        return item.isExternalLink ? (
-          <ExternalLink href={item.url} key={item.title} style={style}>
-            <HomeIcon title={item.title} bgColor={item.bgColor} image={item.iconImage} />
-          </ExternalLink>
-        ) : (
-          <Link href={item.url} key={item.title} style={style}>
-            <HomeIcon title={item.title} bgColor={item.bgColor} image={item.iconImage} />
-          </Link>
-        );
-      })}
-    </Flex>
+          return item.isExternalLink ? (
+            <ExternalLink href={item.url} key={item.title} style={style}>
+              <HomeIcon title={item.title} bgColor={item.bgColor} image={item.iconImage} />
+            </ExternalLink>
+          ) : (
+            <Link href={item.url} key={item.title} style={style}>
+              <HomeIcon title={item.title} bgColor={item.bgColor} image={item.iconImage} />
+            </Link>
+          );
+        })}
+      </Flex>
+    </>
   );
 }
 
@@ -95,26 +100,26 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
     iconImage:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/twoChat.png",
-    title: "게시판",
-    url: "/community?type=info",
+    title: "스터디",
+    url: `/group?category=0`,
     bgColor: "var(--color-gray)",
   },
   {
+    title: "문화·예술",
     iconImage: StoreIconImage,
-    title: "스토어",
     url: "/store",
     bgColor: "var(--color-mint)",
   },
   {
     iconImage: RankingIconImage,
-    title: "랭킹",
+    title: "운동",
     url: "/ranking",
     bgColor: "var(--color-purple)",
   },
   {
     iconImage:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EB%8B%AC%EB%A0%A52.png",
-    title: "캘린더",
+    title: "취미",
     url: "/calendar",
     bgColor: "var(--color-orange)",
   },
@@ -122,7 +127,7 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
     iconImage:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EB%94%94%EC%BD%942.png",
-    title: "디스코드",
+    title: "친목",
     url: "https://discord.gg/dDu2kg2uez",
     bgColor: "var(--color-blue)",
     isExternalLink: true,

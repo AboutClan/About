@@ -1,60 +1,59 @@
-import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { Box, Button } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import AlertCirclePoint from "../../components/atoms/AlertCirclePoint";
+import { BellModalButton } from "../../components/atoms/buttons/ModalButtons";
 
 import ControlButton from "../../components/ControlButton";
 import { Writing2Icon } from "../../components/Icons/ControlButtonIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
-import SquareInfoSection from "../../pageTemplates/community/SquareInfoSection";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import SquareSecretSection from "../../pageTemplates/community/SquareSecretSection";
 
-function BoardPage() {
+const CATEGORY_ARR = ["전체", "일상 · 자유", "팀원모집", "정보공유", "홍보"] as const;
+export type CommunityCategory = (typeof CATEGORY_ARR)[number];
+
+function CommunityPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
-  const typeParams = searchParams.get("type") as "info" | "anonymous";
-  const { data: session } = useSession();
+  const typeToast = useTypeToast();
+  const isGuest = useCheckGuest();
 
-  const isGuest = session?.user.name === "guest";
+  const [tab, setTab] = useState<CommunityCategory>("전체");
 
-  const [tab, setTab] = useState<"정보 게시판" | "익명 게시판">("정보 게시판");
-
-  // const [isRuleModal, setIsRuleModal] = useState(false);
-
-
-  useEffect(() => {
-  
-    if (typeParams === "info") setTab("정보 게시판");
-    if (typeParams === "anonymous") setTab("익명 게시판");
-  }, [typeParams]);
-
-  const tabOptions: ITabNavOptions[] = [
-    {
-      text: "정보 게시판",
-      func: () => {
-        newSearchParams.set("type", "info");
-        router.replace(`/community?${newSearchParams.toString()}`);
-        setTab("정보 게시판");
-      },
+  const tabOptions: ITabNavOptions[] = CATEGORY_ARR.map((c) => ({
+    text: c,
+    func: () => {
+      const idx = CATEGORY_ARR.findIndex((category) => category === c);
+      setTab(c);
+      router.replace(`/community?tab=${idx}`);
     },
-    {
-      text: "익명 게시판",
-      func: () => {
-        newSearchParams.set("type", "anonymous");
-        router.replace(`/community?${newSearchParams.toString()}`);
-        setTab("익명 게시판");
-      },
-    },
-  ];
+  }));
 
   return (
     <>
-      <Header title="커뮤니티" url="/home"></Header>
+      <Header title="커뮤니티" isBack={false}>
+        <Box position="relative" mr={2.5}>
+          <BellModalButton
+            handleClick={isGuest ? () => typeToast("guest") : () => router.push("/notice")}
+          />
+          <Box position="absolute" right="6px" top="4px" p="1px" bgColor="white" borderRadius="50%">
+            <AlertCirclePoint isActive={false} />
+          </Box>
+        </Box>
+        <Box position="relative">
+          <Button onClick={() => {}} variant="unstyled" w={8} h={8} display="flex">
+            <UserIcon />
+          </Button>
+        </Box>
+      </Header>
       <Slide isNoPadding>
-        <TabNav tabOptionsArr={tabOptions} selected={tab} isFullSize />
-        {tab === "정보 게시판" ? <SquareInfoSection /> : <SquareSecretSection />}
+        <Box fontSize="16px" mb={3} bgColor="white" borderBottom="var(--border)" px={5}>
+          <TabNav tabOptionsArr={tabOptions} selected={tab} isMain />
+        </Box>
+        <SquareSecretSection category={tab} />
       </Slide>
       {!isGuest && (
         <ControlButton
@@ -64,12 +63,22 @@ function BoardPage() {
             router.push(`/community/writing?type=${tab === "익명 게시판" ? "anonymous" : "info"}`);
           }}
         />
-     
       )}
       {/* {isRuleModal && <RuleModal content={SECRET_CONTENT} setIsModal={setIsRuleModal} />} */}
     </>
   );
 }
+
+const UserIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 18 18" fill="none">
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M10.5175 4.11809C10.5175 4.58391 10.4275 5.04518 10.2526 5.47556C10.0777 5.90594 9.82122 6.297 9.49794 6.62642C9.17466 6.95584 8.79086 7.21716 8.36845 7.39547C7.94603 7.57377 7.49329 7.66557 7.03605 7.66562C6.11262 7.66571 5.22698 7.29209 4.57395 6.62693C3.92092 5.96178 3.554 5.05958 3.55391 4.11881C3.55386 3.65299 3.64388 3.19173 3.81881 2.76135C3.99374 2.33097 4.25017 1.9399 4.57345 1.61049C5.22634 0.945195 6.11191 0.571385 7.03534 0.571289C7.95877 0.571193 8.84441 0.944819 9.49744 1.60997C10.1505 2.27513 10.5174 3.17732 10.5175 4.11809M7.0357 8.75078C2.02178 8.75078 0.0714111 12.0016 0.0714111 13.5139C0.0714111 15.0255 4.22324 15.4284 7.0357 15.4284C9.84815 15.4284 14 15.0255 14 13.5139C14 12.0016 12.0496 8.75078 7.0357 8.75078Z"
+      fill="var(--color-icon)"
+    />
+  </svg>
+);
 
 // const SECRET_CONTENT: IRuleModalContent = {
 //   mainContent: [
@@ -89,4 +98,4 @@ function BoardPage() {
 //   },
 // };
 
-export default BoardPage;
+export default CommunityPage;

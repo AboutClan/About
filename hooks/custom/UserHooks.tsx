@@ -6,6 +6,12 @@ export const useUserInfo = (): IUser => {
   return data;
 };
 
+export const useCheckGuest = (): boolean => {
+  const { data } = useUserInfoQuery();
+  if (!data) return undefined;
+  return data?.role === "guest";
+};
+
 type MembershipStore = "study" | "store" | "dailyCheck" | "gather";
 
 export const useHasMemership = (type: MembershipStore): boolean => {

@@ -3,46 +3,41 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import AlertDot from "../../components/atoms/AlertDot";
-import { NOTICE_ACTIVE_CNT, RECENT_CHAT } from "../../constants/keys/localStorage";
+import { NOTICE_ALERT, NOTICE_MESSAGE_ALERT } from "../../constants/keys/localStorage";
 import { NoticeType } from "../../pages/notice";
+import { NOTICE_ARR } from "../../storage/notice";
+import { INoticeActiveLog } from "../../types/globals/interaction";
 import { DispatchType } from "../../types/hooks/reactTypes";
 
 interface INoticeNav {
   noticeType: NoticeType;
   setNoticeType: DispatchType<NoticeType>;
-  activeAlertCnt: number;
-  recentChat: string;
+  activeLogs: INoticeActiveLog[];
 }
 
-function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChat }: INoticeNav) {
+function NoticeNav({ noticeType, setNoticeType, activeLogs }: INoticeNav) {
   const router = useRouter();
-  const [isAlert, setIsAlert] = useState({
-    notice: false,
-    active: false,
-    chat: false,
-  });
+  const [isActiveAlert, setIsActiveAlert] = useState(false);
 
   useEffect(() => {
-    if (activeAlertCnt === undefined) return;
+    if (noticeType === "notice") {
+      localStorage.setItem(NOTICE_ALERT, NOTICE_ARR.length + "");
+      if (!activeLogs?.length) return;
 
-    const prevActiveCnt = Number(localStorage.getItem(NOTICE_ACTIVE_CNT) ?? 0);
-    const chatDiff = localStorage.getItem(RECENT_CHAT) !== recentChat;
-
-    setIsAlert((prev) => ({
-      ...prev,
-      active: prevActiveCnt < activeAlertCnt,
-      chat: recentChat && chatDiff ? true : prev.chat,
-    }));
-
-    if (noticeType === "active") {
-      localStorage.setItem(NOTICE_ACTIVE_CNT, String(activeAlertCnt ?? 0));
-      setIsAlert((prev) => ({ ...prev, active: false }));
+      const noticeMessageStorage = localStorage.getItem(NOTICE_MESSAGE_ALERT);
+      if (noticeMessageStorage !== activeLogs?.[0]?.message) {
+        setIsActiveAlert(true);
+      }
+    } else {
+      localStorage.setItem(NOTICE_MESSAGE_ALERT, activeLogs?.[0]?.message);
+      setIsActiveAlert(false);
     }
-    if (noticeType === "chat") {
-      localStorage.setItem(RECENT_CHAT, recentChat ?? "");
-      setIsAlert((prev) => ({ ...prev, chat: false }));
-    }
-  }, [activeAlertCnt, noticeType, recentChat]);
+
+    // if (noticeType === "chat") {
+    //   localStorage.setItem(RECENT_CHAT, recentChat ?? "");
+    //   setIsAlert((prev) => ({ ...prev, chat: false }));
+    // }
+  }, [activeLogs, noticeType]);
 
   const handleNavigate = (type: NoticeType) => {
     router.replace(`/notice?type=${type}`);
@@ -52,7 +47,7 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChat }: IN
   const tabs = [
     { key: "notice", label: "공지 알림" },
     { key: "active", label: "활동 알림" },
-    { key: "chat", label: "쪽지 알림" },
+    // { key: "chat", label: "쪽지 알림" },
   ] as const;
 
   return (
@@ -77,7 +72,7 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChat }: IN
             onClick={() => handleNavigate(tab.key)}
           >
             {tab.label}
-            {isAlert[tab.key] && (
+            {isActiveAlert && idx === 1 && (
               <Box position="absolute" right={2} bottom={2}>
                 <AlertDot />
               </Box>

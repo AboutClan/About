@@ -87,7 +87,7 @@ function HomeStudySection() {
 
   return (
     <>
-      <Box px={5} mt={8}>
+      <Box px={5} mt={5}>
         <SectionHeader title="About 카공 스터디" subTitle="동네 친구와의 열공 스터디">
           <ButtonWrapper size="sm" url={`/studyPage?date=${dayjsToStr(dayjs())}`}>
             <ShortArrowIcon dir="right" />

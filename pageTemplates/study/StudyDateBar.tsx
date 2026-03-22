@@ -18,7 +18,7 @@ import { DispatchType } from "../../types/hooks/reactTypes";
 import { RealTimeVoteProps } from "../../types/models/studyTypes/requestTypes";
 import {
   StudyConfirmedMemberProps,
-  StudyPlaceProps
+  StudyPlaceProps,
 } from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
@@ -204,7 +204,7 @@ function InviteDrawer({
 
   const { data: usersAll, isLoading } = useAllUserDataQuery(null);
 
-  const placeArr: PlaceType[] = ["강남", "홍대", "사당", "건대","노원"];
+  const placeArr: PlaceType[] = ["강남", "홍대", "사당", "건대", "노원"];
 
   useEffect(() => {
     if (!usersAll || !group) return;
@@ -239,9 +239,9 @@ function InviteDrawer({
       longitude: 127.071458,
     },
     노원: {
-      locationDetail: "서울특별시 성북구 하월곡동 21-1 카페어바웃 1F, B1",
-      latitude: 37.60461,
-      longitude: 127.042699,
+      locationDetail: "서울특별시 동대문구 휘경동 280-2 지하1층",
+      latitude: 37.588692,
+      longitude: 127.057927,
     },
   };
 

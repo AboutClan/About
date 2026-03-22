@@ -75,90 +75,87 @@ function NoticeActive({ activeLogs }: INoticeActive) {
 
   return (
     <>
-      {activeLogs
-        ?.slice()
-        ?.reverse()
-        ?.map((item, idx) => {
-          const type = item.type;
-          const [name, message] = item.message.split("님");
-          const alphabet = item?.sub?.split("/");
-          let text = message?.replace("알파벳 교환", "교환");
-          text = text?.replace("친구추가", "친구");
+      {activeLogs?.map((item, idx) => {
+        const type = item.type;
+        const [name, message] = item.message.split("님");
+        const alphabet = item?.sub?.split("/");
+        let text = message?.replace("알파벳 교환", "교환");
+        text = text?.replace("친구추가", "친구");
 
-          return (
-            <Item key={idx}>
-              <Box mr={2}>
-                <Avatar user={{ ...item?.fromUser }} size="xs1" />
-              </Box>
-              <Name>
-                {name}
-                {type === "alphabet" && `(${alphabet[0]})`}
-              </Name>
-              <Content>
-                님{text} {type === "like" && <Point>+2 point</Point>}
-              </Content>
-              {type === "alphabet" && (
-                <AlphabetWrapper style={{ marginRight: "var(--gap-2)" }}>
-                  <AboutIcon alphabet={alphabet[0] as Alphabet} size="xs" isActive />
-                  <Box mx={1}>
-                    <ArrowIcon />
-                  </Box>
-                  <AboutIcon alphabet={alphabet[1] as Alphabet} size="xs" isActive />
-                </AlphabetWrapper>
-              )}
-              {type === "friend" || type === "alphabet" ? (
-                item.status === "pending" ? (
-                  <FriendButtons>
-                    <Button
-                      mr={2}
-                      size="xs"
-                      border="var(--border)"
-                      borderColor="mint"
-                      borderRadius="12px"
-                      fontSize="10px"
-                      variant="ghost"
-                      color="var(--color-mint)"
-                      onClick={() =>
-                        onClickFriendRequest(
-                          type,
-                          "approval",
-                          item.from,
-                          type === "alphabet" && (alphabet as Alphabet[]),
-                        )
-                      }
-                    >
-                      수락
-                    </Button>
-                    <Button
-                      fontSize="10px"
-                      border="1px solid var(--gray-600)"
-                      borderRadius="12px"
-                      size="xs"
-                      color="var(--gray-600)"
-                      variant="ghost"
-                      onClick={() =>
-                        onClickFriendRequest(
-                          type,
-                          "refusal",
-                          item.from,
-                          type === "alphabet" && (alphabet as Alphabet[]),
-                        )
-                      }
-                    >
-                      거절
-                    </Button>
-                  </FriendButtons>
-                ) : item.status === "response" ? (
-                  <Date>{item?.createdAt && getDateDiff(dayjs(item.createdAt))}</Date>
-                ) : (
-                  <FriendComplete>{item.status === "approval" ? "수락" : "거절"}</FriendComplete>
-                )
-              ) : (
+        return (
+          <Item key={idx}>
+            <Box mr={2}>
+              <Avatar user={{ ...item?.fromUser }} size="xs1" />
+            </Box>
+            <Name>
+              {name}
+              {type === "alphabet" && `(${alphabet[0]})`}
+            </Name>
+            <Content>
+              님{text} {type === "like" && <Point>+2 point</Point>}
+            </Content>
+            {type === "alphabet" && (
+              <AlphabetWrapper style={{ marginRight: "var(--gap-2)" }}>
+                <AboutIcon alphabet={alphabet[0] as Alphabet} size="xs" isActive />
+                <Box mx={1}>
+                  <ArrowIcon />
+                </Box>
+                <AboutIcon alphabet={alphabet[1] as Alphabet} size="xs" isActive />
+              </AlphabetWrapper>
+            )}
+            {type === "friend" || type === "alphabet" ? (
+              item.status === "pending" ? (
+                <FriendButtons>
+                  <Button
+                    mr={2}
+                    size="xs"
+                    border="var(--border)"
+                    borderColor="mint"
+                    borderRadius="12px"
+                    fontSize="10px"
+                    variant="ghost"
+                    color="var(--color-mint)"
+                    onClick={() =>
+                      onClickFriendRequest(
+                        type,
+                        "approval",
+                        item.from,
+                        type === "alphabet" && (alphabet as Alphabet[]),
+                      )
+                    }
+                  >
+                    수락
+                  </Button>
+                  <Button
+                    fontSize="10px"
+                    border="1px solid var(--gray-600)"
+                    borderRadius="12px"
+                    size="xs"
+                    color="var(--gray-600)"
+                    variant="ghost"
+                    onClick={() =>
+                      onClickFriendRequest(
+                        type,
+                        "refusal",
+                        item.from,
+                        type === "alphabet" && (alphabet as Alphabet[]),
+                      )
+                    }
+                  >
+                    거절
+                  </Button>
+                </FriendButtons>
+              ) : item.status === "response" ? (
                 <Date>{item?.createdAt && getDateDiff(dayjs(item.createdAt))}</Date>
-              )}
-            </Item>
-          );
-        })}
+              ) : (
+                <FriendComplete>{item.status === "approval" ? "수락" : "거절"}</FriendComplete>
+              )
+            ) : (
+              <Date>{item?.createdAt && getDateDiff(dayjs(item.createdAt))}</Date>
+            )}
+          </Item>
+        );
+      })}
     </>
   );
 }

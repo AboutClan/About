@@ -1,99 +1,90 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
 
 import AlertCirclePoint from "../../../components/atoms/AlertCirclePoint";
 import {
   BellModalButton,
   CalendarCheckModalButton,
+  ChatModalButton,
 } from "../../../components/atoms/buttons/ModalButtons";
 import Slide from "../../../components/layouts/PageSlide";
 import { AboutLogo } from "../../../components/services/AboutLogo";
 import {
-  DAILY_CHECK_POP_UP,
   NOTICE_ALERT,
+  NOTICE_MESSAGE_ALERT,
   RECENT_CHAT,
 } from "../../../constants/keys/localStorage";
-import { useMyChatsQuery } from "../../../hooks/chat/queries";
+import { useRecentChatQuery } from "../../../hooks/chat/queries";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useCheckGuest } from "../../../hooks/custom/UserHooks";
+import { useNoticeActiveLogQuery } from "../../../hooks/user/sub/interaction/queries";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
-import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
 import { NOTICE_ARR } from "../../../storage/notice";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
-
-export type HomeHeaderModalType = "rule" | "dailyCheck" | "pointGuide" | null;
 
 function HomeHeader() {
   const router = useRouter();
   const typeToast = useTypeToast();
-  const { data: session } = useSession();
-  const isGuest = session ? session.user.name === "guest" : false;
-  const [isModal, setIsModal] = useState(false);
-  const renderHomeHeader = useRecoilValue(renderHomeHeaderState);
+  const isGuest = useCheckGuest();
 
-  const todayDailyCheck = localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
+  const [isDailyCheckModal, setIsDailyCheckModal] = useState(false);
+  const [noticeAlert, setNoticeAlert] = useState<{ chat: boolean; notice: boolean }>({
+    chat: false,
+    notice: false,
+  });
 
-  const [isNoticeAlert, setIsNoticeAlert] = useState(false);
+  const { data } = useNoticeActiveLogQuery(null, true);
 
-  // const { data } = useNoticeActiveLogQuery(undefined, false);
-
-  // const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
-
-  const { data: chats } = useMyChatsQuery({ enabled: isGuest === false });
+  const { data: recentChat } = useRecentChatQuery({ enabled: isGuest });
 
   useEffect(() => {
-    // if (!data) return;
-    // const recentOne = data[0]?.message;
-
+    if (isGuest) return;
     const noticeCnt = localStorage.getItem(NOTICE_ALERT);
+    const noticeMessageStorage = localStorage.getItem(NOTICE_MESSAGE_ALERT);
     const recentChatStorage = localStorage.getItem(RECENT_CHAT);
-    const chatArr = chats?.sort((a, b) =>
-      dayjs(a.content.createdAt).isBefore(dayjs(b.content.createdAt)) ? 1 : -1,
-    );
-    const recentChat = chatArr?.[0]?.content?.content;
+
     if (recentChat && recentChat !== recentChatStorage) {
-      setIsNoticeAlert(true);
+      setNoticeAlert((old) => ({ ...old, chat: true }));
     }
 
-    if (!noticeCnt || NOTICE_ARR.length + "" !== noticeCnt) {
-      setIsNoticeAlert(true);
+    if (
+      !noticeCnt ||
+      NOTICE_ARR.length + "" !== noticeCnt ||
+      (data?.length && noticeMessageStorage !== data?.[0]?.message)
+    ) {
+      setNoticeAlert((old) => ({ ...old, notice: true }));
     }
-  }, [chats]);
-
-  const handleClickDice = () => {
-    router.push(`/random-roulette`);
-  };
+  }, [isGuest, data, recentChat]);
+  // const handleClickDice = () => {
+  //   router.push(`/random-roulette`);
+  // };
 
   return (
     <>
       <Slide isFixed={true}>
-        {renderHomeHeader && (
-          <Flex
-            as="header"
-            h="var(--header-h)"
-            fontSize="20px"
-            bg="white"
-            pl="20px"
-            pr="16px"
-            justify="space-between"
-            align="center"
-            borderBottom="var(--border)"
-            maxW="var(--max-width)"
-            mx="auto"
-          >
-            <AboutLogo />
-            <Flex align="center">
-              <Box position="relative" mr={3.5}>
+        <Flex
+          as="header"
+          h="var(--header-h)"
+          fontSize="20px"
+          bg="white"
+          pl="20px"
+          pr="16px"
+          justify="space-between"
+          align="center"
+          borderBottom="var(--border)"
+          maxW="var(--max-width)"
+          mx="auto"
+        >
+          <AboutLogo />
+          <Flex align="center">
+            {/* <Box position="relative" mr={3.5}>
                 <Button onClick={handleClickDice} variant="unstyled" w={8} h={8} display="flex">
                   <DiceIcon />
                 </Button>
-              </Box>
-              <Box mr={2.5} position="relative">
-                <CalendarCheckModalButton handleClick={() => setIsModal(true)} />
-                <Box
+              </Box> */}
+            <Box mr={2.5} position="relative">
+              <CalendarCheckModalButton handleClick={() => setIsDailyCheckModal(true)} />
+              {/* <Box
                   position="absolute"
                   right="4px"
                   bottom="4px"
@@ -102,30 +93,42 @@ function HomeHeader() {
                   borderRadius="50%"
                 >
                   <AlertCirclePoint isActive={!todayDailyCheck} />
-                </Box>
+                </Box> */}
+            </Box>
+            <Box mr={2.5} position="relative">
+              <ChatModalButton handleClick={() => {}} />
+              <Box
+                position="absolute"
+                right="2.5px"
+                top="4px"
+                p="1px"
+                bgColor="white"
+                borderRadius="50%"
+              >
+                <AlertCirclePoint isActive={noticeAlert.chat} />
               </Box>
+            </Box>
 
-              <Box position="relative">
-                <BellModalButton
-                  handleClick={isGuest ? () => typeToast("guest") : () => router.push("/notice")}
-                />
-                <Box
-                  position="absolute"
-                  right="6px"
-                  top="4px"
-                  p="1px"
-                  bgColor="white"
-                  borderRadius="50%"
-                >
-                  <AlertCirclePoint isActive={isNoticeAlert} />
-                </Box>
+            <Box position="relative">
+              <BellModalButton
+                handleClick={isGuest ? () => typeToast("guest") : () => router.push("/notice")}
+              />
+              <Box
+                position="absolute"
+                right="6px"
+                top="4px"
+                p="1px"
+                bgColor="white"
+                borderRadius="50%"
+              >
+                <AlertCirclePoint isActive={noticeAlert.notice} />
               </Box>
-            </Flex>
+            </Box>
           </Flex>
-        )}
+        </Flex>
       </Slide>
 
-      {isModal && <DailyCheckModal setIsModal={setIsModal} />}
+      {isDailyCheckModal && <DailyCheckModal setIsModal={setIsDailyCheckModal} />}
     </>
   );
 }

@@ -9,7 +9,6 @@ import {
   useSecretSquareListQuery,
 } from "../../hooks/secretSquare/queries";
 import { InfoSquareCategory } from "../../types/models/square";
-import SecretSquareCategories from "./SecretSquareCategories";
 import SquareItem from "./SquareItem";
 
 function SquareInfoSection() {
@@ -63,10 +62,10 @@ function SquareInfoSection() {
       }
     };
   }, []);
- 
+
   return (
     <>
-      <SecretSquareCategories type="info" category={category} setCategory={setCategory} />
+      {/* <SecretSquareCategories type="info" category={category} setCategory={setCategory} /> */}
       <Box pb="80px">
         {sqaures && sqaures.length === 0 && data ? (
           <Flex fontSize="18px" height="200px" justify="center" align="center">
@@ -74,7 +73,7 @@ function SquareInfoSection() {
           </Flex>
         ) : (
           <>
-          {sqaures.map((squareItem) => (
+            {sqaures.map((squareItem) => (
               <BlurredPart key={squareItem._id} isBlur={!!isGuest}>
                 <SquareItem item={squareItem} isSecret={false} />
               </BlurredPart>

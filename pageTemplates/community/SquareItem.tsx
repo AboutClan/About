@@ -1,29 +1,17 @@
 import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 import Avatar from "../../components/atoms/Avatar";
 import ThumbIcon from "../../components/Icons/ThumbIcon";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import type { SecretSquareCategory, SecretSquareType } from "../../types/models/square";
+import { SecretSquareListResponse } from "../../hooks/secretSquare/queries";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 
 interface SquareItemProps {
-  item: {
-    _id: string;
-    category: SecretSquareCategory;
-    title: string;
-    content: string;
-    type: SecretSquareType;
-    viewCount: number;
-    thumbnail: string;
-    likeCount: number;
-    commentsCount: number;
-    createdAt: string;
-    author: string | UserSimpleInfoProps;
-  };
+  item: SecretSquareListResponse["squareList"][0];
   isSecret: boolean;
 }
 
@@ -148,7 +136,7 @@ export default function SquareItem({ item, isSecret = true }: SquareItemProps) {
           <Flex gap={2} color="gray.500" align="center">
             <Flex gap={1} align="center">
               <ThumbIcon colorType="400" />
-              <span>{item.likeCount + (item.title === "정보 게시판 출시 안내" ? 4 : 0)}</span>
+              <span>{item.like.length + (item.title === "정보 게시판 출시 안내" ? 4 : 0)}</span>
             </Flex>
             <Flex gap={1} align="center">
               <svg

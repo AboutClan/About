@@ -40,17 +40,16 @@ const enToStatus: Record<string, Status> = Object.entries(statusToEn).reduce(
 
 const categoryArr = [
   { title: "전체" },
-  { title: "공부 · 자기계발" },
-
-  { title: "영화 · 전시 · 공연" },
-  { title: "소셜 게임" },
+  { title: "공부·자기계발" },
+  { title: "취미" },
+  { title: "문화·예술" },
   { title: "스포츠" },
-  { title: "취미 · 창작" },
+  // { title: "취미 · 창작" },
   // { title: "말하기" },
-  { title: "푸드" },
+  // { title: "푸드" },
   // { title: "힐링" },
   { title: "친목" },
-  { title: "크루" },
+  // { title: "크루" },
   // { title: "파티" },
 ];
 

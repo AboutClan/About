@@ -22,6 +22,7 @@ export const MY_TODAY_STUDY_FIXED = "myTodayStudyFixed";
 //알림
 export const GATHER_ALERT = "gatherAlert";
 export const NOTICE_ALERT = "noticeAlert";
+export const NOTICE_MESSAGE_ALERT="noticeMessageAlert"
 export const POINT_ALERT = "pointAlert";
 export const LIKE_HEART = "LikeHeart";
 

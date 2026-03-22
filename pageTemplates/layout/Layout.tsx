@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -21,7 +21,7 @@ import { parseUrlToSegments } from "../../utils/stringUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 
-export const BASE_BOTTOM_NAV_SEGMENT = ["home", "gather", "user", "studyPage", "group"];
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "gather", "user", "studyPage", "community"];
 export const NOT_PADDING_NAV_SEGMENT = ["login"];
 export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote", "ranking", "board", "studyPageMap"];
 
@@ -182,7 +182,7 @@ function Layout({ children }: ILayout) {
           return;
         }
 
-        if (firstPath === "group" && secondPath && secondPath !== "writing") {
+        if (firstPath === "community" && secondPath && secondPath !== "writing") {
           if (prevPath === "home") {
             router.replace("/home");
           } else {
