@@ -1,7 +1,7 @@
 import { CommunityCategory } from "../../pages/community";
 import { UserCommentProps } from "../components/propTypes";
 import { TimeStampProps } from "../utils/timeAndDate";
-import { IUserSummary } from "./userTypes/userInfoTypes";
+import { AvatarProps, IUserSummary } from "./userTypes/userInfoTypes";
 
 interface BaseSecretSquareItem extends TimeStampProps {
   _id: string;
@@ -13,6 +13,7 @@ interface BaseSecretSquareItem extends TimeStampProps {
   images: string[];
   author: string | IUserSummary;
   comments: UserCommentProps[];
+  avatar: AvatarProps;
 }
 
 interface GeneralSecretSquareItem extends BaseSecretSquareItem {

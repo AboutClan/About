@@ -1,8 +1,8 @@
 import { Badge, Box, Button, ButtonGroup, Flex, Text, VStack } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import AlertModal from "../../components/AlertModal";
@@ -13,7 +13,6 @@ import ThumbIcon from "../../components/Icons/ThumbIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import PostAuthorCard from "../../components/molecules/cards/PostAuthorCard";
-import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import {
   useDeleteLikeSecretSquareMutation,
   useDeleteSecretSquareMutation,
@@ -27,7 +26,6 @@ import {
 } from "../../hooks/secretSquare/queries";
 import PollItemButton from "../../pageTemplates/community/PollItemButton";
 import SecretSquareComments from "../../pageTemplates/community/SecretSquareComments";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 
 function SecretSquareDetailPage() {
   const searchParams = useSearchParams();
@@ -35,8 +33,6 @@ function SecretSquareDetailPage() {
   const squareId = router.query.id as string;
   const { data: session } = useSession();
   const [isDeleteModal, setIsDeleteModal] = useState(false);
-  const typeParams = searchParams.get("type");
-  const isSecret = typeParams === "anonymous";
 
   const { mutate: putLikeMutate, isLoading: isPutLikeLoading } = usePutLikeSecretSquareMutation({
     squareId,
@@ -107,10 +103,9 @@ function SecretSquareDetailPage() {
   const handleDeleteSquare = () => {
     deleteSquareMutate();
   };
-
+  console.log(12, squareDetail);
   const menuArr: MenuProps[] = [
-    ...((isSecret ? squareDetail?.author : (squareDetail?.author as IUserSummary)?._id) ===
-    session?.user.id
+    ...(squareDetail?.author === session?.user.id
       ? [
           {
             icon: <DeleteIcon />,
@@ -150,9 +145,7 @@ function SecretSquareDetailPage() {
 
                   <section id="avatar-section">
                     <PostAuthorCard
-                      organizer={
-                        isSecret ? SECRET_USER_SUMMARY : (squareDetail.author as IUserSummary)
-                      }
+                      organizer={{ name: "글쓴이", avatar: squareDetail.avatar }}
                       createdAt={squareDetail.createdAt}
                     ></PostAuthorCard>
                   </section>
@@ -373,7 +366,7 @@ function SecretSquareDetailPage() {
               author={squareDetail?.author}
               comments={squareDetail?.comments}
               refetch={refetch}
-              isSecret={isSecret}
+              avatar={squareDetail?.avatar}
             />
           </Box>
         )}

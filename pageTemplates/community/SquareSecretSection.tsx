@@ -109,7 +109,7 @@ function SquareSecretSection({ category }: SquareSecretSectionProps) {
           <>
             {sqaures.map((squareItem, idx) => (
               <BlurredPart key={idx} isBlur={!!isGuest}>
-                <SquareItem item={squareItem} isSecret />
+                <SquareItem item={squareItem} />
               </BlurredPart>
             ))}
           </>

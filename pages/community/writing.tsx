@@ -15,9 +15,11 @@ import ImageUploadSlider, {
 } from "../../components/organisms/sliders/ImageUploadSlider";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useCreateSecretSquareMutation } from "../../hooks/secretSquare/mutations";
+import RequestChangeProfileImageModalAvatar from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
 import PollCreatorDrawer from "../../pageTemplates/community/writing/PollCreatorDrawer";
 import SquareCategoryRadioGroup from "../../pageTemplates/community/writing/SquareCategoryRadioGroup";
 import { SecretSquareFormData } from "../../types/models/square";
+import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
 
 const defaultFormData: SecretSquareFormData = {
   category: "일상 · 자유",
@@ -47,10 +49,12 @@ function SquareWritingPage() {
   } = useDisclosure();
 
   const [imageArr, setImageArr] = useState<string[]>([]);
-
+  const [isAvatarModal, setIsAvatarModal] = useState(false);
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
   const pollItems = getValues("pollItems");
   const isPollType = pollItems.every(({ name }) => !!name.trim());
+
+  const [avatar, setAvatar] = useState<AvatarProps>({ type: 0, bg: 0 });
 
   const { mutate: createSecretSquareMutate, isLoading: isCreateSquareLoading } =
     useCreateSecretSquareMutation();
@@ -65,22 +69,17 @@ function SquareWritingPage() {
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
     let type = "general";
-    // if (isSecret) {
-    //   if (isPollType) type = "poll";
-    //   else type = "general";
-    // } else {
-    //   if (isPollType) type = "poll2";
-    //   else type = "info";
-    // }
+
     const { category, title, content, pollItems, canMultiple } = data;
 
     const formData = new FormData();
 
-    if (type === "poll2") {
+    if (isPollType) {
       formData.append("pollItems", JSON.stringify(pollItems));
       formData.append("canMultiple", JSON.stringify(canMultiple));
     }
 
+    formData.append("avatar", JSON.stringify(avatar));
     formData.append("category", category);
     formData.append("title", title);
     formData.append("type", type);
@@ -108,7 +107,7 @@ function SquareWritingPage() {
       setImageArr(imageArr.filter((old) => old !== url));
     },
   }));
-
+  console.log(12, avatar);
   return (
     <>
       <Header title="글 쓰기" rightPadding={8}>
@@ -172,24 +171,30 @@ function SquareWritingPage() {
               >
                 <Flex justifyContent="space-between" align="center" gap={2}>
                   <Flex align="center">
-                    <i className="fa-solid fa-check-to-slot" />
-                    <Box as="span" ml={2} fontWeight={600}>
+                    <VoteIcon color="black" />
+                    <Box as="span" ml={2} color="gray.800" fontWeight={600} lineHeight="20px">
                       투표
                     </Box>
                   </Flex>
                   <Box>
                     <IconButton
-                      icon={<i className="fa-solid fa-pen fa-xs" />}
+                      h="24px"
+                      w="24px"
+                      p="0 !important"
+                      icon={<EditIcon />}
                       aria-label="edit vote"
                       borderRadius="full"
                       bgColor="var(--gray-200)"
-                      size="xs" // 버튼 크기 설정
+                      size="xs"
                       onClick={onOpenPollCreatorDrawer}
                       type="button"
                       mr="12px"
                     />
                     <IconButton
-                      icon={<i className="fa-solid fa-x fa-xs" />}
+                      icon={<XIcon />}
+                      h="24px"
+                      w="24px"
+                      p="0 !important"
                       aria-label="delete vote"
                       borderRadius="full"
                       bgColor="var(--gray-200)"
@@ -206,8 +211,9 @@ function SquareWritingPage() {
                   {pollItems.map(({ name }, index) => {
                     return (
                       <Box
-                        as="li"
                         p={2}
+                        pl={3}
+                        color="gray.600"
                         sx={{
                           borderRadius: "var(--rounded)",
                           border: "var(--border-main)",
@@ -258,31 +264,51 @@ function SquareWritingPage() {
           leftIcon={<AvatarIcon />}
           variant="ghost"
           size="sm"
-          onClick={openPollCreatorDrawer}
+          onClick={() => setIsAvatarModal(true)}
           fontSize="12px"
           border="none"
         >
           아바타
         </Button>
       </WritingNavigation>
+      {isAvatarModal && (
+        <RequestChangeProfileImageModalAvatar
+          defaultAvatar={avatar}
+          setAvatar={setAvatar}
+          setIsModal={() => {
+            setIsAvatarModal(false);
+          }}
+        />
+      )}
     </>
   );
 }
 
-function VoteIcon() {
+function VoteIcon({ color }: { color?: "black" }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="20px"
       viewBox="0 -960 960 960"
       width="20px"
-      fill="var(--gray-500)"
+      fill={color === "black" ? "var(--gray-700)" : "var(--gray-500)"}
     >
       <path d="M200-80q-33 0-56.5-23.5T120-160v-152q0-14 5-28t15-25l62-70q11-13 28.5-13.5T260-437q11 11 12 27t-10 28l-55 62h546l-53-60q-11-12-10-28t12-27q12-12 29.5-11.5T760-433l60 68q10 11 15 25t5 28v152q0 33-23.5 56.5T760-80H200Zm224-304L285-525q-23-23-23-57t23-57l196-196q23-23 57-23t57 23l141 139q23 23 23.5 56.5T737-583L537-383q-23 23-56.5 22.5T424-384Zm256-256L538-780 340-582l142 140 198-198Z" />
     </svg>
   );
 }
 
+const EditIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="12px"
+    viewBox="0 -960 960 960"
+    width="12px"
+    fill="var(--gray-800)"
+  >
+    <path d="M160 0q-33 0-56.5-23.5T80-80q0-33 23.5-56.5T160-160h640q33 0 56.5 23.5T880-80q0 33-23.5 56.5T800 0H160Zm0-280v-113q0-8 3-15.5t9-13.5l436-435q11-11 25.5-17t30.5-6q16 0 31 6t27 18l55 56q12 11 17.5 26t5.5 31q0 15-5.5 29.5T777-687L342-252q-6 6-13.5 9t-15.5 3H200q-17 0-28.5-11.5T160-280Zm504-408 56-56-56-56-56 56 56 56Z" />
+  </svg>
+);
 const AvatarIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -294,5 +320,19 @@ const AvatarIcon = () => (
     <path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm146.5-204.5Q340-521 340-580t40.5-99.5Q421-720 480-720t99.5 40.5Q620-639 620-580t-40.5 99.5Q539-440 480-440t-99.5-40.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
   </svg>
 );
+
+export function XIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="12px"
+      viewBox="0 -960 960 960"
+      width="12px"
+      fill="var(--gray-800)"
+    >
+      <path d="M480-405.91 293.04-218.96Q278.09-204 256-204t-37.04-14.96Q204-233.91 204-256t14.96-37.04L405.91-480 218.96-666.96Q204-681.91 204-704t14.96-37.04Q233.91-756 256-756t37.04 14.96L480-554.09l186.96-186.95Q681.91-756 704-756t37.04 14.96Q756-726.09 756-704t-14.96 37.04L554.09-480l186.95 186.96Q756-278.09 756-256t-14.96 37.04Q726.09-204 704-204t-37.04-14.96L480-405.91Z" />
+    </svg>
+  );
+}
 
 export default SquareWritingPage;

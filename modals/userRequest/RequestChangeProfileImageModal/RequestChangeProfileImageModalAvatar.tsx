@@ -1,9 +1,8 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { Box, Button, chakra, Flex, shouldForwardProp } from "@chakra-ui/react";
+import { AnimatePresence, isValidMotionProp, motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "react-query";
-import styled from "styled-components";
-
+import { AVATAR_BG_IMAGES } from "../../../assets/images/avatarBgImages";
 import { AVATAR_IMAGES } from "../../../assets/images/avatarImages";
 import Avatar from "../../../components/atoms/Avatar";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
@@ -11,23 +10,49 @@ import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
 import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
 import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
+import { useCheckGuest } from "../../../hooks/custom/UserHooks";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { IModal } from "../../../types/components/modalTypes";
+import { DispatchType } from "../../../types/hooks/reactTypes";
+import { AvatarProps } from "../../../types/models/userTypes/userInfoTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
+
 interface IRequestChangeProfileImageModalAvatar extends IModal {
-  type: "dog" | "cat" | "special";
+  defaultAvatar?: AvatarProps;
+  setAvatar?: DispatchType<AvatarProps>;
 }
 
-function RequestChangeProfileImageModalAvatar({
-  type,
-  setIsModal,
-}: IRequestChangeProfileImageModalAvatar) {
-  const { data: session } = useSession();
+const TAB_CONFIG = {
+  댕댕이: {
+    start: 0,
+    end: 12,
+  },
+  똑냥이: {
+    start: 12,
+    end: 23,
+  },
+  유니크: {
+    start: 24,
+    end: AVATAR_IMAGES.length,
+  },
+} as const;
 
+type Tab = keyof typeof TAB_CONFIG;
+const TAB_LIST = Object.keys(TAB_CONFIG) as Tab[];
+
+const MotionBox = chakra(motion.div, {
+  shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
+});
+
+function RequestChangeProfileImageModalAvatar({
+  setIsModal,
+  defaultAvatar,
+  setAvatar,
+}: IRequestChangeProfileImageModalAvatar) {
+  const queryClient = useQueryClient();
   const errorToast = useErrorToast();
   const failToast = useFailToast();
-
-  const queryClient = useQueryClient();
+  const isGuest = useCheckGuest();
 
   const { mutate: setUserAvatar } = useUserInfoFieldMutation("avatar", {
     onSuccess() {
@@ -37,36 +62,55 @@ function RequestChangeProfileImageModalAvatar({
     onError: errorToast,
   });
 
-  const isGuest = session?.user.name === "guest";
-
-  const avatarArr =
-    type === "dog"
-      ? AVATAR_IMAGES.slice(0, 12)
-      : type === "cat"
-      ? AVATAR_IMAGES.slice(12, 23)
-      : AVATAR_IMAGES.slice(24);
-
-  const [iconIdx, setIconIdx] = useState(0);
+  const [tab, setTab] = useState<Tab>("댕댕이");
+  const [iconIdx, setIconIdx] = useState(defaultAvatar?.type || 0);
   const [back, setBack] = useState(false);
-  const [BG, setBG] = useState(0);
-
-  // const { data: score } = usePointSystemQuery("score");
+  const [bg, setBg] = useState(defaultAvatar?.bg || 0);
 
   useEffect(() => {
-    if (iconIdx === 0) setBack(false);
-    if (iconIdx === avatarArr.length - 1) setBack(true);
-  }, [iconIdx]);
-
-  const handleMove = (type: "prev" | "next") => {
-    if (type === "prev") {
-      if (iconIdx === 0) return;
-      setBack(true);
-      setIconIdx(iconIdx - 1);
+    if (defaultAvatar) {
+      const type = defaultAvatar?.type;
+      if (type >= 12 && type <= 23) {
+        setTab("똑냥이");
+      } else if (type >= 24) {
+        setTab("유니크");
+      }
     }
-    if (type === "next") {
-      if (iconIdx === avatarArr.length) return;
+  }, [defaultAvatar]);
+
+  const currentTabConfig = TAB_CONFIG[tab];
+
+  const avatarArr = useMemo(() => {
+    return AVATAR_IMAGES.slice(currentTabConfig.start, currentTabConfig.end);
+  }, [currentTabConfig]);
+
+  const typeIdx = currentTabConfig.start + iconIdx;
+
+  const canGoPrev = iconIdx > 0;
+  const canGoNext = iconIdx < avatarArr.length - 1;
+
+  useEffect(() => {
+    if (iconIdx > avatarArr.length - 1) {
+      setIconIdx(0);
+    }
+  }, [avatarArr.length, iconIdx]);
+
+  const handleTabClick = (nextTab: Tab) => {
+    setTab(nextTab);
+    setIconIdx(0);
+    setBack(false);
+  };
+
+  const handleMove = (direction: "prev" | "next") => {
+    if (direction === "prev" && canGoPrev) {
+      setBack(true);
+      setIconIdx((prev) => prev - 1);
+      return;
+    }
+
+    if (direction === "next" && canGoNext) {
       setBack(false);
-      setIconIdx(iconIdx + 1);
+      setIconIdx((prev) => prev + 1);
     }
   };
 
@@ -75,90 +119,122 @@ function RequestChangeProfileImageModalAvatar({
       failToast("guest");
       return;
     }
-    // if (AVATAR_COST[iconIdx] > score) {
-    //   failToast("free", "프로필 변경을 위한 점수가 부족해요!");
-    //   return;
-    // }
-    setUserAvatar({ type: iconIdx + (type === "dog" ? 0 : type === "cat" ? 12 : 24), bg: BG });
-    setIsModal(false);
+    if (defaultAvatar) {
+      setAvatar({
+        type: typeIdx,
+        bg,
+      });
+      setIsModal(false);
+      return;
+    }
+
+    setUserAvatar({
+      type: typeIdx,
+      bg,
+    });
   };
 
   const footerOptions: IFooterOptions = {
     main: {
-      text: "변경",
+      text: defaultAvatar ? "사 용" : "변 경",
       func: onSubmit,
     },
   };
 
-  const typeIdx = iconIdx + (type === "dog" ? 0 : type === "cat" ? 12 : 24);
-
   return (
     <ModalLayout title="아바타 프로필" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <UpPart>
-        <ArrowIcon isLeft={true} onClick={() => handleMove("prev")}>
-          {iconIdx !== 0 && <ShortArrowIcon dir="left" color="black" size="lg" />}
-        </ArrowIcon>
-        <AnimatePresence>
-          <IconWrapper
+      <Flex w="full" mx="auto" borderBottom="var(--border)" mb={8}>
+        {TAB_LIST.map((item, idx) => {
+          const selected = tab === item;
+
+          return (
+            <Button
+              key={item}
+              borderRadius="0"
+              position="relative"
+              flex={1}
+              variant="unstyled"
+              fontSize="14px"
+              fontWeight={selected ? 700 : 500}
+              py={3}
+              bg={selected ? "white" : "var(--gray-100)"}
+              border="var(--border-main)"
+              borderLeft={idx === 1 ? "var(--border-main)" : "none"}
+              borderRight={idx === 1 ? "var(--border-main)" : "none"}
+              borderBottom={selected ? "2px solid var(--color-mint)" : "var(--border-main)"}
+              onClick={() => handleTabClick(item)}
+            >
+              {item}
+            </Button>
+          );
+        })}
+      </Flex>
+
+      <Flex flex={1} justify="center" align="center" position="relative" mb="20px">
+        <Box
+          position="absolute"
+          left="0"
+          top="50%"
+          transform="translateY(-50%)"
+          onClick={() => handleMove("prev")}
+          cursor={canGoPrev ? "pointer" : "default"}
+        >
+          {canGoPrev && <ShortArrowIcon dir="left" color="black" size="lg" />}
+        </Box>
+
+        <AnimatePresence mode="wait" custom={back}>
+          <MotionBox
+            key={`${tab}-${iconIdx}`}
             custom={back}
             variants={variants}
             initial="entry"
             animate="center"
             exit="exit"
-            key={iconIdx}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
           >
-            <Avatar user={{ avatar: { type: typeIdx, bg: BG } }} size="xl1" />
-            {/* <IconPoint>{AVATAR_COST[iconIdx]}점 달성</IconPoint> */}
-          </IconWrapper>
+            <Avatar user={{ avatar: { type: typeIdx, bg } }} size="xl1" />
+          </MotionBox>
         </AnimatePresence>
-        <ArrowIcon isLeft={false} onClick={() => handleMove("next")}>
-          {iconIdx !== AVATAR_IMAGES.length - 1 && (
-            <ShortArrowIcon dir="right" size="lg" color="gray" />
-          )}
-        </ArrowIcon>
-      </UpPart>
-      <DownPart>
+
+        <Box
+          position="absolute"
+          right="0"
+          top="50%"
+          transform="translateY(-50%)"
+          onClick={() => handleMove("next")}
+          cursor={canGoNext ? "pointer" : "default"}
+        >
+          {canGoNext && <ShortArrowIcon dir="right" size="lg" color="gray" />}
+        </Box>
+      </Flex>
+
+      <Flex
+        align="center"
+        py="var(--gap-2)"
+        mt="8px"
+        borderTop="var(--border)"
+        borderBottom="var(--border)"
+      >
         <ImageSlider
           type="avatarColor"
           imageContainer={COLOR_TABLE_LIGHT}
-          onClick={(idx) => setBG(idx)}
+          onClick={(idx) => setBg(idx)}
         />
-      </DownPart>
+      </Flex>
+
+      <Flex align="center" py="var(--gap-2)" borderBottom="var(--border)">
+        <ImageSlider
+          type="specialBg"
+          imageContainer={AVATAR_BG_IMAGES}
+          onClick={(idx) => setBg(idx + 100)}
+        />
+      </Flex>
     </ModalLayout>
   );
 }
-
-const UpPart = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`;
-
-const IconWrapper = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ArrowIcon = styled.div<{ isLeft: boolean }>`
-  position: absolute;
-  left: ${(props) => props.isLeft && "0"};
-  right: ${(props) => !props.isLeft && "0"};
-  top: 50%;
-  transform: translate(0, -50%);
-`;
-
-const DownPart = styled.div`
-  display: flex;
-  align-items: center;
-  padding: var(--gap-2) 0;
-  margin-top: var(--gap-3);
-  border-top: var(--border);
-  border-bottom: var(--border);
-`;
 
 const variants = {
   entry: (isBack: boolean) => ({
@@ -178,7 +254,10 @@ const variants = {
     x: isBack ? 100 : -100,
     opacity: 0,
     scale: 0.5,
-    transition: { duration: 0.3 },
+    transition: {
+      duration: 0.3,
+    },
   }),
 };
+
 export default RequestChangeProfileImageModalAvatar;

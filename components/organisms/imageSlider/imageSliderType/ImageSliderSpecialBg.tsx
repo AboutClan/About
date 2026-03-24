@@ -12,7 +12,6 @@ interface IImageSliderSpecialBg {
 }
 
 function ImageSliderSpecialBg({ imageContainer, onClick }: IImageSliderSpecialBg) {
-  
   return (
     <Swiper
       navigation
@@ -21,7 +20,7 @@ function ImageSliderSpecialBg({ imageContainer, onClick }: IImageSliderSpecialBg
         width: "100%",
         height: "auto",
       }}
-      slidesPerView={3.4}
+      slidesPerView={5.3}
     >
       {(imageContainer as { name: string; image: string }[]).map((item, index) => (
         <SwiperSlide key={index}>
@@ -38,8 +37,8 @@ const AvatarColorItem = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 68px;
-  height: 68px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   overflow: hidden;
 

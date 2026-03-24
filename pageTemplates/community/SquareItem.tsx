@@ -7,15 +7,13 @@ import Avatar from "../../components/atoms/Avatar";
 import ThumbIcon from "../../components/Icons/ThumbIcon";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { SecretSquareListResponse } from "../../hooks/secretSquare/queries";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 
 interface SquareItemProps {
   item: SecretSquareListResponse["squareList"][0];
-  isSecret: boolean;
 }
 
-export default function SquareItem({ item, isSecret = true }: SquareItemProps) {
+export default function SquareItem({ item }: SquareItemProps) {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
@@ -29,12 +27,9 @@ export default function SquareItem({ item, isSecret = true }: SquareItemProps) {
   };
 
   return (
-    <Link
-      href={`/community/${item._id}?type=${isSecret ? "anonymous" : "blindness"}`}
-      onClick={onClick}
-    >
+    <Link href={`/community/${item._id}?type`} onClick={onClick}>
       <Flex flexDir="column" borderBottom="var(--border)" px={5} py={3}>
-        <Badge mb={1} colorScheme="gray" size="smd" w="max-content">
+        <Badge mb={1} size="smd" w="max-content" color="gray.600" fontSize="10px">
           {`# ${item?.category}`}
         </Badge>
         <Text
@@ -110,11 +105,11 @@ export default function SquareItem({ item, isSecret = true }: SquareItemProps) {
             </Box>
           )}
         </Flex>
-        <Flex fontSize="12px" color="var(--gray-600)" justify="space-between">
+        <Flex fontSize="12px" color="var(--gray-500)" justify="space-between">
           <Flex>
-            {!isSecret && <Avatar size="xxs1" user={item?.author as UserSimpleInfoProps} />}
+            <Avatar size="xxs1" user={{ avatar: item.avatar }} />
             <Flex
-              ml={isSecret ? 0 : 1}
+              ml={1}
               sx={{
                 "& :after": {
                   height: "100%",
@@ -130,7 +125,9 @@ export default function SquareItem({ item, isSecret = true }: SquareItemProps) {
               }}
             >
               <span>{getDateDiff(dayjs(item.createdAt))}</span>
-              <span>조회 {item.viewCount + (item.title === "정보 게시판 출시 안내" ? 25 : 0)}</span>
+              <span>
+                조회 {(item.viewCount || 0) + (item.title === "정보 게시판 출시 안내" ? 25 : 0)}
+              </span>
             </Flex>
           </Flex>
           <Flex gap={2} color="gray.500" align="center">

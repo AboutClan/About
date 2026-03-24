@@ -33,14 +33,6 @@ function CommunityPage() {
   return (
     <>
       <Header title="커뮤니티" isBack={false}>
-        {/* <Box position="relative" mr={2.5}>
-          <BellModalButton
-            handleClick={isGuest ? () => typeToast("guest") : () => router.push("/notice")}
-          />
-          <Box position="absolute" right="6px" top="4px" p="1px" bgColor="white" borderRadius="50%">
-            <AlertCirclePoint isActive={false} />
-          </Box>
-        </Box> */}
         <Box position="relative">
           <Button onClick={() => {}} variant="unstyled" w={8} h={8} display="flex">
             <UserIcon />
@@ -53,7 +45,7 @@ function CommunityPage() {
         </Box>
         <SquareSecretSection category={tab} />
       </Slide>
-      {isGuest && (
+      {isGuest === false && (
         <ControlButton
           text="글쓰기"
           rightIcon={<Writing2Icon />}

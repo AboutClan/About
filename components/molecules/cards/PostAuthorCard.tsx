@@ -1,14 +1,14 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { AvatarProps } from "../../../types/models/userTypes/userInfoTypes";
 
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
 import Avatar from "../../atoms/Avatar";
 import { AboutIcon } from "../../Icons/AboutIcon";
 
 interface PostAuthorCardProps {
   createdAt: string;
-  organizer: IUserSummary;
+  organizer: { name: string; avatar: AvatarProps };
   isAdminOpen?: boolean;
   children?: React.ReactNode;
   // size: "sm" | "md";

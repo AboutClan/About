@@ -19,7 +19,7 @@ function ImageSliderAvatarColor({ imageContainer, onClick }: IImageSliderAvatarC
         width: "100%",
         height: "auto",
       }}
-      slidesPerView={4.6}
+      slidesPerView={5.3}
     >
       {(imageContainer as string[]).map((item, index) => (
         <SwiperSlide key={index}>
@@ -32,8 +32,8 @@ function ImageSliderAvatarColor({ imageContainer, onClick }: IImageSliderAvatarC
   );
 }
 const Color = styled.div<{ bg: string }>`
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 36px;
+  min-height: 36px;
   border-radius: 50%;
   margin-right: var(--gap-3);
   background-color: ${(props) => props.bg};
@@ -41,7 +41,7 @@ const Color = styled.div<{ bg: string }>`
 const AvatarColorItem = styled.div`
   display: flex;
   flex-direction: column;
-  width: 68px;
+  width: 48px;
   align-items: center;
   > span {
     font-size: 10px;

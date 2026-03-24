@@ -15,13 +15,13 @@ import {
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getCommentArr } from "../../libs/comment/commentLib";
 import { UserCommentProps } from "../../types/components/propTypes";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { AvatarProps, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 interface SecretSquareCommentsProps {
   author: string | IUserSummary;
   comments: UserCommentProps[];
   refetch: () => void;
-  isSecret: boolean;
+  avatar: AvatarProps;
 }
 
 export interface ReplyProps extends Omit<SubCommentParamProps, "comment"> {
@@ -29,7 +29,7 @@ export interface ReplyProps extends Omit<SubCommentParamProps, "comment"> {
   parentId?: string;
 }
 
-function SecretSquareComments({ author, comments, refetch, isSecret }: SecretSquareCommentsProps) {
+function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquareCommentsProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
 
@@ -90,7 +90,7 @@ function SecretSquareComments({ author, comments, refetch, isSecret }: SecretSqu
         }
       }
     });
-
+  console.log(2, commentArr);
   return (
     <>
       <Slide isNoPadding>
@@ -104,28 +104,25 @@ function SecretSquareComments({ author, comments, refetch, isSecret }: SecretSqu
                 id={squareId}
                 commentProps={{
                   ...commentProps,
-                  user: !isSecret
-                    ? (author as IUserSummary)
-                    : {
-                        ...SECRET_USER_SUMMARY,
-                        name:
-                          uniqueUsers[item.user._id] === -1
-                            ? "익명(글쓴이)"
-                            : `익명 ${uniqueUsers[item.user._id] || ""}`,
-                        _id: item.user._id,
-                      },
+                  user: {
+                    ...SECRET_USER_SUMMARY,
+                    avatar: uniqueUsers[item.user._id] === -1 ? avatar : { type: 2, bg: 0 },
+                    name:
+                      uniqueUsers[item.user._id] === -1
+                        ? "글쓴이"
+                        : `익명 ${uniqueUsers[item.user._id] || ""}`,
+                    _id: item.user._id,
+                  },
                   subComments: (commentProps.subComments || []).map((sub) => ({
                     ...sub,
-                    user: !isSecret
-                      ? (author as IUserSummary)
-                      : {
-                          ...SECRET_USER_SUMMARY,
-                          name:
-                            uniqueUsers[sub.user._id] === -1
-                              ? "익명(글쓴이)"
-                              : `익명 ${uniqueUsers[sub.user._id] || ""}`,
-                          _id: sub.user._id,
-                        },
+                    user: {
+                      ...SECRET_USER_SUMMARY,
+                      name:
+                        uniqueUsers[sub.user._id] === -1
+                          ? "익명(글쓴이)"
+                          : `익명 ${uniqueUsers[sub.user._id] || ""}`,
+                      _id: sub.user._id,
+                    },
                   })),
                 }}
                 setCommentArr={setCommentArr}

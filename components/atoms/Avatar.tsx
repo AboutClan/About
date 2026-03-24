@@ -61,7 +61,7 @@ function AvatarComponent({
   const avatar = user?.avatar;
   const userId = user?._id;
   const profileImage = user?.profileImage;
- 
+
   const image =
     typeof profileImage === "string"
       ? profileImage.startsWith("http://")
@@ -70,7 +70,10 @@ function AvatarComponent({
       : undefined;
 
   const hasAvatar =
-    avatar !== undefined && avatar?.type !== null && avatar?.bg !== null && !!avatar?.type;
+    avatar !== undefined &&
+    avatar?.type !== null &&
+    avatar?.bg !== null &&
+    avatar?.type !== undefined;
 
   const [imageUrl, setImageUrl] = useState(!hasAvatar ? image : AVATAR_IMAGES[avatar.type].image);
   const [bgImage, setBgImage] = useState<string | null>(null);

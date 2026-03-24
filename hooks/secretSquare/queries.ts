@@ -5,7 +5,7 @@ import { SERVER_URI } from "../../constants/system";
 import { CommunityCategory } from "../../pages/community";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import type { SecretSquareItem, SecretSquareType } from "../../types/models/square";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+import { AvatarProps, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 
 export type SecretSquareListResponse = {
   squareList: {
@@ -20,7 +20,8 @@ export type SecretSquareListResponse = {
     commentsCount: number;
     createdAt: string;
     author: string | UserSimpleInfoProps;
-    viewCnt?: number;
+    viewCount?: number;
+    avatar: AvatarProps;
   }[];
 };
 export const useSecretSquareListQuery = (

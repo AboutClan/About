@@ -131,7 +131,13 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
               항목 추가
             </Button>
             <Flex mt="12px" align="center" justifyContent="space-between" w="100%">
-              <FormLabel htmlFor="can-multiple" mb="0">
+              <FormLabel
+                htmlFor="can-multiple"
+                mb="0"
+                fontSize="14px"
+                fontWeight={600}
+                color="gray.600"
+              >
                 복수 선택 가능
               </FormLabel>
               <Switch id="can-multiple" colorScheme="mint" {...register("canMultiple")} />
