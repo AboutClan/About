@@ -1,6 +1,6 @@
+import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
@@ -9,6 +9,7 @@ import TextDevider from "../../../components/atoms/devider/TextDevider";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { DispatchString } from "../../../types/hooks/reactTypes";
+import { navigateExternalLink } from "../../../utils/navigateUtils";
 import { UserOverviewModal } from "./UserNavigation";
 
 interface IUserNavigationBlock {
@@ -84,8 +85,14 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
       <div>
         <BlockName>문의 및 요청</BlockName>
         <NavBlock>
+          <button
+            onClick={() => {
+              navigateExternalLink("https://pf.kakao.com/_SaWXn/109551233");
+            }}
+          >
+            어바웃 채널로 문의하기
+          </button>
           <button onClick={() => onClickBlock("modal", "suggest")}>건의하기</button>
-          <button onClick={() => onClickBlock("modal", "declaration")}>불편사항 신고</button>
           <button onClick={() => onClickBlock("modal", "rest")}>
             {userInfo?.role === "resting" ? "휴식 해제" : "휴식 신청"}
           </button>

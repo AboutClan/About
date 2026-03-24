@@ -6,7 +6,15 @@ import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import IconButton from "../atoms/buttons/IconButton";
 import InfoList from "../atoms/lists/InfoList";
 
-type InfoType = "study" | "gather" | "group" | "gatherRequest" | "ranking" | "map" | "roullete";
+type InfoType =
+  | "study"
+  | "gather"
+  | "group"
+  | "gatherRequest"
+  | "ranking"
+  | "map"
+  | "roullete"
+  | "chat";
 
 interface InfoModalButtonProps {
   type: InfoType;
@@ -121,6 +129,12 @@ function InfoModalSubTitle({ type }: { type: InfoType }) {
           <br />
           생각만 했던 순간들! 이제 직접 요청해 봐요!
         </>
+      ) : type === "chat" ? (
+        <>
+          1:1로 자유롭게 대화를 나눌 수 있어요.
+          <br />
+          문제가 발생하면 즉시 차단 및 신고해주세요.
+        </>
       ) : (
         <>
           아무 카공 장소나 모은 지도가 아닙니다.
@@ -135,6 +149,14 @@ function InfoModalSubTitle({ type }: { type: InfoType }) {
 }
 
 const INFO_MODAL_CONTENTS: Record<InfoType, { title: string; items: string[] }> = {
+  chat: {
+    title: "채팅 가이드",
+    items: [
+      "상대가 불편을 느끼지 않도록 주의해주세요.",
+      "개인정보 요구나 불쾌한 메시지는 삼가주세요.",
+      "반복적인 일방적 연락은 제재될 수 있어요.",
+    ],
+  },
   roullete: {
     title: "뽑기권 획득 방법",
     items: [

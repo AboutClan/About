@@ -10,11 +10,11 @@ interface INoticeIcon {
 export function NoticeIcon({ type }: INoticeIcon) {
   const getColor = (type: NoticeCategory) => {
     switch (type) {
-      case "main":
+      case "공지":
         return { color: "var(--color-red)", bg: "red.50" };
-      case "sub":
+      case "행사":
         return { color: "var(--color-mint)", bg: "mint.50" };
-      case "event":
+      case "업데이트":
         return { color: "var(--color-blue)", bg: "blue.50" };
       default:
         return { color: "var(--color-gray)", bg: "gray.200" };
@@ -23,7 +23,15 @@ export function NoticeIcon({ type }: INoticeIcon) {
 
   const { color, bg } = getColor(type);
   return (
-    <Flex justify="center" align="center" w="44px" h="44px" borderRadius="50%" bg={bg}>
+    <Flex
+      pos="relative"
+      justify="center"
+      align="center"
+      w="44px"
+      h="44px"
+      borderRadius="50%"
+      bg={bg}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="22"

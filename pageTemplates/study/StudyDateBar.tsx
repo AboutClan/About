@@ -88,8 +88,8 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
       const voteInfo: StudyVoteProps = {
         ...placeProps,
         userId: inviteUser._id,
-        start: dayjs(date).hour(14).minute(0),
-        end: dayjs(date).hour(18).minute(0),
+        start: dayjs(date).hour(18).minute(0),
+        end: dayjs(date).hour(20).minute(0),
         eps: 1,
       };
       inviteStudy({ userId: inviteUser._id, ...voteInfo });
@@ -239,9 +239,9 @@ function InviteDrawer({
       longitude: 127.071458,
     },
     노원: {
-      locationDetail: "서울특별시 성북구 동선동2가 72",
-      latitude: 37.589527,
-      longitude: 127.019521,
+      locationDetail: "서울특별시 성북구 석관동 168-60 1-2층",
+      latitude: 37.61385,
+      longitude: 127.06436,
     },
   };
 

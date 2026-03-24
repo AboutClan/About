@@ -1,10 +1,11 @@
-import { Box, Button, Flex, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 import Avatar from "../../components/atoms/Avatar";
+import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -16,7 +17,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import { transferUserName } from "../../recoils/transferRecoils";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
-
+import { BanIcon, DeclareDrawer2 } from "../profile/[userId]";
 interface Chat {
   message: string;
   isMine: boolean;
@@ -35,10 +36,6 @@ function Uid() {
   const { data: userInfo } = useUserInfoQuery();
   const { data: chatInfo, isLoading } = useChatQuery(uid);
   const { mutate } = useChatMutation(uid);
-
-  const onClickMenuItem = () => {
-    router.push(`/profile/${uid}?declare=on`);
-  };
 
   const onSubmit = async (message: string) => {
     await mutate({ message });
@@ -70,19 +67,13 @@ function Uid() {
   }, [chats]);
 
   const opponent = chatInfo?.opponent;
-
+  const [isBanModal, setIsBanModal] = useState(false);
   return (
     <>
       <Header title={`${userName || opponent?.name}님과의 메세지`} rightPadding={4}>
-        <Menu>
-          <MenuButton variant="ghost" size="md" as={Button}>
-            <i className="fa-regular fa-ellipsis fa-lg" />
-          </MenuButton>
-          <MenuList fontSize="14px">
-            <MenuItem onClick={onClickMenuItem}>거리두기</MenuItem>
-            <MenuItem onClick={onClickMenuItem}>신고하기</MenuItem>
-          </MenuList>
-        </Menu>
+        <ButtonWrapper onClick={() => setIsBanModal(true)}>
+          <BanIcon />
+        </ButtonWrapper>
       </Header>
       <Slide isNoPadding>
         <Flex
@@ -177,6 +168,7 @@ function Uid() {
           />
         </Box>
       </Box>
+      {isBanModal && <DeclareDrawer2 user={userInfo} onClose={() => setIsBanModal(false)} />}
     </>
   );
 }

@@ -49,8 +49,9 @@ export const useUserRequestQuery = (
   useQuery<IUserRequest[], AxiosError, IUserRequest[]>(
     [USER_REQUEST, category],
     async () => {
+      console.log(21);
       const res = await axios.get<IUserRequest[]>(`${SERVER_URI}/request`);
-
+      console.log(3, res.data);
       const filterData = res.data.filter((item) => item.category === category);
       return filterData;
     },

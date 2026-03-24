@@ -29,8 +29,8 @@ function NoticeItem() {
     const temp = [];
     const REGISTER_NOTICE = {
       id: "10000",
-      title: "🎉 신규 가입을 환영합니다! 🎉",
-      category: "main",
+      title: "신규 인원 가이드",
+      category: "공지",
       content:
         "About 멤버가 되신 것을 환영합니다! 활동을 시작하시기 전에 [신규 인원 가이드]를 꼭 확인해 주세요!",
       date: dayjsToStr(dayjs(userInfo?.registerDate)),
@@ -65,19 +65,28 @@ function NoticeItem() {
           .map((item) => (
             <AccordionItem borderTop="none" key={item.id} borderBottom="1px solid var(--gray-200)">
               <AccordionButton _focus={{ outline: "none" }} p="var(--gap-3) var(--gap-5)">
-                <Box as="span" flex="1" textAlign="left" display="flex">
+                <Flex align="center" flex={1} justify="flex-start">
                   <Flex width="48px" align="center">
                     <NoticeIcon type={item.category} />
                   </Flex>
-                  <Flex direction="column" flex="1" ml="var(--gap-3)">
-                    <Text fontSize="15px" fontWeight="500" color="var(--gray-800)">
+                  <Flex direction="column" flex="1" ml={2} align="start">
+                    <Text
+                      fontSize="14px"
+                      fontWeight="600"
+                      color="var(--gray-800)"
+                      lineHeight="20px"
+                    >
+                      <Box as="span" fontWeight={600}>
+                        [{item.category}]{" "}
+                      </Box>
+
                       {item.title}
                     </Text>
-                    <Text fontSize="12px" color="var(--gray-500)">
+                    <Text mt={1} fontSize="11px" lineHeight="12px" color="var(--gray-500)">
                       {item.date}
                     </Text>
                   </Flex>
-                </Box>
+                </Flex>
                 <AccordionIcon fontSize="24px" color="var(--gray-700)" />
               </AccordionButton>
               <AccordionPanel

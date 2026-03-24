@@ -63,7 +63,7 @@ function DeclareDrawer({ userData, declareModal, setDeclareModal }: IDeclareDraw
 
   const onSubmit = () => {
     const data: IUserRequest = {
-      category: "신고",
+      category:  "신고",
       title: `${userData?.name}-${userData?.uid}`,
       content: declareModal === "declare" ? DECLARE_LIST[declareIdx] : "거리두기",
     };
