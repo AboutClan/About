@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signOut, useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -153,29 +153,7 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
             py={3}
             onClick={() => setModalType("dog")}
           >
-            댕댕이 아바타 / 배경 선택
-          </Button>
-          <Button
-            lineHeight="20px"
-            mx={10}
-            variant="unstyled"
-            borderBottom="var(--border)"
-            fontWeight="regular"
-            py={3}
-            onClick={() => setModalType("cat")}
-          >
-            똑냥이 아바타 / 배경 선택
-          </Button>
-          <Button
-            lineHeight="20px"
-            mx={10}
-            variant="unstyled"
-            borderBottom="var(--border)"
-            fontWeight="regular"
-            py={3}
-            onClick={() => setModalType("special")}
-          >
-            유니크 아바타 / 배경 선택
+            아바타 / 배경 선택
           </Button>
           <Button
             lineHeight="20px"
@@ -224,7 +202,6 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
       )}
       {["dog", "cat", "special"].includes(modalType) && (
         <RequestChangeProfileImageModalAvatar
-          type={modalType as "dog" | "cat" | "special"}
           setIsModal={() => {
             setIsModal(false);
             setModalType(null);

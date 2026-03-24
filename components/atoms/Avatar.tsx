@@ -9,7 +9,7 @@ import { AVATAR_BG_IMAGES } from "../../assets/images/avatarBgImages";
 import { AVATAR_IMAGES } from "../../assets/images/avatarImages";
 import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
-import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 
 // type Size = "2xs" | "xs" | "sm" | "smd" | "mds" | "md" | "lg" | "xl" | "slg" | "xxl";
 type Size = "xxs1" | "xs1" | "sm1" | "md1" | "lg1" | "xl1" | "xl2" | "xxl1";
@@ -38,11 +38,7 @@ interface IAvatar {
   isPriority?: boolean;
   shadowAvatar?: number;
   isLink?: boolean;
-  user: {
-    avatar: AvatarProps;
-    _id?: string;
-    profileImage?: string;
-  };
+  user: Partial<UserSimpleInfoProps>;
   isSquare?: boolean;
   isWhite?: boolean;
 }
