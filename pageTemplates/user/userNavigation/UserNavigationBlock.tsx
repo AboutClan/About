@@ -1,6 +1,6 @@
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import styled from "styled-components";
 

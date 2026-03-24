@@ -31,25 +31,18 @@ export function HomeIcon({ title, image, bgColor }: HomeIconProps) {
         borderRadius="50%"
         position="relative"
       >
-        <Box
-          position="absolute"
-          w="100%"
-          h="100%"
-          opacity={title === "게시판" ? 0.12 : 0.08}
-          bgColor={bgColor}
-          borderRadius="50%"
-        />
+        <Box position="absolute" w="100%" h="100%" bgColor={bgColor} borderRadius="50%" />
         <Image
           src={image}
-          width={36}
-          height={36}
+          width={28}
+          height={28}
           alt={title + image}
           priority
-          style={{ width: "36px", height: "36px", objectFit: "contain" }}
+          style={{ width: "28px", height: "28px", objectFit: "contain", zIndex: 2 }}
         />
       </Flex>
       {title && (
-        <Box fontSize="11px" color="222222" mt={2}>
+        <Box fontSize="11px" color="222222" mt={2} lineHeight="16px" letterSpacing={0.08}>
           {title}
         </Box>
       )}
@@ -60,7 +53,7 @@ export function HomeIcon({ title, image, bgColor }: HomeIconProps) {
 function HomeNav() {
   return (
     <>
-      <Box mr="auto" color="var(--gray-800)" fontSize={"18px"} mb={4} fontWeight={600}>
+      <Box mr="auto" color="var(--gray-800)" fontSize="18px" mb={4} fontWeight={600}>
         소모임 가입
       </Box>
       <Flex mb={3}>
@@ -69,11 +62,11 @@ function HomeNav() {
 
           return item.isExternalLink ? (
             <ExternalLink href={item.url} key={item.title} style={style}>
-              <HomeIcon title={item.title} bgColor={item.bgColor} image={item.iconImage} />
+              <HomeIcon title={item.title} bgColor="gray.100" image={item.iconImage} />
             </ExternalLink>
           ) : (
             <Link href={item.url} key={item.title} style={style}>
-              <HomeIcon title={item.title} bgColor={item.bgColor} image={item.iconImage} />
+              <HomeIcon title={item.title} bgColor="gray.100" image={item.iconImage} />
             </Link>
           );
         })}
@@ -86,7 +79,6 @@ interface HomeRecommendationItemProps {
   iconImage: string;
   title: string;
   url: string;
-  bgColor: string;
   isExternalLink?: boolean;
 }
 
@@ -98,36 +90,30 @@ export const RankingIconImage =
 
 const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
-    iconImage: "/연필.png",
+    iconImage: "/group/스터디.png",
     title: "스터디",
     url: `/group?category=1`,
-    bgColor: "var(--color-gray)",
   },
   {
-    iconImage: "/취미.png",
+    iconImage: "/group/취미.png",
     title: "취미",
     url: `/group?category=2`,
-    bgColor: "var(--color-orange)",
   },
   {
-    iconImage: "/액티비티.png",
-    title: "스포츠",
+    iconImage: "/group/액티비티.png",
+    title: "액티비티",
     url: `/group?category=3`,
-    bgColor: "var(--color-purple)",
   },
   {
     title: "문화·감상",
-    iconImage: "/문화.png",
+    iconImage: "/group/티켓.png",
     url: `/group?category=4`,
-    bgColor: "var(--color-mint)",
   },
 
   {
-    iconImage: "친목.png",
+    iconImage: "/group/칵테일.png",
     title: "친목",
     url: `/group?category=5`,
-    bgColor: "var(--color-blue)",
-  
   },
 ];
 

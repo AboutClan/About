@@ -1,7 +1,7 @@
 import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 import Avatar from "../../components/atoms/Avatar";
 import ThumbIcon from "../../components/Icons/ThumbIcon";

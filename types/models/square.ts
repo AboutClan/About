@@ -14,6 +14,10 @@ interface BaseSecretSquareItem extends TimeStampProps {
   author: string | IUserSummary;
   comments: UserCommentProps[];
   avatar: AvatarProps;
+  poll?: {
+    pollItems: PollItem[];
+    canMultiple: boolean;
+  };
 }
 
 interface GeneralSecretSquareItem extends BaseSecretSquareItem {
@@ -26,17 +30,9 @@ interface PollItem {
   users: string[];
 }
 
-interface PollSecretSquareItem extends BaseSecretSquareItem {
-  type: "poll";
-  poll: {
-    pollItems: PollItem[];
-    canMultiple: boolean;
-  };
-}
-
 export type SecretSquareType = "general" | "poll";
 
-export type SecretSquareItem = GeneralSecretSquareItem | PollSecretSquareItem;
+export type SecretSquareItem = GeneralSecretSquareItem;
 
 export type SecretSquareFormData = {
   category: CommunityCategory;

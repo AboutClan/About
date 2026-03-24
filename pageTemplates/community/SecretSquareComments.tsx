@@ -56,7 +56,7 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
 
   const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
     return {
-      user: user._id as unknown as IUserSummary,
+      user: { _id: user._id },
       comment,
       createdAt: dayjsToStr(dayjs()),
     };
@@ -64,7 +64,7 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
 
   const onSubmit = async (value: string) => {
     if (replyProps) {
-      writeSubComment({ comment: value, commentId: replyProps.commentId });
+      writeSubComment({ comment: value, commentId: replyProps.parentId });
       setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
       return;
     }
@@ -117,9 +117,10 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
                     ...sub,
                     user: {
                       ...SECRET_USER_SUMMARY,
+                      avatar: uniqueUsers[sub.user._id] === -1 ? avatar : { type: 2, bg: 0 },
                       name:
                         uniqueUsers[sub.user._id] === -1
-                          ? "익명(글쓴이)"
+                          ? "글쓴이"
                           : `익명 ${uniqueUsers[sub.user._id] || ""}`,
                       _id: sub.user._id,
                     },

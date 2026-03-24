@@ -1,8 +1,7 @@
 import { Badge, Box, Button, ButtonGroup, Flex, Text, VStack } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import AlertModal from "../../components/AlertModal";
@@ -28,7 +27,6 @@ import PollItemButton from "../../pageTemplates/community/PollItemButton";
 import SecretSquareComments from "../../pageTemplates/community/SecretSquareComments";
 
 function SecretSquareDetailPage() {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const squareId = router.query.id as string;
   const { data: session } = useSession();
@@ -54,7 +52,7 @@ function SecretSquareDetailPage() {
   const { data: pollStatus } = useCurrentPollStatusQuery(
     { squareId },
     {
-      enabled: !!session?.user.id && squareDetail?.type === "poll",
+      enabled: !!session?.user.id && !!squareDetail?.poll?.pollItems?.length,
       staleTime: Infinity,
     },
   );
@@ -139,7 +137,7 @@ function SecretSquareDetailPage() {
             <Box minH="83px">
               {squareDetail && (
                 <>
-                  <Badge colorScheme="gray" size="smd" w="max-content">
+                  <Badge color="gray.600" size="smd" w="max-content">
                     {`# ${squareDetail?.category}`}
                   </Badge>
 
@@ -169,7 +167,7 @@ function SecretSquareDetailPage() {
             </section>
             {squareDetail && (
               <>
-                {squareDetail.type === "poll" && (
+                {squareDetail?.poll?.pollItems?.length && (
                   <Box
                     as="section"
                     id="poll-section"

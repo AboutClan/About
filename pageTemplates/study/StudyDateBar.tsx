@@ -80,10 +80,10 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
       // onClose();
     },
   });
-
+  console.log(voteDateArr);
   useEffect(() => {
     if (!inviteUser) return;
-    console.log(13, inviteUser);
+
     if (placeProps) {
       const voteInfo: StudyVoteProps = {
         ...placeProps,

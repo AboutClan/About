@@ -29,9 +29,12 @@ function PollItemButton({ isChecked, isDisabled, onClick, name, count }: PollIte
       py={2}
       cursor="pointer"
       onClick={onClick}
+      color="gray.600"
     >
       <span>{name}</span>
-      <span>{count}</span>
+      <Box as="span" color="gray.800" fontWeight={600} fontSize="12px">
+        {count}
+      </Box>
     </Box>
   );
 }

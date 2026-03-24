@@ -1,8 +1,8 @@
 import { Box, Button, Flex, HStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -243,13 +243,13 @@ function ProfilePage() {
   );
 }
 
-export const DeclareDrawer2 = ({
+export function DeclareDrawer2({
   user,
   onClose,
 }: {
   user: UserSimpleInfoProps;
   onClose: () => void;
-}) => {
+}) {
   const toast = useToast();
   const [declareType, setDeclareType] = useState<"distance" | "block">(null);
   const [text, setText] = useState("");
@@ -362,7 +362,7 @@ export const DeclareDrawer2 = ({
       )}
     </BottomFlexDrawer>
   );
-};
+}
 
 function SendIcon() {
   return (

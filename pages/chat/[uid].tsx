@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -25,7 +25,6 @@ interface Chat {
 }
 
 function Uid() {
-  const router = useRouter();
   const { uid } = useParams<{ uid: string }>() || {};
   const keypadHeight = useKeypadHeight();
 

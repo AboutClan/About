@@ -2,6 +2,7 @@ import { Box, Button, chakra, Flex, shouldForwardProp } from "@chakra-ui/react";
 import { AnimatePresence, isValidMotionProp, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "react-query";
+
 import { AVATAR_BG_IMAGES } from "../../../assets/images/avatarBgImages";
 import { AVATAR_IMAGES } from "../../../assets/images/avatarImages";
 import Avatar from "../../../components/atoms/Avatar";

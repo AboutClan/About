@@ -1,5 +1,4 @@
 import { Box, Button, Flex, IconButton, Spacer, useDisclosure, VStack } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -32,8 +31,6 @@ const defaultFormData: SecretSquareFormData = {
 function SquareWritingPage() {
   const router = useRouter();
   const toast = useToast();
-  const searchParams = useSearchParams();
-  const typeParams = searchParams.get("type");
 
   const methods = useForm<SecretSquareFormData>({
     defaultValues: {
@@ -68,7 +65,7 @@ function SquareWritingPage() {
   };
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
-    let type = "general";
+    const type = "general";
 
     const { category, title, content, pollItems, canMultiple } = data;
 
@@ -298,28 +295,32 @@ function VoteIcon({ color }: { color?: "black" }) {
   );
 }
 
-const EditIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="12px"
-    viewBox="0 -960 960 960"
-    width="12px"
-    fill="var(--gray-800)"
-  >
-    <path d="M160 0q-33 0-56.5-23.5T80-80q0-33 23.5-56.5T160-160h640q33 0 56.5 23.5T880-80q0 33-23.5 56.5T800 0H160Zm0-280v-113q0-8 3-15.5t9-13.5l436-435q11-11 25.5-17t30.5-6q16 0 31 6t27 18l55 56q12 11 17.5 26t5.5 31q0 15-5.5 29.5T777-687L342-252q-6 6-13.5 9t-15.5 3H200q-17 0-28.5-11.5T160-280Zm504-408 56-56-56-56-56 56 56 56Z" />
-  </svg>
-);
-const AvatarIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="20px"
-    viewBox="0 -960 960 960"
-    width="20px"
-    fill="var(--gray-500)"
-  >
-    <path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm146.5-204.5Q340-521 340-580t40.5-99.5Q421-720 480-720t99.5 40.5Q620-639 620-580t-40.5 99.5Q539-440 480-440t-99.5-40.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
-  </svg>
-);
+function EditIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="12px"
+      viewBox="0 -960 960 960"
+      width="12px"
+      fill="var(--gray-800)"
+    >
+      <path d="M160 0q-33 0-56.5-23.5T80-80q0-33 23.5-56.5T160-160h640q33 0 56.5 23.5T880-80q0 33-23.5 56.5T800 0H160Zm0-280v-113q0-8 3-15.5t9-13.5l436-435q11-11 25.5-17t30.5-6q16 0 31 6t27 18l55 56q12 11 17.5 26t5.5 31q0 15-5.5 29.5T777-687L342-252q-6 6-13.5 9t-15.5 3H200q-17 0-28.5-11.5T160-280Zm504-408 56-56-56-56-56 56 56 56Z" />
+    </svg>
+  );
+}
+function AvatarIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20px"
+      viewBox="0 -960 960 960"
+      width="20px"
+      fill="var(--gray-500)"
+    >
+      <path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm146.5-204.5Q340-521 340-580t40.5-99.5Q421-720 480-720t99.5 40.5Q620-639 620-580t-40.5 99.5Q539-440 480-440t-99.5-40.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
+    </svg>
+  );
+}
 
 export function XIcon() {
   return (
