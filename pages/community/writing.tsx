@@ -20,7 +20,7 @@ import SquareCategoryRadioGroup from "../../pageTemplates/community/writing/Squa
 import { SecretSquareFormData } from "../../types/models/square";
 
 const defaultFormData: SecretSquareFormData = {
-  category: "일상",
+  category: "일상 · 자유",
   title: "",
   content: "",
   pollItems: [{ name: "" }, { name: "" }],
@@ -32,12 +32,10 @@ function SquareWritingPage() {
   const toast = useToast();
   const searchParams = useSearchParams();
   const typeParams = searchParams.get("type");
-  const isSecret = typeParams === "anonymous";
 
   const methods = useForm<SecretSquareFormData>({
     defaultValues: {
       ...defaultFormData,
-      category: isSecret ? "일상" : "정보",
     },
   });
   const { register, handleSubmit, watch, getValues, resetField } = methods;
@@ -67,13 +65,13 @@ function SquareWritingPage() {
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
     let type = "general";
-    if (isSecret) {
-      if (isPollType) type = "poll";
-      else type = "general";
-    } else {
-      if (isPollType) type = "poll2";
-      else type = "info";
-    }
+    // if (isSecret) {
+    //   if (isPollType) type = "poll";
+    //   else type = "general";
+    // } else {
+    //   if (isPollType) type = "poll2";
+    //   else type = "info";
+    // }
     const { category, title, content, pollItems, canMultiple } = data;
 
     const formData = new FormData();
@@ -99,7 +97,7 @@ function SquareWritingPage() {
           setTimeout(() => {
             toast("success", "등록되었습니다.");
           }, 200);
-          router.replace(`/community/${squareId}?type=${isSecret ? "anonymous" : "info"}`);
+          router.replace(`/community/${squareId}`);
         },
       },
     );
@@ -130,7 +128,7 @@ function SquareWritingPage() {
         <VStack h="100%" px={5}>
           <FormProvider {...methods}>
             <Box as="form" w="100%" onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
-              <SquareCategoryRadioGroup type={isSecret ? "secret" : "info"} />
+              <SquareCategoryRadioGroup />
               <Input
                 placeholder="제목을 입력해주세요"
                 {...register("title", {
@@ -236,6 +234,7 @@ function SquareWritingPage() {
         />
 
         <Button
+          ml={1}
           px="6px"
           color="var(--gray-500)"
           type="button"
@@ -249,21 +248,51 @@ function SquareWritingPage() {
         >
           투표
         </Button>
+
+        <Button
+          ml={1}
+          px="6px"
+          color="var(--gray-500)"
+          type="button"
+          iconSpacing="4px"
+          leftIcon={<AvatarIcon />}
+          variant="ghost"
+          size="sm"
+          onClick={openPollCreatorDrawer}
+          fontSize="12px"
+          border="none"
+        >
+          아바타
+        </Button>
       </WritingNavigation>
     </>
   );
 }
 
 function VoteIcon() {
-  return <svg
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20px"
+      viewBox="0 -960 960 960"
+      width="20px"
+      fill="var(--gray-500)"
+    >
+      <path d="M200-80q-33 0-56.5-23.5T120-160v-152q0-14 5-28t15-25l62-70q11-13 28.5-13.5T260-437q11 11 12 27t-10 28l-55 62h546l-53-60q-11-12-10-28t12-27q12-12 29.5-11.5T760-433l60 68q10 11 15 25t5 28v152q0 33-23.5 56.5T760-80H200Zm224-304L285-525q-23-23-23-57t23-57l196-196q23-23 57-23t57 23l141 139q23 23 23.5 56.5T737-583L537-383q-23 23-56.5 22.5T424-384Zm256-256L538-780 340-582l142 140 198-198Z" />
+    </svg>
+  );
+}
+
+const AvatarIcon = () => (
+  <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20px"
     viewBox="0 -960 960 960"
     width="20px"
     fill="var(--gray-500)"
   >
-    <path d="M200-80q-33 0-56.5-23.5T120-160v-152q0-14 5-28t15-25l62-70q11-13 28.5-13.5T260-437q11 11 12 27t-10 28l-55 62h546l-53-60q-11-12-10-28t12-27q12-12 29.5-11.5T760-433l60 68q10 11 15 25t5 28v152q0 33-23.5 56.5T760-80H200Zm224-304L285-525q-23-23-23-57t23-57l196-196q23-23 57-23t57 23l141 139q23 23 23.5 56.5T737-583L537-383q-23 23-56.5 22.5T424-384Zm256-256L538-780 340-582l142 140 198-198Z" />
+    <path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm146.5-204.5Q340-521 340-580t40.5-99.5Q421-720 480-720t99.5 40.5Q620-639 620-580t-40.5 99.5Q539-440 480-440t-99.5-40.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
   </svg>
-}
+);
 
 export default SquareWritingPage;

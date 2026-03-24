@@ -33,9 +33,9 @@ function HomeHeader() {
     notice: false,
   });
 
-  const { data } = useNoticeActiveLogQuery(null, true);
+  const { data } = useNoticeActiveLogQuery(null, true, { enabled: isGuest === false });
 
-  const { data: recentChat } = useRecentChatQuery({ enabled: isGuest });
+  const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
 
   useEffect(() => {
     if (isGuest) return;
@@ -96,7 +96,9 @@ function HomeHeader() {
                 </Box> */}
             </Box>
             <Box mr={2.5} position="relative">
-              <ChatModalButton handleClick={() => {}} />
+              <ChatModalButton
+                handleClick={isGuest ? () => typeToast("guest") : () => router.push("/chat")}
+              />
               <Box
                 position="absolute"
                 right="2.5px"

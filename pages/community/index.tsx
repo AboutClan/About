@@ -13,7 +13,7 @@ import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import SquareSecretSection from "../../pageTemplates/community/SquareSecretSection";
 
-const CATEGORY_ARR = ["전체", "일상 · 자유", "팀원모집", "정보공유", "홍보"] as const;
+export const CATEGORY_ARR = ["전체", "일상 · 자유", "팀원모집", "정보공유", "홍보"] as const;
 export type CommunityCategory = (typeof CATEGORY_ARR)[number];
 
 function CommunityPage() {
@@ -51,16 +51,17 @@ function CommunityPage() {
       </Header>
       <Slide isNoPadding>
         <Box fontSize="16px" mb={3} bgColor="white" borderBottom="var(--border)" px={5}>
-          <TabNav tabOptionsArr={tabOptions} selected={tab} isMain />
+          <TabNav tabOptionsArr={tabOptions} selected={tab} isMain isBlack />
         </Box>
         <SquareSecretSection category={tab} />
       </Slide>
-      {!isGuest && (
+      {isGuest && (
         <ControlButton
           text="글쓰기"
           rightIcon={<Writing2Icon />}
+          hasBottomNav
           handleClick={() => {
-            router.push(`/community/writing?type=${tab === "익명 게시판" ? "anonymous" : "info"}`);
+            router.push(`/community/writing`);
           }}
         />
       )}

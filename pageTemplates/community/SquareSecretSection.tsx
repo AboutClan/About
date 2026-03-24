@@ -40,7 +40,7 @@ function SquareSecretSection({ category }: SquareSecretSectionProps) {
   }, [category]);
 
   useEffect(() => {
-    if (!data?.squareList) return;
+    if (!data?.squareList?.length) return;
 
     const now = dayjs();
 
@@ -107,8 +107,8 @@ function SquareSecretSection({ category }: SquareSecretSectionProps) {
           </Flex>
         ) : (
           <>
-            {sqaures.map((squareItem) => (
-              <BlurredPart key={squareItem._id} isBlur={!!isGuest}>
+            {sqaures.map((squareItem, idx) => (
+              <BlurredPart key={idx} isBlur={!!isGuest}>
                 <SquareItem item={squareItem} isSecret />
               </BlurredPart>
             ))}

@@ -18,7 +18,7 @@ export default function InviteUserGroups({
 }: IInviteUserGroups) {
   return (
     <Grid mt="20px" templateColumns="repeat(3,1fr)" gap="12px">
-      {users?.map((who, idx) => {
+      {users?.slice(0, 100)?.map((who, idx) => {
         const isMember = existUsers?.includes(who._id);
         return (
           <Flex h="48px" key={idx} justify="center" align="center">

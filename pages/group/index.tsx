@@ -227,7 +227,7 @@ function GroupPage() {
 
   return (
     <>
-      <Header title="소모임" isBack={false}>
+      <Header title="소모임">
         <InfoModalButton type="group" />
       </Header>
       <Slide isNoPadding>

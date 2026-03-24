@@ -40,7 +40,7 @@ function ControlButton({
         borderRadius="20px"
         lineHeight="24px"
         iconSpacing={1}
-        colorScheme={colorScheme}
+        colorScheme={"black" || colorScheme}
         rightIcon={<Box mb="1px">{rightIcon}</Box>}
         onClick={handleClick}
         isDisabled={isDisabled}

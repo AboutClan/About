@@ -98,39 +98,36 @@ export const RankingIconImage =
 
 const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
-    iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/twoChat.png",
+    iconImage: "/연필.png",
     title: "스터디",
-    url: `/group?category=0`,
+    url: `/group?category=1`,
     bgColor: "var(--color-gray)",
   },
   {
-    title: "문화·예술",
-    iconImage: StoreIconImage,
-    url: "/store",
-    bgColor: "var(--color-mint)",
+    iconImage: "/취미.png",
+    title: "취미",
+    url: `/group?category=2`,
+    bgColor: "var(--color-orange)",
   },
   {
-    iconImage: RankingIconImage,
-    title: "운동",
-    url: "/ranking",
+    iconImage: "/액티비티.png",
+    title: "스포츠",
+    url: `/group?category=3`,
     bgColor: "var(--color-purple)",
   },
   {
-    iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EB%8B%AC%EB%A0%A52.png",
-    title: "취미",
-    url: "/calendar",
-    bgColor: "var(--color-orange)",
+    title: "문화·감상",
+    iconImage: "/문화.png",
+    url: `/group?category=4`,
+    bgColor: "var(--color-mint)",
   },
 
   {
-    iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EB%94%94%EC%BD%942.png",
+    iconImage: "친목.png",
     title: "친목",
-    url: "https://discord.gg/dDu2kg2uez",
+    url: `/group?category=5`,
     bgColor: "var(--color-blue)",
-    isExternalLink: true,
+  
   },
 ];
 

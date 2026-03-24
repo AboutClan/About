@@ -53,18 +53,16 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
   const [inviteUser, setInviteUser] = useState<UserSimpleInfoProps>(null);
   const [dateArr, setDateArr] = useState<string[]>([]);
 
-  const { mutate: inviteStudy } = useStudyInviteMutation(date, {
+  const { mutate: inviteStudy } = useStudyInviteMutation(placeProps ? dateArr[0] : date, {
     onSuccess() {
       resetStudy();
       typeToast("invite");
-      setIsModal(false);
     },
   });
   const { mutate: inviteRealTimes } = useRealtimeInviteMutation(date, {
     onSuccess() {
       resetStudy();
       typeToast("invite");
-      setIsModal(false);
     },
   });
   const { mutate: voteDateArr } = useStudyVoteArrMutation(dateArr, {
@@ -85,14 +83,16 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
 
   useEffect(() => {
     if (!inviteUser) return;
+    console.log(13, inviteUser);
     if (placeProps) {
-      voteDateArr({
+      const voteInfo: StudyVoteProps = {
         ...placeProps,
         userId: inviteUser._id,
         start: dayjs(date).hour(14).minute(0),
         end: dayjs(date).hour(18).minute(0),
         eps: 1,
-      });
+      };
+      inviteStudy({ userId: inviteUser._id, ...voteInfo });
       return;
     }
 
@@ -229,9 +229,9 @@ function InviteDrawer({
       longitude: 126.915129,
     },
     사당: {
-      locationDetail: "서울특별시 관악구 남현동 1060-4",
-      latitude: 37.476183,
-      longitude: 126.980677,
+      locationDetail: "경기도 수원시 팔달구 인계동 1119-10 영성빌딩",
+      latitude: 37.264364,
+      longitude: 127.034008,
     },
     건대: {
       locationDetail: "서울특별시 광진구 화양동 5-3 지하1층",
@@ -239,9 +239,9 @@ function InviteDrawer({
       longitude: 127.071458,
     },
     노원: {
-      locationDetail: "서울특별시 동대문구 휘경동 280-2 지하1층",
-      latitude: 37.588692,
-      longitude: 127.057927,
+      locationDetail: "서울특별시 성북구 동선동2가 72",
+      latitude: 37.589527,
+      longitude: 127.019521,
     },
   };
 
@@ -254,13 +254,7 @@ function InviteDrawer({
               <Button
                 key={n}
                 onClick={() => {
-                  if (dateArr.includes(dayjsToStr(dayjs(date).add(n, "day")))) {
-                    setDateArr((old) =>
-                      old.filter((o) => o !== dayjsToStr(dayjs(date).add(n, "day"))),
-                    );
-                  } else {
-                    setDateArr((old) => [...old, dayjsToStr(dayjs(date).add(n, "day"))]);
-                  }
+                  setDateArr([dayjsToStr(dayjs(date).add(n, "day"))]);
                 }}
                 colorScheme={
                   dateArr.includes(dayjsToStr(dayjs(date).add(n, "day"))) ? "mint" : "gray"
