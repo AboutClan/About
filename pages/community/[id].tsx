@@ -357,18 +357,13 @@ function SecretSquareDetailPage() {
           </Flex>
         </Slide>
         <Slide isNoPadding>{squareDetail && <Divider />}</Slide>
-        <Slide isNoPadding>
-          {squareDetail && (
-            <Box as="section" bg="white">
-              <SecretSquareComments
-                author={squareDetail?.author}
-                comments={squareDetail?.comments}
-                refetch={refetch}
-                avatar={squareDetail?.avatar}
-              />
-            </Box>
-          )}
-        </Slide>
+
+        <SecretSquareComments
+          author={squareDetail?.author}
+          comments={squareDetail?.comments}
+          refetch={refetch}
+          avatar={squareDetail?.avatar}
+        />
       </>
       {isDeleteModal && (
         <AlertModal
