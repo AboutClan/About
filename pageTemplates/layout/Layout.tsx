@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -186,7 +186,7 @@ function Layout({ children }: ILayout) {
           if (prevPath === "home") {
             router.replace("/home");
           } else {
-            router.replace(`/group`);
+            router.replace(`/community`);
           }
           return;
         }
