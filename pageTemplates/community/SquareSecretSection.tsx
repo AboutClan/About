@@ -100,7 +100,7 @@ function SquareSecretSection({ category }: SquareSecretSectionProps) {
   return (
     <>
       {/* <SecretSquareCategories type="secret" category={category} setCategory={setCategory} /> */}
-      <Box pb="80px" pos="relative">
+      <Box pb="80px" pos="relative" minH="90dvh">
         {sqaures && sqaures.length === 0 && data ? (
           <Flex fontSize="18px" height="200px" justify="center" align="center">
             가장 먼저 &ldquo;#{category}&rdquo;에 글을 남겨보세요!
