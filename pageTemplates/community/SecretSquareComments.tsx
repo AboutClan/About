@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import BottomCommentInput from "../../components/atoms/BottomCommentInput";
-import Slide from "../../components/layouts/PageSlide";
 import UserCommentBlock from "../../components/molecules/UserCommentBlock";
 import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import {
@@ -93,7 +92,7 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
   console.log(2, commentArr);
   return (
     <>
-      <Slide isNoPadding>
+      <>
         <Flex direction="column" pt="8px" pb="20px">
           {commentArr?.map((item, idx) => {
             const commentProps = commentArr?.find((comment) => comment._id === item._id);
@@ -133,7 +132,7 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
             );
           })}
         </Flex>
-      </Slide>
+      </>
       <BottomCommentInput
         onSubmit={onSubmit}
         type="comment"

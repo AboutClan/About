@@ -25,6 +25,7 @@ import {
 } from "../../hooks/secretSquare/queries";
 import PollItemButton from "../../pageTemplates/community/PollItemButton";
 import SecretSquareComments from "../../pageTemplates/community/SecretSquareComments";
+import { VoteIcon } from "./writing";
 
 function SecretSquareDetailPage() {
   const router = useRouter();
@@ -167,7 +168,7 @@ function SecretSquareDetailPage() {
             </section>
             {squareDetail && (
               <>
-                {squareDetail?.poll?.pollItems?.length && (
+                {squareDetail?.poll?.pollItems?.length ? (
                   <Box
                     as="section"
                     id="poll-section"
@@ -183,7 +184,7 @@ function SecretSquareDetailPage() {
                     <VStack as="ul" align="flex-start">
                       <Text fontWeight={600} display="flex" mb="4px" gap={1} align="center">
                         <Box as="span" display="flex" alignItems="center">
-                          <i className="fa-solid fa-check-to-slot" />
+                          <VoteIcon />
                         </Box>
                         <span>투표</span>
                       </Text>
@@ -270,7 +271,7 @@ function SecretSquareDetailPage() {
                       )}
                     </VStack>
                   </Box>
-                )}
+                ) : null}
 
                 {squareDetail.images.length !== 0 && (
                   <section id="images-section">
@@ -300,7 +301,6 @@ function SecretSquareDetailPage() {
                     </VStack>
                   </section>
                 )}
-
                 <Flex color="var(--gray-600)" align="center" mt={4} gap={1} fontSize="12px">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -357,17 +357,18 @@ function SecretSquareDetailPage() {
           </Flex>
         </Slide>
         <Slide isNoPadding>{squareDetail && <Divider />}</Slide>
-
-        {squareDetail && (
-          <Box as="section" bg="white">
-            <SecretSquareComments
-              author={squareDetail?.author}
-              comments={squareDetail?.comments}
-              refetch={refetch}
-              avatar={squareDetail?.avatar}
-            />
-          </Box>
-        )}
+        <Slide isNoPadding>
+          {squareDetail && (
+            <Box as="section" bg="white">
+              <SecretSquareComments
+                author={squareDetail?.author}
+                comments={squareDetail?.comments}
+                refetch={refetch}
+                avatar={squareDetail?.avatar}
+              />
+            </Box>
+          )}
+        </Slide>
       </>
       {isDeleteModal && (
         <AlertModal

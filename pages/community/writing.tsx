@@ -281,7 +281,7 @@ function SquareWritingPage() {
   );
 }
 
-function VoteIcon({ color }: { color?: "black" }) {
+export function VoteIcon({ color }: { color?: "black" }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import BlurredPart from "../../components/molecules/BlurredPart";
 import {
   SecretSquareListResponse,
@@ -100,7 +100,7 @@ function SquareSecretSection({ category }: SquareSecretSectionProps) {
   return (
     <>
       {/* <SecretSquareCategories type="secret" category={category} setCategory={setCategory} /> */}
-      <Box pb="80px">
+      <Box pb="80px" pos="relative">
         {sqaures && sqaures.length === 0 && data ? (
           <Flex fontSize="18px" height="200px" justify="center" align="center">
             가장 먼저 &ldquo;#{category}&rdquo;에 글을 남겨보세요!
@@ -116,8 +116,8 @@ function SquareSecretSection({ category }: SquareSecretSectionProps) {
         )}
         <div ref={loader} />
         {isLoading && (
-          <Box position="relative" mt="60px" mb="40px">
-            <MainLoadingAbsolute size="sm" />
+          <Box position="relative" mt="80px" mb="40px">
+            <MainLoading size="sm" />
           </Box>
         )}
       </Box>

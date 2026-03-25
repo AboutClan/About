@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 import Spinner from "../Spinner";
 
-export function MainLoading() {
+export function MainLoading({ size = "md" }: { size?: "sm" | "md" }) {
   return (
     <MainLoadingLayout>
-      <Spinner />
+      <Spinner size={size} />
     </MainLoadingLayout>
   );
 }
