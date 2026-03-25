@@ -1,5 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 
 import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { UserCommentProps } from "../../types/components/propTypes";
@@ -19,12 +18,10 @@ function CommentSection({
   setCommentArr,
   commentArr,
   id,
-  hasAuthority,
+
   setReplyProps,
   hasMyReview,
 }: CommentSectionProps) {
-  const { data: session } = useSession();
-
   return (
     <>
       <Flex px={5} pb={4}>
