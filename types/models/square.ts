@@ -30,8 +30,6 @@ interface PollItem {
   users: string[];
 }
 
-export type SecretSquareType = "general" | "poll";
-
 export type SecretSquareItem = GeneralSecretSquareItem;
 
 export type SecretSquareFormData = {

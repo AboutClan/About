@@ -62,9 +62,10 @@ export const getDateDiff = (date: Dayjs) => {
   const daysDiff = dayjs().diff(date, "day");
 
   if (daysDiff < 1) {
-    const hoursDiff = dayjs().diff(date, "hour");
+    const hoursDiff = dayjs().diff(date, "minutes");
 
-    if (hoursDiff < 1) return "방금 전";
+    if (hoursDiff <= 30) return "방금 전";
+    if (hoursDiff < 60) return `${hoursDiff}분 전`;
     return `${dayjs().diff(date, "hours")}시간 전`;
   }
   return `${daysDiff}일 전`;

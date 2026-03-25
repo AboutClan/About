@@ -51,7 +51,18 @@ function SquareWritingPage() {
   const pollItems = getValues("pollItems");
   const isPollType = pollItems.every(({ name }) => !!name.trim());
 
-  const [avatar, setAvatar] = useState<AvatarProps>({ type: 0, bg: 0 });
+  const getRandomAvatar = (): AvatarProps => {
+    const type = Math.floor(Math.random() * 37); // 0 ~ 36
+
+    const isLowRange = Math.random() < 0.5; // 두 범위 중 하나 선택
+    const bg = isLowRange
+      ? Math.floor(Math.random() * 10) // 0 ~ 9
+      : 100 + Math.floor(Math.random() * 21); // 100 ~ 120
+
+    return { type, bg };
+  };
+
+  const [avatar, setAvatar] = useState<AvatarProps>(() => getRandomAvatar());
 
   const { mutate: createSecretSquareMutate, isLoading: isCreateSquareLoading } =
     useCreateSecretSquareMutation();
@@ -281,13 +292,13 @@ function SquareWritingPage() {
   );
 }
 
-export function VoteIcon({ color }: { color?: "black" }) {
+export function VoteIcon({ color, size = "md" }: { color?: "black"; size?: "sm" | "md" }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="20px"
       viewBox="0 -960 960 960"
-      width="20px"
+      height={size === "md" ? "20px" : "16px"}
+      width={size === "md" ? "20px" : "16px"}
       fill={color === "black" ? "var(--gray-700)" : "var(--gray-500)"}
     >
       <path d="M200-80q-33 0-56.5-23.5T120-160v-152q0-14 5-28t15-25l62-70q11-13 28.5-13.5T260-437q11 11 12 27t-10 28l-55 62h546l-53-60q-11-12-10-28t12-27q12-12 29.5-11.5T760-433l60 68q10 11 15 25t5 28v152q0 33-23.5 56.5T760-80H200Zm224-304L285-525q-23-23-23-57t23-57l196-196q23-23 57-23t57 23l141 139q23 23 23.5 56.5T737-583L537-383q-23 23-56.5 22.5T424-384Zm256-256L538-780 340-582l142 140 198-198Z" />

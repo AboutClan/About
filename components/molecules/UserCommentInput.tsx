@@ -10,10 +10,11 @@ import Avatar from "../atoms/Avatar";
 interface UserCommentInputProps {
   type?: "comment" | "message" | "review";
   onSubmit: (value: string) => void;
-  user: IUserSummary;
+  user: Partial<IUserSummary>;
   initialFocus?: boolean;
   replyName: string;
   setReplyProps: DispatchType<ReplyProps>;
+  myName?: string;
 }
 
 function UserCommentInput({
@@ -23,10 +24,11 @@ function UserCommentInput({
   type = "comment",
   replyName,
   setReplyProps,
+  myName,
 }: UserCommentInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [text, setText] = useState(replyName ? "@" + replyName + " " : "");
-
+  console.log(52, user, replyName, myName);
   useEffect(() => {
     if (replyName) {
       setText("@" + replyName + " ");

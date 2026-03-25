@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { SERVER_URI } from "../../constants/system";
 import { CommunityCategory } from "../../pages/community";
 import { QueryOptions } from "../../types/hooks/reactTypes";
-import type { SecretSquareItem, SecretSquareType } from "../../types/models/square";
+import type { SecretSquareItem } from "../../types/models/square";
 import { AvatarProps, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 
 export type SecretSquareListResponse = {
@@ -13,7 +13,6 @@ export type SecretSquareListResponse = {
     category: CommunityCategory;
     title: string;
     content: string;
-    type: SecretSquareType;
     viewers: string[];
     thumbnail: string;
     like: string[];
@@ -22,6 +21,14 @@ export type SecretSquareListResponse = {
     author: string | UserSimpleInfoProps;
     viewCount?: number;
     avatar: AvatarProps;
+    poll: {
+      canMultiple: boolean;
+      pollItems: {
+        name: string;
+        users: string[];
+        _id: string;
+      }[];
+    };
   }[];
 };
 export const useSecretSquareListQuery = (

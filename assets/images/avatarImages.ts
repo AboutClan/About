@@ -67,7 +67,7 @@ export const AVATAR_IMAGES: { idx: number; image: string }[] = [
   {
     idx: 13,
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EA%B3%A0%EC%96%91%EC%9D%B4_%EA%B9%9C1.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EA%B3%A0%EC%96%91%EC%9D%B4_%EA%B9%9C2.png",
   },
   {
     idx: 14,

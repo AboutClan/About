@@ -13,8 +13,9 @@ interface BottomCommentInputProps {
   onSubmit: (value: string) => void;
   type?: "comment" | "message" | "review";
   replyName: string;
-  user: IUserSummary;
+  user: Partial<IUserSummary>;
   setReplyProps: DispatchType<ReplyProps>;
+  myName?: string;
 }
 
 function BottomCommentInput({
@@ -24,6 +25,7 @@ function BottomCommentInput({
   replyName,
   user,
   setReplyProps,
+  myName,
 }: BottomCommentInputProps) {
   const keypadHeight = useKeypadHeight();
 
@@ -47,6 +49,7 @@ function BottomCommentInput({
           type={type}
           replyName={replyName}
           setReplyProps={setReplyProps}
+          myName={myName}
         />
       </Box>
     </Box>

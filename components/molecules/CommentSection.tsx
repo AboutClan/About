@@ -44,7 +44,6 @@ function CommentSection({
             type="group"
             id={id}
             commentProps={comment}
-            hasAuthority={session?.user.uid !== comment.user.uid && hasAuthority}
             setReplyProps={setReplyProps}
             setCommentArr={setCommentArr}
             hasDeleteBtn={false}

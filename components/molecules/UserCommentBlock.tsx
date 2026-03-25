@@ -12,7 +12,7 @@ interface UserCommentBlockProps {
   setCommentArr?: DispatchType<UserCommentProps[]>;
 
   setReplyProps: DispatchType<ReplyProps>;
-  hasAuthority: boolean;
+
   hasDeleteBtn?: boolean;
 }
 
@@ -21,17 +21,15 @@ function UserCommentBlock({
   id,
   commentProps,
   setReplyProps,
-  hasAuthority = true,
+
   setCommentArr,
   hasDeleteBtn = true,
 }: UserCommentBlockProps) {
-  
   return (
     <>
       <UserComment
         type={type}
         isReComment={false}
-        hasAuthority={hasAuthority}
         user={commentProps.user}
         updatedAt={commentProps.updatedAt || commentProps?.createdAt}
         comment={commentProps.comment}
@@ -49,7 +47,6 @@ function UserCommentBlock({
           <UserComment
             isReComment={true}
             type={type}
-            hasAuthority={hasAuthority}
             isSecret={type === "square"}
             setReplyProps={null}
             user={sub.user}

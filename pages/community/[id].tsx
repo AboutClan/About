@@ -365,6 +365,7 @@ function SecretSquareDetailPage() {
           avatar={squareDetail?.avatar}
         />
       </>
+
       {isDeleteModal && (
         <AlertModal
           setIsModal={setIsDeleteModal}

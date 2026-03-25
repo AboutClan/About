@@ -7,6 +7,7 @@ import Avatar from "../../components/atoms/Avatar";
 import ThumbIcon from "../../components/Icons/ThumbIcon";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { SecretSquareListResponse } from "../../hooks/secretSquare/queries";
+import { VoteIcon } from "../../pages/community/writing";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 
 interface SquareItemProps {
@@ -25,7 +26,7 @@ export default function SquareItem({ item }: SquareItemProps) {
       return;
     }
   };
-
+  console.log(15, item);
   return (
     <Link href={`/community/${item._id}?type`} onClick={onClick}>
       <Flex flexDir="column" borderBottom="var(--border)" px={5} py={3}>
@@ -50,7 +51,7 @@ export default function SquareItem({ item }: SquareItemProps) {
           {item.title}
         </Text>
         <Flex justifyContent="space-between" gap={4}>
-          <Box
+          <Flex
             mt={1}
             mb={2}
             sx={{
@@ -62,14 +63,15 @@ export default function SquareItem({ item }: SquareItemProps) {
               overflow: "hidden",
             }}
           >
-            {item.type === "poll" && (
-              <i
-                className="fa-solid fa-check-to-slot"
-                style={{ color: "var(--gray-500)", marginRight: "8px" }}
-              />
-            )}
-            {item.content}
-          </Box>
+            <Flex>
+              {item?.poll?.pollItems?.length && (
+                <Box mr={1}>
+                  <VoteIcon size="sm" color="black" />
+                </Box>
+              )}
+              {item.content}
+            </Flex>
+          </Flex>
           {item.thumbnail && (
             <Box position="relative" overflow="visible" mb="8px">
               <Box

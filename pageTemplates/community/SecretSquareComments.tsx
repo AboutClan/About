@@ -38,6 +38,10 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments || []);
   const [replyProps, setReplyProps] = useState<ReplyProps>();
 
+  const isMine = author === userInfo?._id;
+  const findMyUserId = commentArr?.find((c) => c.user._id === userInfo?._id)?.user?._id;
+  let myName;
+  console.log(12, findMyUserId);
   useEffect(() => {
     setCommentArr(comments);
   }, [comments]);
@@ -61,11 +65,20 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
       createdAt: dayjsToStr(dayjs()),
     };
   };
-
+  const removeAnonymousPrefix = (text: string) => {
+    return text.replace(/^@익명\s*\d+\s*/, "");
+  };
   const onSubmit = async (value: string) => {
+    console.log(1, myName, replyProps?.replyName);
+    let value2 = value;
     if (replyProps) {
-      writeSubComment({ comment: value, commentId: replyProps.parentId });
-      setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
+      if (myName === replyProps.replyName) {
+        const pureText = removeAnonymousPrefix(value);
+        value2 = pureText;
+      }
+
+      writeSubComment({ comment: value2, commentId: replyProps.parentId });
+      setCommentArr(getCommentArr(value2, replyProps.commentId, commentArr, userInfo));
       return;
     }
     await writeComment({ comment: value });
@@ -85,12 +98,16 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
         if (userId === author) {
           uniqueUsers[userId] = -1;
         } else {
+          if (findMyUserId === userId) {
+            myName = `익명 ${uniqueIdCounter}`;
+          }
+
           uniqueUsers[userId] = uniqueIdCounter;
           uniqueIdCounter++;
         }
       }
     });
-  console.log(2, commentArr);
+  console.log(15, myName);
   return (
     <>
       <Slide isNoPadding>
@@ -127,7 +144,6 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
                   })),
                 }}
                 setCommentArr={setCommentArr}
-                hasAuthority={item.user._id !== userInfo?._id}
                 setReplyProps={setReplyProps}
               />
             );
@@ -139,7 +155,8 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
         type="comment"
         replyName={replyProps?.replyName}
         setReplyProps={setReplyProps}
-        user={author as IUserSummary}
+        user={isMine ? { _id: author, avatar } : SECRET_USER_SUMMARY}
+        myName={myName}
       />
     </>
   );

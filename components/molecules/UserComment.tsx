@@ -27,7 +27,7 @@ interface UserCommentProps extends Omit<CommentProps, "_id"> {
   setReplyProps: DispatchType<ReplyProps>;
   likeList: string[];
   isAuthor: boolean;
-  hasAuthority: boolean;
+
   hasDeleteBtn?: boolean;
 }
 
@@ -44,7 +44,7 @@ function UserComment({
   type,
   pageId,
   likeList,
-  hasAuthority,
+
   hasDeleteBtn = true,
 }: UserCommentProps) {
   const { data: session } = useSession();
@@ -139,7 +139,7 @@ function UserComment({
     });
     setLikeArr((old) => [...old, session?.user.id]);
   };
-
+  
   return (
     <>
       <Flex px={5} align="center" py={3} borderBottom="var(--border)">
@@ -182,7 +182,7 @@ function UserComment({
             >
               좋아요 {likeArr.length}개
             </Button>
-            {!isReComment && hasAuthority && hasDeleteBtn && (
+            {!isReComment && hasDeleteBtn && (
               <>
                 <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
                 <Button
