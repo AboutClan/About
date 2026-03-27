@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -38,10 +38,10 @@ function safeDecode(v: string | undefined) {
 interface RegisterPaymentButtonProps {
   type: "register" | "point";
   value: number;
-  isFree: boolean;
+  isFree?: boolean;
 }
 
-function RegisterPaymentButton({ type, value, isFree }: RegisterPaymentButtonProps) {
+function RegisterPaymentButton({ type, value, isFree = false }: RegisterPaymentButtonProps) {
   const { data: session } = useSession();
   const toast = useToast();
   const router = useRouter();
