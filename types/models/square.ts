@@ -21,7 +21,7 @@ interface BaseSecretSquareItem extends TimeStampProps {
 }
 
 interface GeneralSecretSquareItem extends BaseSecretSquareItem {
-  type: "general";
+  type: "general" | "blindnes";
 }
 
 interface PollItem {

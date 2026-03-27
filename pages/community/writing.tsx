@@ -1,4 +1,13 @@
-import { Box, Button, Flex, IconButton, Spacer, useDisclosure, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  Spacer,
+  Switch,
+  useDisclosure,
+  VStack
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -10,7 +19,7 @@ import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import ImageUploadButton from "../../components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
-  ImageUploadTileProps,
+  ImageUploadTileProps
 } from "../../components/organisms/sliders/ImageUploadSlider";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useCreateSecretSquareMutation } from "../../hooks/secretSquare/mutations";
@@ -50,6 +59,7 @@ function SquareWritingPage() {
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
   const pollItems = getValues("pollItems");
   const isPollType = pollItems.every(({ name }) => !!name.trim());
+  const [isSecret, setIsSecret] = useState(true);
 
   const getRandomAvatar = (): AvatarProps => {
     const type = Math.floor(Math.random() * 37); // 0 ~ 36
@@ -76,7 +86,6 @@ function SquareWritingPage() {
   };
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
-    const type = "general";
 
     const { category, title, content, pollItems, canMultiple } = data;
 
@@ -90,9 +99,10 @@ function SquareWritingPage() {
     formData.append("avatar", JSON.stringify(avatar));
     formData.append("category", category);
     formData.append("title", title);
-    formData.append("type", type);
+    formData.append("type", isSecret ? "general" : "blindnes");
     formData.append("content", content);
     formData.append("squareType", content);
+
     imageFormArr.forEach((imageBlob) => {
       formData.append("images", imageBlob);
     });
@@ -278,6 +288,18 @@ function SquareWritingPage() {
         >
           아바타
         </Button>
+        <Flex ml="auto" align="center">
+          <Box fontSize="10px" color={isSecret ? "gray.500" : "mint"} lineHeight="16px">
+            실명으로 작성
+          </Box>
+          <Switch
+            colorScheme="mint"
+            size="sm"
+            ml={2}
+            mr={1}
+            onChange={() => setIsSecret((old) => !old)}
+          />
+        </Flex>
       </WritingNavigation>
       {isAvatarModal && (
         <RequestChangeProfileImageModalAvatar

@@ -21,6 +21,7 @@ export type SecretSquareListResponse = {
     author: string | UserSimpleInfoProps;
     viewCount?: number;
     avatar: AvatarProps;
+    type: "general" | "blindnes";
     poll: {
       canMultiple: boolean;
       pollItems: {
