@@ -1,20 +1,21 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { AvatarProps } from "../../../types/models/userTypes/userInfoTypes";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
 import Avatar from "../../atoms/Avatar";
 import { AboutIcon } from "../../Icons/AboutIcon";
 
 interface PostAuthorCardProps {
   createdAt: string;
-  organizer: { name: string; avatar: AvatarProps };
+  organizer: Partial<IUserSummary>;
   isAdminOpen?: boolean;
   children?: React.ReactNode;
   // size: "sm" | "md";
 }
 
 function PostAuthorCard({ organizer, createdAt, children, isAdminOpen }: PostAuthorCardProps) {
+  console.log(2, organizer);
   return (
     <Flex align="center" py={4} justify="space-between">
       <Flex align="center">

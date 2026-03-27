@@ -103,9 +103,10 @@ function SecretSquareDetailPage() {
   const handleDeleteSquare = () => {
     deleteSquareMutate();
   };
-  console.log(12, squareDetail);
+  console.log(squareDetail, (squareDetail?.author as IUserSummary)?._id === session?.user.id);
   const menuArr: MenuProps[] = [
-    ...(squareDetail?.author === session?.user.id
+    ...(squareDetail?.author === session?.user.id ||
+    (squareDetail?.author as IUserSummary)?._id === session?.user.id
       ? [
           {
             icon: <DeleteIcon />,
@@ -154,6 +155,10 @@ function SecretSquareDetailPage() {
                           squareDetail.type === "blindnes"
                             ? (squareDetail?.author as IUserSummary)?.avatar
                             : squareDetail.avatar,
+                        profileImage:
+                          squareDetail.type === "blindnes"
+                            ? (squareDetail?.author as IUserSummary)?.profileImage
+                            : null,
                       }}
                       createdAt={squareDetail.createdAt}
                     ></PostAuthorCard>
