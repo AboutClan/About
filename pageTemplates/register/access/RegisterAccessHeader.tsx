@@ -1,9 +1,10 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 import Header from "../../../components/layouts/Header";
 import { ModalLayout } from "../../../modals/Modals";
+import { navigateExternalLink } from "../../../utils/navigateUtils";
 
 function RegisterAccessHeader() {
   const router = useRouter();
@@ -14,7 +15,7 @@ function RegisterAccessHeader() {
   return (
     <>
       <Header title="회원 가입" func={handleBack}>
-        {/* <Button
+        <Button
           p={1}
           color="gray.500"
           fontWeight={600}
@@ -24,7 +25,7 @@ function RegisterAccessHeader() {
           }}
         >
           문의하기
-        </Button> */}
+        </Button>
       </Header>
       {isBackModal && (
         <ModalLayout

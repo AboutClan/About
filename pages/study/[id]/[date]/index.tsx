@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import Divider from "../../../../components/atoms/Divider";
+import InfoList from "../../../../components/atoms/lists/InfoList";
 import { MainLoading, MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
 import { GroupThumbnailCard } from "../../../../components/molecules/cards/GroupThumbnailCard";
@@ -268,7 +269,6 @@ export default function Page() {
                 />
               </Box>
             </Slide>
-
             <Slide>
               <StudyDateBar
                 date={date}
@@ -317,7 +317,6 @@ export default function Page() {
                   </>
                 )} */}
             </Slide>
-
             {studyType === "participations" && studySet.results.length ? (
               <>
                 <Box h={2} bg="gray.100" my={4} />
@@ -338,7 +337,25 @@ export default function Page() {
                   />
                 </Slide>
               </>
-            ) : null}
+            ) : null}{" "}
+            <Box h={2} bg="gray.100" my={4} />
+            <Box mx={5}>
+              <Box mb={2} fontSize="16px" fontWeight="semibold">
+                스터디 규칙 안내
+              </Box>
+              <InfoList
+                items={[
+                  "당일 오전 9시에 스터디가 확정됩니다.",
+                  "스터디 신청 & 출석 시에 포인트가 적립됩니다.",
+                  "스터디 확정 후 불참은 1,000 Point가 차감됩니다.",
+                  "스터디 신청 후 잠수는 2,000 Point가 차감됩니다.",
+                  "스터디 당일 참여는 빈자리가 있는 경우에만 가능합니다.",
+                  "스터디 종료 후, 멤버 후기 평가를 할 수 있습니다.",
+                ]}
+                isLight
+              />
+            </Box>{" "}
+            <Box h={2} bg="gray.100" my={4} />
             {studyType === "participations" && (
               <StudyPlaceMap
                 centerLocation={
@@ -354,7 +371,6 @@ export default function Page() {
                 }
               />
             )}
-
             {placeInfo && studyType === "results" && date === getTodayStr() && (
               <StudyNearMap centerPlace={placeInfo} />
             )}

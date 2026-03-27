@@ -2,6 +2,7 @@
 
 import { Box } from "@chakra-ui/react";
 import Script from "next/script";
+import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
 import RegisterAccessHeader from "../../pageTemplates/register/access/RegisterAccessHeader";
@@ -9,6 +10,7 @@ import RegisterComparation from "../../pageTemplates/register/access/RegisterCom
 import RegisterFAQ from "../../pageTemplates/register/access/RegisterFAQ";
 import RegisterFee from "../../pageTemplates/register/access/RegisterFee";
 import RegisterGatherCount from "../../pageTemplates/register/access/RegisterGatherCount";
+import RegisterInvite from "../../pageTemplates/register/access/RegisterInvite";
 import RegisterPaymentButton from "../../pageTemplates/register/access/RegisterPaymentButton";
 import RegisterReview from "../../pageTemplates/register/access/RegisterReview";
 import RegisterSlideImage from "../../pageTemplates/register/access/RegisterSlideImage";
@@ -16,6 +18,9 @@ import RegisterSlideImage from "../../pageTemplates/register/access/RegisterSlid
 const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
 
 function Access() {
+  const [codeText, setCodeText] = useState("");
+  const [isFree, setIsFree] = useState(false);
+
   return (
     <>
       <Script src={JQ_SRC} strategy="afterInteractive" />
@@ -29,9 +34,16 @@ function Access() {
         <RegisterFee />
         <RegisterReview isShort={false} />
         <RegisterFAQ />
+        <RegisterInvite
+          codeText={codeText}
+          setCodeText={setCodeText}
+          handleClick={() => {
+            setIsFree(true);
+          }}
+        />
         <Box h={20} />
       </Slide>
-      <RegisterPaymentButton type="register" value={20000} />
+      <RegisterPaymentButton type="register" value={20000} isFree={isFree} />
     </>
   );
 }

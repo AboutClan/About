@@ -12,6 +12,7 @@ import {
   usePointSystemMutation,
   useUserRegisterControlMutation,
 } from "../../../hooks/user/mutations";
+import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
 import { gaEvent } from "../../../libs/gtag";
 import { isWebView } from "../../../utils/appEnvUtils";
 import { navigateExternalLink } from "../../../utils/navigateUtils";
@@ -37,9 +38,10 @@ function safeDecode(v: string | undefined) {
 interface RegisterPaymentButtonProps {
   type: "register" | "point";
   value: number;
+  isFree: boolean;
 }
 
-function RegisterPaymentButton({ type, value }: RegisterPaymentButtonProps) {
+function RegisterPaymentButton({ type, value, isFree }: RegisterPaymentButtonProps) {
   const { data: session } = useSession();
   const toast = useToast();
   const router = useRouter();
@@ -69,6 +71,8 @@ function RegisterPaymentButton({ type, value }: RegisterPaymentButtonProps) {
       }, 1000);
     }
   }, [router.isReady, router.query.status, session, toast, router]);
+
+  const { mutate: sendRequest } = useUserRequestMutation();
 
   const { mutate: chargePoint } = usePointSystemMutation("point", {
     onSuccess() {
@@ -112,6 +116,20 @@ function RegisterPaymentButton({ type, value }: RegisterPaymentButtonProps) {
       handledReturnRef.current = false; // 🔥 이거 추가
     },
   });
+  useEffect(() => {
+    if (isFree === false) return;
+    if (!session?.user?.uid) {
+      toast("error", "계정 오류가 발생했어요. 관리자에게 문의주세요!");
+      return;
+    }
+    sendRequest({
+      title: "친구 초대 가입",
+      category: "건의",
+      content: `가입자: ${session.user.uid} `,
+    });
+
+    approve(session.user.uid);
+  }, [isFree, session]);
 
   // 기존 view 계산은 유지 (UI/기능 영향 없고, 디버깅에도 유용)
   useMemo(() => {
