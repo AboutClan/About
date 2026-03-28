@@ -25,7 +25,7 @@ function PointLowModal({ onClose }: CloseProps) {
       </Flex>
       <p>
         포인트가 <b>0원</b>이 되어, 활동 유지를 위한 <b>1회 한정 지원금</b>이 지급되었습니다. 이후
-        다시 0원이 되면, 활동을 위해 최소 3,000원 충전이 필요합니다.
+        다시 0원이 되면, 활동을 위한 충전이 필요합니다.
       </p>
     </ModalLayout>
   );
