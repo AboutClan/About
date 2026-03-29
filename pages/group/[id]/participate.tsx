@@ -13,7 +13,6 @@ import {
   useGroupWaitingMutation,
 } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
 import ParticipateModal from "../../../pageTemplates/group/ParticipateModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -28,7 +27,6 @@ function Participate() {
   const { id } = useParams<{ id: string }>() || {};
 
   const { data: group } = useGroupIdQuery(id, { enabled: !!id });
-  const { data: userInfo } = useUserInfoQuery();
 
   const queryClient = useQueryClient();
 

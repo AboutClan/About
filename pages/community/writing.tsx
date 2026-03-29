@@ -6,7 +6,7 @@ import {
   Spacer,
   Switch,
   useDisclosure,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -19,7 +19,7 @@ import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import ImageUploadButton from "../../components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
-  ImageUploadTileProps
+  ImageUploadTileProps,
 } from "../../components/organisms/sliders/ImageUploadSlider";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useCreateSecretSquareMutation } from "../../hooks/secretSquare/mutations";
@@ -86,7 +86,6 @@ function SquareWritingPage() {
   };
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
-
     const { category, title, content, pollItems, canMultiple } = data;
 
     const formData = new FormData();
@@ -125,7 +124,7 @@ function SquareWritingPage() {
       setImageArr(imageArr.filter((old) => old !== url));
     },
   }));
-  console.log(12, avatar);
+
   return (
     <>
       <Header title="글 쓰기" rightPadding={8}>

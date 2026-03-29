@@ -354,7 +354,7 @@ function Ranking() {
           </Flex>
         ) : tab === "누적 인기 랭킹" ? (
           <Flex h="52px" align="center" mx={5} color="gray.500" fontSize="12px">
-            ※ 인기 랭킹은 상위 100명까지만 보여집니다.
+            ※ 인기 랭킹은 상위 500명까지만 보여집니다.
           </Flex>
         ) : (
           <Flex h="52px" align="center" mx={5} color="gray.500" fontSize="12px">

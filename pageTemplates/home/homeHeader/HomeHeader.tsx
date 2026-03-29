@@ -58,7 +58,6 @@ function HomeHeader() {
   // const handleClickDice = () => {
   //   router.push(`/random-roulette`);
   // };
-  console.log(54, recentChat);
 
   return (
     <>

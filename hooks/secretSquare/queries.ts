@@ -52,7 +52,7 @@ export const useSecretSquareListQuery = (
       const res = await axios.get<SecretSquareListResponse>(`${SERVER_URI}/square`, {
         params: { category, cursor },
       });
-      console.log(15, res.data);
+
       return res.data;
     },
     options,

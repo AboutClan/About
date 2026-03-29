@@ -54,7 +54,7 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
   //     setDate(newDate);
   //   }
   // };
-  console.log(15, thumbnailCardInfoArr);
+
   return (
     <Flex flexDir="column" mb={8}>
       <Box>

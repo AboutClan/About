@@ -101,7 +101,7 @@ export const setStudyThumbnailCard = (
     const study = data.study;
     const placeInfo = study.place;
     const textArr = placeInfo.location?.address.split(" ");
-    console.log(25, study);
+
     return {
       place: {
         name: placeInfo.location.name,

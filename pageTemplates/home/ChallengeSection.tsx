@@ -3,20 +3,9 @@ import { useRouter } from "next/router";
 
 import SectionHeader from "../../components/atoms/SectionHeader";
 import AvatarGroupsOverwrap from "../../components/molecules/groups/AvatarGroupsOverwrap";
-import { useAllUserDataQuery } from "../../hooks/admin/quries";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
 
 function ChallengeSection() {
   const router = useRouter();
-  const userInfo = useUserInfo();
-
-  const { data: studyUsers } = useAllUserDataQuery("study");
-
-  const transformMinutesToHour = (minutes: number = 0) => {
-    return `${Math.floor(minutes / 60)}시간 ${minutes % 60}분`;
-  };
-
-  const record = userInfo?.studyRecord;
 
   return (
     <>
@@ -25,65 +14,7 @@ function ChallengeSection() {
           title="시선 집중! 어바웃 인기 랭킹"
           subTitle="멤버들이 직접 평가한 소셜링 온도"
         />
-        <Flex mt={4}>
-          <Flex
-            flexDir="column"
-            alignItems="center"
-            mr={2}
-            flex={1}
-            px={4}
-            py={5}
-            border="var(--border-main)"
-            borderRadius="8px"
-          >
-            <Box fontSize="18px" lineHeight="26px" color="mint" fontWeight="bold">
-              {transformMinutesToHour(record?.monthCnt)}
-            </Box>
-            <Box fontSize="13px" lineHeight="18px" color="gray.500" fontWeight="medium">
-              스터디 참여
-            </Box>
-            <Box
-              mt={2}
-              bg="mint"
-              color="white"
-              borderRadius="full"
-              fontSize="10px"
-              fontWeight="bold"
-              px={3}
-              py={1.5}
-            >
-              {record?.accumulationCnt} 회
-            </Box>
-          </Flex>
-          <Flex
-            flexDir="column"
-            alignItems="center"
-            flex={1}
-            px={4}
-            py={5}
-            border="var(--border-main)"
-            borderRadius="8px"
-          >
-            <Box fontSize="18px" lineHeight="26px" fontWeight="bold">
-              {transformMinutesToHour(record?.monthMinutes)}
-            </Box>
-            <Box fontSize="13px" lineHeight="18px" color="gray.500" fontWeight="medium">
-              개인 공부 인증
-            </Box>
-            <Box
-              mt={2}
-              bg="gray.800"
-              color="white"
-              borderRadius="full"
-              fontSize="10px"
-              fontWeight="bold"
-              px={3}
-              py={1.5}
-            >
-              {record?.accumulationMinutes} 회
-            </Box>
-          </Flex>
-        </Flex>
+
         <Flex
           borderRadius="8px"
           flexDir="column"
@@ -105,15 +36,15 @@ function ChallengeSection() {
             />
           </Flex>
           <Box mt={4} mb={4}>
-            <b>{studyUsers?.length}명</b>의 멤버가 함께 도전중이에요!
+            <b>1,000명</b> 이상의 멤버가 함께 도전중이에요!
           </Box>
           <Button
             w="full"
             borderRadius="8px"
             colorScheme="black"
-            onClick={() => router.push("/ranking?tab=study")}
+            onClick={() => router.push("/ranking?tab=temperature")}
           >
-            스터디 랭킹 보러가기
+            인기 랭킹 보러가기
           </Button>
         </Flex>
       </Box>

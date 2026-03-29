@@ -32,7 +32,7 @@ function SquareSecretSection({ category }: SquareSecretSectionProps) {
       enabled: (!!category && cursor === 0 && firstLoad.current) || cursor !== 0,
     },
   );
-  console.log(3, data);
+
   useEffect(() => {
     firstLoad.current = true;
     setSqaures([]);

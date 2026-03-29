@@ -45,7 +45,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
   const typeToast = useTypeToast();
   const inputRef = useRef(null);
   const setTransferGather = useSetRecoilState(transferGatherDataState);
-  console.log(12, isOpenGather);
+  console.log(isOpenGather);
   const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();

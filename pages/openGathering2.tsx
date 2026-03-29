@@ -65,7 +65,6 @@ function OpenGathering() {
 
   const myFriends = AGroup?.some((user) => user?.uid === "4756703725")
     ? users?.filter((user) => {
-        console.log(Math.abs(birthToAge(user.birth) - myAge) <= 3);
         if (user.gender === "남성") return Math.abs(birthToAge(user.birth) - myAge) <= 3;
         else return Math.abs(birthToAge(user.birth) - myAge) <= 2;
       })

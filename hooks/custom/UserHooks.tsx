@@ -9,7 +9,7 @@ export const useUserInfo = (): IUser => {
 export const useCheckGuest = (): boolean => {
   const { data } = useUserInfoQuery();
   if (!data) return undefined;
-  console.log(5, data.role);
+
   return data?.role === "guest";
 };
 

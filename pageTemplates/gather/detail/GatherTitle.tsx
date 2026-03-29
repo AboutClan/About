@@ -23,7 +23,7 @@ function GatherTitle({
   isOpenGather,
 }: IGatherTitle) {
   const isDefault = age[0] === 19 && age[1] === 28;
-  console.log(2, category);
+
   return (
     <Flex flexDir="column" px={5} pt={4} pb={0}>
       <Flex mb={2}>

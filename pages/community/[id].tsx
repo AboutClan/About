@@ -103,7 +103,7 @@ function SecretSquareDetailPage() {
   const handleDeleteSquare = () => {
     deleteSquareMutate();
   };
-  console.log(squareDetail, (squareDetail?.author as IUserSummary)?._id === session?.user.id);
+
   const menuArr: MenuProps[] = [
     ...(squareDetail?.author === session?.user.id ||
     (squareDetail?.author as IUserSummary)?._id === session?.user.id

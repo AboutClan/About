@@ -140,7 +140,7 @@ export const getStudyPlaceMarkersOptions = (
       },
     });
   }
-  console.log(14, defaultLocation);
+
   if (clusters) {
     clusters.forEach((cluster) => {
       temp.push({
