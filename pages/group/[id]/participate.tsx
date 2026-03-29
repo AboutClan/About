@@ -51,10 +51,6 @@ function Participate() {
   });
 
   const onClick = () => {
-    if (userInfo?.ticket?.groupStudyTicket < group?.requiredTicket) {
-      toast("warning", "보유중인 티켓이 부족합니다.");
-      return;
-    }
     if (group?.questionText) sendRegisterForm({ answer: textArr, pointType: "point" });
     else mutate();
   };

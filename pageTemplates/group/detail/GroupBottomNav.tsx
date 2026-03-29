@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -93,11 +93,11 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const onClick = (type: ButtonType) => {
     if (type === "cancel") cancel();
-    const myTicket = userInfo?.ticket?.groupStudyTicket;
-    if (myTicket < data?.requiredTicket) {
-      toast("warning", "보유중인 티켓이 부족합니다.");
-      return;
-    }
+    // const myTicket = userInfo?.ticket?.groupStudyTicket;
+    // if (myTicket < data?.requiredTicket) {
+    //   toast("warning", "보유중인 티켓이 부족합니다.");
+    //   return;
+    // }
 
     if (type === "participate") router.push(`${url}/participate`);
     if (type === "register") participate();

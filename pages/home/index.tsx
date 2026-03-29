@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 
 import Divider from "../../components/atoms/Divider";
 import Slide from "../../components/layouts/PageSlide";
+import ChallengeSection from "../../pageTemplates/home/ChallengeSection";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
 import HomeFooter from "../../pageTemplates/home/HomeFooter";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
@@ -38,6 +39,7 @@ function Home() {
       </Slide>{" "}
       <Slide isNoPadding>
         <HomeGroupSection />
+        <ChallengeSection/>
       </Slide>
       {/* <Slide isNoPadding>
         <HomeGroupSection2 />
