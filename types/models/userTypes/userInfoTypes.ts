@@ -22,7 +22,9 @@ export type UserMemberShip =
   | "normal";
 
 type UserMemberShipKr = "뉴비" | "스터디 서포터즈" | "번개 서포터즈" | "운영진/소모임장";
-export interface IUser extends Omit<IUserRegisterForm, "location">, UserSimpleInfoProps {
+export interface IUser
+  extends Omit<IUserRegisterForm, "location">,
+    Omit<UserSimpleInfoProps, "birth"> {
   membership: UserMemberShip;
   point: number;
   isActive: boolean;
@@ -40,7 +42,6 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, UserSimpleIn
   belong?: string;
   monthScore: number;
   instagram?: string;
-  isPrivate?: boolean;
   _id: string;
   ticket: {
     gatherTicket: number;
@@ -84,6 +85,8 @@ export interface UserSimpleInfoProps {
     sum?: number;
   };
   belong?: string;
+  birth?: string;
+  isPrivate?: boolean;
 }
 
 export interface LocationDetailProps {
