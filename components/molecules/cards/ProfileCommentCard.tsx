@@ -5,11 +5,7 @@ import styled from "styled-components";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { ModalLayout } from "../../../modals/Modals";
 import { CommentProps } from "../../../types/models/commonTypes";
-import {
-  IUser,
-  IUserSummary,
-  UserSimpleInfoProps,
-} from "../../../types/models/userTypes/userInfoTypes";
+import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
 import Textarea from "../../atoms/Textarea";
@@ -17,7 +13,7 @@ import { ChatTalkIcon } from "../../Icons/chatIcons";
 import { CrownIcon } from "../../Icons/icons";
 
 export interface IProfileCommentCard {
-  user: UserSimpleInfoProps | IUserSummary;
+  user: Partial<IUser>;
   memo?: string;
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
@@ -90,7 +86,7 @@ export default function ProfileCommentCard({
             )}
           </Flex>
           <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
-            <CommentText>{memo || text}</CommentText>
+            <CommentText>{text || memo || "코멘트 없음"}</CommentText>
             {user.uid === userInfo?.uid && hasCommentButton && (
               <Button variant="unstyled" ml={1} onClick={() => setIsCommentModal(true)}>
                 <EditIcon2 />
@@ -156,23 +152,25 @@ const RightComponentContainer = styled.div`
 `;
 
 export function StudyBadge({ cnt }: { cnt: number }) {
-  return <Flex
-    ml={1}
-    fontWeight={600}
-    fontSize="9px"
-    h="20px"
-    bg="red.50"
-    pl={1}
-    pr={1.5}
-    py="1px"
-    borderRadius="8px"
-    justify="center"
-    align="center"
-    color="gray.800"
-  >
-    🔥
-    {cnt}
-  </Flex>
+  return (
+    <Flex
+      ml={1}
+      fontWeight={600}
+      fontSize="9px"
+      h="20px"
+      bg="red.50"
+      pl={1}
+      pr={1.5}
+      py="1px"
+      borderRadius="8px"
+      justify="center"
+      align="center"
+      color="gray.800"
+    >
+      🔥
+      {cnt}
+    </Flex>
+  );
 }
 
 function EditIcon2() {

@@ -67,7 +67,7 @@ function GatherDetail() {
       router.push(`/login?status=before&page=gather/${id}`);
     }
   }, [session]);
-
+  console.log("g", gather);
   return (
     <>
       {gather ? (

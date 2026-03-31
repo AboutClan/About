@@ -49,7 +49,7 @@ function GatherTitle({
             소모임 연동
           </Badge>
         )}
-        {!isDefault && (
+        {!isDefault ? (
           <Badge
             px={2}
             py={1}
@@ -64,7 +64,22 @@ function GatherTitle({
           >
             만 {age[0]} ~ {age[1]}세
           </Badge>
-        )}
+        ) : isOpenGather ? (
+          <Badge
+            px={2}
+            py={1}
+            fontSize="10px"
+            fontWeight={400}
+            borderRadius="4px"
+            ml={1}
+            size="md"
+            variant="subtle"
+            bg="blue.50"
+            color="blue.500"
+          >
+            오픈 번개
+          </Badge>
+        ) : null}
       </Flex>
       <Box mb={2} fontSize="16px" fontWeight="bold" lineHeight="28px">
         {title}

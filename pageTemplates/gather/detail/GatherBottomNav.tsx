@@ -144,6 +144,23 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
     isEnd?: boolean;
     isReverse?: boolean;
   } => {
+    if (isOpenGather && isParticipant) {
+      if (data?.reviewers?.some((r) => r === userInfo?._id)) {
+        return {
+          text: "신청 결과를 기다리는 중...",
+          type: "black",
+          isReverse: true,
+          isEnd: true,
+        };
+      }
+
+      return {
+        text: "멤버 선택하기",
+        handleFunction: () => {
+          router.push(`/gather/${id}/openGather`);
+        },
+      };
+    }
     switch (data?.status) {
       case "open":
         if (feed) {

@@ -28,7 +28,7 @@ function BottomButtonNav({
       w="full"
       borderTop="var(--border-main)"
       align="center"
-      bg="white"
+      bg={!isReverse ? "white" : "gray.200"}
       h="72px"
       pt={3}
       pb={getSafeAreaBottom(12)}
