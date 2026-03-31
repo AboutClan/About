@@ -2,6 +2,7 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
+import BlurredPart from "../../components/molecules/BlurredPart";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useGatherRequestLikeMutation } from "../../hooks/gather/mutations";
 import { useGatherRequestQuery } from "../../hooks/gather/queries";
@@ -45,100 +46,95 @@ function GatherPick() {
         .map((item) => {
           const isMyPick = item.like.includes(userInfo?._id);
           return (
-            <Box
-              key={item._id}
-              border="var(--border)"
-              bg="gray.100"
-              m={5}
-              borderRadius="12px"
-              py={4}
-              px={4}
-            >
-              <Flex flexDir="column" borderBottom="var(--border)">
-                <Text fontSize="16px" fontWeight="semibold">
-                  {item.title}
-                </Text>
-                <Box
-                  mt={2}
-                  mb={3}
-                  sx={{
-                    color: "var(--gray-600)",
-                    fontSize: "14px",
-                    display: "-webkit-box",
-                    WebkitLineClamp: "2",
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                  }}
-                >
-                  {item.content}
-                </Box>
-
-                <Flex
-                  mt={2}
-                  fontSize="12px"
-                  lineHeight="16px"
-                  color="var(--gray-600)"
-                  justify="space-between"
-                >
-                  <Flex align="center">
-                    <Box>
-                      <ClockIcon />
-                    </Box>
-                    <Box ml={1} mt={0.5}>
-                      {getDateDiff(dayjs(item.createdAt))}
-                    </Box>
-                  </Flex>
-
-                  <Flex ml="auto" align="center" lineHeight="16px">
-                    <Box>
-                      <MoneyBagIcon />
-                    </Box>
-                    <Box as="b" ml={1} mt={0.5} color="gray.800">
-                      {(5000 + item.like.length * 150).toLocaleString()}원
-                    </Box>
-                  </Flex>
-                </Flex>
-                <Flex mt={3}>
-                  <Button
-                    flex={1}
-                    border="var(--border)"
-                    color="var(--gray-800)"
-                    bg="white"
-                    borderColor="var(--gray-800)"
-                    borderRadius="12px"
-                    onClick={() => {
-                      if (isGuest) {
-                        typeToast("guest");
-                        return;
-                      }
-                      handleLikeButton(item._id);
+            <BlurredPart isBlur={isGuest} key={item._id}>
+              <Box border="var(--border)" bg="gray.100" m={5} borderRadius="12px" py={4} px={4}>
+                <Flex flexDir="column" borderBottom="var(--border)">
+                  <Text fontSize="16px" fontWeight="semibold">
+                    {item.title}
+                  </Text>
+                  <Box
+                    mt={2}
+                    mb={3}
+                    sx={{
+                      color: "var(--gray-600)",
+                      fontSize: "14px",
+                      display: "-webkit-box",
+                      WebkitLineClamp: "2",
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
                     }}
                   >
-                    이 번개 관심있어요 <Box mx={1}>{isMyPick ? <Heart2Icon /> : <HeartIcon />}</Box>{" "}
-                    {item.like.length}
-                  </Button>
-                  <Button
-                    w="42px"
-                    h="42px"
-                    bgColor="var(--gray-800)"
-                    ml={2}
-                    borderRadius="full"
-                    border="var(--border-main)"
-                    onClick={() => {
-                      if (isGuest) {
-                        typeToast("guest");
-                        return;
-                      }
-                      router.push("/gather/writing/category");
-                    }}
+                    {item.content}
+                  </Box>
+
+                  <Flex
+                    mt={2}
+                    fontSize="12px"
+                    lineHeight="16px"
+                    color="var(--gray-600)"
+                    justify="space-between"
                   >
-                    <Box>
-                      <ThunderIcon />
-                    </Box>
-                  </Button>
+                    <Flex align="center">
+                      <Box>
+                        <ClockIcon />
+                      </Box>
+                      <Box ml={1} mt={0.5}>
+                        {getDateDiff(dayjs(item.createdAt))}
+                      </Box>
+                    </Flex>
+
+                    <Flex ml="auto" align="center" lineHeight="16px">
+                      <Box>
+                        <MoneyBagIcon />
+                      </Box>
+                      <Box as="b" ml={1} mt={0.5} color="gray.800">
+                        {(5000 + item.like.length * 150).toLocaleString()}원
+                      </Box>
+                    </Flex>
+                  </Flex>
+                  <Flex mt={3}>
+                    <Button
+                      flex={1}
+                      border="var(--border)"
+                      color="var(--gray-800)"
+                      bg="white"
+                      borderColor="var(--gray-800)"
+                      borderRadius="12px"
+                      onClick={() => {
+                        if (isGuest) {
+                          typeToast("guest");
+                          return;
+                        }
+                        handleLikeButton(item._id);
+                      }}
+                    >
+                      이 번개 관심있어요{" "}
+                      <Box mx={1}>{isMyPick ? <Heart2Icon /> : <HeartIcon />}</Box>{" "}
+                      {item.like.length}
+                    </Button>
+                    <Button
+                      w="42px"
+                      h="42px"
+                      bgColor="var(--gray-800)"
+                      ml={2}
+                      borderRadius="full"
+                      border="var(--border-main)"
+                      onClick={() => {
+                        if (isGuest) {
+                          typeToast("guest");
+                          return;
+                        }
+                        router.push("/gather/writing/category");
+                      }}
+                    >
+                      <Box>
+                        <ThunderIcon />
+                      </Box>
+                    </Button>
+                  </Flex>
                 </Flex>
-              </Flex>
-            </Box>
+              </Box>
+            </BlurredPart>
           );
         })}
       {/* <ModalLayout title="관심 추가" footerOptions={{ main: { text: "관심 등록" } }}>
