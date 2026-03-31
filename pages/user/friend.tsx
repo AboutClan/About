@@ -9,7 +9,7 @@ import Slide from "../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../components/molecules/cards/ProfileCommentCard";
 import { useUidsToUsersInfoQuery, useUserInfoQuery } from "../../hooks/user/queries";
 import { prevPageUrlState } from "../../recoils/navigationRecoils";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 
 function ProfileFriend() {
   const router = useRouter();
@@ -22,7 +22,7 @@ function ProfileFriend() {
     enabled: !!userInfo?.friend.length,
   });
 
-  const onClickUser = (user: IUserSummary) => {
+  const onClickUser = (user: UserSimpleInfoProps) => {
     setBeforePage(router?.asPath);
     router.push(`/profile/${user._id}`);
   };

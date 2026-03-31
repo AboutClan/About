@@ -10,7 +10,7 @@ import {
   GroupStatus,
   IGroupWritingCategory,
 } from "../../../types/models/groupTypes/group";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import { InfinityIcon } from "./StudyThumbnailCard";
@@ -21,7 +21,7 @@ export interface GroupThumbnailCardProps {
   text: string;
   status: GroupStatus;
   category: IGroupWritingCategory;
-  participants: (GroupParicipantProps | { user: IUserSummary })[];
+  participants: (GroupParicipantProps | { user: UserSimpleInfoProps })[];
   imageProps: {
     image: string;
     isPriority?: boolean;

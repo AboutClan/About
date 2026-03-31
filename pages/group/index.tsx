@@ -21,6 +21,7 @@ import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import { backUrlState } from "../../recoils/navigationRecoils";
 import { GroupStatus, IGroup } from "../../types/models/groupTypes/group";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 
 type Status = "모집중" | "종료" | "오픈 예정";
@@ -301,7 +302,7 @@ export const createGroupThumbnailProps = (
   category: group.category,
   participants: group.participants
     .filter((par) => par?.user?._id !== "65df1ddcd73ecfd250b42c89")
-    .map((user) => (group.isSecret ? { user: ABOUT_USER_SUMMARY } : user)),
+    .map((user) => (group.isSecret ? { user: ABOUT_USER_SUMMARY as UserSimpleInfoProps } : user)),
   imageProps: {
     image: group?.squareImage || GATHER_MAIN_IMAGE_ARR["공통"][0],
     isPriority: isPriority && idx < 4,

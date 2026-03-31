@@ -1,4 +1,4 @@
-import { IUser, IUserSummary, UserSimpleInfoProps } from "../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../types/models/userTypes/userInfoTypes";
 
 export const getPlaceBranch = (text: string, isShort?: boolean) => {
   if (!text) return "";
@@ -32,7 +32,7 @@ export const parseUrlToSegments = (url) => {
 };
 
 export const searchName = (
-  users: IUser[] | IUserSummary[] | UserSimpleInfoProps[],
+  users: IUser[] | UserSimpleInfoProps[] | UserSimpleInfoProps[],
   name: string,
 ) => {
   if (!users || !name) return;

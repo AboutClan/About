@@ -16,11 +16,11 @@ import { DECLARE_LIST } from "../../constants/contentsText/requestContents";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
-import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { DeclareRequest, IUserRequest } from "../../types/models/userTypes/userRequestTypes";
 
 interface IDeclareDrawer {
-  userData: IUser | IUserSummary;
+  userData: IUser | UserSimpleInfoProps;
   declareModal: DeclareRequest;
   setDeclareModal: DispatchType<DeclareRequest>;
 }
@@ -63,7 +63,7 @@ function DeclareDrawer({ userData, declareModal, setDeclareModal }: IDeclareDraw
 
   const onSubmit = () => {
     const data: IUserRequest = {
-      category:  "신고",
+      category: "신고",
       title: `${userData?.name}-${userData?.uid}`,
       content: declareModal === "declare" ? DECLARE_LIST[declareIdx] : "거리두기",
     };

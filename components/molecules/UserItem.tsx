@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
 
 interface IUserItem {
-  user: IUserSummary | IUser;
+  user: UserSimpleInfoProps | IUser;
 
   children: React.ReactNode;
 }

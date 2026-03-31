@@ -2,7 +2,7 @@ import { GatherCategoryMain } from "../../../constants/contentsText/GatherConten
 import { UserCommentProps } from "../../components/propTypes";
 import { Location } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
-import { IUserSummary, UserSimpleInfoProps } from "../userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 
 export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
   date: string;
@@ -13,7 +13,7 @@ export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
   reviewers: string[];
   hasReview: boolean;
   waiting: {
-    user: IUserSummary;
+    user: UserSimpleInfoProps;
     phase: "first" | "second";
   }[];
 }
@@ -67,7 +67,7 @@ export interface IGatherListItem {
   };
 }
 export interface IGatherParticipants {
-  user: IUserSummary;
+  user: UserSimpleInfoProps;
   phase?: "first" | "second";
   reviewed?: boolean;
   absence?: boolean;

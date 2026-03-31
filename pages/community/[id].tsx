@@ -25,7 +25,7 @@ import {
 } from "../../hooks/secretSquare/queries";
 import PollItemButton from "../../pageTemplates/community/PollItemButton";
 import SecretSquareComments from "../../pageTemplates/community/SecretSquareComments";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { VoteIcon } from "./writing";
 
 function SecretSquareDetailPage() {
@@ -106,7 +106,7 @@ function SecretSquareDetailPage() {
 
   const menuArr: MenuProps[] = [
     ...(squareDetail?.author === session?.user.id ||
-    (squareDetail?.author as IUserSummary)?._id === session?.user.id
+    (squareDetail?.author as UserSimpleInfoProps)?._id === session?.user.id
       ? [
           {
             icon: <DeleteIcon />,
@@ -149,15 +149,15 @@ function SecretSquareDetailPage() {
                       organizer={{
                         name:
                           squareDetail.type === "blindnes"
-                            ? (squareDetail?.author as IUserSummary)?.name
+                            ? (squareDetail?.author as UserSimpleInfoProps)?.name
                             : "글쓴이",
                         avatar:
                           squareDetail.type === "blindnes"
-                            ? (squareDetail?.author as IUserSummary)?.avatar
+                            ? (squareDetail?.author as UserSimpleInfoProps)?.avatar
                             : squareDetail.avatar,
                         profileImage:
                           squareDetail.type === "blindnes"
-                            ? (squareDetail?.author as IUserSummary)?.profileImage
+                            ? (squareDetail?.author as UserSimpleInfoProps)?.profileImage
                             : null,
                       }}
                       createdAt={squareDetail.createdAt}

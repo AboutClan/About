@@ -12,7 +12,7 @@ import {
 import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThumbnailCardSkeleton";
 import { backUrlState } from "../../recoils/navigationRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../utils/imageUtils";
 dayjs().locale("ko");
 
@@ -82,7 +82,10 @@ export const setGatherDataToCardCol = (
 
       id: gather.id,
       maxCnt: gather.memberCnt.max,
-      participants: [{ user: gather.user as IUserSummary, phase: "first" }, ...gather.participants],
+      participants: [
+        { user: gather.user as UserSimpleInfoProps, phase: "first" },
+        ...gather.participants,
+      ],
 
       age: gather.age,
       func,

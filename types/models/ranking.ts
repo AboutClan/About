@@ -1,6 +1,6 @@
 import { IScore } from "../services/pointSystem";
 import { IVoteRate } from "./studyTypes/studyRecords";
-import { IUser, IUserSummary } from "./userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "./userTypes/userInfoTypes";
 
 export interface IRankScore {
   isRank: boolean;
@@ -9,7 +9,6 @@ export interface IRankScore {
   scoreArr?: IScore[] | IVoteRate[];
   score?: number;
 }
-
 
 export interface IMyRank {
   rankNum: number;
@@ -27,7 +26,7 @@ export type RankingCategory = "월간" | "누적" | "지난";
 export interface IRankingUser extends IMyRank {
   uid: string;
   cnt: number;
-  userSummary?: IUserSummary;
+  userSummary?: UserSimpleInfoProps;
 }
 
 export type RankingType = ISortedUserScores | ISortedUserAttends;

@@ -11,7 +11,7 @@ import { FRIEND_RECOMMEND_CATEGORY } from "../../../constants/contentsText/frien
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { prevPageUrlState } from "../../../recoils/previousAtoms";
 import { transferMemberDataState } from "../../../recoils/transferRecoils";
-import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { birthToAge, birthToDayjs } from "../../../utils/convertUtils/convertTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
@@ -50,7 +50,7 @@ function FriendCategory() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
-  const onClickProfile = (user: IUserSummary) => {
+  const onClickProfile = (user: UserSimpleInfoProps) => {
     setBeforePage(router?.asPath);
     router.push(`/profile/${user.uid}`);
   };

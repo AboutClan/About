@@ -4,13 +4,13 @@ import styled from "styled-components";
 
 import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
 
 interface UserCommentInputProps {
   type?: "comment" | "message" | "review";
   onSubmit: (value: string) => void;
-  user: Partial<IUserSummary>;
+  user: Partial<UserSimpleInfoProps>;
   initialFocus?: boolean;
   replyName: string;
   setReplyProps: DispatchType<ReplyProps>;

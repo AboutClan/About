@@ -13,7 +13,7 @@ import { ChatTalkIcon } from "../../Icons/chatIcons";
 import { CrownIcon } from "../../Icons/icons";
 
 export interface IProfileCommentCard {
-  user: Partial<IUser> | UserSimpleInfoProps;
+  user: UserSimpleInfoProps;
   memo?: string;
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;

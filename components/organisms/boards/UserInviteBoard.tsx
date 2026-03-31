@@ -7,11 +7,7 @@ import { useAllUserDataQuery } from "../../../hooks/admin/quries";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useGatherInviteMutation } from "../../../hooks/gather/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import {
-  IUser,
-  IUserSummary,
-  UserSimpleInfoProps,
-} from "../../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { searchName } from "../../../utils/stringUtils";
 import { Input } from "../../atoms/Input";
 import { MainLoadingAbsolute } from "../../atoms/loaders/MainLoading";
@@ -21,15 +17,14 @@ interface UserInviteBoardProps {
   members: string[];
   gatherId?: string;
   groupId: string;
-  
 }
 
 function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
   const typeToast = useTypeToast();
   const queryClient = useQueryClient();
 
-  const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
-  const [users, setUsers] = useState<IUserSummary[] | UserSimpleInfoProps[]>(null);
+  const [inviteUser, setInviteUser] = useState<UserSimpleInfoProps>(null);
+  const [users, setUsers] = useState<UserSimpleInfoProps[] | UserSimpleInfoProps[]>(null);
   const [existUsers, setExistUsers] = useState<string[]>(members);
   const [nameValue, setNameValue] = useState("");
   const [filter, setFilter] = useState<"소모임 멤버" | "친구인 멤버">(

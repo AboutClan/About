@@ -87,7 +87,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         <NavBlock>
           <button
             onClick={() => {
-              navigateExternalLink("https://pf.kakao.com/_SaWXn/109551233");
+              navigateExternalLink("https://pf.kakao.com/_SaWXn/chat");
             }}
           >
             어바웃 채널로 문의하기

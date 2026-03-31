@@ -15,10 +15,10 @@ import {
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getCommentArr } from "../../libs/comment/commentLib";
 import { UserCommentProps } from "../../types/components/propTypes";
-import { AvatarProps, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { AvatarProps, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 interface SecretSquareCommentsProps {
-  author: string | IUserSummary;
+  author: string | UserSimpleInfoProps;
   comments: UserCommentProps[];
   refetch: () => void;
   avatar: AvatarProps;
@@ -58,7 +58,7 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
     },
   });
 
-  const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
+  const addNewComment = (user: UserSimpleInfoProps, comment: string): UserCommentProps => {
     return {
       user: { _id: user._id },
       comment,

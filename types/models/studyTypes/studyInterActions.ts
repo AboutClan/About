@@ -1,7 +1,7 @@
 import { Dayjs } from "dayjs";
 
 import { TimeStampProps } from "../../utils/timeAndDate";
-import { IUserSummary } from "../userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 import { StudyPlaceProps } from "./study-entity.types";
 
 export interface StudyVoteProps {
@@ -43,7 +43,7 @@ export interface IStudyVoteTime {
 }
 
 export interface IAbsence extends TimeStampProps {
-  user: IUserSummary;
+  user: UserSimpleInfoProps;
   noShow: boolean;
   message: string;
 }
@@ -59,7 +59,7 @@ interface StudyWaitingPlaceProps {
   branch: string;
 }
 export interface StudyWaitingUser {
-  user: IUserSummary;
+  user: UserSimpleInfoProps;
   place: StudyWaitingPlaceProps;
   subPlace: StudyWaitingPlaceProps[];
   createdAt?: string;
@@ -73,5 +73,5 @@ export interface StudyVotingSave {
 
 export interface StudyAttendMembersProp {
   date: string;
-  members: IUserSummary[];
+  members: UserSimpleInfoProps[];
 }

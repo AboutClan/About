@@ -1,11 +1,11 @@
 import { Box, Button, Flex, Grid } from "@chakra-ui/react";
 
 import Avatar from "../../../components/atoms/Avatar";
-import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 
 interface IInviteUserGroups {
-  users: IUserSummary[] | UserSimpleInfoProps[];
-  inviteUser: (who: IUserSummary) => void;
+  users: UserSimpleInfoProps[] | UserSimpleInfoProps[];
+  inviteUser: (who: UserSimpleInfoProps) => void;
   existUsers?: string[];
   type?: "exile" | "study";
 }

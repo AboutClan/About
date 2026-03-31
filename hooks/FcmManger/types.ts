@@ -1,6 +1,6 @@
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 
-export interface DeviceInfo extends Pick<IUserSummary, "uid"> {
+export interface DeviceInfo extends Pick<UserSimpleInfoProps, "uid"> {
   fcmToken: string;
   deviceId?: string;
   platform: "android" | "ios" | "web";

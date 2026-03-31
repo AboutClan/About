@@ -1,4 +1,4 @@
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 
 export const USER_ROLE = [
   "waiting",
@@ -15,7 +15,7 @@ export const USER_ROLE = [
   "secede",
 ] as const;
 
-export const ABOUT_USER_SUMMARY: IUserSummary = {
+export const ABOUT_USER_SUMMARY: Partial<IUser> = {
   _id: "65df1ddcd73ecfd250b42c89",
   uid: "3224546232",
   name: "어바웃",
@@ -31,15 +31,18 @@ export const ABOUT_USER_SUMMARY: IUserSummary = {
   },
 
   monthScore: 30,
-  badge: {
-    badgeIdx: 10,
-  },
   temperature: {
     temperature: 36.5,
     cnt: 0,
   },
 };
-export const SECRET_USER_SUMMARY: IUserSummary = {
+
+interface SecretUserInfos extends UserSimpleInfoProps {
+  isActive: boolean;
+  birth: string;
+}
+
+export const SECRET_USER_SUMMARY: SecretUserInfos = {
   _id: "",
   uid: "",
   name: "익명",
@@ -52,11 +55,13 @@ export const SECRET_USER_SUMMARY: IUserSummary = {
     type: 2,
     bg: 0,
   },
-
-  monthScore: 30,
   badge: {
     badgeIdx: 0,
+    badgeList: [],
   },
+
+  monthScore: 30,
+
   temperature: {
     temperature: 36.5,
     cnt: 0,

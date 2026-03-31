@@ -2,7 +2,7 @@ import { GatherCategoryMain } from "../../../constants/contentsText/GatherConten
 import { UserCommentProps } from "../../components/propTypes";
 import { LocationFilterType } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
-import { IUser, IUserSummary } from "../userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 
 export type GroupStatus = "pending" | "end" | "imminent" | "full" | "planned" | "resting";
 export interface IGroup extends IGroupWriting {
@@ -18,7 +18,7 @@ export interface IGroup extends IGroupWriting {
 export type GroupMemberRole = "member" | "manager" | "admin" | "regularMember";
 
 export interface GroupParicipantProps {
-  user: IUserSummary;
+  user: UserSimpleInfoProps;
   role: GroupMemberRole;
   randomId?: number;
   deposit: number;

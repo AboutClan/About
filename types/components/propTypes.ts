@@ -1,6 +1,6 @@
 import { ThemeTypings } from "@chakra-ui/react";
 
-import { IUserSummary } from "../models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../models/userTypes/userInfoTypes";
 import { LocationEn } from "../services/locationTypes";
 import { TimeStampProps } from "../utils/timeAndDate";
 
@@ -20,7 +20,7 @@ export interface ITextAndColorSchemes {
 
 interface CommentProps extends TimeStampProps {
   comment: string;
-  user?: Partial<IUserSummary>;
+  user?: Partial<UserSimpleInfoProps>;
   likeList?: string[];
   _id?: string;
 }

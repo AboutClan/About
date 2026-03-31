@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAdminPoint2Mutation } from "../../../hooks/admin/mutation";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import AlertModal from "../../AlertModal";
 import ProfileCommentCard from "../../molecules/cards/ProfileCommentCard";
 
@@ -43,7 +43,7 @@ function UserAbsenceBoard({ gatherData, users, handleDelete }: UserAbsenceBoardP
         {members?.map((user, idx) => (
           <ProfileCommentCard
             key={idx}
-            user={user.user as Partial<IUser>}
+            user={user.user}
             comment={{ comment: user.text }}
             rightComponent={
               user.isAbsence ? (

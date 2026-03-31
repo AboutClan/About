@@ -25,7 +25,7 @@ import GatherHeader from "../../../pageTemplates/gather/detail/GatherHeader";
 import GatherParticipation from "../../../pageTemplates/gather/detail/GatherParticipation";
 import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
 import { isScrollAutoState } from "../../../recoils/navigationRecoils";
-import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../../utils/imageUtils";
 
 function GatherDetail() {
@@ -52,7 +52,7 @@ function GatherDetail() {
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
 
   const isMember =
-    (gather?.user as IUserSummary)?.uid === session?.user.uid ||
+    (gather?.user as UserSimpleInfoProps)?.uid === session?.user.uid ||
     gather?.participants.some((who) => who?.user.uid === session?.user.uid);
   const postImage = gather?.postImage;
 

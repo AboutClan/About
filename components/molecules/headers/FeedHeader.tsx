@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 interface IFeedHeader {
-  writer: IUserSummary;
+  writer: UserSimpleInfoProps;
   date: string;
 }
 

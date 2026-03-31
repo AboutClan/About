@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Fragment, useEffect, useState } from "react";
 
 import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
@@ -12,7 +12,7 @@ import { getCommentArr } from "../../libs/comment/commentLib";
 import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { FeedComment } from "../../types/models/feed";
-import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import RightDrawer from "../organisms/drawer/RightDrawer";
 import ProfileCommentCard from "./cards/ProfileCommentCard";
@@ -22,7 +22,7 @@ import UserCommentInput from "./UserCommentInput";
 
 interface ContentHeartBarProps {
   feedId: string;
-  likeUsers: IUserSummary[];
+  likeUsers: UserSimpleInfoProps[];
   likeCnt: number;
   comments: FeedComment[];
 
@@ -146,7 +146,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     mutate(feedId);
   };
 
-  const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
+  const addNewComment = (user: UserSimpleInfoProps, comment: string): UserCommentProps => {
     return {
       user,
       comment,
@@ -226,10 +226,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
           <Flex direction="column">
             {likeUsers.map((who, idx) => (
               <Fragment key={idx}>
-                <ProfileCommentCard
-                  user={who as Partial<IUser>}
-                  comment={{ comment: who.comment }}
-                />
+                <ProfileCommentCard user={who} comment={{ comment: who.comment }} />
               </Fragment>
             ))}
           </Flex>

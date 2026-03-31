@@ -12,20 +12,16 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGroupInviteMutation } from "../../../hooks/groupStudy/mutations";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { IGroup } from "../../../types/models/groupTypes/group";
-import {
-  IUser,
-  IUserSummary,
-  UserSimpleInfoProps,
-} from "../../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { searchName } from "../../../utils/stringUtils";
 
 export default function GroupAdminInvitation({ group }: { group: IGroup }) {
   const toast = useToast();
   const { id } = useParams<{ id: string }>() || {};
   const [filterUsers, setFilterUsers] = useState<
-    IUserSummary[] | IUser[] | UserSimpleInfoProps[]
+    UserSimpleInfoProps[] | IUser[] | UserSimpleInfoProps[]
   >();
-  const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
+  const [inviteUser, setInviteUser] = useState<UserSimpleInfoProps>(null);
   const [nameValue, setNameValue] = useState("");
 
   const { data: usersAll, refetch, isLoading } = useAllUserDataQuery(null);

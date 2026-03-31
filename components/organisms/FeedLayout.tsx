@@ -2,7 +2,7 @@ import { AspectRatio, Box, Flex } from "@chakra-ui/react";
 
 import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { FeedComment } from "../../types/models/feed";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import ContentSummary from "../atoms/ContentSummary";
 import ContentHeartBar from "../molecules/ContentHeartBar";
 import FeedHeader from "../molecules/headers/FeedHeader";
@@ -10,13 +10,13 @@ import SummaryBlock, { SummaryBlockProps } from "../molecules/SummaryBlock";
 import ImageSlider from "./imageSlider/ImageSlider";
 
 export interface FeedLayoutProps {
-  user: IUserSummary;
+  user: UserSimpleInfoProps;
   date: string;
   images: string[];
   content: string;
   summary?: SummaryBlockProps;
   refetch?: () => void;
-  likeUsers: IUserSummary[];
+  likeUsers: UserSimpleInfoProps[];
   likeCnt: number;
   id: string;
   comments: FeedComment[];
@@ -48,7 +48,10 @@ function FeedLayout({
       borderRadius={isRadius ? "12px" : 0}
       pb={2}
     >
-      <FeedHeader writer={isAnonymous ? SECRET_USER_SUMMARY : user} date={date} />
+      <FeedHeader
+        writer={isAnonymous ? (SECRET_USER_SUMMARY as UserSimpleInfoProps) : user}
+        date={date}
+      />
       <AspectRatio ratio={1}>
         <ImageSlider imageContainer={images} type="review" />
       </AspectRatio>

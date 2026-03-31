@@ -15,7 +15,7 @@ import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getCommentArr } from "../../../libs/comment/commentLib";
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { UserCommentProps } from "../../../types/components/propTypes";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { ReplyProps } from "../../community/SecretSquareComments";
 
@@ -66,7 +66,7 @@ function GatherComments({ comments }: IGatherComments) {
     setCommentArr(comments);
   }, [comments]);
 
-  const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
+  const addNewComment = (user: UserSimpleInfoProps, comment: string): UserCommentProps => {
     return {
       user,
       comment,

@@ -4,7 +4,7 @@ import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConsta
 import { useKeypadHeight } from "../../hooks/custom/useKeypadHeight";
 import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
 import UserCommentInput from "../molecules/UserCommentInput";
 
@@ -13,7 +13,7 @@ interface BottomCommentInputProps {
   onSubmit: (value: string) => void;
   type?: "comment" | "message" | "review";
   replyName: string;
-  user: Partial<IUserSummary>;
+  user: Partial<UserSimpleInfoProps>;
   setReplyProps: DispatchType<ReplyProps>;
   myName?: string;
 }
@@ -25,7 +25,6 @@ function BottomCommentInput({
   replyName,
   user,
   setReplyProps,
-  myName,
 }: BottomCommentInputProps) {
   const keypadHeight = useKeypadHeight();
 

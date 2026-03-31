@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { prevPageUrlState } from "../../../../recoils/previousAtoms";
-import { IUser, IUserSummary } from "../../../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
 import Avatar from "../../../atoms/Avatar";
 import HeartCircleIcon from "../../../Icons/HeartCircleIcon";
@@ -19,7 +19,7 @@ function ImageSliderMember({ imageContainer }: IImageSliderMember) {
   const router = useRouter();
   const setBeforePage = useSetRecoilState(prevPageUrlState);
 
-  const onClickUser = (user: IUserSummary) => {
+  const onClickUser = (user: UserSimpleInfoProps) => {
     router.push(`/profile/${user._id}`);
     setBeforePage(router?.asPath);
   };
@@ -36,7 +36,7 @@ function ImageSliderMember({ imageContainer }: IImageSliderMember) {
       }}
       slidesPerView={9.5}
     >
-      {(imageContainer as IUserSummary[]).map((user, index) => {
+      {(imageContainer as UserSimpleInfoProps[]).map((user, index) => {
         return (
           <SwiperSlide key={index}>
             <MemberItem>

@@ -1,4 +1,4 @@
-import { IUserSummary } from "../userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 
 export interface IArrivedInfo {
   uid: string;
@@ -18,7 +18,7 @@ export interface IArrivedData {
 export interface IVoteRate {
   uid: string;
   cnt: number;
-  userSummary?: IUserSummary;
+  userSummary?: UserSimpleInfoProps;
 }
 
 export interface VoteCntProps {
@@ -26,4 +26,3 @@ export interface VoteCntProps {
   value: number;
   totalValue?: number;
 }
-

@@ -22,7 +22,7 @@ import {
 } from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
-import { IUserSummary, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { searchName } from "../../utils/stringUtils";
 
@@ -180,7 +180,7 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
 interface InviteDrawerProps {
   isAdmin: boolean;
   onClose: () => void;
-  handleClick: (who: IUserSummary, place: PlaceProps) => void;
+  handleClick: (who: UserSimpleInfoProps, place: PlaceProps) => void;
   dateArr: string[];
   setDateArr: DispatchType<string[]>;
   date: string;

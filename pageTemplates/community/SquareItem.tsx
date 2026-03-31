@@ -7,7 +7,7 @@ import Avatar from "../../components/atoms/Avatar";
 import ThumbIcon from "../../components/Icons/ThumbIcon";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { SecretSquareListResponse } from "../../hooks/secretSquare/queries";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 
 interface SquareItemProps {
@@ -126,7 +126,9 @@ export default function SquareItem({ item }: SquareItemProps) {
               size="xxs1"
               user={{
                 avatar:
-                  item.type === "blindnes" ? (item.author as IUserSummary)?.avatar : item.avatar,
+                  item.type === "blindnes"
+                    ? (item.author as UserSimpleInfoProps)?.avatar
+                    : item.avatar,
               }}
             />
             <Flex

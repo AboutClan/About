@@ -21,7 +21,7 @@ import {
 import { AlphabetChangeGuideModal } from "../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import AlphabetChangeModal from "../../modals/user/collection/AlphabetChangeModal";
 import { Alphabet, ICollectionAlphabet } from "../../types/models/collections";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 
 const ALPHABET_COLLECTION: Alphabet[] = ["A", "B", "O", "U", "T"];
 
@@ -111,7 +111,7 @@ function CollectionAlphabet() {
     setMembers(userAlphabetAll);
   }, [isLoading, userInfo, userAlphabetAll]);
 
-  const onClickChangeBtn = (user: IUserSummary, alphabets: Alphabet[]) => {
+  const onClickChangeBtn = (user: UserSimpleInfoProps, alphabets: Alphabet[]) => {
     const myFriends = userInfo?.friend;
     if (!myFriends?.includes(user.uid)) {
       failToast("free", "친구끼리만 교환 신청이 가능합니다.");

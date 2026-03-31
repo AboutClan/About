@@ -38,11 +38,11 @@ const MemberReviewRow = memo(function MemberReviewRow({
   return (
     <Stack pt={1} pb={3} borderBottom="var(--border)" key={user.uid}>
       <ProfileCommentCard
-        user={user}
+        user={user as UserSimpleInfoProps}
         memo={user.comment}
         rightComponent={
           <Box>
-            <SocialingScoreBadge size="sm" user={user} />
+            <SocialingScoreBadge size="sm" user={user as UserSimpleInfoProps} />
           </Box>
         }
       />

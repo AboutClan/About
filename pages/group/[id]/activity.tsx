@@ -7,7 +7,7 @@ import Slide from "../../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
 import TabNav from "../../../components/molecules/navs/TabNav";
 import { useGroupIdQuery, useGroupsMemberActivityQuery } from "../../../hooks/groupStudy/queries";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 
 export default function Member() {
   const { id } = useParams<{ id: string }>() || {};
@@ -23,7 +23,7 @@ export default function Member() {
     {
       gatherCount: number;
       totalCount: number;
-      user: IUserSummary;
+      user: UserSimpleInfoProps;
       randomId?: number;
       deposit: number;
       lastMonthAttendance: boolean;

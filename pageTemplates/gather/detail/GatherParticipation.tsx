@@ -6,11 +6,7 @@ import SocialingScoreBadge from "../../../components/molecules/SocialingScoreBad
 import ProfileCardColumn from "../../../components/organisms/ProfileCardColumn";
 import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import {
-  IUser,
-  IUserSummary,
-  UserSimpleInfoProps,
-} from "../../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 
 interface IGatherParticipation {
   data: IGather;
@@ -30,10 +26,10 @@ function GatherParticipation({ data, isOpenGather }: IGatherParticipation) {
 
   const userCardArr: IProfileCommentCard[] = (data?.participants ? [...data.participants] : []).map(
     (par, idx) => ({
-      user: isOpenGather ? SECRET_USER_SUMMARY : par.user,
+      user: isOpenGather ? (SECRET_USER_SUMMARY as UserSimpleInfoProps) : par.user,
       memo: isOpenGather ? `익명 신청자 ${idx + 1}` : par.user.comment,
       rightComponent: isOpenGather ? null : (
-        <SocialingScoreBadge user={par?.user as IUserSummary} size="sm" />
+        <SocialingScoreBadge user={par?.user as UserSimpleInfoProps} size="sm" />
       ),
     }),
   );

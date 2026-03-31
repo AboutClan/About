@@ -34,6 +34,10 @@ interface IGatherHeader {
 }
 type ModalType = "inviteMember" | "waitingMember" | "removeMember" | "exile" | "absence";
 
+interface UserSimpleInfoProps2 extends UserSimpleInfoProps {
+  telephone?: number;
+}
+
 function GatherHeader({ gatherData }: IGatherHeader) {
   const router = useRouter();
   const toast = useToast();
@@ -191,7 +195,8 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             users={gatherData.participants.map((who) => ({
               user: who.user,
               text:
-                safeDecodeTel(who?.user?.telephone) || (who?.user?.telephone?.toString() ?? "없음"),
+                safeDecodeTel((who?.user as UserSimpleInfoProps2)?.telephone) ||
+                ((who?.user as UserSimpleInfoProps2)?.telephone?.toString() ?? "없음"),
             }))}
             handleDelete={(userId) => deleteUser({ userId })}
           />

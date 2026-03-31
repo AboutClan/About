@@ -10,7 +10,7 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getCommentArr } from "../../../libs/comment/commentLib";
 import { UserCommentProps } from "../../../types/components/propTypes";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { ReplyProps } from "../../community/SecretSquareComments";
 interface IGroupComments {
@@ -44,7 +44,7 @@ function GroupComments({ comments, hasAutority }: IGroupComments) {
     setCommentArr(comments);
   }, [comments]);
 
-  const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
+  const addNewComment = (user: UserSimpleInfoProps, comment: string): UserCommentProps => {
     return {
       user,
       comment,
@@ -78,7 +78,6 @@ function GroupComments({ comments, hasAutority }: IGroupComments) {
             id={groupId}
             hasAuthority={hasAutority}
             hasMyReview={hasMyReview}
-            
           />
         )}
       </Layout>
@@ -90,7 +89,6 @@ function GroupComments({ comments, hasAutority }: IGroupComments) {
           setReplyProps={setReplyProps}
           isFixed={false}
           user={userInfo}
-          
         />
       )}
     </>

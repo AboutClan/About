@@ -7,11 +7,11 @@ import styled from "styled-components";
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 export interface IHighlightedThumbnailCard {
-  participants?: IUserSummary[];
+  participants?: UserSimpleInfoProps[];
   title: string;
   subtitle: string;
   image: IImageProps;
@@ -34,7 +34,10 @@ export function HighlightedThumbnailCard({ date }: IHighlightedThumbnailCardObj)
 
   return (
     <CardLink
-      href={`/vote?location=${convertLocationLangTo(session?.user.location, "en")}&date=${date}&tab=real`}
+      href={`/vote?location=${convertLocationLangTo(
+        session?.user.location,
+        "en",
+      )}&date=${date}&tab=real`}
     >
       <Flex flex={1}>
         <Box
@@ -124,12 +127,8 @@ const CardLink = styled(Link)`
     border-bottom-right-radius: 0;
     padding: 2px; /* 테두리 두께 */
     background: linear-gradient(to right, #4de1b6, #1c5bd0); /* 그라데이션 */
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     -webkit-mask-composite: destination-out;
     pointer-events: none; /* 클릭 방지 */

@@ -6,7 +6,7 @@ import Divider from "../../../components/atoms/Divider";
 import BlurredLink from "../../../components/molecules/BlurredLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 dayjs.locale("ko");
 
@@ -18,7 +18,7 @@ interface IGatherDetailInfo {
 
 function GatherDetailInfo({ data, isMember, isOpenGather }: IGatherDetailInfo) {
   const { data: session } = useSession();
-  const isOrganizer = (data?.user as IUserSummary)?.uid === session?.user?.uid;
+  const isOrganizer = (data?.user as UserSimpleInfoProps)?.uid === session?.user?.uid;
 
   return (
     <>

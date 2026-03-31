@@ -1,22 +1,21 @@
 import { WritingFormProps } from "../services/writingTypes";
 import { TimeStampProps } from "../utils/timeAndDate";
-import { IUserSummary } from "./userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "./userTypes/userInfoTypes";
 
 export interface FeedProps
   extends Omit<WritingFormProps, "images" | "isAnonymous">,
     TimeStampProps {
   images: string[];
   id: string;
-  like: IUserSummary[];
+  like: UserSimpleInfoProps[];
   likeCnt: number;
-  writer: IUserSummary;
+  writer: UserSimpleInfoProps;
   comments: FeedComment[];
   isAnonymous: boolean;
- 
 }
 
 export interface FeedComment extends TimeStampProps {
-  user: IUserSummary;
+  user: UserSimpleInfoProps;
   comment: string;
   feedId: string;
 }

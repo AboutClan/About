@@ -22,9 +22,10 @@ export type UserMemberShip =
   | "normal";
 
 type UserMemberShipKr = "뉴비" | "스터디 서포터즈" | "번개 서포터즈" | "운영진/소모임장";
-export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary {
+export interface IUser extends Omit<IUserRegisterForm, "location">, UserSimpleInfoProps {
   membership: UserMemberShip;
   point: number;
+  isActive: boolean;
   badge: {
     badgeIdx: number;
     badgeList: string[];
@@ -72,7 +73,7 @@ export interface UserSimpleInfoProps {
   monthScore: number;
   uid: string;
   score: number;
-  comment?: string;
+  comment: string;
   badge: {
     badgeIdx: number;
     badgeList?: string[];
@@ -90,29 +91,6 @@ export interface LocationDetailProps {
   address: string;
   latitude: number;
   longitude: number;
-}
-
-export interface IUserSummary {
-  avatar: AvatarProps;
-  birth: string;
-  comment: string;
-  isActive: boolean;
-  name: string;
-  profileImage: string;
-  monthScore: number;
-  score: number;
-  badge: {
-    badgeIdx: number;
-    badgeList?: string[];
-  };
-  uid: string;
-  _id: string;
-  temperature: {
-    temperature: number;
-    cnt: number;
-    sum?: number;
-  };
-  telephone?: string;
 }
 
 export interface IUserRegisterForm extends IUserRegisterFormWriting, TimeStampProps {

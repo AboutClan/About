@@ -25,11 +25,7 @@ import { ModalLayout } from "../../../modals/Modals";
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { FeedProps } from "../../../types/models/feed";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import {
-  IUser,
-  IUserSummary,
-  UserSimpleInfoProps,
-} from "../../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../../utils/convertUtils/convertTypes";
 interface IGatherBootmNav {
   data: IGather;
@@ -49,7 +45,8 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
   const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
-  const myGather = (data.user as IUserSummary).uid === userInfo?.uid || userInfo?.name === "어바웃";
+  const myGather =
+    (data.user as UserSimpleInfoProps).uid === userInfo?.uid || userInfo?.name === "어바웃";
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
   const [isExpirationModal, setIsExpirationModal] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(true);
