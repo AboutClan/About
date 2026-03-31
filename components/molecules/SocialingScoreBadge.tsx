@@ -1,14 +1,14 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { PopOverIcon } from "../Icons/PopOverIcon";
 
 interface SocialingScoreBadgeProps {
-  user: Partial<IUser>;
+  user: Partial<IUser> | UserSimpleInfoProps;
   size: "sm" | "md";
 }
 
-export const getTemperature = (user: Partial<IUser>) => {
+export const getTemperature = (user: Partial<IUser> | UserSimpleInfoProps) => {
   return `${
     user?.temperature?.temperature < 36.5 && user?.temperature?.cnt <= 2
       ? "36.5"

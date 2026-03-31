@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
 import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
@@ -12,7 +12,7 @@ import { getCommentArr } from "../../libs/comment/commentLib";
 import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { FeedComment } from "../../types/models/feed";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import RightDrawer from "../organisms/drawer/RightDrawer";
 import ProfileCommentCard from "./cards/ProfileCommentCard";
@@ -226,7 +226,10 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
           <Flex direction="column">
             {likeUsers.map((who, idx) => (
               <Fragment key={idx}>
-                <ProfileCommentCard user={who} comment={{ comment: who.comment }} />
+                <ProfileCommentCard
+                  user={who as Partial<IUser>}
+                  comment={{ comment: who.comment }}
+                />
               </Fragment>
             ))}
           </Flex>

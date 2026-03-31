@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { ModalLayout } from "../../../modals/Modals";
 import { CommentProps } from "../../../types/models/commonTypes";
-import { IUser } from "../../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
 import Textarea from "../../atoms/Textarea";
@@ -13,7 +13,7 @@ import { ChatTalkIcon } from "../../Icons/chatIcons";
 import { CrownIcon } from "../../Icons/icons";
 
 export interface IProfileCommentCard {
-  user: Partial<IUser>;
+  user: Partial<IUser> | UserSimpleInfoProps;
   memo?: string;
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;

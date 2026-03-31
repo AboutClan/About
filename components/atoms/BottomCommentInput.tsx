@@ -49,7 +49,6 @@ function BottomCommentInput({
           type={type}
           replyName={replyName}
           setReplyProps={setReplyProps}
-          myName={myName}
         />
       </Box>
     </Box>
