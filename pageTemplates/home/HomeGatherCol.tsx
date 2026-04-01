@@ -73,6 +73,7 @@ export const setGatherDataToCardCol = (
       title: gather.title,
       status: gather.status,
       category: gather.type.title,
+      isOpenGather: gather.category === "openGather",
       date: gather.date,
       place: gather.location.main,
       imageProps: {

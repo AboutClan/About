@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ComponentProps, useState } from "react";
 import styled from "styled-components";
+import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 
 import { SingleLineText } from "../../../styles/layout/components";
 import {
@@ -42,6 +43,7 @@ export interface GatherThumbnailCardProps {
     handleBtn: () => void;
   };
   homePath?: boolean;
+  isOpenGather: boolean;
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -69,6 +71,7 @@ export function GatherThumbnailCard({
   gatherReview,
   memberReview,
   homePath,
+  isOpenGather,
 }: GatherThumbnailCardProps) {
   const participantsMember = participants.filter(
     (par) => par.user?._id !== "65df1ddcd73ecfd250b42c89",
@@ -77,7 +80,7 @@ export function GatherThumbnailCard({
   const has = !!(gatherReview || memberReview);
 
   const statusProps = STATUS_TO_BADGE_PROPS[dayjs(date).isBefore(dayjs()) ? "expired" : status];
-
+  console.log(15, gatherType);
   return (
     <CardLink
       href={`/${"gather"}/${id}` + (homePath ? "?path=home" : "")}
@@ -137,7 +140,9 @@ export function GatherThumbnailCard({
 
           <Flex mt={1} alignItems="center" justify="space-between">
             <AvatarGroupsOverwrap
-              users={participantsMember?.map((par) => par.user)}
+              users={participantsMember?.map((par) =>
+                isOpenGather ? SECRET_USER_SUMMARY : par.user,
+              )}
               maxCnt={VOTER_SHOW_MAX}
             />
             <Flex align="center" color="var(--gray-500)">
