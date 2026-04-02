@@ -22,7 +22,6 @@ import { useGatherGroupQuery, useGroupFeedsQuery } from "../../../hooks/gather/q
 import { useGroupIdMannerQuery, useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { IFooterOptions, ModalLayout } from "../../../modals/Modals";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
-import GroupComments from "../../../pageTemplates/group/detail/GroupComment";
 import GroupContent from "../../../pageTemplates/group/detail/GroupContent";
 import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
@@ -156,16 +155,14 @@ function GroupDetail() {
                     isPlanned={false}
                   />
                 )}
-                {(gatherData?.length > 1 || group.meetingType !== "online") && (
-                  <GroupGathering gatherData={gatherData} />
-                )}
-                <GroupReview feeds={gatherFeeds} />
+                {gatherData?.length > 1 && <GroupGathering gatherData={gatherData} />}
+                {gatherFeeds?.length > 1 && <GroupReview feeds={gatherFeeds} />}
               </>
             ) : null}
           </Box>
-          {(group.comments.length || findMyInfo) && group.participants.length >= 2 && (
+          {/* {(group.comments.length || findMyInfo) && group.participants.length >= 2 && (
             <GroupComments comments={group.comments} hasAutority={!!findMyInfo} />
-          )}
+          )} */}
         </Slide>
       )}
       {isAdmin && (

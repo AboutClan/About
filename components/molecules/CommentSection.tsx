@@ -18,21 +18,21 @@ function CommentSection({
   setCommentArr,
   commentArr,
   id,
-
   setReplyProps,
   hasMyReview,
 }: CommentSectionProps) {
+  console.log(hasMyReview);
   return (
     <>
       <Flex px={5} pb={4}>
         <Box color="gray.800" fontSize="18px" lineHeight="28px" fontWeight="bold">
-          참여자 실제 리뷰
+          댓글 (문의)
         </Box>
-        {!hasMyReview && (
+        {/* {!hasMyReview && (
           <Box ml={3} mb={0.5} alignSelf="flex-end" fontSize="11px" color="mint">
             ※ 리뷰 작성 시 500 Point 지급
           </Box>
-        )}
+        )} */}
       </Flex>
       <Box>
         {commentArr.map((comment, idx) => (
