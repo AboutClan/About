@@ -22,6 +22,7 @@ export type SecretSquareListResponse = {
     viewCount?: number;
     avatar: AvatarProps;
     type: "general" | "blindnes";
+    images: string[];
     poll: {
       canMultiple: boolean;
       pollItems: {

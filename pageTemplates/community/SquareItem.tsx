@@ -18,7 +18,7 @@ export default function SquareItem({ item }: SquareItemProps) {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
-
+  console.log(item);
   const onClick = (e) => {
     if (isGuest) {
       e.preventDefault();
@@ -85,7 +85,7 @@ export default function SquareItem({ item }: SquareItemProps) {
 
             {item.content}
           </Flex>
-          {item.thumbnail && (
+          {item.images?.length ? (
             <Box position="relative" overflow="visible" mb="8px">
               <Box
                 w="64px"
@@ -98,13 +98,13 @@ export default function SquareItem({ item }: SquareItemProps) {
                 bgColor="white"
               >
                 <Image
-                  src={item.thumbnail}
+                  src={item.images[0]}
                   alt="thumbnailImage"
                   sizes="80px"
                   objectFit="cover"
                   objectPosition="center"
                 />
-                <Box
+                {/* <Box
                   py="2px"
                   color="white"
                   fontSize="10px"
@@ -115,10 +115,10 @@ export default function SquareItem({ item }: SquareItemProps) {
                   textAlign="center"
                 >
                   대표사진
-                </Box>
+                </Box> */}
               </Box>
             </Box>
-          )}
+          ) : null}
         </Flex>
         <Flex fontSize="12px" color="var(--gray-500)" justify="space-between">
           <Flex>

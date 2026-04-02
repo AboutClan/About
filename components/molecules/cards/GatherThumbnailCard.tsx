@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ComponentProps, useState } from "react";
 import styled from "styled-components";
-import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 
+import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { SingleLineText } from "../../../styles/layout/components";
 import {
   GatherCategory,
