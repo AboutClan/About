@@ -236,7 +236,7 @@ export default function TicketWheelRoulette() {
 
   return (
     <>
-      <Header title="랜덤 이벤트 룰렛">
+      <Header title="랜덤 이벤트 룰렛" url="/home">
         <InfoModalButton type="roullete" />
       </Header>
       <Slide>

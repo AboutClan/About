@@ -1,7 +1,7 @@
 import { UserSimpleInfoProps } from "../models/userTypes/userInfoTypes";
 import { TimeStampProps } from "../utils/timeAndDate";
 
-export type InteractionType = "like" | "friend" | "alphabet";
+export type InteractionType = "like" | "friend" | "alphabet" | "randomTicket";
 
 export interface IInteractionSendLike {
   to: string;

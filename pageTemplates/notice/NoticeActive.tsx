@@ -1,5 +1,6 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import { AboutIcon } from "../../components/atoms/AboutIcons";
@@ -13,7 +14,7 @@ import { useAlphabetMutation } from "../../hooks/user/sub/collection/mutations";
 import { useInteractionMutation } from "../../hooks/user/sub/interaction/mutations";
 import { INoticeActiveLog } from "../../types/globals/interaction";
 import { Alphabet } from "../../types/models/collections";
-import { getDateDiff } from "../../utils/dateTimeUtils";
+import { dayjsToFormat, getDateDiff } from "../../utils/dateTimeUtils";
 
 interface INoticeActive {
   activeLogs: INoticeActiveLog[];
@@ -21,8 +22,9 @@ interface INoticeActive {
 
 function NoticeActive({ activeLogs }: INoticeActive) {
   const toast = useToast();
+  const router = useRouter();
   const errorToast = useErrorToast();
-
+  console.log(activeLogs);
   let statusType: "approval" | "refusal" | "response";
 
   const resetQueryData = useResetQueryData();
@@ -83,77 +85,92 @@ function NoticeActive({ activeLogs }: INoticeActive) {
         text = text?.replace("친구추가", "친구");
 
         return (
-          <Item key={idx}>
-            <Box mr={2}>
-              <Avatar user={{ ...item?.fromUser }} size="xs1" />
-            </Box>
-            <Name>
-              {name}
-              {type === "alphabet" && `(${alphabet[0]})`}
-            </Name>
-            <Content>
-              님{text} {type === "like" && <Point>+2 point</Point>}
-            </Content>
-            {type === "alphabet" && (
-              <AlphabetWrapper style={{ marginRight: "var(--gap-2)" }}>
-                <AboutIcon alphabet={alphabet[0] as Alphabet} size="xs" isActive />
-                <Box mx={1}>
-                  <ArrowIcon />
-                </Box>
-                <AboutIcon alphabet={alphabet[1] as Alphabet} size="xs" isActive />
-              </AlphabetWrapper>
-            )}
-            {type === "friend" || type === "alphabet" ? (
-              item.status === "pending" ? (
-                <FriendButtons>
-                  <Button
-                    mr={2}
-                    size="xs"
-                    border="var(--border)"
-                    borderColor="mint"
-                    borderRadius="12px"
-                    fontSize="10px"
-                    variant="ghost"
-                    color="var(--color-mint)"
-                    onClick={() =>
-                      onClickFriendRequest(
-                        type,
-                        "approval",
-                        item.from,
-                        type === "alphabet" && (alphabet as Alphabet[]),
-                      )
-                    }
-                  >
-                    수락
-                  </Button>
-                  <Button
-                    fontSize="10px"
-                    border="1px solid var(--gray-600)"
-                    borderRadius="12px"
-                    size="xs"
-                    color="var(--gray-600)"
-                    variant="ghost"
-                    onClick={() =>
-                      onClickFriendRequest(
-                        type,
-                        "refusal",
-                        item.from,
-                        type === "alphabet" && (alphabet as Alphabet[]),
-                      )
-                    }
-                  >
-                    거절
-                  </Button>
-                </FriendButtons>
-              ) : item.status === "response" ? (
-                <Date>{item?.createdAt && getDateDiff(dayjs(item.createdAt))}</Date>
-              ) : (
-                <FriendComplete>{item.status === "approval" ? "수락" : "거절"}</FriendComplete>
-              )
-            ) : (
-              <Date>{item?.createdAt && getDateDiff(dayjs(item.createdAt))}</Date>
-            )}
-          </Item>
+          <Flex flexDir="column" p="12px 20px" borderBottom="var(--border-main)" key={idx}>
+            <Flex fontSize="13px" align="center">
+              <Box mr={2}>
+                <Avatar user={{ ...item?.fromUser }} size="xs1" />
+              </Box>
+              <Name>
+                {name}
+                {type === "alphabet" && `(${alphabet[0]})`}
+              </Name>
+              <Content>
+                님{text} {type === "like" && <Point>+2 point</Point>}
+              </Content>
+              {type === "alphabet" && (
+                <AlphabetWrapper style={{ marginRight: "var(--gap-2)" }}>
+                  <AboutIcon alphabet={alphabet[0] as Alphabet} size="xs" isActive />
+                  <Box mx={1}>
+                    <ArrowIcon />
+                  </Box>
+                  <AboutIcon alphabet={alphabet[1] as Alphabet} size="xs" isActive />
+                </AlphabetWrapper>
+              )}
+            </Flex>
+            <Flex justify="space-between">
+              <Box fontSize="10px" color="gray.500" mt={2}>
+                {item?.createdAt && dayjsToFormat(dayjs(item.createdAt), "YYYY년 M월 D일")}
+              </Box>
+
+              {type === "randomTicket" ? (
+                <Button
+                  size="sm"
+                  colorScheme="black"
+                  onClick={() => router.push(`/random-roulette`)}
+                >
+                  사용하기
+                </Button>
+              ) : null}
+              {type === "friend" || type === "alphabet" ? (
+                item.status === "pending" ? (
+                  <Flex>
+                    <Button
+                      mr={2}
+                      size="xs"
+                      border="var(--border)"
+                      borderColor="mint"
+                      borderRadius="12px"
+                      fontSize="10px"
+                      variant="ghost"
+                      color="var(--color-mint)"
+                      onClick={() =>
+                        onClickFriendRequest(
+                          type,
+                          "approval",
+                          item.from,
+                          type === "alphabet" && (alphabet as Alphabet[]),
+                        )
+                      }
+                    >
+                      수락
+                    </Button>
+                    <Button
+                      fontSize="10px"
+                      border="1px solid var(--gray-600)"
+                      borderRadius="12px"
+                      size="xs"
+                      color="var(--gray-600)"
+                      variant="ghost"
+                      onClick={() =>
+                        onClickFriendRequest(
+                          type,
+                          "refusal",
+                          item.from,
+                          type === "alphabet" && (alphabet as Alphabet[]),
+                        )
+                      }
+                    >
+                      거절
+                    </Button>
+                  </Flex>
+                ) : item.status === "response" ? (
+                  <Date>{item?.createdAt && getDateDiff(dayjs(item.createdAt))}</Date>
+                ) : (
+                  <FriendComplete>{item.status === "approval" ? "수락" : "거절"}</FriendComplete>
+                )
+              ) : null}
+            </Flex>
+          </Flex>
         );
       })}
     </>
@@ -184,14 +201,6 @@ const AlphabetWrapper = styled.div`
   }
 `;
 
-const Item = styled.div`
-  display: flex;
-  align-items: center;
-  padding: var(--gap-2) var(--gap-5);
-  font-size: 13px;
-  border-bottom: 1px solid var(--gray-200);
-`;
-
 const Name = styled.div`
   font-weight: 600;
   white-space: nowrap;
@@ -216,11 +225,6 @@ const Date = styled.span`
   white-space: nowrap;
   color: var(--gray-500);
   font-size: 10px;
-`;
-
-const FriendButtons = styled.div`
-  margin-left: auto;
-  display: flex;
 `;
 
 const FriendComplete = styled.span`

@@ -1,7 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
@@ -19,7 +18,6 @@ import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
 import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
-import { backUrlState } from "../../recoils/navigationRecoils";
 import { GroupStatus, IGroup } from "../../types/models/groupTypes/group";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
@@ -73,7 +71,7 @@ function GroupPage() {
   const userInfo = useUserInfo();
   const isGuest = userInfo?.role === "guest";
 
-  const setBackUrl = useSetRecoilState(backUrlState);
+  // const setBackUrl = useSetRecoilState(backUrlState);
 
   const [status, setStatus] = useState<Status>(statusFromParam);
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
@@ -112,16 +110,16 @@ function GroupPage() {
   }, [cursor, status, category]);
 
   useEffect(() => {
-    if (status) {
-      setBackUrl(`/group?filter=${statusToEn[status]}`);
-    }
+    // if (status) {
+    //   setBackUrl(`/group?filter=${statusToEn[status]}`);
+    // }
     const baseCursor = status === "모집중" && category === "전체" ? getInitialCursor() : 0;
     setCursor(baseCursor);
     setGroupStudies([]);
-    return () => {
-      setBackUrl(null);
-    };
-  }, [status, category, setBackUrl]);
+    // return () => {
+    //   setBackUrl(null);
+    // };
+  }, [status, category]);
 
   useEffect(() => {
     if (!router.isReady) return;

@@ -259,7 +259,10 @@ export default function Page() {
                       text: "스터디 크루",
                       func: () => {
                         if (!myBelong) {
-                          toast("info", "가입중인 스터디 크루가 없습니다.");
+                          toast(
+                            "info",
+                            "가입중인 스터디 크루가 없습니다. 스터디 소모임에서 가입할 수 있어요!",
+                          );
                           return;
                         }
                         setTab("스터디 크루");
