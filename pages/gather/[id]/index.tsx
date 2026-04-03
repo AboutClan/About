@@ -100,6 +100,7 @@ function GatherDetail() {
                 postImage={postImage}
                 location={gather.location}
                 isOpenGather={isOpenGather}
+                id={gather.id}
               />
               <Divider />
               <GatherParticipation data={gather} isOpenGather={isOpenGather} />

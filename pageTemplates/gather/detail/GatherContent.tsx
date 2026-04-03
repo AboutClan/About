@@ -13,9 +13,10 @@ interface IGather {
   postImage: string;
   location: IGatherLocation;
   isOpenGather: boolean;
+  id: number;
 }
 
-function GatherContent({ content, gatherList, postImage, location, isOpenGather }: IGather) {
+function GatherContent({ content, gatherList, postImage, location, isOpenGather, id }: IGather) {
   const firstItem = gatherList?.[0];
   const secondItem = gatherList?.[1];
 
@@ -46,7 +47,7 @@ function GatherContent({ content, gatherList, postImage, location, isOpenGather 
           />
         </Box>
       ) : isOpenGather ? (
-        <ProcessGuide />
+        <ProcessGuide type={id === 4853 ? 2 : 1} />
       ) : (
         <Box px={5} borderTop="var(--border)" mt={5}>
           <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} highlightSide="right" />

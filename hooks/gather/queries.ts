@@ -86,7 +86,9 @@ export const useGatherIDQuery = (gatherId: number, options?: QueryOptions<IGathe
       const res = await axios.get<IGather>(`${SERVER_URI}/gather`, {
         params: { gatherId },
       });
-      return res.data;
+
+      const data = res.data;
+      return data;
     },
     options,
   );
