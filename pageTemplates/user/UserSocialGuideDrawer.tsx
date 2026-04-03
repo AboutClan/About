@@ -48,8 +48,8 @@ function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
   const { data: userInfo } = useUserInfoQuery();
 
   const isGirl = userInfo?.gender === "여성";
-
-  const [isBenefit, setIsBenefit] = useState(false);
+  console.log(isGirl);
+  const [isBenefit, setIsBenefit] = useState(true);
 
   const benefitArr: { category: string; text: string }[] = isGirl
     ? [
@@ -77,7 +77,7 @@ function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
   const { gather, group } = getTemperatureTicket(userInfo?.temperature.temperature, isGirl);
 
   return (
-    <RightDrawer title="스터디 혜택" px={false} onClose={onClose}>
+    <RightDrawer title="혜택" px={false} onClose={onClose}>
       <Flex px={5} justify="space-between" py={3}>
         <Flex fontSize="16px" w="full">
           <Box>
@@ -91,7 +91,7 @@ function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
           </Box>
         </Flex>
       </Flex>
-      <Flex px={5} justify="space-between" py={3} mb={1}>
+      <Flex px={5} justify="space-between" py={3}>
         <Flex fontSize="16px" fontWeight="bold" w="full">
           <Box as="span" fontSize="16px">
             매월 받는 참여권 =
@@ -101,7 +101,7 @@ function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
           </Box>
         </Flex>
       </Flex>
-      <Box px={5} borderTop="var(--border)" pb={1}>
+      <Box px={5} borderTop="var(--border)" pb={2}>
         <Collapse in={isBenefit} animateOpacity unmountOnExit>
           <Box px={5} mb={1} borderTop="var(--border)">
             <InfoBoxCol infoBoxPropsArr={benefitArr} />
@@ -156,12 +156,12 @@ function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
         <Avatar size="xl2" user={{ avatar: { type: 10, bg: 3 } }} />
         <Flex flexDir="column" align="flex-end">
           <Box fontSize="18px" fontWeight="bold" color="mint" mb={1}>
-            인기 랭킹 보상
+            랭킹 상품 지급
           </Box>
           <Box as="p" textAlign="end">
-            매월 인기 랭킹 정산으로
+            월마다 열활 멤버, 인기 멤버에게
             <br />
-            최대 5,000 Point가 지급돼요.
+            다양한 상품이 지급돼요.
           </Box>
         </Flex>
       </Flex>
@@ -169,12 +169,12 @@ function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
         <Avatar size="xl2" user={{ avatar: { type: 20, bg: 2 } }} />
         <Flex flexDir="column">
           <Box fontSize="18px" fontWeight="bold" color="mint" mb={1}>
-            소셜링 신뢰 지표
+            참여권 구매
           </Box>
           <Box as="p">
-            누군가를 처음 만나기 전,
+            더 많은 참여권이 필요하다면,
             <br />
-            긍정적인 첫 이미지를 줄 수 있어요.
+            1,000 포인트로 구매할 수 있어요!
           </Box>
         </Flex>
       </Flex>{" "}

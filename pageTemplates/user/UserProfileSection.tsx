@@ -48,7 +48,18 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
     <>
       <Box borderBottom="var(--border)">
         <UserProfileBar user={user} />
-        <UserPointBlock />
+        <UserPointBlock
+          handleButton={() => {
+            router.push(
+              { pathname: router.pathname, query: { ...router.query, modal: "temperature" } },
+              undefined,
+              {
+                shallow: true,
+              },
+            );
+            setModalType("temperature");
+          }}
+        />
         <UserScoreBar
           score={user?.monthScore}
           handleButton={() => {
@@ -64,19 +75,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
         />
       </Box>
       <Box borderBottom="var(--border)" pb={2}>
-        <UserReviewBar
-          user={user}
-          handleButton={() => {
-            router.push(
-              { pathname: router.pathname, query: { ...router.query, modal: "temperature" } },
-              undefined,
-              {
-                shallow: true,
-              },
-            );
-            setModalType("temperature");
-          }}
-        />
+        <UserReviewBar hasTop={false} user={user} />
       </Box>
       <UserCollection />
       <UserProfile />

@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -7,8 +7,9 @@ import { useState } from "react";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import InstagramCheckModal from "../../modals/InstagramCheckModal";
+import { BarRightIcon } from "./UserScoreBar";
 
-function UserPointBlock() {
+function UserPointBlock({ handleButton }: { handleButton: () => void }) {
   const { data: session } = useSession();
   const isGuest = session?.user.role === "guest";
   const { data: userInfo } = useUserInfoQuery();
@@ -26,8 +27,8 @@ function UserPointBlock() {
 
   return (
     <>
-      <Box mt={1} mx={5} p={3} borderRadius="20px" border="var(--border)" bgColor="white">
-        <Flex justify="space-around">
+      <Box mt={1} ml={5} p={3} pb={1} borderRadius="20px" border="var(--border)" bgColor="white">
+        <Flex mr={5} justify="space-around">
           <Link href="/user/log/gatherTicket" onClick={handleGuestClick} style={{ flex: 1 }}>
             <Flex direction="column" align="center">
               <Flex
@@ -89,7 +90,36 @@ function UserPointBlock() {
             </Flex>
           </Link>
         </Flex>
-
+        <Flex mt={2} mr={2}>
+          <Button
+            pt={0.5}
+            pb={1.5}
+            px={2}
+            variant="unstyled"
+            color="var(--color-gray)"
+            ml="auto"
+            border="none"
+            w="max-content"
+            fontSize="10px"
+            lineHeight="14px"
+            rightIcon={
+              <Flex
+                transform="translateY(2.7px)"
+                alignItems="center"
+                justifyContent="center"
+                h="14px"
+              >
+                <BarRightIcon />
+              </Flex>
+            }
+            iconSpacing={0.5}
+            onClick={() => {
+              handleButton();
+            }}
+          >
+            월간 참여권 가이드
+          </Button>
+        </Flex>
         {/* <Flex justify="space-around" mt={5}>
           <Box flex={1}>
             <Button variant="nostyle" p={0} h="auto" onClick={() => setIsModal(true)}>

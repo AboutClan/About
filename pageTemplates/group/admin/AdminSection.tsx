@@ -70,7 +70,7 @@ export function AdminSection({ groupId, users, randomTicket }: AdminSectionProps
   const { data: activityData } = useGroupsMemberActivityQuery(groupId, "this", {
     enabled: !!groupId,
   });
-
+  console.log(12, data);
   const { mutate: changeRole, isLoading: isLoading1 } = useGroupMemberRoleMutation(+groupId, {
     onSuccess() {
       queryClient.invalidateQueries([GROUP_STUDY]);
@@ -201,7 +201,7 @@ function UserBlock({
   function Divider() {
     return <Box w="1px" h="40px" bg="gray.200" />;
   }
- 
+
   return (
     <>
       <Flex flexDir="column" borderBottom="var(--border)" pb={3}>

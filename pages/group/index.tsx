@@ -120,7 +120,7 @@ function GroupPage() {
     //   setBackUrl(null);
     // };
   }, [status, category]);
-
+  console.log(cursor);
   useEffect(() => {
     if (!router.isReady) return;
     const { filter, category, ...rest } = router.query;
@@ -159,41 +159,75 @@ function GroupPage() {
     );
   }, [status, router]);
 
+  const isFetchingRef = useRef(false);
   useEffect(() => {
-    if (!router.isReady) return;
+    isFetchingRef.current = isLoading;
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (!router.isReady || !loader.current) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !firstLoad.current) {
-          if (groups?.length < 8 && categoryIdx !== "0") return;
-          setCursor((prevCursor) => {
-            const nextCursor =
-              prevCursor === 0
-                ? 1
-                : prevCursor === 1
-                ? 2
-                : prevCursor === 2
-                ? 3
-                : prevCursor === 3
-                ? 4
-                : prevCursor === 4
-                ? 5
-                : 0;
+        const entry = entries[0];
+        if (!entry.isIntersecting) return;
+        if (firstLoad.current) return;
+        if (isFetchingRef.current) return;
 
-            return nextCursor;
-          });
-        }
+        if (groups?.length < 8 && categoryIdx !== "0") return;
+
+        isFetchingRef.current = true;
+
+        setCursor((prevCursor) => {
+          if (prevCursor >= 5) return 0;
+          return prevCursor + 1;
+        });
       },
       { threshold: 0.5 },
     );
-    if (loader.current) {
-      observer.observe(loader.current);
-    }
+
+    observer.observe(loader.current);
+
     return () => {
-      if (loader.current) {
-        observer.unobserve(loader.current);
-      }
+      observer.disconnect();
     };
-  }, [groups, categoryIdx, status, localStorageCursorNum, router.isReady]);
+  }, [router.isReady]);
+
+  // useEffect(() => {
+  //   if (!router.isReady) return;
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       if (entries[0].isIntersecting && !firstLoad.current) {
+  //         if (groups?.length < 8 && categoryIdx !== "0") return;
+  //         setCursor((prevCursor) => {
+  //           const nextCursor =
+  //             prevCursor === 0
+  //               ? 1
+  //               : prevCursor === 1
+  //               ? 2
+  //               : prevCursor === 2
+  //               ? 3
+  //               : prevCursor === 3
+  //               ? 4
+  //               : prevCursor === 4
+  //               ? 5
+  //               : 0;
+
+  //           return nextCursor;
+  //         });
+  //       }
+  //     },
+  //     { threshold: 0.5 },
+  //   );
+  //   if (loader.current) {
+  //     observer.observe(loader.current);
+  //   }
+  //   return () => {
+  //     if (loader.current) {
+  //       observer.unobserve(loader.current);
+  //     }
+  //   };
+  // }, [groups, categoryIdx, status, localStorageCursorNum, router.isReady]);
 
   useEffect(() => {
     if (!groups) return;

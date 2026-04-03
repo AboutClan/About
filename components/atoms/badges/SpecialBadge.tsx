@@ -132,6 +132,7 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
 
   const [currentKey, currentValue] = entries[idx];
 
+  const membership: UserMemberShip = userInfo?.role === "guest" ? "newbie" : userInfo?.membership;
   return (
     <>
       <Badge
@@ -184,11 +185,11 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
           <Box minH="330px">
             <Flex flexDir="column">
               <Box fontSize="14px">
-                {userInfo?.membership === "normal" ? (
+                {membership === "normal" ? (
                   <Box color="gray.500">적용중인 멤버십이 없습니다.</Box>
                 ) : (
                   <>
-                    <b>[{MEMBERSHIP_CONVERTOR[userInfo?.membership]}]</b> 멤버십이 적용중입니다 !
+                    <b>[{MEMBERSHIP_CONVERTOR[membership]}]</b> 멤버십이 적용중입니다 !
                   </>
                 )}
               </Box>

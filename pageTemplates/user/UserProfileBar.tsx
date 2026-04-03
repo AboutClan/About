@@ -44,7 +44,9 @@ function UserProfileBar({ user }: UserProfileBarProps) {
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
             <Box ml={1}>
-              <SpecialBadge hasMembership={user?.membership !== "normal"} />
+              <SpecialBadge
+                hasMembership={user?.membership !== "normal" || user?.role === "guest"}
+              />
             </Box>
           </Flex>
           <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
