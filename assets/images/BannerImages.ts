@@ -16,7 +16,7 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/group.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%AA%A8%EC%9E%84%EC%9E%A5%EB%B0%B0%EB%84%88.png",
     category: "groupAdmin",
   },
   {
