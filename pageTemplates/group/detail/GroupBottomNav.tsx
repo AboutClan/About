@@ -93,12 +93,6 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const onClick = (type: ButtonType) => {
     if (type === "cancel") cancel();
-    // const myTicket = userInfo?.ticket?.groupStudyTicket;
-    // if (myTicket < data?.requiredTicket) {
-    //   toast("warning", "보유중인 티켓이 부족합니다.");
-    //   return;
-    // }
-
     if (type === "participate") router.push(`${url}/participate`);
     if (type === "register") participate();
   };
