@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -27,8 +27,18 @@ function UserPointBlock({ handleButton }: { handleButton: () => void }) {
 
   return (
     <>
-      <Box mt={1} ml={5} p={3} pb={1} borderRadius="20px" border="var(--border)" bgColor="white">
-        <Flex mr={5} justify="space-around">
+      <Box
+        mt={1}
+        ml={5}
+        mr={5}
+        p={3}
+        pr={0}
+        pb={1}
+        borderRadius="20px"
+        border="var(--border)"
+        bgColor="white"
+      >
+        <Flex mr={3} justify="space-around">
           <Link href="/user/log/gatherTicket" onClick={handleGuestClick} style={{ flex: 1 }}>
             <Flex direction="column" align="center">
               <Flex
@@ -90,7 +100,7 @@ function UserPointBlock({ handleButton }: { handleButton: () => void }) {
             </Flex>
           </Link>
         </Flex>
-        <Flex mt={2} mr={2}>
+        <Flex mt={2}>
           <Button
             pt={0.5}
             pb={1.5}
