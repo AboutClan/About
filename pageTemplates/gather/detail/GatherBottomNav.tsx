@@ -144,20 +144,20 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
     if (isOpenGather && isParticipant) {
       if (data?.reviewers?.some((r) => r === userInfo?._id)) {
         return {
-          text: "신청 결과를 기다리는 중...",
+          text: "최종 멤버를 기다리는 중... (4/7)",
           type: "black",
           isReverse: true,
           isEnd: true,
         };
       }
-      if (data.id === 4853) {
-        return {
-          text: "4월 6일(월)에 멤버 선택 가능!",
-          type: "black",
-          isReverse: true,
-          isEnd: true,
-        };
-      }
+      // if (data.id === 4853) {
+      //   return {
+      //     text: "4월 6일(월)에 멤버 선택 가능!",
+      //     type: "black",
+      //     isReverse: true,
+      //     isEnd: true,
+      //   };
+      // }
 
       return {
         text: "멤버 선택하기",

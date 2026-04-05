@@ -240,8 +240,8 @@ function InviteDrawer({
     },
     노원: {
       locationDetail: "서울특별시 성북구 동선동2가 72",
-      latitude: 37.618599,
-      longitude: 127.077679,
+      latitude: 37.589527,
+      longitude: 127.019521,
     },
   };
 
