@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -141,30 +141,39 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
     isEnd?: boolean;
     isReverse?: boolean;
   } => {
-    if (isOpenGather && isParticipant) {
-      if (data?.reviewers?.some((r) => r === userInfo?._id)) {
+    if (isOpenGather) {
+      if (isParticipant) {
+        if (data?.reviewers?.some((r) => r === userInfo?._id)) {
+          return {
+            text: "최종 결과를 기다리는 중... (4/7)",
+            type: "black",
+            isReverse: true,
+            isEnd: true,
+          };
+        }
+        // if (data.id === 4853) {
+        //   return {
+        //     text: "4월 6일(월)에 멤버 선택 가능!",
+        //     type: "black",
+        //     isReverse: true,
+        //     isEnd: true,
+        //   };
+        // }
+
         return {
-          text: "최종 멤버를 기다리는 중... (4/7)",
+          text: "멤버 선택하기",
+          handleFunction: () => {
+            router.push(`/gather/${id}/openGather`);
+          },
+        };
+      } else {
+        return {
+          text: "신청이 마감되었습니다! (4월 5일까지)",
           type: "black",
           isReverse: true,
           isEnd: true,
         };
       }
-      // if (data.id === 4853) {
-      //   return {
-      //     text: "4월 6일(월)에 멤버 선택 가능!",
-      //     type: "black",
-      //     isReverse: true,
-      //     isEnd: true,
-      //   };
-      // }
-
-      return {
-        text: "멤버 선택하기",
-        handleFunction: () => {
-          router.push(`/gather/${id}/openGather`);
-        },
-      };
     }
     switch (data?.status) {
       case "open":
