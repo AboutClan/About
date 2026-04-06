@@ -145,7 +145,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
       if (isParticipant) {
         if (data?.reviewers?.some((r) => r === userInfo?._id)) {
           return {
-            text: "최종 결과를 기다리는 중... (4/7)",
+            text: "최종 결과를 기다리는 중... (D-1)",
             type: "black",
             isReverse: true,
             isEnd: true,
