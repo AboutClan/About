@@ -80,6 +80,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "friend")}>친구 초대</button>
           <button onClick={() => onClickBlock("modal", "coupon")}>쿠폰 입력</button>
+          <button onClick={() => onClickBlock("modal", "id")}>계정 ID 확인</button>
         </NavBlock>
       </div>
       <div>

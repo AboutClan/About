@@ -45,7 +45,7 @@ function GatherDetail() {
       router.back();
     },
   });
-
+  console.log(2, gather);
   const isOpenGather = gather?.category === "openGather";
 
   const groupId = gather?.groupId;
@@ -53,7 +53,7 @@ function GatherDetail() {
 
   const isMember =
     (gather?.user as UserSimpleInfoProps)?.uid === session?.user.uid ||
-    gather?.participants.some((who) => who?.user.uid === session?.user.uid);
+    gather?.participants.some((who) => who?.user?.uid === session?.user.uid);
   const postImage = gather?.postImage;
 
   useEffect(() => {

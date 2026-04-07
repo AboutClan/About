@@ -119,6 +119,13 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       {modalOpen === "secede" && <RequestSecedeModal setIsModal={setIsModal} />}
 
       {modalOpen === "profile" && <RequestBirthModal type="profile" setIsModal={setIsModal} />}
+      {modalOpen === "id" && (
+        <ModalLayout title="계정 ID" setIsModal={setIsModal} footerOptions={{ main: {} }}>
+          <Box fontSize="15px" color="gray.600">
+            {session?.user.id}
+          </Box>
+        </ModalLayout>
+      )}
       {modalOpen === "friend" && (
         <ModalLayout title="친구 초대" footerOptions={{ main: {} }} setIsModal={setIsModal}>
           친구에게 아래 코드를 전달해 주세요!
