@@ -34,7 +34,6 @@ function GatherDetail() {
   const toast = useToast();
 
   const { id } = useParams<{ id: string }>() || {};
-  const isGuest = session?.user.name === "guest";
 
   const setIsScrollAuto = useSetRecoilState(isScrollAutoState);
 
@@ -121,7 +120,7 @@ function GatherDetail() {
               <GatherComments comments={gather.comments} />
             </Box>
           </Slide>
-          {!isGuest && <GatherBottomNav data={gather} isOpenGather={isOpenGather} />}
+          <GatherBottomNav data={gather} isOpenGather={isOpenGather} />
         </>
       ) : (
         <MainLoading />

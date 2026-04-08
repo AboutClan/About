@@ -15,6 +15,7 @@ import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/Study
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyMutations } from "../../hooks/custom/StudyHooks";
+import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import { useStudyAttendChangeMutation, useStudyVoteArrMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { ModalLayout } from "../../modals/Modals";
@@ -336,7 +337,21 @@ function StudyNavigation({
     }
   };
 
+  const isGuest = useCheckGuest();
+
   const handleDirectAction = (drawerType: DirectAction) => {
+    if (isGuest) {
+      if (isGuest) {
+        router.replace({
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            guest: "on",
+          },
+        });
+        return;
+      }
+    }
     switch (drawerType) {
       case "dailyVote":
         participate({ placeId: id, ...voteTime });

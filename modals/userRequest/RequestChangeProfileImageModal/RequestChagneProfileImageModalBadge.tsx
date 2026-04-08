@@ -31,6 +31,10 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
   });
 
   const onApply = () => {
+    if (userInfo?.role === "guest") {
+      typeToast("guest");
+      return;
+    }
     const findIdx = USER_BADGE_ARR.findIndex((badge) => badge === selectBadge);
     changeBadge({ badgeIdx: findIdx });
   };

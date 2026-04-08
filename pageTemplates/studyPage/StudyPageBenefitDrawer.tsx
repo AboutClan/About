@@ -74,7 +74,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
         <Flex flexDir="column" justify="flex-end">
           <Box as="span" color="mint" fontSize="16px" fontWeight="extrabold">
             <Box as="span" fontSize="28px">
-              {totalValue.toLocaleString()}
+              {userInfo?.role === "guest" ? "23,700" : totalValue.toLocaleString()}
             </Box>{" "}
             원
           </Box>

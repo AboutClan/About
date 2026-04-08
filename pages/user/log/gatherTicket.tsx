@@ -128,7 +128,7 @@ function GatherTicketLogSection() {
             번개 참여권을 구매하시겠어요?
           </Box>
           <Box color="gray.500" mr="auto" fontSize="12px">
-            모임 참여를 위해서는 참여권이 필요합니다.
+            모임 참여에 1장이 소모됩니다.
           </Box>
           <Box
             mr="auto"

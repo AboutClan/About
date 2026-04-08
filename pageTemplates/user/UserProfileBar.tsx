@@ -27,10 +27,6 @@ function UserProfileBar({ user }: UserProfileBarProps) {
           <Avatar size="lg1" user={isGuest ? SECRET_USER_SUMMARY : user} />
           <IconWrapper
             onClick={() => {
-              if (isGuest) {
-                typeToast("guest");
-                return;
-              }
               setIsDrawer(true);
             }}
           >

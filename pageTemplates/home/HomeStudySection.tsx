@@ -25,6 +25,7 @@ type StudyTab = "오늘 날짜 스터디" | "진행 예정 스터디";
 
 function HomeStudySection() {
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
+  console.log(35, studySet);
   const setBackUrl = useSetRecoilState(backUrlState);
 
   const [tab, setTab] = useState<StudyTab>("오늘 날짜 스터디");

@@ -7,7 +7,7 @@ import { Writing2Icon } from "../../components/Icons/ControlButtonIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
-import { useToast } from "../../hooks/custom/CustomToast";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import SquareSecretSection from "../../pageTemplates/community/SquareSecretSection";
 
@@ -16,7 +16,8 @@ export type CommunityCategory = (typeof CATEGORY_ARR)[number];
 
 function CommunityPage() {
   const router = useRouter();
-  const toast = useToast();
+
+  const typeToast = useTypeToast();
   const isGuest = useCheckGuest();
 
   const [tab, setTab] = useState<CommunityCategory>("전체");
@@ -36,7 +37,7 @@ function CommunityPage() {
         <Box position="relative">
           <Button
             onClick={() => {
-              toast("info", "(개발중) 4월 1일부터 사용 가능");
+              typeToast("guest");
             }}
             variant="unstyled"
             w={8}

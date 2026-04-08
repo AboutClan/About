@@ -130,7 +130,7 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
 
   return (
     <>
-      <BottomDrawerLg height={372} setIsModal={setIsModal}>
+      <BottomDrawerLg height={272} setIsModal={setIsModal}>
         <Flex h="full" w="full" direction="column" fontSize="14px" color="gray.600">
           <Button
             lineHeight="20px"

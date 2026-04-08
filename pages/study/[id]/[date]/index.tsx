@@ -348,6 +348,7 @@ export default function Page() {
               </Box>
               <InfoList
                 items={[
+                  "어바웃 멤버 누구나 자유롭게 신청할 수 있습니다.",
                   "당일 오전 9시에 스터디가 확정됩니다.",
                   "스터디 신청 & 출석 시에 포인트가 적립됩니다.",
                   "스터디 확정 후 불참은 1,000 Point가 차감됩니다.",
@@ -378,22 +379,22 @@ export default function Page() {
               <StudyNearMap centerPlace={placeInfo} />
             )}
           </Box>
-          {userInfo?.role !== "guest" && (
-            <StudyNavigation
-              myStudyInfo={myStudyInfo}
-              date={isPassedSolo ? dayjsToStr(dateDayjs) : date}
-              id={id as string}
-              myStudyStatus={myStudyStatus}
-              studyType={studyType}
-              location={placeInfo?.location}
-              findStudy={findStudy}
-              myStudyDateArr={myStudyArr?.map((s) => s?.date)}
-              tempCheck={
-                !members?.some((member) => member.user._id === userInfo?._id) &&
-                studyType === "participations"
-              }
-            />
-          )}
+
+          <StudyNavigation
+            myStudyInfo={myStudyInfo}
+            date={isPassedSolo ? dayjsToStr(dateDayjs) : date}
+            id={id as string}
+            myStudyStatus={myStudyStatus}
+            studyType={studyType}
+            location={placeInfo?.location}
+            findStudy={findStudy}
+            myStudyDateArr={myStudyArr?.map((s) => s?.date)}
+            tempCheck={
+              !members?.some((member) => member.user._id === userInfo?._id) &&
+              studyType === "participations"
+            }
+          />
+
           {/* {date === dayjsToStr(dayjs()) &&
             (studyType === "openRealTimes" || studyType === "results") &&
             (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type === "arrived" && (

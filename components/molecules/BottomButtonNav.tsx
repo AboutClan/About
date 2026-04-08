@@ -1,6 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 
 import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
 
 interface BottomButtonNavProps {
@@ -21,6 +22,7 @@ function BottomButtonNav({
   isLoading,
 }: BottomButtonNavProps) {
   const typeToast = useTypeToast();
+  const isGuest = useCheckGuest();
   return (
     <Flex
       position="fixed"
@@ -28,7 +30,7 @@ function BottomButtonNav({
       w="full"
       borderTop="var(--border-main)"
       align="center"
-      bg={!isReverse ? "white" : "gray.200"}
+      bg={handleClick ? "white" : "gray.200"}
       h="72px"
       pt={3}
       pb={getSafeAreaBottom(12)}
@@ -40,6 +42,10 @@ function BottomButtonNav({
           variant="unstyled"
           mr={5}
           onClick={() => {
+            if (isGuest) {
+              typeToast("guest");
+              return;
+            }
             typeToast("not-yet");
           }}
         >

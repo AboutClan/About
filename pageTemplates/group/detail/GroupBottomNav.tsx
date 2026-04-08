@@ -31,7 +31,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   const { id } = useParams<{ id: string }>() || {};
 
   const { data: userInfo } = useUserInfoQuery();
-
+  const isGuest = userInfo?.role === "guest";
   const errorToast = useErrorToast();
   const { data: session } = useSession();
 
@@ -122,6 +122,16 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
       return {
         text: "빈자리 생기면 참여 요청",
         handleFunction: () => {
+          if (isGuest) {
+            router.replace({
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                guest: "on",
+              },
+            });
+            return;
+          }
           sendRegisterForm({ answer: ["참여 대기 신청"], pointType: "point" });
         },
         isReverse: true,
@@ -130,7 +140,20 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     if (data?.participants.length <= 1) {
       return {
         text: "참여 대기 신청",
-        handleFunction: data?.isFree
+        handleFunction: isGuest
+          ? () => {
+              if (isGuest) {
+                router.replace({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    guest: "on",
+                  },
+                });
+                return;
+              }
+            }
+          : data?.isFree
           ? () => sendRegisterForm({ answer: ["참여 대기 신청"], pointType: "point" })
           : () => onClick("participate"),
       };
@@ -138,7 +161,22 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
     return {
       text: "가입 신청",
-      handleFunction: !data?.isFree ? () => onClick("participate") : () => setIsModal(true),
+      handleFunction: isGuest
+        ? () => {
+            if (isGuest) {
+              router.replace({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  guest: "on",
+                },
+              });
+              return;
+            }
+          }
+        : !data?.isFree
+        ? () => onClick("participate")
+        : () => setIsModal(true),
       type: "mint",
     };
   };

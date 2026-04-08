@@ -172,7 +172,13 @@ export default function StudyPage() {
               <Box mt={5}>
                 <IconRowBlock
                   leftIcon={<ReviewIcon />}
-                  func={() => typeToast("not-yet")}
+                  func={() => {
+                    if (isGuest) {
+                      typeToast("guest");
+                      return;
+                    }
+                    typeToast("not-yet");
+                  }}
                   mainText="카페 후기 모아 보기"
                   subText="카공러들의 찐 후기를 한 눈에 확인하세요!"
                 />

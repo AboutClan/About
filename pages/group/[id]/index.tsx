@@ -46,7 +46,6 @@ function GroupDetail() {
   const router = useRouter();
   const toast = useToast();
   const setBackUrl = useSetRecoilState(backUrlState);
-  const isGuest = session?.user.name === "guest";
   const { id } = useParams<{ id: string }>() || {};
   const isResult = router.query.result === "on";
 
@@ -173,7 +172,7 @@ function GroupDetail() {
         />
       )}
       {!group && <MainLoading />}
-      {group && !findMyInfo && !isGuest && !isAdmin ? <GroupBottomNav data={group} /> : null}
+      {group && !findMyInfo && !isAdmin ? <GroupBottomNav data={group} /> : null}
       {isModal && (
         <ResultModal
           onClose={() => setIsModal(false)}

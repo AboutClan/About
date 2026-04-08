@@ -131,9 +131,9 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
       router.push(`/feed/writing/${data.category}?id=${data.id}`);
     }
   };
-
+  const isGuest = userInfo?.role === "guest";
   const diffDate = dayjs(data.date).startOf("d").diff(dayjs().startOf("d"), "d");
-
+  console.log(52, data.status);
   const getButtonSettings = (): {
     text: string;
     handleFunction?: () => void;
@@ -194,12 +194,38 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
           };
         } else if (data.status === "open") {
           return {
-            text: null,
+            text: "참여 대기 요청",
+            handleFunction: () => {
+              if (isGuest) {
+                router.replace({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    guest: "on",
+                  },
+                });
+                return;
+              }
+              sendRegisterForm({ phase: "first" });
+            },
+            isReverse: true,
           };
         } else {
           return {
             text: "빈자리 생기면 참여 요청",
-            handleFunction: () => sendRegisterForm({ phase: "first" }),
+            handleFunction: () => {
+              if (isGuest) {
+                router.replace({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    guest: "on",
+                  },
+                });
+                return;
+              }
+              sendRegisterForm({ phase: "first" });
+            },
             isReverse: true,
           };
         }
@@ -239,11 +265,23 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
         },
       };
     }
-
+    console.log(3333);
     if (isMax) {
       return {
         text: "빈자리 생기면 참여 요청",
-        handleFunction: () => sendRegisterForm({ phase: "first" }),
+        handleFunction: () => {
+          if (isGuest) {
+            router.replace({
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                guest: "on",
+              },
+            });
+            return;
+          }
+          sendRegisterForm({ phase: "first" });
+        },
         isReverse: true,
       };
     }
@@ -251,6 +289,16 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
     return {
       text: data?.isApprovalRequired ? "참여 신청" : "참여하기",
       handleFunction: () => {
+        if (isGuest) {
+          router.replace({
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              guest: "on",
+            },
+          });
+          return;
+        }
         const myOld = birthToAge(userInfo.birth);
 
         if ((data.age[0] !== 19 && myOld < data.age[0]) || myOld > data.age[1]) {

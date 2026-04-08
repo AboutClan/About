@@ -73,8 +73,12 @@ function StudyPageHeader() {
       queryClient.invalidateQueries([USER_INFO]);
     },
   });
-
+  const isGuest = userInfo?.role === "guest";
   const handleButton = () => {
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
     if (!placeInfo) {
       setErrorMessage("정확한 장소를 입력해 주세요.");
       return;
@@ -188,7 +192,14 @@ function StudyPageHeader() {
           </Flex>
         </Flex>
       </Slide>
-      {modalType === "point" && <StudyPageBenefitDrawer onClose={() => setModalType(null)} />}
+      {modalType === "point" && (
+        <StudyPageBenefitDrawer
+          onClose={() => {
+            router.back();
+            setModalType(null);
+          }}
+        />
+      )}
       {modalType === "location" && (
         <RightDrawer
           title="활동 장소 변경"

@@ -1,5 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import PageIntro from "../../../components/atoms/PageIntro";
@@ -12,6 +13,7 @@ import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/St
 import { STUDY_RESULT_HOUR } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useCheckGuest } from "../../../hooks/custom/UserHooks";
 import { useStudyVoteArrMutation } from "../../../hooks/study/mutations";
 import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
@@ -46,6 +48,7 @@ function StudyApplyDrawer({
   isLocation,
 }: StudyDateDrawerProps) {
   const toast = useToast();
+  const router = useRouter();
 
   const resetStudy = useResetStudyQuery();
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
@@ -57,6 +60,8 @@ function StudyApplyDrawer({
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
+
+  const isGuest = useCheckGuest();
 
   useEffect(() => {
     if (location) setVoteLocation(location);
@@ -165,6 +170,16 @@ function StudyApplyDrawer({
     footer: {
       text: "신청 완료",
       func: () => {
+        if (isGuest) {
+          router.replace({
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              guest: "on",
+            },
+          });
+          return;
+        }
         voteDateArr({
           locationDetail: voteLocation
             ? voteLocation.address
@@ -312,6 +327,7 @@ function StudyApplyDrawer({
           setVoteTime={setVoteTime}
           drawerOptions={drawerOptions}
           setIsModal={setIsTimeDrawer}
+
           // defaultVoteTime={{ start: dayjs(), end: dayjs().add(3, "hour") }}
         />
       )}

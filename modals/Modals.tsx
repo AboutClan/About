@@ -9,6 +9,7 @@ import {
   ModalFooter as ChakraModalFooter,
   ModalHeader as ChakraModalHeader,
   ModalOverlay,
+  PortalManager,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -48,6 +49,7 @@ interface IModalLayout extends IModal {
   isInputFocus?: boolean;
   isCloseButton?: boolean;
   isDark?: boolean;
+  zIndex?: number;
 }
 
 export interface IPaddingOptions {
@@ -70,6 +72,7 @@ export function ModalLayout({
   isInputFocus,
   isCloseButton = true,
   isDark,
+  zIndex,
 }: IModalLayout) {
   const onClose = setIsModal ? () => setIsModal(false) : null;
 
@@ -96,146 +99,152 @@ export function ModalLayout({
   }, [isInputFocus]);
 
   return (
-    <Modal isOpen={true} onClose={onClose} initialFocusRef={initialRef}>
-      <ModalOverlay bg={isDark ? "blackAlpha.700" : "blackAlpha.600"} />
-      <ModalContent
-        w="300px"
-        top={modalTop}
-        mx="var(--gap-4)"
-        // h={height || SIZE_HEIGHT_MAP[size]}
-        maxWidth="358px"
-        my="auto"
-        borderRadius="12px"
-      >
-        {!headerOptions ? (
-          <>
-            <ChakraModalHeader
-              fontWeight={700}
-              px={6}
-              pt={4}
-              pb={3}
-              fontSize="16px"
-              color="var(--gray-800)"
-              textAlign="center"
-            >
-              {title}
-            </ChakraModalHeader>
-            {isCloseButton && (
-              <ModalCloseButton
-                color="var(--gray-500)"
-                mr="8px"
-                size="md"
-                mt={2.5}
-                w="16px"
-                h="16px"
-                _focus={{ boxShadow: "none" }}
-                _focusVisible={{ boxShadow: "none" }}
-              />
-            )}
-          </>
-        ) : headerOptions?.children ? (
-          headerOptions.children
-        ) : (
-          <>
-            <ChakraModalHeader
-              pt={
-                paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "var(--gap-5)"
-              }
-              pb={paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "8px"}
-              fontSize="16px"
-              fontWeight={700}
-              textAlign="center"
-            >
-              {title}
-            </ChakraModalHeader>
-            {headerOptions?.subTitle && (
-              <Box textAlign="center" fontSize="13px">
-                {headerOptions.subTitle}
-              </Box>
-            )}
-          </>
-        )}
-        <ChakraModalBody
-          pt={paddingOptions?.body?.top !== undefined ? `${paddingOptions.body.top}px` : "12px"}
-          pb={
-            paddingOptions?.body?.bottom !== undefined ? `${paddingOptions.body.bottom}px` : "12px"
-          }
-          px={6}
-          textAlign="center"
-          fontSize="13px"
-          display="flex"
-          justifyContent="center"
-          flexDir="column"
-          color="gray.700"
+    <PortalManager zIndex={zIndex || 5000}>
+      <Modal isOpen={true} onClose={onClose} initialFocusRef={initialRef}>
+        <ModalOverlay bg={isDark ? "blackAlpha.700" : "blackAlpha.600"} />
+        <ModalContent
+          w="300px"
+          top={modalTop}
+          mx="var(--gap-4)"
+          // h={height || SIZE_HEIGHT_MAP[size]}
+          maxWidth="358px"
+          my="auto"
+          borderRadius="12px"
         >
-          {children}
-        </ChakraModalBody>
-
-        {footerOptions && (
-          <ChakraModalFooter
-            pb={5}
-            pt={paddingOptions?.footer !== undefined ? `${paddingOptions.footer}px` : "12px"}
-            px={6}
-          >
-            {footerOptions?.children ? (
-              footerOptions.children
-            ) : !sub ? (
-              isFull ? (
-                <Button
+          {!headerOptions ? (
+            <>
+              <ChakraModalHeader
+                fontWeight={700}
+                px={6}
+                pt={4}
+                pb={3}
+                fontSize="16px"
+                color="var(--gray-800)"
+                textAlign="center"
+              >
+                {title}
+              </ChakraModalHeader>
+              {isCloseButton && (
+                <ModalCloseButton
+                  color="var(--gray-500)"
+                  mr="8px"
                   size="md"
-                  colorScheme={main?.isDisabled ? "black" : main?.isred ? "red" : "mint"}
-                  borderRadius="8px"
-                  w="100%"
-                  onClick={func}
+                  mt={2.5}
+                  w="16px"
+                  h="16px"
+                  _focus={{ boxShadow: "none" }}
+                  _focusVisible={{ boxShadow: "none" }}
+                />
+              )}
+            </>
+          ) : headerOptions?.children ? (
+            headerOptions.children
+          ) : (
+            <>
+              <ChakraModalHeader
+                pt={
+                  paddingOptions?.header !== undefined
+                    ? `${paddingOptions.header}px`
+                    : "var(--gap-5)"
+                }
+                pb={paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "8px"}
+                fontSize="16px"
+                fontWeight={700}
+                textAlign="center"
+              >
+                {title}
+              </ChakraModalHeader>
+              {headerOptions?.subTitle && (
+                <Box textAlign="center" fontSize="13px">
+                  {headerOptions.subTitle}
+                </Box>
+              )}
+            </>
+          )}
+          <ChakraModalBody
+            pt={paddingOptions?.body?.top !== undefined ? `${paddingOptions.body.top}px` : "12px"}
+            pb={
+              paddingOptions?.body?.bottom !== undefined
+                ? `${paddingOptions.body.bottom}px`
+                : "12px"
+            }
+            px={6}
+            textAlign="center"
+            fontSize="13px"
+            display="flex"
+            justifyContent="center"
+            flexDir="column"
+            color="gray.700"
+          >
+            {children}
+          </ChakraModalBody>
+
+          {footerOptions && (
+            <ChakraModalFooter
+              pb={5}
+              pt={paddingOptions?.footer !== undefined ? `${paddingOptions.footer}px` : "12px"}
+              px={6}
+            >
+              {footerOptions?.children ? (
+                footerOptions.children
+              ) : !sub ? (
+                isFull ? (
+                  <Button
+                    size="md"
+                    colorScheme={main?.isDisabled ? "black" : main?.isred ? "red" : "mint"}
+                    borderRadius="8px"
+                    w="100%"
+                    onClick={func}
+                    isLoading={main?.isLoading}
+                    isDisabled={main?.isDisabled}
+                    h={10}
+                  >
+                    {text}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={func}
+                    size="md"
+                    h={5}
+                    px={2}
+                    variant="ghost"
+                    color={main?.isred ? "var(--color-red)" : "var(--color-mint)"}
+                  >
+                    {text}
+                  </Button>
+                )
+              ) : isFull ? (
+                <TwoButtonNav
+                  leftText={subText}
+                  rightText={text}
+                  onClickLeft={subFunc}
+                  onClickRight={func}
                   isLoading={main?.isLoading}
                   isDisabled={main?.isDisabled}
-                  h={10}
-                >
-                  {text}
-                </Button>
+                  colorType={colorType}
+                />
               ) : (
-                <Button
-                  onClick={func}
-                  size="md"
-                  h={5}
-                  px={2}
-                  variant="ghost"
-                  color={main?.isred ? "var(--color-red)" : "var(--color-mint)"}
-                >
-                  {text}
-                </Button>
-              )
-            ) : isFull ? (
-              <TwoButtonNav
-                leftText={subText}
-                rightText={text}
-                onClickLeft={subFunc}
-                onClickRight={func}
-                isLoading={main?.isLoading}
-                isDisabled={main?.isDisabled}
-                colorType={colorType}
-              />
-            ) : (
-              <>
-                <Button h={5} px={2} mr={3} onClick={subFunc} variant="ghost" color="gray">
-                  {subText}
-                </Button>
-                <Button
-                  h={5}
-                  px={2}
-                  onClick={func}
-                  variant="ghost"
-                  color="mint"
-                  isLoading={main?.isLoading}
-                >
-                  {text}
-                </Button>
-              </>
-            )}
-          </ChakraModalFooter>
-        )}
-      </ModalContent>
-    </Modal>
+                <>
+                  <Button h={5} px={2} mr={3} onClick={subFunc} variant="ghost" color="gray">
+                    {subText}
+                  </Button>
+                  <Button
+                    h={5}
+                    px={2}
+                    onClick={func}
+                    variant="ghost"
+                    color="mint"
+                    isLoading={main?.isLoading}
+                  >
+                    {text}
+                  </Button>
+                </>
+              )}
+            </ChakraModalFooter>
+          )}
+        </ModalContent>
+      </Modal>
+    </PortalManager>
   );
 }
 

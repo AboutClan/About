@@ -129,15 +129,11 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
   const isAdmin = userInfo?.role === "previliged";
 
   const handleClick = () => {
-    if (
-      !isAdmin &&
-      (studyType !== "openRealTimes" ||
-        dayjs(date).startOf("day").isBefore(dayjs().subtract(1, "day")))
-    ) {
-      toast("warning", "확정된 모임장 스터디에서만 초대가 가능합니다.");
+    if (isAdmin) {
+      setIsModal(true);
       return;
     }
-    setIsModal(true);
+    toast("info", "스터디 개설자만 사용할 수 있어요!");
   };
 
   return (
