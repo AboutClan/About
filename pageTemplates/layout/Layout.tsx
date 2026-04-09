@@ -5,7 +5,7 @@ import axios from "axios";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -102,15 +102,18 @@ function Layout({ children }: ILayout) {
       // signIn("kakao", { redirect: false });
       return;
     }
-
+    const process = async () => {
+      await signOut({ redirect: false });
+      await signIn("guest", {
+        redirect: false,
+        callbackUrl: router.asPath,
+      }).catch((err) => {
+        console.error("Guest sign-in failed:", err);
+        // 실패해도 화면은 보여야 하므로 여기서 따로 막지는 않음
+      });
+    };
+    process();
     // ⚡ 여기서 게스트 로그인 (redirect: false)
-    signIn("guest", {
-      redirect: false,
-      callbackUrl: router.asPath,
-    }).catch((err) => {
-      console.error("Guest sign-in failed:", err);
-      // 실패해도 화면은 보여야 하므로 여기서 따로 막지는 않음
-    });
   }, [status, token, pathname, segment, router.asPath]);
 
   /**

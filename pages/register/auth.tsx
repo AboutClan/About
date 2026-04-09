@@ -5,7 +5,7 @@
 
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { useCallback, useEffect, useRef } from "react";
 
 import BottomNav from "../../components/layouts/BottomNav";
@@ -64,12 +64,17 @@ export default function Auth() {
   // PC 팝업 플로우에서 바로 이어가려고 ref도 유지
   const currentRequestNoRef = useRef("");
 
+  const process = async () => {
+    await signOut({ redirect: false });
+    await signIn("kakao");
+  };
+
   const handleWebTransactionId = useCallback(
     async (webTransactionId: string) => {
       const jwt = token ?? "";
       if (!jwt) {
         toast("error", "로그인이 필요합니다.");
-        signIn("kakao");
+        process();
         return;
       }
 
@@ -156,7 +161,7 @@ export default function Auth() {
     const jwt = token ?? "";
     if (!jwt) {
       toast("error", "로그인이 필요합니다");
-      signIn("kakao");
+      process();
       return;
     }
 

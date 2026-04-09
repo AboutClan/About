@@ -3,7 +3,7 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 import { Box, Flex } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -73,7 +73,12 @@ function GroupDetail() {
   useEffect(() => {
     if (session === undefined) return;
     if (session === null) {
-      signIn("guest");
+      const temp = async () => {
+        await signOut({ redirect: false });
+        await signIn("guest");
+      };
+      temp();
+
       return;
     }
     if (!session?.user.uid) {

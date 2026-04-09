@@ -20,7 +20,7 @@ const DEFAULT_PROFILE_IMAGE =
   "http://img1.kakaocdn.net/thumb/R110x110.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg";
 
 const GUEST_USER = {
-  id: "66f29811e0f0564ae35c52a5",
+  id: "69c4f9ce862f5d10130252ab",
   uid: "1234567890",
   name: "guest",
   role: "guest",
@@ -251,7 +251,10 @@ export const authOptions: NextAuthOptions = {
           case "apple":
             {
               await Account.findOneAndUpdate(
-                { providerAccountId: account.providerAccountId },
+                {
+                  provider: account.provider,
+                  providerAccountId: account.providerAccountId,
+                },
                 {
                   $set: {
                     access_token: account.access_token,

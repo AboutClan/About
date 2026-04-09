@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { gaEvent } from "../libs/gtag";
@@ -37,8 +37,13 @@ function StudyMap() {
   }, []);
 
   useEffect(() => {
+    const temp = async () => {
+      await signOut({ redirect: false });
+      await signIn("guest");
+    };
+
     if (session === null) {
-      signIn("guest");
+      temp();
     }
   }, [session]);
 

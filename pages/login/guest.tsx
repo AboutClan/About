@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 
 import Avatar from "../../components/atoms/Avatar";
@@ -18,7 +18,15 @@ function LoginGuest() {
 
   const onClickNext = () => {
     setIsLoading(true);
-    signIn("guest", { callbackUrl: `${window.location.origin}/${method}` });
+    const process = async () => {
+      // 기존 세션 제거 (guest 포함)
+      await signOut({ redirect: false });
+
+      // 카카오 로그인 시작
+      await signIn("guest", { callbackUrl: `${window.location.origin}/${method}` });
+    };
+
+    process();
   };
 
   return (

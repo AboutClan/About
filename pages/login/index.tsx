@@ -76,9 +76,8 @@ function LoginPage() {
     setLoadingType(type);
 
     // 게스트 → 정회원 로그인으로 전환 시, 먼저 guest 세션 정리
-    if (session?.user?.name === "guest") {
-      await signOut({ redirect: false });
-    }
+
+    await signOut({ redirect: false });
 
     // 다양한 statusParam에 따른 callbackUrl 분기
     if (statusParam === "before") {
