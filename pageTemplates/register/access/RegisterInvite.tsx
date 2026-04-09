@@ -39,7 +39,7 @@ function RegisterInvite({ codeText, setCodeText, handleClick }: RegisterInvitePr
                 toast("info", "초대코드를 입력해 주세요!");
                 return;
               }
-              if (codeText !== "4815246867") {
+              if (codeText !== "4815246867" && codeText !== "2026040912") {
                 setCodeText("");
                 toast("info", "등록되지 않은 초대코드입니다.");
                 return;
