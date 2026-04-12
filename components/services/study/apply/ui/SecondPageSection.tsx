@@ -134,7 +134,7 @@ function SecondPageSection({
               const beforeCnt = participants.filter((belong) => belong === title2).length;
               const standardText = STUDY_CREW_PLACE_MAPPING?.[title2]
                 ?.map((c) => c.standard)
-                .join(" / ");
+                .join("/");
               return (
                 <>
                   <MainCard
