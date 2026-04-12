@@ -161,7 +161,7 @@ export function CalendarHeader({
       <IconButton onClick={goPrev} isDisabled={leftDisabled} aria-label="이전 달">
         <LeftIcon />
       </IconButton>
-      <Box pt="2px" fontWeight={500}>
+      <Box pt="1px" fontWeight={600}>
         {dayjsToFormat(dayjs(date), "YYYY년 M월")}
       </Box>
       <IconButton onClick={goNext} isDisabled={rightDisabled} aria-label="다음 달">
@@ -192,7 +192,7 @@ function RightIcon() {
       height="20"
       viewBox="0 -960 960 960"
       width="20"
-      fill="var(--gray-500)"
+      fill="var(--gray-600)"
     >
       <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
     </svg>

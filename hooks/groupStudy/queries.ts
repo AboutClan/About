@@ -55,7 +55,7 @@ export const useGroupMyStatusQuery = (
 
 export const useGroupQuery = (
   filter: GroupStatus,
-  category: GatherCategoryMain | "전체",
+  category: GatherCategoryMain | "전체" | "크루",
   cursor: number,
   options?: QueryOptions<IGroup[]>,
 ) =>

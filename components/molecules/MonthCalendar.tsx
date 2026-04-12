@@ -21,7 +21,13 @@ function MonthCalendar({
   passedDisabled,
   mintDateArr,
 }: CalendarProps) {
-  const calendarArr = getCalendarDates("month", dayjs(standardDate), passedDisabled, mintDateArr,selectedDates);
+  const calendarArr = getCalendarDates(
+    "month",
+    dayjs(standardDate),
+    passedDisabled,
+    mintDateArr,
+    selectedDates,
+  );
 
   return (
     <>

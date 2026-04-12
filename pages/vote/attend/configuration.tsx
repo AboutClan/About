@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import SectionTitle from "../../../components/atoms/SectionTitle";
@@ -15,10 +14,11 @@ import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import { STUDY_ATTEND_AT } from "../../../constants/keys/queryKeys";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import { useStudySetQuery } from "../../../hooks/study/queries";
-import { transferStudyRewardState } from "../../../recoils/transferRecoils";
+import { useUserRandomTicketMutation } from "../../../hooks/user/mutations";
 import { PointInfoProps } from "../../../types/common";
 import {
   StudyConfirmedSetProps,
@@ -43,6 +43,7 @@ function Configuration() {
   const { data: studySet } = useStudySetQuery(date, { enabled: !!date });
 
   const studyData = studySet && studySet[type];
+  const userInfo = useUserInfo();
 
   const confirmedSet = studyData as StudyConfirmedSetProps[];
 
@@ -53,7 +54,7 @@ function Configuration() {
     dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
 
-  const setTransferStudyReward = useSetRecoilState(transferStudyRewardState);
+  // const setTransferStudyReward = useSetRecoilState(transferStudyRewardState);
   const textareaRef = useRef(null);
 
   const [attendMessage, setAttendMessage] = useState("");
@@ -98,12 +99,33 @@ function Configuration() {
     currentDayjs = currentDayjs.add(30, "m");
   }
 
-  const handleAttendSuccess = (data: PointInfoProps) => {
-    setLocalStorageObj(STUDY_ATTEND_AT, getTodayStr());
+  const { mutate: updateUserTicket } = useUserRandomTicketMutation();
+
+  const handleAttendSuccess = async (data: PointInfoProps) => {
+    console.log(data);
     resetStudy();
-    setTimeout(() => {
-      setTransferStudyReward(data);
-    }, 500);
+    if (type === "results") {
+      setLocalStorageObj(STUDY_ATTEND_AT, getTodayStr());
+      const preloadImage = (src: string) => {
+        const img = new Image();
+        img.src = src;
+      };
+      await updateUserTicket({
+        userId: userInfo._id,
+        number: 1,
+      });
+      preloadImage(
+        "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%A3%B0%EB%A0%9B.png",
+      );
+      if (id) {
+        router.push(`/study/${id}/${date}?type=${type}&ticket=on`);
+      } else {
+        router.push(`/study/realTimes/${date}?type=${type}`);
+      }
+    }
+    // setTimeout(() => {
+    //   setTransferStudyReward(data);
+    // }, 500);
     if (id) {
       router.push(`/study/${id}/${date}?type=${type}`);
     } else {
@@ -241,6 +263,7 @@ function Configuration() {
         onClick={handleSubmit}
         isLoading={isLoading1 || isLoading2}
       />
+
       {/* {isChecking && (
         <>
           <Spinner text="위치를 확인중입니다..." />

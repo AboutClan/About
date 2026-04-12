@@ -6,6 +6,7 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { useHandleMove } from "../@natives/useHandleBottomNav";
+import { useCheckGuest } from "../hooks/custom/UserHooks";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { dayjsToStr } from "../utils/dateTimeUtils";
 import { getSafeAreaBottom } from "../utils/validationUtils";
@@ -76,8 +77,12 @@ export default function BottomNav({ hasBottomNav }: { hasBottomNav: boolean }) {
 function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavButton) {
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const handleMove = useHandleMove(setSlideDirection);
+  const isGuest = useCheckGuest();
 
   const onClick = () => {
+    if (isGuest) {
+      return;
+    }
     handleMove();
   };
 

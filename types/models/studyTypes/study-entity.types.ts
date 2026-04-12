@@ -31,6 +31,12 @@ export type StudyStatus = RealTimesStudyStatus | VoteStudyStatus;
 export type VoteStudyStatus = "open" | "expected";
 export type RealTimesStudyStatus = "open" | "participation" | "solo";
 export type MyStudyStatus = "pending" | "participation" | "otherParticipation";
+export type StudyCrew =
+  | "[마포/당산/영등포]"
+  | "[성수/왕십리/건대]"
+  | "[수원/용인]"
+  | "[성북/동대문/노원]"
+  | "[강남/서초]";
 
 /**
  * study member (participation 제외)

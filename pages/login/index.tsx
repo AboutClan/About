@@ -142,11 +142,23 @@ function LoginPage() {
         bg="linear-gradient(0deg, rgba(40, 40, 40, 0.87) 0%, rgba(40, 40, 40, 0.54) 100%)"
         position="relative"
       >
-        {session?.user?.uid && (
-          <Box fontSize="12px" opacity={0.8} position="fixed" top="12px" right="12px" color="white">
-            UID: {session?.user.uid}
-          </Box>
-        )}
+        <Button
+          position="fixed"
+          top="12px"
+          opacity={0.8}
+          right="12px"
+          zIndex={1000}
+          p={1}
+          color="white"
+          fontWeight={600}
+          variant="unstyled"
+          onClick={() => {
+            navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
+          }}
+        >
+          문의하기
+        </Button>
+
         <Button
           position="fixed"
           top="0"

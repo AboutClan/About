@@ -11,6 +11,9 @@ import { XCircleIcon } from "../../components/Icons/CircleIcons";
 import { ClockIcon } from "../../components/Icons/ClockIcons";
 import Slide from "../../components/layouts/PageSlide";
 import { BottomFlexDrawerOptions } from "../../components/organisms/drawer/BottomFlexDrawer";
+import StudyApplyDrawer from "../../components/services/study/apply/StudyApplyDrawer";
+import { StudyCancelModal } from "../../components/services/study/apply/ui/overlay/CancelModal";
+import { PlaceDrawer } from "../../components/services/study/apply/ui/overlay/PlaceDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -33,10 +36,6 @@ import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { DayjsTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
-import StudyApplyDrawer, {
-  PlaceDrawer,
-  StudyCancelModal,
-} from "../vote/voteDrawer/StudyApplyDrawer";
 
 interface IStudyNavigation {
   myStudyInfo: StudyConfirmedMemberProps | StudyParticipationProps[];

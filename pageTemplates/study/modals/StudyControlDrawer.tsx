@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 
 import { StudyUserCheckIcon } from "../../../components/Icons/ControlButtonIcon";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
+import StudyApplyDrawer from "../../../components/services/study/apply/StudyApplyDrawer";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import StudyApplyDrawer from "../../vote/voteDrawer/StudyApplyDrawer";
-import StudyOpenDrawer from "../../vote/voteDrawer/StudyOpenDrawer";
+import StudyOpenDrawer from "../../vote/StudyOpenDrawer";
 
 type DrawerType = "apply" | "open";
 

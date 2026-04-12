@@ -18,7 +18,13 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { isValidMotionProp, motion, useAnimation, useReducedMotion } from "framer-motion";
+import {
+  AnimationControls,
+  isValidMotionProp,
+  motion,
+  useAnimation,
+  useReducedMotion,
+} from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import Header from "../components/layouts/Header";
@@ -41,7 +47,7 @@ type WheelItem = { label: string; weight: number };
 
 // ✅ 확률(가중치)은 코드에 박기
 const ITEMS: WheelItem[] = [
-  { label: "100 pt", weight: 400 },
+  { label: "100 pt", weight: 500 },
   { label: "200 pt", weight: 100 },
   { label: "500 pt", weight: 20 },
   { label: "1,000 pt", weight: 10 },
@@ -110,7 +116,7 @@ export default function TicketWheelRoulette() {
     const idx = Math.floor(normalizeDeg(a - slice / 2) / slice);
     return ((idx % n) + n) % n;
   }
-  const size = 360;
+
   const items = ITEMS;
   const n = items.length;
   const slice = 360 / n;
@@ -119,13 +125,7 @@ export default function TicketWheelRoulette() {
   const panelBg = useColorModeValue("white", "blackAlpha.300");
   const subtleText = useColorModeValue("blackAlpha.700", "whiteAlpha.700");
 
-  const colors = useMemo(
-    () => COLOR_TABLE,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [useColorModeValue],
-  );
   const POINTER_DEG = -90;
-  const wheelGradient = useMemo(() => buildWheelGradient(n, colors), [n, colors]);
 
   const totalWeight = useMemo(
     () => items.reduce((s, it) => s + Math.max(0, it.weight), 0),
@@ -264,201 +264,13 @@ export default function TicketWheelRoulette() {
           <Box mb={8} w="full">
             <WinnerTextSlider textArr={textArr} />
           </Box>
-          <Center>
-            <Box position="relative" w={`${340}px`} h={`${340}px`}>
-              {/* Outer ambient glow */}
-              <Box
-                position="absolute"
-                inset="-18px"
-                borderRadius="full"
-                bgGradient={useColorModeValue(
-                  "radial(rgba(0,0,0,0.10) 0%, rgba(0,0,0,0) 60%)",
-                  "radial(rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 60%)",
-                )}
-                filter="blur(10px)"
-                pointerEvents="none"
-              />
-
-              {/* Pointer */}
-              {/* Pointer */}
-              {/* Pointer */}
-              <Box
-                position="absolute"
-                top="8px"
-                left="50%"
-                transform="translateX(-50%)"
-                zIndex={40}
-                pointerEvents="none"
-              >
-                {/* 원형 캡 (위에 위치) */}
-                <Box
-                  position="absolute"
-                  top="-14px"
-                  left="50%"
-                  transform="translateX(-50%)"
-                  w="14px"
-                  h="14px"
-                  borderRadius="full"
-                  bg="black"
-                  boxShadow="0 4px 10px rgba(0,0,0,0.25)"
-                  zIndex={2}
-                />
-
-                {/* 삼각형 (아래 방향 ↓) */}
-                <Box
-                  w="0"
-                  h="0"
-                  borderLeft="14px solid transparent"
-                  borderRight="14px solid transparent"
-                  borderTop="28px solid"
-                  borderTopColor="black"
-                />
-              </Box>
-
-              {/* Double ring frame */}
-
-              {/* Wheel */}
-              <MotionDiv
-                animate={wheelControls}
-                // initial={{ rotate: 0 }}
-                // style={{ rotate: 0 }}
-                position="absolute"
-                inset="1px"
-                borderRadius="full"
-                overflow="hidden"
-                bg={wheelGradient}
-              >
-                {/* glass highlight */}
-                <Box
-                  position="absolute"
-                  inset="0"
-                  bgGradient="linear(to-br, rgba(255,255,255,0.70), rgba(255,255,255,0) 48%)"
-                  pointerEvents="none"
-                />
-                {/* inner vignette */}
-                <Box
-                  position="absolute"
-                  inset="0"
-                  bgGradient="radial(rgba(0,0,0,0) 55%, rgba(0,0,0,0.10) 100%)"
-                  pointerEvents="none"
-                />
-
-                {/* separators */}
-                {Array.from({ length: n }).map((_, i) => (
-                  <Box
-                    key={i}
-                    position="absolute"
-                    top="50%"
-                    left="50%"
-                    w="2px"
-                    h="52%"
-                    transform={`rotate(${i * slice}deg) translateY(-100%)`}
-                    transformOrigin="bottom center"
-                    bg="white"
-                    opacity={0.7}
-                  />
-                ))}
-
-                <Box>
-                  {items.map((it, i) => {
-                    const angleDeg = i * slice + slice / 2; // 섹션 중앙 각도
-                    const angleRad = (angleDeg * Math.PI) / 180;
-
-                    // ✅ 실제 wheel 반지름 기준으로 계산 (wheel inset 고려)
-                    const wheelInset = 1; // MotionDiv inset 값이랑 동일하게!
-                    const wheelSize = 340 - wheelInset * 2; // 338
-                    const r = wheelSize / 2 - 58; // 169 - 58 = 111
-
-                    const x = Math.cos(angleRad) * r * 1.08;
-                    const y = Math.sin(angleRad) * r;
-
-                    return (
-                      <Box
-                        key={`${it.label}-${i}`}
-                        position="absolute"
-                        top="50%"
-                        left="50%"
-                        transform={`translate(${x}px, ${y}px) translate(-50%, -50%)`}
-                        transformOrigin="center"
-                      >
-                        <Box
-                          px={2}
-                          py={2}
-                          borderRadius="full"
-                          bg="white"
-                          backdropFilter="blur(10px)"
-                          boxShadow="0 8px 18px rgba(0,0,0,0.12)"
-                          borderWidth="1px"
-                          borderColor="gray.800"
-                          overflow="hidden"
-                          textAlign="center"
-                          w="80px"
-                        >
-                          <Text
-                            fontSize="10px"
-                            fontWeight="800"
-                            letterSpacing="-0.2px"
-                            noOfLines={1}
-                          >
-                            {it.label}
-                          </Text>
-                        </Box>
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </MotionDiv>
-
-              {/* Center cap + button */}
-              <Center position="absolute" inset="0" zIndex={30}>
-                <Box
-                  w={`${Math.round(size * 0.36)}px`}
-                  h={`${Math.round(size * 0.36)}px`}
-                  borderRadius="full"
-                  bg={panelBg}
-                  borderWidth="1px"
-                  borderColor={ringBorder}
-                  boxShadow="xl"
-                  position="relative"
-                >
-                  <Box
-                    position="absolute"
-                    inset="12px"
-                    borderRadius="full"
-                    bgGradient="radial(white 0%, rgba(255,255,255,0) 70%)"
-                    pointerEvents="none"
-                  />
-                  <Center position="absolute" inset="0">
-                    <Button
-                      colorScheme="black"
-                      onClick={spin}
-                      isLoading={spinning}
-                      loadingText="뽑는 중..."
-                      borderRadius="full"
-                      fontWeight="bold"
-                      color="white"
-                      isDisabled={ticketCount <= 0}
-                      _hover={{
-                        bgGradient: "linear(to-b, mint.500, mint.600)",
-                        boxShadow: "0 10px 24px rgba(0, 180, 150, 0.45)",
-                        transform: "translateY(-2px)",
-                      }}
-                      _active={{
-                        bgGradient: "linear(to-b, mint.600, mint.700)",
-                        transform: "translateY(0px)",
-                        boxShadow: "0 4px 12px rgba(0, 180, 150, 0.35)",
-                      }}
-                    >
-                      룰렛 돌리기
-                    </Button>
-                  </Center>
-                </Box>
-              </Center>
-
-              {/* small caption */}
-            </Box>
-          </Center>
-
+          <RouletteWheel
+            items={items}
+            wheelControls={wheelControls}
+            spinning={spinning}
+            ticketCount={ticketCount}
+            spin={spin}
+          />
           {/* Toggle: 당첨 확률 확인 */}
           <Button
             onClick={onProbToggle}
@@ -562,5 +374,205 @@ export default function TicketWheelRoulette() {
         </ModalLayout>
       )}
     </>
+  );
+}
+
+interface RouletteWheelProps {
+  items: WheelItem[];
+  wheelControls: AnimationControls;
+  spinning: boolean;
+  ticketCount: number;
+  spin: () => void;
+}
+
+export function RouletteWheel({
+  items,
+  wheelControls,
+  spinning,
+  ticketCount,
+  spin,
+}: RouletteWheelProps) {
+  const size = 360;
+  const n = items.length;
+  const slice = 360 / n;
+
+  const ringBorder = useColorModeValue("blackAlpha.200", "whiteAlpha.200");
+  const panelBg = useColorModeValue("white", "blackAlpha.300");
+
+  const colors = useMemo(() => COLOR_TABLE, []);
+  const wheelGradient = useMemo(() => buildWheelGradient(n, colors), [n, colors]);
+
+  return (
+    <Center>
+      <Box position="relative" w="340px" h="340px">
+        <Box
+          position="absolute"
+          inset="-18px"
+          borderRadius="full"
+          bgGradient={useColorModeValue(
+            "radial(rgba(0,0,0,0.10) 0%, rgba(0,0,0,0) 60%)",
+            "radial(rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 60%)",
+          )}
+          filter="blur(10px)"
+          pointerEvents="none"
+        />
+
+        <Box
+          position="absolute"
+          top="8px"
+          left="50%"
+          transform="translateX(-50%)"
+          zIndex={40}
+          pointerEvents="none"
+        >
+          <Box
+            position="absolute"
+            top="-14px"
+            left="50%"
+            transform="translateX(-50%)"
+            w="14px"
+            h="14px"
+            borderRadius="full"
+            bg="black"
+            boxShadow="0 4px 10px rgba(0,0,0,0.25)"
+            zIndex={2}
+          />
+
+          <Box
+            w="0"
+            h="0"
+            borderLeft="14px solid transparent"
+            borderRight="14px solid transparent"
+            borderTop="28px solid"
+            borderTopColor="black"
+          />
+        </Box>
+
+        <MotionDiv
+          animate={wheelControls}
+          position="absolute"
+          inset="1px"
+          borderRadius="full"
+          overflow="hidden"
+          bg={wheelGradient}
+        >
+          <Box
+            position="absolute"
+            inset="0"
+            bgGradient="linear(to-br, rgba(255,255,255,0.70), rgba(255,255,255,0) 48%)"
+            pointerEvents="none"
+          />
+          <Box
+            position="absolute"
+            inset="0"
+            bgGradient="radial(rgba(0,0,0,0) 55%, rgba(0,0,0,0.10) 100%)"
+            pointerEvents="none"
+          />
+
+          {Array.from({ length: n }).map((_, i) => (
+            <Box
+              key={i}
+              position="absolute"
+              top="50%"
+              left="50%"
+              w="2px"
+              h="52%"
+              transform={`rotate(${i * slice}deg) translateY(-100%)`}
+              transformOrigin="bottom center"
+              bg="white"
+              opacity={0.7}
+            />
+          ))}
+
+          <Box>
+            {items.map((it, i) => {
+              const angleDeg = i * slice + slice / 2;
+              const angleRad = (angleDeg * Math.PI) / 180;
+
+              const wheelInset = 1;
+              const wheelSize = 340 - wheelInset * 2;
+              const r = wheelSize / 2 - 58;
+
+              const x = Math.cos(angleRad) * r * 1.08;
+              const y = Math.sin(angleRad) * r;
+
+              return (
+                <Box
+                  key={`${it.label}-${i}`}
+                  position="absolute"
+                  top="50%"
+                  left="50%"
+                  transform={`translate(${x}px, ${y}px) translate(-50%, -50%)`}
+                  transformOrigin="center"
+                >
+                  <Box
+                    px={2}
+                    py={2}
+                    borderRadius="full"
+                    bg="white"
+                    backdropFilter="blur(10px)"
+                    boxShadow="0 8px 18px rgba(0,0,0,0.12)"
+                    borderWidth="1px"
+                    borderColor="gray.800"
+                    overflow="hidden"
+                    textAlign="center"
+                    w="80px"
+                  >
+                    <Text fontSize="10px" fontWeight="800" letterSpacing="-0.2px" noOfLines={1}>
+                      {it.label}
+                    </Text>
+                  </Box>
+                </Box>
+              );
+            })}
+          </Box>
+        </MotionDiv>
+
+        <Center position="absolute" inset="0" zIndex={30}>
+          <Box
+            w={`${Math.round(size * 0.36)}px`}
+            h={`${Math.round(size * 0.36)}px`}
+            borderRadius="full"
+            bg={panelBg}
+            borderWidth="1px"
+            borderColor={ringBorder}
+            boxShadow="xl"
+            position="relative"
+          >
+            <Box
+              position="absolute"
+              inset="12px"
+              borderRadius="full"
+              bgGradient="radial(white 0%, rgba(255,255,255,0) 70%)"
+              pointerEvents="none"
+            />
+            <Center position="absolute" inset="0">
+              <Button
+                colorScheme="black"
+                onClick={spin}
+                isLoading={spinning}
+                loadingText="뽑는 중..."
+                borderRadius="full"
+                fontWeight="bold"
+                color="white"
+                isDisabled={ticketCount <= 0}
+                _hover={{
+                  bgGradient: "linear(to-b, mint.500, mint.600)",
+                  boxShadow: "0 10px 24px rgba(0, 180, 150, 0.45)",
+                  transform: "translateY(-2px)",
+                }}
+                _active={{
+                  bgGradient: "linear(to-b, mint.600, mint.700)",
+                  transform: "translateY(0px)",
+                  boxShadow: "0 4px 12px rgba(0, 180, 150, 0.35)",
+                }}
+              >
+                룰렛 돌리기
+              </Button>
+            </Center>
+          </Box>
+        </Center>
+      </Box>
+    </Center>
   );
 }
