@@ -10,6 +10,7 @@ import { MainLoading, MainLoadingAbsolute } from "../../../../components/atoms/l
 import Slide from "../../../../components/layouts/PageSlide";
 import { GroupThumbnailCard } from "../../../../components/molecules/cards/GroupThumbnailCard";
 import TabNav from "../../../../components/molecules/navs/TabNav";
+import { STUDY_CREW_ID_MAPPING } from "../../../../constants/service/study/place";
 import { useToast } from "../../../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
 import { useGroupIdQuery } from "../../../../hooks/groupStudy/queries";
@@ -232,14 +233,8 @@ export default function Page() {
   const removeBrackets = (str: string) => str.slice(1, -1);
 
   const belong = userInfo?.belong ? removeBrackets(userInfo.belong) : null;
-  const STUDY_GROUP = {
-    "수원/용인": "270",
-    "성북/동대문/노원": "275",
-    "마포/당산/영등포": "274",
-    "성수/왕십리/건대": "273",
-    "강남/서초": "272",
-  };
-  const groupId = !belong ? null : STUDY_GROUP?.[belong];
+
+  const groupId = !belong ? null : STUDY_CREW_ID_MAPPING?.[belong];
 
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
 

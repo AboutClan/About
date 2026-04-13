@@ -18,15 +18,14 @@ export default function SquareItem({ item }: SquareItemProps) {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
-  console.log(item);
-  const onClick = (e) => {
+  console.log(item);  const onClick = (e) => {
     if (isGuest) {
       e.preventDefault();
       typeToast("guest");
       return;
     }
   };
-  console.log(15, item);
+
   return (
     <Link href={`/community/${item._id}?type`} onClick={onClick}>
       <Flex flexDir="column" borderBottom="var(--border)" px={5} py={3}>

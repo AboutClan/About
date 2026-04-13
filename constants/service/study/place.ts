@@ -6,6 +6,22 @@ export interface CrewLocationProps extends LocationProps {
   rating: number;
 }
 
+export const STUDY_CREW = [
+  "[마포/당산/영등포]",
+  "[성수/왕십리/건대]",
+  "[수원/용인]",
+  "[성북/동대문/노원]",
+  "[강남/서초]",
+] as const;
+
+export const STUDY_CREW_ID_MAPPING: Record<StudyCrew, string> = {
+  "[수원/용인]": "270",
+  "[성북/동대문/노원]": "275",
+  "[마포/당산/영등포]": "274",
+  "[성수/왕십리/건대]": "273",
+  "[강남/서초]": "272",
+};
+
 export const STUDY_CREW_PLACE_MAPPING: Record<StudyCrew, CrewLocationProps[]> = {
   "[성북/동대문/노원]": [
     {

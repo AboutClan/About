@@ -69,7 +69,7 @@ export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
 };
 
 interface StudyInviteProps extends StudyVoteProps {
-  userId: string;
+  userId?: string;
 }
 
 export const useStudyInviteMutation = (

@@ -1,130 +1,79 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { Input } from "../../components/atoms/Input";
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { PlusIcon } from "../../components/Icons/MathIcons";
-import InviteUserGroups from "../../components/molecules/groups/InviteUserGroups";
-import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import { useAllUserDataQuery } from "../../hooks/admin/quries";
-import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { StudyInviteDrawer } from "../../components/services/study/invite/StudyInviteDrawer";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { useGroupIdQuery } from "../../hooks/groupStudy/queries";
-import { useRealtimeInviteMutation } from "../../hooks/realtime/mutations";
-import { useStudyInviteMutation, useStudyVoteArrMutation } from "../../hooks/study/mutations";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { RealTimeVoteProps } from "../../types/models/studyTypes/requestTypes";
-import {
-  StudyConfirmedMemberProps,
-  StudyPlaceProps,
-} from "../../types/models/studyTypes/study-entity.types";
+import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
-import { StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
-import { searchName } from "../../utils/stringUtils";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyDateBar {
   date: string;
   members: StudyConfirmedMemberProps[];
   studyType: StudyType;
-  placeInfo: StudyPlaceProps;
-}
-interface PlaceProps {
-  locationDetail: string;
-  latitude: number;
-  longitude: number;
 }
 
-function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
+function StudyDateBar({ date, members, studyType }: IStudyDateBar) {
   const memberIdArr = members?.map(
     (member) => (member as StudyConfirmedMemberProps)?.user._id || "",
   );
-  const typeToast = useTypeToast();
+
   const toast = useToast();
-  const resetStudy = useResetStudyQuery();
+
   const userInfo = useUserInfo();
   const [isModal, setIsModal] = useState(false);
 
-  const [placeProps, setPlaceProps] = useState<PlaceProps>();
+  // const { mutate: inviteRealTimes } = useRealtimeInviteMutation(date, {
+  //   onSuccess() {
+  //     resetStudy();
+  //     typeToast("invite");
+  //   },
+  // });
+  // const { mutate: voteDateArr } = useStudyVoteArrMutation(dateArr, {
+  //   onSuccess() {
+  //     // if (selectedDates.length) {
+  //     //   if (canChange) {
+  //     //     toast("success", "스터디 변경 완료!");
+  //     //   } else {
+  //     //     toast("success", "스터디 신청 완료!");
+  //     //   }
+  //     // } else {
+  //     //   toast("success", "스터디 취소 완료!");
+  //     // }
+  //     // resetStudy();
+  //     // onClose();
+  //   },
+  // });
 
-  const [inviteUser, setInviteUser] = useState<UserSimpleInfoProps>(null);
-  const [dateArr, setDateArr] = useState<string[]>([]);
-
-  const { mutate: inviteStudy } = useStudyInviteMutation(placeProps ? dateArr[0] : date, {
-    onSuccess() {
-      resetStudy();
-      typeToast("invite");
-    },
-  });
-  const { mutate: inviteRealTimes } = useRealtimeInviteMutation(date, {
-    onSuccess() {
-      resetStudy();
-      typeToast("invite");
-    },
-  });
-  const { mutate: voteDateArr } = useStudyVoteArrMutation(dateArr, {
-    onSuccess() {
-      // if (selectedDates.length) {
-      //   if (canChange) {
-      //     toast("success", "스터디 변경 완료!");
-      //   } else {
-      //     toast("success", "스터디 신청 완료!");
-      //   }
-      // } else {
-      //   toast("success", "스터디 취소 완료!");
-      // }
-      // resetStudy();
-      // onClose();
-    },
-  });
-  console.log(voteDateArr);
-  useEffect(() => {
-    if (!inviteUser) return;
-
-    if (placeProps) {
-      const voteInfo: StudyVoteProps = {
-        ...placeProps,
-        userId: inviteUser._id,
-        start: dayjs(date).hour(18).minute(0),
-        end: dayjs(date).hour(22).minute(0),
-        eps: 1,
-      };
-      inviteStudy({ userId: inviteUser._id, ...voteInfo });
-      return;
-    }
-
-    if (studyType === "soloRealTimes" || studyType === "openRealTimes") {
-      const voteInfo: RealTimeVoteProps = {
-        place: {
-          latitude: placeInfo?.location.latitude,
-          longitude: placeInfo?.location.longitude,
-          name: placeInfo?.location.name,
-          address: placeInfo?.location.address,
-        },
-        time: {
-          start: dayjs().hour(14).minute(0),
-          end: dayjs().hour(18).minute(0),
-        },
-        status: studyType === "soloRealTimes" ? "solo" : "participation",
-      };
-      inviteRealTimes({ userId: inviteUser._id, ...voteInfo });
-    } else {
-      const voteInfo: StudyVoteProps = {
-        latitude: placeInfo?.location.latitude,
-        longitude: placeInfo?.location.longitude,
-        locationDetail: placeInfo?.location.address,
-        start: dayjs(date).hour(14).minute(0),
-        end: dayjs(date).hour(18).minute(0),
-        eps: 3,
-      };
-      inviteStudy({ userId: inviteUser._id, ...voteInfo });
-    }
-
-    setInviteUser(null);
-  }, [inviteUser]);
+  // if (studyType === "soloRealTimes" || studyType === "openRealTimes") {
+  //   const voteInfo: RealTimeVoteProps = {
+  //     place: {
+  //       latitude: placeInfo?.location.latitude,
+  //       longitude: placeInfo?.location.longitude,
+  //       name: placeInfo?.location.name,
+  //       address: placeInfo?.location.address,
+  //     },
+  //     time: {
+  //       start: dayjs().hour(14).minute(0),
+  //       end: dayjs().hour(18).minute(0),
+  //     },
+  //     status: studyType === "soloRealTimes" ? "solo" : "participation",
+  //   };
+  //   inviteRealTimes({ userId: inviteUser._id, ...voteInfo });
+  // } else {
+  //   const voteInfo: StudyVoteProps = {
+  //     latitude: placeInfo?.location.latitude,
+  //     longitude: placeInfo?.location.longitude,
+  //     locationDetail: placeInfo?.location.address,
+  //     start: dayjs(date).hour(14).minute(0),
+  //     end: dayjs(date).hour(18).minute(0),
+  //     eps: 3,
+  //   };
+  //   inviteStudy({ userId: inviteUser._id, ...voteInfo });
+  // }
 
   const isAdmin = userInfo?.role === "previliged";
 
@@ -156,154 +105,8 @@ function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
           {studyType === "participations" ? "스터디를 기다리고 있어요!" : "참여중이에요!"}
         </Box>
       </Box>
-      {isModal && (
-        <InviteDrawer
-          onClose={() => setIsModal(false)}
-          handleClick={(who, place) => {
-            setInviteUser(who);
-            setPlaceProps(place);
-          }}
-          date={date}
-          dateArr={dateArr}
-          setDateArr={setDateArr}
-          isAdmin={isAdmin}
-        />
-      )}
+      {isModal && <StudyInviteDrawer onClose={() => setIsModal(false)} />}
     </>
-  );
-}
-
-interface InviteDrawerProps {
-  isAdmin: boolean;
-  onClose: () => void;
-  handleClick: (who: UserSimpleInfoProps, place: PlaceProps) => void;
-  dateArr: string[];
-  setDateArr: DispatchType<string[]>;
-  date: string;
-}
-
-type PlaceType = "강남" | "홍대" | "사당" | "건대" | "노원";
-
-function InviteDrawer({
-  isAdmin,
-  onClose,
-  handleClick,
-  dateArr,
-  setDateArr,
-  date,
-}: InviteDrawerProps) {
-  const [users, setUsers] = useState<UserSimpleInfoProps[]>(null);
-  const [nameValue, setNameValue] = useState("");
-  const [placeName, setPlaceName] = useState<PlaceType>();
-
-  const { data: group } = useGroupIdQuery("118");
-
-  const { data: usersAll, isLoading } = useAllUserDataQuery(null);
-
-  const placeArr: PlaceType[] = ["강남", "홍대", "사당", "건대", "노원"];
-
-  useEffect(() => {
-    if (!usersAll || !group) return;
-    const groupUsers = group.participants.map((par) => par.user);
-    const totalUsers = Array.from(
-      new Map([...groupUsers, ...usersAll].map((user) => [user.uid, user])).values(),
-    );
-
-    if (nameValue) setUsers(searchName(totalUsers as UserSimpleInfoProps[], nameValue));
-    else setUsers(totalUsers as UserSimpleInfoProps[]);
-  }, [nameValue, usersAll, group]);
-
-  const PLACE_MAPPING: Record<PlaceType, PlaceProps> = {
-    강남: {
-      locationDetail: "서울특별시 강남구 역삼동 827-13 1층",
-      latitude: 37.496193,
-      longitude: 127.030907,
-    },
-    홍대: {
-      locationDetail: "서울특별시 마포구 합정동 366-1 더보이드빌딩 지하1층",
-      latitude: 37.547935,
-      longitude: 126.915129,
-    },
-    사당: {
-      locationDetail: "경기도 수원시 팔달구 인계동 1119-10 영성빌딩",
-      latitude: 37.264364,
-      longitude: 127.034008,
-    },
-    건대: {
-      locationDetail: "서울특별시 광진구 화양동 5-3 지하1층",
-      latitude: 37.542149,
-      longitude: 127.071458,
-    },
-    노원: {
-      locationDetail: "서울특별시 성북구 동선동2가 72",
-      latitude: 37.589527,
-      longitude: 127.019521,
-    },
-  };
-
-  return (
-    <RightDrawer title="인원 초대" onClose={onClose}>
-      {isAdmin && (
-        <>
-          <Flex mb={2}>
-            {[0, 1, 2, 3, 4, 5, 6, 7].map((n) => (
-              <Button
-                key={n}
-                onClick={() => {
-                  setDateArr([dayjsToStr(dayjs(date).add(n, "day"))]);
-                }}
-                colorScheme={
-                  dateArr.includes(dayjsToStr(dayjs(date).add(n, "day"))) ? "mint" : "gray"
-                }
-              >
-                {dayjsToFormat(dayjs(date).add(n, "day"), "D(ddd)")}
-              </Button>
-            ))}
-          </Flex>
-          <Flex justify="space-between">
-            {placeArr.map((place) => (
-              <Button
-                key={place}
-                colorScheme={placeName === place ? "mint" : "gray"}
-                onClick={() => {
-                  setPlaceName(place);
-                }}
-              >
-                {place}
-              </Button>
-            ))}
-          </Flex>
-        </>
-      )}
-      <Box mt="16px">
-        <Input
-          placeholder="이름 검색"
-          value={nameValue}
-          onChange={(e) => setNameValue(e.target.value)}
-          size="md"
-        />
-      </Box>
-      <Box
-        mb={5}
-        overflowY="auto"
-        css={{
-          "&::-webkit-scrollbar": { display: "none" },
-          scrollbarWidth: "none",
-        }}
-      >
-        {!isLoading && users ? (
-          <InviteUserGroups
-            users={users}
-            inviteUser={(who) => {
-              handleClick(who, PLACE_MAPPING[placeName]);
-              setUsers((old) => old.filter((old) => old.uid !== who.uid));
-            }}
-          />
-        ) : (
-          <MainLoadingAbsolute />
-        )}
-      </Box>
-    </RightDrawer>
   );
 }
 

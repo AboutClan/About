@@ -203,3 +203,12 @@ export const useUidsToUsersInfoQuery = (uids: string[], options?: QueryOptions<I
     },
     options,
   );
+export const useUserTestQuery = (options?: QueryOptions<void>) =>
+  useQuery<void, AxiosError, void>(
+    ["test"],
+    async () => {
+      const res = await axios.get<void>(`${SERVER_URI}/user/test`);
+      return res.data;
+    },
+    options,
+  );

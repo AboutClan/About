@@ -188,7 +188,7 @@ function StudyApplyDrawer({
       eps: 2,
     });
   };
-  console.log(15, selectedDates);
+
   return (
     <>
       <RightDrawer
