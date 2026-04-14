@@ -92,7 +92,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
 
       {isGuestModal && (
         <ModalLayout
-          title="기능 제한"
+          title="게스트 안내"
           setIsModal={closeGuestModal}
           footerOptions={{
             main: {

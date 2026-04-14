@@ -50,7 +50,7 @@ export default function RegisterComparation() {
 
         <Heading fontSize="2xl">동아리 비교</Heading>
         <Text color="gray.500">
-          어바웃은 한번의 가입으로 <b>20대 모든 순간</b>을 함께해요.
+          어바웃은 <b>한번의 가입</b>으로 <b>20대 모든 순간</b>을 함께해요.
         </Text>
       </Stack>
 
@@ -71,7 +71,7 @@ export default function RegisterComparation() {
           <UnderlinedLines
             lines={[
               "평균 회비 30,000원",
-              "활동 기간 제한",
+              "3개월 단위 활동",
               "하나의 관심사만 반영",
               "번거로운 가입 절차",
               "동아리 일정에 종속",
@@ -101,13 +101,13 @@ export default function RegisterComparation() {
 
           <UnderlinedLines
             lines={[
-              "최초 가입비 20,000원",
-              "20대 전체 기간 동안 활동",
+              "단 1회, 20,000원",
+              "20대 전 기간 활동",
               "100개 이상의 다양한 모임",
               "원터치 소모임 가입",
               "내가 원할 때 참여 가능",
               "앱을 통한 간편한 참여/관리",
-              "한번의 가입으로 20대 전체 기간 동안, 내가 원하는 주제를 원하는 때 참여할 수 있음",
+              "한 번의 가입으로 20대 전체 기간 동안, 내가 원하는 주제를 원하는 때 참여할 수 있음",
             ]}
             size="lg"
           />

@@ -25,13 +25,13 @@ export const VALUE_BOX_COL_ITEMS: ValueBoxCol2ItemProps[] = [
   {
     left: `동아리 가입비`,
     right: "15,000원",
-    lineThroughText: "20,000원",
+    lineThroughText: "25,000원",
     leftSub: `(${dayjs().add(1, "month").month() + 1}월 중 인상 예정)`,
   },
   {
     left: "포인트 충전",
     right: "5,000원",
-    leftSub: "(활동에 쓰이는 재화)",
+    leftSub: "(보증금 등에 사용)",
   },
   {
     left: "최종 결제 금액",

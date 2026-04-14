@@ -1,7 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link, { LinkProps } from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+import { MouseEvent } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -28,9 +29,9 @@ interface INavButton extends INavButtonProps {
 type Category = "홈" | "스터디" | "소셜링" | "커뮤니티" | "내 정보";
 
 export default function BottomNav({ hasBottomNav }: { hasBottomNav: boolean }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
+  const router = useRouter();
+  const pathname = router.pathname;
+  const asPath = router.asPath;
 
   return (
     <Flex
@@ -51,11 +52,17 @@ export default function BottomNav({ hasBottomNav }: { hasBottomNav: boolean }) {
           switch (category) {
             case "스터디":
               return `?date=${dayjsToStr(dayjs())}`;
-            case undefined:
-              newSearchParams.append("write", "on");
-              return pathname + "?" + newSearchParams.toString();
+
+            case undefined: {
+              const currentQueryString = asPath.split("?")[1] || "";
+              const newSearchParams = new URLSearchParams(currentQueryString);
+              newSearchParams.set("write", "on");
+              return `?${newSearchParams.toString()}`;
+            }
+
+            default:
+              return "";
           }
-          return "";
         };
 
         return (
@@ -63,7 +70,7 @@ export default function BottomNav({ hasBottomNav }: { hasBottomNav: boolean }) {
             idx={idx}
             text={item.text}
             key={idx}
-            url={item.url + `${getParams(item.text)}`}
+            url={item.url + getParams(item.text)}
             activeIcon={item.activeIcon}
             defaultIcon={item.defaultIcon}
             isActive={pathname === item.url}
@@ -75,12 +82,22 @@ export default function BottomNav({ hasBottomNav }: { hasBottomNav: boolean }) {
 }
 
 function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavButton) {
+  const router = useRouter();
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const handleMove = useHandleMove(setSlideDirection);
   const isGuest = useCheckGuest();
 
-  const onClick = () => {
-    if (isGuest) {
+  const onClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (isGuest && text === "내 정보") {
+      router.replace({
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          guest: "on",
+        },
+      });
+      e.stopPropagation();
+      e.preventDefault();
       return;
     }
     handleMove();

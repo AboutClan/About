@@ -1,4 +1,4 @@
-import { Badge, Flex, Heading, ListItem, Stack, Text , UnorderedList } from "@chakra-ui/react";
+import { Badge, Flex, Heading, ListItem, Stack, Text, UnorderedList } from "@chakra-ui/react";
 
 import ValueBoxCol2 from "../../../components/molecules/ValueBoxCol2";
 import { VALUE_BOX_COL_ITEMS } from "../../../pages/register/fee";
@@ -19,7 +19,6 @@ function RegisterFee() {
         </Stack>{" "}
         <Flex direction="column" w="full">
           <ValueBoxCol2 items={VALUE_BOX_COL_ITEMS} />
-
           <UnorderedList fontSize="12px" color="gray.500" mt="10px" ml={0}>
             <ListItem textAlign="start">
               7일 이내 탈퇴 시, 이용 이력이 없으면 전액 환불 (포인트 제외)

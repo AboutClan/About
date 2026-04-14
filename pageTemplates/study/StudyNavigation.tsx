@@ -340,17 +340,16 @@ function StudyNavigation({
 
   const handleDirectAction = (drawerType: DirectAction) => {
     if (isGuest) {
-      if (isGuest) {
-        router.replace({
-          pathname: router.pathname,
-          query: {
-            ...router.query,
-            guest: "on",
-          },
-        });
-        return;
-      }
+      router.replace({
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          guest: "on",
+        },
+      });
+      return;
     }
+
     switch (drawerType) {
       case "dailyVote":
         participate({ placeId: id, ...voteTime });
