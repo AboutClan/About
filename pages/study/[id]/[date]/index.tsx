@@ -290,12 +290,7 @@ export default function Page() {
               </Box>
             </Slide>
             <Slide>
-              <StudyDateBar
-                date={date}
-                members={members}
-                studyType={studyType}
-                placeInfo={placeInfo}
-              />
+              <StudyDateBar date={date} members={members} studyType={studyType} />
               {isOpenStudy && members?.length && (
                 <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
               )}
