@@ -151,14 +151,14 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
             isEnd: true,
           };
         }
-        // if (data.id === 4853) {
-        //   return {
-        //     text: "4월 6일(월)에 멤버 선택 가능!",
-        //     type: "black",
-        //     isReverse: true,
-        //     isEnd: true,
-        //   };
-        // }
+        if (data.id > 4870) {
+          return {
+            text: "4월 20일(월)에 멤버 선택 가능!",
+            type: "black",
+            isReverse: true,
+            isEnd: true,
+          };
+        }
 
         return {
           text: "멤버 선택하기",

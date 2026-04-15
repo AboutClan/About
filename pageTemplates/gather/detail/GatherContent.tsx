@@ -47,7 +47,7 @@ function GatherContent({ content, gatherList, postImage, location, isOpenGather,
           />
         </Box>
       ) : isOpenGather ? (
-        <ProcessGuide type={id === 4853 ? 2 : 1} />
+        <ProcessGuide type={id > 4870 ? 3 : id === 4853 ? 2 : 1} />
       ) : (
         <Box px={5} borderTop="var(--border)" mt={5}>
           <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} highlightSide="right" />
