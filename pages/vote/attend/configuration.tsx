@@ -19,7 +19,6 @@ import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserRandomTicketMutation } from "../../../hooks/user/mutations";
-import { PointInfoProps } from "../../../types/common";
 import {
   StudyConfirmedSetProps,
   StudyType,
@@ -70,14 +69,14 @@ function Configuration() {
   // const studyType = myStudyResult?.status;
 
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
-    onSuccess(data) {
-      handleAttendSuccess(data);
+    onSuccess() {
+      handleAttendSuccess();
     },
   });
 
   const { mutate: attendRealTimeStudy, isLoading: isLoading2 } = useRealTimeAttendMutation(date, {
-    onSuccess(data) {
-      handleAttendSuccess(data);
+    onSuccess() {
+      handleAttendSuccess();
     },
   });
 
@@ -101,8 +100,7 @@ function Configuration() {
 
   const { mutate: updateUserTicket } = useUserRandomTicketMutation();
 
-  const handleAttendSuccess = async (data: PointInfoProps) => {
-    console.log(data);
+  const handleAttendSuccess = async () => {
     resetStudy();
     if (type === "results") {
       setLocalStorageObj(STUDY_ATTEND_AT, getTodayStr());

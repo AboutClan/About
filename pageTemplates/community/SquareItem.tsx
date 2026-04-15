@@ -18,7 +18,8 @@ export default function SquareItem({ item }: SquareItemProps) {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
-  console.log(item);  const onClick = (e) => {
+
+  const onClick = (e) => {
     if (isGuest) {
       e.preventDefault();
       typeToast("guest");

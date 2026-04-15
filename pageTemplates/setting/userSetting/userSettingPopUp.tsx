@@ -57,7 +57,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
 
   const studyRecordStr = localStorage.getItem(STUDY_ATTEND_AT);
   const studyRecord = JSON.parse(studyRecordStr);
-  console.log(52, studyRecordStr, studyRecord);
+
   const { data: membershipLog, isLoading: isLoading2 } = useUserMembershipLogQuery();
 
   useEffect(() => {

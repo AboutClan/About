@@ -120,7 +120,7 @@ function GroupPage() {
     //   setBackUrl(null);
     // };
   }, [status, category]);
-  console.log(cursor);
+
   useEffect(() => {
     if (!router.isReady) return;
     const { filter, category, ...rest } = router.query;

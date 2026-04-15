@@ -41,7 +41,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
   const typeToast = useTypeToast();
   const inputRef = useRef(null);
   const setTransferGather = useSetRecoilState(transferGatherDataState);
-  console.log(isOpenGather);
+
   const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
@@ -99,7 +99,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
   const myUid = session?.user.uid;
   const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
   const groupId = router.query.id;
-  console.log(31, isParticipant);
+
   const queryClient = useQueryClient();
   const { mutate: cancel, isLoading: isLoading4 } = useGatherParticipationMutation(
     "delete",
@@ -133,7 +133,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
   };
   const isGuest = userInfo?.role === "guest";
   const diffDate = dayjs(data.date).startOf("d").diff(dayjs().startOf("d"), "d");
-  console.log(52, data.status);
+
   const getButtonSettings = (): {
     text: string;
     handleFunction?: () => void;
@@ -266,7 +266,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
         },
       };
     }
-    console.log(3333);
+
     if (isMax) {
       return {
         text: "빈자리 생기면 참여 요청",

@@ -17,7 +17,7 @@ function GatherTicketLogSection() {
 
   const [isModal, setIsModal] = useState(false);
   const { data: logsData, refetch } = useTicketSystemLogQuery("gather");
-  console.log(24, logsData);
+
   const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate, isLoading } = useUserTicketMutation({
     onSuccess() {

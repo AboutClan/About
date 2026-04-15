@@ -105,7 +105,7 @@ function GatherReview() {
       setUserReviewArr(gather.participants.map((p) => ({ toUid: p.user.uid, type: "good" })));
     }
   }, [gather]);
-  console.log(userReviewArr);
+
   const handleSubmit = () => {
     if (!gather) return;
 

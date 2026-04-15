@@ -122,7 +122,6 @@ export const getCalendarDates = (
         const isCutoffDisabled =
           current.isBefore(cutoffDay, "day") || current.isSame(cutoffDay, "day");
 
-        console.log(current, isCutoffDisabled);
         calendar.push({
           date: dayjsToStr(current),
           isDisabled: selectedDates.includes(dayjsToStr(current))

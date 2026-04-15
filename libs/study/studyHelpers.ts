@@ -38,7 +38,6 @@ export const getMyStudyDateArr = (
 };
 
 export const getStudyBadge = (studyType: StudyType, isFutureDate: boolean) => {
-  console.log(1234, studyType);
   switch (studyType) {
     case "participations":
       return { text: "스터디 매칭", colorScheme: "blue" };

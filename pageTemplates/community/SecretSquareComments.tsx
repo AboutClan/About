@@ -41,7 +41,7 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
   const isMine = author === userInfo?._id;
   const findMyUserId = commentArr?.find((c) => c.user._id === userInfo?._id)?.user?._id;
   let myName;
-  console.log(12, findMyUserId);
+
   useEffect(() => {
     setCommentArr(comments);
   }, [comments]);
@@ -69,7 +69,6 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
     return text.replace(/^@익명\s*\d+\s*/, "");
   };
   const onSubmit = async (value: string) => {
-    console.log(1, myName, replyProps?.replyName);
     let value2 = value;
     if (replyProps) {
       if (myName === replyProps.replyName) {
@@ -107,7 +106,7 @@ function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquar
         }
       }
     });
-  console.log(15, myName);
+
   return (
     <>
       <Slide isNoPadding>

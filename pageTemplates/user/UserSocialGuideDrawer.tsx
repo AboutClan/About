@@ -48,7 +48,7 @@ function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
   const { data: userInfo } = useUserInfoQuery();
 
   const isGirl = userInfo?.gender === "여성";
-  console.log(isGirl);
+
   const [isBenefit, setIsBenefit] = useState(true);
 
   const benefitArr: { category: string; text: string }[] = isGirl

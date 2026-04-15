@@ -76,9 +76,7 @@ function StudyApplyDrawer({
       onClose();
     },
   });
-  console.log(12, isFirstPage);
   useEffect(() => {
-    console.log(5, location);
     if (location) {
       setVoteLocation(location);
       return;

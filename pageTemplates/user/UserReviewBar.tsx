@@ -14,7 +14,7 @@ function UserReviewBar({ user, hasTop = true }: UserReviewBarProps) {
   const { data: reviewArr } = useUserReviewQuery(user?.uid, {
     enabled: !!user?.uid,
   });
-  console.log(reviewArr);
+
   const totalCnt = reviewArr?.totalCnt;
 
   const calculatePercent = (cnt: number) => {
