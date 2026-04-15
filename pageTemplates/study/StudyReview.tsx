@@ -77,7 +77,7 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
               setIsReviewDrawer(true);
             }}
           >
-            장소 별점 체크하기
+            카공 장소 별점 남기기
           </Button>
         </Flex>{" "}
       </Box>
