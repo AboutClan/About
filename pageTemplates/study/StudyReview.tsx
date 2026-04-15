@@ -7,7 +7,7 @@ import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewB
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import ReviewForm from "../../components/organisms/StarRatingForm";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useCheckGuest, useUserInfo } from "../../hooks/custom/UserHooks";
+import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import {
   StudyPlaceProps,
   StudyRatingProps,
@@ -22,11 +22,10 @@ interface StudyReviewProps {
 function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
   const toast = useToast();
   const isGuest = useCheckGuest();
-  const userInfo = useUserInfo();
   const typeToast = useTypeToast();
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
 
-  const ratings = placeInfo?.ratings;
+  const ratings = placeInfo?.ratings || [];
 
   const temp: StudyRatingProps = {
     comment: "여러분의 리뷰를 기다리고 있어요!",
