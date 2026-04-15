@@ -92,7 +92,7 @@ export function StudyThumbnailCard({
               </Badge>
             </Flex>
           </Flex>
-          <Subtitle>
+          <Box color="gray.500" fontSize="11px" lineHeight="12px">
             <Flex>
               {place.date && (
                 <Box as="span" fontWeight={600}>
@@ -123,7 +123,7 @@ export function StudyThumbnailCard({
                 {place.address}
               </Box>
             </Flex>
-          </Subtitle>
+          </Box>
           <Flex mb={1} mt="auto" alignItems="center" justify="space-between">
             <Box>
               <AvatarGroupsOverwrap users={participants} maxCnt={status ? 8 : VOTER_SHOW_MAX} />
@@ -220,10 +220,4 @@ const Title = styled(SingleLineText)`
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
-`;
-
-const Subtitle = styled(SingleLineText)`
-  color: var(--gray-500);
-  font-size: 11px;
-  line-height: 12px;
 `;
