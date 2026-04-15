@@ -16,7 +16,7 @@ function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
   const { etc, mood, space, table, comment, createdAt } = review;
 
   const total = (etc + mood + space + table) / 4;
- 
+
   return (
     <Flex flexDir="column">
       <Flex align="center" justify="space-between">
@@ -25,7 +25,7 @@ function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
             user={{
               avatar: {
                 type: Math.ceil(Math.random() * 35),
-                bg: Math.ceil(Math.random() * 10),
+                bg: Math.ceil(Math.random() * 8),
               },
             }}
             size="xs1"

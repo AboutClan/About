@@ -70,10 +70,10 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
                 toast("info", "스터디 출석 후에 체크할 수 있어요!");
                 return;
               }
-              if (ratings?.some((r) => r.user === userInfo?._id)) {
-                toast("info", "이미 리뷰를 완료한 스터디 장소예요!");
-                return;
-              }
+              // if (ratings?.some((r) => r.user === userInfo?._id)) {
+              //   toast("info", "이미 리뷰를 완료한 스터디 장소예요!");
+              //   return;
+              // }
               setIsReviewDrawer(true);
             }}
           >
