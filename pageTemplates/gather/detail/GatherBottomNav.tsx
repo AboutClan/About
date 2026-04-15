@@ -99,7 +99,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
   const myUid = session?.user.uid;
   const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
   const groupId = router.query.id;
-
+  console.log(31, isParticipant);
   const queryClient = useQueryClient();
   const { mutate: cancel, isLoading: isLoading4 } = useGatherParticipationMutation(
     "delete",
@@ -166,14 +166,15 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
             router.push(`/gather/${id}/openGather`);
           },
         };
-      } else {
-        return {
-          text: "신청이 마감되었습니다! (4월 5일까지)",
-          type: "black",
-          isReverse: true,
-          isEnd: true,
-        };
       }
+      // else {
+      //   return {
+      //     text: "신청이 마감되었습니다! (4월 5일까지)",
+      //     type: "black",
+      //     isReverse: true,
+      //     isEnd: true,
+      //   };
+      // }
     }
     switch (data?.status) {
       case "open":
