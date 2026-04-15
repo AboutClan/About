@@ -26,7 +26,7 @@ function StudyLinkModal({ studyType, date, onClose }: StudyLinkModalProps) {
         type === "openStudy"
           ? "스터디 진행 예정!"
           : type === "result"
-          ? "스터디 매칭 성공!"
+          ? "스터디 안내"
           : "스터디 매칭 예정!"
       }
       footerOptions={{
@@ -59,7 +59,7 @@ function StudyLinkModal({ studyType, date, onClose }: StudyLinkModalProps) {
       <p>
         {type === "result" ? (
           <>
-            스터디 매칭에 성공했어요! <br />
+            스터디 진행이 확정됐어요! <br />
           </>
         ) : (
           <>

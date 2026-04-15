@@ -16,7 +16,7 @@ function StudyPlaceMap({ centerLocation }: StudyPlaceMapProps) {
   console.log(centerLocation);
   return (
     <>
-      <Box px={5} mt={5} mb={2}>
+      <Box px={5} mt={1} mb={2}>
         <Box fontSize="18px" mb={4} fontWeight="bold"></Box>
         <SectionHeader
           title="ABOUT 카공 스터디 장소"

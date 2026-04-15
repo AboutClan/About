@@ -31,7 +31,7 @@ function GatherGuide({ isAdmin, isOpenGather }: GatherGuideProps) {
       )}
       {isOpenGather ? (
         <Box mt={10} mx={5}>
-          <Box mb={2} fontSize="16px" fontWeight="semibold">
+          <Box mb={3} fontSize="16px" fontWeight="semibold">
             오픈 번개 안내
           </Box>
           <InfoList
@@ -49,7 +49,7 @@ function GatherGuide({ isAdmin, isOpenGather }: GatherGuideProps) {
         </Box>
       ) : (
         <Box mt={10} mx={5}>
-          <Box mb={2} fontSize="16px" fontWeight="semibold">
+          <Box mb={3} fontSize="16px" fontWeight="semibold">
             번개 모임 안내
           </Box>
           <InfoList

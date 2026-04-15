@@ -10,7 +10,10 @@ import { MainLoading, MainLoadingAbsolute } from "../../../../components/atoms/l
 import Slide from "../../../../components/layouts/PageSlide";
 import { GroupThumbnailCard } from "../../../../components/molecules/cards/GroupThumbnailCard";
 import TabNav from "../../../../components/molecules/navs/TabNav";
-import { STUDY_CREW_ID_MAPPING } from "../../../../constants/service/study/place";
+import {
+  STUDY_CREW_ID_MAPPING,
+  STUDY_CREW_PLACE_MAPPING,
+} from "../../../../constants/service/study/place";
 import { useToast } from "../../../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
 import { useGroupIdQuery } from "../../../../hooks/groupStudy/queries";
@@ -31,10 +34,12 @@ import StudyNearMap from "../../../../pageTemplates/study/StudyNearMap";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyPendingSection from "../../../../pageTemplates/study/StudyPendingSection";
 import StudyPlaceMap from "../../../../pageTemplates/study/StudyPlaceMap";
+import StudyReviewSection from "../../../../pageTemplates/study/StudyReview";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
+  StudyCrew,
   StudyParticipationProps,
 } from "../../../../types/models/studyTypes/study-entity.types";
 import {
@@ -139,8 +144,6 @@ export default function Page() {
     studyType !== "participations" &&
     confirmedSet?.find((set) => set.study.place._id === id)?.study;
 
-  const myBelong = userInfo?.belong;
-
   const userId = userInfo?._id;
 
   const getMyStudyInfo = () => {
@@ -206,11 +209,17 @@ export default function Page() {
           ...study.study.members[0],
         }))
       : findStudy?.members;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const entry = Object.entries(STUDY_CREW_PLACE_MAPPING).find(([_, places]) =>
+    places.some((s) => s.name === findStudy?.place?.location?.name),
+  );
+
+  const crewKey = entry?.[0] as StudyCrew;
 
   const members =
     tab === "스터디 크루"
-      ? (members2 as StudyParticipationProps[])?.filter(
-          (member) => member?.user?.belong === userInfo?.belong,
+      ? (members2 as StudyParticipationProps[])?.filter((member) =>
+          crewKey ? member?.user?.belong === crewKey : !!member?.user?.belong,
         )
       : members2;
 
@@ -230,11 +239,7 @@ export default function Page() {
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
 
-  const removeBrackets = (str: string) => str.slice(1, -1);
-
-  const belong = userInfo?.belong ? removeBrackets(userInfo.belong) : null;
-
-  const groupId = !belong ? null : STUDY_CREW_ID_MAPPING?.[belong];
+  const groupId = !crewKey ? null : STUDY_CREW_ID_MAPPING?.[crewKey];
 
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
 
@@ -275,7 +280,7 @@ export default function Page() {
                     {
                       text: "스터디 크루",
                       func: () => {
-                        if (!myBelong) {
+                        if (!userInfo?.belong) {
                           toast(
                             "info",
                             "가입중인 스터디 크루가 없습니다. 스터디 소모임에서 가입할 수 있어요!",
@@ -340,7 +345,7 @@ export default function Page() {
                 </Slide>
               </>
             ) : null}
-            {studyType === "participations" && tab === "스터디 크루" && group ? (
+            {tab === "스터디 크루" && group ? (
               <>
                 <Box h={2} bg="gray.100" my={4} />
                 <Slide>
@@ -355,41 +360,67 @@ export default function Page() {
             ) : null}{" "}
             <Box h={2} bg="gray.100" my={4} />
             <Box mx={5}>
-              <Box mb={2} fontSize="16px" fontWeight="semibold">
-                스터디 규칙 안내
+              <Box mb={3} fontSize="16px" fontWeight="semibold">
+                {tab === "스터디 크루" ? "스터디 크루 혜택" : "스터디 규칙 안내"}
               </Box>
-              <InfoList
-                items={[
-                  "어바웃 멤버 누구나 자유롭게 신청할 수 있습니다.",
-                  "당일 오전 9시에 스터디가 확정됩니다.",
-                  "스터디 신청 & 출석 시에 포인트가 적립됩니다.",
-                  "스터디 확정 후 불참은 1,000 Point가 차감됩니다.",
-                  "스터디 신청 후 잠수는 2,000 Point가 차감됩니다.",
-                  "스터디 당일 참여는 빈자리가 있는 경우에만 가능합니다.",
-                  "스터디 종료 후, 멤버 후기 평가를 할 수 있습니다.",
-                ]}
-                isLight
-              />
+              {tab === "일반 스터디" ? (
+                <InfoList
+                  items={[
+                    "어바웃 멤버 누구나 자유롭게 신청할 수 있습니다.",
+                    "당일 오전 9시에 스터디가 확정됩니다.",
+                    "스터디 출석 시 최대 500 Point가 적립됩니다.",
+                    "스터디 확정 후 불참은 1,000 Point가 차감됩니다.",
+                    "스터디 신청 후 잠수는 2,000 Point가 차감됩니다.",
+                    "스터디 당일 참여는 빈자리가 있는 경우에만 가능합니다.",
+                    "스터디 종료 후, 멤버 후기 평가를 할 수 있습니다.",
+                  ]}
+                  isLight
+                />
+              ) : (
+                <InfoList
+                  items={[
+                    "해당 지역 스터디에 우선 매칭됩니다.",
+                    "정원이 마감되어도 추가 참여가 가능합니다.",
+                    "스터디 출석 시 [이벤트 뽑기권]이 지급됩니다.",
+                    "같은 지역 인원들과 다양한 활동을 할 수 있습니다.",
+                  ]}
+                  isLight
+                />
+              )}
             </Box>{" "}
             <Box h={2} bg="gray.100" my={4} />
             {studyType === "participations" && (
-              <StudyPlaceMap
-                centerLocation={
-                  myStudyInfo
-                    ? {
-                        lat: (myStudyInfo as StudyParticipationProps).location.latitude,
-                        lon: (myStudyInfo as StudyParticipationProps).location.longitude,
-                      }
-                    : {
-                        lat: userInfo?.locationDetail.latitude,
-                        lon: userInfo?.locationDetail.longitude,
-                      }
-                }
-              />
+              <>
+                <StudyPlaceMap
+                  centerLocation={
+                    myStudyInfo
+                      ? {
+                          lat: (myStudyInfo as StudyParticipationProps).location.latitude,
+                          lon: (myStudyInfo as StudyParticipationProps).location.longitude,
+                        }
+                      : {
+                          lat: userInfo?.locationDetail.latitude,
+                          lon: userInfo?.locationDetail.longitude,
+                        }
+                  }
+                />
+                <Box h={5} />
+              </>
             )}
             {placeInfo && studyType === "results" && date === getTodayStr() && (
-              <StudyNearMap centerPlace={placeInfo} />
+              <>
+                <StudyNearMap
+                  centerPlace={placeInfo}
+                  placeId={placeInfo?._id}
+                  defaultLocation={{
+                    lat: placeInfo?.location?.latitude,
+                    lon: placeInfo?.location?.longitude,
+                  }}
+                />
+                <Box h={2} bg="gray.100" my={4} />
+              </>
             )}
+            <StudyReviewSection placeInfo={placeInfo} />
           </Box>
 
           <StudyNavigation
@@ -417,17 +448,7 @@ export default function Page() {
             )} */}
 
           {(studyType === "openRealTimes" || studyType === "results") && (
-            <StudyExtraButton
-              date={date}
-              placeId={placeInfo?._id}
-              myStudyInfo={myStudyInfo as StudyConfirmedMemberProps}
-              myStudyStatus={myStudyStatus}
-              studyType={studyType}
-              defaultLocation={{
-                lat: placeInfo?.location?.latitude,
-                lon: placeInfo?.location?.longitude,
-              }}
-            />
+            <StudyExtraButton myStudyInfo={myStudyInfo as StudyConfirmedMemberProps} />
           )}
 
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}

@@ -125,13 +125,11 @@ function UserScoreGuideDrawer({ onClose }: UserScoreGuideDrawerProps) {
             동아리 규칙
           </Box>
           <Box as="p" textAlign="end">
-            월 최소 활동 점수는 <b>10점</b>이에요.
+            월 최소 활동 점수는 <b>10점</b>으로,
             <br />
-            출석, 모임, 공부 등 쉽게 채울 수 있고,
+            출석만 해도 쉽게 채울 수 있어요.
             <br />
-            미달 시 <b>1,000 Point</b>가 차감돼요.
-            <br />
-            언제든 &#39;휴식 신청&#39;도 가능해요.
+            미달 시 <b>1,000 포인트</b>가 차감돼요.
           </Box>
         </Flex>
       </Flex>{" "}
@@ -139,12 +137,12 @@ function UserScoreGuideDrawer({ onClose }: UserScoreGuideDrawerProps) {
         <Avatar size="xl2" user={{ avatar: { type: 16, bg: 8 } }} />
         <Flex flexDir="column">
           <Box fontSize="18px" fontWeight="bold" color="mint" mb={1}>
-            동아리 점수 보상
+            활동 점수 보상
           </Box>
           <Box as="p" fontSize="14px">
             동아리 점수를 모으면
             <br />
-            아바타, 배지, 포인트를 획득할 수 있어요!
+            여러 상품을 획득할 수 있어요!
           </Box>
         </Flex>
       </Flex>
@@ -155,9 +153,9 @@ function UserScoreGuideDrawer({ onClose }: UserScoreGuideDrawerProps) {
             월간 랭킹 보상
           </Box>
           <Box as="p" textAlign="end">
-            매월 점수 랭킹 정산으로
+            매월 활동 랭킹 정산으로
             <br />
-            최대 10,000 Point가 지급돼요.
+            최대 <b>10,000 포인트</b>가 지급돼요.
           </Box>
         </Flex>
       </Flex>
@@ -169,7 +167,7 @@ function UserScoreGuideDrawer({ onClose }: UserScoreGuideDrawerProps) {
           </Box>
           <Box as="p">
             만약 이번 달 활동이 어렵다면,
-            <br />내 정보에서 미리 [휴식 신청]을 해보세요!
+            <br />내 정보에서 [휴식 신청]을 해보세요!
           </Box>
         </Flex>
       </Flex>{" "}
