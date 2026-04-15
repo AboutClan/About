@@ -197,7 +197,7 @@ function Configuration() {
 
   return (
     <>
-      <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
+      <Box minH="calc(100dvh)" bgColor="white">
         <Header title="" isBorder={false} />
         <Slide>
           <PageIntro

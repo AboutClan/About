@@ -16,9 +16,10 @@ import { getTodayStr } from "../../utils/dateTimeUtils";
 
 interface StudyReviewProps {
   placeInfo: StudyPlaceProps;
+  isArrived: boolean;
 }
 
-function StudyReviewSection({ placeInfo }: StudyReviewProps) {
+function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
   const toast = useToast();
   const isGuest = useCheckGuest();
   const userInfo = useUserInfo();
@@ -63,6 +64,10 @@ function StudyReviewSection({ placeInfo }: StudyReviewProps) {
             onClick={() => {
               if (isGuest) {
                 typeToast("guest");
+                return;
+              }
+              if (!isArrived) {
+                toast("info", "스터디 출석 후에 체크할 수 있어요!");
                 return;
               }
               if (ratings?.some((r) => r.user === userInfo?._id)) {

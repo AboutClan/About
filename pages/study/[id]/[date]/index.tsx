@@ -250,7 +250,7 @@ export default function Page() {
       {isPassedSolo || studyPassedData || studySet ? (
         <>
           <StudyHeader date={date} placeInfo={placeInfo} />
-          <Box mb={20}>
+          <Box mb="92px">
             <Slide isNoPadding>
               <StudyCover studyType={studyType} coverImage={placeInfo?.coverImage} />
               <StudyOverview date={date} placeInfo={placeInfo} studyType={studyType} />
@@ -420,7 +420,14 @@ export default function Page() {
                 <Box h={2} bg="gray.100" my={4} />
               </>
             )}
-            {placeInfo && <StudyReviewSection placeInfo={placeInfo} />}
+            {placeInfo && (
+              <StudyReviewSection
+                placeInfo={placeInfo}
+                isArrived={
+                  (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type === "arrived"
+                }
+              />
+            )}
           </Box>
 
           <StudyNavigation
