@@ -113,11 +113,15 @@ export function GatherThumbnailCard({
                 {category}
               </Badge>
             </Flex>
-            {(age[0] !== 19 || age[1] !== 28) && (
+            {isOpenGather ? (
+              <Badge size="md" ml={1} variant="subtle" colorScheme="blue">
+                오픈 번개
+              </Badge>
+            ) : age[0] !== 19 || age[1] !== 28 ? (
               <Badge size="md" variant="subtle" colorScheme="blue">
                 만 {age[0]} ~ {age[1]}세
               </Badge>
-            )}
+            ) : null}
           </Flex>
           <Title>{title}</Title>
           <Subtitle>

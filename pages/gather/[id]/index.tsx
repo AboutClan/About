@@ -44,7 +44,7 @@ function GatherDetail() {
       router.back();
     },
   });
-  console.log(2, gather);
+
   const isOpenGather = gather?.category === "openGather";
 
   const groupId = gather?.groupId;
@@ -66,7 +66,7 @@ function GatherDetail() {
       router.push(`/login?status=before&page=gather/${id}`);
     }
   }, [session]);
-  console.log("g", gather);
+
   return (
     <>
       {gather ? (
