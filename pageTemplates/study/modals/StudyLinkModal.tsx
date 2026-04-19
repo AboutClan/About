@@ -3,17 +3,19 @@ import dayjs from "dayjs";
 import Image from "next/image";
 
 import { ModalLayout } from "../../../modals/Modals";
+import { CoordinatesProps } from "../../../types/common";
 import { StudyType } from "../../../types/models/studyTypes/study-set.types";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import { navigateExternalLink } from "../../../utils/navigateUtils";
+import { navigateLocationToLink } from "../StudyMembers";
 
 interface StudyLinkModalProps {
   date: string;
   onClose: () => void;
   studyType: StudyType;
+  coordinates: CoordinatesProps;
 }
 
-function StudyLinkModal({ studyType, date, onClose }: StudyLinkModalProps) {
+function StudyLinkModal({ studyType, date, onClose, coordinates }: StudyLinkModalProps) {
   const type =
     studyType === "openRealTimes" && date !== dayjsToStr(dayjs())
       ? "openStudy"
@@ -33,13 +35,14 @@ function StudyLinkModal({ studyType, date, onClose }: StudyLinkModalProps) {
         main: {
           text: "입 장",
           func: () => {
-            navigateExternalLink("https://open.kakao.com/o/gCRegnOh");
+            navigateLocationToLink({ latitude: coordinates.lat, longitude: coordinates.lon });
+
             localStorage.setItem("studyLink", date);
             onClose();
           },
         },
         sub: {
-          text: type !== "result" ? "나중에" : "생 략",
+          text: type !== "result" ? "생 략" : "생 략",
           func: () => {
             localStorage.setItem("studyLink", date);
             onClose();
@@ -68,7 +71,7 @@ function StudyLinkModal({ studyType, date, onClose }: StudyLinkModalProps) {
           </>
         )}
         원활한 스터디 진행을 위해, <br />
-        <b>[스터디 단톡방]</b>에 입장해 주세요!
+        <b>[일일 스터디 톡방]</b>에 입장해 주세요!
       </p>
     </ModalLayout>
   );

@@ -480,7 +480,12 @@ export default function Page() {
         <MainLoading />
       )}
       {modalType === "studyLink" && (
-        <StudyLinkModal studyType={studyType} date={date} onClose={() => setModalType(null)} />
+        <StudyLinkModal
+          studyType={studyType}
+          date={date}
+          onClose={() => setModalType(null)}
+          coordinates={{ lat: placeInfo?.location.latitude, lon: placeInfo?.location.longitude }}
+        />
       )}
       {studyType === "participations" && <Box h={5} />}
       {isTicketModal && (

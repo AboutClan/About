@@ -8,6 +8,7 @@ import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { STUDY_HEART_ARR } from "../../constants/keys/localStorage";
+import { STUDY_LOCATION_CENTER_MAPPING } from "../../constants/service/study/place";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
@@ -272,9 +273,6 @@ export default function StudyMembers({
     }
   });
   console.log(coordinates);
-  const navigateLocationToLink = () => {
-    navigateExternalLink("https://open.kakao.com/o/gCRegnOh");
-  };
 
   return (
     <>
@@ -330,7 +328,7 @@ export default function StudyMembers({
               typeToast("guest");
               return;
             }
-            navigateExternalLink("https://open.kakao.com/o/gCRegnOh");
+            navigateLocationToLink({ latitude: coordinates.lat, longitude: coordinates.lon });
           }}
         >
           스터디 단톡방 입장하기
@@ -355,6 +353,55 @@ interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
     time: string;
   };
 }
+
+type Coord = { latitude: number; longitude: number };
+export const navigateLocationToLink = ({ latitude, longitude }: Coord) => {
+  function getDistance(a: Coord, b: Coord) {
+    const R = 6371; // km
+    const dLat = ((b.latitude - a.latitude) * Math.PI) / 180;
+    const dLon = ((b.longitude - a.longitude) * Math.PI) / 180;
+
+    const lat1 = (a.latitude * Math.PI) / 180;
+    const lat2 = (b.latitude * Math.PI) / 180;
+
+    const x = Math.sin(dLat / 2) ** 2 + Math.sin(dLon / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
+
+    return 2 * R * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+  }
+
+  function getClosestStudyCrewLink(target: Coord) {
+    let minDistance = Infinity;
+    let closestKey: keyof typeof STUDY_LOCATION_CENTER_MAPPING | null = null;
+
+    for (const [key, coord] of Object.entries(STUDY_LOCATION_CENTER_MAPPING)) {
+      const distance = getDistance(target, coord);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestKey = key as keyof typeof STUDY_LOCATION_CENTER_MAPPING;
+      }
+    }
+    switch (closestKey) {
+      case "[강남/서초]":
+        return "https://open.kakao.com/o/gumMh9qi";
+      case "[마포/당산/영등포]":
+        return "https://open.kakao.com/o/gJUzedri";
+      case "[성북/동대문/노원]":
+        return "https://open.kakao.com/o/gc6NV8qi";
+      case "[성수/왕십리/건대]":
+        return "https://open.kakao.com/o/ghxrj9qi";
+      default:
+        return "https://open.kakao.com/o/gCRegnOh";
+    }
+  }
+
+  const result = getClosestStudyCrewLink({
+    latitude,
+    longitude,
+  });
+
+  navigateExternalLink(result);
+};
 
 const composeUserCardArr = (participant: StudyConfirmedMemberProps): IReturnProps => {
   const attendance = participant?.attendance;
