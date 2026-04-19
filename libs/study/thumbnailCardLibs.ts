@@ -1,8 +1,9 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudySetProps, StudyType } from "../../types/models/studyTypes/study-set.types";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 import { shortenParticipations } from "./studyConverters";
 
@@ -102,11 +103,58 @@ export const setStudyThumbnailCard = (
     const placeInfo = study.place;
     const textArr = placeInfo.location?.address.split(" ");
 
+    const members = study.members;
+
+    const floorTo30 = (date: dayjs.ConfigType) => {
+      const d = dayjs(date);
+      const minute = d.minute();
+
+      if (minute < 30) {
+        return d.minute(0).second(0).millisecond(0);
+      }
+
+      return d.minute(30).second(0).millisecond(0);
+    };
+
+    const ceilTo30 = (date: dayjs.ConfigType) => {
+      const d = dayjs(date);
+      const minute = d.minute();
+
+      if (minute === 0 || minute === 30) {
+        return d.second(0).millisecond(0);
+      }
+
+      if (minute < 30) {
+        return d.minute(30).second(0).millisecond(0);
+      }
+
+      return d.add(1, "hour").minute(0).second(0).millisecond(0);
+    };
+    const result = members.reduce<{
+      earliestStart: Dayjs;
+      latestEnd: Dayjs;
+    } | null>((acc, cur) => {
+      const start = floorTo30(cur.time.start);
+      const end = ceilTo30(cur.time.end);
+
+      if (!acc) {
+        return { earliestStart: start, latestEnd: end };
+      }
+
+      return {
+        earliestStart: start.isBefore(acc.earliestStart) ? start : acc.earliestStart,
+        latestEnd: end.isAfter(acc.latestEnd) ? end : acc.latestEnd,
+      };
+    }, null);
+
     return {
       place: {
         name: placeInfo.location.name,
         branch: textArr?.[0] + " " + textArr?.[1],
-        address: placeInfo.location?.address,
+        address: `${dayjsToFormat(result.earliestStart, "HH:mm")} ~ ${dayjsToFormat(
+          result.latestEnd,
+          "HH:mm",
+        )}`,
         date: dayjs(data.date),
         imageProps: {
           image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),

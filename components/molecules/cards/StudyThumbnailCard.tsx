@@ -92,12 +92,10 @@ export function StudyThumbnailCard({
               </Badge>
             </Flex>
           </Flex>
-          <Box color="gray.500" fontSize="11px" lineHeight="12px">
+          <Subtitle>
             <Flex>
               {place.date && (
-                <Box as="span" fontWeight={600}>
-                  {dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}
-                </Box>
+                <Box as="span">{dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}</Box>
               )}
               {place.date && (
                 <Box as="span" color="var(--gray-400)">
@@ -119,11 +117,14 @@ export function StudyThumbnailCard({
                   WebkitLineClamp: 1,
                   WebkitBoxOrient: "vertical",
                 }}
+                fontWeight={
+                  place.branch === "자유 장소" || place.branch === "위치 선정 중..." ? 400 : 600
+                }
               >
                 {place.address}
               </Box>
             </Flex>
-          </Box>
+          </Subtitle>
           <Flex mb={1} mt="auto" alignItems="center" justify="space-between">
             <Box>
               <AvatarGroupsOverwrap users={participants} maxCnt={status ? 8 : VOTER_SHOW_MAX} />
@@ -220,4 +221,10 @@ const Title = styled(SingleLineText)`
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
+`;
+
+const Subtitle = styled(SingleLineText)`
+  color: var(--gray-500);
+  font-size: 11px;
+  line-height: 12px;
 `;

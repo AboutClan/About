@@ -191,7 +191,7 @@ function GroupPage() {
     return () => {
       observer.disconnect();
     };
-  }, [router.isReady]);
+  }, [router.isReady, groups, categoryIdx]);
 
   // useEffect(() => {
   //   if (!router.isReady) return;

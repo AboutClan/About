@@ -153,10 +153,12 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
         }
         if (data.id > 4870) {
           return {
-            text: "4월 20일(월)에 멤버 선택 가능!",
-            type: "black",
+            text: "신청 취소",
+            type: "red",
             isReverse: true,
-            isEnd: true,
+            handleFunction: () => {
+              setIsCancelModal(true);
+            },
           };
         }
 

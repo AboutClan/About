@@ -33,7 +33,7 @@ const avatarArr: AvatarOption[] = [
   { type: 20, bg: 1, text: "최고예요😘", rating: "great" },
   { type: 11, bg: 6, text: "좋아요😉 ", rating: "good" },
   { type: 12, bg: 2, text: "그냥 그래요😑", rating: "soso" },
-  { type: 28, bg: 0, text: "불편해요🫤", rating: "block" },
+  { type: 28, bg: 0, text: "별로예요🫤", rating: "block" },
 ];
 
 // 아바타 줄: rating이 바뀔 때만 리렌더되도록 memo + 커스텀 비교
