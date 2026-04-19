@@ -18,6 +18,7 @@ import {
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
 import { getNearLocationCluster } from "../../libs/study/setStudyMapOptions";
 import ImageZoomModal from "../../modals/ImageZoomModal";
+import { CoordinatesProps } from "../../types/common";
 import {
   StudyConfirmedMemberProps,
   StudyParticipationProps,
@@ -31,6 +32,7 @@ interface IStudyMembers {
   studyType: StudyType;
   isAttend?: boolean;
   isCrew: boolean;
+  coordinates: CoordinatesProps;
 }
 
 export default function StudyMembers({
@@ -39,6 +41,7 @@ export default function StudyMembers({
   members: prevMembers,
   isAttend,
   isCrew,
+  coordinates,
 }: IStudyMembers) {
   const userInfo = useUserInfo();
   const isGuest = userInfo?.role === "guest";
@@ -268,6 +271,10 @@ export default function StudyMembers({
       };
     }
   });
+  console.log(coordinates);
+  const navigateLocationToLink = () => {
+    navigateExternalLink("https://open.kakao.com/o/gCRegnOh");
+  };
 
   return (
     <>

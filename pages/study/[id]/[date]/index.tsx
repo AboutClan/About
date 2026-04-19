@@ -323,6 +323,10 @@ export default function Page() {
                       members={members || []}
                       studyType={studyType}
                       isCrew={tab === "스터디 크루"}
+                      coordinates={{
+                        lat: placeInfo?.location.latitude,
+                        lon: placeInfo?.location?.longitude,
+                      }}
                       // hasStudyLink={
                       //   myStudyStatus === "participation" && studyType !== "soloRealTimes"
                       // }

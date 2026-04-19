@@ -6,6 +6,20 @@ export interface CrewLocationProps extends LocationProps {
   rating: number;
 }
 
+export const STUDY_LOCATION_CENTER_MAPPING: Record<
+  StudyCrew,
+  { latitude: number; longitude: number }
+> = {
+  "[강남/서초]": {
+    latitude: 37.4979,
+    longitude: 127.0276,
+  },
+  "[마포/당산/영등포]": { latitude: 37.5496, longitude: 126.9137 },
+  "[성수/왕십리/건대]": { latitude: 37.5405, longitude: 127.0693 },
+  "[수원/용인]": { latitude: 37.2636, longitude: 127.0286 },
+  "[성북/동대문/노원]": { latitude: 37.6133, longitude: 127.0301 },
+};
+
 export const STUDY_CREW = [
   "[마포/당산/영등포]",
   "[성수/왕십리/건대]",
