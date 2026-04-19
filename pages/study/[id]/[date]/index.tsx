@@ -21,6 +21,7 @@ import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/stud
 import { shortenParticipations } from "../../../../libs/study/studyConverters";
 import { getMyStudyDateArr } from "../../../../libs/study/studyHelpers";
 import { ModalLayout } from "../../../../modals/Modals";
+import StudyStep from "../../../../pageTemplates/gather/detail/StudyStep";
 import StudyLinkModal from "../../../../pageTemplates/study/modals/StudyLinkModal";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
@@ -219,7 +220,7 @@ export default function Page() {
   const members =
     tab === "스터디 크루"
       ? (members2 as StudyParticipationProps[])?.filter((member) =>
-          crewKey ? member?.user?.belong === crewKey : !!member?.user?.belong,
+          crewKey ? !!member?.user?.belong : !!member?.user?.belong,
         )
       : members2;
 
@@ -287,6 +288,8 @@ export default function Page() {
                           );
                           return;
                         }
+                        toast("info", "기능 점검 중 (4월 20일 ~ 4월 25일)");
+                        return;
                         setTab("스터디 크루");
                       },
                     },
@@ -345,6 +348,15 @@ export default function Page() {
                 </Slide>
               </>
             ) : null}
+            <>
+              <Box h={2} bg="gray.100" my={4} />
+              <Slide>
+                <Box fontSize="18px" mb={4} mt={5} fontWeight="bold">
+                  스터디 진행 방식
+                </Box>
+                <StudyStep />
+              </Slide>
+            </>
             {tab === "스터디 크루" && group ? (
               <>
                 <Box h={2} bg="gray.100" my={4} />
@@ -358,36 +370,6 @@ export default function Page() {
                 </Slide>
               </>
             ) : null}{" "}
-            <Box h={2} bg="gray.100" my={4} />
-            <Box mx={5}>
-              <Box mb={3} fontSize="16px" fontWeight="semibold">
-                {tab === "스터디 크루" ? "스터디 크루 혜택" : "스터디 규칙 안내"}
-              </Box>
-              {tab === "일반 스터디" ? (
-                <InfoList
-                  items={[
-                    "어바웃 멤버 누구나 자유롭게 신청할 수 있습니다.",
-                    "당일 오전 9시에 스터디가 확정됩니다.",
-                    "스터디 출석 시 최대 500 Point가 적립됩니다.",
-                    "스터디 확정 후 불참은 1,000 Point가 차감됩니다.",
-                    "스터디 신청 후 잠수는 2,000 Point가 차감됩니다.",
-                    "스터디 당일 참여는 빈자리가 있는 경우에만 가능합니다.",
-                    "스터디 종료 후, 멤버 후기 평가를 할 수 있습니다.",
-                  ]}
-                  isLight
-                />
-              ) : (
-                <InfoList
-                  items={[
-                    "해당 지역 스터디에 우선 매칭됩니다.",
-                    "정원이 마감되어도 추가 참여가 가능합니다.",
-                    "스터디 출석 시 [이벤트 뽑기권]이 지급됩니다.",
-                    "같은 지역 인원들과 다양한 활동을 할 수 있습니다.",
-                  ]}
-                  isLight
-                />
-              )}
-            </Box>{" "}
             <Box h={2} bg="gray.100" my={4} />
             {studyType === "participations" && (
               <>
@@ -428,6 +410,36 @@ export default function Page() {
                 }
               />
             )}
+            <Box h={2} bg="gray.100" mb={4} />
+            <Box mx={5}>
+              <Box mb={3} fontSize="16px" fontWeight="semibold">
+                {tab === "스터디 크루" ? "스터디 크루 혜택" : "스터디 규칙 안내"}
+              </Box>
+              {tab === "일반 스터디" ? (
+                <InfoList
+                  items={[
+                    "어바웃 멤버 누구나 자유롭게 신청할 수 있습니다.",
+                    "당일 오전 9시에 스터디가 확정됩니다.",
+                    "스터디 출석 시 최대 500 Point가 적립됩니다.",
+                    "스터디 확정 후 불참은 1,000 Point가 차감됩니다.",
+                    "스터디 신청 후 잠수는 2,000 Point가 차감됩니다.",
+                    "스터디 당일 참여는 빈자리가 있는 경우에만 가능합니다.",
+                    "스터디 종료 후, 멤버 후기 평가를 할 수 있습니다.",
+                  ]}
+                  isLight
+                />
+              ) : (
+                <InfoList
+                  items={[
+                    "해당 지역 스터디에 우선 매칭됩니다.",
+                    "정원이 마감되어도 추가 참여가 가능합니다.",
+                    "스터디 출석 시 [이벤트 뽑기권]이 지급됩니다.",
+                    "같은 지역 인원들과 다양한 활동을 할 수 있습니다.",
+                  ]}
+                  isLight
+                />
+              )}
+            </Box>{" "}
           </Box>
 
           <StudyNavigation

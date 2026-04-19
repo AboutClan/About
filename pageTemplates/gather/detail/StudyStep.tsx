@@ -72,37 +72,35 @@ function StepRow({ item, isLast }: { item: StepItem; isLast: boolean }) {
   );
 }
 
-export default function ProcessGuide({ type }: { type: number }) {
+export default function StudyStep() {
   const steps: StepItem[] = [
     {
       step: 1,
-      title: "모임에 관심 있는 멤버들의 신청을 먼저 받아요",
-      description: "이 단계에서는 신청자 정보가 공개되지 않아요",
+      title: "원하는 날짜와 장소로 스터디를 신청해요",
+      description: "해당 위치를 기준으로 가까운 스터디가 매칭돼요",
+      date: "스터디 신청",
     },
     {
       step: 2,
-      title: "함께하고 싶은 멤버를 직접 선택해요",
-      description: "신청한 멤버들의 프로필을 확인할 수 있어요",
-      date: type === 3 ? `4월 21일(화)` : type === 1 ? `3월 31일(화)` : "4월 6일(월)",
+      title: "당일 오전 9시에 스터디가 확정돼요",
+      description: "알림이 발송되니, 앱 알림을 켜주세요!",
+      date: "결과 발표",
     },
     {
       step: 3,
-      title: "선택을 고려해 최종 멤버가 확정돼요",
-      description: "선택 멤버, 나이, 성별, 인원 등을 고려해요",
-      date: type === 3 ? "4월 22일(수)" : type === 1 ? "4월 1일(수)" : "4월 7일(화)",
+      title: "스터디 일일 톡방에 입장해요",
+      description: "진행 순서를 확인하고, 참여 멤버들과 소통할 수 있어요",
+      date: "톡방 입장",
     },
     {
       step: 4,
-      title: "톡방이 개설되고, 함께 모임을 진행해요!",
-      description: "시간, 장소, 콘텐츠는 운영진이 함께 조율해요",
+      title: "스터디 장소에 모여서 카공해요!",
+      date: "스터디 출석",
     },
   ];
 
   return (
-    <Box bg="gray.100" border="var(--border-main)" borderRadius="8px" p={5} py={4} mx={5} mt={5}>
-      <Text color="gray.800" fontSize="16px" fontWeight="600" mb={4}>
-        오픈 번개는 이렇게 진행돼요!
-      </Text>
+    <Box bg="gray.100" border="var(--border-main)" borderRadius="8px" p={5} py={4} mt={4}>
       <VStack spacing={0} align="stretch">
         {steps.map((item, index) => (
           <StepRow key={item.step} item={item} isLast={index === steps.length - 1} />
