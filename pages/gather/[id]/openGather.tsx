@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Stack , Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Stack, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
@@ -90,8 +90,11 @@ function GatherReview() {
   const { data: userInfo } = useUserInfoQuery();
   const queryClient = useQueryClient();
 
+  const { mutate: updatePoint } = usePointSystemMutation("point");
+
   const { mutate, isLoading } = useOpenGatherMemberMutation(+id, {
     onSuccess() {
+      updatePoint({ value: -1000, sub: "openGather", message: "오픈 번개 참여 신청" });
       queryClient.resetQueries([GATHER_CONTENT, id + ""]);
       toast("success", "완료되었습니다.");
       router.push(`/gather/${id}`);
@@ -277,8 +280,8 @@ function GridItem2({ gender, birth, introduceText, mbti }: Partial<IUser>) {
   );
 }
 
-
 import Divider from "../../../components/atoms/Divider";
+import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { ModalLayout } from "../../../modals/Modals";
 
 type StepItem = {

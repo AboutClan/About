@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -168,15 +168,14 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
             router.push(`/gather/${id}/openGather`);
           },
         };
+      } else {
+        return {
+          text: "신청이 마감되었습니다.",
+          type: "black",
+          isReverse: true,
+          isEnd: true,
+        };
       }
-      // else {
-      //   return {
-      //     text: "신청이 마감되었습니다! (4월 5일까지)",
-      //     type: "black",
-      //     isReverse: true,
-      //     isEnd: true,
-      //   };
-      // }
     }
     switch (data?.status) {
       case "open":
