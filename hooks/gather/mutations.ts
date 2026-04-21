@@ -2,7 +2,6 @@ import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
-import { OpenGatherVoteProps } from "../../pages/gather/[id]/openGather";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import { GatherRequestWritingProps, IGather } from "../../types/models/gatherTypes/gatherTypes";
 
@@ -29,11 +28,11 @@ export const useGatherWritingMutation = <T extends "post" | "patch" | "delete">(
 
 export const useOpenGatherMemberMutation = (
   gatherId: number,
-  options?: MutationOptions<OpenGatherVoteProps[]>,
+  options?: MutationOptions<{ toUid: string; type: "good" | "bad" }[]>,
 ) =>
-  useMutation<void, AxiosError, OpenGatherVoteProps[]>(
+  useMutation<void, AxiosError, { toUid: string; type: "good" | "bad" }[]>(
     (param) =>
-      requestServer<{ gatherId: number; infos: OpenGatherVoteProps[] }>({
+      requestServer<{ gatherId: number; infos: { toUid: string; type: "good" | "bad" }[] }>({
         method: "post",
         url: "gather/openGather",
         body: { gatherId, infos: param },

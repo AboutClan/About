@@ -142,7 +142,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
     isReverse?: boolean;
   } => {
     if (isOpenGather) {
-      if (isParticipant) {
+      if (!isParticipant) {
         if (data?.reviewers?.some((r) => r === userInfo?._id)) {
           return {
             text: "최종 결과를 기다리는 중... (D-1)",
@@ -151,7 +151,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
             isEnd: true,
           };
         }
-        if (data.id > 4870) {
+        if (data.id > 5000) {
           return {
             text: "신청 취소",
             type: "red",

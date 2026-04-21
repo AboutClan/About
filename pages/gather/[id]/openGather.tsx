@@ -1,5 +1,4 @@
-import { Box, Button, Flex, Stack } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { Box, Button, Flex, Stack , Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
@@ -16,10 +15,9 @@ import { useOpenGatherMemberMutation } from "../../../hooks/gather/mutations";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 export interface OpenGatherVoteProps {
-  toUid: string;
+  user: Partial<IUser>;
   type: "good" | "bad";
 }
 
@@ -36,7 +34,7 @@ const MemberReviewRow = memo(function MemberReviewRow({
   changeUserVote,
 }: MemberReviewRowProps) {
   return (
-    <Stack pt={1} pb={3} borderBottom="var(--border)" key={user.uid}>
+    <Stack pt={1} pb={3} borderBottom="var(--border-main)" key={user.uid}>
       <ProfileCommentCard
         user={user as UserSimpleInfoProps}
         memo={user.comment}
@@ -53,14 +51,15 @@ const MemberReviewRow = memo(function MemberReviewRow({
         mbti={user.mbti}
       />
 
-      <Flex>
+      <Flex mt={1}>
         <Button
           onClick={() => {
             changeUserVote("good");
           }}
           flex={1}
+          colorScheme="mint"
+          size="lg"
           mr={2}
-          colorScheme={type === "good" ? "mint" : "gray"}
         >
           좋아요
         </Button>
@@ -70,6 +69,7 @@ const MemberReviewRow = memo(function MemberReviewRow({
           }}
           flex={1}
           colorScheme={type === "bad" ? "mint" : "gray"}
+          size="lg"
         >
           패스
         </Button>
@@ -102,72 +102,43 @@ function GatherReview() {
 
   useEffect(() => {
     if (gather) {
-      setUserReviewArr(gather.participants.map((p) => ({ toUid: p.user.uid, type: "good" })));
+      setUserReviewArr(
+        gather.participants
+          .filter((p) => p.user._id !== userInfo?._id)
+          ?.map((p) => ({ user: p.user as Partial<IUser>, type: null })),
+      );
     }
-  }, [gather]);
+  }, [gather, userInfo]);
+
+  const [isModal, setIsModal] = useState(false);
 
   const handleSubmit = () => {
-    if (!gather) return;
-
-    const members: UserSimpleInfoProps[] = [
-      gather.user,
-      ...gather.participants.map((par) => par.user),
-    ].filter(
-      (who) =>
-        (who as UserSimpleInfoProps)._id !== userInfo?._id &&
-        (who as UserSimpleInfoProps).uid !== "3224546232",
-    ) as UserSimpleInfoProps[];
-
-    const infos = members
-      .map<OpenGatherVoteProps>((member) => {
-        const ratingItem = userReviewArr.find((r) => r.toUid === member.uid);
-        if (!ratingItem) return null;
-        // message 없는 케이스도 명시적으로 포함
-        return { toUid: member.uid, type: ratingItem.type };
-      })
-      .filter((v): v is OpenGatherVoteProps => v !== null);
-
-    mutate(infos);
+    const members = userReviewArr.map((u) => ({ toUid: u.user.uid, type: u.type || "good" }));
+    mutate(members);
   };
 
   return (
     <>
-      <Header title={gather ? dayjsToFormat(dayjs(gather.date).locale("ko"), "오픈 번개") : ""} />
+      <Header title={gather ? "오픈번개 멤버 선택" : ""} />
       {gather ? (
         <Slide isNoPadding>
-          <Box fontSize="18px" fontWeight="bold" mx={5} my={5}>
-            <Box>함께하고 싶은 멤버 선택</Box>
-            <Box fontSize="12px" color="gray.500" fontWeight={400}>
-              선택하신 내용은 100% 익명을 보장합니다.
-            </Box>
-          </Box>
-
+          <ProcessGuide />
           <Box mb={10} mx={5}>
-            {[gather.user, ...gather.participants.map((par) => par.user)]
-              .filter(
-                (who) =>
-                  (who as UserSimpleInfoProps)._id !== userInfo?._id &&
-                  (who as UserSimpleInfoProps).uid !== "3224546232",
-              )
-              .map((member) => {
-                const user = member as Partial<IUser>;
-                const findMyInfo = userReviewArr.find((props) => props.toUid === user.uid);
-                const myRating: "good" | "bad" = findMyInfo?.type ?? null;
-
+            {[...userReviewArr]
+              ?.filter((u) => u.type === null)
+              ?.map((member) => {
+                const { user, type } = member;
                 return (
                   <MemberReviewRow
                     key={user.uid}
                     user={user}
-                    type={myRating}
+                    type={type}
                     changeUserVote={(type: "good" | "bad") => {
                       setUserReviewArr((old) => {
-                        const temp = old.filter(
-                          (p) => p.toUid !== (member as UserSimpleInfoProps).uid,
-                        );
-                        const findUser = old.find(
-                          (p) => p.toUid === (member as UserSimpleInfoProps).uid,
-                        );
-                        return [...temp, { toUid: findUser.toUid, type }];
+                        const temp = old.filter((p) => p.user.uid !== user.uid);
+                        const findUser = old.find((p) => p.user.uid === user.uid);
+                        const data = [...temp, { user: findUser.user, type }];
+                        return data;
                       });
                     }}
                   />
@@ -177,12 +148,49 @@ function GatherReview() {
           <BottomNavButton
             text="멤버 선택 완료"
             color="black"
-            func={handleSubmit}
+            func={() => setIsModal(true)}
             isLoading={isLoading}
           />
         </Slide>
       ) : (
         <MainLoadingAbsolute />
+      )}
+      {isModal && (
+        <ModalLayout
+          setIsModal={setIsModal}
+          title="선택 완료"
+          footerOptions={{
+            main: {
+              text: "완 료",
+              func: () => {
+                handleSubmit();
+              },
+            },
+            sub: {
+              text: "다시 선택",
+              func: () => {
+                setUserReviewArr(
+                  gather.participants
+                    .filter((p) => p.user._id !== userInfo?._id)
+                    .map((p) => ({
+                      user: p.user as Partial<IUser>,
+                      type: null,
+                    })),
+                );
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+                setIsModal(false);
+              },
+            },
+          }}
+        >
+          멤버 선택을 완료하시겠어요?
+          <br />
+          수요일 중에 결과가 확정됩니다.
+          <br />
+        </ModalLayout>
       )}
     </>
   );
@@ -266,6 +274,110 @@ function GridItem2({ gender, birth, introduceText, mbti }: Partial<IUser>) {
         </Box>
       </Box>
     </Flex>
+  );
+}
+
+
+import Divider from "../../../components/atoms/Divider";
+import { ModalLayout } from "../../../modals/Modals";
+
+type StepItem = {
+  step: number;
+  title: string;
+  description?: string;
+  date?: string;
+};
+
+function StepCircle({ step }: { step: number }) {
+  return (
+    <Flex
+      w="20px"
+      h="20px"
+      borderRadius="full"
+      bg="gray.500"
+      color="white"
+      fontSize="10px"
+      fontWeight="600"
+      align="center"
+      justify="center"
+      lineHeight="1"
+    >
+      {step}
+    </Flex>
+  );
+}
+
+function StepConnector({ isBig }: { isBig?: boolean }) {
+  return <Box w="2px" my={1} minH={isBig ? "32px" : "20px"} bg="gray.200" borderRadius="full" />;
+}
+
+function StepRow({ item, isLast }: { item: StepItem; isLast: boolean }) {
+  return (
+    <Flex align="flex-start" w="full">
+      <Flex flexDir="column" mr={3} flexShrink={0} w="full">
+        <Flex>
+          <StepCircle step={item.step} />
+          <Text ml={2} color="gray.600" fontWeight={600} fontSize="13px" lineHeight="20px">
+            {item.title}
+          </Text>
+        </Flex>
+
+        <Flex align="flex-start">
+          <Box ml={!isLast ? "9px" : "11px"}>{!isLast && <StepConnector isBig={true} />}</Box>
+          <Box flex={1}>
+            {item.description && (
+              <Text color="gray.500" fontSize="12px" mt={1} ml={4}>
+                {item.description}
+              </Text>
+            )}
+          </Box>
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+}
+
+function ProcessGuide() {
+  const steps: StepItem[] = [
+    {
+      step: 1,
+      title: "함께하고 싶은 멤버는 '좋아요'를 눌러주세요",
+      description: "선택하신 내용은 100% 익명이 보장됩니다.",
+    },
+    {
+      step: 2,
+      title: "함께하고 싶지 않은 멤버는 '패스'를 눌러주세요",
+      description: "선택하지 않은 멤버는 [좋아요]로 제출돼요!",
+    },
+    {
+      step: 3,
+      title: "서로 '좋아요'를 누른 멤버끼리만 조가 편성돼요",
+      description: "[멤버 선택 완료]를 누르면 신청이 확정됩니다.",
+    },
+    {
+      step: 4,
+      title: "톡방이 개설되고, 함께 모임을 진행해요!",
+      description: "매칭이 안되는 경우도 많으니 다음에 또 신청해 주세요!",
+    },
+  ];
+
+  return (
+    <Box>
+      <Box my={4} mb={3} px={5} fontSize="18px" fontWeight="semibold">
+        선택 가이드
+      </Box>
+      <Box bg="gray.100" border="var(--border-main)" borderRadius="8px" p={5} py={4} mx={5} mb={5}>
+        <VStack spacing={0} align="stretch">
+          {steps.map((item, index) => (
+            <StepRow key={item.step} item={item} isLast={index === steps.length - 1} />
+          ))}
+        </VStack>
+      </Box>
+      <Divider />
+      <Box my={4} mb={3} px={5} fontSize="18px" fontWeight="semibold">
+        함께하고 싶은 멤버 선택
+      </Box>
+    </Box>
   );
 }
 
