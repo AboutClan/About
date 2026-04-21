@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -142,7 +142,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
     isReverse?: boolean;
   } => {
     if (isOpenGather) {
-      if (!isParticipant) {
+      if (isParticipant) {
         if (data?.reviewers?.some((r) => r === userInfo?._id)) {
           return {
             text: "최종 결과를 기다리는 중... (D-1)",
