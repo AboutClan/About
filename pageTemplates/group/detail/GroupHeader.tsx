@@ -168,7 +168,7 @@ function GroupHeader({ group }: IGroupHeader) {
                   if (total < 5) {
                     toast(
                       "info",
-                      `현재 받은 멤버 평가가 5건 미만입니다. 5명 이상의 멤버 후기가 존재해야 확인 가능합니다.`,
+                      `소모임 내 받은 멤버 후기가 5건 미만입니다. 5명 이상의 멤버 후기가 쌓이면 확인할 수 있습니다.`,
                     );
                     return;
                   }
