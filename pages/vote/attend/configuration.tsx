@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import SectionTitle from "../../../components/atoms/SectionTitle";
@@ -14,11 +15,10 @@ import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import { STUDY_ATTEND_AT } from "../../../constants/keys/queryKeys";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import { useStudySetQuery } from "../../../hooks/study/queries";
-import { useUserRandomTicketMutation } from "../../../hooks/user/mutations";
+import { transferStudyRewardState } from "../../../recoils/transferRecoils";
 import {
   StudyConfirmedSetProps,
   StudyType,
@@ -42,7 +42,7 @@ function Configuration() {
   const { data: studySet } = useStudySetQuery(date, { enabled: !!date });
 
   const studyData = studySet && studySet[type];
-  const userInfo = useUserInfo();
+  // const userInfo = useUserInfo();
 
   const confirmedSet = studyData as StudyConfirmedSetProps[];
 
@@ -69,14 +69,14 @@ function Configuration() {
   // const studyType = myStudyResult?.status;
 
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
-    onSuccess() {
-      handleAttendSuccess();
+    onSuccess(data) {
+      handleAttendSuccess(data);
     },
   });
 
   const { mutate: attendRealTimeStudy, isLoading: isLoading2 } = useRealTimeAttendMutation(date, {
-    onSuccess() {
-      handleAttendSuccess();
+    onSuccess(data) {
+      handleAttendSuccess(data);
     },
   });
 
@@ -98,32 +98,22 @@ function Configuration() {
     currentDayjs = currentDayjs.add(30, "m");
   }
 
-  const { mutate: updateUserTicket } = useUserRandomTicketMutation();
+  const setTransferStudyReward = useSetRecoilState(transferStudyRewardState);
 
-  const handleAttendSuccess = async () => {
+  const handleAttendSuccess = async (data) => {
     resetStudy();
     if (type === "results") {
       setLocalStorageObj(STUDY_ATTEND_AT, getTodayStr());
-      const preloadImage = (src: string) => {
-        const img = new Image();
-        img.src = src;
-      };
-      await updateUserTicket({
-        userId: userInfo._id,
-        number: 1,
-      });
-      preloadImage(
-        "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%A3%B0%EB%A0%9B.png",
-      );
+
       if (id) {
         router.push(`/study/${id}/${date}?type=${type}&ticket=on`);
       } else {
         router.push(`/study/realTimes/${date}?type=${type}`);
       }
     }
-    // setTimeout(() => {
-    //   setTransferStudyReward(data);
-    // }, 500);
+    setTimeout(() => {
+      setTransferStudyReward(data);
+    }, 500);
     if (id) {
       router.push(`/study/${id}/${date}?type=${type}`);
     } else {
