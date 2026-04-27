@@ -38,10 +38,10 @@ function safeDecode(v: string | undefined) {
 interface RegisterPaymentButtonProps {
   type: "register" | "point";
   value: number;
-  isFree?: boolean;
+  discount: number;
 }
 
-function RegisterPaymentButton({ type, value, isFree = false }: RegisterPaymentButtonProps) {
+function RegisterPaymentButton({ type, value, discount }: RegisterPaymentButtonProps) {
   const { data: session } = useSession();
   const toast = useToast();
   const router = useRouter();
@@ -117,7 +117,7 @@ function RegisterPaymentButton({ type, value, isFree = false }: RegisterPaymentB
     },
   });
   useEffect(() => {
-    if (isFree === false) return;
+    if (discount > 0) return;
     if (!session?.user?.uid) {
       toast("error", "계정 오류가 발생했어요. 관리자에게 문의주세요!");
       return;
@@ -128,8 +128,10 @@ function RegisterPaymentButton({ type, value, isFree = false }: RegisterPaymentB
       content: `가입자: ${session.user.uid} `,
     });
 
-    approve(session.user.uid);
-  }, [isFree, session]);
+    if (discount === 20000) {
+      approve(session.user.uid);
+    }
+  }, [discount, session]);
 
   // 기존 view 계산은 유지 (UI/기능 영향 없고, 디버깅에도 유용)
   useMemo(() => {
@@ -325,7 +327,7 @@ function RegisterPaymentButton({ type, value, isFree = false }: RegisterPaymentB
       cookiepayments.payrequest({
         ORDERNO: orderNo,
         PRODUCTNAME: "회원가입",
-        AMOUNT: "20000",
+        AMOUNT: 20000 - discount + "",
         BUYERNAME: session.user.name,
         PAYMETHOD: "CARD",
         RETURNURL: "https://study-about.club/api/cookiepay/return",

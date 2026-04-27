@@ -184,6 +184,19 @@ export const useTicketSystemLogQuery = (
     { ...options, staleTime: 0, cacheTime: 0 },
   );
 
+export const useUserInfoByUidQuery = (
+  uid: string,
+ 
+  options?: QueryOptions<IUser>,
+) =>
+  useQuery<IUser, AxiosError, IUser>(
+    [UID_TO_USER, uid],
+    async () => {
+      const res = await axios.get<IUser>(`${SERVER_URI}/user/profile/uid/${uid}`);
+      return res.data;
+    },
+    options,
+  );
 export const useUserIdToUserInfoQuery = (userId: string, options?: QueryOptions<IUser>) =>
   useQuery<IUser, AxiosError, IUser>(
     [UID_TO_USER, userId],

@@ -19,7 +19,7 @@ const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
 
 function Access() {
   const [codeText, setCodeText] = useState("");
-  const [isFree, setIsFree] = useState(false);
+  const [discount, setDiscount] = useState(0);
 
   return (
     <>
@@ -37,13 +37,12 @@ function Access() {
         <RegisterInvite
           codeText={codeText}
           setCodeText={setCodeText}
-          handleClick={() => {
-            setIsFree(true);
-          }}
+          discount={discount}
+          setDiscount={setDiscount}
         />
         <Box h={20} />
       </Slide>
-      <RegisterPaymentButton type="register" value={20000} isFree={isFree} />
+      <RegisterPaymentButton type="register" value={20000} discount={discount} />
     </>
   );
 }
