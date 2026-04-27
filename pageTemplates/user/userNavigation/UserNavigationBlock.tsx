@@ -78,7 +78,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
       <div>
         <BlockName>프로모션</BlockName>
         <NavBlock>
-          <button onClick={() => onClickBlock("modal", "friend")}>친구 초대</button>
+          <button onClick={() => onClickBlock("modal", "friend")}>추천인 코드 (친구 초대용)</button>
           <button onClick={() => onClickBlock("modal", "coupon")}>쿠폰 입력</button>
           <button onClick={() => onClickBlock("modal", "id")}>계정 ID 확인</button>
         </NavBlock>

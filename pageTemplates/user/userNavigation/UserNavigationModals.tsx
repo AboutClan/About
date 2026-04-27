@@ -128,16 +128,25 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       )}
       {modalOpen === "friend" && (
         <ModalLayout title="친구 초대" footerOptions={{ main: {} }} setIsModal={setIsModal}>
-          친구에게 아래 코드를 전달해 주세요!
-          <br />{" "}
           <Box>
-            카카오 채널에서 <b>[친구 초대]</b> 메뉴를 누르시면,
+            친구분께 {userInfo?.name?.slice(1)}님의 <b>추천인 코드</b>를 전달해 주세요!
           </Box>
+
           <Box>
-            두 분 모두에게 <b>3,000 Point</b>가 지급됩니다.
+            동아리 가입 마지막 페이지에서 입력하시면
+            <br /> 최종{" "}
+            <b>
+              {userInfo?.temperature?.temperature >= 42
+                ? "15,000"
+                : userInfo?.temperature?.temperature >= 40
+                ? "10,000"
+                : "5,000"}
+            </b>
+            원이 할인됩니다.
+            <br />
           </Box>
           <Flex
-            mt={4}
+            mt={5}
             align="center"
             justify="center"
             w="full"
@@ -148,7 +157,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
             fontSize="14px"
             borderColor="gray.200"
             bg="gray.100"
-            color="gray.600"
+            color="gray.700"
           >
             <Box mr={3} as="span" fontWeight="semibold">
               {session?.user?.uid}
