@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { ComponentType, useEffect, useState } from "react";
 
 import FAQModal from "../../../components/overlay/FAQModal";
+import FriendInviteModal from "../../../components/overlay/FriendInviteModal";
 import GatherRecordDrawer from "../../../components/overlay/GatherRecordDrawer";
 import KakaoFriendModal from "../../../components/overlay/KakaoFriendModal";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
@@ -12,6 +13,7 @@ import PointLowModal from "../../../components/overlay/PointLowModal";
 import SelfIntroduceModal from "../../../components/overlay/SelfIntroduceModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
+  FRIEND_INVITE_AT,
   GATHER_REVIEW_MODAL_ID,
   MEMBERSHIP_AT,
   POINT_RECEIVE_AT,
@@ -32,7 +34,8 @@ export type PopUpType =
   | "newMember"
   | "pointReceive"
   | "kakaoFriend"
-  | "membership";
+  | "membership"
+  | "friend";
 
 interface PopUpProps extends CloseProps {}
 
@@ -46,6 +49,7 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
   pointReceive: PointLowModal,
   kakaoFriend: KakaoFriendModal,
   membership: NewbieBenefitModal,
+  friend: FriendInviteModal,
 };
 
 export default function UserSettingPopUp({ user }: { user: IUser }) {
@@ -77,6 +81,12 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
     //   setPopUpType((old) => [...old, "kakaoFriend"]);
     //   return;
     // }
+
+    if (!checkAndSetLocalStorage(FRIEND_INVITE_AT, 7)) {
+      setPopUpType((old) => [...old, "friend"]);
+      return;
+    }
+
     if (data && localStorage.getItem(GATHER_REVIEW_MODAL_ID) !== data.id + "") {
       localStorage.setItem(GATHER_REVIEW_MODAL_ID, data.id + "");
 
@@ -125,7 +135,14 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
             : {};
         return (
           popUpType.includes(type) && (
-            <Component {...props} key={type} onClose={() => filterPopUpType(type)} />
+            <Component
+              {...props}
+              key={type}
+              onClose={() => {
+                console.log(55, type);
+                filterPopUpType(type);
+              }}
+            />
           )
         );
       })}

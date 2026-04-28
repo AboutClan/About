@@ -77,7 +77,7 @@ function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: Regist
         {discount > 0 && data && (
           <Box mt={8} fontSize="15px" color="gray.700">
             추천인 <b>{data?.name}님</b> 확인 완료!
-            <br /> 결제 시 <b>가입비 {discount}원</b>이 할인됩니다.
+            <br /> 결제 시 <b>가입비 {discount.toLocaleString()}원</b>이 할인됩니다.
           </Box>
         )}
       </Flex>

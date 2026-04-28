@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
-import { IFooterOptions, ModalLayout } from "../../modals/Modals";
+import { ModalLayout } from "../../modals/Modals";
 import { isWebView } from "../../utils/appEnvUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
 import { getSafeAreaBottom, isApp, isIOS } from "../../utils/validationUtils";
@@ -41,7 +41,6 @@ function LoginPage() {
   const statusParam = typeof status === "string" ? status : null;
   const pageParam = typeof page === "string" ? page : null;
 
-  const [isWaitingModal, setIsWaitingModal] = useState(false);
   const [loadingType, setLoadingType] = useState<"kakao" | "guest" | "apple" | null>(null);
 
   const { data: userInfo } = useUserInfoQuery({
@@ -107,9 +106,9 @@ function LoginPage() {
 
     // 가입 대기 중인 경우
     if (statusParam === "waiting") {
-      setIsWaitingModal(true);
-      setLoadingType(null);
-      return;
+      await signIn(type, {
+        callbackUrl: `${window.location.origin}/register/access`,
+      });
     }
 
     // 기본: 로그인 후 /home
@@ -118,15 +117,6 @@ function LoginPage() {
     });
 
     setLoadingType(null);
-  };
-
-  const waitingFooterOptions: IFooterOptions = {
-    main: {
-      text: "카카오 채널로 이동하기",
-      func: () => {
-        navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
-      },
-    },
   };
 
   useEffect(() => {
@@ -313,18 +303,7 @@ function LoginPage() {
         </Flex>
       </Box>
       {/* {isModal && <GuestLoginModal setIsModal={setIsModal} customSignin={customSignin} />} */}
-      {isWaitingModal && (
-        <ModalLayout
-          title="가입 대기"
-          setIsModal={setIsWaitingModal}
-          footerOptions={waitingFooterOptions}
-        >
-          가입 대기중입니다. <br />
-          <Box>
-            <b>카카오 채널</b>을 통해 가입을 완료해 주세요!
-          </Box>
-        </ModalLayout>
-      )}{" "}
+
       {isModal && (
         <ModalLayout
           setIsModal={setIsModal}

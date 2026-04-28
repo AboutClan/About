@@ -10,6 +10,7 @@ export const GATHER_REVIEW_WRITE = "gatherReviewWrite";
 export const GATHER_REVIEW_RECEIVE = "gatherReviewReceive";
 export const POINT_RECEIVE_AT = "pointReceiveAt";
 export const MEMBERSHIP_AT = "memberShipAt";
+export const FRIEND_INVITE_AT="friendInviteAt"
 
 //스터디
 
