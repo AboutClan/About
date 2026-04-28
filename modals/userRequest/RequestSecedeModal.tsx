@@ -1,4 +1,4 @@
-import { Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
+import { Checkbox, CheckboxGroup, Stack, Text } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 
@@ -12,13 +12,18 @@ import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IModal } from "../../types/components/modalTypes";
+
 function RequestSecedeModal({ setIsModal }: IModal) {
   const toast = useToast();
   const failToast = useFailToast();
 
   const [isFirstPage, setIsFirstPage] = useState(true);
-  const [value, setValue] = useState("");
-  const [text, setText] = useState("");
+
+  // ✅ 다중 선택
+  const [values, setValues] = useState<string[]>([]);
+
+  // ✅ textarea 분리
+  const [textMap, setTextMap] = useState<Record<string, string>>({});
 
   const { mutate: changeRole, isLoading } = useUserInfoFieldMutation("role", {
     onSuccess() {
@@ -34,13 +39,23 @@ function RequestSecedeModal({ setIsModal }: IModal) {
   const { mutate, isLoading: isLoading2 } = useUserRequestMutation();
 
   const handleBottomNav = () => {
-    if (isFirstPage) setIsFirstPage(false);
-    else {
+    if (isFirstPage) {
+      setIsFirstPage(false);
+    } else {
+      // ✅ 선택한 이유 + 상세 내용 합치기
+      const content = values
+        .map((reason) => {
+          const extra = textMap[reason];
+          return extra ? `${reason}: ${extra}` : reason;
+        })
+        .join("\n");
+
       mutate({
         category: "탈퇴",
-        title: value,
-        content: text,
+        title: values.join(", "),
+        content,
       });
+
       changeRole({ role: "secede" });
     }
   };
@@ -65,6 +80,7 @@ function RequestSecedeModal({ setIsModal }: IModal) {
               <span>ABOUT을 탈퇴하시겠어요?</span>
               <span>나중을 위해 휴식 신청만 진행할 수도 있어요!</span>
             </RegisterOverview>
+
             <InfoList
               items={[
                 "회원님의 모든 활동 정보와 기록이 삭제됩니다.",
@@ -79,39 +95,46 @@ function RequestSecedeModal({ setIsModal }: IModal) {
               <span>탈퇴하시려는 이유를 선택해 주세요</span>
               <span>더 발전하는 ABOUT이 될 수 있도록 최선을 다하겠습니다.</span>
             </RegisterOverview>
-            <RadioGroup onChange={setValue} value={value}>
+
+            <CheckboxGroup value={values} onChange={(val) => setValues(val as string[])}>
               <Stack spacing="16px">
                 {reasons.map((reason) => {
                   const needsTextarea =
                     reason === "맘에 들지 않는 멤버 또는 비매너 멤버를 만나서" || reason === "기타";
 
-                  const showTextarea = needsTextarea && value === reason; // ✅ 핵심
+                  const showTextarea = needsTextarea && values.includes(reason);
 
                   return (
                     <Stack key={reason} spacing="12px">
-                      <Radio value={reason} colorScheme="mint" alignItems="flex-start">
+                      <Checkbox value={reason} colorScheme="mint" alignItems="flex-start">
                         <Text fontSize="md" lineHeight="1.4">
                           {reason}
                         </Text>
-                      </Radio>
+                      </Checkbox>
+
                       {showTextarea && (
                         <Textarea
-                          mt="0"
                           placeholder="해당 내용은 관리자만 확인합니다. 더 나은 어바웃이 될 수 있도록 소중한 의견 감사드립니다."
                           fontSize="sm"
                           minH="100px"
-                          value={text}
-                          onChange={(e) => setText(e.target.value)}
+                          value={textMap[reason] || ""}
+                          onChange={(e) =>
+                            setTextMap((prev) => ({
+                              ...prev,
+                              [reason]: e.target.value,
+                            }))
+                          }
                         />
                       )}
                     </Stack>
                   );
                 })}
               </Stack>
-            </RadioGroup>{" "}
+            </CheckboxGroup>
           </>
         )}
       </RegisterLayout>
+
       <BottomNav
         isSlide={false}
         onClick={handleBottomNav}

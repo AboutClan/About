@@ -17,7 +17,8 @@ export type UserRequestCategory =
   | "장소 추가"
   | "지원금"
   | "출금"
-  | "인스타";
+  | "인스타"
+  | "경로";
 
 export interface IUserRequest extends TimeStampProps {
   category: UserRequestCategory;

@@ -65,7 +65,7 @@ function Comment() {
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={90} />
+      <ProgressHeader title="회원가입" value={84} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
@@ -101,7 +101,7 @@ function Comment() {
         </Container>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} url="/register/introduce" />
+      <BottomNav onClick={onClickNext} url="/register/tracking" />
     </>
   );
 }

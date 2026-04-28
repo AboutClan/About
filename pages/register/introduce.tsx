@@ -8,16 +8,17 @@ import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
+import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { gaEvent } from "../../libs/gtag";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
+import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
-
 function Comment() {
   const toast = useToast();
   const router = useRouter();
   const errorToast = useErrorToast();
-  const info = getLocalStorageObj(REGISTER_INFO);
+  const info = getLocalStorageObj(REGISTER_INFO) as IUserRegisterFormWriting;
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const { mutate: changeRole } = useUserInfoFieldMutation("role");
@@ -54,6 +55,8 @@ function Comment() {
 
   const [text, setText] = useState(info?.introduceText || "");
 
+  const { mutate: request } = useUserRequestMutation();
+
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (text.length < 30) {
       setErrorMessage("조금만 더 적어주세요!");
@@ -67,7 +70,15 @@ function Comment() {
     }
     setLocalStorageObj(REGISTER_INFO, { ...info, introduceText: text });
 
-    mutate({ ...info, introduceText: text });
+    const { route: content, ...registerData } = info;
+
+    request({
+      category: "경로",
+      title: "가입 경로",
+      content,
+    });
+
+    mutate({ ...registerData, introduceText: text });
   };
 
   return (

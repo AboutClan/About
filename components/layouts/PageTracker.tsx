@@ -9,15 +9,17 @@ import { parseUrlToSegments } from "../../utils/stringUtils";
 
 const REGISTER_WRITING_SEQUENCE = {
   auth: 1,
-  location: 2,
-  mbti: 3,
-  major: 4,
+  gender: 2,
+  location: 3,
+  mbti: 4,
+  major: 5,
   // interest: 7,
-  comment: 5,
-  introduce: 6,
+  comment: 6,
+  tracking: 7,
+  introduce: 8,
   // phone: 9,
   // fee: 10,
-  access: 7,
+  access: 9,
 };
 
 const GATHER_WRITING_SEQUENCE = {

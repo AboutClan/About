@@ -114,6 +114,7 @@ export interface IUserRegisterFormWriting {
   telephone?: string;
   locationDetail: LocationDetailProps;
   introduceText?: string;
+  route?: string;
 }
 export interface AvatarProps {
   type: number;
