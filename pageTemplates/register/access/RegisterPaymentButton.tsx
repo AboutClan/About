@@ -42,12 +42,12 @@ interface RegisterPaymentButtonProps {
 }
 
 function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentButtonProps) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const toast = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
   const [isLoading2, setIsLoading2] = useState(false);
-
+  console.log(session);
   // 가입 승인/결제리턴 처리 중복 방지
 
   const approveOnceRef = useRef(false);
@@ -117,11 +117,12 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     },
   });
   useEffect(() => {
-    if (discount > 0) return;
+    if (discount === 0 || status === "loading") return;
     if (!session?.user?.uid) {
       toast("error", "계정 오류가 발생했어요. 관리자에게 문의주세요!");
       return;
     }
+
     sendRequest({
       title: "친구 초대 가입",
       category: "건의",
@@ -197,6 +198,14 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
           action: "retry",
           orderNo,
         };
+      case "APPROVE_FAIL":
+        return {
+          type: "fail",
+          title: "가입 처리에 실패했어요",
+          desc: msg || "잠시 후 다시 시도해 주세요.",
+          action: "retry",
+          orderNo,
+        };
       default:
         return {
           type: "fail",
@@ -239,8 +248,9 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
           ? "결제 정보가 누락됐어요."
           : reason === "SERVER_ERROR"
           ? "일시적인 오류가 발생했어요."
+          : reason === "APPROVE_FAIL"
+          ? "가입 처리에 실패했어요. 잠시 후 다시 시도해 주세요."
           : "결제가 실패했어요.";
-
       toast("error", title);
 
       // ✅ 실패 케이스는 바로 query 제거(중복 토스트 방지)
@@ -258,7 +268,18 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     if (type === "point") {
       chargePoint({ value, message: "포인트 충전", sub: "point" });
     } else {
-      approve(session.user.uid);
+      gaEvent("sign_up_complete");
+      router.replace("/register/access", undefined, { shallow: true });
+      toast("success", "가입이 완료되었습니다!");
+      queryClient.resetQueries([USER_INFO]);
+
+      setTimeout(() => {
+        router.push("/home");
+      }, 500);
+
+      setTimeout(() => {
+        navigateExternalLink("https://pf.kakao.com/_SaWXn/109551233");
+      }, 1000);
     }
   }, [
     router.isReady,
