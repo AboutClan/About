@@ -47,7 +47,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
   const router = useRouter();
   const queryClient = useQueryClient();
   const [isLoading2, setIsLoading2] = useState(false);
-  console.log(session);
+
   // 가입 승인/결제리턴 처리 중복 방지
 
   const approveOnceRef = useRef(false);
@@ -268,18 +268,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     if (type === "point") {
       chargePoint({ value, message: "포인트 충전", sub: "point" });
     } else {
-      gaEvent("sign_up_complete");
-      router.replace("/register/access", undefined, { shallow: true });
-      toast("success", "가입이 완료되었습니다!");
-      queryClient.resetQueries([USER_INFO]);
-
-      setTimeout(() => {
-        router.push("/home");
-      }, 500);
-
-      setTimeout(() => {
-        navigateExternalLink("https://pf.kakao.com/_SaWXn/109551233");
-      }, 1000);
+      approve(session.user.uid);
     }
   }, [
     router.isReady,

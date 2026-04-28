@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // pages/api/cookiepay/return.ts
-import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { parse as parseQs } from "querystring";
 
@@ -140,7 +139,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // 2) paycert 실패(최종 실패)
       if (cert?.RESULTCODE !== "0000") {
-        await upsertPayment({
+        upsertPayment({
           orderNo,
           tid,
           amount,
@@ -160,7 +159,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       // ✅ 성공
-      await upsertPayment({
+      upsertPayment({
         orderNo,
         tid,
         amount: String(cert.AMOUNT ?? amount),
@@ -169,34 +168,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         status: "SUCCESS",
         raw: { payload, cert },
       });
-      const uid = String(payload.BUYERID ?? cert.BUYERID ?? "");
-
-      if (!uid) {
-        redirect(
-          res,
-          `${RESULT_PATH}?status=fail&reason=MISSING_KEYS&msg=${encodeMsg("missing BUYERID")}`,
-        );
-        return;
-      }
-
-      try {
-        await axios.post(`${process.env.SERVER_URI}/register/approval`, { uid });
-      } catch (e: any) {
-        console.error("approve 실패:", uid, e);
-
-        redirect(
-          res,
-          `${RESULT_PATH}?status=fail&reason=APPROVE_FAIL&orderNo=${encodeURIComponent(
-            orderNo,
-          )}&msg=${encodeMsg("가입 처리에 실패했어요. 잠시 후 다시 시도해 주세요.")}`,
-        );
-        return;
-      }
 
       redirect(res, `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}`);
-
-      // 🔥 여기
-
       return;
     }
 
@@ -233,7 +206,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log("paycert:", { rc: cert?.RESULTCODE, msg: cert?.RESULTMSG });
 
     if (cert?.RESULTCODE !== "0000") {
-      await upsertPayment({
+      upsertPayment({
         orderNo,
         tid,
         amount,
@@ -252,7 +225,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
-    await upsertPayment({
+    upsertPayment({
       orderNo,
       tid,
       amount: String(cert.AMOUNT ?? amount),
@@ -261,29 +234,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       status: "SUCCESS",
       raw: { payload, dec, cert },
     });
-    const uid = String(d.BUYERID ?? cert.BUYERID ?? "");
-
-    if (!uid) {
-      redirect(
-        res,
-        `${RESULT_PATH}?status=fail&reason=MISSING_KEYS&msg=${encodeMsg("missing BUYERID")}`,
-      );
-      return;
-    }
-
-    try {
-      await axios.post(`${process.env.SERVER_URI}/register/approval`, { uid });
-    } catch (e: any) {
-      console.error("approve 실패:", uid, e);
-
-      redirect(
-        res,
-        `${RESULT_PATH}?status=fail&reason=APPROVE_FAIL&orderNo=${encodeURIComponent(
-          orderNo,
-        )}&msg=${encodeMsg("가입 처리에 실패했어요. 잠시 후 다시 시도해 주세요.")}`,
-      );
-      return;
-    }
 
     redirect(res, `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}`);
   } catch (e: any) {
