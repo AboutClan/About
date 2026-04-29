@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Switch } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
@@ -9,6 +9,7 @@ import {
   STUDY_CREW_ID_MAPPING,
   STUDY_CREW_PLACE_MAPPING,
 } from "../../../../constants/service/study/place";
+import { useAllUserDataQuery } from "../../../../hooks/admin/quries";
 import { useResetStudyQuery } from "../../../../hooks/custom/CustomHooks";
 import { useGroupIdQuery } from "../../../../hooks/groupStudy/queries";
 import { useStudyInviteMutation } from "../../../../hooks/study/mutations";
@@ -17,6 +18,7 @@ import { StudyCrew } from "../../../../types/models/studyTypes/study-entity.type
 import { StudyVoteProps } from "../../../../types/models/studyTypes/studyInterActions";
 import { UserSimpleInfoProps } from "../../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../../utils/dateTimeUtils";
+import { Input } from "../../../atoms/Input";
 import { MainLoadingAbsolute } from "../../../atoms/loaders/MainLoading";
 import InviteUserGroups from "../../../molecules/groups/InviteUserGroups";
 
@@ -60,8 +62,9 @@ export function StudyInviteDrawer({ onClose }: CloseProps) {
     const startHour = dayjs(date).day() <= 5 ? 18 : 14;
 
     const voteInfo: StudyVoteProps = {
-      ...placeProps,
-      locationDetail: address,
+      latitude: 37.476183,
+      longitude: 126.980677,
+      locationDetail: "사당역 디저트문",
       userId: who._id,
       start: dayjs(date).hour(startHour).minute(0),
       end: dayjs(date)
@@ -72,6 +75,12 @@ export function StudyInviteDrawer({ onClose }: CloseProps) {
     inviteMember(voteInfo);
     setUsers((old) => [...old].filter((u) => u._id !== who._id));
   };
+
+  const [isToggle, setIsToggle] = useState(false);
+  const [nameValue, setNameValue] = useState("");
+  const { data: usersAll } = useAllUserDataQuery(null, {
+    enabled: !!isToggle,
+  });
 
   return (
     <RightDrawer title="인원 초대" onClose={onClose}>
@@ -140,6 +149,43 @@ export function StudyInviteDrawer({ onClose }: CloseProps) {
           ) : null}
         </Box>
       </>
+      <Flex mt={40}>
+        <Box mr={3}>신규 인원 초대</Box>
+        <Switch
+          colorScheme="mint"
+          onChange={(e) => setIsToggle(e.target.checked)}
+          isChecked={isToggle}
+        />
+      </Flex>
+      {isToggle && (
+        <Box mt="16px">
+          <Flex justify="space-between" align="flex-end">
+            <Box>
+              <Input
+                placeholder="이름 검색"
+                isLine
+                size="sm"
+                value={nameValue}
+                onChange={(e) => setNameValue(e.target.value)}
+              />
+            </Box>
+          </Flex>
+          <Box position="relative">
+            {isLoading ? (
+              <Box h="200px">
+                <MainLoadingAbsolute />
+              </Box>
+            ) : (
+              <InviteUserGroups
+                users={usersAll?.filter((a) => a.name === nameValue)}
+                inviteUser={(who) => {
+                  handleInviteBtn(who);
+                }}
+              />
+            )}
+          </Box>
+        </Box>
+      )}
     </RightDrawer>
   );
 }

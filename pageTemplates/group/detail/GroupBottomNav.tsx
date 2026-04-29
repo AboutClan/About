@@ -197,7 +197,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
         <BottomFlexDrawer
           isDrawerUp
           isOverlay
-          height={443}
+          height={432}
           isHideBottom
           setIsModal={() => setIsModal(false)}
         >
@@ -213,16 +213,16 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
             {!data.isFree
               ? "모임장의 승인이 필요한 소모임이에요."
               : "즉시 가입이 가능한 소모임이에요."}
-            <br /> {data.questionText ? "참여를 희망하시나요?" : "활동을 시작해볼까요?"}
+            <br /> {data.questionText.length ? "참여를 희망하시나요?" : "활동을 시작해볼까요?"}
           </Box>
           <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
-            매월 <b>참여권 {data.requiredTicket}장</b>이 소모됩니다.
+            가입이 완료되면 단톡방에도 입장해 주세요!
           </Box>
-          <Box p={5}>
+          <Box pt={3}>
             <Image
               src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/freepik__background__12597-removebg-preview.png"
-              width={160}
-              height={160}
+              width={168}
+              height={168}
               alt="studyResult"
             />
           </Box>
@@ -239,7 +239,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
             <Button
               my={2}
               size="md"
-              color="gray.700"
+              color="gray.600"
               fontWeight="semibold"
               variant="ghost"
               onClick={() => setIsModal(false)}

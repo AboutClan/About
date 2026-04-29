@@ -45,9 +45,8 @@ export function InviteSection({ group }: InviteSecionProps) {
     e.stopPropagation();
     setDeletedUser((old) => [...old, user._id]);
     mutate({ status, userId: user._id });
-  
+
     if (isStudy) {
-    
       changeBelong({ uid: user.uid, belong: title });
     }
   };

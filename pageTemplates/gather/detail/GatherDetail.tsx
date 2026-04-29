@@ -36,7 +36,7 @@ function GatherDetailInfo({ data, isMember, isOpenGather }: IGatherDetailInfo) {
               ),
             },
             {
-              category: "날 짜",
+              category: "일 정",
               text: dayjsToFormat(dayjs(data?.date), "M.D(ddd) HH:mm"),
             },
             ...(!isOpenGather

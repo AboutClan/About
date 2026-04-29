@@ -177,7 +177,7 @@ function GroupDetail() {
         />
       )}
       {!group && <MainLoading />}
-      {group && !findMyInfo && !isAdmin ? <GroupBottomNav data={group} /> : null}
+      {group && !findMyInfo && isAdmin ? <GroupBottomNav data={group} /> : null}
       {isModal && (
         <ResultModal
           onClose={() => setIsModal(false)}

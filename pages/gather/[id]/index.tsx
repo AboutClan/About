@@ -2,9 +2,10 @@ import "dayjs/locale/ko";
 
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
@@ -13,8 +14,11 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { GroupThumbnailCard } from "../../../components/molecules/cards/GroupThumbnailCard";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useKakaoShare } from "../../../hooks/custom/KakaoShareHook2";
+import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
+import { ModalLayout } from "../../../modals/Modals";
 import { createGroupThumbnailProps } from "../../../pages/group/index";
 import GatherBottomNav from "../../../pageTemplates/gather/detail/GatherBottomNav";
 import GatherComments from "../../../pageTemplates/gather/detail/GatherComments";
@@ -27,10 +31,12 @@ import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
 import { isScrollAutoState } from "../../../recoils/navigationRecoils";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../../utils/imageUtils";
+import { isApp } from "../../../utils/validationUtils";
 
 function GatherDetail() {
   const router = useRouter();
   const { data: session } = useSession();
+  const userInfo = useUserInfo();
   const toast = useToast();
 
   const { id } = useParams<{ id: string }>() || {};
@@ -46,6 +52,7 @@ function GatherDetail() {
   });
 
   const isOpenGather = gather?.category === "openGather";
+  const isAdmin = (gather?.user as UserSimpleInfoProps)?._id === userInfo?._id;
 
   const groupId = gather?.groupId;
   const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
@@ -59,6 +66,17 @@ function GatherDetail() {
     setIsScrollAuto(true);
   }, []);
 
+  const [isModal, setIsModal] = useState(false);
+  useEffect(() => {
+    if (isAdmin && !!gather) {
+      const adminGatherAt = localStorage.getItem("adminGatherId");
+      if (!adminGatherAt || +adminGatherAt < gather.id) {
+        localStorage.setItem("adminGatherId", gather.id + "");
+        setIsModal(true);
+      }
+    }
+  }, [isAdmin, gather]);
+
   useEffect(() => {
     if (session === undefined) return;
     if (!session?.user.uid) {
@@ -66,6 +84,7 @@ function GatherDetail() {
       router.push(`/login?status=before&page=gather/${id}`);
     }
   }, [session]);
+  const { shareToKakao } = useKakaoShare();
 
   return (
     <>
@@ -95,7 +114,6 @@ function GatherDetail() {
               <GatherDetailInfo data={gather} isMember={isMember} isOpenGather={isOpenGather} />
               <GatherContent
                 content={gather.content}
-                gatherList={gather.gatherList}
                 postImage={postImage}
                 location={gather.location}
                 isOpenGather={isOpenGather}
@@ -124,6 +142,44 @@ function GatherDetail() {
         </>
       ) : (
         <MainLoading />
+      )}
+      {isModal && (
+        <ModalLayout
+          title="모임 개설 완료!"
+          setIsModal={setIsModal}
+          footerOptions={{
+            main: {
+              text: "공유하기",
+              func: () => {
+                shareToKakao({
+                  title: gather.title,
+                  date: gather.date,
+                  subtitle: gather?.content,
+                  img: gather?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
+                  url:
+                    "https://about20s.club" +
+                    router.asPath +
+                    (isApp() && gather?.groupId ? `?groupId=${gather.groupId}` : "") +
+                    `uid=${(gather.user as UserSimpleInfoProps).uid}`,
+                });
+              },
+            },
+            sub: {
+              text: "닫 기",
+              func: () => {
+                setIsModal(false);
+              },
+            },
+          }}
+        >
+          <p>
+            친구들에게 아래 링크를 공유해 보세요!
+            <br /> 링크를 클릭하면 <b>자동으로 모임에 참여되고</b>
+            <br />
+            참여권도 소모되지 않아요!
+            <br />
+          </p>
+        </ModalLayout>
       )}
     </>
   );

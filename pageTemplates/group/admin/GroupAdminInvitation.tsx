@@ -80,7 +80,6 @@ export default function GroupAdminInvitation({ group }: { group: IGroup }) {
               onChange={(e) => setNameValue(e.target.value)}
             />
           </Box>
-          {/* <Selector options={["전체", ...LOCATION_ALL]} defaultValue={value} setValue={setValue} /> */}
         </Flex>
         <Box position="relative">
           {isLoading ? (

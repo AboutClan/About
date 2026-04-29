@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -7,36 +7,29 @@ import { useSetRecoilState } from "recoil";
 
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuButton";
+import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import UserAbsenceBoard from "../../../components/organisms/boards/UserAbsenceBoard";
-import UserApprovalBoard from "../../../components/organisms/boards/UserApprovalBoard";
-import UserDeleteBoard from "../../../components/organisms/boards/UserDeleteBoard";
-import UserInviteBoard from "../../../components/organisms/boards/UserInviteBoard";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { useResetGatherQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useKakaoShare } from "../../../hooks/custom/KakaoShareHook2";
 import {
   useGatherAbsenceCheckMutation,
-  useGatherParticipationMutation,
   useGatherStatusMutation,
-  useGatherWaitingStatusMutation,
 } from "../../../hooks/gather/mutations";
+import { ModalLayout } from "../../../modals/Modals";
 import { isGatherEditState } from "../../../recoils/checkAtoms";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../../utils/imageUtils";
-import { safeDecodeTel } from "../../../utils/utils";
 import { isApp } from "../../../utils/validationUtils";
 
 interface IGatherHeader {
   gatherData: IGather;
 }
 type ModalType = "inviteMember" | "waitingMember" | "removeMember" | "exile" | "absence";
-
-interface UserSimpleInfoProps2 extends UserSimpleInfoProps {
-  telephone?: number;
-}
 
 function GatherHeader({ gatherData }: IGatherHeader) {
   const router = useRouter();
@@ -67,32 +60,29 @@ function GatherHeader({ gatherData }: IGatherHeader) {
     },
   });
 
-  const { mutate: deleteUser } = useGatherParticipationMutation("delete", +gatherData.id, {
-    onSuccess() {
-      resetQuery();
-    },
-  });
+  const [isModal, setIsModal] = useState(false);
 
-  const { mutate } = useGatherWaitingStatusMutation(gatherData.id, {
-    onSuccess() {
-      resetQuery();
-    },
-    onError() {
-      toast("error", "상대가 보유중인 참여권이 없습니다.");
-      resetQuery();
-    },
-  });
+  const kakaoOption = {
+    title: `${gatherData.title}`,
+    date: gatherData.date,
+    subtitle: gatherData?.content,
+    img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
+    url:
+      "https://about20s.club" +
+      router.asPath +
+      (isApp() && gatherData?.groupId ? `?groupId=${gatherData.groupId}` : ""),
+  };
 
   const menuArr: MenuProps[] = [
     ...(isAdmin
       ? [
           gatherData?.status === "pending"
             ? {
-                text: "신청 인원 확인",
+                text: "멤버 관리",
                 hasWaiting: !!gatherData?.waiting?.length,
                 icon: <MemberCheckIcon />,
                 func: () => {
-                  setModalType("waitingMember");
+                  router.push(`/gather/${gatherData.id}/admin`);
                 },
               }
             : {
@@ -111,20 +101,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
               router.push(`/gather/writing/category?id=${gatherData.id}&edit=on`);
             },
           },
-          {
-            text: "인원 초대",
-            icon: <MemberInviteIcon />,
-            func: () => {
-              setModalType("inviteMember");
-            },
-          },
-          {
-            text: "참여 인원 관리",
-            icon: <MemberMinusIcon />,
-            func: () => {
-              setModalType("removeMember");
-            },
-          },
+
           ...(gatherData?.status !== "pending"
             ? [
                 {
@@ -140,68 +117,29 @@ function GatherHeader({ gatherData }: IGatherHeader) {
       : []),
 
     {
-      kakaoOptions: {
-        title: gatherData.title,
-        date: gatherData.date,
-        subtitle: gatherData?.content,
-        img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
-        url:
-          "https://about20s.club" +
-          router.asPath +
-          (isApp() && gatherData?.groupId ? `?groupId=${gatherData.groupId}` : ""),
+      text: "카카오톡 공유하기",
+      icon: <ShareIcon />,
+      func: () => {
+        setIsModal(true);
       },
     },
   ];
 
-  const handleUserStatus = async (userId: string, status: "agree" | "refuse") => {
-    await mutate({ userId, status, text: null });
-
-    if (status === "agree") toast("success", "승인되었습니다.");
-    else if (status === "refuse") toast("success", "거절했습니다.");
-  };
+  const { shareToKakao } = useKakaoShare();
 
   return (
     <>
       <Header title="모임 정보" url="/gather">
-        <Box pos="relative">
-          <MenuButton menuArr={menuArr} isBlack={!!gatherData?.waiting?.length} />
-        </Box>
+        <Flex align="center">
+          {isAdmin ? (
+            <Box pos="relative">
+              <MenuButton menuArr={menuArr} />
+            </Box>
+          ) : (
+            <KakaoShareBtn {...kakaoOption} />
+          )}
+        </Flex>
       </Header>
-      {modalType === "waitingMember" && (
-        <RightDrawer title="신청중인 인원" onClose={() => setModalType(null)}>
-          <UserApprovalBoard
-            users={gatherData.waiting.map((who) => ({
-              user: who.user,
-              text: who.phase === "first" ? "1차 참여" : "2차 참여",
-            }))}
-            handleApprove={(userId) => handleUserStatus(userId, "agree")}
-            handleRefuse={(userId) => handleUserStatus(userId, "refuse")}
-          />
-        </RightDrawer>
-      )}
-
-      {modalType === "inviteMember" && (
-        <RightDrawer title="인원 초대" onClose={() => setModalType(null)}>
-          <UserInviteBoard
-            gatherId={gatherData.id + ""}
-            groupId={gatherData?.groupId}
-            members={gatherData.participants.map((who) => who.user._id)}
-          />
-        </RightDrawer>
-      )}
-      {modalType === "removeMember" && (
-        <RightDrawer title="참여중인 인원" onClose={() => setModalType(null)}>
-          <UserDeleteBoard
-            users={gatherData.participants.map((who) => ({
-              user: who.user,
-              text:
-                safeDecodeTel((who?.user as UserSimpleInfoProps2)?.telephone) ||
-                ((who?.user as UserSimpleInfoProps2)?.telephone?.toString() ?? "없음"),
-            }))}
-            handleDelete={(userId) => deleteUser({ userId })}
-          />
-        </RightDrawer>
-      )}
       {modalType === "absence" && (
         <RightDrawer title="불참 체크" onClose={() => setModalType(null)}>
           <UserAbsenceBoard
@@ -214,6 +152,54 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             handleDelete={(userId) => absenceCheck({ userId })}
           />
         </RightDrawer>
+      )}{" "}
+      {isModal && (
+        <ModalLayout
+          title="카카오톡 공유하기"
+          setIsModal={setIsModal}
+          footerOptions={{
+            main: {
+              text: "초대 링크 공유",
+              func: () => {
+                shareToKakao({
+                  title: `${isAdmin ? "(모임장 초대)" : ""}${gatherData.title}`,
+                  date: gatherData.date,
+                  subtitle: gatherData?.content,
+                  img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
+                  url:
+                    "https://about20s.club" +
+                    router.asPath +
+                    (isApp() && gatherData?.groupId ? `?groupId=${gatherData.groupId}` : "") +
+                    `${isAdmin ? `&uid=${session?.user.uid}` : ``}`,
+                });
+              },
+            },
+
+            sub: {
+              text: "일반 링크 공유",
+              func: () => {
+                shareToKakao({
+                  title: `${gatherData.title}`,
+                  date: gatherData.date,
+                  subtitle: gatherData?.content,
+                  img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
+                  url:
+                    "https://about20s.club" +
+                    router.asPath +
+                    (isApp() && gatherData?.groupId ? `?groupId=${gatherData.groupId}` : ""),
+                });
+              },
+            },
+          }}
+        >
+          <p>
+            <b>일반 링크</b>는 해당 모임 페이지만 공유하고,
+            <br /> <b>초대 링크</b>는 누르는 즉시 모임에 참여돼요.
+            <br />
+            (초대 링크는 참여권도 소모되지 않아요)
+            <br />
+          </p>
+        </ModalLayout>
       )}
     </>
   );
@@ -223,9 +209,9 @@ export function CheckCircleIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="16px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="16px"
+      width="20px"
       fill="var(--color-gray)"
     >
       <path d="m424-408-86-86q-11-11-28-11t-28 11q-11 11-11 28t11 28l114 114q12 12 28 12t28-12l226-226q11-11 11-28t-11-28q-11-11-28-11t-28 11L424-408Zm56 328q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
@@ -237,9 +223,9 @@ export function MemberMinusIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="16px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="16px"
+      width="20px"
       fill="var(--color-gray)"
     >
       <path d="M680-600h160q17 0 28.5 11.5T880-560q0 17-11.5 28.5T840-520H680q-17 0-28.5-11.5T640-560q0-17 11.5-28.5T680-600ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-240v-32q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v32q0 33-23.5 56.5T600-160H120q-33 0-56.5-23.5T40-240Z" />
@@ -250,9 +236,9 @@ export function MemberHeartIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="16px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="16px"
+      width="20px"
       fill="var(--color-gray)"
     >
       <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM240-160q-33 0-56.5-23.5T160-240v-32q0-34 17.5-62.5T224-378q50-25 99.5-39.5T427-437q23-2 37 17t9 43q-1 5-1 9.5v9.5q0 30 10.5 59.5T519-243l16 15q19 19 8.5 43.5T506-160H240Zm448-28L576-300q-13-13-18.5-28t-5.5-30q0-32 23-57t59-25q28 0 44 13t38 35q20-20 36.5-34t45.5-14q37 0 59.5 25.5T880-357q0 15-6 30t-18 27L744-188q-12 12-28 12t-28-12Z" />
@@ -264,9 +250,9 @@ export function AdminManageIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="16px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="16px"
+      width="20px"
       fill="var(--color-gray)"
     >
       <path d="M80-240v-32q0-34 17-62.5t47-43.5q57-29 118.5-46T388-441q14 0 22 12.5t3 26.5q-6 21-9 42t-3 43q0 29 6 56t17 53q8 17-1.5 32.5T396-160H160q-33 0-56.5-23.5T80-240Zm656.5-23.5Q760-287 760-320t-23.5-56.5Q713-400 680-400t-56.5 23.5Q600-353 600-320t23.5 56.5Q647-240 680-240t56.5-23.5ZM287-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47Zm347 375-6-28q-12-5-22.5-10.5T584-204l-29 9q-13 4-25.5-1T510-212l-8-14q-7-12-5-26t13-23l22-19q-2-14-2-26t2-26l-22-19q-11-9-13-22.5t5-25.5l9-15q7-11 19-16t25-1l29 9q11-8 21.5-13.5T628-460l6-29q3-14 13.5-22.5T672-520h16q14 0 24.5 9t13.5 23l6 28q12 5 22.5 11t21.5 15l27-9q14-5 27 0t20 17l8 14q7 12 5 26t-13 23l-22 19q2 12 2 25t-2 25l22 19q11 9 13 22.5t-5 25.5l-9 15q-7 11-19 16t-25 1l-29-9q-11 8-21.5 13.5T732-180l-6 29q-3 14-13.5 22.5T688-120h-16q-14 0-24.5-9T634-152Z" />
@@ -278,9 +264,9 @@ export function MemberActivity() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="16px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="16px"
+      width="20px"
       fill="var(--color-gray)"
     >
       <path d="M80-40v-80h40q32 0 62-10t58-30q28 20 58 29.5t62 9.5q32 0 62.5-9.5T480-160q28 20 58 29.5t62 9.5q32 0 62.5-9.5T720-160q27 20 57.5 30t62.5 10h40v80h-40q-31 0-61-7.5T720-70q-29 15-59 22.5T600-40q-31 0-61-7.5T480-70q-29 15-59 22.5T360-40q-31 0-61-7.5T240-70q-29 15-59 22.5T120-40H80Zm260-760 222 41q14 2 27 11t22 25l35 62q26 45 72 73t102 28v80q-78 0-142-39T577-621l-90 61 153 120v154q16 11 31 23t29 23q-21 18-46 29t-54 11q-36 0-67-17t-53-43q-22 26-53 43t-67 17q-10 0-19.5-1.5T322-206q-86-59-144-119t-58-104q0-31 24-41t50-10q29 0 67 8.5t81 24.5l-21-124q-4-20 4.5-39.5T352-642l86-58q-3 0-14.5-2.5t-25.5-5-25.5-5Q361-715 358-715l-113 77-45-66 140-96Zm72 284 18 106q27 13 67 34.5t63 35.5v-60L412-516Zm268-224q-33 0-56.5-23.5T600-820q0-33 23.5-56.5T680-900q33 0 56.5 23.5T760-820q0 33-23.5 56.5T680-740Z" />
@@ -292,9 +278,9 @@ export function MemberCheckIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="16px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="16px"
+      width="20px"
       fill="var(--color-gray)"
     >
       <path d="m702-593 141-142q12-12 28.5-12t28.5 12q12 12 12 28.5T900-678L730-508q-12 12-28 12t-28-12l-85-85q-12-12-12-28.5t12-28.5q12-12 28-12t28 12l57 57ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-240v-32q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v32q0 33-23.5 56.5T600-160H120q-33 0-56.5-23.5T40-240Z" />
@@ -305,9 +291,9 @@ export function EditIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="16px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="16px"
+      width="20px"
       fill="var(--color-gray)"
     >
       <path d="M160-120q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm544-528 56-56-56-56-56 56 56 56Z" />
@@ -319,12 +305,26 @@ export function MemberInviteIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="16px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="16px"
+      width="20px"
       fill="var(--color-gray)"
     >
       <path d="M720-520h-80q-17 0-28.5-11.5T600-560q0-17 11.5-28.5T640-600h80v-80q0-17 11.5-28.5T760-720q17 0 28.5 11.5T800-680v80h80q17 0 28.5 11.5T920-560q0 17-11.5 28.5T880-520h-80v80q0 17-11.5 28.5T760-400q-17 0-28.5-11.5T720-440v-80Zm-360 40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-240v-32q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v32q0 33-23.5 56.5T600-160H120q-33 0-56.5-23.5T40-240Z" />
+    </svg>
+  );
+}
+
+function ShareIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20px"
+      viewBox="0 -960 960 960"
+      width="20px"
+      fill="var(--color-gray)"
+    >
+      <path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Z" />
     </svg>
   );
 }
@@ -333,9 +333,9 @@ export function ChangeStatusIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="16px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="16px"
+      width="20px"
       fill="var(--color-gray)"
     >
       <path d="M480-760q-69 0-129 32t-101 88h70q17 0 28.5 11.5T360-600q0 17-11.5 28.5T320-560H160q-17 0-28.5-11.5T120-600v-160q0-17 11.5-28.5T160-800q17 0 28.5 11.5T200-760v54q51-64 124.5-99T480-840q75 0 140.5 28T735-735q42 42 69 97t34 118q2 17-10 28t-29 11q-17 0-28.5-11T757-520q-7-46-27-86t-52-72q-38-38-88.5-60T480-760ZM164-434q16-2 29 6t18 24q22 81 85 135t146 65q21 3 30 15.5t9 26.5q0 16-10.5 29T441-122q-111-13-195.5-85.5T132-387q-5-17 5-31t27-16Zm356-62 48 48q14 14 12.5 29.5T568-392q-11 11-26.5 12.5T512-392l-60-60q-6-6-9-13.5t-3-15.5v-159q0-17 11.5-28.5T480-680q17 0 28.5 11.5T520-640v144ZM751 0q-14 0-24.5-9T713-32l-6-28q-12-5-22.5-10.5T663-84l-29 9q-13 4-25.5-1T589-92l-8-14q-7-12-5-26t13-23l22-19q-2-13-2-26t2-26l-22-19q-11-9-13-22.5t5-25.5l9-15q7-11 19-16t25-1l29 9q11-8 21.5-13.5T707-340l6-29q3-14 13.5-22.5T751-400h16q14 0 24.5 9t13.5 23l6 28q12 5 23 11.5t21 14.5l27-9q14-5 27 0t20 17l8 14q7 12 5 26t-13 23l-22 19q2 13 2 25t-2 25l22 19q11 9 13 22.5t-5 25.5l-9 15q-7 11-19 16t-25 1l-29-9q-11 8-21.5 13.5T811-60l-6 29q-3 14-13.5 22.5T767 0h-16Zm8-120q33 0 56.5-23.5T839-200q0-33-23.5-56.5T759-280q-33 0-56.5 23.5T679-200q0 33 23.5 56.5T759-120Z" />

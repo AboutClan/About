@@ -79,7 +79,7 @@ function GroupStudyTicketLogSection() {
             >
               <Box px={4} py={3} borderBottomWidth="1px" borderColor="gray.300">
                 <Text fontSize="12px" color="mint" fontWeight={600}>
-                  정규 멤버는 참여권이 소모되지 않습니다.
+                  정규 멤버는 참여권이 1장 적게 소모됩니다.
                 </Text>
               </Box>
 
@@ -116,7 +116,9 @@ function GroupStudyTicketLogSection() {
                           <Text textAlign="center">{it.isMember ? "정규" : "임시"}</Text>
                         </Td>
                         <Td fontSize="12px" px={0} color="gray.600" fontWeight={600}>
-                          <Text textAlign="center">{it.isMember ? 0 : it.requiredTicket}장</Text>
+                          <Text textAlign="center">
+                            {it.isMember ? it.requiredTicket - 1 : it.requiredTicket}장
+                          </Text>
                         </Td>
                       </Tr>
                     ))}

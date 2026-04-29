@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -6,10 +6,10 @@ import styled from "styled-components";
 import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import Textarea from "../../../components/atoms/Textarea";
-import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import BottomNav from "../../../components/layouts/BottomNav";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
+import MenuDrawer from "../../../components/organisms/RightMenuDrawer";
 import SearchLocation from "../../../components/organisms/SearchLocation";
 import VoteMap from "../../../components/organisms/VoteMap";
 import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
@@ -236,7 +236,7 @@ function StudyPageMap({
       setIsMapExpansion(true);
     }
   };
-
+  const toast = useToast();
   return (
     <>
       <Box>
@@ -340,13 +340,42 @@ function StudyPageMap({
         />
       )}
       {drawerType === "menu" && (
-        <RightMenuDrawer
+        <MenuDrawer
+          title="메뉴"
           onClose={() => setDrawerType(null)}
-          handleButton={() => {
-            setDrawerType(null);
-            setIsAddCafeDrawer(true);
-          }}
+          items={[
+            {
+              label: "장소 추가 요청",
+              onClick: () => {
+                setDrawerType(null);
+                setIsAddCafeDrawer(true);
+              },
+            },
+            {
+              label: "정보 수정 요청",
+              onClick: () => toast("info", "준비중"),
+            },
+            {
+              label: "오류 제보",
+              onClick: () => toast("info", "준비중"),
+            },
+            {
+              label: "About이 궁금해요!",
+              onClick: () => router.push("/home"),
+            },
+            {
+              label: "문의하기",
+              onClick: () => toast("info", "준비중"),
+            },
+          ]}
         />
+        // <RightMenuDrawer
+        //   onClose={() => setDrawerType(null)}
+        //   handleButton={() => {
+        //     setDrawerType(null);
+        //     setIsAddCafeDrawer(true);
+        //   }}
+        // />
       )}
       {isAddCafeDrawer && <LocationAddDrawer onClose={() => setIsAddCafeDrawer(false)} />}
       {drawerType === "list" && (
@@ -435,100 +464,6 @@ function CafeListDrawer({ onClose, placeData }: CafeListDrawerProps) {
   );
 }
 
-function RightMenuDrawer({
-  onClose,
-  handleButton,
-}: {
-  onClose: () => void;
-  handleButton: (type: "addCafe") => void;
-}) {
-  const router = useRouter();
-  const toast = useToast();
-  return (
-    <RightDrawer title="메뉴" onClose={onClose}>
-      <Flex flexDir="column">
-        <Button
-          w="full"
-          py={3}
-          px={1}
-          variant="unstyled"
-          borderBottom="var(--border-main)"
-          textAlign="start"
-          onClick={() => handleButton("addCafe")}
-        >
-          <Flex justify="space-between" align="center">
-            <Box>장소 추가 요청</Box>
-            <ShortArrowIcon dir="right" color="black" />
-          </Flex>
-        </Button>
-        <Button
-          w="full"
-          py={3}
-          px={1}
-          variant="unstyled"
-          borderBottom="var(--border-main)"
-          textAlign="start"
-          onClick={() => {
-            toast("info", "준비중");
-          }}
-        >
-          <Flex justify="space-between" align="center">
-            <Box>정보 수정 요청</Box>
-            <ShortArrowIcon dir="right" color="black" />
-          </Flex>
-        </Button>
-        <Button
-          w="full"
-          py={3}
-          px={1}
-          variant="unstyled"
-          borderBottom="var(--border-main)"
-          textAlign="start"
-          onClick={() => {
-            toast("info", "준비중");
-          }}
-        >
-          <Flex justify="space-between" align="center">
-            <Box>오류 제보</Box>
-            <ShortArrowIcon dir="right" color="black" />
-          </Flex>
-        </Button>
-        <Button
-          w="full"
-          py={3}
-          px={1}
-          variant="unstyled"
-          borderBottom="var(--border-main)"
-          textAlign="start"
-          onClick={() => {
-            router.push("/home");
-          }}
-        >
-          <Flex justify="space-between" align="center">
-            <Box>About이 궁금해요!</Box>
-            <ShortArrowIcon dir="right" color="black" />
-          </Flex>
-        </Button>
-        <Button
-          w="full"
-          py={3}
-          px={1}
-          variant="unstyled"
-          borderBottom="var(--border-main)"
-          textAlign="start"
-          onClick={() => {
-            toast("info", "준비중");
-          }}
-        >
-          <Flex justify="space-between" align="center">
-            <Box>문의하기</Box>
-            <ShortArrowIcon dir="right" color="black" />
-          </Flex>
-        </Button>
-      </Flex>
-    </RightDrawer>
-  );
-}
 interface LocationAddDrawerProps {
   onClose: () => void;
 }

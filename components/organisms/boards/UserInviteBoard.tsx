@@ -57,7 +57,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
 
   return (
     <>
-      <Flex mt={5}>
+      <Flex mx={5}>
         <Button
           size="sm"
           mr={3}
@@ -70,7 +70,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
           친구인 멤버
         </Button>
       </Flex>
-      <Box mt="16px">
+      <Box mt="16px" mx={5}>
         <Input
           placeholder="이름 검색"
           value={nameValue}

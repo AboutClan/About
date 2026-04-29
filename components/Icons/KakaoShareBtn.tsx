@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 
@@ -148,7 +148,9 @@ function KakaoShareBtn({
           카카오톡 공유
         </Button>
       ) : !isBig ? (
-        <ShareIcon />
+        <Flex justify="center" align="center" w="32px" h="32px">
+          <ShareIcon />
+        </Flex>
       ) : (
         <Button as="div" colorScheme="mint" flex={1} size="lg" maxW="var( --view-max-width)">
           카카오톡으로 공유하기
