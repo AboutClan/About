@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
@@ -13,9 +14,11 @@ import Divider from "../../../components/atoms/Divider";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { GroupThumbnailCard } from "../../../components/molecules/cards/GroupThumbnailCard";
+import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useKakaoShare } from "../../../hooks/custom/KakaoShareHook2";
 import { useUserInfo } from "../../../hooks/custom/UserHooks";
+import { useGatherParticipationMutation } from "../../../hooks/gather/mutations";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { ModalLayout } from "../../../modals/Modals";
@@ -40,7 +43,9 @@ function GatherDetail() {
   const toast = useToast();
 
   const { id } = useParams<{ id: string }>() || {};
-
+  const uid = router.query.uid;
+  const kakao = router.query.kakao;
+  console.log(1234, uid);
   const setIsScrollAuto = useSetRecoilState(isScrollAutoState);
 
   const { data: gather } = useGatherIDQuery(+id, {
@@ -62,6 +67,30 @@ function GatherDetail() {
     gather?.participants.some((who) => who?.user?.uid === session?.user.uid);
   const postImage = gather?.postImage;
 
+  const queryClient = useQueryClient();
+
+  const { mutate: participate, isLoading } = useGatherParticipationMutation("post", +id, {
+    onSuccess() {
+      toast("success", "모임에 초대되었어요!");
+      // typeToast("participate");
+
+      queryClient.invalidateQueries([GATHER_CONTENT, id]);
+      setIsModal(false);
+    },
+  });
+
+  useEffect(() => {
+    if (gather && uid && userInfo && !isMember && !isLoading) {
+      if ((gather.user as UserSimpleInfoProps).uid === uid) {
+        participate({
+          userId: userInfo._id,
+          phase: "first",
+          isFree: true,
+        });
+      }
+    }
+  }, [uid, gather, userInfo, isMember, isLoading]);
+
   useEffect(() => {
     setIsScrollAuto(true);
   }, []);
@@ -81,7 +110,7 @@ function GatherDetail() {
     if (session === undefined) return;
     if (!session?.user.uid) {
       toast("warning", "로그인 정보가 없습니다. 다시 로그인해주세요!");
-      router.push(`/login?status=before&page=gather/${id}`);
+      router.push(`/login?status=before&page=${router.asPath}`);
     }
   }, [session]);
   const { shareToKakao } = useKakaoShare();
@@ -138,7 +167,7 @@ function GatherDetail() {
               <GatherComments comments={gather.comments} />
             </Box>
           </Slide>
-          <GatherBottomNav data={gather} isOpenGather={isOpenGather} />
+          {kakao !== "share" && <GatherBottomNav data={gather} isOpenGather={isOpenGather} />}
         </>
       ) : (
         <MainLoading />

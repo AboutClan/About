@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
@@ -24,6 +24,7 @@ import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../../utils/imageUtils";
+import { navigateExternalLink } from "../../../utils/navigateUtils";
 import { isApp } from "../../../utils/validationUtils";
 
 interface IGatherHeader {
@@ -39,6 +40,8 @@ function GatherHeader({ gatherData }: IGatherHeader) {
   const setGatherWriting = useSetRecoilState(sharedGatherWritingState);
   const setIsGatherEdit = useSetRecoilState(isGatherEditState);
   const [modalType, setModalType] = useState<ModalType>(null);
+
+  const kakao = router.query.kakao;
 
   const { data: session } = useSession();
 
@@ -120,16 +123,26 @@ function GatherHeader({ gatherData }: IGatherHeader) {
       text: "카카오톡 공유하기",
       icon: <ShareIcon />,
       func: () => {
-        setIsModal(true);
+        if (isApp()) {
+          navigateExternalLink(`https://study-about.club/${router.asPath}?kakao=share`);
+        } else {
+          setIsModal(true);
+        }
       },
     },
   ];
+
+  useEffect(() => {
+    if (kakao === "share") {
+      setIsModal(true);
+    }
+  }, [kakao]);
 
   const { shareToKakao } = useKakaoShare();
 
   return (
     <>
-      <Header title="모임 정보" url="/gather">
+      <Header title="모임 정보" url={kakao === "share" ? null : "/gather"}>
         <Flex align="center">
           {isAdmin ? (
             <Box pos="relative">
@@ -162,9 +175,11 @@ function GatherHeader({ gatherData }: IGatherHeader) {
               text: "초대 링크 공유",
               func: () => {
                 shareToKakao({
-                  title: `${isAdmin ? "(모임장 초대)" : ""}${gatherData.title}`,
+                  title: `${isAdmin ? "(모임장 초대) " : ""}${gatherData.title}`,
                   date: gatherData.date,
-                  subtitle: gatherData?.content,
+                  subtitle: isAdmin
+                    ? `해당 링크를 클릭하면 참여권 소모 없이 모임에 즉시 참여됩니다.`
+                    : gatherData?.content,
                   img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
                   url:
                     "https://about20s.club" +
