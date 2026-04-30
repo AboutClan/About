@@ -183,9 +183,8 @@ function GatherHeader({ gatherData }: IGatherHeader) {
                   img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
                   url:
                     "https://about20s.club" +
-                    router.asPath +
-                    (isApp() && gatherData?.groupId ? `?groupId=${gatherData.groupId}` : "") +
-                    `${isAdmin ? `&uid=${session?.user.uid}` : ``}`,
+                    `/gather/${gatherData.id}` +
+                    `${isAdmin ? `?uid=${session?.user.uid}` : ``}`,
                 });
               },
             },
@@ -198,10 +197,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
                   date: gatherData.date,
                   subtitle: gatherData?.content,
                   img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
-                  url:
-                    "https://about20s.club" +
-                    router.asPath +
-                    (isApp() && gatherData?.groupId ? `?groupId=${gatherData.groupId}` : ""),
+                  url: "https://about20s.club" + `/gather/${gatherData.id}`,
                 });
               },
             },

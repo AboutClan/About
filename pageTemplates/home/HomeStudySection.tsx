@@ -11,7 +11,6 @@ import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
-import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { useStudySetQuery } from "../../hooks/study/queries";
 import {
@@ -19,16 +18,13 @@ import {
   sortThumbnailCardInfoArr,
 } from "../../libs/study/thumbnailCardLibs";
 import { backUrlState } from "../../recoils/navigationRecoils";
-import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
-
-type StudyTab = "오늘 날짜 스터디" | "진행 예정 스터디";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 function HomeStudySection() {
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
 
   const setBackUrl = useSetRecoilState(backUrlState);
 
-  const [tab, setTab] = useState<StudyTab>("오늘 날짜 스터디");
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [cardArr, setCardArr] = useState<StudyThumbnailCardProps[]>();
 
@@ -49,42 +45,8 @@ function HomeStudySection() {
 
   useEffect(() => {
     if (!thumbnailCardInfoArr) return;
-    if (tab === "오늘 날짜 스터디") {
-      setCardArr(
-        thumbnailCardInfoArr
-          .filter(
-            (card) =>
-              !card.place.date ||
-              (dayjsToStr(card.place.date) === getTodayStr() && card.participants.length > 1),
-          )
-          .slice(0, 5),
-      );
-    } else {
-      setCardArr(
-        thumbnailCardInfoArr
-          .filter(
-            (card) =>
-              card.place.date && card.place.date.isAfter(dayjs()) && card.participants.length > 1,
-          )
-          .slice(0, 5),
-      );
-    }
-  }, [tab, thumbnailCardInfoArr]);
-
-  const tabOptionsArr: ITabNavOptions[] = [
-    {
-      text: "오늘 날짜 스터디",
-      func: () => {
-        setTab("오늘 날짜 스터디");
-      },
-    },
-    {
-      text: "진행 예정 스터디",
-      func: () => {
-        setTab("진행 예정 스터디");
-      },
-    },
-  ];
+    setCardArr(thumbnailCardInfoArr.slice(0, 5));
+  }, [thumbnailCardInfoArr]);
 
   return (
     <>
@@ -95,10 +57,8 @@ function HomeStudySection() {
           </ButtonWrapper>
         </SectionHeader>
       </Box>
-      <Box px={5} mt={3} mb={5} borderBottom="var(--border)">
-        <TabNav tabOptionsArr={tabOptionsArr} selected={tab} isFullSize />
-      </Box>
-      <Flex direction="column" px={5} mb={4}>
+
+      <Flex direction="column" px={5} mb={4} mt={4}>
         {cardArr
           ? cardArr.map((thumbnailCardInfo, idx) => (
               <Box key={idx} mb={3}>

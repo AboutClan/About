@@ -12,6 +12,7 @@ function StudyDateControl({
   date: Dayjs;
   setDate: DispatchType<Dayjs>;
   isStudy: boolean;
+
 }) {
   const leftMinDayjs = dayjs().add(getHour() < 9 ? 0 : 1, "day");
   const rightMaxDayjs = dayjs().add(getHour() < 9 ? 6 : 7, "day");

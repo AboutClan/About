@@ -54,6 +54,7 @@ export default function StudyMembers({
     image: string;
     toUid: string;
   }>();
+  console.log(isCrew);
 
   const [members, setMembers] = useState<StudyConfirmedMemberProps[] | StudyParticipationProps[]>(
     [],
@@ -117,19 +118,7 @@ export default function StudyMembers({
       setRealTimeComment(comment);
   };
 
-  const filterMembers =
-    studyType !== "participations" || isCrew
-      ? members
-      : isOpen
-      ? (members as StudyParticipationProps[])?.filter((member) => member.dates.includes(date))
-      : (members as StudyParticipationProps[])
-          ?.filter((member) => member.dates.includes(date))
-          ?.map((member) => ({
-            ...member,
-            dates: member.dates.filter((date2) =>
-              dayjs(date2).isAfter(dayjs(date).subtract(1, "day")),
-            ),
-          }));
+  const filterMembers = members;
 
   const tempArr =
     studyType === "participations"

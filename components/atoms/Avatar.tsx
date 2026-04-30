@@ -41,6 +41,7 @@ interface IAvatar {
   user: Partial<UserSimpleInfoProps>;
   isSquare?: boolean;
   isWhite?: boolean;
+  isEmpty?: boolean;
 }
 
 function AvatarComponent({
@@ -129,6 +130,7 @@ function AvatarComponent({
                 justify="center"
                 alignItems="center"
                 h="100%"
+                p="2px"
               >
                 <Flex justify="center" align="center" h={2} textAlign="center">
                   +{shadowAvatar}

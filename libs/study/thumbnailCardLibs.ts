@@ -2,6 +2,7 @@ import dayjs, { Dayjs } from "dayjs";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
+import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
 import { StudySetProps, StudyType } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
@@ -64,7 +65,7 @@ export const setStudyThumbnailCard = (
         },
         _id: "",
       },
-      participants: shortenParticipations(participations).map((par) => par.user),
+      participants: shortenParticipations(participations, openRealTimes).map((par) => par.user),
       url: `/study/participations/${date}?type=participations` + (pathHome ? "&path=home" : ""),
       studyType: "participations",
       isMyStudy: false,
@@ -103,7 +104,7 @@ export const setStudyThumbnailCard = (
     const placeInfo = study.place;
     const textArr = placeInfo.location?.address.split(" ");
 
-    const members = study.members;
+    const members = study.members as StudyConfirmedMemberProps[];
 
     const floorTo30 = (date: dayjs.ConfigType) => {
       const d = dayjs(date);
@@ -146,7 +147,7 @@ export const setStudyThumbnailCard = (
         latestEnd: end.isAfter(acc.latestEnd) ? end : acc.latestEnd,
       };
     }, null);
-
+    console.log(1234, members);
     return {
       place: {
         name: placeInfo.location.name,
@@ -155,6 +156,7 @@ export const setStudyThumbnailCard = (
           result.latestEnd,
           "HH:mm",
         )}`,
+
         date: dayjs(data.date),
         imageProps: {
           image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
@@ -171,6 +173,9 @@ export const setStudyThumbnailCard = (
       isMyStudy: study.members.map((member) => member.user._id).includes(myId),
       isFutureDate: dayjs(data.date).hour(9).isAfter(dayjs()),
       func,
+      isConfirmed:
+        members.some((m) => m.attendance.type === "arrived") ||
+        members.filter((p) => !!p).length >= 4,
     };
   });
 

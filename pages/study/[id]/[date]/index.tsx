@@ -24,7 +24,6 @@ import StudyLinkModal from "../../../../pageTemplates/study/modals/StudyLinkModa
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
-import StudyDateControl from "../../../../pageTemplates/study/StudyDateControl";
 import StudyExtraButton from "../../../../pageTemplates/study/StudyExtraButton";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
@@ -46,7 +45,7 @@ import {
   StudyParticipationsSetProps,
   StudyType,
 } from "../../../../types/models/studyTypes/study-set.types";
-import { dayjsToStr, getHour, getTodayStr } from "../../../../utils/dateTimeUtils";
+import { dayjsToStr, getTodayStr } from "../../../../utils/dateTimeUtils";
 import { createGroupThumbnailProps } from "../../../group";
 
 export default function Page() {
@@ -58,13 +57,13 @@ export default function Page() {
   const date = date2 as string;
   const studyType = type as StudyType;
 
-  const [dateDayjs, setDateDayjs] = useState(
-    studyType === "soloRealTimes"
-      ? dayjs(date)
-      : date === dayjsToStr(dayjs()) && getHour() >= 9
-      ? dayjs(date).add(1, "day")
-      : dayjs(date),
-  );
+  // const [dateDayjs, setDateDayjs] = useState(
+  //   studyType === "soloRealTimes"
+  //     ? dayjs(date)
+  //     : date === dayjsToStr(dayjs()) && getHour() >= 9
+  //     ? dayjs(date).add(1, "day")
+  //     : dayjs(date),
+  // );
   const [tab, setTab] = useState<"일반 스터디" | "스터디 크루">("일반 스터디");
   // const [isTicketModal, setIsTicketModal] = useState(false);
 
@@ -91,19 +90,17 @@ export default function Page() {
     studyType !== "soloRealTimes" &&
     !!date &&
     dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
-  const isPassedSolo = studyType === "soloRealTimes" && dateDayjs.isBefore(dayjs().startOf("day"));
+  const isPassedSolo =
+    studyType === "soloRealTimes" && dayjs(date).isBefore(dayjs().startOf("day"));
 
   const { data: studySet } = useStudySetQuery(
     studyType === "participations" ? dayjsToStr(dayjs()) : date,
     { enabled: !!date && !isPassedDate },
   );
 
-  const { data: studyPassedData } = useStudyPassedDayQuery(
-    isPassedSolo ? dayjsToStr(dateDayjs) : date,
-    {
-      enabled: !!isPassedDate || !!isPassedSolo,
-    },
-  );
+  const { data: studyPassedData } = useStudyPassedDayQuery(date, {
+    enabled: !!isPassedDate || !!isPassedSolo,
+  });
 
   const [modalType, setModalType] = useState<"studyLink" | "review">();
 
@@ -135,6 +132,9 @@ export default function Page() {
     isPassedDate || isPassedSolo
       ? studyPassedData && studyPassedData[studyType]
       : studySet && studySet[studyType];
+
+  console.log(32, studySet);
+
   const participationsSet =
     studyType === "participations" && (studyData as StudyParticipationsSetProps[]);
   const confirmedSet = studyType !== "participations" && (studyData as StudyConfirmedSetProps[]);
@@ -168,7 +168,7 @@ export default function Page() {
 
   const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
   const findTodayStudy = myStudyArr?.filter((myStudy) => myStudy.date === date);
-
+  console.log(userInfo);
   let myStudyStatus: MyStudyStatus;
 
   switch (studyType) {
@@ -202,12 +202,13 @@ export default function Page() {
 
   const members2 =
     studyType === "participations"
-      ? shortenParticipations(participationsSet)
+      ? shortenParticipations(participationsSet, studySet?.["openRealTimes"])
       : studyType === "soloRealTimes"
       ? (studyData as StudyConfirmedSetProps[])?.map((study) => ({
           ...study.study.members[0],
         }))
       : findStudy?.members;
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const entry = Object.entries(STUDY_CREW_PLACE_MAPPING).find(([_, places]) =>
     places.some((s) => s.name === findStudy?.place?.location?.name),
@@ -302,14 +303,15 @@ export default function Page() {
               )}
               <Box h="1px" bg="gray.100" my={4} />
               <Box pb={2} pos="relative">
-                {(studyType === "soloRealTimes" || studyType === "participations") &&
+                {/* {(studyType === "soloRealTimes" || studyType === "participations") &&
                   tab === "일반 스터디" && (
                     <StudyDateControl
                       date={dateDayjs}
                       setDate={setDateDayjs}
                       isStudy={studyType === "soloRealTimes"}
                     />
-                  )}
+                  )} */}
+
                 <Box minH="240px">
                   {isPassedSolo && !studyPassedData ? (
                     <Box pos="relative" minH="140px">
@@ -317,7 +319,7 @@ export default function Page() {
                     </Box>
                   ) : (
                     <StudyMembers
-                      date={dayjsToStr(dateDayjs)}
+                      date={date}
                       members={members || []}
                       studyType={studyType}
                       isCrew={tab === "스터디 크루"}
@@ -325,9 +327,6 @@ export default function Page() {
                         lat: placeInfo?.location.latitude,
                         lon: placeInfo?.location?.longitude,
                       }}
-                      // hasStudyLink={
-                      //   myStudyStatus === "participation" && studyType !== "soloRealTimes"
-                      // }
                     />
                   )}
                 </Box>
@@ -446,7 +445,7 @@ export default function Page() {
 
           <StudyNavigation
             myStudyInfo={myStudyInfo}
-            date={isPassedSolo ? dayjsToStr(dateDayjs) : date}
+            date={date}
             id={id as string}
             myStudyStatus={myStudyStatus}
             studyType={studyType}

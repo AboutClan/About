@@ -10,6 +10,7 @@ import {
   StudyParticipationProps,
 } from "../../types/models/studyTypes/study-entity.types";
 import {
+  StudyConfirmedSetProps,
   StudyParticipationsSetProps,
   StudySetProps,
 } from "../../types/models/studyTypes/study-set.types";
@@ -424,6 +425,7 @@ const convertParticipations = (
 
 export const shortenParticipations = (
   participations: StudyParticipationsSetProps[],
+  openRealTimes?: StudyConfirmedSetProps[],
 ): StudyParticipationProps[] => {
   const participationMap = new Map();
 
@@ -436,6 +438,21 @@ export const shortenParticipations = (
         participationMap.set(userId, {
           ...study,
           location: study.location,
+          dates: [par.date],
+        });
+      }
+    });
+  });
+  openRealTimes?.forEach((par) => {
+    const studyProps = par.study;
+    studyProps.members.forEach((study) => {
+      const userId = study.user._id;
+      if (participationMap.has(userId)) {
+        participationMap.get(userId).dates.push(par.date);
+      } else {
+        participationMap.set(userId, {
+          ...study,
+          location: studyProps.place.location,
           dates: [par.date],
         });
       }

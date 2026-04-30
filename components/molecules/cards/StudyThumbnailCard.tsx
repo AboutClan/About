@@ -40,6 +40,7 @@ export interface StudyThumbnailCardProps {
 
   hasReview?: boolean;
   hasAttend?: boolean;
+  isConfirmed?: boolean;
 }
 
 export function StudyThumbnailCard({
@@ -53,8 +54,12 @@ export function StudyThumbnailCard({
   hasReviewBtn,
   hasReview,
   hasAttend,
+  isConfirmed = false,
 }: StudyThumbnailCardProps) {
   const router = useRouter();
+
+  const temp = studyType === "openRealTimes" && isFutureDate && participants.length < 4 ? 4 : 8;
+
   return (
     <CardLink
       href={url}
@@ -85,10 +90,10 @@ export function StudyThumbnailCard({
               )}
               <Badge
                 mr="auto"
-                colorScheme={getStudyBadge(studyType, isFutureDate).colorScheme}
+                colorScheme={getStudyBadge(studyType, isFutureDate, isConfirmed).colorScheme}
                 size="md"
               >
-                {getStudyBadge(studyType, isFutureDate).text}
+                {getStudyBadge(studyType, isFutureDate, isConfirmed).text}
               </Badge>
             </Flex>
           </Flex>
@@ -125,40 +130,56 @@ export function StudyThumbnailCard({
               </Box>
             </Flex>
           </Subtitle>
-          <Flex mb={1} mt="auto" alignItems="center" justify="space-between">
+          <Flex mb={0.5} mt="auto" alignItems="center" justify="space-between">
             <Box>
-              <AvatarGroupsOverwrap users={participants} maxCnt={status ? 8 : VOTER_SHOW_MAX} />
+              <AvatarGroupsOverwrap
+                users={
+                  participants.length < 4 &&
+                  studyType !== "participations" &&
+                  studyType !== "soloRealTimes"
+                    ? [...participants, ...Array(4 - participants.length).fill(null)]
+                    : participants
+                }
+                maxCnt={VOTER_SHOW_MAX}
+              />
             </Box>
-            <Flex align="center" color="var(--gray-500)">
-              <UserIcon size="sm" />
-              <Flex lineHeight="12px" ml={1} fontSize="10px" align="center" fontWeight={500}>
-                <Box
-                  fontWeight={600}
-                  as="span"
-                  color={
-                    participants.length >= STUDY_MAX_CNT &&
-                    studyType !== "participations" &&
-                    studyType !== "soloRealTimes"
-                      ? "var(--color-red)"
-                      : "var(--color-gray)"
-                  }
-                >
-                  {participants.length}
-                </Box>
-                <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
-                  /
-                </Box>
-                <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                  {studyType === "soloRealTimes" || studyType === "participations" ? (
-                    <Box>
-                      <InfinityIcon />
-                    </Box>
-                  ) : (
-                    STUDY_MAX_CNT
-                  )}
-                </Box>
+            {studyType !== "participations" && studyType !== "soloRealTimes" ? (
+              <Flex align="center" color="var(--gray-500)" fontSize="11px" lineHeight="16px">
+                {isFutureDate && participants.length < 4 ? "확정까지 " : "마감까지 "}
+                {temp - participants.length}명 남았어요!
               </Flex>
-            </Flex>
+            ) : (
+              <Flex>
+                <UserIcon size="sm" />
+                <Flex lineHeight="12px" ml={1} fontSize="10px" align="center" fontWeight={500}>
+                  <Box
+                    fontWeight={600}
+                    as="span"
+                    color={
+                      participants.length >= STUDY_MAX_CNT &&
+                      studyType !== "participations" &&
+                      studyType !== "soloRealTimes"
+                        ? "var(--color-red)"
+                        : "var(--color-gray)"
+                    }
+                  >
+                    {participants.length}
+                  </Box>
+                  <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                    /
+                  </Box>
+                  <Box as="span" color="var(--gray-500)" fontWeight={500}>
+                    {studyType === "soloRealTimes" || studyType === "participations" ? (
+                      <Box>
+                        <InfinityIcon />
+                      </Box>
+                    ) : (
+                      STUDY_MAX_CNT
+                    )}
+                  </Box>
+                </Flex>
+              </Flex>
+            )}
           </Flex>
           {hasReviewBtn && (
             <Button
@@ -226,5 +247,6 @@ const Title = styled(SingleLineText)`
 const Subtitle = styled(SingleLineText)`
   color: var(--gray-500);
   font-size: 11px;
+
   line-height: 12px;
 `;
