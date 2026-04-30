@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -20,7 +19,6 @@ import { useGroupIdQuery } from "../../../../hooks/groupStudy/queries";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/study/queries";
 import { shortenParticipations } from "../../../../libs/study/studyConverters";
 import { getMyStudyDateArr } from "../../../../libs/study/studyHelpers";
-import { ModalLayout } from "../../../../modals/Modals";
 import StudyStep from "../../../../pageTemplates/gather/detail/StudyStep";
 import StudyLinkModal from "../../../../pageTemplates/study/modals/StudyLinkModal";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
@@ -55,7 +53,7 @@ export default function Page() {
   const router = useRouter();
 
   const toast = useToast();
-  const { id, date: date2, type, studyLocation, ticket } = router.query;
+  const { id, date: date2, type, studyLocation } = router.query;
   const userInfo = useUserInfo();
   const date = date2 as string;
   const studyType = type as StudyType;
@@ -68,26 +66,26 @@ export default function Page() {
       : dayjs(date),
   );
   const [tab, setTab] = useState<"일반 스터디" | "스터디 크루">("일반 스터디");
-  const [isTicketModal, setIsTicketModal] = useState(false);
+  // const [isTicketModal, setIsTicketModal] = useState(false);
 
-  useEffect(() => {
-    if (ticket === "on") {
-      const removeParam = (key: string) => {
-        const { [key]: _, ...rest } = router.query;
-        console.log(_);
-        router.replace(
-          {
-            pathname: router.pathname,
-            query: rest,
-          },
-          undefined,
-          { shallow: true },
-        );
-      };
-      setIsTicketModal(true);
-      removeParam("ticket");
-    }
-  }, [ticket]);
+  // useEffect(() => {
+  //   if (ticket === "on") {
+  //     const removeParam = (key: string) => {
+  //       const { [key]: _, ...rest } = router.query;
+  //       console.log(_);
+  //       router.replace(
+  //         {
+  //           pathname: router.pathname,
+  //           query: rest,
+  //         },
+  //         undefined,
+  //         { shallow: true },
+  //       );
+  //     };
+  //     setIsTicketModal(true);
+  //     removeParam("ticket");
+  //   }
+  // }, [ticket]);
 
   const isPassedDate =
     studyType !== "soloRealTimes" &&
@@ -488,31 +486,6 @@ export default function Page() {
         />
       )}
       {studyType === "participations" && <Box h={5} />}
-      {isTicketModal && (
-        <ModalLayout
-          title="열공 뽑기권을 획득했어요!"
-          footerOptions={{ main: { text: "확 인" } }}
-          isCloseButton={false}
-          setIsModal={setIsTicketModal}
-        >
-          <Box
-            position="relative"
-            aspectRatio={2 / 1}
-            bg="pink"
-            w="full"
-            borderRadius="12px"
-            overflow="hidden"
-            border="var(--border)"
-            borderColor="#FFEBF3"
-          >
-            <Image
-              src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%A3%B0%EB%A0%9B.png"
-              fill
-              alt="열공"
-            />
-          </Box>
-        </ModalLayout>
-      )}
     </>
   );
 }

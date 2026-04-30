@@ -106,7 +106,7 @@ function Configuration() {
       setLocalStorageObj(STUDY_ATTEND_AT, getTodayStr());
 
       if (id) {
-        router.push(`/study/${id}/${date}?type=${type}&ticket=on`);
+        router.push(`/study/${id}/${date}?type=${type}`);
       } else {
         router.push(`/study/realTimes/${date}?type=${type}`);
       }
