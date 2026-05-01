@@ -43,11 +43,18 @@ function Admin() {
           isBlack
         />
         {tab === "참여 인원 관리" ? (
-          <AdminSection groupId={id} users={users} randomTicket={group?.randomTicket} />
+          <AdminSection
+            groupId={id}
+            users={[...users].sort((a, b) => a.user.name.localeCompare(b.user.name))}
+            randomTicket={group?.randomTicket}
+          />
         ) : tab === "신청 인원 확인" ? (
           <InviteSection group={group} />
         ) : (
-          <DeleteSection group={group} users={users} />
+          <DeleteSection
+            group={group}
+            users={[...users].sort((a, b) => a.user.name.localeCompare(b.user.name))}
+          />
         )}
       </Slide>
     </>
