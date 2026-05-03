@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../components/atoms/SectionFooterButton";
+import Select from "../../components/atoms/Select";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
@@ -14,7 +15,7 @@ import {
 } from "../../libs/study/thumbnailCardLibs";
 import { DispatchString } from "../../types/hooks/reactTypes";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
-import StudyPagePlaceSectionFilterBar from "./studyPageDrawer/StudyPagePlaceBlockFilterBar";
+import { CheckBox } from "../gather/GatherMain";
 
 interface StudyPagePlaceSectionProps {
   studySet: StudySetProps;
@@ -31,6 +32,9 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [sortedOption, setSortedOption] = useState<StudySortedOption>("날짜순");
   const [isLoading, setIsLoading] = useState(false);
+  const [sortBy, setSortBy] = useState<SortedType>("기본순");
+
+  const [checkType, setCheckType] = useState<StudySortedOption>(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -56,33 +60,60 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
   // };
 
   return (
-    <Flex flexDir="column" mb={8}>
-      <Box>
-        {thumbnailCardInfoArr?.length ? (
-          <StudyPagePlaceSectionFilterBar
-            sortedOption={sortedOption}
-            setSortedOption={setSortedOption}
-            placeCnt={thumbnailCardInfoArr?.length}
-            date={date}
-          />
-        ) : (
-          <Box my={4} h={4} />
-        )}
-        <Box>
-          {thumbnailCardInfoArr?.length && !isLoading
-            ? thumbnailCardInfoArr.slice(0, 6).map((thumbnailCardInfo, idx) => (
-                <Box key={idx} mb={3}>
-                  <StudyThumbnailCard {...thumbnailCardInfo} />
-                </Box>
-              ))
-            : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+    <>
+      <Flex mt={3} py={1} mb={4} justify="space-between" align="center">
+        <Flex>
+          <Box mr={4}>
+            <CheckBox
+              text="모집중만 보기"
+              isChecked={checkType === "모집중"}
+              onChange={(check: boolean) => {
+                if (check) {
+                  setCheckType("모집중");
+                } else setCheckType(null);
+              }}
+            />
+          </Box>
+          <Box mr={4}>
+            <CheckBox
+              text="마감 임박"
+              isChecked={checkType === "마감 임박"}
+              onChange={(check: boolean) => {
+                if (check) {
+                  setCheckType("마감 임박");
+                } else setCheckType(null);
+              }}
+            />
+          </Box>
+        </Flex>
 
-          {thumbnailCardInfoArr?.length && (
-            <SectionFooterButton url={`/studyList?date=${date}`} key="sectionFooter" />
-          )}
+        <Select
+          options={["날짜순", "인원순", "거리순"]}
+          defaultValue={sortedOption}
+          size="xs"
+          setValue={setSortedOption}
+          isBorder={false}
+        />
+      </Flex>
+
+      <Flex flexDir="column" mb={8}>
+        <Box>
+          <Box>
+            {thumbnailCardInfoArr?.length && !isLoading
+              ? thumbnailCardInfoArr.slice(0, 6).map((thumbnailCardInfo, idx) => (
+                  <Box key={idx} mb={3}>
+                    <StudyThumbnailCard {...thumbnailCardInfo} />
+                  </Box>
+                ))
+              : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+
+            {thumbnailCardInfoArr?.length && (
+              <SectionFooterButton url={`/studyList?date=${date}`} key="sectionFooter" />
+            )}
+          </Box>
         </Box>
-      </Box>
-    </Flex>
+      </Flex>
+    </>
   );
 }
 

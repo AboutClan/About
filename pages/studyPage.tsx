@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
@@ -9,7 +9,6 @@ import { MainLoading } from "../components/atoms/loaders/MainLoading";
 import Slide from "../components/layouts/PageSlide";
 import { useToast, useTypeToast } from "../hooks/custom/CustomToast";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../hooks/study/queries";
-import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageChallenge from "../pageTemplates/studyPage/StudyPageChallenge";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
 import StudyPageMap, {
@@ -21,7 +20,7 @@ import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import { StudyConfirmedMemberProps } from "../types/models/studyTypes/study-entity.types";
 import { getTodayStr } from "../utils/dateTimeUtils";
 
-export type StudyPageTab = "About 스터디" | "카공 지도.ZIP 🔥";
+export type StudyPageTab = "About 스터디" | "카공 지도.ZIP" | "스터디 챌린지";
 
 export default function StudyPage() {
   const typeToast = useTypeToast();
@@ -94,8 +93,10 @@ export default function StudyPage() {
     if (!tabParam) return;
     if (tabParam === "study") {
       setTab("About 스터디");
+    } else if (tabParam === "map") {
+      setTab("카공 지도.ZIP");
     } else {
-      setTab("카공 지도.ZIP 🔥");
+      setTab("스터디 챌린지");
     }
   }, [tabParam]);
 
@@ -120,10 +121,14 @@ export default function StudyPage() {
     if (type === "About 스터디") {
       newSearchParams.set("date", getTodayStr());
       newSearchParams.set("tab", "study");
-    } else {
+    } else if (type === "카공 지도.ZIP") {
       newSearchParams.set("date", getTodayStr());
       newSearchParams.set("tab", "map");
+    } else {
+      newSearchParams.set("date", getTodayStr());
+      newSearchParams.set("tab", "challenge");
     }
+
     router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
     setTab(type);
   };
@@ -138,18 +143,15 @@ export default function StudyPage() {
         {tab === "About 스터디" ? (
           <>
             <Slide>
-              <StudyPageCalendar date={date} setDate={setDate} />
+              {/* <StudyPageCalendar date={date} setDate={setDate} /> */}
               <StudyPagePlaceSection
                 studySet={isPassedDate ? passedStudyData : studySet}
                 date={date}
                 setDate={setDate}
               />
             </Slide>
-            <Slide isNoPadding>
-              <StudyPageChallenge />
-            </Slide>
           </>
-        ) : (
+        ) : tab === "카공 지도.ZIP" ? (
           <Slide isNoPadding>
             <Box h={5} />
             <Box mx={5} mb={2} fontSize="16px" fontWeight={600}>
@@ -184,6 +186,11 @@ export default function StudyPage() {
                 />
               </Box>
             </Box>
+          </Slide>
+        ) : (
+          <Slide isNoPadding>
+            <Box h={5}></Box>
+            <StudyPageChallenge />
           </Slide>
         )}
       </>

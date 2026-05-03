@@ -12,13 +12,14 @@ import { usePointPlusLogQuery } from "../../hooks/user/queries";
 function StudyPageChallenge() {
   const router = useRouter();
   const userInfo = useUserInfo();
+  const isGuest = userInfo?.role === "guest";
 
   const [totalValue, setTotalValue] = useState(0);
 
   const { data: logs } = usePointPlusLogQuery();
 
   const { data: studyUsers } = useAllUserDataQuery("study");
-
+  console.log(51, logs);
   useEffect(() => {
     if (!logs?.length) return;
 

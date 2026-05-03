@@ -62,9 +62,8 @@ export function StudyInviteDrawer({ onClose }: CloseProps) {
     const startHour = dayjs(date).day() <= 5 ? 18 : 14;
 
     const voteInfo: StudyVoteProps = {
-      latitude: 37.476183,
-      longitude: 126.980677,
-      locationDetail: "사당역 디저트문",
+      ...placeProps,
+      locationDetail: address,
       userId: who._id,
       start: dayjs(date).hour(startHour).minute(0),
       end: dayjs(date)
@@ -86,7 +85,7 @@ export function StudyInviteDrawer({ onClose }: CloseProps) {
     <RightDrawer title="인원 초대" onClose={onClose}>
       <>
         <Flex mb={2}>
-          {[0, 1, 2, 3, 4, 5, 6].map((n) => (
+          {[1, 2, 3, 4, 5, 6, 7].map((n) => (
             <Button
               key={n}
               onClick={() => {
