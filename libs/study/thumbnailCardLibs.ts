@@ -174,7 +174,7 @@ export const setStudyThumbnailCard = (
       isFutureDate: dayjs(data.date).hour(9).isAfter(dayjs()),
       func,
       isConfirmed:
-        members.some((m) => m.attendance.type === "arrived") ||
+        members.some((m) => m.attendance?.type === "arrived") ||
         members.filter((p) => !!p).length >= 4,
     };
   });
