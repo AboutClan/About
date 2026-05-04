@@ -13,9 +13,7 @@ import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/Study
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
-import { useStudyPlacesQuery, useStudySetQuery } from "../../hooks/study/queries";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { getMyStudyDateArr } from "../../libs/study/studyHelpers";
+import { useStudyPlacesQuery } from "../../hooks/study/queries";
 import { CalendarHeader } from "../../modals/aboutHeader/DateCalendarModal";
 import { transferStudyRewardState } from "../../recoils/transferRecoils";
 import { LocationProps } from "../../types/common";
@@ -39,10 +37,10 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   const [isMapOpen, setIsMapOpen] = useState(false);
   const setTransferStudyReward = useSetRecoilState(transferStudyRewardState);
 
-  const { data: userInfo } = useUserInfoQuery();
-  const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
+  // const { data: userInfo } = useUserInfoQuery();
+  // const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
 
-  const myStudyDateArr = getMyStudyDateArr(studySet, userInfo?._id);
+  // const myStudyDateArr = getMyStudyDateArr(studySet, userInfo?._id);
 
   useStudyPlacesQuery("main");
 
@@ -142,18 +140,10 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
               selectedDates={[selectedDate]}
               func={handleClickDate}
               passedDisabled
-              mintDateArr={myStudyDateArr?.map((study) => study.date)}
+              mintDateArr={[]}
             />
-            {myStudyDateArr?.length ? (
-              <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
-                <Box as="span" color="mint">
-                  민트색
-                </Box>{" "}
-                숫자는 이미 참여중인 스터디 날짜입니다.
-              </Box>
-            ) : (
-              <Box h={3} />
-            )}
+
+            <Box h={3} />
             <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
               최대 일주일 이내의 스터디를 개설할 수 있습니다.
             </Box>

@@ -4,7 +4,7 @@ import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
 import { StudySetProps, StudyType } from "../../types/models/studyTypes/study-set.types";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { dayjsToFormat, getTodayStr } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 import { shortenParticipations } from "./studyConverters";
 
@@ -23,6 +23,7 @@ export const setStudyThumbnailCard = (
   myId: string,
   func?: () => void,
   pathHome?: boolean,
+  temp?: boolean,
 ): StudyThumbnailCardProps[] => {
   const { participations, openRealTimes, soloRealTimes, results } = studySet;
 
@@ -51,7 +52,7 @@ export const setStudyThumbnailCard = (
       func,
     });
   }
-  if (!isPassedDate) {
+  if (!isPassedDate && !temp) {
     basicThumbnailCard.push({
       place: {
         name: "카공 스터디 라운지",
@@ -171,15 +172,17 @@ export const setStudyThumbnailCard = (
         (pathHome ? "&path=home" : ""),
       studyType: data.study.status,
       isMyStudy: study.members.map((member) => member.user._id).includes(myId),
-      isFutureDate: dayjs(data.date).hour(9).isAfter(dayjs()),
+      dateStatus: dayjs(data.date).hour(9).isAfter(dayjs())
+        ? "future"
+        : data.date == getTodayStr()
+        ? "current"
+        : "prev",
       func,
-      isConfirmed:
-        members.some((m) => m.attendance?.type === "arrived") ||
-        members.filter((p) => !!p).length >= 4,
     };
   });
 
-  return [...basicThumbnailCard, ...cardColData];
+  const data = [...basicThumbnailCard, ...cardColData];
+  return !temp ? data : [...basicThumbnailCard, ...cardColData.slice().reverse()];
 };
 
 export const sortThumbnailCardInfoArr = (

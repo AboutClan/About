@@ -105,6 +105,30 @@ export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) 
       ...options,
     },
   );
+export const useLastStudySetQuery = (idx: number, options?: StudyWeekQueryOptions) =>
+  useQuery<StudySetInitialDataProps[], AxiosError, StudySetProps>(
+    [STUDY_VOTE, "lastWeek", idx],
+    async () => {
+      const { data } = await axios.get<StudySetInitialDataProps[]>(
+        `${SERVER_URI}/vote2/${idx}/lastWeek`,
+      );
+      return data;
+    },
+    {
+      select: (data) => {
+        let byDate = studyWeekCacheMap.get(data);
+        if (!byDate) {
+          byDate = new Map();
+          studyWeekCacheMap.set(data, byDate);
+        }
+
+        const result = setStudyWeekData(data);
+
+        return result;
+      },
+      ...options,
+    },
+  );
 
 export interface InitialStudyPassedDayProps {
   realTimes: {

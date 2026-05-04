@@ -119,8 +119,7 @@ export const getCalendarDates = (
         const cutoffDay = (now.hour() >= 21 ? now.add(1, "day") : now).startOf("day");
 
         // current가 cutoffDay와 "같거나 이전"이면 disabled
-        const isCutoffDisabled =
-          current.isBefore(cutoffDay, "day") || current.isSame(cutoffDay, "day");
+        const isCutoffDisabled = current.isBefore(cutoffDay, "day");
 
         calendar.push({
           date: dayjsToStr(current),

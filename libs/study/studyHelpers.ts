@@ -37,31 +37,19 @@ export const getMyStudyDateArr = (
   return dateArr;
 };
 
-export const getStudyBadge = (
-  studyType: StudyType,
-  isFutureDate: boolean,
-  isConfirmed?: boolean,
-) => {
+export const getStudyBadge = (studyType: StudyType, dateStatus: "future" | "current" | "prev") => {
   switch (studyType) {
     case "participations":
       return { text: "스터디 매칭 신청", colorScheme: "blue" };
     case "soloRealTimes":
       return { text: "공부 인증", colorScheme: "red" };
-    case "openRealTimes":
-      if (isFutureDate) {
-        if (isConfirmed) {
-          return { text: "확정된 스터디", colorScheme: "mint" };
-        }
+    default:
+      if (dateStatus === "current") {
+        return { text: "오늘의 스터디", colorScheme: "mint" };
+      } else if (dateStatus === "future") {
         return { text: "예정된 스터디", colorScheme: "purple" };
-      }
-      return { text: "모임장 스터디", colorScheme: "mint" };
-    case "results":
-      if (isFutureDate) return { text: "진행 확정", colorScheme: "purple" };
-      else {
-        if (isConfirmed) {
-          return { text: "진행중인 스터디", colorScheme: "mint" };
-        }
-        return { text: "확정된 스터디", colorScheme: "mint" };
+      } else {
+        return { text: "지난 스터디", colorScheme: "black" };
       }
   }
 };

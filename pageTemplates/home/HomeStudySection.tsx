@@ -11,6 +11,7 @@ import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
+import TabNav from "../../components/molecules/navs/TabNav";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { useStudySetQuery } from "../../hooks/study/queries";
 import {
@@ -18,7 +19,10 @@ import {
   sortThumbnailCardInfoArr,
 } from "../../libs/study/thumbnailCardLibs";
 import { backUrlState } from "../../recoils/navigationRecoils";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
+
+const STUDY_TAB_ARR = ["오늘 날짜 스터디", "예정된 스터디"] as const;
+type StudyTab = (typeof STUDY_TAB_ARR)[number];
 
 function HomeStudySection() {
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
@@ -27,6 +31,8 @@ function HomeStudySection() {
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [cardArr, setCardArr] = useState<StudyThumbnailCardProps[]>();
+
+  const [tab, setTab] = useState<StudyTab>("오늘 날짜 스터디");
 
   useEffect(() => {
     if (!studySet) {
@@ -45,6 +51,23 @@ function HomeStudySection() {
 
   useEffect(() => {
     if (!thumbnailCardInfoArr) return;
+    if (tab === "오늘 날짜 스터디") {
+      setCardArr(
+        thumbnailCardInfoArr
+          .filter((card) => !card.place.date || dayjsToStr(card.place.date) === getTodayStr())
+          .slice(0, 5),
+      );
+    } else {
+      setCardArr(
+        thumbnailCardInfoArr
+          .filter((card) => card.place.date && card.place.date.isAfter(dayjs()))
+          .slice(0, 5),
+      );
+    }
+  }, [tab, thumbnailCardInfoArr]);
+
+  useEffect(() => {
+    if (!thumbnailCardInfoArr) return;
     setCardArr(thumbnailCardInfoArr.slice(0, 5));
   }, [thumbnailCardInfoArr]);
 
@@ -57,10 +80,21 @@ function HomeStudySection() {
           </ButtonWrapper>
         </SectionHeader>
       </Box>
-
-      <Flex direction="column" px={5} mb={4} mt={4}>
+      <Box px={5} mt={3} mb={5} borderBottom="var(--border)">
+        <TabNav
+          tabOptionsArr={STUDY_TAB_ARR.map((s) => ({
+            text: s,
+            func: () => {
+              setTab(s);
+            },
+          }))}
+          selected={tab}
+          isFullSize
+        />
+      </Box>
+      <Flex direction="column" px={5} mb={4}>
         {cardArr
-          ? cardArr.map((thumbnailCardInfo, idx) => (
+          ? cardArr.slice(0, 3).map((thumbnailCardInfo, idx) => (
               <Box key={idx} mb={3}>
                 <StudyThumbnailCard {...thumbnailCardInfo} />
               </Box>

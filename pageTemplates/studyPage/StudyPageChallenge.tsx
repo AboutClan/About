@@ -12,7 +12,6 @@ import { usePointPlusLogQuery } from "../../hooks/user/queries";
 function StudyPageChallenge() {
   const router = useRouter();
   const userInfo = useUserInfo();
-  const isGuest = userInfo?.role === "guest";
 
   const [totalValue, setTotalValue] = useState(0);
 

@@ -35,7 +35,7 @@ export interface StudyThumbnailCardProps {
   studyType: StudyType;
   func?: () => void;
   isMyStudy: boolean;
-  isFutureDate?: boolean;
+  dateStatus?: "future" | "current" | "prev";
   hasReviewBtn?: boolean;
 
   hasReview?: boolean;
@@ -50,15 +50,14 @@ export function StudyThumbnailCard({
   studyType,
   func = undefined,
   isMyStudy,
-  isFutureDate,
+  dateStatus,
   hasReviewBtn,
   hasReview,
   hasAttend,
-  isConfirmed = false,
 }: StudyThumbnailCardProps) {
   const router = useRouter();
 
-  const temp = studyType === "openRealTimes" && isFutureDate && participants.length < 4 ? 4 : 8;
+  const temp = dateStatus === "future" && participants.length < 4 ? 4 : 8;
 
   return (
     <CardLink
@@ -90,17 +89,19 @@ export function StudyThumbnailCard({
               )}
               <Badge
                 mr="auto"
-                colorScheme={getStudyBadge(studyType, isFutureDate, isConfirmed).colorScheme}
+                colorScheme={getStudyBadge(studyType, dateStatus).colorScheme}
                 size="md"
               >
-                {getStudyBadge(studyType, isFutureDate, isConfirmed).text}
+                {getStudyBadge(studyType, dateStatus).text}
               </Badge>
             </Flex>
           </Flex>
           <Subtitle>
             <Flex>
               {place.date && (
-                <Box as="span">{dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}</Box>
+                <Box as="span" color="mint" fontWeight={600}>
+                  {dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}
+                </Box>
               )}
               {place.date && (
                 <Box as="span" color="var(--gray-400)">
@@ -145,8 +146,16 @@ export function StudyThumbnailCard({
             </Box>
             {studyType !== "participations" && studyType !== "soloRealTimes" ? (
               <Flex align="center" color="var(--gray-500)" fontSize="11px" lineHeight="16px">
-                {isFutureDate && participants.length < 4 ? "확정까지 " : "마감까지 "}
-                {temp - participants.length}명 남았어요!
+                {dateStatus === "future"
+                  ? participants.length < 4
+                    ? "확정까지 "
+                    : "마감까지 "
+                  : dateStatus === "current"
+                  ? `${participants.length}명의 멤버가 참여하고 있어요!`
+                  : ""}
+                {dateStatus === "future" ? `${temp - participants.length}명 남았어요!` : ""}
+                {/* {dateStatus === "future" && participants.length < 4 ? "확정까지 " : "마감까지 "}
+                {temp - participants.length}명 남았어요! */}
               </Flex>
             ) : (
               <Flex>
