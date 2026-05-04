@@ -22,7 +22,11 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
 
   const { text: badgeText, colorScheme: badgeColorScheme } = getStudyBadge(
     studyType,
-    dayjs(date).startOf("day").isAfter(dayjs()),
+    dayjs(date).startOf("day").isAfter(dayjs())
+      ? "future"
+      : dayjs(date).startOf("day").isBefore(dayjs())
+      ? "prev"
+      : "current",
   );
 
   const distance = getDistanceFromLatLonInKm(
