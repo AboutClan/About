@@ -54,7 +54,7 @@ function HomeNav() {
   return (
     <>
       <Box mr="auto" color="var(--gray-800)" fontSize="18px" mb={4} fontWeight={600}>
-        소모임 가입
+        내 취향 소모임 찾기
       </Box>
       <Flex mb={3}>
         {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => {

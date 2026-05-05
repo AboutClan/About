@@ -34,7 +34,7 @@ export default function HomeGatherCol({ gathers: prevGathers, isPriority }: Home
   }, [prevGathers]);
 
   return (
-    <Box my={3}>
+    <Box my={3} mb={2}>
       {cardDataArr?.length ? (
         <Flex direction="column">
           {cardDataArr.map((cardData, idx) => (

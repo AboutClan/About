@@ -41,30 +41,28 @@ export interface StudyThumbnailCardProps {
   hasReview?: boolean;
   hasAttend?: boolean;
   isConfirmed?: boolean;
+  hasBorder?: boolean;
 }
 
 export function StudyThumbnailCard({
   place,
   participants,
   url,
-  studyType,
   func = undefined,
   isMyStudy,
   dateStatus,
+  studyType,
   hasReviewBtn,
   hasReview,
   hasAttend,
+  hasBorder = true,
 }: StudyThumbnailCardProps) {
   const router = useRouter();
 
   const temp = dateStatus === "future" && participants.length < 4 ? 4 : 8;
 
   return (
-    <CardLink
-      href={url}
-      onClick={func}
-      isbordermain={studyType === "participations" ? "false" : "false"}
-    >
+    <CardLink href={url} onClick={func} isbordermain={hasBorder ? "true" : "false"}>
       <>
         <PlaceImage size="md" imageProps={place.imageProps} />
 
@@ -99,9 +97,7 @@ export function StudyThumbnailCard({
           <Subtitle>
             <Flex>
               {place.date && (
-                <Box as="span" color="mint" fontWeight={600}>
-                  {dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}
-                </Box>
+                <Box as="span">{dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}</Box>
               )}
               {place.date && (
                 <Box as="span" color="var(--gray-400)">
@@ -230,10 +226,9 @@ export function InfinityIcon() {
 const CardLink = styled(Link)<{ isbordermain: "true" | "false" }>`
   height: fit-content;
   display: flex;
-  padding-bottom: 12px;
-  padding-right: 0.5px;
-  border-bottom: ${(props) =>
-    props.isbordermain === "true" ? "var(--border-main)" : "var(--border)"};
+  padding-bottom: ${(props) => (props.isbordermain === "true" ? "12px" : "8px")};
+
+  border-bottom: ${(props) => (props.isbordermain === "true" ? "var(--border)" : "none")};
   background-color: white;
   justify-content: space-between;
 

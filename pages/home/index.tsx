@@ -31,6 +31,7 @@ function Home() {
       <Slide isNoPadding>
         <HomeStudySection />
       </Slide>
+      <Box h={2} />
       <Slide isNoPadding>
         <HomeGatherSection />
       </Slide>

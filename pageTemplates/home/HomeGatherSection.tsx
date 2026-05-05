@@ -31,13 +31,13 @@ function HomeGatherSection() {
         >
           <SlideSectionCol
             title="오늘 뭐하지? About 번개"
-            subTitle="20대를 위한 편하고 즐거운 만남"
+            subTitle="내가 원하는 때, 내 취향대로, 골라서 참여!"
           >
             <HomeGatherCol gathers={firstData?.slice(0, 3)?.filter((data) => !!data)} isPriority />
           </SlideSectionCol>
           <SlideSectionCol
             title="오늘 뭐하지? About 번개"
-            subTitle="20대를 위한 편하고 즐거운 만남"
+            subTitle="내가 원하는 때, 내 취향대로, 골라서 참여!"
           >
             <HomeGatherCol
               gathers={firstData?.slice(3, 6)?.filter((data) => !!data)}

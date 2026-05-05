@@ -27,14 +27,14 @@ function HomeGroupSection() {
           }}
         >
           <SlideSectionCol
-            title="새 학기! About 취미 소모임"
-            subTitle="설레는 맘으로 즐기는 취미 활동 모임"
+            title="관심사로 통하는 About 취미 소모임"
+            subTitle="같은 관심사 친구들과 지속적인 모임"
           >
             <HomeGroupCol threeGroups={groups?.hobby.slice(0, 3)} type="hobby" />
           </SlideSectionCol>
           <SlideSectionCol
-            title="새 학기! About 취미 소모임"
-            subTitle="설레는 맘으로 즐기는 취미 활동 모임"
+            title="관심사로 통하는 About 취미 소모임"
+            subTitle="같은 관심사 친구들과 지속적인 모임"
           >
             <HomeGroupCol threeGroups={groups?.hobby.slice(3, 6)} type="hobby" />
           </SlideSectionCol>
@@ -55,13 +55,13 @@ function HomeGroupSection() {
         >
           <SlideSectionCol
             title="2026년을 바꾸는 About 스터디!"
-            subTitle="공부·자기계발·루틴까지 함께 쌓아가는 스터디 모임"
+            subTitle="공부·자기계발·루틴까지 함께 쌓아가는 모임"
           >
             <HomeGroupCol threeGroups={groups?.develop.slice(0, 3)} type="study1" />
           </SlideSectionCol>
           <SlideSectionCol
             title="2026년을 바꾸는 About 스터디!"
-            subTitle="공부·자기계발·루틴까지 함께 쌓아가는 스터디 모임"
+            subTitle="공부·자기계발·루틴까지 함께 쌓아가는 모임"
           >
             <HomeGroupCol threeGroups={groups?.develop.slice(3)} type="self" />
           </SlideSectionCol>
@@ -82,13 +82,13 @@ function HomeGroupSection() {
         >
           <SlideSectionCol
             title="우리 동네 스터디 크루"
-            subTitle="집 근처에서 편하게 모여 같이 카공하는 모임"
+            subTitle="동네에서 편하게 모여 같이 카공하는 모임"
           >
             <HomeGroupCol threeGroups={groups?.crew.slice(0, 3)} type="study1" />
           </SlideSectionCol>
           <SlideSectionCol
             title="우리 동네 스터디 크루"
-            subTitle="집 근처에서 편하게 모여 같이 카공하는 모임"
+            subTitle="동네에서 편하게 모여 같이 카공하는 모임"
           >
             <HomeGroupCol threeGroups={groups?.crew.slice(3)} type="self" />
           </SlideSectionCol>

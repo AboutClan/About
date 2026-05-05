@@ -73,8 +73,8 @@ function HomeStudySection() {
 
   return (
     <>
-      <Box px={5} mt={5}>
-        <SectionHeader title="About 카공 스터디" subTitle="동네 친구와의 열공 스터디">
+      <Box px={5} mt={4}>
+        <SectionHeader title="About 카공 스터디" subTitle="동네 친구와 함께하는 카공 스터디">
           <ButtonWrapper size="sm" url={`/studyPage?date=${dayjsToStr(dayjs())}`}>
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
@@ -92,11 +92,11 @@ function HomeStudySection() {
           isFullSize
         />
       </Box>
-      <Flex direction="column" px={5} mb={4}>
+      <Flex direction="column" px={5}>
         {cardArr
           ? cardArr.map((thumbnailCardInfo, idx) => (
               <Box key={idx} mb={3}>
-                <StudyThumbnailCard {...thumbnailCardInfo} />
+                <StudyThumbnailCard {...thumbnailCardInfo} hasBorder={idx !== cardArr.length - 1} />
               </Box>
             ))
           : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}

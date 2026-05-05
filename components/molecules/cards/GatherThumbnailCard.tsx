@@ -127,7 +127,9 @@ export function GatherThumbnailCard({
           <Subtitle>
             {gatherType !== "event" ? (
               <>
-                <Box as="span">{dayjsToFormat(dayjs(date).locale("ko"), "M.D(ddd) HH:mm")}</Box>
+                <Box as="span">
+                  {dayjsToFormat(dayjs(date).locale("ko"), "M.D(ddd) HH:mm")}
+                </Box>
                 <Box as="span" color="var(--gray-400)">
                   ・
                 </Box>
