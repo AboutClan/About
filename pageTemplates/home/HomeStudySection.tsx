@@ -66,10 +66,10 @@ function HomeStudySection() {
     }
   }, [tab, thumbnailCardInfoArr]);
 
-  useEffect(() => {
-    if (!thumbnailCardInfoArr) return;
-    setCardArr(thumbnailCardInfoArr.slice(0, 5));
-  }, [thumbnailCardInfoArr]);
+  // useEffect(() => {
+  //   if (!thumbnailCardInfoArr) return;
+  //   setCardArr(thumbnailCardInfoArr.slice(0, 5));
+  // }, [thumbnailCardInfoArr]);
 
   return (
     <>
@@ -94,7 +94,7 @@ function HomeStudySection() {
       </Box>
       <Flex direction="column" px={5} mb={4}>
         {cardArr
-          ? cardArr.slice(0, 3).map((thumbnailCardInfo, idx) => (
+          ? cardArr.map((thumbnailCardInfo, idx) => (
               <Box key={idx} mb={3}>
                 <StudyThumbnailCard {...thumbnailCardInfo} />
               </Box>
