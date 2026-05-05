@@ -43,7 +43,6 @@ export interface GatherThumbnailCardProps {
     handleBtn: () => void;
   };
   homePath?: boolean;
-  isOpenGather: boolean;
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -71,7 +70,6 @@ export function GatherThumbnailCard({
   gatherReview,
   memberReview,
   homePath,
-  isOpenGather,
 }: GatherThumbnailCardProps) {
   const participantsMember = participants.filter(
     (par) => par.user?._id !== "65df1ddcd73ecfd250b42c89",
@@ -113,7 +111,7 @@ export function GatherThumbnailCard({
                 {category}
               </Badge>
             </Flex>
-            {isOpenGather ? (
+            {gatherType === "openGather" ? (
               <Badge size="md" ml={1} variant="subtle" colorScheme="blue">
                 오픈 번개
               </Badge>
@@ -127,9 +125,7 @@ export function GatherThumbnailCard({
           <Subtitle>
             {gatherType !== "event" ? (
               <>
-                <Box as="span">
-                  {dayjsToFormat(dayjs(date).locale("ko"), "M.D(ddd) HH:mm")}
-                </Box>
+                <Box as="span">{dayjsToFormat(dayjs(date).locale("ko"), "M.D(ddd) HH:mm")}</Box>
                 <Box as="span" color="var(--gray-400)">
                   ・
                 </Box>
@@ -147,7 +143,9 @@ export function GatherThumbnailCard({
           <Flex mt={1} alignItems="center" justify="space-between">
             <AvatarGroupsOverwrap
               users={participantsMember?.map((par) =>
-                isOpenGather ? SECRET_USER_SUMMARY : par.user,
+                gatherType === "openGather" || gatherType === "secretGather"
+                  ? SECRET_USER_SUMMARY
+                  : par.user,
               )}
               maxCnt={VOTER_SHOW_MAX}
             />

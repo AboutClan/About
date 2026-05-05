@@ -149,7 +149,7 @@ function GatherDetail() {
                 id={gather.id}
               />
               <Divider />
-              <GatherParticipation data={gather} isOpenGather={isOpenGather} />
+              <GatherParticipation data={gather} gatherType={gather.category} />
               {group && (
                 <Box px={5} mt={8}>
                   <Box mb={2} fontSize="16px" fontWeight="semibold">
