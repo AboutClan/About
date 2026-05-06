@@ -1,10 +1,10 @@
 import "dayjs/locale/ko";
 
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -83,7 +83,7 @@ function GatherDetail() {
 
   useEffect(() => {
     if (inviteParticipatedRef.current) return;
-    if (!gather || !uid || !userInfo || isMember || isLoading) return;
+    if (!gather || !uid || !userInfo || isMember || isLoading || userInfo?.role === "guest") return;
 
     const inviteUid = Array.isArray(uid) ? uid[0] : uid;
 
