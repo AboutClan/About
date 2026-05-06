@@ -80,9 +80,9 @@ function Notice() {
 
   // 제목 길이 조절하기.
   const monthAlert = {
-    title: "12월 시작! 소셜링 온도 업데이트 + 티켓 리필 완료 ✨",
+    title: "🚀소셜링 온도 업데이트🚀",
     description:
-      "지난 멤버 평가가 반영됐고, 참여 티켓도 새로 충전되었어요! 이번 달도 즐겁게 시작해봐요 🙌",
+      "4월 멤버 후기가 반영되었어요! 접속해서 변경된 소셜링 온도를 확인해 보세요! (이전 알림을 잘못 발송되었어요🥲)",
   };
   const onSubmit = () => {
     mutate(monthAlert);

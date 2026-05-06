@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
@@ -79,17 +79,24 @@ function GatherDetail() {
     },
   });
 
+  const inviteParticipatedRef = useRef(false);
+
   useEffect(() => {
-    if (gather && uid && userInfo && !isMember && !isLoading) {
-      if ((gather.user as UserSimpleInfoProps).uid === uid) {
-        participate({
-          userId: userInfo._id,
-          phase: "first",
-          isFree: true,
-        });
-      }
-    }
-  }, [uid, gather, userInfo, isMember, isLoading]);
+    if (inviteParticipatedRef.current) return;
+    if (!gather || !uid || !userInfo || isMember || isLoading) return;
+
+    const inviteUid = Array.isArray(uid) ? uid[0] : uid;
+
+    if ((gather.user as UserSimpleInfoProps).uid !== inviteUid) return;
+
+    inviteParticipatedRef.current = true;
+
+    participate({
+      userId: userInfo._id,
+      phase: "first",
+      isFree: true,
+    });
+  }, [uid, gather, userInfo, isMember, isLoading, participate]);
 
   useEffect(() => {
     setIsScrollAuto(true);
