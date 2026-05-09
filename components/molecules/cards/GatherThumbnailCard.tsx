@@ -77,7 +77,8 @@ export function GatherThumbnailCard({
 
   const has = !!(gatherReview || memberReview);
 
-  const statusProps = STATUS_TO_BADGE_PROPS[dayjs(date).isBefore(dayjs()) ? "expired" : status];
+  const statusProps =
+    STATUS_TO_BADGE_PROPS[dayjs(date).isBefore(dayjs().startOf("day")) ? "expired" : status];
 
   return (
     <CardLink
