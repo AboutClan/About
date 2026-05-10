@@ -374,7 +374,8 @@ function StudyNavigation({
         realTimesVote({
           place: location,
           time: voteTime,
-          status: "participation",
+          status: "pending",
+          uid: userInfo?.uid,
         });
         break;
       case "timeChange":

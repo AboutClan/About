@@ -45,9 +45,7 @@ export const setStudyWeekData = (
       if (realTimes?.length) {
         const { soloUsers, openUsers } = realTimes.reduce(
           (b, u) => {
-            if (u?.user?.uid === "3224546232") {
-              console.log(1);
-            } else if (u.status === "solo") b.soloUsers.push(u);
+            if (u.status === "solo") b.soloUsers.push(u);
             else b.openUsers.push(u);
             return b;
           },
@@ -78,8 +76,8 @@ export const setStudyWeekData = (
           })),
         );
 
+        console.log(1234566, openUsers);
         const openGroups = setRealTimesGroup(openUsers);
-
         acc.openRealTimes.push(
           ...openGroups.map((group) => ({
             date: oneDay.date,
@@ -315,6 +313,7 @@ export const setRealTimesGroup = (
         comment: {
           comment: props?.comment?.text,
         },
+        status: props.status,
       });
     } else {
       temp.push({
@@ -328,6 +327,7 @@ export const setRealTimesGroup = (
             comment: {
               comment: props?.comment?.text,
             },
+            status: props.status,
           },
         ],
       });

@@ -27,6 +27,7 @@ export default function ProfileCardColumn({
           crownType={userCard?.crownType}
           isNoBorder={idx === userCardArr.length - 1}
           isStudy={isStudy}
+          pendingType={userCard?.pendingType}
         />
       ))}
     </Layout>

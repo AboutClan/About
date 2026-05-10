@@ -15,6 +15,7 @@ import { useUserInfo } from "../../hooks/custom/UserHooks";
 import {
   useRealTimeCommentMutation,
   useRealTimeHeartMutation,
+  useRealTimeStatusMutation,
 } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
 import { getNearLocationCluster } from "../../libs/study/setStudyMapOptions";
@@ -67,6 +68,9 @@ export default function StudyMembers({
   const { mutate: setVoteComment } = useStudyCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
   });
+  const { mutate: changeStatus } = useRealTimeStatusMutation(date, {
+    onSuccess: () => handleSuccessChange(),
+  });
 
   const handleSuccessChange = () => {
     typeToast("change");
@@ -111,13 +115,18 @@ export default function StudyMembers({
     },
   });
 
+  const findMine =
+    (prevMembers as StudyConfirmedMemberProps[])?.find((t) => t?.status === "open")?.user._id ===
+    userInfo?._id;
+  console.log(24, findMine);
+
   const changeComment = (comment: string) => {
     if (studyType === "results") {
       setVoteComment(comment);
     } else if (studyType === "openRealTimes" || studyType === "soloRealTimes")
       setRealTimeComment(comment);
   };
-
+  console.log(42, studyType);
   const filterMembers = members;
 
   const tempArr =
@@ -135,6 +144,7 @@ export default function StudyMembers({
       return {
         user: user,
         memo: addressArr?.[0] + " " + addressArr?.[1],
+
         rightComponent: (
           <Badge variant="subtle" colorScheme="blue" size="md">
             {participant.dates.map((date, idx) => {
@@ -190,78 +200,112 @@ export default function StudyMembers({
       return {
         ...obj,
         changeComment,
-        rightComponent: rightComponentProps ? (
-          studyType === "soloRealTimes" && image ? (
-            <Flex alignItems="center">
-              <Flex
-                as="button"
-                alignItems="center"
-                p={3}
-                mr={2}
+        pendingType: (studyType === "openRealTimes" && participant.status === "pending"
+          ? findMine
+            ? "pendingOwner"
+            : "pending"
+          : null) as "pendingOwner" | "pending" | null,
+        rightComponent:
+          studyType === "openRealTimes" && participant.status === "pending" && findMine ? (
+            <Flex mt={1}>
+              <Button
                 onClick={() => {
-                  if (isGuest) {
-                    typeToast("guest");
-                    return;
-                  }
-                  if (date !== getTodayStr()) {
-                    toast("info", "오늘 날짜의 인증에만 좋아요를 누를 수 있어요!");
-                    return;
-                  }
-                  if (hasMyHeart) {
-                    toast("info", "같은 사람에게는 매일 한번만 보낼 수 있어요!");
-                    return;
-                  }
-
-                  increaseHeartCnt({ userId: participant.user._id });
+                  changeStatus({
+                    userId: participant.user._id,
+                    status: "participation",
+                  });
                 }}
+                flex={1}
+                colorScheme="mint"
+                size="sm"
+                mr={2}
               >
-                <Box>
-                  <HeartIcon color={hasMyHeart ? "red" : "gray"} fill size="md" />
-                </Box>
-                <Box
-                  mt="2px"
-                  ml={2}
-                  fontSize="12px"
-                  color={hasMyHeart ? "gray.600" : "gray.500"}
-                  lineHeight="16px"
-                >
-                  {participant.heartCnt + extraHeartCnt}
-                </Box>
-              </Flex>
-              <Flex flexDir="column">
-                <Box
-                  position="relative"
-                  w="48px"
-                  h="48px"
-                  borderRadius="4px"
-                  overflow="hidden"
-                  onClick={() => setHasImageProps({ image, toUid: participant.user.uid })}
-                >
-                  <Image src={image} fill alt="studyImage" />
-                </Box>
-                <Box mt={1} fontSize="11px" lineHeight="12px" color="gray.500" textAlign="center">
-                  {rightComponentProps.time}
-                </Box>
-              </Flex>
+                참여 승인
+              </Button>
+              <Button
+                onClick={() => {
+                  changeStatus({
+                    userId: participant.user._id,
+                    status: "refuse",
+                  });
+                }}
+                flex={1}
+                size="sm"
+              >
+                참여 거절
+              </Button>
             </Flex>
-          ) : (
-            <AttendanceBadge
-              type={rightComponentProps.type}
-              time={rightComponentProps.time}
-              handleButton={() => {
-                if (image) {
-                  setHasImageProps({ image, toUid: participant.user.uid });
-                } else {
-                  toast("info", "등록된 출석 이미지가 없습니다.");
-                }
-              }}
-            />
-          )
-        ) : null,
+          ) : rightComponentProps ? (
+            studyType === "soloRealTimes" && image ? (
+              <Flex alignItems="center">
+                <Flex
+                  as="button"
+                  alignItems="center"
+                  p={3}
+                  mr={2}
+                  onClick={() => {
+                    if (isGuest) {
+                      typeToast("guest");
+                      return;
+                    }
+                    if (date !== getTodayStr()) {
+                      toast("info", "오늘 날짜의 인증에만 좋아요를 누를 수 있어요!");
+                      return;
+                    }
+                    if (hasMyHeart) {
+                      toast("info", "같은 사람에게는 매일 한번만 보낼 수 있어요!");
+                      return;
+                    }
+
+                    increaseHeartCnt({ userId: participant.user._id });
+                  }}
+                >
+                  <Box>
+                    <HeartIcon color={hasMyHeart ? "red" : "gray"} fill size="md" />
+                  </Box>
+                  <Box
+                    mt="2px"
+                    ml={2}
+                    fontSize="12px"
+                    color={hasMyHeart ? "gray.600" : "gray.500"}
+                    lineHeight="16px"
+                  >
+                    {participant.heartCnt + extraHeartCnt}
+                  </Box>
+                </Flex>
+                <Flex flexDir="column">
+                  <Box
+                    position="relative"
+                    w="48px"
+                    h="48px"
+                    borderRadius="4px"
+                    overflow="hidden"
+                    onClick={() => setHasImageProps({ image, toUid: participant.user.uid })}
+                  >
+                    <Image src={image} fill alt="studyImage" />
+                  </Box>
+                  <Box mt={1} fontSize="11px" lineHeight="12px" color="gray.500" textAlign="center">
+                    {rightComponentProps.time}
+                  </Box>
+                </Flex>
+              </Flex>
+            ) : (
+              <AttendanceBadge
+                type={rightComponentProps.type}
+                time={rightComponentProps.time}
+                handleButton={() => {
+                  if (image) {
+                    setHasImageProps({ image, toUid: participant.user.uid });
+                  } else {
+                    toast("info", "등록된 출석 이미지가 없습니다.");
+                  }
+                }}
+              />
+            )
+          ) : null,
       };
     }
   });
-  console.log(coordinates);
 
   return (
     <>

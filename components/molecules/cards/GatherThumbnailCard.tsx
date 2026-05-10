@@ -49,6 +49,7 @@ const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: s
   open: { text: "모집 마감", colorScheme: "orange" },
   expired: { text: "지난 모임", colorScheme: "black" },
   close: { text: "취소", colorScheme: "gray" },
+  today: { text: "오늘 날짜", colorScheme: "blue" },
   pending: { text: "모집중", colorScheme: "mint" },
   end: { text: "종료", colorScheme: "black" },
   planned: { text: "오픈 예정", colorScheme: "purple" },
@@ -78,7 +79,15 @@ export function GatherThumbnailCard({
   const has = !!(gatherReview || memberReview);
 
   const statusProps =
-    STATUS_TO_BADGE_PROPS[dayjs(date).isBefore(dayjs().startOf("day")) ? "expired" : status];
+    STATUS_TO_BADGE_PROPS[
+      dayjs(date).isBefore(dayjs().startOf("day"))
+        ? "expired"
+        : status === "pending"
+        ? dayjs(date).startOf("day").isSame(dayjs().startOf("day"))
+          ? "today"
+          : status
+        : status
+    ];
 
   return (
     <CardLink

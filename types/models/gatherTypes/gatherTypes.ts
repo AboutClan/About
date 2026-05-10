@@ -51,7 +51,7 @@ export type GatherCategory =
   | "secretGather";
 export type IGatherType = { title: GatherCategoryMain; subtitle?: string };
 
-export type GatherStatus = "open" | "close" | "end" | "pending" | "planned" | "expired";
+export type GatherStatus = "open" | "close" | "end" | "pending" | "planned" | "expired"|"today";
 
 export type IGatherLocation = {
   main: string;

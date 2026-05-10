@@ -142,7 +142,7 @@ export default function Page() {
   const findStudy =
     studyType !== "participations" &&
     confirmedSet?.find((set) => set.study.place._id === id)?.study;
-
+  console.log("f", findStudy);
   const userId = userInfo?._id;
 
   const getMyStudyInfo = () => {

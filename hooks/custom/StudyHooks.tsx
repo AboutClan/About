@@ -15,7 +15,7 @@ import {
   useStudyVoteMutation,
 } from "../study/mutations";
 import { useResetStudyQuery } from "./CustomHooks";
-import { useTypeToast } from "./CustomToast";
+import { useToast, useTypeToast } from "./CustomToast";
 
 // export const useStudySetQuery = (date: string, isEnabled: boolean): { studySet: StudySetProps } => {
 //   const { data } = useStudyWeekQuery({ enabled: isEnabled });
@@ -38,6 +38,7 @@ import { useTypeToast } from "./CustomToast";
 // };
 
 export const useStudyMutations = (date: Dayjs) => {
+  const toast = useToast();
   const typeToast = useTypeToast();
   const resetStudy = useResetStudyQuery();
 
@@ -89,7 +90,7 @@ export const useStudyMutations = (date: Dayjs) => {
     dayjsToStr(date),
     {
       onSuccess: () => {
-        typeToast("participate");
+        toast("success", "신청이 완료되었습니다.");
         resetStudy();
       },
     },

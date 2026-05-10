@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
@@ -45,7 +45,7 @@ export default function StudyPage() {
   const isPassedDate = !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
 
   const { data: studySet } = useStudySetQuery(date, { enabled: !!date && !isPassedDate });
-
+  console.log(studySet);
   const { data: passedStudyData } = useStudyPassedDayQuery(date, {
     enabled: !!date && !!isPassedDate,
   });

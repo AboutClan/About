@@ -149,7 +149,7 @@ export function StudyInviteDrawer({ onClose }: CloseProps) {
         </Box>
       </>
       <Flex mt={40}>
-        <Box mr={3}>신규 인원 초대</Box>
+        <Box mr={3}>인원 초대</Box>
         <Switch
           colorScheme="mint"
           onChange={(e) => setIsToggle(e.target.checked)}
@@ -161,7 +161,7 @@ export function StudyInviteDrawer({ onClose }: CloseProps) {
           <Flex justify="space-between" align="flex-end">
             <Box>
               <Input
-                placeholder="이름 검색"
+                placeholder="이름을 정확히 입력하세요!"
                 isLine
                 size="sm"
                 value={nameValue}

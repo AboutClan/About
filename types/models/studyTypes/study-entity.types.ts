@@ -30,7 +30,7 @@ export interface StudyConfirmedProps {
 
 export type StudyStatus = RealTimesStudyStatus | VoteStudyStatus;
 export type VoteStudyStatus = "open" | "expected";
-export type RealTimesStudyStatus = "open" | "participation" | "solo";
+export type RealTimesStudyStatus = "open" | "participation" | "solo" | "pending";
 export type MyStudyStatus = "pending" | "participation" | "otherParticipation";
 
 export type StudyCrew = (typeof STUDY_CREW)[number];
@@ -44,6 +44,7 @@ export interface StudyConfirmedMemberProps extends TimeStampProps {
   attendance?: StudyAttendanceProps;
   heartCnt?: number;
   comment?: CommentProps;
+  status?: RealTimesStudyStatus;
 }
 
 export type StudyPlaceFilter = "main" | "best" | "good" | "all";

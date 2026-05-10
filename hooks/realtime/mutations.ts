@@ -15,6 +15,8 @@ import { DayjsTimeProps, StringTimeProps } from "../../types/utils/timeAndDate";
 interface RealTimeVoteRequestServerProps {
   place: LocationProps;
   time: StringTimeProps;
+  status: RealTimesStudyStatus;
+  uid: string;
 }
 
 interface RealTimesVoteReturnProps extends PointInfoProps {
@@ -35,7 +37,7 @@ export const useRealtimeVoteMutation = (
     return requestServer<RealTimeVoteRequestServerProps, RealTimesVoteReturnProps>({
       method: "post",
       url: `realtime/${date}/basicVote`,
-      body: { ...param, time },
+      body: { ...param, time, status: param.status, uid: param.uid },
     });
   }, options);
 
@@ -131,14 +133,14 @@ export const useRealTimeAbsenceMutation = (date: string, options?: MutationOptio
 
 export const useRealTimeStatusMutation = (
   date: string,
-  options?: MutationOptions<RealTimesStudyStatus>,
+  options?: MutationOptions<{ status: RealTimesStudyStatus | "refuse"; userId: string }>,
 ) =>
-  useMutation<void, AxiosError, RealTimesStudyStatus>(
+  useMutation<void, AxiosError, { status: RealTimesStudyStatus | "refuse"; userId: string }>(
     (params) =>
-      requestServer<{ status: RealTimesStudyStatus }>({
+      requestServer<{ status: RealTimesStudyStatus | "refuse"; userId: string }>({
         method: "patch",
-        url: `realtime/status`,
-        body: { status: params },
+        url: `realtime/${date}/status`,
+        body: { ...params },
       }),
     options,
   );
