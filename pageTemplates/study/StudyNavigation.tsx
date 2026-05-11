@@ -497,10 +497,10 @@ function StudyNavigation({
               colorScheme={navigationProps.colorScheme}
               onClick={
                 studyType !== "soloRealTimes" &&
-                userInfo?.temperature?.cnt > 2 &&
+                userInfo?.temperature?.cnt > 3 &&
                 userInfo?.temperature?.temperature < 36
                   ? () => {
-                      toast("warning", "소셜링 온도 36.0°C 이상만 참여 가능합니다.");
+                      toast("warning", "소셜링 온도가 낮아서 참여가 불가능합니다.");
                     }
                   : navigationProps?.func
               }
