@@ -57,6 +57,11 @@ export interface IUser
   };
   rank: "gold" | "silver" | "bronze";
   kakao_account: KakaoProfile["kakao_account"];
+  studyIntroduce: {
+    studyStyle: string;
+    studyTool: string;
+    subject: string;
+  };
 }
 
 export interface UserStudyRecordProps {

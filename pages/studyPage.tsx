@@ -1,14 +1,16 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo,useState  } from "react";
 
 import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
 import { MainLoading } from "../components/atoms/loaders/MainLoading";
 import Slide from "../components/layouts/PageSlide";
 import { useToast, useTypeToast } from "../hooks/custom/CustomToast";
+import { useUserInfo } from "../hooks/custom/UserHooks";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../hooks/study/queries";
+import StudyIntroduceDrawer from "../pageTemplates/study/StudyIntroduceDrawer";
 import StudyPageChallenge from "../pageTemplates/studyPage/StudyPageChallenge";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
 import StudyPageMap, {
@@ -20,194 +22,263 @@ import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import { StudyConfirmedMemberProps } from "../types/models/studyTypes/study-entity.types";
 import { getTodayStr } from "../utils/dateTimeUtils";
 
+// ...기존 imports 유지
+
 export type StudyPageTab = "About 스터디" | "카공 지도.ZIP" | "스터디 챌린지";
+type ModalType = "cafe" | "introduce" | null;
+type TabQuery = "study" | "map" | "challenge";
+
+const TAB_QUERY_MAP: Record<StudyPageTab, TabQuery> = {
+  "About 스터디": "study",
+  "카공 지도.ZIP": "map",
+  "스터디 챌린지": "challenge",
+};
+
+const QUERY_TAB_MAP: Record<TabQuery, StudyPageTab> = {
+  study: "About 스터디",
+  map: "카공 지도.ZIP",
+  challenge: "스터디 챌린지",
+};
 
 export default function StudyPage() {
+  const router = useRouter();
   const typeToast = useTypeToast();
   const toast = useToast();
-  const router = useRouter();
-  const { data: session } = useSession();
-  const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
 
-  const tabParam = searchParams.get("tab") as "study" | "map";
-  const dateParam = searchParams.get("date");
-  const modalParam = searchParams.get("modal");
-  const resultParam = searchParams.get("result");
+  const { data: session } = useSession();
+  const userInfo = useUserInfo();
+
+  const [tab, setTab] = useState<StudyPageTab>("About 스터디");
+  const [date, setDate] = useState<string | null>(null);
+  const [modal, setModal] = useState<ModalType>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const isGuest = session?.user.role === "guest";
 
-  const [tab, setTab] = useState<StudyPageTab>("About 스터디");
-  const [date, setDate] = useState<string>(null);
-  const [modal, setModal] = useState<"cafe">(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const tabParam = router.query.tab as TabQuery | undefined;
+  const dateParam = router.query.date as string | undefined;
+  const modalParam = router.query.modal as ModalType | undefined;
+  const resultParam = router.query.result as string | undefined;
 
-  const isPassedDate = !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
+  const isPassedDate = useMemo(
+    () => !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day")),
+    [date],
+  );
 
-  const { data: studySet } = useStudySetQuery(date, { enabled: !!date && !isPassedDate });
-  console.log(studySet);
-  const { data: passedStudyData } = useStudyPassedDayQuery(date, {
-    enabled: !!date && !!isPassedDate,
+  const { data: studySet } = useStudySetQuery(date, {
+    enabled: !!date && !isPassedDate,
   });
 
+  const { data: passedStudyData } = useStudyPassedDayQuery(date, {
+    enabled: !!date && isPassedDate,
+  });
+
+  const replaceQuery = (query: Record<string, string | undefined | null>) => {
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          ...Object.fromEntries(Object.entries(query).filter(([, value]) => value != null)),
+        },
+      },
+      undefined,
+      { shallow: true, scroll: false },
+    );
+  };
+
+  const removeQuery = (key: string) => {
+    const nextQuery = { ...router.query };
+    delete nextQuery[key];
+
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: nextQuery,
+      },
+      undefined,
+      { shallow: true, scroll: false },
+    );
+  };
+
   useEffect(() => {
-    if (!resultParam || !session) return;
+    if (!router.isReady || !userInfo || userInfo.role === "guest") return;
+
+    if (!userInfo.studyIntroduce.studyStyle) {
+      setModal("introduce");
+      replaceQuery({ modal: "introduce" });
+    }
+  }, [router.isReady, userInfo]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    if (!tabParam) return;
+
+    setTab(QUERY_TAB_MAP[tabParam] ?? "스터디 챌린지");
+  }, [router.isReady, tabParam]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    setModal(modalParam ?? null);
+  }, [router.isReady, modalParam]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    if (dateParam) {
+      setDate(dateParam);
+      return;
+    }
+
+    const today = getTodayStr();
+    setDate(today);
+    replaceQuery({ date: today });
+  }, [router.isReady, dateParam]);
+
+  useEffect(() => {
+    if (!router.isReady || !date || dateParam === date) return;
+
+    replaceQuery({ date });
+  }, [router.isReady, date, dateParam]);
+
+  useEffect(() => {
+    if (!router.isReady || !resultParam || !session) return;
+
     if (!studySet) {
       setIsLoading(true);
       return;
     }
-    let myStudy: StudyConfirmedMemberProps;
-    let openUrl;
+
+    let openUrl: string | undefined;
 
     studySet.results.forEach((result) => {
-      if (result.date === getTodayStr()) {
-        const study = result.study;
-        myStudy = study.members.find((member) => member.user.uid === session?.user.uid);
-        if (myStudy) {
-          openUrl = `/study/${study.place._id}/${getTodayStr()}?type=results`;
-        }
-        return;
+      if (result.date !== getTodayStr()) return;
+
+      const study = result.study;
+      const myStudy = study.members.find(
+        (member: StudyConfirmedMemberProps) => member.user.uid === session.user.uid,
+      );
+
+      if (myStudy) {
+        openUrl = `/study/${study.place._id}/${getTodayStr()}?type=results`;
       }
     });
-    studySet.openRealTimes.forEach((realTimes) => {
-      if (realTimes.date === getTodayStr()) {
-        const study = realTimes.study;
-        myStudy = study.members.find((member) => member.user.uid === session?.user.uid);
-        if (myStudy) {
-          openUrl = `/study/${study.place._id}/${getTodayStr()}?type=openRealTimes`;
-        }
-        return;
+
+    studySet.openRealTimes.forEach((realTime) => {
+      if (realTime.date !== getTodayStr()) return;
+
+      const study = realTime.study;
+      const myStudy = study.members.find(
+        (member: StudyConfirmedMemberProps) => member.user.uid === session.user.uid,
+      );
+
+      if (myStudy) {
+        openUrl = `/study/${study.place._id}/${getTodayStr()}?type=openRealTimes`;
       }
     });
 
     if (openUrl) {
       router.replace(openUrl);
-    } else {
-      toast("info", "오늘 참석중인 스터디가 없습니다.");
-      newSearchParams.delete("result");
+      return;
     }
+
+    toast("info", "오늘 참석중인 스터디가 없습니다.");
+    removeQuery("result");
     setIsLoading(false);
-  }, [resultParam, studySet, session]);
+  }, [router.isReady, resultParam, studySet, session]);
 
-  useEffect(() => {
-    if (!tabParam) return;
-    if (tabParam === "study") {
-      setTab("About 스터디");
-    } else if (tabParam === "map") {
-      setTab("카공 지도.ZIP");
-    } else {
-      setTab("스터디 챌린지");
-    }
-  }, [tabParam]);
+  const changeTab = (nextTab: StudyPageTab) => {
+    setTab(nextTab);
 
-  useEffect(() => {
-    if (!modalParam) {
-      setModal(null);
-    }
-  }, [modalParam]);
+    replaceQuery({
+      date: getTodayStr(),
+      tab: TAB_QUERY_MAP[nextTab],
+    });
+  };
 
-  useEffect(() => {
-    if (!dateParam || dateParam === date) return;
-    setDate(dateParam);
-  }, [dateParam]);
+  const openCafeDrawer = () => {
+    setModal("cafe");
+    replaceQuery({ modal: "cafe" });
+  };
 
-  useEffect(() => {
-    if (!date || dateParam === date) return;
-    newSearchParams.set("date", date);
-    router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
-  }, [date]);
-
-  const changeTab = (type: StudyPageTab) => {
-    if (type === "About 스터디") {
-      newSearchParams.set("date", getTodayStr());
-      newSearchParams.set("tab", "study");
-    } else if (type === "카공 지도.ZIP") {
-      newSearchParams.set("date", getTodayStr());
-      newSearchParams.set("tab", "map");
-    } else {
-      newSearchParams.set("date", getTodayStr());
-      newSearchParams.set("tab", "challenge");
-    }
-
-    router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
-    setTab(type);
+  const closeDrawer = () => {
+    setModal(null);
+    removeQuery("modal");
   };
 
   return (
     <>
       <StudyPageHeader />
+
       <Slide isNoPadding>
         <StudyPageNav tab={tab} changeTab={changeTab} />
       </Slide>
-      <>
-        {tab === "About 스터디" ? (
-          <>
-            <Slide>
-              {/* <StudyPageCalendar date={date} setDate={setDate} /> */}
-              <StudyPagePlaceSection
-                studySet={isPassedDate ? passedStudyData : studySet}
-                date={date}
-                setDate={setDate}
+
+      {tab === "About 스터디" ? (
+        <Slide>
+          <StudyPagePlaceSection
+            studySet={isPassedDate ? passedStudyData : studySet}
+            date={date}
+            setDate={setDate}
+          />
+        </Slide>
+      ) : tab === "카공 지도.ZIP" ? (
+        <Slide isNoPadding>
+          <Box h={5} />
+
+          <Box mx={5} mb={2} fontSize="16px" fontWeight={600}>
+            ⬇️ &apos;찐&apos; 카공러들이 엄선한 카공 지도 끝.판.왕 ⬇️
+          </Box>
+
+          <StudyPageMap isCafeMap />
+
+          <Box mx={5}>
+            <Box mt={5}>
+              <IconRowBlock
+                leftIcon={<MapIcon />}
+                func={openCafeDrawer}
+                mainText="카공 장소 추가 요청"
+                subText="공부하기 좋은 카공 스팟을 함께 공유해요!"
               />
-            </Slide>
-          </>
-        ) : tab === "카공 지도.ZIP" ? (
-          <Slide isNoPadding>
-            <Box h={5} />
-            <Box mx={5} mb={2} fontSize="16px" fontWeight={600}>
-              ⬇️ &apos;찐&apos; 카공러들이 엄선한 카공 지도 끝.판.왕 ⬇️
             </Box>
-            <StudyPageMap isCafeMap />
-            <Box mx={5}>
-              <Box mt={5}>
-                <IconRowBlock
-                  leftIcon={<MapIcon />}
-                  func={() => {
-                    setModal("cafe");
-                    newSearchParams.set("modal", "cafe");
-                    router.push(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
-                  }}
-                  mainText="카공 장소 추가 요청"
-                  subText="공부하기 좋은 카공 스팟을 함께 공유해요!"
-                />
-              </Box>
-              <Box mt={5}>
-                <IconRowBlock
-                  leftIcon={<ReviewIcon />}
-                  func={() => {
-                    if (isGuest) {
-                      typeToast("guest");
-                      return;
-                    }
-                    typeToast("not-yet");
-                  }}
-                  mainText="카페 후기 모아 보기"
-                  subText="카공러들의 찐 후기를 한 눈에 확인하세요!"
-                />
-              </Box>
+
+            <Box mt={5}>
+              <IconRowBlock
+                leftIcon={<ReviewIcon />}
+                func={() => {
+                  if (isGuest) {
+                    typeToast("guest");
+                    return;
+                  }
+
+                  typeToast("not-yet");
+                }}
+                mainText="카페 후기 모아 보기"
+                subText="카공러들의 찐 후기를 한 눈에 확인하세요!"
+              />
             </Box>
-          </Slide>
-        ) : (
-          <Slide isNoPadding>
-            <Box h={5}></Box>
-            <StudyPageChallenge />
-          </Slide>
-        )}
-      </>
-      {isLoading && <MainLoading />}
-      {modal === "cafe" && (
-        <LocationAddDrawer
-          onClose={() => {
-            setModal(null);
-            router.back();
-          }}
-        />
+          </Box>
+        </Slide>
+      ) : (
+        <Slide isNoPadding>
+          <Box h={5} />
+          <StudyPageChallenge />
+        </Slide>
       )}
+
+      {isLoading && <MainLoading />}
+
+      {modal === "cafe" && <LocationAddDrawer onClose={closeDrawer} />}
+
       {!isGuest && (
         <Box mb={20} mt={5}>
           <StudyControlButton date={date} />
         </Box>
       )}
+
+      {modal === "introduce" && <StudyIntroduceDrawer onClose={closeDrawer} />}
     </>
   );
 }

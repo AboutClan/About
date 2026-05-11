@@ -10,6 +10,7 @@ import {
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
+import { getTodayStr } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 
 interface StudyPendingSectionProps {
@@ -46,6 +47,11 @@ function StudyPendingSection({ studySet }: StudyPendingSectionProps) {
         studyType: "results",
         isMyStudy: study.members.map((member) => member.user._id).includes(userInfo?._id),
         isFutureDate: dayjs(data.date).hour(9).isAfter(dayjs()),
+        dateStatus: dayjs(data.date).hour(9).isAfter(dayjs())
+        ? "future"
+        : data.date == getTodayStr()
+        ? "current"
+        : "prev",
       };
     });
 
