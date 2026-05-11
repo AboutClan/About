@@ -91,6 +91,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
             end: voteTime.end,
           },
           status: "open",
+        
         };
 
         handleStudyVote(voteData);

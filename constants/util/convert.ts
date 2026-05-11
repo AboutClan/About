@@ -7,4 +7,5 @@ export const STATUS_TO_TEXT: Record<GatherStatus, string> = {
   end: "마감",
   planned: "오픈 예정",
   expired: "모집 종료",
+  today: "오늘 날짜",
 };

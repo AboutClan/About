@@ -13,7 +13,7 @@ export interface RealTimeVoteProps {
   place: LocationProps;
   time: DayjsTimeProps;
   status: RealTimesStudyStatus;
-  uid: string;
+  uid?: string;
 }
 
 export interface RealTimeAttendanceProps {

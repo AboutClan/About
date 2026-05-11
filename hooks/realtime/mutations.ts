@@ -16,7 +16,7 @@ interface RealTimeVoteRequestServerProps {
   place: LocationProps;
   time: StringTimeProps;
   status: RealTimesStudyStatus;
-  uid: string;
+  uid?: string;
 }
 
 interface RealTimesVoteReturnProps extends PointInfoProps {
