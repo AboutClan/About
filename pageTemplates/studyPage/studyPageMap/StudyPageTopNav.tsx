@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import Header from "../../../components/layouts/Header";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
+import MenuDrawer from "../../../components/organisms/RightMenuDrawer";
 import { AboutLogo } from "../../../components/services/AboutLogo";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { LocationProps } from "../../../types/common";
@@ -26,6 +27,7 @@ export function StudyPageTopNav({
   const toast = useToast();
   const router = useRouter();
   const [isFocus, setIsFocus] = useState(true);
+  const [isMenu, setIsMenu] = useState(false);
   const [placeInfo, setPlaceInfo] = useState<LocationProps>({
     name: "",
     address: "",
@@ -54,7 +56,7 @@ export function StudyPageTopNav({
   };
 
   const isAppDevice = isApp();
-
+  console.log(openMenu);
   return (
     <>
       {!isFocus && (
@@ -101,7 +103,7 @@ export function StudyPageTopNav({
                   {isAppDevice ? "앱 열기" : "앱 설치"}
                 </Button>
 
-                <Button variant="unstyled" p={2} onClick={openMenu}>
+                <Button variant="unstyled" p={2} onClick={() => setIsMenu(true)}>
                   <MenuIcon />
                 </Button>
               </Flex>
@@ -127,6 +129,39 @@ export function StudyPageTopNav({
           />
         </Box>
       </Flex>
+      {isMenu && (
+        <MenuDrawer
+          title="메뉴"
+          onClose={() => {
+            // closePlaceInfoDrawer();
+          }}
+          items={[
+            {
+              label: "장소 추가 요청",
+              onClick: () => {
+                // setDrawerType(null);
+                // setIsAddCafeDrawer(true);
+              },
+            },
+            {
+              label: "정보 수정 요청",
+              onClick: () => toast("info", "준비중"),
+            },
+            {
+              label: "오류 제보",
+              onClick: () => toast("info", "준비중"),
+            },
+            {
+              label: "About이 궁금해요!",
+              onClick: () => router.push("/home"),
+            },
+            {
+              label: "문의하기",
+              onClick: () => toast("info", "준비중"),
+            },
+          ]}
+        />
+      )}
     </>
   );
 }

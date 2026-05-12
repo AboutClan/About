@@ -29,6 +29,7 @@ function StudyPlaceMap({ centerLocation }: StudyPlaceMapProps) {
           handleVotePick={null}
           placeInfo={placeInfo}
           onClose={() => setPlaceInfo(null)}
+          pickReviewPlace={() => {}}
         />
       )}
     </>

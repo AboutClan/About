@@ -25,6 +25,6 @@
 
     "next.config.js",
     "pages/banner/[category]"
-  ],
+, "pageTemplates/cafeMap/MapOverlay"  ],
   "exclude": ["node_modules"]
 }

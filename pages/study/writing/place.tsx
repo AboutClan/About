@@ -69,7 +69,7 @@ function WritingStudyPlace() {
       <RegisterLayout>
         <RegisterOverview>
           <span>추가하고 싶은 장소를 입력해주세요</span>
-          <span>입력하신 장소는 운영진의 검토 후 추가됩니다.</span>
+          <span>입력하신 장소는 관리자의 검토 후 바로 추가됩니다.</span>
         </RegisterOverview>
         <SearchLocation
           placeHolder="ex) 사당역 투썸플레이스"

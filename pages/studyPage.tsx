@@ -2,20 +2,18 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useEffect, useMemo,useState  } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
 import { MainLoading } from "../components/atoms/loaders/MainLoading";
 import Slide from "../components/layouts/PageSlide";
-import { useToast, useTypeToast } from "../hooks/custom/CustomToast";
+import { useToast } from "../hooks/custom/CustomToast";
 import { useUserInfo } from "../hooks/custom/UserHooks";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../hooks/study/queries";
 import StudyIntroduceDrawer from "../pageTemplates/study/StudyIntroduceDrawer";
+import { LocationAddDrawer } from "../pageTemplates/studyPage/LocationAddDrawer";
 import StudyPageChallenge from "../pageTemplates/studyPage/StudyPageChallenge";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
-import StudyPageMap, {
-  LocationAddDrawer,
-} from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
+import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 import StudyPageNav from "../pageTemplates/studyPage/StudyPageNav";
 import StudyPagePlaceSection from "../pageTemplates/studyPage/StudyPagePlaceSection";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
@@ -42,7 +40,7 @@ const QUERY_TAB_MAP: Record<TabQuery, StudyPageTab> = {
 
 export default function StudyPage() {
   const router = useRouter();
-  const typeToast = useTypeToast();
+
   const toast = useToast();
 
   const { data: session } = useSession();
@@ -57,7 +55,6 @@ export default function StudyPage() {
 
   const tabParam = router.query.tab as TabQuery | undefined;
   const dateParam = router.query.date as string | undefined;
-  const modalParam = router.query.modal as ModalType | undefined;
   const resultParam = router.query.result as string | undefined;
 
   const isPassedDate = useMemo(
@@ -73,17 +70,28 @@ export default function StudyPage() {
     enabled: !!date && isPassedDate,
   });
 
-  const replaceQuery = (query: Record<string, string | undefined | null>) => {
+  const replaceQuery = (query: Record<string, string | null | undefined>) => {
+    const nextQuery = {
+      ...router.query,
+      ...query,
+    };
+
+    Object.entries(nextQuery).forEach(([key, value]) => {
+      if (value == null) {
+        delete nextQuery[key];
+      }
+    });
+
     router.push(
       {
         pathname: router.pathname,
-        query: {
-          ...router.query,
-          ...Object.fromEntries(Object.entries(query).filter(([, value]) => value != null)),
-        },
+        query: nextQuery,
       },
       undefined,
-      { shallow: true, scroll: false },
+      {
+        shallow: true,
+        scroll: false,
+      },
     );
   };
 
@@ -113,16 +121,17 @@ export default function StudyPage() {
   useEffect(() => {
     if (!router.isReady) return;
 
-    if (!tabParam) return;
+    if (!tabParam) {
+      setTab("About 스터디");
+      return;
+    }
+    if (tabParam === "map") {
+      setTab("카공 지도.ZIP");
+      return;
+    }
 
     setTab(QUERY_TAB_MAP[tabParam] ?? "스터디 챌린지");
   }, [router.isReady, tabParam]);
-
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    setModal(modalParam ?? null);
-  }, [router.isReady, modalParam]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -198,16 +207,11 @@ export default function StudyPage() {
     });
   };
 
-  const openCafeDrawer = () => {
-    setModal("cafe");
-    replaceQuery({ modal: "cafe" });
-  };
-
   const closeDrawer = () => {
     setModal(null);
     removeQuery("modal");
   };
-
+  console.log(3123, tab);
   return (
     <>
       <StudyPageHeader />
@@ -225,43 +229,51 @@ export default function StudyPage() {
           />
         </Slide>
       ) : tab === "카공 지도.ZIP" ? (
-        <Slide isNoPadding>
-          <Box h={5} />
-
-          <Box mx={5} mb={2} fontSize="16px" fontWeight={600}>
-            ⬇️ &apos;찐&apos; 카공러들이 엄선한 카공 지도 끝.판.왕 ⬇️
-          </Box>
-
-          <StudyPageMap isCafeMap />
-
-          <Box mx={5}>
-            <Box mt={5}>
-              <IconRowBlock
-                leftIcon={<MapIcon />}
-                func={openCafeDrawer}
-                mainText="카공 장소 추가 요청"
-                subText="공부하기 좋은 카공 스팟을 함께 공유해요!"
-              />
-            </Box>
-
-            <Box mt={5}>
-              <IconRowBlock
-                leftIcon={<ReviewIcon />}
-                func={() => {
-                  if (isGuest) {
-                    typeToast("guest");
-                    return;
-                  }
-
-                  typeToast("not-yet");
-                }}
-                mainText="카페 후기 모아 보기"
-                subText="카공러들의 찐 후기를 한 눈에 확인하세요!"
-              />
-            </Box>
-          </Box>
-        </Slide>
+        <StudyPageMap
+          isCafeMap
+          isDefaultOpen
+          onClose={() => {
+            router.back();
+            setTab("About 스터디");
+          }}
+        />
       ) : (
+        // <Slide isNoPadding>
+        //   <Box h={5} />
+
+        //   <Box mx={5} mb={2} fontSize="16px" fontWeight={600}>
+        //     ⬇️ &apos;찐&apos; 카공러들이 엄선한 카공 지도 끝.판.왕 ⬇️
+        //   </Box>
+
+        //   <StudyPageMap isCafeMap />
+
+        //   <Box mx={5}>
+        //     <Box mt={5}>
+        //       <IconRowBlock
+        //         leftIcon={<MapIcon />}
+        //         func={openCafeDrawer}
+        //         mainText="카공 장소 추가 요청"
+        //         subText="공부하기 좋은 카공 스팟을 함께 공유해요!"
+        //       />
+        //     </Box>
+
+        //     <Box mt={5}>
+        //       <IconRowBlock
+        //         leftIcon={<ReviewIcon />}
+        //         func={() => {
+        //           if (isGuest) {
+        //             typeToast("guest");
+        //             return;
+        //           }
+
+        //           typeToast("not-yet");
+        //         }}
+        //         mainText="카페 후기 모아 보기"
+        //         subText="카공러들의 찐 후기를 한 눈에 확인하세요!"
+        //       />
+        //     </Box>
+        //   </Box>
+        // </Slide>
         <Slide isNoPadding>
           <Box h={5} />
           <StudyPageChallenge />
@@ -283,30 +295,30 @@ export default function StudyPage() {
   );
 }
 
-function MapIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="20px"
-      viewBox="0 -960 960 960"
-      width="20px"
-      fill="var(--gray-700)"
-    >
-      <path d="M640-240q34 0 56.5-20t23.5-60q1-34-22.5-57T640-400q-34 0-57 23t-23 57q0 34 23 57t57 23Zm0 80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 23-5.5 43.5T778-238l74 74q11 11 11 28t-11 28q-11 11-28 11t-28-11l-74-74q-18 11-38.5 16.5T640-160Zm-466 28q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l186-63q13-5 26-5t26 5l214 75 186-72q20-8 37 4.5t17 33.5v270q0 17-16 23t-29-6q-33-28-72.5-42.5T640-560h-17q-9 0-17 2-18 2-32-8.5T560-594v-92l-160-56v481q0 19-10.5 34T362-205l-188 73Z" />
-    </svg>
-  );
-}
+// function MapIcon() {
+//   return (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       height="20px"
+//       viewBox="0 -960 960 960"
+//       width="20px"
+//       fill="var(--gray-700)"
+//     >
+//       <path d="M640-240q34 0 56.5-20t23.5-60q1-34-22.5-57T640-400q-34 0-57 23t-23 57q0 34 23 57t57 23Zm0 80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 23-5.5 43.5T778-238l74 74q11 11 11 28t-11 28q-11 11-28 11t-28-11l-74-74q-18 11-38.5 16.5T640-160Zm-466 28q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l186-63q13-5 26-5t26 5l214 75 186-72q20-8 37 4.5t17 33.5v270q0 17-16 23t-29-6q-33-28-72.5-42.5T640-560h-17q-9 0-17 2-18 2-32-8.5T560-594v-92l-160-56v481q0 19-10.5 34T362-205l-188 73Z" />
+//     </svg>
+//   );
+// }
 
-function ReviewIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="20px"
-      viewBox="0 -960 960 960"
-      width="20px"
-      fill="var(--gray-700)"
-    >
-      <path d="m363-390 117-71 117 71-31-133 104-90-137-11-53-126-53 126-137 11 104 90-31 133ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
-    </svg>
-  );
-}
+// function ReviewIcon() {
+//   return (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       height="20px"
+//       viewBox="0 -960 960 960"
+//       width="20px"
+//       fill="var(--gray-700)"
+//     >
+//       <path d="m363-390 117-71 117 71-31-133 104-90-137-11-53-126-53 126-137 11 104 90-31 133ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
+//     </svg>
+//   );
+// }

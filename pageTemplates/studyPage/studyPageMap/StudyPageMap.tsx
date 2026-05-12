@@ -1,32 +1,27 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
-import Textarea from "../../../components/atoms/Textarea";
-import BottomNav from "../../../components/layouts/BottomNav";
-import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
-import MenuDrawer from "../../../components/organisms/RightMenuDrawer";
-import SearchLocation from "../../../components/organisms/SearchLocation";
 import VoteMap from "../../../components/organisms/VoteMap";
 import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudyAdditionMutation } from "../../../hooks/study/mutations";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
+import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
-import { CoordinatesProps, LocationProps } from "../../../types/common";
+import { CoordinatesProps } from "../../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../../types/externals/naverMapTypes";
 import {
   StudyPlaceFilter,
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
 import { getDistanceFromLatLonInKm } from "../../../utils/mathUtils";
-import RegisterOverview from "../../register/RegisterOverview";
-import PlaceInfoDrawer, { PlaceInfoBox } from "../PlaceInfoDrawer";
+import { RightReviewDrawer } from "../../study/StudyReview";
+import { CafeListDrawer } from "../CafeListDrawer";
+import { LocationAddDrawer } from "../LocationAddDrawer";
+import PlaceInfoDrawer, { RightReviewDrawer2 } from "../PlaceInfoDrawer";
 import { StudyPageTopNav } from "./StudyPageTopNav";
 import StudyMapTopNav from "./TopNav";
 
@@ -61,6 +56,7 @@ function StudyPageMap({
   } = useUserCurrentLocation();
   const modalParam = router.query.modal;
   const currentLocation = defaultLocation || currentLocation2;
+  const { updateQuery } = useOverlayRouter();
 
   /* 네이버 지도와 마커 옵션 */
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
@@ -68,15 +64,18 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const scrollLockY = useRef(0);
+  const [zoomNumber, setZoomNumber] = useState<number>(14);
+  const [tempToggle, setTempToggle] = useState(false);
+
+  /** 데이터 */
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
-  const [drawerType, setDrawerType] = useState<"cafe" | "menu" | "list">(null);
-  const [isAddCafeDrawer, setIsAddCafeDrawer] = useState(false);
+
   const [filterType, setFilterType] = useState<StudyPlaceFilter>(
     type === "mainPlace" ? "main" : null,
   );
-  const [zoomNumber, setZoomNumber] = useState<number>(14);
-  const [tempToggle, setTempToggle] = useState(false);
+  const [reviewId, setReviewId] = useState<string>();
+  const [drawerType, setDrawerType] = useState<"menu" | "list" | "placeInfo" | "addCafe">(null);
 
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
     filterType || "best",
@@ -84,28 +83,19 @@ function StudyPageMap({
   );
 
   useEffect(() => {
-    if (router.query.id && placeData) {
-      setPlaceInfo(placeData.find((p) => p._id === router.query.id));
+    if (isCafeMap || isDefaultOpen) {
+      setIsMapExpansion(true);
+      return;
     }
-  }, [router.query.id, placeData]);
-
-  useEffect(() => {
     if (!router.query.modal) {
       setIsMapExpansion(false);
       setPlaceInfo(null);
     }
-  }, [router.query.modal]);
-
-  useEffect(() => {
-    if (isDefaultOpen) {
-      setIsMapExpansion(true);
-    }
-  }, [isDefaultOpen]);
+  }, [router.query.modal, isCafeMap, isDefaultOpen]);
 
   // 초기 지도 map-option 세팅
   useEffect(() => {
     if (!userInfo) return;
-
     const myLocation = {
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
@@ -116,9 +106,14 @@ function StudyPageMap({
     setZoomNumber(zoom);
     setMapOptions(options);
   }, [userInfo, isMapExpansion, currentLocation, defaultLocation]);
-  useEffect(() => {
-    if (!placeInfo) return;
 
+  useEffect(() => {
+    if (!placeInfo) {
+      updateQuery({
+        modal: null,
+      });
+      return;
+    }
     setMapOptions((prev) =>
       getMapOptions(
         {
@@ -129,95 +124,34 @@ function StudyPageMap({
       ),
     );
   }, [placeInfo]);
+
   useEffect(() => {
     if (!placeData?.length) return;
-
     setMarkersOptions(
       getStudyPlaceMarkersOptions(
         placeData,
-        // placeInfo ? placeInfo._id : null,
         null,
         zoomNumber,
         isMapExpansion && !defaultLocation ? currentLocation : null,
         defaultLocation,
       ),
     );
-
-    // if (placeInfo) {
-    //   const options = getMapOptions(
-    //     { lat: placeInfo.location.latitude, lon: placeInfo.location.longitude },
-    //     mapOptions?.zoom,
-    //   );
-    //   setMapOptions(options);
-    // }
   }, [placeData, zoomNumber, currentLocation, defaultLocation, isMapExpansion]);
-  const closePlaceInfoDrawer = () => {
-    const { id, modal, ...restQuery } = router.query;
-    console.log(id, modal);
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: restQuery,
-      },
-      undefined,
-      {
-        shallow: true,
-        scroll: false,
-      },
-    );
-
-    setPlaceInfo(null);
-    setSelectedPlaceId(null);
-  };
-
-  useEffect(() => {
-    if (!placeInfo) {
-      const { id, modal, ...restQuery } = router.query;
-      console.log(id, modal);
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: restQuery,
-        },
-        undefined,
-        {
-          shallow: true,
-          scroll: false,
-        },
-      );
-
-      setPlaceInfo(null);
-      setSelectedPlaceId(null);
-    }
-  }, [placeInfo]);
 
   const handleMarker = (id: string, currentZoom: number) => {
     const findPlace = placeData?.find((place) => place._id === id);
     if (!findPlace) return;
-
     setSelectedPlaceId(id);
     setPlaceInfo(findPlace);
-
+    setDrawerType("placeInfo");
     setMapOptions((prev) => ({
       ...prev,
       zoom: currentZoom,
     }));
-
-    router.push(
-      {
-        pathname: router.pathname,
-        query: {
-          ...router.query,
-          modal: "placeDrawer",
-          id: findPlace._id,
-        },
-      },
-      undefined,
-      { shallow: true, scroll: false },
-    );
+    updateQuery({
+      modal: "placeDrawer",
+    });
   };
-
-  // const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
 
   useEffect(() => {
     if (isMapExpansion) {
@@ -262,22 +196,16 @@ function StudyPageMap({
     if (!isMapExpansion) return;
 
     let startY = 0;
-
     const onTouchStart = (e: TouchEvent) => {
       startY = e.touches[0]?.clientY ?? 0;
     };
-
     const onTouchMove = (e: TouchEvent) => {
       const y = e.touches[0]?.clientY ?? 0;
       const deltaY = y - startY;
-
-      // 페이지 최상단에서 아래로 끌어내리는 제스처만 차단(PtR 방지)
       if (window.scrollY <= 0 && deltaY > 0) {
         e.preventDefault();
       }
     };
-
-    // passive: false 가 핵심 (기본 스크롤 취소 가능)
     window.addEventListener("touchstart", onTouchStart, { passive: false });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
 
@@ -295,27 +223,7 @@ function StudyPageMap({
     }, 800);
     return () => clearTimeout(timer);
   }, [isMapExpansion, filterType]);
-
-  useEffect(() => {
-    if (!router.isReady) return;
-    if (modalParam !== "placeDrawer") {
-      setPlaceInfo(null);
-    }
-  }, [router.isReady, modalParam]);
-
-  const handleMapClick = () => {
-    if (!isMapExpansion) {
-      router.push(
-        { pathname: router.pathname, query: { ...router.query, modal: "map" } },
-        undefined,
-        {
-          shallow: true,
-        },
-      );
-      setIsMapExpansion(true);
-    }
-  };
-  const toast = useToast();
+  console.log(53, reviewId);
   return (
     <>
       <Box>
@@ -328,7 +236,14 @@ function StudyPageMap({
           {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { height: "100svh" })}
           w={isMapExpansion ? "full" : "auto"}
           bg="transparent"
-          onClick={handleMapClick}
+          onClick={() => {
+            if (!isMapExpansion) {
+              updateQuery({
+                modal: "map",
+              });
+              setIsMapExpansion(true);
+            }
+          }}
         >
           <ClipLayer $rounded={!isMapExpansion}>
             {isMapExpansion && (
@@ -346,6 +261,12 @@ function StudyPageMap({
             <StudyMapTopNav
               isCafeMap={isCafeMap}
               isMainType={type === "mainPlace"}
+              addCafe={() => {
+                updateQuery({
+                  modal: "addCafe",
+                });
+                setDrawerType("addCafe");
+              }}
               handleLocationRefetch={async () => {
                 setTempToggle(true);
                 const newPos = await refetchCurrentLocation();
@@ -360,18 +281,21 @@ function StudyPageMap({
               }}
               isMapExpansion={isMapExpansion}
               openList={() => {
+                updateQuery({
+                  modal: "list",
+                });
                 setDrawerType("list");
               }}
               onClose={() => {
                 if (onClose) {
-                  const { modal, ...restQuery } = router.query; // modal만 제외하고 나머지 유지
-                  console.log(modal);
-                  router.push({ pathname: router.pathname, query: restQuery }, undefined, {
-                    shallow: true,
+                  updateQuery({
+                    modal: undefined,
                   });
+
                   if (isMapExpansion) {
-                    setIsMapExpansion(false); // 지도 확장 상태 해제
+                    setIsMapExpansion(false);
                   }
+
                   onClose();
                 } else {
                   router.back();
@@ -388,79 +312,56 @@ function StudyPageMap({
               handleMarker={handleMarker}
               selectedMarkerId={selectedPlaceId}
               zoomChange={(zoom: number) => setZoomNumber(zoom)}
-
-              // circleCenter={placeData?.map((p) => ({
-              //   lat: p.location.latitude,
-              //   lon: p.location.longitude,
-              // }))}
             />
-            {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
+
             {((isLoading && !isLoading2) || (isLoadingLocation && tempToggle)) && (
               <MainLoadingAbsolute size="sm" />
             )}
           </ClipLayer>
         </Box>
       </Box>
-
-      {/* {detailInfo && (
-        <StudyInfoDrawer
-          date={date}
-          detailInfo={detailInfo}
-          setDetailInfo={setDetailInfo}
-          myStudy={myStudy}
+      {drawerType === "addCafe" && (
+        <LocationAddDrawer
+          onClose={() => {
+            router.back();
+            setDrawerType(null);
+          }}
         />
-      )} */}
-      {placeInfo && (
+      )}
+      {drawerType === "placeInfo" && (
         <PlaceInfoDrawer
-          handleVotePick={isDefaultOpen && !isDown ? () => handleVotePick(placeInfo) : undefined}
+          handleVotePick={
+            isDefaultOpen && !isDown && !isCafeMap ? () => handleVotePick(placeInfo) : undefined
+          }
           placeInfo={placeInfo}
-          onClose={closePlaceInfoDrawer}
+          onClose={() => {
+            setDrawerType(null);
+            setPlaceInfo(null);
+            setSelectedPlaceId(null);
+            router.back();
+          }}
           isDown={isDown}
           isChange={!!defaultLocation}
+          pickReviewPlace={(id: string) => {
+            setReviewId(id);
+            updateQuery({
+              modal: "reviewPlace",
+            });
+          }}
         />
       )}
-      {drawerType === "menu" && (
-        <MenuDrawer
-          title="메뉴"
-          onClose={() => setDrawerType(null)}
-          items={[
-            {
-              label: "장소 추가 요청",
-              onClick: () => {
-                setDrawerType(null);
-                setIsAddCafeDrawer(true);
-              },
-            },
-            {
-              label: "정보 수정 요청",
-              onClick: () => toast("info", "준비중"),
-            },
-            {
-              label: "오류 제보",
-              onClick: () => toast("info", "준비중"),
-            },
-            {
-              label: "About이 궁금해요!",
-              onClick: () => router.push("/home"),
-            },
-            {
-              label: "문의하기",
-              onClick: () => toast("info", "준비중"),
-            },
-          ]}
-        />
-        // <RightMenuDrawer
-        //   onClose={() => setDrawerType(null)}
-        //   handleButton={() => {
-        //     setDrawerType(null);
-        //     setIsAddCafeDrawer(true);
-        //   }}
-        // />
-      )}
-      {isAddCafeDrawer && <LocationAddDrawer onClose={() => setIsAddCafeDrawer(false)} />}
       {drawerType === "list" && (
         <CafeListDrawer
-          onClose={() => setDrawerType(null)}
+          onClose={() => {
+            router.back();
+            setDrawerType(null);
+          }}
+          pickReviewPlace={(id: string) => {
+            setReviewId(id);
+            updateQuery({
+              modal: "reviewPlace",
+            });
+          }}
           placeData={(placeData as KmPlaceProps[])
             ?.filter((place) => {
               const diffKm = getDistanceFromLatLonInKm(
@@ -475,6 +376,30 @@ function StudyPageMap({
             ?.sort((a, b) => a._diffKm - b._diffKm)}
         />
       )}
+      {reviewId && (
+        <RightReviewDrawer2
+          placeInfo={placeData.find((p) => p._id === reviewId)}
+          onClose={() => {
+            router.back();
+            setReviewId(null);
+          }}
+          zIndex={13000}
+          handleClick={() => {
+            updateQuery({
+              modal: "addReview",
+            });
+          }}
+        />
+      )}{" "}
+      {modalParam === "addReview" && (
+        <RightReviewDrawer
+          placeId={placeData.find((p) => p._id === reviewId)._id}
+          onClose={() => {
+            router.back();
+          }}
+          zIndex={4000}
+        />
+      )}
       {(isLoading || isLoading2) && (
         <>
           <ScreenOverlay zIndex={2000} />
@@ -482,149 +407,6 @@ function StudyPageMap({
         </>
       )}
     </>
-  );
-}
-
-interface CafeListDrawerProps {
-  onClose: () => void;
-  placeData: StudyPlaceProps[];
-}
-
-function CafeListDrawer({ onClose, placeData }: CafeListDrawerProps) {
-  return (
-    <BottomFlexDrawer
-      isDrawerUp
-      isOverlay
-      height={643}
-      isHideBottom
-      zIndex={2000}
-      setIsModal={onClose}
-    >
-      <Box
-        pt={1}
-        pb={0}
-        lineHeight="32px"
-        w="100%"
-        fontWeight="semibold"
-        fontSize="20px"
-        textAlign="start"
-      >
-        내 인근 카공 카페
-      </Box>{" "}
-      <Box color="gray.500" mr="auto" fontSize="12px">
-        3km 이내, 총 <b>{placeData?.length}개</b>의 카공 카페가 있어요!
-      </Box>
-      <Flex
-        flexDir="column"
-        w="full"
-        mt={3}
-        flex="1"
-        minH={0}
-        overflowY="auto"
-        borderTop="var(--border-main)"
-        borderTopWidth="2px"
-        sx={{
-          "::-webkit-scrollbar": { display: "none" },
-          scrollbarWidth: "none",
-          touchAction: "auto",
-          "& *": {
-            touchAction: "auto", // ← 자식들까지 다 풀어버리기
-          },
-        }}
-      >
-        {placeData?.map((place, idx) => {
-          return (
-            <Box key={idx} borderBottom="var(--border-main)" py={3}>
-              <PlaceInfoBox placeInfo={place} isDown={false} />
-            </Box>
-          );
-        })}
-      </Flex>
-    </BottomFlexDrawer>
-  );
-}
-
-interface LocationAddDrawerProps {
-  onClose: () => void;
-}
-
-export function LocationAddDrawer({ onClose }: LocationAddDrawerProps) {
-  const toast = useToast();
-
-  const [isFirstPage, setIsFirstPage] = useState(true);
-
-  const [placeInfo, setPlaceInfo] = useState<LocationProps>({
-    name: "",
-    address: "",
-    latitude: null,
-    longitude: null,
-  });
-  const [content, setContent] = useState("");
-
-  const { mutate, isLoading } = useStudyAdditionMutation({
-    onSuccess() {
-      toast("success", "요청이 완료되었어요! 운영진의 검토 후 등록됩니다.");
-      onClose();
-    },
-  });
-
-  const onClickNext = () => {
-    if ([placeInfo?.name, placeInfo?.address].some((field) => !field)) {
-      toast("warning", "장소를 입력해주세요.");
-      return;
-    }
-    if (isFirstPage) {
-      setIsFirstPage(false);
-    } else {
-      const { latitude, longitude, address, name } = placeInfo;
-      mutate({
-        location: { name, latitude, longitude, address },
-        status: "inactive",
-      });
-    }
-  };
-
-  const handleBack = () => {
-    if (isFirstPage) onClose();
-    else setIsFirstPage(true);
-  };
-
-  return (
-    <RightDrawer title="장소 추가" onClose={handleBack}>
-      <RegisterOverview>
-        {isFirstPage ? (
-          <>
-            <span>추가하고 싶은 장소를 입력해주세요</span>
-            <span>입력하신 장소는 운영진의 검토 후 추가됩니다.</span>
-          </>
-        ) : (
-          <>
-            <span>장소에 대한 코멘트를 적어주세요</span>
-            <span>추천 이유나 카페에 대한 설명을 남겨주시면 좋아요!</span>
-          </>
-        )}
-      </RegisterOverview>
-      {isFirstPage ? (
-        <SearchLocation
-          placeHolder="ex) 사당역 투썸플레이스"
-          placeInfo={placeInfo}
-          setPlaceInfo={setPlaceInfo}
-        />
-      ) : (
-        <Textarea
-          placeholder="ex) 의자가 편하고 자리마다 콘센트가 있어요! 인기가 많아 주말에는 자리가 없을 수도 있습니다."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          minHeight={200}
-        />
-      )}
-      <BottomNav
-        onClick={() => onClickNext()}
-        text={isFirstPage ? "다 음" : "완 료"}
-        isLoading={isLoading}
-        isSlide={false}
-      />
-    </RightDrawer>
   );
 }
 

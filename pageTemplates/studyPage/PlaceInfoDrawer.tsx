@@ -1,4 +1,5 @@
-import { Badge, Box, Button, Flex } from "@chakra-ui/react";
+import { Badge, Box, Button, Flex, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 
@@ -19,7 +20,6 @@ import {
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { RightReviewDrawer } from "../study/StudyReview";
 
 interface PlaceInfoDrawerProps {
   placeInfo: StudyPlaceProps;
@@ -27,6 +27,7 @@ interface PlaceInfoDrawerProps {
   handleVotePick?: () => void;
   isDown?: boolean;
   isChange?: boolean;
+  pickReviewPlace: (id: string) => void;
 }
 
 function PlaceInfoDrawer({
@@ -35,14 +36,8 @@ function PlaceInfoDrawer({
   handleVotePick,
   isDown = false,
   isChange,
+  pickReviewPlace,
 }: PlaceInfoDrawerProps) {
-  const userInfo = useUserInfo();
-  const [page, setPage] = useState<1 | 2 | 3>(1);
-
-  const ratings = placeInfo?.ratings;
-
-  const isCompleted = ratings?.some((r) => r?.user === userInfo?._id);
-
   return (
     <>
       <BottomFlexDrawer
@@ -51,30 +46,16 @@ function PlaceInfoDrawer({
         isDrawerUp
         setIsModal={onClose}
         isOverlay
-        zIndex={page === 1 ? 3000 : 1000}
+        zIndex={3000}
       >
         <PlaceInfoBox
           placeInfo={placeInfo}
           isDown={isDown}
           handleVotePick={handleVotePick}
           isChange={isChange}
-          handleClick={() => setPage(2)}
+          handleClick={() => pickReviewPlace(placeInfo._id)}
         />
       </BottomFlexDrawer>{" "}
-      {(page === 2 || page === 3) && (
-        <RightReviewDrawer2
-          placeInfo={placeInfo}
-          onClose={() => setPage(1)}
-          zIndex={2000}
-          isCompleted={isCompleted}
-          handleClick={() => {
-            setPage(3);
-          }}
-        />
-      )}
-      {page === 3 && (
-        <RightReviewDrawer placeId={placeInfo._id} onClose={() => setPage(2)} zIndex={3000} />
-      )}
     </>
   );
 }
@@ -87,19 +68,22 @@ export function PlaceInfoBox({
   handleVotePick,
   isChange,
   handleClick,
+  isShort = false,
 }: {
   placeInfo: StudyPlaceProps;
   isDown: boolean;
   handleVotePick?: () => void;
   isChange?: boolean;
-  handleClick?: () => void;
+  handleClick: () => void;
+  isShort?: boolean;
 }) {
+  const router = useRouter();
   const userInfo = useUserInfo();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const isGuest = userInfo?.role === "guest";
-
+  console.log(522525, isGuest);
   const ratings = placeInfo?.ratings || [];
 
   const reviewCnt =
@@ -138,10 +122,9 @@ export function PlaceInfoBox({
   };
 
   const handleRatingClick = async () => {
-    if (isDown || isGuest) {
+    if (isGuest) {
       await signOut({ redirect: false });
-      await signIn("kakao", { callbackUrl: "/studyPage" });
-
+      await signIn("kakao", { callbackUrl: router.pathname });
       return;
     }
     handleClick();
@@ -157,6 +140,15 @@ export function PlaceInfoBox({
     handleVotePick?.();
   };
 
+  const total =
+    ratings?.reduce((acc, cur) => {
+      return acc + cur.mood + cur.table + cur.space + cur.etc;
+    }, 0) ?? 0;
+
+  const totalScore = placeInfo?.ratings?.length > 3 ? total / (ratings.length * 4) : rating;
+
+  console.log(placeInfo, totalScore);
+
   return (
     <>
       <Flex mt={4} w="full" h="full" direction="column" align="start">
@@ -164,7 +156,7 @@ export function PlaceInfoBox({
           <Flex direction="column" flex={1} minW={0} mr={3}>
             <Box mb={2}>
               <Badge px={2} py={1} fontSize="11px" color="gray.500" bg="rgba(142,160,172,0.08)">
-                카공 장소
+                {placeInfo?.registrant?.name || "어바웃"}님 PICK
               </Badge>
             </Box>
 
@@ -176,12 +168,23 @@ export function PlaceInfoBox({
               overflow="hidden"
               textOverflow="ellipsis"
               whiteSpace="nowrap"
+              width="100%"
             >
               {placeInfo.location.name}
             </Box>
             <Flex flexDir="column">
-              <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center" mb={1}>
-                {placeInfo.location.address}
+              <Flex align="center" mb={1} width="90%" minW={0}>
+                <Text
+                  fontSize="13px"
+                  lineHeight="20px"
+                  color="gray.600"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  whiteSpace="nowrap"
+                  width="100%"
+                >
+                  {placeInfo.location.address}
+                </Text>
               </Flex>
               <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center">
                 <Box color="gray.500" fontWeight={600}>
@@ -205,15 +208,15 @@ export function PlaceInfoBox({
           />
         </Flex>
 
-        <Flex align="center" mb={3}>
+        <Flex align="center" mb={isShort ? 0 : 3}>
           <Box>
-            <StarRating rating={placeInfo?.rating} size="lg" />
+            <StarRating rating={totalScore} size="lg" />
           </Box>
           <Box fontWeight={600} fontSize="16px" ml={1.5} mr={1}>
-            {placeInfo?.rating?.toFixed(1)}
+            {totalScore?.toFixed(1)}
           </Box>
           <Box color="gray.500" fontSize="13px">
-            (총 {reviewCnt}명 평가)
+            (총 {reviewCnt}명 평가 반영)
           </Box>
         </Flex>
         {/* <InfoRow label="전체 평점" hasBorder>
@@ -225,20 +228,23 @@ export function PlaceInfoBox({
         </Flex>
       </InfoRow> */}
 
-        <InfoRow label="공부 분위기" value={averageRatings.mood || rating} hasBorder />
-        <InfoRow label="콘센트/테이블" value={averageRatings.table || rating} hasBorder />
-        <InfoRow label="자리 여유" value={averageRatings.space || rating} hasBorder />
-        <InfoRow label="기타" value={averageRatings.etc || rating} hasBorder />
+        {!isShort && (
+          <>
+            <InfoRow label="공부 분위기" value={averageRatings.mood || rating} hasBorder />
+            <InfoRow label="콘센트/테이블" value={averageRatings.table || rating} hasBorder />
+            <InfoRow label="자리 여유" value={averageRatings.space || rating} hasBorder />
+            <InfoRow label="기타" value={averageRatings.etc || rating} hasBorder />
 
-        <Flex w="full" py={1} mb={1} justify="space-between" fontSize="13px" lineHeight="20px">
-          <Box fontWeight="medium">안내사항</Box>
-        </Flex>
+            <Flex w="full" py={1} mb={1} justify="space-between" fontSize="13px" lineHeight="20px">
+              <Box fontWeight="medium">안내사항</Box>
+            </Flex>
 
-        <Box as="ul" color="gray.600" lineHeight="16px" fontSize="12px" pl={4}>
-          <li>현재 베타 서비스로 정보가 정확하지 않을 수 있습니다.</li>
-          <li>후기 게시판에서 생생한 카공 카페 후기를 공유할 수 있어요!</li>
-        </Box>
-
+            <Box as="ul" color="gray.600" lineHeight="16px" fontSize="12px" pl={4}>
+              <li>현재 베타 서비스로 정보가 정확하지 않을 수 있습니다.</li>
+              <li>리뷰 게시판에서 생생한 카공 카페 후기를 공유할 수 있어요!</li>
+            </Box>
+          </>
+        )}
         <Flex py={2} w="full" mt="auto">
           <Button colorScheme="black" size="lg" mr={3} flex={1} onClick={handleReviewClick}>
             네이버 지도
@@ -251,7 +257,7 @@ export function PlaceInfoBox({
             isLoading={isLoading}
             onClick={handleVotePick ? handleVoteClick : handleRatingClick}
           >
-            {handleVotePick ? `이 장소로 스터디 ${isChange ? "변경" : "개설"}` : "카페 후기 게시판"}
+            {handleVotePick ? `이 장소로 스터디 ${isChange ? "변경" : "개설"}` : "카공 리뷰 게시판"}
           </Button>
         </Flex>
       </Flex>
@@ -264,18 +270,17 @@ interface RightReviewDrawer2Props {
   onClose: () => void;
   handleClick: () => void;
   zIndex: number;
-  isCompleted: boolean;
 }
 
-function RightReviewDrawer2({
+export function RightReviewDrawer2({
   placeInfo,
   onClose,
   handleClick,
   zIndex,
-  isCompleted,
 }: RightReviewDrawer2Props) {
+  const userInfo = useUserInfo();
   const ratings = placeInfo?.ratings || [];
-
+  const isCompleted = placeInfo?.ratings?.some((r) => r.user === userInfo?._id);
   const temp: StudyRatingProps = {
     comment: "여러분의 리뷰를 기다리고 있어요!",
     etc: 5,
@@ -296,13 +301,13 @@ function RightReviewDrawer2({
   };
   const reviewArr = [temp, temp2, ...ratings];
   return (
-    <RightDrawer title="후기 게시판" zIndex={zIndex} onClose={onClose}>
+    <RightDrawer title="리뷰 게시판" zIndex={zIndex} onClose={onClose}>
       <Box mb={10}>
         <Flex w="full" justify="space-between" align="start" mb={4}>
           <Flex direction="column" flex={1} minW={0} mr={3}>
             <Box mb={2}>
               <Badge px={2} py={1} fontSize="11px" color="gray.500" bg="rgba(142,160,172,0.08)">
-                카공 장소
+                {placeInfo?.registrant?.name || "어바웃"}님 PICK
               </Badge>
             </Box>
 

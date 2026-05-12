@@ -2,7 +2,6 @@ import { Button, Flex } from "@chakra-ui/react";
 import { MouseEvent } from "react";
 
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
-import KakaoAdfit from "../../../components/KakaoAdfit";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { StudyPlaceFilter } from "../../../types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "../../../utils/validationUtils";
@@ -16,6 +15,7 @@ interface TopNavProps {
   isMainType?: boolean;
   openList: () => void;
   isCafeMap: boolean;
+  addCafe: () => void;
 }
 
 function TopNav({
@@ -27,7 +27,9 @@ function TopNav({
   isMainType,
   openList,
   isCafeMap,
+  addCafe,
 }: TopNavProps) {
+  console.log(onClose, isCafeMap);
   const handleFilter = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     type: StudyPlaceFilter,
@@ -201,22 +203,7 @@ function TopNav({
       {isMapExpansion && (
         <Flex flexDir="column" pos="absolute" w="full" bottom={0} left={0} zIndex={300}>
           <Flex px={5} justify="space-between" align="center" mb={4}>
-            <Button
-              rounded="full"
-              bgColor="white"
-              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-              w="40px"
-              h="40px"
-              size="sm"
-              p="0"
-              border="var(--border-main)"
-              borderColor="var(--gray-300)"
-              onClick={() => {
-                onClose();
-              }}
-            >
-              <AddCafeIcon />
-            </Button>
+            <CurrentLocationBtn onClick={handleLocationRefetch} isBig={true} />
             {!isMainType && (
               <>
                 <Button
@@ -234,11 +221,26 @@ function TopNav({
                 >
                   리스트로 보기
                 </Button>
-                <CurrentLocationBtn onClick={handleLocationRefetch} isBig={true} />
+
+                <Button
+                  rounded="full"
+                  bgColor="white"
+                  boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+                  w="40px"
+                  h="40px"
+                  size="sm"
+                  p="0"
+                  border="var(--border-main)"
+                  borderWidth="1px"
+                  borderColor="var(--gray-300)"
+                  onClick={addCafe}
+                >
+                  <AddCafeIcon />
+                </Button>
               </>
             )}
           </Flex>
-          {isCafeMap && (
+          {/* {isCafeMap && (
             <Flex
               justify="center"
               fontWeight={600}
@@ -250,7 +252,7 @@ function TopNav({
             >
               <KakaoAdfit unitId="DAN-yjQDVIbCjd5Xbowz" width={320} height={50} />
             </Flex>
-          )}
+          )} */}
         </Flex>
       )}
     </>
@@ -260,6 +262,19 @@ function TopNav({
 export default TopNav;
 
 export function AddCafeIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="18px"
+      viewBox="0 -960 960 960"
+      width="18px"
+      fill="var(--gray-800)"
+    >
+      <path d="M720-160h-80q-17 0-28.5-11.5T600-200q0-17 11.5-28.5T640-240h80v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80h80q17 0 28.5 11.5T920-200q0 17-11.5 28.5T880-160h-80v80q0 17-11.5 28.5T760-40q-17 0-28.5-11.5T720-80v-80Zm-600 0q-17 0-28.5-11.5T80-200v-200h-7q-19 0-31-14.5T34-448l40-200q3-14 14-23t25-9h534q14 0 25 9t14 23l40 200q4 19-8 33.5T687-400h-7v80q0 17-11.5 28.5T640-280q-17 0-28.5-11.5T600-320v-80H440v200q0 17-11.5 28.5T400-160H120Zm40-80h200v-160H160v160Zm-38-240h516-516Zm-2-240q-17 0-28.5-11.5T80-760q0-17 11.5-28.5T120-800h520q17 0 28.5 11.5T680-760q0 17-11.5 28.5T640-720H120Zm2 240h516l-24-120H146l-24 120Z" />
+    </svg>
+  );
+}
+export function AddCafeIcon2() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

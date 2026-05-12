@@ -18,6 +18,7 @@ function CurrentLocationBtn({ onClick, isBig }: CurrentLocationBtnProps) {
       p="0"
       border="var(--border-main)"
       borderColor={isBig ? "var(--gray-300)" : "var(--gray-200)"}
+      borderWidth="1px"
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -26,8 +27,8 @@ function CurrentLocationBtn({ onClick, isBig }: CurrentLocationBtnProps) {
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        height={isBig ? "20px" : "16px"}
-        width={isBig ? "20px" : "16px"}
+        height={isBig ? "18px" : "16px"}
+        width={isBig ? "18px" : "16px"}
         viewBox="0 -960 960 960"
         fill="var(--gray-800)"
       >

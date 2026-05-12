@@ -187,6 +187,7 @@ function StudyNearMap({ centerPlace, placeId, defaultLocation }: StudyNearMapPro
           handleVotePick={null}
           placeInfo={placeInfo}
           onClose={() => setPlaceInfo(null)}
+          pickReviewPlace={() => {}}
         />
       )}
     </>
