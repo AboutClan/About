@@ -116,6 +116,22 @@ const baseNextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+
+  async rewrites() {
+    return [
+      {
+        source: "/",
+        has: [
+          {
+            type: "host",
+            value: "xn--ob0b42knwutje.com",
+          },
+        ],
+        destination: "/cafe-map",
+      },
+    ];
+  },
+
   async headers() {
     return [
       {
