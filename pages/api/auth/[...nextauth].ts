@@ -100,6 +100,7 @@ export const authOptions: NextAuthOptions = {
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID as string,
       clientSecret: process.env.KAKAO_CLIENT_SECRET as string,
+      allowDangerousEmailAccountLinking: true,
       profile: (profile: KakaoProfile) => {
         const profileData = {
           ...profile,

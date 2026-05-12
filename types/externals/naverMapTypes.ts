@@ -58,4 +58,5 @@ export interface IMarkerOptions {
   zIndex?: number;
   infoWindow?: any;
   polyline?: any;
+  selectedIcon?: naver.maps.ImageIcon | naver.maps.HtmlIcon;
 }

@@ -26,7 +26,7 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
 
   const ratings = placeInfo?.ratings || [];
-
+  console.log(81, placeInfo);
   const temp: StudyRatingProps = {
     comment: "여러분의 리뷰를 기다리고 있어요!",
     etc: 5,
@@ -81,7 +81,11 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
         </Flex>{" "}
       </Box>
       {isReviewDrawer && (
-        <RightReviewDrawer placeId={placeInfo._id} onClose={() => setIsReviewDrawer(false)} />
+        <RightReviewDrawer
+          placeId={placeInfo._id}
+          onClose={() => setIsReviewDrawer(false)}
+          zIndex={4000}
+        />
       )}
     </>
   );
@@ -89,9 +93,17 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
 
 export default StudyReviewSection;
 
-function RightReviewDrawer({ placeId, onClose }: { placeId: string; onClose: () => void }) {
+export function RightReviewDrawer({
+  placeId,
+  onClose,
+  zIndex,
+}: {
+  zIndex: number;
+  placeId: string;
+  onClose: () => void;
+}) {
   return (
-    <RightDrawer title="카페 후기" onClose={onClose}>
+    <RightDrawer title="카페 후기" onClose={onClose} zIndex={zIndex}>
       <ReviewForm placeId={placeId} onClose={onClose} />
     </RightDrawer>
   );

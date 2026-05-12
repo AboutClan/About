@@ -143,37 +143,33 @@ export const getStudyPlaceMarkersOptions = (
 
   if (clusters) {
     clusters.forEach((cluster) => {
+      const normalIcon = {
+        content:
+          defaultLocation && cluster?.defaultLocationLat === defaultLocation?.lat
+            ? getPlaceBasicIcon("orange", null)
+            : cluster.count > 1
+            ? getPlaceCountIcon(cluster.count)
+            : getPlaceBasicIcon(
+                "mint",
+                zoomNumber >= 15 ? cluster.name : null,
+                false,
+                cluster.rating,
+              ),
+        size: new naver.maps.Size(120, 60),
+        anchor: new naver.maps.Point(60, 60),
+      };
+
+      const selectedIcon = {
+        content: getPlaceBasicIcon("orange", null),
+        size: new naver.maps.Size(120, 60),
+        anchor: new naver.maps.Point(60, 60),
+      };
       temp.push({
         id: cluster._id,
         type: "place",
         position: new naver.maps.LatLng(cluster.center[0], cluster.center[1]),
-        icon: {
-          content:
-            selectedId === cluster._id ||
-            (defaultLocation && cluster?.defaultLocationLat === defaultLocation?.lat)
-              ? getPlaceBasicIcon("orange", null)
-              : cluster.count > 1
-              ? getPlaceCountIcon(cluster.count)
-              : getPlaceBasicIcon(
-                  "mint",
-                  zoomNumber >= 15 ? cluster.name : null,
-                  false,
-                  cluster.rating,
-                ),
-
-          size: new naver.maps.Size(120, 60),
-          // selectedId === cluster._id
-          //   ? new naver.maps.Size(32, 36)
-          //   : cluster.count > 1
-          //   ? new naver.maps.Size(32, zoomNumber >= 15 ? 60 : 36)
-          //   : new naver.maps.Size(zoomNumber >= 15 ? 60 : 32, zoomNumber >= 15 ? 60 : 36),
-          anchor: new naver.maps.Point(60, 60),
-          // selectedId === cluster._id
-          //   ? new naver.maps.Point(16, 36)
-          //   : cluster.count > 1
-          //   ? new naver.maps.Point(16, zoomNumber >= 15 ? 60 : 36)
-          //   : new naver.maps.Point(zoomNumber >= 15 ? 30 : 16, zoomNumber >= 15 ? 60 : 36),
-        },
+        icon: normalIcon,
+        selectedIcon,
       });
     });
   }

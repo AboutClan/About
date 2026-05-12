@@ -59,7 +59,7 @@ function StudyPageMap({
     refetchCurrentLocation,
     isLoadingLocation,
   } = useUserCurrentLocation();
-
+  const modalParam = router.query.modal;
   const currentLocation = defaultLocation || currentLocation2;
 
   /* 네이버 지도와 마커 옵션 */
@@ -69,6 +69,7 @@ function StudyPageMap({
   const [isLoading, setIsLoading] = useState(false);
   const scrollLockY = useRef(0);
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
+  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [drawerType, setDrawerType] = useState<"cafe" | "menu" | "list">(null);
   const [isAddCafeDrawer, setIsAddCafeDrawer] = useState(false);
   const [filterType, setFilterType] = useState<StudyPlaceFilter>(
@@ -81,6 +82,12 @@ function StudyPageMap({
     filterType || "best",
     null,
   );
+
+  useEffect(() => {
+    if (router.query.id && placeData) {
+      setPlaceInfo(placeData.find((p) => p._id === router.query.id));
+    }
+  }, [router.query.id, placeData]);
 
   useEffect(() => {
     if (!router.query.modal) {
@@ -98,6 +105,7 @@ function StudyPageMap({
   // 초기 지도 map-option 세팅
   useEffect(() => {
     if (!userInfo) return;
+
     const myLocation = {
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
@@ -108,41 +116,105 @@ function StudyPageMap({
     setZoomNumber(zoom);
     setMapOptions(options);
   }, [userInfo, isMapExpansion, currentLocation, defaultLocation]);
+  useEffect(() => {
+    if (!placeInfo) return;
 
+    setMapOptions((prev) =>
+      getMapOptions(
+        {
+          lat: placeInfo.location.latitude,
+          lon: placeInfo.location.longitude,
+        },
+        prev?.zoom,
+      ),
+    );
+  }, [placeInfo]);
   useEffect(() => {
     if (!placeData?.length) return;
 
     setMarkersOptions(
       getStudyPlaceMarkersOptions(
         placeData,
-        placeInfo ? placeInfo._id : null,
+        // placeInfo ? placeInfo._id : null,
+        null,
         zoomNumber,
         isMapExpansion && !defaultLocation ? currentLocation : null,
         defaultLocation,
       ),
     );
 
-    if (placeInfo) {
-      const options = getMapOptions(
-        { lat: placeInfo.location.latitude, lon: placeInfo.location.longitude },
-        mapOptions?.zoom,
+    // if (placeInfo) {
+    //   const options = getMapOptions(
+    //     { lat: placeInfo.location.latitude, lon: placeInfo.location.longitude },
+    //     mapOptions?.zoom,
+    //   );
+    //   setMapOptions(options);
+    // }
+  }, [placeData, zoomNumber, currentLocation, defaultLocation, isMapExpansion]);
+  const closePlaceInfoDrawer = () => {
+    const { id, modal, ...restQuery } = router.query;
+    console.log(id, modal);
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: restQuery,
+      },
+      undefined,
+      {
+        shallow: true,
+        scroll: false,
+      },
+    );
+
+    setPlaceInfo(null);
+    setSelectedPlaceId(null);
+  };
+
+  useEffect(() => {
+    if (!placeInfo) {
+      const { id, modal, ...restQuery } = router.query;
+      console.log(id, modal);
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: restQuery,
+        },
+        undefined,
+        {
+          shallow: true,
+          scroll: false,
+        },
       );
-      setMapOptions(options);
+
+      setPlaceInfo(null);
+      setSelectedPlaceId(null);
     }
-  }, [placeData, placeInfo, zoomNumber, currentLocation, defaultLocation]);
+  }, [placeInfo]);
 
   const handleMarker = (id: string, currentZoom: number) => {
-    setMapOptions({ ...mapOptions, zoom: currentZoom });
-
     const findPlace = placeData?.find((place) => place._id === id);
+    if (!findPlace) return;
 
+    setSelectedPlaceId(id);
     setPlaceInfo(findPlace);
-    return;
 
-    // if (!id || !studyVoteData || studyVoteData?.participations) return;
-    // const findStudy = studyVoteData && findStudyByPlaceId(studyVoteData, id);
-    // const detailInfo = getDetailInfo(findStudy, userInfo?.uid);
-    // setDetailInfo(detailInfo);
+    setMapOptions((prev) => ({
+      ...prev,
+      zoom: currentZoom,
+    }));
+
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          modal: "placeDrawer",
+          id: findPlace._id,
+        },
+      },
+      undefined,
+      { shallow: true, scroll: false },
+    );
   };
 
   // const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
@@ -223,6 +295,13 @@ function StudyPageMap({
     }, 800);
     return () => clearTimeout(timer);
   }, [isMapExpansion, filterType]);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (modalParam !== "placeDrawer") {
+      setPlaceInfo(null);
+    }
+  }, [router.isReady, modalParam]);
 
   const handleMapClick = () => {
     if (!isMapExpansion) {
@@ -307,8 +386,9 @@ function StudyPageMap({
               markersOptions={markersOptions}
               resizeToggle={isMapExpansion}
               handleMarker={handleMarker}
+              selectedMarkerId={selectedPlaceId}
               zoomChange={(zoom: number) => setZoomNumber(zoom)}
-              isMapExpansion={isMapExpansion}
+
               // circleCenter={placeData?.map((p) => ({
               //   lat: p.location.latitude,
               //   lon: p.location.longitude,
@@ -334,7 +414,7 @@ function StudyPageMap({
         <PlaceInfoDrawer
           handleVotePick={isDefaultOpen && !isDown ? () => handleVotePick(placeInfo) : undefined}
           placeInfo={placeInfo}
-          onClose={() => setPlaceInfo(null)}
+          onClose={closePlaceInfoDrawer}
           isDown={isDown}
           isChange={!!defaultLocation}
         />

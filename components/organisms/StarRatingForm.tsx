@@ -3,7 +3,7 @@
 import { Box, Flex, FormControl } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import { STUDY_VOTE } from "../../constants/keys/queryKeys";
+import { STUDY_PLACE, STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
 
 import { useStudyPlaceReviewMutation } from "../../hooks/study/mutations";
@@ -27,9 +27,11 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
   const { mutate: updatePoint } = usePointSystemMutation("point");
 
   const queryClient = useQueryClient();
+
   const { mutate, isLoading } = useStudyPlaceReviewMutation(placeId, {
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: [STUDY_VOTE], exact: false });
+      queryClient.invalidateQueries({ queryKey: [STUDY_PLACE], exact: false });
       updatePoint({
         value: 200,
         message: "카공 장소 리뷰",

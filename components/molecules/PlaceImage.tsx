@@ -15,7 +15,7 @@ interface PlaceHeartImageProps {
   id?: string;
   hasToggleHeart?: boolean;
   selected?: "main" | "sub" | null;
-  size: "sm" | "md" | "md2" | "lg";
+  size: "sm" | "md" | "md2" | "lg" | "lg2";
   isFull?: boolean;
   isDown?: boolean;
 }
@@ -58,7 +58,7 @@ function PlaceImage({
       ? "88px"
       : size === "lg"
       ? "100px"
-      : "180px";
+      : size==="lg2"?"112px": "180px";
 
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     if (isDown) {

@@ -1,17 +1,25 @@
-import { Box, Button, Flex, Grid } from "@chakra-ui/react";
+import { Badge, Box, Button, Flex } from "@chakra-ui/react";
+import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
+import Divider from "../../components/atoms/Divider";
 import StarRating from "../../components/atoms/StarRating";
 import { StarIcon } from "../../components/Icons/StarIcon";
-import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
+import BottomNav from "../../components/layouts/BottomNav";
 import PlaceImage from "../../components/molecules/PlaceImage";
+import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewBlock2";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
+import {
+  StudyPlaceProps,
+  StudyRatingProps,
+} from "../../types/models/studyTypes/study-entity.types";
+import { getTodayStr } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
+import { RightReviewDrawer } from "../study/StudyReview";
 
 interface PlaceInfoDrawerProps {
   placeInfo: StudyPlaceProps;
@@ -25,26 +33,48 @@ function PlaceInfoDrawer({
   placeInfo,
   onClose,
   handleVotePick,
-  isDown,
+  isDown = false,
   isChange,
 }: PlaceInfoDrawerProps) {
+  const userInfo = useUserInfo();
+  const [page, setPage] = useState<1 | 2 | 3>(1);
+
+  const ratings = placeInfo?.ratings;
+
+  const isCompleted = ratings?.some((r) => r?.user === userInfo?._id);
+
   return (
     <>
       <BottomFlexDrawer
-        isDrawerUp
-        isOverlay
         isHideBottom
-        zIndex={2000}
-        height={!handleVotePick ? 213 : 269}
+        height={!handleVotePick ? 481 : 476}
+        isDrawerUp
         setIsModal={onClose}
+        isOverlay
+        zIndex={page === 1 ? 3000 : 1000}
       >
         <PlaceInfoBox
           placeInfo={placeInfo}
           isDown={isDown}
           handleVotePick={handleVotePick}
           isChange={isChange}
+          handleClick={() => setPage(2)}
         />
-      </BottomFlexDrawer>
+      </BottomFlexDrawer>{" "}
+      {(page === 2 || page === 3) && (
+        <RightReviewDrawer2
+          placeInfo={placeInfo}
+          onClose={() => setPage(1)}
+          zIndex={2000}
+          isCompleted={isCompleted}
+          handleClick={() => {
+            setPage(3);
+          }}
+        />
+      )}
+      {page === 3 && (
+        <RightReviewDrawer placeId={placeInfo._id} onClose={() => setPage(2)} zIndex={3000} />
+      )}
     </>
   );
 }
@@ -56,189 +86,310 @@ export function PlaceInfoBox({
   isDown,
   handleVotePick,
   isChange,
+  handleClick,
 }: {
   placeInfo: StudyPlaceProps;
   isDown: boolean;
   handleVotePick?: () => void;
   isChange?: boolean;
+  handleClick?: () => void;
 }) {
   const userInfo = useUserInfo();
-  const typeToast = useTypeToast();
-  const toast = useToast();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const isGuest = userInfo?.role === "guest";
-  const reviewCnt = Math.ceil(Math.random() * 30);
+
+  const ratings = placeInfo?.ratings || [];
+
+  const reviewCnt =
+    (ratings?.length || 0) + 2 + Number(placeInfo?.location?.latitude?.toString().slice(-1));
+
+  const rating = placeInfo?.rating;
+
+  const result = ratings?.reduce(
+    (acc, cur) => {
+      acc.mood += cur.mood;
+      acc.table += cur.table;
+      acc.space += cur.space;
+      acc.etc += cur.etc;
+
+      return acc;
+    },
+    {
+      mood: 0,
+      table: 0,
+      space: 0,
+      etc: 0,
+    },
+  );
+
+  const count = ratings.length;
+
+  const averageRatings = {
+    mood: result.mood / count,
+    table: result.table / count,
+    space: result.space / count,
+    etc: result.etc / count,
+  };
+
+  const handleReviewClick = () => {
+    navigateExternalLink(`https://map.naver.com/p/search/${placeInfo.location.name}`);
+  };
+
+  const handleRatingClick = async () => {
+    if (isDown || isGuest) {
+      await signOut({ redirect: false });
+      await signIn("kakao", { callbackUrl: "/studyPage" });
+
+      return;
+    }
+    handleClick();
+  };
+
+  const handleVoteClick = () => {
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    handleVotePick?.();
+  };
+
   return (
-    <Flex direction="column" w="100%">
-      <Flex justifyContent="space-between">
-        <Flex direction="column" mr={2} w="full">
-          <Box
-            fontSize="18px"
-            lineHeight="28px"
-            fontWeight={600}
-            textOverflow="ellipsis"
-            overflow="hidden"
-            whiteSpace="nowrap"
-            maxW="60dvw"
-          >
-            {placeInfo.location.name}
-          </Box>
-          <Flex mt={0.5} align="center">
-            <Box>
-              <StarRating rating={placeInfo?.rating} size="lg" />
+    <>
+      <Flex mt={4} w="full" h="full" direction="column" align="start">
+        <Flex w="full" justify="space-between" align="start" mb={4}>
+          <Flex direction="column" flex={1} minW={0} mr={3}>
+            <Box mb={2}>
+              <Badge px={2} py={1} fontSize="11px" color="gray.500" bg="rgba(142,160,172,0.08)">
+                카공 장소
+              </Badge>
             </Box>
-            <Box fontWeight={600} fontSize="16px" mb="-2px" ml={1.5} mr={1}>
-              {placeInfo?.rating?.toFixed(1)}
+
+            <Box
+              mb={2}
+              fontSize="18px"
+              fontWeight="semibold"
+              lineHeight="28px"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+            >
+              {placeInfo.location.name}
             </Box>
-            <Box color="gray.500" fontSize="13px" mb="-2px">
-              ({reviewCnt})
-            </Box>
+            <Flex flexDir="column">
+              <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center" mb={1}>
+                {placeInfo.location.address}
+              </Flex>
+              <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center">
+                <Box color="gray.500" fontWeight={600}>
+                  영업중
+                </Box>
+                <Box color="gray.400" fontWeight={400}>
+                  ・
+                </Box>
+                <Box>08:00 - 24:00</Box>
+              </Flex>
+            </Flex>
           </Flex>
-          <Grid
-            gridTemplateColumns="repeat(2,1fr)"
-            gridGap="4px"
-            fontSize="12px"
-            mt={2}
-            bg="gray.100"
-            w="full"
-            px={3}
-            py={2}
-            borderRadius="8px"
-            color="gray.800"
-            mb={1}
-          >
-            <Flex>
-              <Box w="56px">공부 분위기</Box>
-              <Box mx="1px">
-                <StarIcon type="empty" size="md" />
-              </Box>
-              {placeInfo?.rating?.toFixed(1)}
-            </Flex>
-            <Flex ml="-2px">
-              <Box>콘센트/테이블</Box>
-              <Box mx="1px">
-                <StarIcon type="empty" size="md" />
-              </Box>
-              {placeInfo?.rating?.toFixed(1)}
-            </Flex>
-            <Flex>
-              <Box w="56px">음료/가성비</Box>
-              <Box mx="1px">
-                <StarIcon type="empty" size="md" />
-              </Box>
-              {placeInfo?.rating?.toFixed(1)}
-            </Flex>
-            <Flex ml="-2px">
-              기타
-              <Box mx="1px">
-                <StarIcon type="empty" size="md" />
-              </Box>
-              {placeInfo?.rating?.toFixed(1)}
-            </Flex>
-          </Grid>
-          {/* <Flex mt={2}>
-            환경
-            <Box mx="1px">
-              <StarIcon type="empty" size="md" />
-            </Box>
-            4.0 | 콘센트
-            <Box mx="1px">
-              <StarIcon type="empty" size="md" />
-            </Box>
-            4.0 | 기타
-            <Box mx="1px">
-              <StarIcon type="empty" size="md" />
-            </Box>
-            4.5
-          </Flex> */}
-          {/* <Flex mt={2} align="center" fontSize="12px" color="gray.600">
-            한 줄 메모 기능 준비중...
-          </Flex> */}
-        </Flex>
-        <Box>
+
           <PlaceImage
-            imageProps={{ image: placeInfo?.image || getRandomImage(STUDY_MAIN_IMAGES) }}
-            size="md2"
+            imageProps={{
+              image: placeInfo?.image || getRandomImage(STUDY_MAIN_IMAGES),
+            }}
+            size="lg2"
             hasToggleHeart
             isDown={isDown}
           />
-        </Box>
-      </Flex>
-      <Box py={2}>
-        <NewTwoButtonRow
-          leftProps={{
-            icon: (
-              <Box mb="2px">
-                <InfoIcon />
-              </Box>
-            ),
-            func: () => {
-              navigateExternalLink(`https://map.naver.com/p/search/${placeInfo.location.name}`);
-            },
+        </Flex>
 
-            children: <Box mr="2px">네이버 리뷰</Box>,
-          }}
-          rightProps={{
-            icon: (
-              <Box mb="2px">
-                <QuoteIcon />
-              </Box>
-            ),
-            func: () => {
-              if (isDown || isGuest) {
-                toast("info", "ABOUT 멤버만 이용할 수 있는 기능입니다.");
-              } else typeToast("not-yet");
-            },
-            children: <Box mr="2px">별점 남기기</Box>,
-          }}
-        />
+        <Flex align="center" mb={3}>
+          <Box>
+            <StarRating rating={placeInfo?.rating} size="lg" />
+          </Box>
+          <Box fontWeight={600} fontSize="16px" ml={1.5} mr={1}>
+            {placeInfo?.rating?.toFixed(1)}
+          </Box>
+          <Box color="gray.500" fontSize="13px">
+            (총 {reviewCnt}명 평가)
+          </Box>
+        </Flex>
+        {/* <InfoRow label="전체 평점" hasBorder>
+        <Flex color="gray.600" fontWeight="regular" align="center">
+          <Box mr={1}>
+            <StarRating rating={placeInfo?.rating} size="lg" />
+          </Box>
+          {rating}
+        </Flex>
+      </InfoRow> */}
+
+        <InfoRow label="공부 분위기" value={averageRatings.mood || rating} hasBorder />
+        <InfoRow label="콘센트/테이블" value={averageRatings.table || rating} hasBorder />
+        <InfoRow label="자리 여유" value={averageRatings.space || rating} hasBorder />
+        <InfoRow label="기타" value={averageRatings.etc || rating} hasBorder />
+
+        <Flex w="full" py={1} mb={1} justify="space-between" fontSize="13px" lineHeight="20px">
+          <Box fontWeight="medium">안내사항</Box>
+        </Flex>
+
+        <Box as="ul" color="gray.600" lineHeight="16px" fontSize="12px" pl={4}>
+          <li>현재 베타 서비스로 정보가 정확하지 않을 수 있습니다.</li>
+          <li>후기 게시판에서 생생한 카공 카페 후기를 공유할 수 있어요!</li>
+        </Box>
+
+        <Flex py={2} w="full" mt="auto">
+          <Button colorScheme="black" size="lg" mr={3} flex={1} onClick={handleReviewClick}>
+            네이버 지도
+          </Button>
+
+          <Button
+            size="lg"
+            flex={1}
+            colorScheme="mint"
+            isLoading={isLoading}
+            onClick={handleVotePick ? handleVoteClick : handleRatingClick}
+          >
+            {handleVotePick ? `이 장소로 스터디 ${isChange ? "변경" : "개설"}` : "카페 후기 게시판"}
+          </Button>
+        </Flex>
+      </Flex>
+    </>
+  );
+}
+
+interface RightReviewDrawer2Props {
+  placeInfo: StudyPlaceProps;
+  onClose: () => void;
+  handleClick: () => void;
+  zIndex: number;
+  isCompleted: boolean;
+}
+
+function RightReviewDrawer2({
+  placeInfo,
+  onClose,
+  handleClick,
+  zIndex,
+  isCompleted,
+}: RightReviewDrawer2Props) {
+  const ratings = placeInfo?.ratings || [];
+
+  const temp: StudyRatingProps = {
+    comment: "여러분의 리뷰를 기다리고 있어요!",
+    etc: 5,
+    mood: 5,
+    space: 5,
+    table: 5,
+    user: "",
+    createdAt: getTodayStr(),
+  };
+  const temp2: StudyRatingProps = {
+    comment: "첫 번째 익명 리뷰를 남겨보세요! 200 Point 지급!",
+    etc: 4,
+    mood: 5,
+    space: 3,
+    table: 5,
+    user: "",
+    createdAt: getTodayStr(),
+  };
+  const reviewArr = [temp, temp2, ...ratings];
+  return (
+    <RightDrawer title="후기 게시판" zIndex={zIndex} onClose={onClose}>
+      <Box mb={10}>
+        <Flex w="full" justify="space-between" align="start" mb={4}>
+          <Flex direction="column" flex={1} minW={0} mr={3}>
+            <Box mb={2}>
+              <Badge px={2} py={1} fontSize="11px" color="gray.500" bg="rgba(142,160,172,0.08)">
+                카공 장소
+              </Badge>
+            </Box>
+
+            <Box
+              mb={2}
+              fontSize="18px"
+              fontWeight="semibold"
+              lineHeight="28px"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+            >
+              {placeInfo.location.name}
+            </Box>
+            <Flex flexDir="column">
+              <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center" mb={1}>
+                {placeInfo.location.address}
+              </Flex>
+              <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center">
+                <Box color="gray.500" fontWeight={600}>
+                  영업중
+                </Box>
+                <Box color="gray.400" fontWeight={400}>
+                  ・
+                </Box>
+                <Box>08:00 - 24:00</Box>
+              </Flex>
+            </Flex>
+          </Flex>
+
+          <PlaceImage
+            imageProps={{
+              image: placeInfo?.image || getRandomImage(STUDY_MAIN_IMAGES),
+            }}
+            size="lg2"
+            hasToggleHeart
+          />
+        </Flex>
+        <Divider />
+        <Flex flexDir="column" borderRadius="8px" mt={2} mb={20}>
+          {[...reviewArr]?.map((review, idx) => (
+            <Box key={idx} pt={3} borderTop="var(--border)">
+              <StarRatingReviewBlock2 review={review} idx={idx + 1} />
+            </Box>
+          ))}
+        </Flex>{" "}
       </Box>
-      {handleVotePick && (
-        <Button
-          mb={2}
-          colorScheme="black"
-          size="lg"
-          isLoading={isLoading}
-          onClick={() => {
-            setIsLoading(true);
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 2000);
-            handleVotePick();
-          }}
-        >
-          이 장소로 스터디 {isChange ? "변경" : "개설"}
-        </Button>
+      <BottomNav
+        text={isCompleted ? "별점 평가를 완료했어요!" : "카공 장소 별점 남기기"}
+        isActive={!isCompleted}
+        onClick={handleClick}
+      />
+    </RightDrawer>
+  );
+}
+
+function InfoRow({
+  label,
+  value,
+  children,
+  hasBorder,
+}: {
+  label: string;
+  value?: number;
+  children?: React.ReactNode;
+  hasBorder?: boolean;
+}) {
+  return (
+    <Flex
+      w="full"
+      py={1}
+      mb={1}
+      borderBottom={hasBorder ? "var(--border)" : undefined}
+      justify="space-between"
+      fontSize="13px"
+      lineHeight="20px"
+    >
+      <Box fontWeight="medium">{label}</Box>
+
+      {children || (
+        <Flex color="gray.600" fontWeight="regular" align="center" lineHeight="20px">
+          <Box mx="2px">
+            <StarIcon type="fill" size="md" />
+          </Box>
+          {value.toFixed(1)}
+        </Flex>
       )}
     </Flex>
-  );
-}
-
-function InfoIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="16px"
-      viewBox="0 -960 960 960"
-      width="16px"
-      fill="var(--color-mint)"
-    >
-      <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
-    </svg>
-  );
-}
-
-function QuoteIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="16px"
-      viewBox="0 -960 960 960"
-      width="16px"
-      fill="white"
-    >
-      <path d="M240-240 114-114q-10 10-22 5t-12-19v-672q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240Zm240-221 76 46q11 7 22-.5t8-20.5l-20-87 68-59q10-9 6-21.5T622-617l-89-7-35-82q-5-12-18-12t-18 12l-35 82-89 7q-14 1-18 13.5t6 21.5l68 59-20 87q-3 13 8 20.5t22 .5l76-46Z" />
-    </svg>
   );
 }
