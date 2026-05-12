@@ -2,10 +2,10 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -246,7 +246,7 @@ function Layout({ children }: ILayout) {
         }
       : pathname === "/cafe-map"
       ? {
-          title: "ABOUT 카공 지도",
+          title: "카공 지도",
           description: "카공러들을 위한 진짜 카공 지도",
           url: `about20s.club/cafe-map`,
           image:
