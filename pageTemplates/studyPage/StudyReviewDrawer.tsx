@@ -27,7 +27,6 @@ export function StudyReviewDrawer({
   handleClick,
   zIndex,
 }: RightReviewDrawer2Props) {
-
   const userInfo = useUserInfo();
   const ratings = placeInfo?.ratings || [];
   const isCompleted = placeInfo?.ratings?.some((r) => r.user === userInfo?._id);
