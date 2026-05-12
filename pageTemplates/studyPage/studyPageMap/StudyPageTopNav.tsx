@@ -4,12 +4,8 @@ import { useEffect, useState } from "react";
 
 import Header from "../../../components/layouts/Header";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
-import MenuDrawer from "../../../components/organisms/RightMenuDrawer";
 import { AboutLogo } from "../../../components/services/AboutLogo";
-import { useToast } from "../../../hooks/custom/CustomToast";
 import { LocationProps } from "../../../types/common";
-import { navigateExternalLink } from "../../../utils/navigateUtils";
-import { getDeviceOS, isApp } from "../../../utils/validationUtils";
 
 interface StudyPageTopNavProps {
   handleCenterLocation: (location: { lat: number; lon: number }) => void;
@@ -24,10 +20,9 @@ export function StudyPageTopNav({
   isCafeMap,
   onClose,
 }: StudyPageTopNavProps) {
-  const toast = useToast();
   const router = useRouter();
   const [isFocus, setIsFocus] = useState(true);
-  const [isMenu, setIsMenu] = useState(false);
+
   const [placeInfo, setPlaceInfo] = useState<LocationProps>({
     name: "",
     address: "",
@@ -39,24 +34,22 @@ export function StudyPageTopNav({
     handleCenterLocation({ lat: placeInfo.latitude, lon: placeInfo.longitude });
   }, [placeInfo]);
 
-  const device = getDeviceOS();
+  // const handleAppOpen = () => {
+  //   if (device === "Android") {
+  //     navigateExternalLink(
+  //       "https://play.google.com/store/apps/details?id=com.about.studyaboutclubapp",
+  //     );
+  //   } else if (device === "iOS") {
+  //     navigateExternalLink(
+  //       "https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83/id6737145787",
+  //     );
+  //   } else {
+  //     toast("warning", "앱 설치를 지원하는 단말기가 아닙니다.");
+  //   }
+  // };
 
-  const handleAppOpen = () => {
-    if (device === "Android") {
-      navigateExternalLink(
-        "https://play.google.com/store/apps/details?id=com.about.studyaboutclubapp",
-      );
-    } else if (device === "iOS") {
-      navigateExternalLink(
-        "https://apps.apple.com/kr/app/%EC%96%B4%EB%B0%94%EC%9B%83/id6737145787",
-      );
-    } else {
-      toast("warning", "앱 설치를 지원하는 단말기가 아닙니다.");
-    }
-  };
+  // const isAppDevice = isApp();
 
-  const isAppDevice = isApp();
-  console.log(openMenu);
   return (
     <>
       {!isFocus && (
@@ -99,11 +92,11 @@ export function StudyPageTopNav({
                 <AboutLogo />
               </Button>
               <Flex align="center" mr={1}>
-                <Button mr={3} h="32px" w="64px" colorScheme="mint" onClick={handleAppOpen}>
+                {/* <Button mr={3} h="32px" w="64px" colorScheme="mint" onClick={handleAppOpen}>
                   {isAppDevice ? "앱 열기" : "앱 설치"}
-                </Button>
+                </Button> */}
 
-                <Button variant="unstyled" p={2} onClick={() => setIsMenu(true)}>
+                <Button variant="unstyled" p={2} onClick={() => openMenu()}>
                   <MenuIcon />
                 </Button>
               </Flex>
@@ -129,39 +122,6 @@ export function StudyPageTopNav({
           />
         </Box>
       </Flex>
-      {isMenu && (
-        <MenuDrawer
-          title="메뉴"
-          onClose={() => {
-            // closePlaceInfoDrawer();
-          }}
-          items={[
-            {
-              label: "장소 추가 요청",
-              onClick: () => {
-                // setDrawerType(null);
-                // setIsAddCafeDrawer(true);
-              },
-            },
-            {
-              label: "정보 수정 요청",
-              onClick: () => toast("info", "준비중"),
-            },
-            {
-              label: "오류 제보",
-              onClick: () => toast("info", "준비중"),
-            },
-            {
-              label: "About이 궁금해요!",
-              onClick: () => router.push("/home"),
-            },
-            {
-              label: "문의하기",
-              onClick: () => toast("info", "준비중"),
-            },
-          ]}
-        />
-      )}
     </>
   );
 }

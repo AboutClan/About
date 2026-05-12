@@ -76,7 +76,6 @@ export const setStudyWeekData = (
           })),
         );
 
-        console.log(1234566, openUsers);
         const openGroups = setRealTimesGroup(openUsers);
         acc.openRealTimes.push(
           ...openGroups.map((group) => ({

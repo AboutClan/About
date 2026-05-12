@@ -35,7 +35,7 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
   const { data: passedStudyData } = useLastStudySetQuery(lastIdx, {
     enabled: lastIdx !== 0,
   });
-  console.log(5, passedStudyData);
+
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [sortedOption, setSortedOption] = useState<StudySortedOption>("날짜순");
   const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +69,7 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
 
   useEffect(() => {
     if (!passedStudyData || (sortBy === "예정 스터디" && lastIdx === 0)) return;
-    console.log(52);
+
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
       passedStudyData,

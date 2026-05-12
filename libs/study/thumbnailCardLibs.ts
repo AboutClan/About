@@ -148,7 +148,7 @@ export const setStudyThumbnailCard = (
         latestEnd: end.isAfter(acc.latestEnd) ? end : acc.latestEnd,
       };
     }, null);
-    console.log(1234, members);
+    
     return {
       place: {
         name: placeInfo.location.name,

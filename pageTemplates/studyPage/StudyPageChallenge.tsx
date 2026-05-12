@@ -18,7 +18,7 @@ function StudyPageChallenge() {
   const { data: logs } = usePointPlusLogQuery();
 
   const { data: studyUsers } = useAllUserDataQuery("study");
-  console.log(51, logs);
+ 
   useEffect(() => {
     if (!logs?.length) return;
 

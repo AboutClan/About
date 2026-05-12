@@ -18,7 +18,7 @@ export function CafeListDrawer({ onClose, placeData, pickReviewPlace }: CafeList
         isOverlay
         height={643}
         isHideBottom
-        zIndex={2000}
+        zIndex={1000}
         setIsModal={onClose}
       >
         <Box

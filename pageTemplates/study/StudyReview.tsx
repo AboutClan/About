@@ -26,7 +26,7 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
 
   const ratings = placeInfo?.ratings || [];
-  console.log(81, placeInfo);
+
   const temp: StudyRatingProps = {
     comment: "여러분의 리뷰를 기다리고 있어요!",
     etc: 5,

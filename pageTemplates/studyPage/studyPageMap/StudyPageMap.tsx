@@ -21,7 +21,9 @@ import { getDistanceFromLatLonInKm } from "../../../utils/mathUtils";
 import { RightReviewDrawer } from "../../study/StudyReview";
 import { CafeListDrawer } from "../CafeListDrawer";
 import { LocationAddDrawer } from "../LocationAddDrawer";
-import PlaceInfoDrawer, { RightReviewDrawer2 } from "../PlaceInfoDrawer";
+import PlaceInfoDrawer from "../PlaceInfoDrawer";
+import StudyMapMenuDrawer from "../StudyMapMenuDrawer";
+import { StudyReviewDrawer } from "../StudyReviewDrawer";
 import { StudyPageTopNav } from "./StudyPageTopNav";
 import StudyMapTopNav from "./TopNav";
 
@@ -48,6 +50,7 @@ function StudyPageMap({
   defaultLocation,
 }: StudyPageMapProps) {
   const router = useRouter();
+
   const { data: userInfo } = useUserInfoQuery();
   const {
     currentLocation: currentLocation2,
@@ -83,6 +86,25 @@ function StudyPageMap({
   );
 
   useEffect(() => {
+    if (modalParam !== "reviewPlace" && modalParam !== "addReview") {
+      setReviewId(null);
+      if (modalParam !== "placeDrawer" && drawerType === "placeInfo") {
+        setDrawerType(null);
+        setSelectedPlaceId(null);
+      }
+      if (modalParam !== "list" && drawerType === "list") {
+        setDrawerType(null);
+      }
+    }
+    if (modalParam !== "addCafe" && drawerType === "addCafe") {
+      setDrawerType(null);
+    }
+    if (modalParam !== "menu" && drawerType === "menu") {
+      setDrawerType(null);
+    }
+  }, [modalParam]);
+
+  useEffect(() => {
     if (isCafeMap || isDefaultOpen) {
       setIsMapExpansion(true);
       return;
@@ -100,7 +122,7 @@ function StudyPageMap({
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
     };
-    const zoom = defaultLocation ? 16 : mapOptions?.zoom || (isMapExpansion ? 11 : 14);
+    const zoom = defaultLocation ? 16 : mapOptions?.zoom || (isMapExpansion ? 12 : 14);
 
     const options = getMapOptions(currentLocation || myLocation, zoom);
     setZoomNumber(zoom);
@@ -223,7 +245,7 @@ function StudyPageMap({
     }, 800);
     return () => clearTimeout(timer);
   }, [isMapExpansion, filterType]);
-  console.log(53, reviewId);
+  console.log(placeData);
   return (
     <>
       <Box>
@@ -232,7 +254,7 @@ function StudyPageMap({
           mx={!isMapExpansion ? 5 : 0}
           top={0}
           left={0}
-          zIndex={isDefaultOpen && !isDown ? 1500 : isMapExpansion ? 1000 : 0}
+          zIndex={isDefaultOpen && !isDown ? 1000 : isMapExpansion ? 1000 : 0}
           {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { height: "100svh" })}
           w={isMapExpansion ? "full" : "auto"}
           bg="transparent"
@@ -253,6 +275,9 @@ function StudyPageMap({
                   setMapOptions(getMapOptions(location, zoomNumber));
                 }}
                 openMenu={() => {
+                  updateQuery({
+                    modal: "menu",
+                  });
                   setDrawerType("menu");
                 }}
                 onClose={onClose}
@@ -377,20 +402,20 @@ function StudyPageMap({
         />
       )}
       {reviewId && (
-        <RightReviewDrawer2
+        <StudyReviewDrawer
           placeInfo={placeData.find((p) => p._id === reviewId)}
           onClose={() => {
             router.back();
             setReviewId(null);
           }}
-          zIndex={13000}
+          zIndex={3000}
           handleClick={() => {
             updateQuery({
               modal: "addReview",
             });
           }}
         />
-      )}{" "}
+      )}
       {modalParam === "addReview" && (
         <RightReviewDrawer
           placeId={placeData.find((p) => p._id === reviewId)._id}
@@ -400,6 +425,21 @@ function StudyPageMap({
           zIndex={4000}
         />
       )}
+      {drawerType === "menu" && (
+        <StudyMapMenuDrawer
+          onClose={() => {
+            setDrawerType(null);
+            router.back();
+          }}
+          addCafe={() => {
+            updateQuery({
+              modal: "addCafe",
+            });
+            setDrawerType("addCafe");
+          }}
+        />
+      )}
+
       {(isLoading || isLoading2) && (
         <>
           <ScreenOverlay zIndex={2000} />

@@ -211,7 +211,7 @@ export default function StudyPage() {
     setModal(null);
     removeQuery("modal");
   };
-  console.log(3123, tab);
+
   return (
     <>
       <StudyPageHeader />
@@ -219,7 +219,14 @@ export default function StudyPage() {
       <Slide isNoPadding>
         <StudyPageNav tab={tab} changeTab={changeTab} />
       </Slide>
-
+      {/* {placeData && (
+        <StudyReviewDrawer
+          placeInfo={placeData?.[0]}
+          onClose={() => {}}
+          zIndex={3000}
+          handleClick={() => {}}
+        />
+      )} */}
       {tab === "About 스터디" ? (
         <Slide>
           <StudyPagePlaceSection
