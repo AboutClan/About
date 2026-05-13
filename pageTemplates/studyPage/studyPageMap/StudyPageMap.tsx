@@ -67,13 +67,17 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const scrollLockY = useRef(0);
-  const [zoomNumber, setZoomNumber] = useState<number>(14);
+  const [zoomNumber, setZoomNumber] = useState<number>(15);
   const [tempToggle, setTempToggle] = useState(false);
+  const [currentMapCenter, setCurrentMapCenter] = useState<{
+    lat: number;
+    lon: number;
+  } | null>(null);
 
   /** 데이터 */
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
-
+  const [ids, setIds] = useState<string[]>([]);
   const [filterType, setFilterType] = useState<StudyPlaceFilter>(
     type === "mainPlace" ? "main" : null,
   );
@@ -92,8 +96,9 @@ function StudyPageMap({
         setDrawerType(null);
         setSelectedPlaceId(null);
       }
-      if (modalParam !== "list" && drawerType === "list") {
+      if (modalParam !== "list" && !ids.length && drawerType === "list") {
         setDrawerType(null);
+        setIds([]);
       }
     }
     if (modalParam !== "addCafe" && drawerType === "addCafe") {
@@ -122,13 +127,13 @@ function StudyPageMap({
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
     };
-    const zoom = defaultLocation ? 16 : mapOptions?.zoom || (isMapExpansion ? 12 : 14);
+    const zoom = defaultLocation ? 16 : mapOptions?.zoom || (isMapExpansion ? 15 : 16);
 
     const options = getMapOptions(currentLocation || myLocation, zoom);
     setZoomNumber(zoom);
     setMapOptions(options);
   }, [userInfo, isMapExpansion, currentLocation, defaultLocation]);
-
+  console.log(zoomNumber);
   useEffect(() => {
     if (!placeInfo) {
       updateQuery({
@@ -160,7 +165,15 @@ function StudyPageMap({
     );
   }, [placeData, zoomNumber, currentLocation, defaultLocation, isMapExpansion]);
 
-  const handleMarker = (id: string, currentZoom: number) => {
+  const handleMarker = (id: string, currentZoom: number, ids?: string[]) => {
+    if (ids && ids.length > 1) {
+      setIds(ids);
+      setDrawerType("list");
+      updateQuery({
+        modal: "list",
+      });
+      return;
+    }
     const findPlace = placeData?.find((place) => place._id === id);
     if (!findPlace) return;
     setSelectedPlaceId(id);
@@ -245,7 +258,7 @@ function StudyPageMap({
     }, 800);
     return () => clearTimeout(timer);
   }, [isMapExpansion, filterType]);
-  
+
   return (
     <>
       <Box>
@@ -337,6 +350,7 @@ function StudyPageMap({
               handleMarker={handleMarker}
               selectedMarkerId={selectedPlaceId}
               zoomChange={(zoom: number) => setZoomNumber(zoom)}
+              centerChange={setCurrentMapCenter}
             />
 
             {((isLoading && !isLoading2) || (isLoadingLocation && tempToggle)) && (
@@ -377,7 +391,9 @@ function StudyPageMap({
       )}
       {drawerType === "list" && (
         <CafeListDrawer
+          type={ids.length ? "ids" : "drawer"}
           onClose={() => {
+            setIds([]);
             router.back();
             setDrawerType(null);
           }}
@@ -389,9 +405,12 @@ function StudyPageMap({
           }}
           placeData={(placeData as KmPlaceProps[])
             ?.filter((place) => {
+              if (ids.length) {
+                return ids.includes(place._id);
+              }
               const diffKm = getDistanceFromLatLonInKm(
-                mapOptions.center.y,
-                mapOptions.center.x,
+                currentMapCenter?.lat ?? mapOptions.center.y,
+                currentMapCenter?.lon ?? mapOptions.center.x,
                 place.location.latitude,
                 place.location.longitude,
               );

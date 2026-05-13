@@ -7,8 +7,9 @@ interface VoteMapProps {
   mapOptions: IMapOptions;
   markersOptions: IMarkerOptions[];
   resizeToggle?: boolean;
-  handleMarker?: (id: string, currentZoom: number) => void;
+  handleMarker?: (id: string, currentZoom: number, ids?: string[]) => void;
   zoomChange?: (zoom: number) => void;
+  centerChange?: (center: { lat: number; lon: number }) => void;
   selectedMarkerId?: string | null;
   circleCenter?: {
     lat: number;
@@ -27,6 +28,7 @@ function VoteMap({
   resizeToggle,
   handleMarker,
   zoomChange,
+  centerChange,
   selectedMarkerId,
   circleCenter,
   centerValue,
@@ -93,6 +95,26 @@ function VoteMap({
   }, [zoomChange]);
 
   useEffect(() => {
+    if (!centerChange) return;
+
+    const map = mapInstanceRef.current;
+    if (!map || typeof naver === "undefined") return;
+
+    const idleListener = naver.maps.Event.addListener(map, "idle", () => {
+      const center = map.getCenter();
+
+      centerChange({
+        lat: center.y,
+        lon: center.x,
+      });
+    });
+
+    return () => {
+      naver.maps.Event.removeListener(idleListener);
+    };
+  }, [centerChange]);
+
+  useEffect(() => {
     const map = mapInstanceRef.current;
 
     if (!mapRef.current || !map || typeof naver === "undefined") return;
@@ -147,7 +169,7 @@ function VoteMap({
       naver.maps.Event.addListener(marker, "click", () => {
         if (!handleMarker || !markerOptions.id) return;
 
-        handleMarker(markerOptions.id, map.getZoom());
+        handleMarker(markerOptions.id, map.getZoom(), markerOptions.ids);
       });
 
       mapElementsRef.current.markers.push(marker);

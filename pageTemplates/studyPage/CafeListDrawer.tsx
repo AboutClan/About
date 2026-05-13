@@ -8,9 +8,10 @@ interface CafeListDrawerProps {
   onClose: () => void;
   placeData: StudyPlaceProps[];
   pickReviewPlace: (id: string) => void;
+  type: "ids" | "drawer";
 }
 
-export function CafeListDrawer({ onClose, placeData, pickReviewPlace }: CafeListDrawerProps) {
+export function CafeListDrawer({ onClose, placeData, pickReviewPlace, type }: CafeListDrawerProps) {
   return (
     <>
       <BottomFlexDrawer
@@ -30,10 +31,18 @@ export function CafeListDrawer({ onClose, placeData, pickReviewPlace }: CafeList
           fontSize="20px"
           textAlign="start"
         >
-          내 인근 카공 카페
+          {type === "drawer" ? "내 인근 카공 카페" : "해당 위치 카공 카페"}
         </Box>{" "}
         <Box color="gray.500" mr="auto" fontSize="12px">
-          3km 이내에 <b>{placeData?.length}개</b>의 카공 카페가 있어요!
+          {type === "drawer" ? (
+            <>
+              3km 이내에 <b>{placeData?.length}개</b>의 카공 카페가 있어요!
+            </>
+          ) : (
+            <>
+              해당 위치에 <b>{placeData?.length}개</b>의 카공 카페가 있어요!
+            </>
+          )}
         </Box>
         <Flex
           flexDir="column"

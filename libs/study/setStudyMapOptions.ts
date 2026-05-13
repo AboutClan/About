@@ -54,6 +54,7 @@ export const getStudyPlaceMarkersOptions = (
 
   interface ClusterInfoProps {
     _id: string;
+    ids: string[];
     center: number[];
     count: number;
     type: "cluster" | "noise";
@@ -95,13 +96,13 @@ export const getStudyPlaceMarkersOptions = (
       const count = points.length;
 
       // 클러스터에 포함된 place들의 _id 배열
-      const clusters = cluster.map((idx) => placeData[idx]);
 
-      // 대표 _id = 첫 번째 place의 _id
-      const id = clusters[0]._id;
+      const clusterPlaces = cluster.map((idx) => placeData[idx]);
+      const ids = clusterPlaces.map((place) => place._id);
 
       return {
-        _id: id,
+        _id: ids[0],
+        ids,
         center,
         count,
         type: "cluster",
@@ -115,6 +116,7 @@ export const getStudyPlaceMarkersOptions = (
 
       return {
         _id: data._id,
+        ids: [data._id],
         center: point,
         count: 1,
         type: "noise",
@@ -166,6 +168,7 @@ export const getStudyPlaceMarkersOptions = (
       };
       temp.push({
         id: cluster._id,
+        ids: cluster.ids,
         type: "place",
         position: new naver.maps.LatLng(cluster.center[0], cluster.center[1]),
         icon: normalIcon,
