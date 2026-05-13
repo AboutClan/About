@@ -33,6 +33,46 @@ function HomeInitialSetting() {
     }
     return 0;
   };
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // /cafe-map 에서만 실행
+    if (!window.location.pathname.startsWith("/cafe-map")) return;
+
+    const openExternalBrowser = () => {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const currentUrl = window.location.href;
+
+      // 카카오톡 인앱 브라우저 체크
+      const isKakaoInApp = /kakaotalk/i.test(userAgent);
+
+      if (!isKakaoInApp) return;
+
+      // Android
+      if (/android/i.test(userAgent)) {
+        window.location.href =
+          "intent://" +
+          currentUrl.replace(/^https?:\/\//, "") +
+          "#Intent;scheme=https;package=com.android.chrome;end";
+        return;
+      }
+
+      // iOS
+      window.location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(currentUrl);
+    };
+
+    if (document.readyState !== "loading") {
+      openExternalBrowser();
+    } else {
+      document.addEventListener("DOMContentLoaded", openExternalBrowser);
+
+      return () => {
+        document.removeEventListener("DOMContentLoaded", openExternalBrowser);
+      };
+    }
+  }, []);
+
   usePushServiceInitialize({
     uid: session?.user?.uid,
   });
@@ -148,37 +188,6 @@ function HomeInitialSetting() {
     }
   }, [userInfo?.role]);
 
-  // const [{ steps }, setState] = useState<{
-  //   run: boolean;
-  //   steps?: Step[];
-  // }>({
-  //   run: false,
-  //   steps: STEPS_CONTENTS,
-  // });
-  // useEffect(() => {
-  //   requestAndSubscribePushService();
-  // }, []);
-
-  // const handleJoyrideCallback = (data: CallBackProps) => {
-  //   if (data.step.target === ".about_navigation1") {
-  //     setRenderHomeHeaderState(false);
-  //   }
-  //   if (data.step.target === "body") {
-  //     setRenderHomeHeaderState(true);
-  //   }
-
-  //   const { status } = data;
-  //   const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
-
-  //   if (finishedStatuses.includes(status)) {
-  //     window.scrollTo({
-  //       top: 0,
-  //       behavior: "smooth",
-  //     });
-  //     setState({ run: false });
-  //   }
-  // };
-
   const [isWeb, setIsWeb] = useState(false);
 
   useEffect(() => {
@@ -202,14 +211,6 @@ function HomeInitialSetting() {
       <GlobalStyle />
       {isLegacyApp && isApp() && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
       {isWeb && <AppDownloadModal onClose={closeModal} />}
-      {/* <Joyride
-        hideCloseButton={true}
-        callback={handleJoyrideCallback}
-        continuous
-        steps={steps}
-        run={isGuide}
-        showSkipButton
-      /> */}
     </>
   );
 }
