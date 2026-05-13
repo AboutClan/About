@@ -56,10 +56,9 @@ export function CafeListDrawer({ onClose, placeData, pickReviewPlace, type }: Ca
           sx={{
             "::-webkit-scrollbar": { display: "none" },
             scrollbarWidth: "none",
-            touchAction: "auto",
-            "& *": {
-              touchAction: "auto", // ← 자식들까지 다 풀어버리기
-            },
+            touchAction: "pan-y",
+            overscrollBehavior: "contain",
+            WebkitOverflowScrolling: "touch",
           }}
         >
           {placeData?.map((place, idx) => {
