@@ -216,7 +216,17 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
     },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("https://xn--ob0b42knwutje.com")) {
+        return url;
+      }
 
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+
+      return baseUrl;
+    },
     async session({ session, token, user, trigger }) {
       if (trigger === "update") return session;
       if (session.user.name === "게스트") session.user = MEMBER_GUEST_USER;

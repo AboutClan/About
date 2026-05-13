@@ -1,5 +1,4 @@
 import { Badge, Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 
@@ -34,7 +33,7 @@ function PlaceInfoDrawer({
     <>
       <BottomFlexDrawer
         isHideBottom
-        height={!handleVotePick ? 440 : 476}
+        height={!handleVotePick ? 424 : 476}
         isDrawerUp
         setIsModal={onClose}
         isOverlay
@@ -69,7 +68,6 @@ export function PlaceInfoBox({
   handleClick: () => void;
   isShort?: boolean;
 }) {
-  const router = useRouter();
   const userInfo = useUserInfo();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -116,9 +114,12 @@ export function PlaceInfoBox({
   const handleRatingClick = async () => {
     if (isGuest) {
       await signOut({ redirect: false });
-      await signIn("kakao", { callbackUrl: router.pathname });
+      await signIn("kakao", {
+        callbackUrl: "https://xn--ob0b42knwutje.com/",
+      });
       return;
     }
+
     handleClick();
   };
 
