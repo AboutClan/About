@@ -17,7 +17,7 @@ export function CafeListDrawer({ onClose, placeData, pickReviewPlace, type }: Ca
       <BottomFlexDrawer
         isDrawerUp
         isOverlay
-        height={643}
+        height={600}
         isHideBottom
         zIndex={1000}
         setIsModal={onClose}
@@ -64,7 +64,7 @@ export function CafeListDrawer({ onClose, placeData, pickReviewPlace, type }: Ca
         >
           {placeData?.map((place, idx) => {
             return (
-              <Box key={idx} borderBottom="var(--border-main)" py={3}>
+              <Box key={idx} borderBottom="var(--border-main)" pb={3} pt={1}>
                 <PlaceInfoBox
                   placeInfo={place}
                   isDown={false}

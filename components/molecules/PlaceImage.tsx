@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { MouseEvent, useEffect, useState } from "react";
 
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -58,13 +58,15 @@ function PlaceImage({
       ? "88px"
       : size === "lg"
       ? "100px"
-      : size==="lg2"?"112px": "180px";
+      : size === "lg2"
+      ? "112px"
+      : "180px";
 
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     if (isDown) {
       toast("info", "ABOUT 멤버만 이용할 수 있는 기능입니다.");
     } else {
-      typeToast("inspection");
+      typeToast("not-yet");
     }
 
     console.log(e);

@@ -37,14 +37,18 @@ function HomeInitialSetting() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // /cafe-map 에서만 실행
-    if (!window.location.pathname.startsWith("/cafe-map")) return;
+    const allowedHosts = ["xn--ob0b42knwutje.com", "www.xn--ob0b42knwutje.com", "카공지도.com"];
+
+    const isValidHost = allowedHosts.includes(window.location.hostname);
+
+    const isCafeMapPage = window.location.pathname.startsWith("/cafe-map");
+
+    if (!isValidHost || !isCafeMapPage) return;
 
     const openExternalBrowser = () => {
       const userAgent = navigator.userAgent.toLowerCase();
       const currentUrl = window.location.href;
 
-      // 카카오톡 인앱 브라우저 체크
       const isKakaoInApp = /kakaotalk/i.test(userAgent);
 
       if (!isKakaoInApp) return;
@@ -62,15 +66,7 @@ function HomeInitialSetting() {
       window.location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(currentUrl);
     };
 
-    if (document.readyState !== "loading") {
-      openExternalBrowser();
-    } else {
-      document.addEventListener("DOMContentLoaded", openExternalBrowser);
-
-      return () => {
-        document.removeEventListener("DOMContentLoaded", openExternalBrowser);
-      };
-    }
+    openExternalBrowser();
   }, []);
 
   usePushServiceInitialize({
