@@ -21,15 +21,12 @@ interface TopNavProps {
 function TopNav({
   handleLocationRefetch,
   isMapExpansion,
-  onClose,
   filterType,
   setFilterType,
   isMainType,
   openList,
-  isCafeMap,
   addCafe,
 }: TopNavProps) {
-  console.log(onClose, isCafeMap);
   const handleFilter = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     type: StudyPlaceFilter,

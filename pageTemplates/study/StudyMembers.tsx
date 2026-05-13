@@ -42,7 +42,7 @@ export default function StudyMembers({
   date,
   members: prevMembers,
   isAttend,
-  isCrew,
+
   coordinates,
 }: IStudyMembers) {
   const userInfo = useUserInfo();
@@ -55,7 +55,6 @@ export default function StudyMembers({
     image: string;
     toUid: string;
   }>();
-  console.log(isCrew);
 
   const [members, setMembers] = useState<StudyConfirmedMemberProps[] | StudyParticipationProps[]>(
     [],
@@ -118,7 +117,6 @@ export default function StudyMembers({
   const findMine =
     (prevMembers as StudyConfirmedMemberProps[])?.find((t) => t?.status === "open")?.user._id ===
     userInfo?._id;
-  console.log(24, findMine);
 
   const changeComment = (comment: string) => {
     if (studyType === "results") {
@@ -126,7 +124,7 @@ export default function StudyMembers({
     } else if (studyType === "openRealTimes" || studyType === "soloRealTimes")
       setRealTimeComment(comment);
   };
-  console.log(42, studyType);
+
   const filterMembers = members;
 
   const tempArr =

@@ -7,10 +7,10 @@ import { useUpdateProfileMutation } from "../../../hooks/admin/mutation";
 import { IUser, UserRole } from "../../../types/models/userTypes/userInfoTypes";
 
 function AdminUserInfo() {
-  const [admins, setAdmins] = useState<IUser[]>([]);
+
   const [members, setMembers] = useState<IUser[]>([]);
   const [filtered, setFiltered] = useState<IUser[]>([]);
-  console.log(setAdmins);
+ 
   // useAllUserDataQuery(null, null, false, {
   //   onSuccess(data) {
   //     const tempAdmins = [];
@@ -50,9 +50,7 @@ function AdminUserInfo() {
       <Layout>
         <Section>
           <SectionHeader>관리자</SectionHeader>
-          {admins.map((user, idx) => (
-            <UserSection key={idx} user={user} />
-          ))}
+        
         </Section>
         <Section>
           <SectionHeader>멤버</SectionHeader>

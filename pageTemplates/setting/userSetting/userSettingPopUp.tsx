@@ -139,7 +139,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
               {...props}
               key={type}
               onClose={() => {
-                console.log(55, type);
+              
                 filterPopUpType(type);
               }}
             />

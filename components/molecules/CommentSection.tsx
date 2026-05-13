@@ -19,9 +19,7 @@ function CommentSection({
   commentArr,
   id,
   setReplyProps,
-  hasMyReview,
 }: CommentSectionProps) {
-  console.log(hasMyReview);
   return (
     <>
       <Flex px={5} pb={4}>

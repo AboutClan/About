@@ -12,10 +12,10 @@ interface StudyReviewButtonProps {
   myStudyInfo: StudyConfirmedMemberProps;
 }
 
-function StudyReviewButton({ placeId, myStudyInfo }: StudyReviewButtonProps) {
+function StudyReviewButton({ myStudyInfo }: StudyReviewButtonProps) {
   const toast = useToast();
   const [isReviewModal, setIsReviewModal] = useState(false);
-  console.log(placeId);
+
   const isAttend = myStudyInfo?.attendance?.type === "arrived";
 
   const handleModalOpen = () => {

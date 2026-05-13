@@ -245,7 +245,7 @@ function StudyPageMap({
     }, 800);
     return () => clearTimeout(timer);
   }, [isMapExpansion, filterType]);
-  console.log(placeData);
+  
   return (
     <>
       <Box>

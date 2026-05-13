@@ -11,7 +11,7 @@ import { GroupThumbnailCard } from "../../../../components/molecules/cards/Group
 import TabNav from "../../../../components/molecules/navs/TabNav";
 import {
   STUDY_CREW_ID_MAPPING,
-  STUDY_CREW_PLACE_MAPPING,
+  STUDY_CREW_PLACE_MAPPING
 } from "../../../../constants/service/study/place";
 import { useToast } from "../../../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
@@ -38,12 +38,12 @@ import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
   StudyCrew,
-  StudyParticipationProps,
+  StudyParticipationProps
 } from "../../../../types/models/studyTypes/study-entity.types";
 import {
   StudyConfirmedSetProps,
   StudyParticipationsSetProps,
-  StudyType,
+  StudyType
 } from "../../../../types/models/studyTypes/study-set.types";
 import { dayjsToStr, getTodayStr } from "../../../../utils/dateTimeUtils";
 import { createGroupThumbnailProps } from "../../../group";
@@ -133,7 +133,7 @@ export default function Page() {
       ? studyPassedData && studyPassedData[studyType]
       : studySet && studySet[studyType];
 
-  console.log(32, studySet);
+ 
 
   const participationsSet =
     studyType === "participations" && (studyData as StudyParticipationsSetProps[]);
@@ -142,7 +142,7 @@ export default function Page() {
   const findStudy =
     studyType !== "participations" &&
     confirmedSet?.find((set) => set.study.place._id === id)?.study;
-  console.log("f", findStudy);
+ 
   const userId = userInfo?._id;
 
   const getMyStudyInfo = () => {
@@ -168,7 +168,7 @@ export default function Page() {
 
   const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
   const findTodayStudy = myStudyArr?.filter((myStudy) => myStudy.date === date);
-  console.log(userInfo);
+ 
   let myStudyStatus: MyStudyStatus;
 
   switch (studyType) {

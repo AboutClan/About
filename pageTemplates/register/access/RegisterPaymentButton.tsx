@@ -287,8 +287,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
 
     const apiId = process.env.NEXT_PUBLIC_COOKIEPAY_API_ID;
 
-    console.log("cookiepay apiId exists:", apiId);
-
+    
     cookiepayments.init({ api_id: apiId as string });
     setReady(true);
   }, []);

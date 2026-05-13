@@ -45,7 +45,7 @@ function GatherDetail() {
   const { id } = useParams<{ id: string }>() || {};
   const uid = router.query.uid;
   const kakao = router.query.kakao;
-  console.log(1234, uid);
+ 
   const setIsScrollAuto = useSetRecoilState(isScrollAutoState);
 
   const { data: gather } = useGatherIDQuery(+id, {
