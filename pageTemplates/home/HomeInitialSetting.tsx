@@ -41,9 +41,7 @@ function HomeInitialSetting() {
 
     const isValidHost = allowedHosts.includes(window.location.hostname);
 
-    const isCafeMapPage = window.location.pathname.startsWith("/cafe-map");
-
-    if (!isValidHost || !isCafeMapPage) return;
+    if (!isValidHost) return;
 
     const openExternalBrowser = () => {
       const userAgent = navigator.userAgent.toLowerCase();

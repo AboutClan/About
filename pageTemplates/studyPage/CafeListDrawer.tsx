@@ -61,9 +61,9 @@ export function CafeListDrawer({ onClose, placeData, pickReviewPlace, type }: Ca
             WebkitOverflowScrolling: "touch",
           }}
         >
-          {placeData?.map((place, idx) => {
+          {placeData?.map((place) => {
             return (
-              <Box key={idx} borderBottom="var(--border-main)" pb={3} pt={1}>
+              <Box key={place._id} borderBottom="var(--border-main)" pb={3} pt={1}>
                 <PlaceInfoBox
                   placeInfo={place}
                   isDown={false}

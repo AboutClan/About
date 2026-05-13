@@ -1,5 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { animate, motion, useMotionValue } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -46,9 +46,26 @@ export default function BottomFlexDrawer({
   zIndex,
   isOverlay,
 }: BottomFlexDrawerProps) {
-  const [drawerHeight, setDrawerHeight] = useState(isDrawerUp ? maxHeight : DRAWER_MIN_HEIGHT); // 초기 높이
+  const [drawerHeight, setDrawerHeight] = useState(isDrawerUp ? maxHeight : DRAWER_MIN_HEIGHT); // 닫힘/드래그 판단용
   const startYRef = useRef(0); // 드래그 시작 위치 저장
   const currentHeightRef = useRef(drawerHeight); // 현재 높이 저장
+
+  // open animation 의 target. props 에만 의존 → drawerHeight 가 흔들려도 변하지 않음.
+  const openTargetY = isDrawerUp ? 0 : maxHeight - DRAWER_MIN_HEIGHT;
+
+  // transform 의 단일 source. 첫 paint 는 peeking(103px) 위치에서 시작.
+  const y = useMotionValue(maxHeight - DRAWER_MIN_HEIGHT);
+
+  // 마운트(또는 isDrawerUp/maxHeight 변경)될 때만 imperative animate 한 번.
+  // 부모 rerender, setDrawerHeight, 드래그가 일어나도 이 effect 는 다시 트리거되지 않음.
+  useEffect(() => {
+    const controls = animate(y, openTargetY, {
+      type: "tween",
+      ease: "easeOut",
+      duration: 0.28,
+    });
+    return () => controls.stop();
+  }, [openTargetY, y]);
 
   useEffect(() => {
     if (isDrawerUp) setDrawerHeight(maxHeight);
@@ -80,6 +97,8 @@ export default function BottomFlexDrawer({
     newHeight = Math.max(DRAWER_MIN_HEIGHT, Math.min(newHeight, maxHeight));
 
     setDrawerHeight(newHeight);
+    // 드래그는 transform 을 즉시 직접 갱신. open animation 과 독립적으로 동작.
+    y.set(maxHeight - newHeight);
   };
 
   const handlePointerUp = (event) => {
@@ -92,6 +111,7 @@ export default function BottomFlexDrawer({
     // 위로 잘 올렸으면 풀오픈
     if (deltaY > SWIPE_THRESHOLD) {
       setDrawerHeight(maxHeight);
+      animate(y, 0, { type: "tween", ease: "easeOut", duration: 0.2 });
       return;
     }
 
@@ -104,6 +124,11 @@ export default function BottomFlexDrawer({
 
     // 애매하면 원래 위치로 복원
     setDrawerHeight(currentHeightRef.current);
+    animate(y, maxHeight - currentHeightRef.current, {
+      type: "tween",
+      ease: "easeOut",
+      duration: 0.2,
+    });
   };
 
   return (
@@ -113,10 +138,9 @@ export default function BottomFlexDrawer({
         ishide={isHideBottom ? "true" : "false"}
         zindex={zIndex}
         isdrawerup={isDrawerUp ? "true" : "false"}
+        maxheight={maxHeight}
         as={motion.div}
-        initial={{ height: `${DRAWER_MIN_HEIGHT}px` }}
-        animate={{ height: `${drawerHeight}px` }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        style={{ y }}
       >
         <Flex justify="center" py={3} w="full" cursor="grab" onPointerDown={handlePointerDown}>
           <TopNav />
@@ -155,6 +179,7 @@ const Layout = styled.div<{
   ishide: string;
   zindex: number;
   isdrawerup: string;
+  maxheight: number;
 }>`
   position: fixed;
   overflow: hidden;
@@ -173,6 +198,10 @@ const Layout = styled.div<{
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* 박스 자체는 maxHeight로 고정. 보이는 양은 transform: translateY 로만 조절해
+     매 프레임 layout reflow 없이 compositor만 사용하게 한다. */
+  height: ${(props) => props.maxheight}px;
+  will-change: transform;
 `;
 
 const TopNav = styled.nav`

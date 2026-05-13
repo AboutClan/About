@@ -53,6 +53,12 @@ function VoteMap({
   const markerSelectedIconMapRef = useRef<Record<string, naver.maps.MarkerOptions["icon"]>>({});
   const prevSelectedMarkerIdRef = useRef<string | null>(null);
 
+  // selectedMarkerId를 effect deps에 넣지 않고 ref로만 읽어, 마커 클릭 시
+  // 마커 전체 destroy/recreate가 일어나지 않도록 한다. 아이콘 swap은 아래
+  // 전용 effect([selectedMarkerId])에서 처리됨.
+  const selectedMarkerIdRef = useRef<string | null>(selectedMarkerId);
+  selectedMarkerIdRef.current = selectedMarkerId;
+
   useEffect(() => {
     if (!mapRef.current || typeof naver === "undefined" || !mapOptions) return;
 
@@ -215,17 +221,18 @@ function VoteMap({
       }
     });
 
-    if (selectedMarkerId) {
-      const selectedMarker = markerMapRef.current[selectedMarkerId];
-      const selectedIcon = markerSelectedIconMapRef.current[selectedMarkerId];
+    const currentSelectedId = selectedMarkerIdRef.current;
+    if (currentSelectedId) {
+      const selectedMarker = markerMapRef.current[currentSelectedId];
+      const selectedIcon = markerSelectedIconMapRef.current[currentSelectedId];
 
       if (selectedMarker && selectedIcon) {
         selectedMarker.setIcon(selectedIcon);
         selectedMarker.setZIndex(999);
-        prevSelectedMarkerIdRef.current = selectedMarkerId;
+        prevSelectedMarkerIdRef.current = currentSelectedId;
       }
     }
-  }, [markersOptions, circleCenter, selectedMarkerId, handleMarker]);
+  }, [markersOptions, circleCenter, handleMarker]);
 
   useEffect(() => {
     const prevMarkerId = prevSelectedMarkerIdRef.current;

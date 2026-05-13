@@ -226,76 +226,82 @@ function Layout({ children }: ILayout) {
   const first = path.split("/")[1];
   const second = path.split("/")?.[2];
   const third = path.split("/")?.[3];
+  const hosts = ["xn--ob0b42knwutje.com", "www.xn--ob0b42knwutje.com", "카공지도.com"];
 
-  const { title, description, url, image } =
-    pathname === "/home/gatherReview"
-      ? {
-          title: "멤버 리뷰",
-          description: "함께 참여했던 멤버들에 대한 후기를 익명으로 평가할 수 있어요!",
-          url: `about20s.club`,
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
-        }
-      : pathname === "/random-roulette"
-      ? {
-          title: "🔥 열활 멤버 🔥 이벤트 룰렛",
-          description: "소모임 열활 멤버에게 드리는 이벤트 티켓! 접속해서 확인하세요!",
-          url: `about20s.club/cafe-map`,
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%9D%B4%EB%B2%A4%ED%8A%B8+%EB%A1%A4%EB%A0%9B.png",
-        }
-      : pathname === "/cafe-map"
-      ? {
-          title: "카공 지도 | 내 근처 카공 카페 찾기",
-          description: "콘센트·좌석·분위기까지 고려한, 카공러들을 위한 진짜 카공 지도",
-          url: `about20s.club/cafe-map`,
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/cafe-map.png",
-        }
-      : pathname === "/s/lounge"
-      ? {
-          title: "카공 스터디 라운지",
-          description: "스터디 확인, 신청, 변경 모두 여기서!",
-          url: `about20s.club/s/lounge`,
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A7%A4%EC%B9%AD-%EB%9D%BC%EC%9A%B4%EC%A7%80.png",
-        }
-      : pathname === "/s/result"
-      ? {
-          title: "내 카공 스터디",
-          description: "오늘 참여중인 스터디로 바로 이동!",
-          url: `about20s.club/s/result`,
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
-        }
-      : pathname === "/s/attend"
-      ? {
-          title: "실시간 공부 인증",
-          description: "개인 공부 인증하고 포인트 받자!",
-          url: `about20s.club/s/attend`,
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
-        }
-      : first === "s" && second === "group"
-      ? {
-          ...GROUP_OG_MAPPING[third],
-          url: `about20s.club/s/results/group/${third}`,
-        }
-      : second === "gather"
-      ? {
-          title: "번개 모임",
-          description: "해당 번개로 바로 이동!",
-          url: `about20s.club/s/results/gather`,
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
-        }
-      : {
-          title: "어바웃",
-          description: "20대를 위한 모임 플랫폼",
-          url: `about20s.club`,
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
-        };
+  const { title, description, url, image } = hosts.includes(window.location.hostname)
+    ? {
+        title: "카공 지도 | 내 근처 카공 카페 찾기",
+        description: "콘센트·좌석·분위기까지 고려한, 카공러들을 위한 진짜 카공 지도",
+        url: `about20s.club/cafe-map`,
+        image: "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/cafe-map.png",
+      }
+    : pathname === "/home/gatherReview"
+    ? {
+        title: "멤버 리뷰",
+        description: "함께 참여했던 멤버들에 대한 후기를 익명으로 평가할 수 있어요!",
+        url: `about20s.club`,
+        image:
+          "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
+      }
+    : pathname === "/random-roulette"
+    ? {
+        title: "🔥 열활 멤버 🔥 이벤트 룰렛",
+        description: "소모임 열활 멤버에게 드리는 이벤트 티켓! 접속해서 확인하세요!",
+        url: `about20s.club/cafe-map`,
+        image:
+          "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%9D%B4%EB%B2%A4%ED%8A%B8+%EB%A1%A4%EB%A0%9B.png",
+      }
+    : pathname === "/cafe-map"
+    ? {
+        title: "카공 지도 | 내 근처 카공 카페 찾기",
+        description: "콘센트·좌석·분위기까지 고려한, 카공러들을 위한 진짜 카공 지도",
+        url: `about20s.club/cafe-map`,
+        image: "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/cafe-map.png",
+      }
+    : pathname === "/s/lounge"
+    ? {
+        title: "카공 스터디 라운지",
+        description: "스터디 확인, 신청, 변경 모두 여기서!",
+        url: `about20s.club/s/lounge`,
+        image:
+          "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A7%A4%EC%B9%AD-%EB%9D%BC%EC%9A%B4%EC%A7%80.png",
+      }
+    : pathname === "/s/result"
+    ? {
+        title: "내 카공 스터디",
+        description: "오늘 참여중인 스터디로 바로 이동!",
+        url: `about20s.club/s/result`,
+        image:
+          "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
+      }
+    : pathname === "/s/attend"
+    ? {
+        title: "실시간 공부 인증",
+        description: "개인 공부 인증하고 포인트 받자!",
+        url: `about20s.club/s/attend`,
+        image:
+          "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
+      }
+    : first === "s" && second === "group"
+    ? {
+        ...GROUP_OG_MAPPING[third],
+        url: `about20s.club/s/results/group/${third}`,
+      }
+    : second === "gather"
+    ? {
+        title: "번개 모임",
+        description: "해당 번개로 바로 이동!",
+        url: `about20s.club/s/results/gather`,
+        image:
+          "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
+      }
+    : {
+        title: "어바웃",
+        description: "20대를 위한 모임 플랫폼",
+        url: `about20s.club`,
+        image:
+          "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
+      };
 
   return (
     <>

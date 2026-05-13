@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
@@ -27,9 +27,6 @@ import { StudyReviewDrawer } from "../StudyReviewDrawer";
 import { StudyPageTopNav } from "./StudyPageTopNav";
 import StudyMapTopNav from "./TopNav";
 
-interface KmPlaceProps extends StudyPlaceProps {
-  _diffKm: number;
-}
 interface StudyPageMapProps {
   isDefaultOpen?: boolean;
   handleVotePick?: (place: StudyPlaceProps) => void;
@@ -165,28 +162,31 @@ function StudyPageMap({
     );
   }, [placeData, zoomNumber, currentLocation, defaultLocation, isMapExpansion]);
 
-  const handleMarker = (id: string, currentZoom: number, ids?: string[]) => {
-    if (ids && ids.length > 1) {
-      setIds(ids);
-      setDrawerType("list");
+  const handleMarker = useCallback(
+    (id: string, currentZoom: number, ids?: string[]) => {
+      if (ids && ids.length > 1) {
+        setIds(ids);
+        setDrawerType("list");
+        updateQuery({
+          modal: "list",
+        });
+        return;
+      }
+      const findPlace = placeData?.find((place) => place._id === id);
+      if (!findPlace) return;
+      setSelectedPlaceId(id);
+      setPlaceInfo(findPlace);
+      setDrawerType("placeInfo");
+      setMapOptions((prev) => ({
+        ...prev,
+        zoom: currentZoom,
+      }));
       updateQuery({
-        modal: "list",
+        modal: "placeDrawer",
       });
-      return;
-    }
-    const findPlace = placeData?.find((place) => place._id === id);
-    if (!findPlace) return;
-    setSelectedPlaceId(id);
-    setPlaceInfo(findPlace);
-    setDrawerType("placeInfo");
-    setMapOptions((prev) => ({
-      ...prev,
-      zoom: currentZoom,
-    }));
-    updateQuery({
-      modal: "placeDrawer",
-    });
-  };
+    },
+    [placeData, updateQuery],
+  );
 
   useEffect(() => {
     if (isMapExpansion) {
@@ -258,6 +258,38 @@ function StudyPageMap({
     }, 800);
     return () => clearTimeout(timer);
   }, [isMapExpansion, filterType]);
+
+  // CafeListDrawer로 넘길 정렬된 placeData. 부모 리렌더마다 새 배열이 만들어지는
+  // 것을 막고, filter 안에서 cache 객체를 mutate 하던 side-effect도 제거.
+  const sortedListPlaces = useMemo(() => {
+    if (!placeData) return undefined;
+    if (ids.length) {
+      return placeData.filter((place) => ids.includes(place._id));
+    }
+    const centerLat = currentMapCenter?.lat ?? mapOptions?.center?.y;
+    const centerLon = currentMapCenter?.lon ?? mapOptions?.center?.x;
+    if (centerLat == null || centerLon == null) return [];
+    return placeData
+      .map((place) => ({
+        place,
+        diffKm: getDistanceFromLatLonInKm(
+          centerLat,
+          centerLon,
+          place.location.latitude,
+          place.location.longitude,
+        ),
+      }))
+      .filter((entry) => entry.diffKm < 3)
+      .sort((a, b) => a.diffKm - b.diffKm)
+      .map((entry) => entry.place);
+  }, [
+    placeData,
+    ids,
+    currentMapCenter?.lat,
+    currentMapCenter?.lon,
+    mapOptions?.center?.y,
+    mapOptions?.center?.x,
+  ]);
 
   return (
     <>
@@ -403,21 +435,7 @@ function StudyPageMap({
               modal: "reviewPlace",
             });
           }}
-          placeData={(placeData as KmPlaceProps[])
-            ?.filter((place) => {
-              if (ids.length) {
-                return ids.includes(place._id);
-              }
-              const diffKm = getDistanceFromLatLonInKm(
-                currentMapCenter?.lat ?? mapOptions.center.y,
-                currentMapCenter?.lon ?? mapOptions.center.x,
-                place.location.latitude,
-                place.location.longitude,
-              );
-              place._diffKm = diffKm;
-              return diffKm < 3;
-            })
-            ?.sort((a, b) => a._diffKm - b._diffKm)}
+          placeData={sortedListPlaces}
         />
       )}
       {reviewId && (
