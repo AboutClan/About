@@ -32,7 +32,7 @@ function GatherContent({ content, postImage, location, isOpenGather, id }: IGath
           />
         </Box>
       ) : isOpenGather ? (
-        <ProcessGuide type={id > 4870 ? 3 : id === 4853 ? 2 : 1} />
+        <ProcessGuide type={id > 4900 ? 4 : id > 4870 ? 3 : id === 4853 ? 2 : 1} />
       ) : null}
       <Box px={5} mt={5}>
         {location?.latitude && (
