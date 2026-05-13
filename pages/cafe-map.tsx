@@ -11,7 +11,7 @@ function StudyMap() {
 
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
-
+  console.log(session);
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const inappdenyExecVanillajs = (callback: any) => {
