@@ -1,5 +1,4 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import Header from "../../../components/layouts/Header";
@@ -20,7 +19,6 @@ export function StudyPageTopNav({
   isCafeMap,
   onClose,
 }: StudyPageTopNavProps) {
-  const router = useRouter();
   const [isFocus, setIsFocus] = useState(true);
 
   const [placeInfo, setPlaceInfo] = useState<LocationProps>({
@@ -81,16 +79,16 @@ export function StudyPageTopNav({
         >
           {isCafeMap ? (
             <>
-              <Button
+              <Box
                 px={2}
                 py={2}
-                variant="unstyled"
-                onClick={() => {
-                  router.push(`/home`);
-                }}
+
+                // onClick={() => {
+                //   router.push(`/home`);
+                // }}
               >
                 <AboutLogo />
-              </Button>
+              </Box>
               <Flex align="center" mr={1}>
                 {/* <Button mr={3} h="32px" w="64px" colorScheme="mint" onClick={handleAppOpen}>
                   {isAppDevice ? "앱 열기" : "앱 설치"}
