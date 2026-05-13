@@ -133,7 +133,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
     isEnd?: boolean;
     isReverse?: boolean;
   } => {
-    if (isOpenGather) {
+    if (isOpenGather && isParticipant) {
       if (isParticipant) {
         if (data?.reviewers?.some((r) => r === userInfo?._id)) {
           return {
