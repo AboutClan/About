@@ -1,7 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
+import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
+
+const MIN_RADIUS_KM = 3;
+const MAX_RADIUS_KM = 1000;
+const RADIUS_BUFFER = 1.25;
+const DEFAULT_RADIUS_KM = 5;
 
 interface VoteMapProps {
   mapOptions: IMapOptions;
@@ -9,7 +15,7 @@ interface VoteMapProps {
   resizeToggle?: boolean;
   handleMarker?: (id: string, currentZoom: number, ids?: string[]) => void;
   zoomChange?: (zoom: number) => void;
-  centerChange?: (center: { lat: number; lon: number }) => void;
+  centerChange?: (info: { lat: number; lon: number; radiusKm: number }) => void;
   selectedMarkerId?: string | null;
   circleCenter?: {
     lat: number;
@@ -59,6 +65,11 @@ function VoteMap({
   const selectedMarkerIdRef = useRef<string | null>(selectedMarkerId);
   selectedMarkerIdRef.current = selectedMarkerId;
 
+  // map 인스턴스가 생성된 시점을 effect deps 로 사용할 수 있도록 state 로 마킹.
+  // 이게 없으면 idle / zoom_changed listener effect 가 첫 mount 에 mapInstance 가
+  // 아직 null 이라 early-return 되어 리스너가 영영 등록되지 않는다.
+  const [mapReady, setMapReady] = useState(false);
+
   useEffect(() => {
     if (!mapRef.current || typeof naver === "undefined" || !mapOptions) return;
 
@@ -73,6 +84,7 @@ function VoteMap({
 
       map.setZoom(mapOptions.zoom);
       mapInstanceRef.current = map;
+      setMapReady(true);
       return;
     }
 
@@ -86,6 +98,7 @@ function VoteMap({
   }, [resizeToggle]);
 
   useEffect(() => {
+    if (!mapReady) return;
     if (!zoomChange) return;
 
     const map = mapInstanceRef.current;
@@ -98,9 +111,10 @@ function VoteMap({
     return () => {
       naver.maps.Event.removeListener(zoomListener);
     };
-  }, [zoomChange]);
+  }, [mapReady, zoomChange]);
 
   useEffect(() => {
+    if (!mapReady) return;
     if (!centerChange) return;
 
     const map = mapInstanceRef.current;
@@ -108,17 +122,46 @@ function VoteMap({
 
     const idleListener = naver.maps.Event.addListener(map, "idle", () => {
       const center = map.getCenter();
+      // naver.maps.LatLng: .lat()/.lng() 메서드와 .y(lat)/.x(lng) 필드 둘 다 지원.
+      const readLat = (p: naver.maps.LatLng) =>
+        typeof p.lat === "function" ? p.lat() : (p as unknown as { y: number }).y;
+      const readLng = (p: naver.maps.LatLng) =>
+        typeof p.lng === "function" ? p.lng() : (p as unknown as { x: number }).x;
 
-      centerChange({
-        lat: center.y,
-        lon: center.x,
-      });
+      const lat = readLat(center as naver.maps.LatLng);
+      const lng = readLng(center as naver.maps.LatLng);
+
+      // bounds 의 NE 코너까지 거리 = 화면 대각선 절반 = 화면이 커버하는 반경.
+      // buffer 1.25 를 곱하고 [3, 20] 범위로 clamp.
+      let radiusKm = DEFAULT_RADIUS_KM;
+      try {
+        const bounds = map.getBounds() as naver.maps.LatLngBounds | undefined;
+        const ne = bounds?.getNE?.() as naver.maps.LatLng | undefined;
+        if (ne) {
+          const neLat = readLat(ne);
+          const neLng = readLng(ne);
+          if (typeof neLat === "number" && typeof neLng === "number") {
+            const diagonalKm = getDistanceFromLatLonInKm(lat, lng, neLat, neLng);
+            radiusKm = Math.min(MAX_RADIUS_KM, Math.max(MIN_RADIUS_KM, diagonalKm * RADIUS_BUFFER));
+          }
+        }
+      } catch {
+        radiusKm = DEFAULT_RADIUS_KM;
+      }
+
+      if (process.env.NODE_ENV !== "production") {
+        // eslint-disable-next-line no-console
+        console.log("[VoteMap] idle fired", { lat, lng, radiusKm });
+      }
+
+      if (lat == null || lng == null) return;
+      centerChange({ lat, lon: lng, radiusKm });
     });
 
     return () => {
       naver.maps.Event.removeListener(idleListener);
     };
-  }, [centerChange]);
+  }, [mapReady, centerChange]);
 
   useEffect(() => {
     const map = mapInstanceRef.current;

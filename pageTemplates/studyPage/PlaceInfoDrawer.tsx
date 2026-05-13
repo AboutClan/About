@@ -1,5 +1,4 @@
 import { Badge, Box, Button, Flex, Text } from "@chakra-ui/react";
-import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
@@ -7,7 +6,6 @@ import StarRating from "../../components/atoms/StarRating";
 import { StarIcon } from "../../components/Icons/StarIcon";
 import PlaceImage from "../../components/molecules/PlaceImage";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { getRandomImage } from "../../utils/imageUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
@@ -68,11 +66,7 @@ export function PlaceInfoBox({
   handleClick: () => void;
   isShort?: boolean;
 }) {
-  const userInfo = useUserInfo();
-
   const [isLoading, setIsLoading] = useState(false);
-
-  const isGuest = userInfo?.role === "guest";
 
   const ratings = placeInfo?.ratings || [];
 
@@ -112,13 +106,13 @@ export function PlaceInfoBox({
   };
 
   const handleRatingClick = async () => {
-    if (isGuest) {
-      await signOut({ redirect: false });
-      await signIn("kakao", {
-        callbackUrl: "https://xn--ob0b42knwutje.com/",
-      });
-      return;
-    }
+    // if (isGuest) {
+    //   await signOut({ redirect: false });
+    //   await signIn("kakao", {
+    //     callbackUrl: "https://xn--ob0b42knwutje.com/",
+    //   });
+    //   return;
+    // }
 
     handleClick();
   };

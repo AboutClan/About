@@ -1,19 +1,22 @@
+import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import Textarea from "../../components/atoms/Textarea";
+import { Input } from "../../components/atoms/Input";
 import BottomNav from "../../components/layouts/BottomNav";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import SearchLocation from "../../components/organisms/SearchLocation";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyAdditionMutation } from "../../hooks/study/mutations";
 import { LocationProps } from "../../types/common";
+import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import RegisterOverview from "../register/RegisterOverview";
 
 interface LocationAddDrawerProps {
+  placeArr: StudyPlaceProps[];
   onClose: () => void;
 }
 
-export function LocationAddDrawer({ onClose }: LocationAddDrawerProps) {
+export function LocationAddDrawer({ onClose, placeArr }: LocationAddDrawerProps) {
   const toast = useToast();
 
   const [isFirstPage, setIsFirstPage] = useState(true);
@@ -39,12 +42,23 @@ export function LocationAddDrawer({ onClose }: LocationAddDrawerProps) {
       return;
     }
     if (isFirstPage) {
+      {
+        if (placeArr.some((p) => p.location.name === placeInfo.name)) {
+          toast("info", "이미 등록된 장소입니다.");
+          return;
+        }
+      }
       setIsFirstPage(false);
     } else {
+      if (content.length < 1 || content.length > 5) {
+        toast("info", "글자 수를 확인해 주세요!");
+        return;
+      }
       const { latitude, longitude, address, name } = placeInfo;
       mutate({
         location: { name, latitude, longitude, address },
         status: "inactive",
+        name: content,
       });
     }
   };
@@ -64,8 +78,8 @@ export function LocationAddDrawer({ onClose }: LocationAddDrawerProps) {
           </>
         ) : (
           <>
-            <span>장소에 대한 코멘트를 적어주세요</span>
-            <span>추천 이유나 카페에 대한 설명을 남겨주시면 좋아요!</span>
+            <span>등록할 닉네임을 입력해 주세요</span>
+            <span>작성한 닉네임은 카페 소개 상단에 배지로 표시돼요.</span>
           </>
         )}
       </RegisterOverview>
@@ -76,12 +90,13 @@ export function LocationAddDrawer({ onClose }: LocationAddDrawerProps) {
           setPlaceInfo={setPlaceInfo}
         />
       ) : (
-        <Textarea
-          placeholder="ex) 의자가 편하고 자리마다 콘센트가 있어요! 인기가 많아 주말에는 자리가 없을 수도 있습니다."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          minHeight={200}
-        />
+        <Box>
+          <Input
+            placeholder="다섯 글자 이내로 입력해 주세요."
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </Box>
       )}
       <BottomNav
         onClick={() => onClickNext()}

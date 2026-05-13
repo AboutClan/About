@@ -3,11 +3,10 @@
 import { Box, Flex, FormControl } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import { STUDY_PLACE, STUDY_VOTE } from "../../constants/keys/queryKeys";
+import { CAFE_REVIEW_ARR, STUDY_PLACE, STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
 
 import { useStudyPlaceReviewMutation } from "../../hooks/study/mutations";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
 import Textarea from "../atoms/Textarea";
 import { StarIcon } from "../Icons/StarIcon";
 import BottomNav from "../layouts/BottomNav";
@@ -24,21 +23,16 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
   const toast = useToast();
   const [text, setText] = useState<string>("");
 
-  const { mutate: updatePoint } = usePointSystemMutation("point");
-
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useStudyPlaceReviewMutation(placeId, {
     onSuccess() {
+      const savedIds = localStorage.getItem(CAFE_REVIEW_ARR);
+      const parsedIds: string[] = savedIds ? JSON.parse(savedIds) : [];
+      localStorage.setItem(CAFE_REVIEW_ARR, JSON.stringify([...parsedIds, placeId]));
       queryClient.invalidateQueries({ queryKey: [STUDY_VOTE], exact: false });
       queryClient.invalidateQueries({ queryKey: [STUDY_PLACE], exact: false });
-      updatePoint({
-        value: 200,
-        message: "카공 장소 리뷰",
-        sub: "cafe-review",
-      });
       toast("success", "평가가 완료되었어요!");
-
       onClose();
     },
   });

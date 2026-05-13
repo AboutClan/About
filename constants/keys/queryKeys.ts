@@ -5,6 +5,8 @@ export const USER_INITIAL_INFO = "userInitialInfo";
 export const USER_REGISTER_FORM = "userRegisterForm";
 export const USER_POINT_SYSTEM = "userPointSystem";
 
+export const CAFE_REVIEW_ARR="cafeReviewArr"
+
 export const UID_TO_USER = "uidToUser";
 
 export const USER_ATTEND_RATE = "userAttendRate";

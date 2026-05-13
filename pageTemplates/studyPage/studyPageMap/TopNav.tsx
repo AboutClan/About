@@ -124,7 +124,7 @@ function TopNav({
                 bg: "gray.900",
               }}
             >
-              별점 4.0 이상
+              인기 카공 스팟
             </Button>
           )}{" "}
           {!isMainType && (
@@ -150,7 +150,7 @@ function TopNav({
                 bg: "gray.900",
               }}
             >
-              별점 4.5 이상
+              베스트 카공 스팟
             </Button>
           )}
         </Flex>{" "}

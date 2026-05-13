@@ -4,19 +4,23 @@ import "../styles/variable.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import type { AppProps } from "next/app";
+import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
 
-dayjs.locale("ko");
-
 import Layout from "../pageTemplates/layout/Layout";
 import theme from "../theme";
 
-function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+dayjs.locale("ko");
+
+type CustomAppProps = AppProps & {
+  host?: string;
+};
+
+function MyApp({ Component, pageProps: { session, ...pageProps }, host }: CustomAppProps) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -45,7 +49,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <SessionProvider session={session}>
             <RecoilRoot>
               <ChakraProvider theme={theme}>
-                <Layout>
+                <Layout host={host}>
                   <Component {...pageProps} />
                 </Layout>
               </ChakraProvider>
@@ -57,4 +61,13 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   );
 }
 
-export default App;
+MyApp.getInitialProps = async (appContext: AppContext) => {
+  const appProps = await App.getInitialProps(appContext);
+
+  return {
+    ...appProps,
+    host: appContext.ctx.req?.headers.host,
+  };
+};
+
+export default MyApp;

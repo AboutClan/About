@@ -6,6 +6,7 @@ import BottomNav from "../../components/layouts/BottomNav";
 import PlaceImage from "../../components/molecules/PlaceImage";
 import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewBlock2";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
+import { CAFE_REVIEW_ARR } from "../../constants/keys/queryKeys";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import {
   StudyPlaceProps,
@@ -29,7 +30,13 @@ export function StudyReviewDrawer({
 }: RightReviewDrawer2Props) {
   const userInfo = useUserInfo();
   const ratings = placeInfo?.ratings || [];
-  const isCompleted = placeInfo?.ratings?.some((r) => r.user === userInfo?._id);
+
+  const savedIds = localStorage.getItem(CAFE_REVIEW_ARR);
+  const parsedIds: string[] = savedIds ? JSON.parse(savedIds) : [];
+
+  const isCompleted =
+    parsedIds.includes(placeInfo._id) ||
+    (userInfo?.role !== "guest" && placeInfo?.ratings?.some((r) => r.user === userInfo?._id));
   const temp: StudyRatingProps = {
     comment: "여러분의 리뷰를 기다리고 있어요!",
     etc: 5,

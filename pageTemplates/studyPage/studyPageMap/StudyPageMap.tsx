@@ -64,12 +64,34 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const scrollLockY = useRef(0);
-  const [zoomNumber, setZoomNumber] = useState<number>(15);
+  const [zoomNumber, setZoomNumber] = useState<number>(14);
   const [tempToggle, setTempToggle] = useState(false);
   const [currentMapCenter, setCurrentMapCenter] = useState<{
     lat: number;
     lon: number;
   } | null>(null);
+
+  // 마커 필터 기준점. currentMapCenter 와 달리 자주 바뀌지 않음.
+  // 이 값이 변경되어야만 visiblePlaceData / markersOptions 가 재계산된다.
+  const [markerCenter, setMarkerCenter] = useState<{ lat: number; lon: number } | null>(null);
+
+  // 화면 bounds 기반으로 idle 시점에 갱신되는 반경. 기본 5km, hysteresis 로 churn 방지.
+  const [markerRadiusKm, setMarkerRadiusKm] = useState(5);
+
+  // VoteMap idle 콜백. center 와 radius 를 한 번에 처리하고, useCallback 으로
+  // 안정화해 VoteMap 의 idle listener effect 가 재등록되지 않게 한다.
+  const handleCenterChange = useCallback((info: { lat: number; lon: number; radiusKm: number }) => {
+    setCurrentMapCenter({ lat: info.lat, lon: info.lon });
+    setMarkerRadiusKm((prev) => {
+      // 0.5km 미만 차이는 numerical noise → 무시.
+      if (Math.abs(info.radiusKm - prev) < 0.5) return prev;
+      // zoom out 으로 더 넓어진 경우 → 즉시 반영 (마커 누락 방지).
+      if (info.radiusKm > prev) return info.radiusKm;
+      // zoom in 으로 좁아진 경우 → 30% 이상 줄어들 때만 반영 (hysteresis).
+      if (info.radiusKm < prev * 0.7) return info.radiusKm;
+      return prev;
+    });
+  }, []);
 
   /** 데이터 */
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
@@ -117,6 +139,11 @@ function StudyPageMap({
     }
   }, [router.query.modal, isCafeMap, isDefaultOpen]);
 
+  // 초기 지도 위치를 한 번만 결정하기 위한 snapshot.
+  // userInfo 도착 시점에 currentLocation 이 이미 있으면 그 값, 없으면 userInfo location 으로 고정.
+  // 이후 currentLocation 이 늦게 resolve 되어도 ref 가 바뀌지 않으므로 지도가 튀지 않는다.
+  const initialLocationRef = useRef<{ lat: number; lon: number } | null>(null);
+
   // 초기 지도 map-option 세팅
   useEffect(() => {
     if (!userInfo) return;
@@ -124,12 +151,20 @@ function StudyPageMap({
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
     };
-    const zoom = defaultLocation ? 16 : mapOptions?.zoom || (isMapExpansion ? 15 : 16);
 
-    const options = getMapOptions(currentLocation || myLocation, zoom);
+    // 최초 1회만 snapshot. 이후 currentLocation 변경에 의한 재실행이 와도 이 값은 유지.
+    if (!initialLocationRef.current) {
+      initialLocationRef.current = currentLocation || myLocation;
+    }
+
+    const zoom = defaultLocation ? 16 : mapOptions?.zoom || (isMapExpansion ? 14 : 16);
+    const options = getMapOptions(initialLocationRef.current, zoom);
     setZoomNumber(zoom);
     setMapOptions(options);
-  }, [userInfo, isMapExpansion, currentLocation, defaultLocation]);
+    // currentLocation 은 의도적으로 deps 에서 제외 — 늦게 도착해도 지도를 다시 움직이지 않기 위함.
+    // 사용자가 명시적으로 "현재 위치" 버튼을 누르면 handleLocationRefetch 가 setMapOptions 를 직접 호출.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInfo, isMapExpansion, defaultLocation]);
   console.log(zoomNumber);
   useEffect(() => {
     if (!placeInfo) {
@@ -149,18 +184,78 @@ function StudyPageMap({
     );
   }, [placeInfo]);
 
+  // 기준점 초기화 + drift 감지. currentMapCenter 가 markerCenter 에서 3km 이상
+  // 멀어진 경우에만 markerCenter 를 갱신. naver map idle 이후에만 currentMapCenter
+  // 가 갱신되므로, 지도 이동 중 실시간 refilter 가 발생하지 않음.
   useEffect(() => {
-    if (!placeData?.length) return;
+    if (!markerCenter) {
+      // 우선순위: defaultLocation > currentLocation > currentMapCenter
+      if (defaultLocation) {
+        setMarkerCenter({ lat: defaultLocation.lat, lon: defaultLocation.lon });
+      } else if (currentLocation) {
+        setMarkerCenter({ lat: currentLocation.lat, lon: currentLocation.lon });
+      } else if (currentMapCenter) {
+        setMarkerCenter(currentMapCenter);
+      }
+      return;
+    }
+    if (!currentMapCenter) return;
+    const drift = getDistanceFromLatLonInKm(
+      markerCenter.lat,
+      markerCenter.lon,
+      currentMapCenter.lat,
+      currentMapCenter.lon,
+    );
+    if (drift >= 3) {
+      setMarkerCenter(currentMapCenter);
+    }
+  }, [currentMapCenter, markerCenter, defaultLocation, currentLocation]);
+
+  // markerCenter 기준 markerRadiusKm 이내 place 만 추출. placeData / markerCenter /
+  // markerRadiusKm 가 바뀔 때만 재계산. currentMapCenter 가 계속 흔들려도 영향 없음.
+  const visiblePlaceData = useMemo(() => {
+    if (!placeData?.length) return [];
+    if (!markerCenter) return [];
+    return placeData.filter((place) => {
+      const d = getDistanceFromLatLonInKm(
+        markerCenter.lat,
+        markerCenter.lon,
+        place.location.latitude,
+        place.location.longitude,
+      );
+      return d < markerRadiusKm;
+    });
+  }, [placeData, markerCenter, markerRadiusKm]);
+  useEffect(() => {
+    console.log("currentMapCenter", currentMapCenter);
+    console.log("markerCenter", markerCenter);
+  }, [currentMapCenter, markerCenter]);
+  console.log(56, visiblePlaceData);
+  // 개발 환경에서만 필터 결과 가시화.
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.log("[cafe-map markers]", {
+        total: placeData?.length ?? 0,
+        visible: visiblePlaceData.length,
+        markerCenter,
+        markerRadiusKm,
+      });
+    }
+  }, [placeData, visiblePlaceData, markerCenter, markerRadiusKm]);
+
+  useEffect(() => {
+    if (!visiblePlaceData.length) return;
     setMarkersOptions(
       getStudyPlaceMarkersOptions(
-        placeData,
+        visiblePlaceData,
         null,
         zoomNumber,
         isMapExpansion && !defaultLocation ? currentLocation : null,
         defaultLocation,
       ),
     );
-  }, [placeData, zoomNumber, currentLocation, defaultLocation, isMapExpansion]);
+  }, [visiblePlaceData, zoomNumber, currentLocation, defaultLocation, isMapExpansion]);
 
   const handleMarker = useCallback(
     (id: string, currentZoom: number, ids?: string[]) => {
@@ -382,7 +477,7 @@ function StudyPageMap({
               handleMarker={handleMarker}
               selectedMarkerId={selectedPlaceId}
               zoomChange={(zoom: number) => setZoomNumber(zoom)}
-              centerChange={setCurrentMapCenter}
+              centerChange={handleCenterChange}
             />
 
             {((isLoading && !isLoading2) || (isLoadingLocation && tempToggle)) && (
@@ -393,6 +488,7 @@ function StudyPageMap({
       </Box>
       {drawerType === "addCafe" && (
         <LocationAddDrawer
+          placeArr={placeData}
           onClose={() => {
             router.back();
             setDrawerType(null);

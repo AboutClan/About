@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import MenuDrawer from "../../components/organisms/RightMenuDrawer";
+import { useToast } from "../../hooks/custom/CustomToast";
 import RequestStudyModal from "../../modals/userRequest/RequestStudyModal";
 
 interface StudyMapMenuDrawerProps {
@@ -9,6 +10,7 @@ interface StudyMapMenuDrawerProps {
 }
 
 function StudyMapMenuDrawer({ onClose, addCafe }: StudyMapMenuDrawerProps) {
+  const toast = useToast();
   const [modal, setModal] = useState<"suggest" | "error">();
   return (
     <>
@@ -34,6 +36,12 @@ function StudyMapMenuDrawer({ onClose, addCafe }: StudyMapMenuDrawerProps) {
             label: "오류 제보",
             onClick: () => {
               setModal("error");
+            },
+          },
+          {
+            label: "모든 카페 한 눈에 보기",
+            onClick: () => {
+              toast("info", "업데이트 예정");
             },
           },
 
