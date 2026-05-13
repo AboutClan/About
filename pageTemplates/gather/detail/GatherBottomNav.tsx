@@ -1,9 +1,9 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -143,7 +143,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
             isEnd: true,
           };
         }
-        if (data.id > 5000) {
+        if (data.id > 4900) {
           return {
             text: "신청 취소",
             type: "red",
