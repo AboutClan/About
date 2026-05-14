@@ -75,23 +75,30 @@ export function PlaceInfoBox({
     (ratings?.length || 0) + 2 + Number(placeInfo?.location?.latitude?.toString().slice(-1));
 
   const rating = placeInfo?.rating || 3.5;
+  console.log(3232, placeInfo, ratings);
+  const result = Array.isArray(ratings)
+    ? ratings.reduce(
+        (acc, cur) => {
+          acc.mood += cur.mood;
+          acc.table += cur.table;
+          acc.space += cur.space;
+          acc.etc += cur.etc;
 
-  const result = ratings?.reduce(
-    (acc, cur) => {
-      acc.mood += cur.mood;
-      acc.table += cur.table;
-      acc.space += cur.space;
-      acc.etc += cur.etc;
-
-      return acc;
-    },
-    {
-      mood: 0,
-      table: 0,
-      space: 0,
-      etc: 0,
-    },
-  );
+          return acc;
+        },
+        {
+          mood: 0,
+          table: 0,
+          space: 0,
+          etc: 0,
+        },
+      )
+    : {
+        mood: 0,
+        table: 0,
+        space: 0,
+        etc: 0,
+      };
 
   const count = ratings.length;
 
