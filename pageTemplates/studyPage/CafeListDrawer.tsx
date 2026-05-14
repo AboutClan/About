@@ -34,7 +34,7 @@ export function CafeListDrawer({ onClose, placeData, pickReviewPlace, type }: Ca
           fontSize="20px"
           textAlign="start"
         >
-          {type === "drawer" ? "내 인근 카공 카페" : "해당 위치 카공 카페"}
+          {type === "drawer" ? "근처에 있는 카공 카페" : "해당 위치 카공 카페"}
         </Box>{" "}
         <Box color="gray.500" mr="auto" fontSize="12px">
           {type === "drawer" ? (
