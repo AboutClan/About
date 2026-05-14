@@ -171,7 +171,7 @@ function HomeInitialSetting() {
     }
 
     if (userInfo?.role === "waiting") {
-      router.push("/login?status=waiting");
+      router.push(`/register/access`);
       return;
     }
     if (userInfo?.role === "human") {
