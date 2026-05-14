@@ -1,4 +1,4 @@
-import { Badge, Box, Flex } from "@chakra-ui/react";
+import { Badge, Box, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
@@ -102,8 +102,18 @@ export function StudyReviewDrawer({
               {placeInfo.location.name}
             </Box>
             <Flex flexDir="column">
-              <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center" mb={1}>
-                {placeInfo.location.address}
+              <Flex align="center" mb={1} width="90%" minW={0}>
+                <Text
+                  fontSize="13px"
+                  lineHeight="20px"
+                  color="gray.600"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  whiteSpace="nowrap"
+                  width="100%"
+                >
+                  {placeInfo.location.address}
+                </Text>
               </Flex>
               <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center">
                 {isCurrent ? "영업중" : "영업 종료"}
