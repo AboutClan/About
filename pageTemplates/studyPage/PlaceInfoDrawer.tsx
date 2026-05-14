@@ -1,4 +1,5 @@
 import { Badge, Box, Button, Flex, Text } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useState } from "react";
 
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
@@ -163,7 +164,16 @@ export function PlaceInfoBox({
   const seed = Number(placeInfo?.location?.latitude?.toString().slice(-1));
 
   const naturalRatings = getNaturalRatings(rating, seed || 0);
+  const isCurrentTimeInRange = (timeRange: string) => {
+    const [start, end] = timeRange.split(" - ");
 
+    const now = dayjs().format("HH:mm");
+
+    return now >= start && now <= end;
+  };
+
+  const hour = placeInfo?.operatingHours?.[0]?.[1] || "08:00 - 22:00";
+  const isCurrent = isCurrentTimeInRange(hour);
   return (
     <>
       <Flex mt={2} w="full" h="full" direction="column" align="start">
@@ -203,12 +213,12 @@ export function PlaceInfoBox({
               </Flex>
               <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center">
                 <Box color="gray.500" fontWeight={600}>
-                  영업중
+                  {isCurrent ? "영업중" : "영업 종료"}
                 </Box>
                 <Box color="gray.400" fontWeight={400}>
                   ・
                 </Box>
-                <Box>08:00 - 24:00</Box>
+                <Box>{hour}</Box>
               </Flex>
             </Flex>
           </Flex>

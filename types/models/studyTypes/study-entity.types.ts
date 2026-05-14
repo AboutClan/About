@@ -67,6 +67,7 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
   coverImage?: string;
   rating?: number;
   ratings?: StudyRatingProps[];
+  operatingHours?: string[];
 }
 
 // export interface RealTimeMemberProps extends StudyConfirmedMemberProps {

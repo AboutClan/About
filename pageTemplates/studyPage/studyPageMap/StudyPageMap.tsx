@@ -155,6 +155,9 @@ function StudyPageMap({
     // 최초 1회만 snapshot. 이후 currentLocation 변경에 의한 재실행이 와도 이 값은 유지.
     if (!initialLocationRef.current) {
       initialLocationRef.current = currentLocation || myLocation;
+      // 지도 중심과 markerCenter 의 최초 기준점을 동일하게 묶는다.
+      // 이후 currentLocation 이 늦게 resolve 되어도 markerCenter 가 흔들리지 않게 함.
+      setMarkerCenter((prev) => prev ?? initialLocationRef.current);
     }
 
     const zoom = defaultLocation ? 16 : mapOptions?.zoom || (isMapExpansion ? 14 : 16);
@@ -189,11 +192,13 @@ function StudyPageMap({
   // 가 갱신되므로, 지도 이동 중 실시간 refilter 가 발생하지 않음.
   useEffect(() => {
     if (!markerCenter) {
-      // 우선순위: defaultLocation > currentLocation > currentMapCenter
-      if (defaultLocation) {
+      // 우선순위: initialLocationRef.current(지도 초기 중심과 동일) > defaultLocation > currentMapCenter.
+      // currentLocation 은 직접 사용하지 않는다 — 늦게 resolve 되어도 기준점이 흔들리지 않게 하기 위함.
+      // 일반적으로는 위 map-init effect 에서 이미 동기화되며, 이 분기는 fallback.
+      if (initialLocationRef.current) {
+        setMarkerCenter(initialLocationRef.current);
+      } else if (defaultLocation) {
         setMarkerCenter({ lat: defaultLocation.lat, lon: defaultLocation.lon });
-      } else if (currentLocation) {
-        setMarkerCenter({ lat: currentLocation.lat, lon: currentLocation.lon });
       } else if (currentMapCenter) {
         setMarkerCenter(currentMapCenter);
       }
@@ -209,7 +214,7 @@ function StudyPageMap({
     if (drift >= 3) {
       setMarkerCenter(currentMapCenter);
     }
-  }, [currentMapCenter, markerCenter, defaultLocation, currentLocation]);
+  }, [currentMapCenter, markerCenter, defaultLocation]);
 
   // markerCenter 기준 markerRadiusKm 이내 place 만 추출. placeData / markerCenter /
   // markerRadiusKm 가 바뀔 때만 재계산. currentMapCenter 가 계속 흔들려도 영향 없음.

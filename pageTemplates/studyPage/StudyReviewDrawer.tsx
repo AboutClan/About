@@ -1,4 +1,5 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import Divider from "../../components/atoms/Divider";
@@ -68,6 +69,16 @@ export function StudyReviewDrawer({
     createdAt: getTodayStr(),
   };
   const reviewArr = [temp, temp2, ...ratings];
+  const isCurrentTimeInRange = (timeRange: string) => {
+    const [start, end] = timeRange.split(" - ");
+
+    const now = dayjs().format("HH:mm");
+
+    return now >= start && now <= end;
+  };
+  const hour = placeInfo?.operatingHours?.[0]?.[1] || "08:00 - 22:00";
+  const isCurrent = isCurrentTimeInRange(hour);
+
   return (
     <RightDrawer title="리뷰 게시판" zIndex={zIndex} onClose={onClose}>
       <Box mb={10}>
@@ -95,13 +106,11 @@ export function StudyReviewDrawer({
                 {placeInfo.location.address}
               </Flex>
               <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center">
-                <Box color="gray.500" fontWeight={600}>
-                  영업중
-                </Box>
+                {isCurrent ? "영업중" : "영업 종료"}
                 <Box color="gray.400" fontWeight={400}>
                   ・
                 </Box>
-                <Box>08:00 - 24:00</Box>
+                <Box>{hour}</Box>
               </Flex>
             </Flex>
           </Flex>

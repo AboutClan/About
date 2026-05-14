@@ -12,6 +12,9 @@ interface CafeListDrawerProps {
 }
 
 export function CafeListDrawer({ onClose, placeData, pickReviewPlace, type }: CafeListDrawerProps) {
+  const a = placeData?.map((p) => p?.operatingHours?.[0]?.[1] || "08:00 - 22:00");
+  console.log("WOW", a);
+
   return (
     <>
       <BottomFlexDrawer
