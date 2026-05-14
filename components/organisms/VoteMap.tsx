@@ -5,6 +5,7 @@ import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 
 const MIN_RADIUS_KM = 3;
+const MIN_VIEWPORT_RADIUS_KM = 0.1; // 100m — 화면이 아무리 좁아도 0 으로 떨어지지 않게.
 const MAX_RADIUS_KM = 1000;
 const RADIUS_BUFFER = 1.25;
 const DEFAULT_RADIUS_KM = 5;
@@ -15,7 +16,12 @@ interface VoteMapProps {
   resizeToggle?: boolean;
   handleMarker?: (id: string, currentZoom: number, ids?: string[]) => void;
   zoomChange?: (zoom: number) => void;
-  centerChange?: (info: { lat: number; lon: number; radiusKm: number }) => void;
+  centerChange?: (info: {
+    lat: number;
+    lon: number;
+    radiusKm: number;
+    viewportRadiusKm: number;
+  }) => void;
   selectedMarkerId?: string | null;
   circleCenter?: {
     lat: number;
@@ -132,8 +138,11 @@ function VoteMap({
       const lng = readLng(center as naver.maps.LatLng);
 
       // bounds 의 NE 코너까지 거리 = 화면 대각선 절반 = 화면이 커버하는 반경.
-      // buffer 1.25 를 곱하고 [3, 20] 범위로 clamp.
+      // radiusKm: 마커 prefetch 용 — buffer(1.25) 적용, [MIN_RADIUS_KM, MAX] clamp.
+      // viewportRadiusKm: 리스트 등 "지금 화면에 보이는 것"용 — buffer 없이 화면 대각선
+      // 그대로, 단 [MIN_VIEWPORT_RADIUS_KM=0.1, MAX] clamp (줌 끝까지 확대해도 100m 보장).
       let radiusKm = DEFAULT_RADIUS_KM;
+      let viewportRadiusKm = DEFAULT_RADIUS_KM;
       try {
         const bounds = map.getBounds() as naver.maps.LatLngBounds | undefined;
         const ne = bounds?.getNE?.() as naver.maps.LatLng | undefined;
@@ -143,19 +152,24 @@ function VoteMap({
           if (typeof neLat === "number" && typeof neLng === "number") {
             const diagonalKm = getDistanceFromLatLonInKm(lat, lng, neLat, neLng);
             radiusKm = Math.min(MAX_RADIUS_KM, Math.max(MIN_RADIUS_KM, diagonalKm * RADIUS_BUFFER));
+            viewportRadiusKm = Math.min(
+              MAX_RADIUS_KM,
+              Math.max(MIN_VIEWPORT_RADIUS_KM, diagonalKm),
+            );
           }
         }
       } catch {
         radiusKm = DEFAULT_RADIUS_KM;
+        viewportRadiusKm = DEFAULT_RADIUS_KM;
       }
 
       if (process.env.NODE_ENV !== "production") {
         // eslint-disable-next-line no-console
-        console.log("[VoteMap] idle fired", { lat, lng, radiusKm });
+        console.log("[VoteMap] idle fired", { lat, lng, radiusKm, viewportRadiusKm });
       }
 
       if (lat == null || lng == null) return;
-      centerChange({ lat, lon: lng, radiusKm });
+      centerChange({ lat, lon: lng, radiusKm, viewportRadiusKm });
     });
 
     return () => {

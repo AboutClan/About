@@ -141,7 +141,7 @@ export function PlaceInfoBox({
       }, 0)
     : 0;
 
-  const totalScore = placeInfo?.ratings?.length > 3 ? total / (ratings.length * 4) : rating;
+  const totalScore = Number(placeInfo?.ratings?.length > 3 ? total / (ratings.length * 4) : rating);
   const getNaturalRatings = (
     rating: number,
     seed: number,
@@ -246,7 +246,7 @@ export function PlaceInfoBox({
             <StarRating rating={totalScore} size="lg" />
           </Box>
           <Box fontWeight={600} fontSize="16px" ml={1.5} mr={1}>
-            {totalScore?.toFixed(1)}
+            {Number.isFinite(totalScore) ? totalScore.toFixed(1) : "0.0"}
           </Box>
           <Box color="gray.500" fontSize="13px">
             (총 {reviewCnt}명 평가 반영)

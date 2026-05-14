@@ -78,20 +78,29 @@ function StudyPageMap({
   // 화면 bounds 기반으로 idle 시점에 갱신되는 반경. 기본 5km, hysteresis 로 churn 방지.
   const [markerRadiusKm, setMarkerRadiusKm] = useState(5);
 
+  // 화면에 실제로 보이는 영역 반경 (buffer/floor 없음). cafeList 필터·라벨용.
+  // markerRadiusKm 와 달리 hysteresis 없이 idle 마다 직접 반영 — 리스트는
+  // 사용자가 보는 것과 어긋나면 안 되고, 줌 단계마다 자연스레 단계적으로 변한다.
+  const [viewportRadiusKm, setViewportRadiusKm] = useState(5);
+  console.log(42, viewportRadiusKm);
   // VoteMap idle 콜백. center 와 radius 를 한 번에 처리하고, useCallback 으로
   // 안정화해 VoteMap 의 idle listener effect 가 재등록되지 않게 한다.
-  const handleCenterChange = useCallback((info: { lat: number; lon: number; radiusKm: number }) => {
-    setCurrentMapCenter({ lat: info.lat, lon: info.lon });
-    setMarkerRadiusKm((prev) => {
-      // 0.5km 미만 차이는 numerical noise → 무시.
-      if (Math.abs(info.radiusKm - prev) < 0.5) return prev;
-      // zoom out 으로 더 넓어진 경우 → 즉시 반영 (마커 누락 방지).
-      if (info.radiusKm > prev) return info.radiusKm;
-      // zoom in 으로 좁아진 경우 → 30% 이상 줄어들 때만 반영 (hysteresis).
-      if (info.radiusKm < prev * 0.7) return info.radiusKm;
-      return prev;
-    });
-  }, []);
+  const handleCenterChange = useCallback(
+    (info: { lat: number; lon: number; radiusKm: number; viewportRadiusKm: number }) => {
+      setCurrentMapCenter({ lat: info.lat, lon: info.lon });
+      setViewportRadiusKm(info.viewportRadiusKm);
+      setMarkerRadiusKm((prev) => {
+        // 0.5km 미만 차이는 numerical noise → 무시.
+        if (Math.abs(info.radiusKm - prev) < 0.5) return prev;
+        // zoom out 으로 더 넓어진 경우 → 즉시 반영 (마커 누락 방지).
+        if (info.radiusKm > prev) return info.radiusKm;
+        // zoom in 으로 좁아진 경우 → 30% 이상 줄어들 때만 반영 (hysteresis).
+        if (info.radiusKm < prev * 0.7) return info.radiusKm;
+        return prev;
+      });
+    },
+    [],
+  );
 
   /** 데이터 */
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
@@ -379,7 +388,7 @@ function StudyPageMap({
           place.location.longitude,
         ),
       }))
-      .filter((entry) => entry.diffKm < 3)
+      .filter((entry) => entry.diffKm < viewportRadiusKm)
       .sort((a, b) => a.diffKm - b.diffKm)
       .map((entry) => entry.place);
   }, [
@@ -389,6 +398,7 @@ function StudyPageMap({
     currentMapCenter?.lon,
     mapOptions?.center?.y,
     mapOptions?.center?.x,
+    viewportRadiusKm,
   ]);
 
   return (
@@ -537,6 +547,7 @@ function StudyPageMap({
             });
           }}
           placeData={sortedListPlaces}
+          radiusKm={viewportRadiusKm}
         />
       )}
       {reviewId && (
