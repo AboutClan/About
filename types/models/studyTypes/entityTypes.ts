@@ -14,7 +14,7 @@ export interface PlaceProps extends PlaceRegisterProps {
 export interface PlaceRegisterProps {
   status?: PlaceStatus;
   location: LocationProps;
-  name: string;
+  name?: string;
 }
 
 export interface PlaceReviewProps extends TimeStampProps {

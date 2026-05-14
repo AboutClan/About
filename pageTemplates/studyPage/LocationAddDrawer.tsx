@@ -12,7 +12,7 @@ import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.type
 import RegisterOverview from "../register/RegisterOverview";
 
 interface LocationAddDrawerProps {
-  placeArr: StudyPlaceProps[];
+  placeArr?: StudyPlaceProps[];
   onClose: () => void;
 }
 

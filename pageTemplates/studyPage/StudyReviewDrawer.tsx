@@ -31,8 +31,20 @@ export function StudyReviewDrawer({
   const userInfo = useUserInfo();
   const ratings = placeInfo?.ratings || [];
 
-  const savedIds = localStorage.getItem(CAFE_REVIEW_ARR);
-  const parsedIds: string[] = savedIds ? JSON.parse(savedIds) : [];
+  const getSavedReviewIds = () => {
+    if (typeof window === "undefined") return [];
+
+    try {
+      const savedIds = localStorage.getItem(CAFE_REVIEW_ARR);
+      const parsedIds = savedIds ? JSON.parse(savedIds) : [];
+
+      return Array.isArray(parsedIds) ? parsedIds : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const parsedIds = getSavedReviewIds();
 
   const isCompleted =
     parsedIds.includes(placeInfo._id) ||
