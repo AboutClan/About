@@ -135,10 +135,11 @@ export function PlaceInfoBox({
     handleVotePick?.();
   };
 
-  const total =
-    ratings?.reduce((acc, cur) => {
-      return acc + cur.mood + cur.table + cur.space + cur.etc;
-    }, 0) ?? 0;
+  const total = Array.isArray(ratings)
+    ? ratings.reduce((acc, cur) => {
+        return acc + cur.mood + cur.table + cur.space + cur.etc;
+      }, 0)
+    : 0;
 
   const totalScore = placeInfo?.ratings?.length > 3 ? total / (ratings.length * 4) : rating;
   const getNaturalRatings = (

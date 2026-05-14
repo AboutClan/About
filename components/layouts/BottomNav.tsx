@@ -31,10 +31,9 @@ function BottomNav({
   function BottomButton() {
     return (
       <Button
-        position="fixed"
+        position={isSlide ? "fixed" : "absolute"}
         left="50%"
-       bottom={getSafeAreaBottom(8)}
-
+        bottom={getSafeAreaBottom(8)}
         maxW="var(--view-max-width)"
         transform="translate(-50%,0)"
         width="calc(100% - 2*var(--gap-4))"

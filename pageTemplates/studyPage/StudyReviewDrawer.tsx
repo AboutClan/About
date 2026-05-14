@@ -146,6 +146,7 @@ export function StudyReviewDrawer({
         text={isCompleted ? "별점 평가를 완료했어요!" : "카공 장소 별점 남기기"}
         isActive={!isCompleted}
         onClick={handleClick}
+        isSlide={false}
       />
     </RightDrawer>
   );
