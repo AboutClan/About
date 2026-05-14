@@ -74,7 +74,7 @@ export function PlaceInfoBox({
   const reviewCnt =
     (ratings?.length || 0) + 2 + Number(placeInfo?.location?.latitude?.toString().slice(-1));
 
-  const rating = placeInfo?.rating;
+  const rating = placeInfo?.rating || 3.5;
 
   const result = ratings?.reduce(
     (acc, cur) => {
