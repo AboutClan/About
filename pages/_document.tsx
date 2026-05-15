@@ -107,12 +107,11 @@ const resolveOg = (host: string | undefined, asPath: string): OG => {
       image: DEFAULT_IMAGE,
     };
   }
-
   return {
-    title: "카공 지도 | 내 근처 카공 카페 찾기",
-    description: "콘센트·좌석·분위기까지 고려한, 카공러들을 위한 진짜 카공 지도",
-    url: "https://xn--ob0b42knwutje.com/",
-    image: CAFE_MAP_IMAGE,
+    title: "어바웃",
+    description: "20대를 위한 모임 플랫폼",
+    url: "https://about20s.club",
+    image: DEFAULT_IMAGE,
   };
 };
 
