@@ -68,7 +68,7 @@ export function StudyReviewDrawer({
     user: "",
     createdAt: getTodayStr(),
   };
-  const reviewArr = [temp, temp2, ...ratings];
+  const reviewArr = ratings?.length ? ratings : [temp, temp2];
   const isCurrentTimeInRange = (timeRange: string) => {
     const [start, end] = timeRange.split(" - ");
 
