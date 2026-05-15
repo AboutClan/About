@@ -75,7 +75,7 @@ function GroupDetail() {
     if (session === null) {
       const temp = async () => {
         await signOut({ redirect: false });
-        await signIn("guest");
+        await signIn("guest", { redirect: false });
       };
       temp();
 

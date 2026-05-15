@@ -37,9 +37,13 @@ function StudyMap() {
   }, []);
 
   useEffect(() => {
+    // 게스트 세션 자동 생성. redirect: false 가 핵심 —
+    // 디폴트 redirect:true 는 /api/auth/callback/guest → /cafe-map 풀 네비게이션을 일으켜
+    // 디바이스 최초 진입 시 iOS Kakao 인앱 webview 에서 흰 화면 구간이 길게 노출됨.
+    // 쿠키가 한 번 박히면 그 뒤로는 session !== null 이라 이 분기 자체를 안 탐.
     const temp = async () => {
       await signOut({ redirect: false });
-      await signIn("guest");
+      await signIn("guest", { redirect: false });
     };
 
     if (session === null) {
