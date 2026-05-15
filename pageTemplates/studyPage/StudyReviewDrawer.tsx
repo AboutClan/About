@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import Divider from "../../components/atoms/Divider";
-import BottomNav from "../../components/layouts/BottomNav";
 import PlaceImage from "../../components/molecules/PlaceImage";
 import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewBlock2";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
@@ -142,12 +141,12 @@ export function StudyReviewDrawer({
           ))}
         </Flex>{" "}
       </Box>
-      <BottomNav
+      {/* <BottomNav
         text={isCompleted ? "별점 평가를 완료했어요!" : "카공 장소 별점 남기기"}
         isActive={!isCompleted}
         onClick={handleClick}
         isSlide={false}
-      />
+      /> */}
     </RightDrawer>
   );
 }

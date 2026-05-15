@@ -76,6 +76,59 @@ function VoteMap({
   // 아직 null 이라 early-return 되어 리스너가 영영 등록되지 않는다.
   const [mapReady, setMapReady] = useState(false);
 
+  const moveNaverLogo = () => {
+    const mapEl = mapRef.current;
+    if (!mapEl) return;
+
+    const logoLink = Array.from(mapEl.querySelectorAll("a")).find((el) => {
+      const href = el.getAttribute("href") || "";
+      return href.includes("ssl.pstatic.net");
+    }) as HTMLElement | undefined;
+
+    if (!logoLink) return;
+
+    const logoWrapper = logoLink.parentElement as HTMLElement | null;
+    if (!logoWrapper) return;
+
+    logoWrapper.style.transform = "translate(16px, 122px)";
+    logoWrapper.style.zIndex = "0";
+  };
+  const debugNaverLogo = () => {
+    const mapEl = document.getElementById("map");
+    if (!mapEl) {
+      console.log("map 없음");
+      return;
+    }
+
+    const nodes = Array.from(mapEl.querySelectorAll("*")) as HTMLElement[];
+
+    const candidates = nodes
+      .map((el, index) => ({
+        index,
+        tag: el.tagName,
+        text: el.textContent?.trim(),
+        href: el.getAttribute("href"),
+        src: el.getAttribute("src"),
+        title: el.getAttribute("title"),
+        ariaLabel: el.getAttribute("aria-label"),
+        className: el.className,
+        style: el.getAttribute("style"),
+        html: el.outerHTML.slice(0, 300),
+      }))
+      .filter((item) => {
+        const value = JSON.stringify(item).toLowerCase();
+
+        return (
+          value.includes("naver") ||
+          value.includes("logo") ||
+          value.includes("네이버") ||
+          value.includes("copyright")
+        );
+      });
+
+    console.log("NAVER LOGO DEBUG", candidates);
+  };
+  setTimeout(debugNaverLogo, 1500);
   useEffect(() => {
     if (!mapRef.current || typeof naver === "undefined" || !mapOptions) return;
 
@@ -88,7 +141,35 @@ function VoteMap({
         },
       });
 
-      map.setZoom(mapOptions.zoom);
+      mapInstanceRef.current = map;
+      setMapReady(true);
+
+      naver.maps.Event.once(map, "idle", () => {
+        requestAnimationFrame(moveNaverLogo);
+        setTimeout(moveNaverLogo, 300);
+      });
+
+      return;
+    }
+
+    mapInstanceRef.current.setOptions(mapOptions);
+
+    requestAnimationFrame(moveNaverLogo);
+    setTimeout(moveNaverLogo, 300);
+  }, [mapOptions]);
+  useEffect(() => {
+    if (!mapRef.current || typeof naver === "undefined" || !mapOptions) return;
+
+    if (!mapInstanceRef.current) {
+      const map = new naver.maps.Map(mapRef.current, {
+        ...mapOptions,
+        logoControl: true,
+        logoControlOptions: {
+          position: naver.maps.Position.BOTTOM_LEFT,
+        },
+      });
+
+      map.setZoom(11);
       mapInstanceRef.current = map;
       setMapReady(true);
       return;

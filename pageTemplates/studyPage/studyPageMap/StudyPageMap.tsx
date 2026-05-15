@@ -24,7 +24,6 @@ import { LocationAddDrawer } from "../LocationAddDrawer";
 import PlaceInfoDrawer from "../PlaceInfoDrawer";
 import StudyMapMenuDrawer from "../StudyMapMenuDrawer";
 import { StudyReviewDrawer } from "../StudyReviewDrawer";
-import { StudyPageTopNav } from "./StudyPageTopNav";
 import StudyMapTopNav from "./TopNav";
 
 interface StudyPageMapProps {
@@ -64,7 +63,7 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const scrollLockY = useRef(0);
-  const [zoomNumber, setZoomNumber] = useState<number>(14);
+  const [zoomNumber, setZoomNumber] = useState<number>(10);
   const [tempToggle, setTempToggle] = useState(false);
   const [currentMapCenter, setCurrentMapCenter] = useState<{
     lat: number;
@@ -169,9 +168,9 @@ function StudyPageMap({
       setMarkerCenter((prev) => prev ?? initialLocationRef.current);
     }
 
-    const zoom = defaultLocation ? 16 : mapOptions?.zoom || (isMapExpansion ? 14 : 16);
+    const zoom = defaultLocation ? 8 : mapOptions?.zoom || (isMapExpansion ? 12 : 16);
     const options = getMapOptions(initialLocationRef.current, zoom);
-    setZoomNumber(zoom);
+    setZoomNumber(12);
     setMapOptions(options);
     // currentLocation 은 의도적으로 deps 에서 제외 — 늦게 도착해도 지도를 다시 움직이지 않기 위함.
     // 사용자가 명시적으로 "현재 위치" 버튼을 누르면 handleLocationRefetch 가 setMapOptions 를 직접 호출.
@@ -261,13 +260,7 @@ function StudyPageMap({
   useEffect(() => {
     if (!visiblePlaceData.length) return;
     setMarkersOptions(
-      getStudyPlaceMarkersOptions(
-        visiblePlaceData,
-        null,
-        zoomNumber,
-        isMapExpansion && !defaultLocation ? currentLocation : null,
-        defaultLocation,
-      ),
+      getStudyPlaceMarkersOptions(visiblePlaceData, null, zoomNumber, null, defaultLocation),
     );
   }, [visiblePlaceData, zoomNumber, currentLocation, defaultLocation, isMapExpansion]);
 
@@ -423,7 +416,7 @@ function StudyPageMap({
           }}
         >
           <ClipLayer $rounded={!isMapExpansion}>
-            {isMapExpansion && (
+            {/* {isMapExpansion && (
               <StudyPageTopNav
                 isCafeMap={isCafeMap}
                 handleCenterLocation={(location) => {
@@ -437,7 +430,7 @@ function StudyPageMap({
                 }}
                 onClose={onClose}
               />
-            )}
+            )} */}
             <StudyMapTopNav
               isCafeMap={isCafeMap}
               isMainType={type === "mainPlace"}

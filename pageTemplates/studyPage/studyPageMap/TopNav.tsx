@@ -46,124 +46,126 @@ function TopNav({
         px={5}
         py={4}
         position="absolute"
-        top={isMapExpansion ? "112px" : "0"}
+        top={isMapExpansion ? "0" : "0"}
         left="0"
         zIndex={100}
       >
-        <Flex gap={2} h="32px">
-          {isMainType && (
-            <Button
-              h="32px"
-              px={4}
-              borderRadius="20px"
-              border={filterType === "main" ? "none" : "var(--border)"}
-              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-              bg={filterType === "main" ? "gray.900" : "white"}
-              fontSize="11px"
-              color={filterType === "main" ? "white" : "gray.800"}
-              fontWeight={600}
-              lineHeight="12px"
-              onClick={(e) => handleFilter(e, "main")}
-              _hover={{
-                bg: "gray.900",
-              }}
-              _active={{
-                bg: "gray.900",
-              }}
-              _focus={{
-                bg: "gray.900",
-              }}
-            >
-              About 스터디 장소
-            </Button>
-          )}
+        <Flex gap={2} h="36px">
           <Button
-            h="32px"
+            h="36px"
+            mr={1}
             px={4}
             borderRadius="20px"
-            border={filterType === "all" ? "none" : "var(--border)"}
-            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+            border={filterType === "all" ? "none" : "1px solid"}
+            borderColor="gray.200"
+            boxShadow="0px 4px 12px rgba(66, 66, 66, 0.10)"
             bg={filterType === "all" ? "gray.800" : "white"}
-            fontSize="11px"
+            fontSize="12px"
             color={filterType === "all" ? "white" : "gray.800"}
-            fontWeight={600}
-            lineHeight="12px"
+            fontWeight={700}
+            lineHeight="1"
+            letterSpacing="-0.01em"
+            transition="all 0.15s ease"
             onClick={(e) => handleFilter(e, "all")}
             _hover={{
-              bg: "gray.900",
+              bg: filterType === "all" ? "gray.900" : "gray.50",
+              transform: "translateY(-1px)",
             }}
             _active={{
-              bg: "gray.900",
+              bg: filterType === "all" ? "gray.900" : "gray.100",
+              transform: "translateY(0)",
             }}
             _focus={{
-              bg: "gray.900",
+              boxShadow: "0 0 0 3px rgba(0,0,0,0.06)",
             }}
           >
             모든 카공 카페
           </Button>
+
           {isMapExpansion && !isMainType && (
             <Button
-              h="32px"
+              h="36px"
               px={4}
               borderRadius="20px"
-              border={filterType === "good" ? "none" : "var(--border)"}
-              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+              border={filterType === "good" ? "none" : "1px solid"}
+              borderColor="gray.200"
+              boxShadow="0px 4px 12px rgba(66, 66, 66, 0.10)"
               bg={filterType === "good" ? "gray.900" : "white"}
-              fontSize="11px"
+              fontSize="12px"
               color={filterType === "good" ? "white" : "gray.800"}
-              fontWeight={600}
-              lineHeight="12px"
+              fontWeight={700}
+              lineHeight="1"
+              letterSpacing="-0.01em"
+              transition="all 0.15s ease"
               onClick={(e) => handleFilter(e, "good")}
               _hover={{
-                bg: "gray.900",
+                bg: filterType === "good" ? "gray.900" : "gray.50",
+                transform: "translateY(-1px)",
               }}
               _active={{
-                bg: "gray.900",
+                bg: filterType === "good" ? "gray.900" : "gray.100",
+                transform: "translateY(0)",
               }}
               _focus={{
-                bg: "gray.900",
+                boxShadow: "0 0 0 3px rgba(0,0,0,0.06)",
               }}
             >
               인기 카공 스팟
             </Button>
-          )}{" "}
+          )}
+
           {!isMainType && (
             <Button
-              h="32px"
+              h="36px"
               px={4}
               borderRadius="20px"
-              border={filterType === "best" ? "none" : "var(--border)"}
-              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+              border={filterType === "best" ? "none" : "1px solid"}
+              borderColor="gray.200"
+              boxShadow="0px 4px 12px rgba(66, 66, 66, 0.10)"
               bg={filterType === "best" ? "gray.900" : "white"}
-              fontSize="11px"
+              fontSize="12px"
               color={filterType === "best" ? "white" : "gray.800"}
-              fontWeight={600}
-              lineHeight="12px"
+              fontWeight={700}
+              lineHeight="1"
+              letterSpacing="-0.01em"
+              transition="all 0.15s ease"
               onClick={(e) => handleFilter(e, "best")}
               _hover={{
-                bg: "gray.900",
+                bg: filterType === "best" ? "gray.900" : "gray.50",
+                transform: "translateY(-1px)",
               }}
               _active={{
-                bg: "gray.900",
+                bg: filterType === "best" ? "gray.900" : "gray.100",
+                transform: "translateY(0)",
               }}
               _focus={{
-                bg: "gray.900",
+                boxShadow: "0 0 0 3px rgba(0,0,0,0.06)",
               }}
             >
               베스트 카공 스팟
             </Button>
           )}
-        </Flex>{" "}
+        </Flex>
+
         {!isMapExpansion && (
           <Button
-            borderRadius="4px"
-            bgColor="white"
-            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-            w="32px"
-            h="32px"
-            size="sm"
+            borderRadius="8px"
+            bg="white"
+            boxShadow="0px 4px 12px rgba(66, 66, 66, 0.10)"
+            w="36px"
+            h="36px"
             p="0"
-            border="var(--border-main)"
+            border="1px solid"
+            borderColor="gray.200"
+            transition="all 0.15s ease"
+            _hover={{
+              bg: "gray.50",
+              transform: "translateY(-1px)",
+            }}
+            _active={{
+              bg: "gray.100",
+              transform: "translateY(0)",
+            }}
           >
             <ExpansionIcon />
           </Button>
@@ -237,19 +239,6 @@ function TopNav({
               </>
             )}
           </Flex>
-          {/* {isCafeMap && (
-            <Flex
-              justify="center"
-              fontWeight={600}
-              align="center"
-              w="full"
-              alignItems="flex-end"
-              justifyContent="center"
-              overflow="hidden"
-            >
-              <KakaoAdfit unitId="DAN-yjQDVIbCjd5Xbowz" width={320} height={50} />
-            </Flex>
-          )} */}
         </Flex>
       )}
     </>
