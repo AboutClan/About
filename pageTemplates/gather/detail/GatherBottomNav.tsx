@@ -200,6 +200,10 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
                 });
                 return;
               }
+              if (userInfo?.temperature?.cnt > 3 && userInfo?.temperature?.temperature < 36) {
+                toast("warning", "소셜링 온도가 낮아서 참여가 불가능합니다.");
+                return;
+              }
               sendRegisterForm({ phase: "first" });
             },
             isReverse: true,
@@ -216,6 +220,10 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
                     guest: "on",
                   },
                 });
+                return;
+              }
+              if (userInfo?.temperature?.cnt > 3 && userInfo?.temperature?.temperature < 36) {
+                toast("warning", "소셜링 온도가 낮아서 참여가 불가능합니다.");
                 return;
               }
               sendRegisterForm({ phase: "first" });
@@ -272,6 +280,10 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
                 guest: "on",
               },
             });
+            return;
+          }
+          if (userInfo?.temperature?.cnt > 3 && userInfo?.temperature?.temperature < 36) {
+            toast("warning", "소셜링 온도가 낮아서 참여가 불가능합니다.");
             return;
           }
           sendRegisterForm({ phase: "first" });
