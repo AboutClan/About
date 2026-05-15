@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { gaEvent } from "../libs/gtag";
@@ -12,29 +12,6 @@ function StudyMap() {
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
   console.log(session);
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const inappdenyExecVanillajs = (callback: any) => {
-      if (document.readyState !== "loading") callback();
-      else document.addEventListener("DOMContentLoaded", callback);
-    };
-
-    inappdenyExecVanillajs(() => {
-      const useragt = navigator.userAgent.toLowerCase();
-      const targetUrl = location.href;
-
-      // 카카오톡 or 인스타그램 인앱 브라우저 감지
-      const isInAppBrowser = useragt.includes("instagram");
-      if (isInAppBrowser) {
-        if (useragt.includes("instagram")) {
-          alert(
-            "인스타그램 내에서는 일부 기능이 제한됩니다.\n외부 브라우저로 열면 더 원활하게 이용할 수 있어요!",
-          );
-          window.open(targetUrl, "_blank");
-        }
-      }
-    });
-  }, []);
 
   useEffect(() => {
     // 게스트 세션 자동 생성. redirect: false 가 핵심 —
