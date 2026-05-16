@@ -31,7 +31,7 @@ export function LocationAddDrawer({ onClose, placeArr }: LocationAddDrawerProps)
 
   const { mutate, isLoading } = useStudyAdditionMutation({
     onSuccess() {
-      toast("success", "요청이 완료되었어요! 운영진의 검토 후 등록됩니다.");
+      toast("success", "요청 완료! 운영진 검토 후 등록됩니다.");
       onClose();
     },
   });
@@ -72,7 +72,7 @@ export function LocationAddDrawer({ onClose, placeArr }: LocationAddDrawerProps)
     <RightDrawer title="장소 추가" onClose={handleBack}>
       {/* position:relative로 BottomNav(position:absolute)의 기준을 DrawerContent(100vh)가 아닌
           이 Box(100dvh 기준)로 변경 — iPhone SE + Chrome 하단 바에 버튼이 가려지는 문제 방지 */}
-      <Box position="relative" height="calc(100dvh - var(--header-h))" overflow="hidden">
+      <Box position="relative" height="calc(100dvh - var(--header-h))">
         <RegisterOverview>
           {isFirstPage ? (
             <>
