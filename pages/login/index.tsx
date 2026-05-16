@@ -9,6 +9,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
 import { ModalLayout } from "../../modals/Modals";
 import { isWebView } from "../../utils/appEnvUtils";
+import { setAuthIntent } from "../../utils/authIntentUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
 import { getSafeAreaBottom, isApp, isIOS } from "../../utils/validationUtils";
 
@@ -74,8 +75,10 @@ function LoginPage() {
     }
     setLoadingType(type);
 
-    // 게스트 → 정회원 로그인으로 전환 시, 먼저 guest 세션 정리
+    // 소셜 로그인 진행 중 자동 게스트 로그인이 끼어들지 않도록 플래그 설정
+    setAuthIntent();
 
+    // 게스트 → 정회원 로그인으로 전환 시, 먼저 guest 세션 정리
     await signOut({ redirect: false });
 
     // 다양한 statusParam에 따른 callbackUrl 분기
@@ -312,6 +315,7 @@ function LoginPage() {
             main: {
               text: "기존 멤버 로그인",
               func: async () => {
+                setAuthIntent();
                 await signOut({ redirect: false });
                 await signIn("kakao", { callbackUrl: "/home" });
               },

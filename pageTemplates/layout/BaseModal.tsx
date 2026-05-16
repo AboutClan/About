@@ -18,6 +18,7 @@ import {
 } from "../../recoils/transferRecoils";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
 import { isWebView } from "../../utils/appEnvUtils";
+import { setAuthIntent } from "../../utils/authIntentUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
 
 interface IBaseModal {
@@ -105,8 +106,8 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
                   }, 1000);
                   return;
                 }
+                setAuthIntent();
                 await signOut({ redirect: false });
-
                 await signIn("kakao", { callbackUrl: "/home" });
               },
             },

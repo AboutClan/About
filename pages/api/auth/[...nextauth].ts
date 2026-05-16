@@ -104,9 +104,9 @@ export const authOptions: NextAuthOptions = {
       profile: (profile: KakaoProfile) => {
         const profileData = {
           ...profile,
-          name: profile.kakao_account.name || profile.properties.nickname,
+          name: profile.kakao_account?.name || profile.properties?.nickname || profile.id.toString(),
           role: "newUser",
-          profileImage: profile.properties.thumbnail_image || profile.properties.profile_image,
+          profileImage: profile.properties?.thumbnail_image || profile.properties?.profile_image || DEFAULT_PROFILE_IMAGE,
           uid: profile.id.toString(),
           id: profile.id.toString(),
           isActive: false,
@@ -160,7 +160,7 @@ export const authOptions: NextAuthOptions = {
             {
               $set: {
                 profileImage:
-                  (profile as KakaoProfile).properties.thumbnail_image ||
+                  (profile as KakaoProfile).properties?.thumbnail_image ||
                   user.profileImage ||
                   DEFAULT_PROFILE_IMAGE,
               },
@@ -178,7 +178,17 @@ export const authOptions: NextAuthOptions = {
               providerAccountId: account.providerAccountId,
             });
 
-            if (!existingAccount) {
+            if (existingAccount) {
+              // account.userId가 guest _id를 가리키고 있으면 실제 유저 _id로 교체 (DB 오염 자동 수리)
+              // findUser가 없는 경우 수리하지 않아 새로운 손상을 만들지 않음
+              const GUEST_OID = "69c4f9ce862f5d10130252ab";
+              if (String(existingAccount.userId) === GUEST_OID) {
+                await Account.updateOne(
+                  { _id: existingAccount._id },
+                  { $set: { userId: findUser._id } },
+                );
+              }
+            } else {
               await Account.findOneAndUpdate(
                 {
                   provider: account.provider,
@@ -229,13 +239,15 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token, user, trigger }) {
       if (trigger === "update") return session;
-      if (session.user.name === "게스트") session.user = MEMBER_GUEST_USER;
-      else if (session.user.name === "guest") session.user = GUEST_USER;
-      else {
+      // uid "1234567890"은 guest/credentials 전용 하드코딩 UID — 실제 OAuth 유저는 절대 이 값을 가지지 않음
+      // name 기반 판별을 제거해 실제 유저 name이 "게스트"일 때 MEMBER_GUEST_USER로 오인하는 문제 방지
+      if (token.uid === "1234567890") {
+        session.user = token.isActive ? MEMBER_GUEST_USER : GUEST_USER;
+      } else {
         session.user = {
           id: token.id,
           uid: token.uid,
-          name: token.name ?? "게스트",
+          name: token.name ?? "",
           role: token.role,
           isActive: token.isActive,
           profileImage: token.profileImage,
@@ -267,6 +279,8 @@ export const authOptions: NextAuthOptions = {
                   providerAccountId: account.providerAccountId,
                 },
                 {
+                  // 신규 insert 시에만 userId 설정 — 기존 account의 userId를 덮어쓰지 않음
+                  ...(user?.id ? { $setOnInsert: { userId: user.id } } : {}),
                   $set: {
                     access_token: account.access_token,
                     refresh_token: account.refresh_token ?? token.refresh_token,

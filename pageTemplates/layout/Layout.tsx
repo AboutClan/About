@@ -6,15 +6,14 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useQueryClient } from "react-query";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
 import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
-import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { clearAuthIntent, isAuthIntentActive } from "../../utils/authIntentUtils";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
@@ -47,15 +46,10 @@ function Layout({ children }: ILayout) {
 
   const { data: session, status } = useSession();
   const token = useToken();
-  const queryClient = useQueryClient();
 
   useDeepLink({ token });
 
-  if (token) {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  } else {
-    delete axios.defaults.headers.common["Authorization"];
-  }
+  axios.defaults.headers.common["Authorization"] = token ? `Bearer ${token}` : "";
 
   const currentSegment = parseUrlToSegments(pathname);
 
@@ -73,21 +67,13 @@ function Layout({ children }: ILayout) {
   const isGuest = session?.user.name === "guest";
   const [isErrorModal, setIsErrorModal] = useState(false);
 
-  // 세션 사용자가 바뀔 때 [USER_INFO] 캐시를 제거.
-  // useToken이 이전 유저 JWT를 들고 있는 동안 staleTime 내에 캐시가 서빙되면
-  // 게스트 화면에 다른 유저 데이터가 표시되는 문제가 생기므로 선제적으로 무효화한다.
-  const prevTokenRef = useRef<string | undefined>(undefined);
-  useEffect(() => {
-    if (token === prevTokenRef.current) return;
-    const prev = prevTokenRef.current;
-    prevTokenRef.current = token;
-    // 이전 토큰이 있었는데 사용자가 전환된 경우에만 무효화 (초기 로드 제외)
-    if (prev) {
-      queryClient.removeQueries([USER_INFO]);
-    }
-  }, [token, queryClient]);
-
   const guestSignInTriedRef = useRef(false);
+
+  // 인증 완료 시 명시적 로그인 플래그 해제 (OAuth 성공/실패 후 새 페이지 로드로 리셋되지만
+  // SPA 내 전환에서도 확실히 정리)
+  useEffect(() => {
+    if (status === "authenticated") clearAuthIntent();
+  }, [status]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -95,6 +81,8 @@ function Layout({ children }: ILayout) {
     if (status === "authenticated") return;
     if (token) return;
     if (guestSignInTriedRef.current) return;
+    // 카카오·애플 등 명시적 소셜 로그인 진행 중이면 게스트 자동 로그인 건너뜀
+    if (isAuthIntentActive()) return;
 
     guestSignInTriedRef.current = true;
 

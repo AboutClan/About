@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { ModalLayout } from "../../../modals/Modals";
 import { isWebView } from "../../../utils/appEnvUtils";
+import { setAuthIntent } from "../../../utils/authIntentUtils";
 import { navigateExternalLink } from "../../../utils/navigateUtils";
 import { getSafeAreaBottom } from "../../../utils/validationUtils";
 function GuestBottomNav() {
@@ -16,8 +17,8 @@ function GuestBottomNav() {
       setIsModal(true);
       return;
     }
+    setAuthIntent();
     await signOut({ redirect: false });
-
     await signIn("kakao", { callbackUrl: "/home" });
   };
 
@@ -63,6 +64,7 @@ function GuestBottomNav() {
             main: {
               text: "기존 멤버 로그인",
               func: async () => {
+                setAuthIntent();
                 await signOut({ redirect: false });
                 await signIn("kakao", { callbackUrl: "/home" });
               },

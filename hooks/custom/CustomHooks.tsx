@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
@@ -10,29 +10,32 @@ import { transferGatherDataState } from "../../recoils/transferRecoils";
 export const useToken = () => {
   const { status } = useSession();
   const [token, setToken] = useState<string | undefined>();
+  const fetchedOnceRef = useRef(false);
 
   const fetchToken = async () => {
     try {
       const response = await axios.get("/api/token");
-      setToken(response.data ?? undefined);
+      setToken(response.data);
     } catch (error) {
       console.error("Failed to fetch token:", error);
       setToken(undefined);
     }
   };
 
-  // status 변화마다 토큰 상태를 동기화.
-  // signOut → "unauthenticated": 토큰 즉시 제거 (이전 유저 JWT가 axios 헤더에 잔존하는 것 방지).
-  // signIn  → "authenticated" : 새 세션의 JWT를 재발급받아 axios 헤더에 반영.
+  // 1) 기존처럼 마운트 시 한 번 호출 (속도 유지)
   useEffect(() => {
-    if (status === "loading") return;
-    if (status === "unauthenticated") {
-      setToken(undefined);
-      return;
-    }
+    if (fetchedOnceRef.current) return;
+    fetchedOnceRef.current = true;
     fetchToken();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, []);
+
+  // 2) 나중에 status가 authenticated로 바뀌었는데 token이 없다면 → 한 번 더 호출
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    if (token) return;
+
+    fetchToken();
+  }, [status, token]);
 
   return token;
 };
