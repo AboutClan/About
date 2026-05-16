@@ -70,7 +70,12 @@ export function LocationAddDrawer({ onClose, placeArr }: LocationAddDrawerProps)
 
   return (
     <RightDrawer title="장소 추가" onClose={handleBack} px={false}>
-      <Box display="flex" flexDir="column" height="calc(100dvh - var(--header-h))">
+      <Box
+        display="flex"
+        flexDir="column"
+        height="calc(100dvh - var(--header-h))"
+        overflow="hidden"
+      >
         <Box flex={1} px={5} pb={1} overflowY="auto">
           <RegisterOverview>
             {isFirstPage ? (
