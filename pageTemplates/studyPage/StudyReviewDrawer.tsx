@@ -51,7 +51,7 @@ export function StudyReviewDrawer({
     parsedIds.includes(placeInfo._id) ||
     (userInfo?.role !== "guest" && placeInfo?.ratings?.some((r) => r.user === userInfo?._id));
   const temp: StudyRatingProps = {
-    comment: "콘센트, 좌석, 분위기 등 카공러들의 솔직한 리뷰가 모이는 공간이에요!",
+    comment: "",
     etc: 4,
     mood: 5,
     space: 5,
@@ -60,7 +60,7 @@ export function StudyReviewDrawer({
     createdAt: getTodayStr(),
   };
   const temp2: StudyRatingProps = {
-    comment: "카공하기 괜찮았나요? 솔직한 평가를 남겨주세요 ✍️",
+    comment: "",
     etc: 4,
     mood: 5,
     space: 3,
@@ -81,6 +81,9 @@ export function StudyReviewDrawer({
 
   return (
     <RightDrawer title="리뷰 게시판" zIndex={zIndex} onClose={onClose}>
+      {/* position:relative + minHeight:100dvh로 BottomNav(position:absolute)의 기준을
+          DrawerContent(100vh)에서 이 Box(dvh 기준)로 변경 — 모바일 웹 하단 툴바에 가려지는 문제 방지 */}
+      <Box position="relative" minHeight="calc(100dvh - var(--header-h))">
       <Box mb={10}>
         <Flex w="full" justify="space-between" align="start" mb={4}>
           <Flex direction="column" flex={1} minW={0} mr={3}>
@@ -142,12 +145,14 @@ export function StudyReviewDrawer({
           ))}
         </Flex>{" "}
       </Box>
+
       <BottomNav
         text={isCompleted ? "별점 평가를 완료했어요!" : "카공 장소 별점 남기기"}
         isActive={!isCompleted}
         onClick={handleClick}
         isSlide={false}
       />
+      </Box>
     </RightDrawer>
   );
 }

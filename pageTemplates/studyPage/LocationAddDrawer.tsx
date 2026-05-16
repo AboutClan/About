@@ -70,40 +70,44 @@ export function LocationAddDrawer({ onClose, placeArr }: LocationAddDrawerProps)
 
   return (
     <RightDrawer title="장소 추가" onClose={handleBack}>
-      <RegisterOverview>
+      {/* position:relative로 BottomNav(position:absolute)의 기준을 DrawerContent(100vh)가 아닌
+          이 Box(100dvh 기준)로 변경 — iPhone SE + Chrome 하단 바에 버튼이 가려지는 문제 방지 */}
+      <Box position="relative" minHeight="calc(100dvh - var(--header-h))">
+        <RegisterOverview>
+          {isFirstPage ? (
+            <>
+              <span>추가하고 싶은 장소를 입력해주세요</span>
+              <span>입력하신 장소는 관리자의 검토 후 바로 추가됩니다.</span>
+            </>
+          ) : (
+            <>
+              <span>등록할 닉네임을 입력해 주세요</span>
+              <span>작성한 닉네임은 카페 소개 상단에 배지로 표시돼요.</span>
+            </>
+          )}
+        </RegisterOverview>
         {isFirstPage ? (
-          <>
-            <span>추가하고 싶은 장소를 입력해주세요</span>
-            <span>입력하신 장소는 관리자의 검토 후 바로 추가됩니다.</span>
-          </>
-        ) : (
-          <>
-            <span>등록할 닉네임을 입력해 주세요</span>
-            <span>작성한 닉네임은 카페 소개 상단에 배지로 표시돼요.</span>
-          </>
-        )}
-      </RegisterOverview>
-      {isFirstPage ? (
-        <SearchLocation
-          placeHolder="ex) 사당역 투썸플레이스"
-          placeInfo={placeInfo}
-          setPlaceInfo={setPlaceInfo}
-        />
-      ) : (
-        <Box>
-          <Input
-            placeholder="다섯 글자 이내로 입력해 주세요."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+          <SearchLocation
+            placeHolder="ex) 사당역 투썸플레이스"
+            placeInfo={placeInfo}
+            setPlaceInfo={setPlaceInfo}
           />
-        </Box>
-      )}
-      <BottomNav
-        onClick={() => onClickNext()}
-        text={isFirstPage ? "다 음" : "완 료"}
-        isLoading={isLoading}
-        isSlide={false}
-      />
+        ) : (
+          <Box>
+            <Input
+              placeholder="다섯 글자 이내로 입력해 주세요."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </Box>
+        )}
+        <BottomNav
+          onClick={() => onClickNext()}
+          text={isFirstPage ? "다 음" : "완 료"}
+          isLoading={isLoading}
+          isSlide={false}
+        />
+      </Box>
     </RightDrawer>
   );
 }
