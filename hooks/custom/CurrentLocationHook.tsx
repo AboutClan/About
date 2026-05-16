@@ -4,10 +4,20 @@ import { CoordinatesProps } from "../../types/common";
 import { useToast } from "./CustomToast";
 
 const LOCATION_PROMPTED_KEY = "location_prompted_once";
+const LOCATION_CACHE_KEY = "current_location_cache";
 
 export function useUserCurrentLocation() {
   const toast = useToast();
-  const [coordinate, setCoordinate] = useState<CoordinatesProps | null | undefined>(undefined);
+  const [coordinate, setCoordinate] = useState<CoordinatesProps | null | undefined>(() => {
+    if (typeof window === "undefined") return undefined;
+    try {
+      const cached = sessionStorage.getItem(LOCATION_CACHE_KEY);
+      if (cached) return JSON.parse(cached) as CoordinatesProps;
+    } catch {
+      console.log(33);
+    }
+    return undefined;
+  });
   const [isLoading, setIsLoading] = useState(false);
   const mountedRef = useRef(false);
 
@@ -27,6 +37,11 @@ export function useUserCurrentLocation() {
             lat: position.coords.latitude,
             lon: position.coords.longitude,
           };
+          try {
+            sessionStorage.setItem(LOCATION_CACHE_KEY, JSON.stringify(coords));
+          } catch {
+            console.log(33);
+          }
           setCoordinate(coords);
           setIsLoading(false);
           resolve(coords);

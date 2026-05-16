@@ -153,6 +153,18 @@ function StudyPageMap({
   // 이후 currentLocation 이 늦게 resolve 되어도 ref 가 바뀌지 않으므로 지도가 튀지 않는다.
   const initialLocationRef = useRef<{ lat: number; lon: number } | null>(null);
 
+  // 게스트(isCafeMap) 전용: sessionStorage 캐시 등으로 currentLocation 이 userInfo 보다 먼저
+  // resolve 된 경우 즉시 지도를 초기화. userInfo effect 의 snapshot 조건과 동일하게
+  // initialLocationRef 가 아직 비어있을 때만 실행되어 두 effect 가 충돌하지 않는다.
+  useEffect(() => {
+    if (!isCafeMap || !currentLocation || initialLocationRef.current) return;
+    initialLocationRef.current = currentLocation;
+    setMarkerCenter((prev) => prev ?? currentLocation);
+    const zoom = 14;
+    setMapOptions(getMapOptions(currentLocation, zoom));
+    setZoomNumber(zoom);
+  }, [isCafeMap, currentLocation]);
+
   // 초기 지도 map-option 세팅
   useEffect(() => {
     if (!userInfo) return;
