@@ -51,7 +51,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
   };
 
   return (
-    <Flex flexDir="column">
+    <Flex flexDir="column" position="relative" minHeight="calc(100dvh - var(--header-h))">
       <Flex flexDir="column" lineHeight={1.8} mt={2} mb={10}>
         <Box as="span" fontSize="24px" fontWeight={600} lineHeight="36px" color="gray.800" mb={2}>
           카페는 공부하기에 어떤가요?

@@ -96,16 +96,13 @@ export const isApp = (): boolean => {
 };
 
 export const getSafeAreaBottom = (basePx = 0) => {
-  const os = getDeviceOS();
+  // 앱(WebView)은 네이티브 컨테이너가 safe area를 처리하므로 base만 반환
+  if (isApp()) return `${basePx}px`;
 
-  // iOS "모바일 웹"에서만 env를 더함
-  // && !isApp()
-  if (os === "iOS" && !isApp()) {
-    return `calc(${basePx}px + env(safe-area-inset-bottom, 0px))`;
-  }
-
-  // 앱(WebView)이나 Android/Other는 base만
-  return `${basePx}px`;
+  // 모바일 웹(iOS·Android 공통): env(safe-area-inset-bottom) 적용
+  // iOS: 홈 인디케이터 영역
+  // Android: 시스템 내비게이션 바 (엣지-투-엣지 모드에서 non-zero)
+  return `calc(${basePx}px + env(safe-area-inset-bottom, 0px))`;
 };
 export const isMobileWeb = (): boolean => {
   if (typeof window === "undefined") return false;

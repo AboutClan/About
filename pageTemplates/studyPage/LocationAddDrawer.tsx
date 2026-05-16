@@ -72,7 +72,7 @@ export function LocationAddDrawer({ onClose, placeArr }: LocationAddDrawerProps)
     <RightDrawer title="장소 추가" onClose={handleBack}>
       {/* position:relative로 BottomNav(position:absolute)의 기준을 DrawerContent(100vh)가 아닌
           이 Box(100dvh 기준)로 변경 — iPhone SE + Chrome 하단 바에 버튼이 가려지는 문제 방지 */}
-      <Box position="relative" minHeight="calc(100dvh - var(--header-h))">
+      <Box position="relative" height="calc(100dvh - var(--header-h))" overflow="hidden">
         <RegisterOverview>
           {isFirstPage ? (
             <>
