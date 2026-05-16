@@ -32,7 +32,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
       localStorage.setItem(CAFE_REVIEW_ARR, JSON.stringify([...parsedIds, placeId]));
       queryClient.invalidateQueries({ queryKey: [STUDY_VOTE], exact: false });
       queryClient.invalidateQueries({ queryKey: [STUDY_PLACE], exact: false });
-      toast("success", "평가가 완료되었어요!");
+      toast("success", "리뷰 작성 완료!");
       onClose();
     },
   });
