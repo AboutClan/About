@@ -51,7 +51,7 @@ export function StudyReviewDrawer({
     parsedIds.includes(placeInfo._id) ||
     (userInfo?.role !== "guest" && placeInfo?.ratings?.some((r) => r.user === userInfo?._id));
   const temp: StudyRatingProps = {
-    comment: "콘센트, 좌석, 분위기 등 카공러들의 솔직한 리뷰가 모이는 공간이에요!",
+    comment: "",
     etc: 4,
     mood: 5,
     space: 5,
@@ -60,7 +60,7 @@ export function StudyReviewDrawer({
     createdAt: getTodayStr(),
   };
   const temp2: StudyRatingProps = {
-    comment: "카공하기 괜찮았나요? 솔직한 평가를 남겨주세요 ✍️",
+    comment: "",
     etc: 4,
     mood: 5,
     space: 3,
