@@ -53,7 +53,7 @@ function GuideButton() {
               bg="white"
               borderRadius="20px"
               px={5}
-              py={4}
+              py={3}
               gap={4}
               minW="190px"
               boxShadow="0px 12px 32px rgba(0, 0, 0, 0.18)"
@@ -245,6 +245,7 @@ function FloatingMenuItem({
       color="gray.900"
       lineHeight="1"
       onClick={onClick}
+      py={2}
     >
       {icon}
       <Text ml={text === "이용 가이드" ? "3px" : "-2px"}>{text}</Text>
