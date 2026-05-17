@@ -243,6 +243,7 @@ export default function StudyPage() {
             router.back();
             setTab("About 스터디");
           }}
+          hasBackButton
         />
       ) : (
         // <Slide isNoPadding>

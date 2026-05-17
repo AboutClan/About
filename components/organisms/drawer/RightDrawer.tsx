@@ -12,6 +12,7 @@ interface RightUserDrawerProps {
   zIndex?: number;
   isOverlayClickable?: boolean;
   deferChildren?: boolean;
+  isFull?: boolean;
 }
 
 function RightDrawer({
@@ -23,6 +24,7 @@ function RightDrawer({
   zIndex = 3000,
   isOverlayClickable = false,
   deferChildren = true,
+  isFull = true,
 }: RightUserDrawerProps) {
   const [canRenderChildren, setCanRenderChildren] = useState(!deferChildren);
 
@@ -40,7 +42,7 @@ function RightDrawer({
     <Drawer
       isOpen
       onClose={onClose}
-      size="full"
+      size={isFull ? "full" : "xs"}
       placement="right"
       useInert={false}
       trapFocus={false}
@@ -55,8 +57,8 @@ function RightDrawer({
       <DrawerContent
         zIndex={zIndex + 1}
         pointerEvents="auto"
-        w="100%"
-        maxW="var(--max-width)"
+        w={isFull ? "100%" : "80%"}
+        maxW={isFull ? "var(--max-width)" : "80%"}
         ml="auto"
       >
         <DrawerBody p="0" w="100%">

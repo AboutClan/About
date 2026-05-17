@@ -35,6 +35,7 @@ interface StudyPageMapProps {
   type?: "mainPlace";
   isCafeMap: boolean;
   defaultLocation?: CoordinatesProps;
+  hasBackButton?: boolean;
 }
 
 function StudyPageMap({
@@ -45,6 +46,7 @@ function StudyPageMap({
   type,
   isCafeMap,
   defaultLocation,
+  hasBackButton = false,
 }: StudyPageMapProps) {
   const router = useRouter();
 
@@ -459,6 +461,7 @@ function StudyPageMap({
                 });
                 setDrawerType("addCafe");
               }}
+              hasBackButton={hasBackButton}
               handleLocationRefetch={async () => {
                 setTempToggle(true);
                 const newPos = await refetchCurrentLocation();

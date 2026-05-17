@@ -5,6 +5,7 @@ import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { StudyPlaceFilter } from "../../../types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "../../../utils/validationUtils";
+import GuideButton from "./GuideButton";
 
 interface TopNavProps {
   handleLocationRefetch: () => void;
@@ -16,6 +17,7 @@ interface TopNavProps {
   openList: () => void;
   isCafeMap: boolean;
   addCafe: () => void;
+  hasBackButton?: boolean;
 }
 
 function TopNav({
@@ -25,7 +27,9 @@ function TopNav({
   setFilterType,
   isMainType,
   openList,
-  addCafe,
+
+  hasBackButton,
+  onClose,
 }: TopNavProps) {
   const handleFilter = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
@@ -200,7 +204,28 @@ function TopNav({
       {isMapExpansion && (
         <Flex flexDir="column" pos="absolute" w="full" bottom={0} left={0} zIndex={300}>
           <Flex px={5} justify="space-between" align="center" mb={4}>
-            <CurrentLocationBtn onClick={handleLocationRefetch} isBig={true} />
+            {hasBackButton ? (
+              <Button
+                rounded="full"
+                bgColor="white"
+                boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+                w="40px"
+                h="40px"
+                size="sm"
+                p="0"
+                border="var(--border-main)"
+                borderWidth="1px"
+                borderColor="var(--gray-300)"
+                onClick={() => {
+                  onClose();
+                }}
+              >
+                <AddCafeIcon2 />
+              </Button>
+            ) : (
+              <CurrentLocationBtn onClick={handleLocationRefetch} isBig={true} />
+            )}
+
             {!isMainType && (
               <>
                 <Button
@@ -219,21 +244,35 @@ function TopNav({
                   리스트로 보기
                 </Button>
 
-                <Button
+                <GuideButton />
+
+                {/* <Button
                   rounded="full"
                   bgColor="white"
                   boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
                   w="40px"
                   h="40px"
+                  minW="40px"
                   size="sm"
                   p="0"
                   border="var(--border-main)"
                   borderWidth="1px"
                   borderColor="var(--gray-300)"
-                  onClick={addCafe}
+                  onClick={() => setIsOpen((prev) => !prev)}
+                  _hover={{ bgColor: "white" }}
+                  _active={{ bgColor: "white" }}
+                  bg="gray.900"
                 >
-                  <AddCafeIcon />
-                </Button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="20px"
+                    viewBox="0 -960 960 960"
+                    width="20px"
+                    fill="white"
+                  >
+                    <path d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-66.5 93.5Q441-188 430-194q-39-23-82-34.5T260-240q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-45 0-88 11.5T530-194q-11 6-23.5 9.5T480-181q-14 0-26.5-3.5ZM280-494Zm280-115q0-9 6.5-18.5T581-640q29-10 58-15t61-5q20 0 39.5 2.5T778-651q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-600q-26 0-51 5t-48 13q-18 7-29.5-1T560-609Zm0 220q0-9 6.5-18.5T581-420q29-10 58-15t61-5q20 0 39.5 2.5T778-431q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-380q-26 0-51 4.5T601-363q-18 7-29.5-.5T560-389Zm0-110q0-9 6.5-18.5T581-530q29-10 58-15t61-5q20 0 39.5 2.5T778-541q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-490q-26 0-51 5t-48 13q-18 7-29.5-1T560-499Z" />
+                  </svg>
+                </Button> */}
               </>
             )}
           </Flex>
@@ -271,6 +310,7 @@ export function AddCafeIcon() {
     </svg>
   );
 }
+
 export function AddCafeIcon2() {
   return (
     <svg
