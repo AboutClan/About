@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import type { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -155,12 +156,15 @@ export const authOptions: NextAuthOptions = {
         }
         if (["kakao", "apple"].includes(account.provider)) {
           await dbConnect();
+          console.log("[signIn] dbConnect 완료 | provider:", account.provider);
         }
 
         const profileIdStr = kakaoProfile?.id != null ? String(kakaoProfile.id) : null;
         const userUid = (user as any)?.uid;
+        console.log("[signIn] profileIdStr:", profileIdStr, "| userUid:", userUid);
 
         if (userUid === "1234567890" || profileIdStr === "1234567890") {
+          console.log("[signIn] return false — 게스트 UID 차단");
           return false;
         }
 
@@ -176,6 +180,10 @@ export const authOptions: NextAuthOptions = {
               },
             },
           );
+          console.log(
+            "[signIn] findUser:",
+            findUser ? `found (_id: ${findUser._id}, role: ${findUser.role})` : "null",
+          );
 
           if (findUser) {
             (user as any).role = findUser.role;
@@ -187,16 +195,25 @@ export const authOptions: NextAuthOptions = {
               provider: account.provider,
               providerAccountId: account.providerAccountId,
             });
+            console.log(
+              "[signIn] existingAccount:",
+              existingAccount ? `found (userId: ${existingAccount.userId})` : "null",
+            );
 
             if (existingAccount) {
               const GUEST_OID = "69c4f9ce862f5d10130252ab";
               if (String(existingAccount.userId) === GUEST_OID) {
+                console.log("[signIn] 분기: GUEST_OID → userId 교체 실행");
                 await Account.updateOne(
                   { _id: existingAccount._id },
                   { $set: { userId: findUser._id } },
                 );
+                console.log("[signIn] userId 교체 완료");
+              } else {
+                console.log("[signIn] 분기: existingAccount 존재, GUEST_OID 아님 → 스킵");
               }
             } else {
+              console.log("[signIn] 분기: existingAccount 없음 → upsert 실행");
               await Account.findOneAndUpdate(
                 {
                   provider: account.provider,
@@ -217,20 +234,28 @@ export const authOptions: NextAuthOptions = {
                 },
                 { upsert: true, new: true },
               );
+              console.log("[signIn] upsert 완료");
             }
           }
 
+          console.log("[signIn] return true");
           return true;
         }
 
         return true;
       } catch (error) {
-        console.error("signIn 콜백 에러:", error);
+        console.error("[signIn] catch — name:", (error as any)?.name);
+        console.error("[signIn] catch — message:", (error as any)?.message);
+        console.error("[signIn] catch — stack:", (error as any)?.stack);
+        console.error("[signIn] catch — errors:", (error as any)?.errors);
         return false;
       }
     },
     async redirect({ url, baseUrl }) {
       if (url.startsWith("https://xn--ob0b42knwutje.com")) {
+        return url;
+      }
+      if (url.startsWith(baseUrl)) {
         return url;
       }
 

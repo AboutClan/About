@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -15,10 +15,11 @@ import { getSafeAreaBottom, isApp, isIOS } from "../../utils/validationUtils";
 
 function LoginPage() {
   const router = useRouter();
-  const { status, page } = router.query;
+  const { status, page, error: errorParam } = router.query;
   const { data: session } = useSession();
   const toast = useToast();
 
+  const [errorUserUid, setErrorUserUid] = useState<string>(null);
   // 화면 비율 계산 (SSR-safe)
   const [ratio, setRatio] = useState<number | null>(null);
   const [isIPhone, setIsIPhone] = useState(false);
@@ -41,6 +42,7 @@ function LoginPage() {
 
   const statusParam = typeof status === "string" ? status : null;
   const pageParam = typeof page === "string" ? page : null;
+  const errorCode = typeof errorParam === "string" ? errorParam : null;
 
   const [loadingType, setLoadingType] = useState<"kakao" | "guest" | "apple" | null>(null);
 
@@ -62,9 +64,37 @@ function LoginPage() {
     }
   }, [statusParam, toast]);
 
+  useEffect(() => {
+    if (!errorCode) return;
+
+    let uid: string | null = null;
+    try {
+      const match = document.cookie.split("; ").find((row) => row.startsWith("signin_error_uid="));
+      if (match) {
+        uid = decodeURIComponent(match.split("=")[1]);
+        // 읽은 즉시 삭제 (1회성)
+        document.cookie = "signin_error_uid=; Path=/login; Max-Age=0; SameSite=Lax";
+      }
+    } catch {
+      console.log("error");
+    }
+
+    if (uid) {
+      setErrorUserUid(uid);
+    } else {
+      setErrorUserUid("정보 없음");
+    }
+  }, [errorCode, toast]);
+
   const [isModal, setIsModal] = useState(false);
 
   const customSignin = async (type: "kakao" | "guest" | "apple") => {
+    await signIn("credentials", {
+      username: "test",
+      password: "test",
+      callbackUrl: "/home",
+    });
+    return;
     if (type === "kakao" && isWebView() && !session) {
       setIsModal(true);
       return;
@@ -112,7 +142,7 @@ function LoginPage() {
       await signIn(type, {
         callbackUrl: `${window.location.origin}/register/access`,
       });
-      return;  // FIX: 누락된 return — 없으면 아래 signIn("/home")까지 실행되어 OAuth가 두 번 시작됨
+      return; // FIX: 누락된 return — 없으면 아래 signIn("/home")까지 실행되어 OAuth가 두 번 시작됨
     }
 
     // 기본: 로그인 후 /home
@@ -306,6 +336,29 @@ function LoginPage() {
           <ForceLogoutDialog />
         </Flex>
       </Box>
+      {errorUserUid && (
+        <ModalLayout
+          title="로그인 실패"
+          setIsModal={() => setErrorUserUid(null)}
+          footerOptions={{
+            main: {
+              text: "채널 방문하기",
+              func: async () => {
+                navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
+              },
+            },
+          }}
+        >
+          오류가 발생해 로그인에 실패했어요 😢
+          <br />
+          아래 채널로 이 화면을 캡처해 보내주세요!
+          <br />
+          최대한 빠르게 해결해 드리겠습니다 🚀
+          <Box mt={3} color="red">
+            UID: {errorUserUid}
+          </Box>
+        </ModalLayout>
+      )}
       {/* {isModal && <GuestLoginModal setIsModal={setIsModal} customSignin={customSignin} />} */}
 
       {isModal && (

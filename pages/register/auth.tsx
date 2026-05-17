@@ -15,6 +15,7 @@ import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import RegisterReview from "../../pageTemplates/register/access/RegisterReview";
 import { isWebView } from "../../utils/appEnvUtils";
+import { setAuthIntent } from "../../utils/authIntentUtils";
 import { setLocalStorageObj } from "../../utils/storageUtils";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URI ?? "http://localhost:3001";
@@ -63,8 +64,11 @@ export default function Auth() {
 
   // PC 팝업 플로우에서 바로 이어가려고 ref도 유지
   const currentRequestNoRef = useRef("");
+  // 모바일 redirect 콜백에서 받은 web_transaction_id를 토큰 준비 전까지 보관
+  const pendingTransactionRef = useRef<string | null>(null);
 
   const process = async () => {
+    setAuthIntent();
     await signOut({ redirect: false });
     await signIn("kakao");
   };
@@ -144,18 +148,29 @@ export default function Auth() {
     return () => window.removeEventListener("message", handleMessage);
   }, [handleMessage]);
 
-  // ✅ 모바일/인앱: callback이 ?web_transaction_id=... 로 redirect해 준 케이스 처리
+  // ✅ 모바일/인앱: Step 1 - URL에서 web_transaction_id를 ref에 저장하고 쿼리 즉시 제거
+  // token이 아직 없을 수 있으므로 여기서 처리하지 않고 ref에만 보관
   useEffect(() => {
     if (!router.isReady) return;
 
     const webTransactionId = router.query.web_transaction_id;
     if (typeof webTransactionId === "string" && webTransactionId) {
-      handleWebTransactionId(webTransactionId);
-
-      // ✅ 쿼리 제거: /register/auth 로 통일
+      pendingTransactionRef.current = webTransactionId;
       router.replace("/register/auth", undefined, { shallow: true });
     }
-  }, [router.isReady, router.query.web_transaction_id, handleWebTransactionId, router]);
+  }, [router.isReady, router.query.web_transaction_id, router]);
+
+  // ✅ 모바일/인앱: Step 2 - token이 준비된 후 처리
+  // 모바일 redirect 후 페이지가 새로 로드될 때 token fetch가 완료되기 전에 처리하면
+  // jwt가 undefined여서 "로그인이 필요합니다" 오류 → 게스트 자동로그인으로 빠지는 버그 방지
+  useEffect(() => {
+    if (!token) return;
+    if (!pendingTransactionRef.current) return;
+
+    const txId = pendingTransactionRef.current;
+    pendingTransactionRef.current = null;
+    handleWebTransactionId(txId);
+  }, [token, handleWebTransactionId]);
 
   const startAuth = useCallback(async () => {
     const jwt = token ?? "";
