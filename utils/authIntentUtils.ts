@@ -47,7 +47,9 @@ export const clearAuthIntent = (): void => {
   if (w) w.__authIntentTs = null;
   try {
     sessionStorage.removeItem(INTENT_KEY);
-  } catch {}
+  } catch {
+    console.log("error");
+  }
 };
 
 export const isAuthIntentActive = (): boolean => {
