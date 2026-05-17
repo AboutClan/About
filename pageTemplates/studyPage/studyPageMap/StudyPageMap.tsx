@@ -354,13 +354,24 @@ function StudyPageMap({
     if (!isMapExpansion) return;
 
     let startY = 0;
+    let touchStartedInScrollable = false;
     const onTouchStart = (e: TouchEvent) => {
       startY = e.touches[0]?.clientY ?? 0;
+      let el = e.target as HTMLElement | null;
+      touchStartedInScrollable = false;
+      while (el && el !== document.body) {
+        const { overflowY } = getComputedStyle(el);
+        if ((overflowY === "auto" || overflowY === "scroll") && el.scrollHeight > el.clientHeight) {
+          touchStartedInScrollable = true;
+          break;
+        }
+        el = el.parentElement;
+      }
     };
     const onTouchMove = (e: TouchEvent) => {
       const y = e.touches[0]?.clientY ?? 0;
       const deltaY = y - startY;
-      if (window.scrollY <= 0 && deltaY > 0) {
+      if (!touchStartedInScrollable && window.scrollY <= 0 && deltaY > 0) {
         e.preventDefault();
       }
     };

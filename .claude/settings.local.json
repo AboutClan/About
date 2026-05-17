@@ -6,7 +6,9 @@
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\" -Recurse -Directory)",
       "Bash(Select-Object -First 20)",
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\" -Recurse -Directory | Select-Object -First 30 | ForEach-Object { $_.FullName })",
-      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\\\\hooks\" -File | ForEach-Object { $_.FullName })"
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\\\\hooks\" -File | ForEach-Object { $_.FullName })",
+      "Bash(Select-String -Pattern \"BottomFlexDrawer\" -Context 0,30)",
+      "Bash(xargs grep -l \"DrawerBody\\\\|ModalBody\")"
     ]
   }
 }

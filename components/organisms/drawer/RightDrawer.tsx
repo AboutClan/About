@@ -1,4 +1,4 @@
-import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
+﻿import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import Header from "../../layouts/Header";
@@ -61,7 +61,7 @@ function RightDrawer({
         maxW={isFull ? "var(--max-width)" : "80%"}
         ml="auto"
       >
-        <DrawerBody p="0" w="100%">
+        <DrawerBody p="0" w="100%" sx={{ touchAction: "pan-y", overscrollBehavior: "contain" }}>
           <Header
             title={title}
             isSlide={false}

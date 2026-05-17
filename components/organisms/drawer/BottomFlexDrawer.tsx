@@ -155,7 +155,15 @@ export default function BottomFlexDrawer({
             </Box>
           </Flex>
         )}
-        {drawerHeight > 100 && children}
+        <Flex
+          direction="column"
+          flex={1}
+          minH={0}
+          w="100%"
+          sx={{ touchAction: "pan-y" }}
+        >
+          {drawerHeight > 100 && children}
+        </Flex>
         {drawerOptions?.footer && drawerHeight > 100 && (
           <Box py={2} w="100%" mt="auto" mb={getSafeAreaBottom(0)}>
             <Button
