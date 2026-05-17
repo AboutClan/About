@@ -60,11 +60,13 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
 
   const cancelLogout = () => {
     const { logout, ...rest } = router.query;
+    console.log(logout);
     replaceQuery(rest);
   };
 
   const closeGuestModal = () => {
     const { guest, ...rest } = router.query;
+    console.log(guest);
     replaceQuery(rest);
   };
 
