@@ -96,7 +96,9 @@ function Layout({ children }: ILayout) {
     }
 
     const process = async () => {
+      if (isAuthIntentActive()) return;
       await signOut({ redirect: false });
+      if (isAuthIntentActive()) return;
       await signIn("guest", {
         redirect: false,
         callbackUrl: router.asPath,

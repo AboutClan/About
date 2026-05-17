@@ -104,9 +104,13 @@ export const authOptions: NextAuthOptions = {
       profile: (profile: KakaoProfile) => {
         const profileData = {
           ...profile,
-          name: profile.kakao_account?.name || profile.properties?.nickname || profile.id.toString(),
+          name:
+            profile.kakao_account?.name || profile.properties?.nickname || profile.id.toString(),
           role: "newUser",
-          profileImage: profile.properties?.thumbnail_image || profile.properties?.profile_image || DEFAULT_PROFILE_IMAGE,
+          profileImage:
+            profile.properties?.thumbnail_image ||
+            profile.properties?.profile_image ||
+            DEFAULT_PROFILE_IMAGE,
           uid: profile.id.toString(),
           id: profile.id.toString(),
           isActive: false,
@@ -143,6 +147,8 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async signIn({ account, user, profile }) {
+      const kakaoProfile = profile as KakaoProfile;
+
       try {
         if (["guest", "credentials"].includes(account.provider)) {
           return true;
@@ -151,26 +157,30 @@ export const authOptions: NextAuthOptions = {
           await dbConnect();
         }
 
-        if (user.uid === "1234567890" || (profile as KakaoProfile).id + "" === "1234567890") {
+        const profileIdStr = kakaoProfile?.id != null ? String(kakaoProfile.id) : null;
+        const userUid = (user as any)?.uid;
+
+        if (userUid === "1234567890" || profileIdStr === "1234567890") {
           return false;
         }
+
         if (account.provider === "kakao" || account.provider === "apple") {
           const findUser = await User.findOneAndUpdate(
-            { uid: (profile as KakaoProfile).id + "" || user.uid },
+            { uid: profileIdStr || userUid },
             {
               $set: {
                 profileImage:
-                  (profile as KakaoProfile).properties?.thumbnail_image ||
-                  user.profileImage ||
+                  kakaoProfile?.properties?.thumbnail_image ||
+                  (user as any)?.profileImage ||
                   DEFAULT_PROFILE_IMAGE,
               },
             },
           );
+
           if (findUser) {
-            user.role = findUser.role;
-            // account.role = findUser.role;
+            (user as any).role = findUser.role;
             user.name = findUser.name ?? user.name;
-            user.uid = findUser.uid ?? user.uid;
+            (user as any).uid = findUser.uid ?? userUid;
             user.id = findUser.id ?? user.id;
 
             const existingAccount = await Account.findOne({
@@ -179,8 +189,6 @@ export const authOptions: NextAuthOptions = {
             });
 
             if (existingAccount) {
-              // account.userId가 guest _id를 가리키고 있으면 실제 유저 _id로 교체 (DB 오염 자동 수리)
-              // findUser가 없는 경우 수리하지 않아 새로운 손상을 만들지 않음
               const GUEST_OID = "69c4f9ce862f5d10130252ab";
               if (String(existingAccount.userId) === GUEST_OID) {
                 await Account.updateOne(
@@ -196,10 +204,10 @@ export const authOptions: NextAuthOptions = {
                 },
                 {
                   $setOnInsert: {
-                    userId: findUser._id, // 꼭 user._id를 연결해야 함
-                    provider: account.provider, // 필수 필드
+                    userId: findUser._id,
+                    provider: account.provider,
                     providerAccountId: account.providerAccountId,
-                    type: "oauth", // 필수 필드
+                    type: "oauth",
                   },
                   $set: {
                     access_token: account.access_token,
@@ -212,14 +220,9 @@ export const authOptions: NextAuthOptions = {
             }
           }
 
-          // if (user.role === "newUser") {
-          //   return "/register/auth";
-          // } else if (user.role === "waiting") {
-          //   return "/register/access";
-          // }
-
           return true;
         }
+
         return true;
       } catch (error) {
         console.error("signIn 콜백 에러:", error);
@@ -263,6 +266,14 @@ export const authOptions: NextAuthOptions = {
         if (trigger === "update") {
           token.role = "waiting";
           return token;
+        }
+
+        // TEMP DEBUG: kakao-debug → kakao로 오버라이드
+        if (account?.provider === "kakao-debug") {
+          (account as any).provider = "kakao";
+          (account as any).access_token = (account as any).access_token || "";
+          (account as any).refresh_token = (account as any).refresh_token || "";
+          (account as any).expires_at = (account as any).expires_at || 0;
         }
 
         switch (account?.provider) {

@@ -112,6 +112,7 @@ function LoginPage() {
       await signIn(type, {
         callbackUrl: `${window.location.origin}/register/access`,
       });
+      return;  // FIX: 누락된 return — 없으면 아래 signIn("/home")까지 실행되어 OAuth가 두 번 시작됨
     }
 
     // 기본: 로그인 후 /home
