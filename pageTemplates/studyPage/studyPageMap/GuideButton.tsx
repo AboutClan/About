@@ -216,7 +216,7 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     date: "2026-05-18",
     isCompleted: false,
     textArr: [
-      "카페 상세 정보 항목 추가 예정",
+      "카페 상세 정보 추가 예정 (ex. 주차)",
       "카공 카페 랭킹 기능 업데이트 예정",
       "신규 카공 카페 추가 예정",
       "아이폰/안드로이드 앱 출시 예정",
