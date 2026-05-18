@@ -18,7 +18,7 @@ function GroupBlock({ group }: IGroupBlock) {
   const failToast = useFailToast();
   const infoArrText = ["그룹장", "인원", "조건", "참여금", "진행", "개설"];
 
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
 
   const groupInfo = {
     그룹장: group.isSecret

@@ -64,7 +64,7 @@ function Layout({ children }: ILayout) {
     pathname === "/user/info/privacy" ||
     pathname === "/faq";
 
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const [isErrorModal, setIsErrorModal] = useState(false);
 
   const guestSignInTriedRef = useRef(false);
@@ -188,7 +188,7 @@ function Layout({ children }: ILayout) {
       document.removeEventListener("message", handleMessage);
     };
   }, [pathname, router, toast]);
-
+  console.log(35, isGuest);
   return (
     <>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />

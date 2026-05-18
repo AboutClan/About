@@ -18,7 +18,7 @@ function DetailInfo({
   const isPublic = router.query.isPublic === "true";
 
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest" && !isPublic;
+  const isGuest = session?.user.role === "guest" && !isPublic;
 
   const isPrivate =
     !isPublic &&

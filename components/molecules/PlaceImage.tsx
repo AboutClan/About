@@ -32,7 +32,7 @@ function PlaceImage({
   const { data: session } = useSession();
   const toast = useToast();
   const typeToast = useTypeToast();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
 
   const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,

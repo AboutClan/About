@@ -27,7 +27,7 @@ function GatherComments({ comments }: IGatherComments) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const gatherId = router.query.id as string;
 
   const setTransferGather = useSetRecoilState(transferGatherDataState);

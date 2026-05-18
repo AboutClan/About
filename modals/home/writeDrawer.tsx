@@ -81,7 +81,7 @@ function SocialButton({ title, subTitle, icon, color, url }: ISocialButton) {
   const toast = useToast();
   const typeToast = useTypeToast();
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onClick = (e: any) => {
     e.stopPropagation();

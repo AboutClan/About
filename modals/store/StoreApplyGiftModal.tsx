@@ -28,7 +28,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
   const toast = useToast();
   const errorToast = useErrorToast();
 
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
 
   const [value, setValue] = useState(1);
 

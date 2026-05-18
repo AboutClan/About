@@ -27,7 +27,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const isAdmin = userInfo?.role === "previliged";
 
   useEffect(() => {

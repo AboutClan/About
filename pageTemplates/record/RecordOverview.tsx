@@ -19,7 +19,7 @@ interface IStudySummary {
 
 function RecordOverview({ arrivedCalendar }: IRecordOverview) {
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
 
   const [studySummary, setStudySummary] = useState<IStudySummary>();
   const [isNotCompleted, setIsNotCompleted] = useState(false);

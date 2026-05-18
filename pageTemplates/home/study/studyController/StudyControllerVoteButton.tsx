@@ -53,7 +53,7 @@ export default StudyControllerVoteButton;
 //   const { data: session } = useSession();
 //   const searchParams = useSearchParams();
 //   const newSearchParams = new URLSearchParams(searchParams);
-//   const isGuest = session?.user.name === "guest";
+//   const isGuest = session?.user.role === "guest";
 
 //   const studyDateStatus = useRecoilValue(studyDateStatusState);
 //   const myStudy = useRecoilValue(myStudyInfoState);
