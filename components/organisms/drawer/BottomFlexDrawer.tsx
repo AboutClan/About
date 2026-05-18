@@ -161,6 +161,7 @@ export default function BottomFlexDrawer({
           minH={0}
           w="100%"
           sx={{ touchAction: "pan-y" }}
+          align="center"
         >
           {drawerHeight > 100 && children}
         </Flex>
