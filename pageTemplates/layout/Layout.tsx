@@ -2,9 +2,9 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
@@ -64,7 +64,7 @@ function Layout({ children }: ILayout) {
     pathname === "/user/info/privacy" ||
     pathname === "/faq";
 
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const [isErrorModal, setIsErrorModal] = useState(false);
 
   const guestSignInTriedRef = useRef(false);

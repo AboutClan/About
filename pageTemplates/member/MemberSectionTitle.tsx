@@ -22,7 +22,7 @@ export default function Empty() {
 
 // function MemberSectionTitle({ section, onClickSection }: IMemberSectionTitle) {
 //   const { data: session } = useSession();
-//   const isGuest = session?.user.name === "guest";
+//   const isGuest = session?.user.role === "guest";
 
 //   return (
 //     <Layout>

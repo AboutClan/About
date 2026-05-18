@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -27,7 +27,7 @@ function GatherComments({ comments }: IGatherComments) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const gatherId = router.query.id as string;
 
   const setTransferGather = useSetRecoilState(transferGatherDataState);

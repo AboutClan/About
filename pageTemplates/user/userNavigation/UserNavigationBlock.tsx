@@ -1,6 +1,6 @@
+import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
@@ -27,7 +27,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const isAdmin = userInfo?.role === "previliged";
 
   useEffect(() => {

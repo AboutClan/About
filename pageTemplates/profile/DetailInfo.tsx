@@ -1,6 +1,6 @@
 import { Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 import BlurredPart from "../../components/molecules/BlurredPart";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
@@ -18,7 +18,7 @@ function DetailInfo({
   const isPublic = router.query.isPublic === "true";
 
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest" && !isPublic;
+  const isGuest = session?.user.role === "guest" && !isPublic;
 
   const isPrivate =
     !isPublic &&

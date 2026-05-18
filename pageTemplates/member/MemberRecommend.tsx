@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -17,7 +17,7 @@ function MemberRecommend({ members }: IMemberRecommend) {
   const failToast = useFailToast();
   const router = useRouter();
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const locationUrl = router.query.location;
 
   const setTransferMemberData = useSetRecoilState(transferMemberDataState);

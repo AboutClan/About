@@ -13,7 +13,7 @@ interface IRankingOverview {
 
 function RankingOverview({ rank, value }: IRankingOverview) {
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
 
   const { data: userInfo } = useUserInfoQuery();
 

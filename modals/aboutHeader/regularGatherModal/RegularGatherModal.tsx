@@ -19,7 +19,7 @@ interface IRegularGatherModal extends IModal {
 
 function RegularGatherModal({ setIsModal, setIsRabbitRun }: IRegularGatherModal) {
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const failToast = useFailToast();
   const toast = useToast();
   const errorToast = useErrorToast();

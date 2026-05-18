@@ -9,9 +9,9 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -81,7 +81,7 @@ function SocialButton({ title, subTitle, icon, color, url }: ISocialButton) {
   const toast = useToast();
   const typeToast = useTypeToast();
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onClick = (e: any) => {
     e.stopPropagation();

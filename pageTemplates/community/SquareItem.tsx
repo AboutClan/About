@@ -1,7 +1,7 @@
 import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 import Avatar from "../../components/atoms/Avatar";
 import ThumbIcon from "../../components/Icons/ThumbIcon";
@@ -17,7 +17,7 @@ interface SquareItemProps {
 export default function SquareItem({ item }: SquareItemProps) {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
 
   const onClick = (e) => {
     if (isGuest) {

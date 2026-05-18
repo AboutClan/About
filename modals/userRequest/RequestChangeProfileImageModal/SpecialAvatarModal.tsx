@@ -34,7 +34,7 @@ function SpecialAvatarModal({ setIsModal }: ISpecialAvatarModal) {
     onError: errorToast,
   });
 
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
 
   const [BG, setBG] = useState(0);
 

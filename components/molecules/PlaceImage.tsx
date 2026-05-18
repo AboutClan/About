@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { MouseEvent, useEffect, useState } from "react";
 
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -32,7 +32,7 @@ function PlaceImage({
   const { data: session } = useSession();
   const toast = useToast();
   const typeToast = useTypeToast();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
 
   const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,

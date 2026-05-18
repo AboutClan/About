@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -32,7 +32,7 @@ export const changeAlphabet = (alphabet: Alphabet) => {
 export default function UserCollection() {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const queryClient = useQueryClient();
 
   const { mutate } = useAlphabetMutation("get", {
