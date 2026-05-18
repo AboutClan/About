@@ -4,15 +4,13 @@ import { useState } from "react";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 
 function ReviewButton() {
-  const [isDrawer, setIsDrawer] = useState(true);
+  const [isDrawer, setIsDrawer] = useState(false);
   const tabs = ["최근 후기", "신규 장소"] as const;
   const [tab, setTab] = useState<(typeof tabs)[number]>("최근 후기");
   console.log(setTab);
   return (
     <>
       <Button
-        pos="absolute"
-        bottom="72px"
         rounded="full"
         bgColor="white"
         boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"

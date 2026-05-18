@@ -168,7 +168,7 @@ function StudyNavigation({
       case "openRealTimes":
         if (myStatus === "pending") {
           return {
-            text: "스터디 참여",
+            text: "스터디 참여 신청",
             type: "single",
             colorScheme: "mint",
             func: () => {

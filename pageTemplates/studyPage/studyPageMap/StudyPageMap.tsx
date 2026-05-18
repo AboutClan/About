@@ -114,10 +114,12 @@ function StudyPageMap({
     type === "mainPlace" ? "main" : null,
   );
   const [reviewId, setReviewId] = useState<string>();
-  const [drawerType, setDrawerType] = useState<"menu" | "list" | "placeInfo" | "addCafe">(null);
+  const [drawerType, setDrawerType] = useState<"menu" | "list" | "placeInfo" | "addCafe" | "about">(
+    null,
+  );
 
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
-    filterType || "best",
+    (filterType === "about" ? "all" : filterType) || "best",
     null,
   );
 
@@ -248,6 +250,9 @@ function StudyPageMap({
   // markerRadiusKm 가 바뀔 때만 재계산. currentMapCenter 가 계속 흔들려도 영향 없음.
   const visiblePlaceData = useMemo(() => {
     if (!placeData?.length) return [];
+    if (filterType === "about") {
+      return placeData.filter((place) => place.pick === "어바웃");
+    }
     if (!markerCenter) return [];
     return placeData.filter((place) => {
       const d = getDistanceFromLatLonInKm(
@@ -258,7 +263,7 @@ function StudyPageMap({
       );
       return d < markerRadiusKm;
     });
-  }, [placeData, markerCenter, markerRadiusKm]);
+  }, [placeData, markerCenter, markerRadiusKm, filterType]);
   useEffect(() => {
     console.log("currentMapCenter", currentMapCenter);
     console.log("markerCenter", markerCenter);
@@ -369,8 +374,11 @@ function StudyPageMap({
       let el = e.target as HTMLElement | null;
       touchStartedInScrollable = false;
       while (el && el !== document.body) {
-        const { overflowY } = getComputedStyle(el);
-        if ((overflowY === "auto" || overflowY === "scroll") && el.scrollHeight > el.clientHeight) {
+        const { overflowY, overflowX } = getComputedStyle(el);
+        if (
+          ((overflowY === "auto" || overflowY === "scroll") && el.scrollHeight > el.clientHeight) ||
+          ((overflowX === "auto" || overflowX === "scroll") && el.scrollWidth > el.clientWidth)
+        ) {
           touchStartedInScrollable = true;
           break;
         }
@@ -392,6 +400,16 @@ function StudyPageMap({
       window.removeEventListener("touchmove", onTouchMove);
     };
   }, [isMapExpansion]);
+
+  useEffect(() => {
+    if (filterType === "about") {
+      setZoomNumber(11);
+      setMapOptions((prev) => (prev ? { ...prev, zoom: 11 } : prev));
+      setDrawerType("about");
+    } else {
+      setDrawerType((prev) => (prev === "about" ? null : prev));
+    }
+  }, [filterType]);
 
   useEffect(() => {
     if (!isMapExpansion) return;
@@ -443,7 +461,9 @@ function StudyPageMap({
           mx={!isMapExpansion ? 5 : 0}
           top={0}
           left={0}
-          zIndex={noModalUpdate ? 3500 : isDefaultOpen && !isDown ? 1000 : isMapExpansion ? 1000 : 0}
+          zIndex={
+            noModalUpdate ? 3500 : isDefaultOpen && !isDown ? 1000 : isMapExpansion ? 1000 : 0
+          }
           {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { height: "100svh" })}
           w={isMapExpansion ? "full" : "auto"}
           bg="transparent"
@@ -522,6 +542,7 @@ function StudyPageMap({
               filterType={filterType}
               setFilterType={setFilterType}
             />
+          
             <VoteMap
               mapOptions={mapOptions}
               markersOptions={markersOptions}
@@ -586,6 +607,17 @@ function StudyPageMap({
           }}
           placeData={sortedListPlaces}
           radiusKm={viewportRadiusKm}
+        />
+      )}
+      {drawerType === "about" && (
+        <CafeListDrawer
+          type="about"
+          onClose={() => setDrawerType(null)}
+          pickReviewPlace={(id: string) => {
+            setReviewId(id);
+            updateQuery({ modal: "reviewPlace" });
+          }}
+          placeData={placeData?.filter((p) => p.pick === "어바웃") ?? []}
         />
       )}
       {reviewId && (

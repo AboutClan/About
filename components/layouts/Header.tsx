@@ -13,6 +13,7 @@ interface IHeader {
   children?: React.ReactNode;
   isTransparent?: boolean;
   func?: () => void;
+  dir?: "left" | "right";
 }
 
 export default function Header({
@@ -24,6 +25,7 @@ export default function Header({
   isBorder = false,
   isTransparent,
   func,
+  dir = "left",
 }: IHeader) {
   function HeaderLayout() {
     return (
@@ -34,7 +36,12 @@ export default function Header({
       >
         <Box w="130px" pl={1}>
           {isBack && (
-            <ArrowBackButton func={func} color={isTransparent ? "white" : "mint"} url={url} />
+            <ArrowBackButton
+              func={func}
+              color={isTransparent ? "white" : "mint"}
+              url={url}
+              dir={dir}
+            />
           )}
         </Box>
         <Box

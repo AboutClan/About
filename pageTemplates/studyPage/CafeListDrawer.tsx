@@ -9,7 +9,7 @@ interface CafeListDrawerProps {
   onClose: () => void;
   placeData: StudyPlaceProps[];
   pickReviewPlace: (id: string) => void;
-  type: "ids" | "drawer";
+  type: "ids" | "drawer" | "about";
   radiusKm?: number;
 }
 
@@ -57,7 +57,11 @@ export function CafeListDrawer({
             fontSize="20px"
             textAlign="start"
           >
-            {type === "drawer" ? "근처에 있는 카공 카페" : "해당 위치 카공 카페"}
+            {type === "about"
+              ? "어바웃님 PICK 카공 카페"
+              : type === "drawer"
+              ? "근처에 있는 카공 카페"
+              : "해당 위치 카공 카페"}
           </Box>
           <IconButton
             aria-label="닫기"
@@ -65,11 +69,16 @@ export function CafeListDrawer({
             variant="ghost"
             size="sm"
             ml={2}
+            border="none"
             onClick={onClose}
           />
         </Flex>{" "}
         <Box color="gray.500" mr="auto" fontSize="12px">
-          {type === "drawer" ? (
+          {type === "about" ? (
+            <>
+              항상 자리 여유가 있는 <b>{placeData?.length}개</b>의 카공 카페
+            </>
+          ) : type === "drawer" ? (
             <>
               반경 <b>{formatRadius(radiusKm ?? 0)}</b>에 <b>{placeData?.length}개</b>의 카공 카페가
               있어요!

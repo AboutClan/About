@@ -67,6 +67,7 @@ function RightDrawer({
             isSlide={false}
             func={onClose}
             rightPadding={headerBtn ? 4 : undefined}
+            dir={isFull ? "left" : "right"}
           >
             {headerBtn}
           </Header>

@@ -1,11 +1,57 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { MouseEvent } from "react";
+import { MouseEvent, ReactNode, RefObject, useEffect, useRef } from "react";
 
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { StudyPlaceFilter } from "../../../types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "../../../utils/validationUtils";
 import GuideButton from "./GuideButton";
+import ReviewButton from "./ReviewButton";
+
+const MAP_BTN_SHADOW = "0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)";
+
+interface FilterButtonProps {
+  type: StudyPlaceFilter;
+  filterType: StudyPlaceFilter;
+  onFilter: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, type: StudyPlaceFilter) => void;
+  activeColor?: string;
+  btnRef?: RefObject<HTMLButtonElement>;
+  children: ReactNode;
+}
+
+function FilterButton({
+  type,
+  filterType,
+  onFilter,
+  activeColor = "gray.900",
+  btnRef,
+  children,
+}: FilterButtonProps) {
+  const isActive = filterType === type;
+  const bg = isActive ? activeColor : "white";
+  return (
+    <Button
+      ref={btnRef}
+      flexShrink={0}
+      h="32px"
+      px={4}
+      borderRadius="20px"
+      boxShadow={MAP_BTN_SHADOW}
+      fontSize="11px"
+      fontWeight={600}
+      lineHeight="12px"
+      bg={bg}
+      color={isActive ? "white" : "gray.800"}
+      border={isActive ? "none" : "var(--border)"}
+      _hover={{ bg: isActive ? activeColor : "gray.100" }}
+      _active={{ opacity: 0.8 }}
+      _focus={{ bg }}
+      onClick={(e) => onFilter(e, type)}
+    >
+      {children}
+    </Button>
+  );
+}
 
 interface TopNavProps {
   handleLocationRefetch: () => void;
@@ -31,138 +77,96 @@ function TopNav({
   hasBackButton,
   onClose,
 }: TopNavProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const aboutBtnRef = useRef<HTMLButtonElement>(null);
+
   const handleFilter = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     type: StudyPlaceFilter,
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    setFilterType(type);
+    e.currentTarget.blur();
+    setFilterType(filterType === type ? "all" : type);
   };
+
+  useEffect(() => {
+    if (filterType !== "about" || !scrollContainerRef.current || !aboutBtnRef.current) return;
+    const container = scrollContainerRef.current;
+    const btn = aboutBtnRef.current;
+    const scrollLeft = btn.offsetLeft + btn.offsetWidth - container.clientWidth + 16;
+    container.scrollTo({ left: Math.max(0, scrollLeft), behavior: "smooth" });
+  }, [filterType]);
 
   return (
     <>
       <Flex
         w="100%"
-        // direction={isMapExpansion ? "row" : "row-reverse"}
-        justify="space-between"
+        flexDir="column"
         align="center"
-        px={5}
         py={4}
         position="absolute"
         top={isMapExpansion ? "112px" : "0"}
         left="0"
         zIndex={100}
+        bg="transparent"
       >
-        <Flex gap={2} h="32px">
+        <Flex
+          w="full"
+          ref={scrollContainerRef}
+          gap={2}
+          flex={1}
+          px={4}
+          overflowX="auto"
+          mr={!isMapExpansion ? 2 : 0}
+          bg="transparent"
+          sx={{
+            "::-webkit-scrollbar": { display: "none" },
+            scrollbarWidth: "none",
+          }}
+        >
           {isMainType && (
-            <Button
-              h="32px"
-              px={4}
-              borderRadius="20px"
-              border={filterType === "main" ? "none" : "var(--border)"}
-              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-              bg={filterType === "main" ? "gray.900" : "white"}
-              fontSize="11px"
-              color={filterType === "main" ? "white" : "gray.800"}
-              fontWeight={600}
-              lineHeight="12px"
-              onClick={(e) => handleFilter(e, "main")}
-              _hover={{
-                bg: "gray.900",
-              }}
-              _active={{
-                bg: "gray.900",
-              }}
-              _focus={{
-                bg: "gray.900",
-              }}
-            >
+            <FilterButton type="main" filterType={filterType} onFilter={handleFilter}>
               About 스터디 장소
-            </Button>
+            </FilterButton>
           )}
-          <Button
-            h="32px"
-            px={4}
-            borderRadius="20px"
-            border={filterType === "all" ? "none" : "var(--border)"}
-            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-            bg={filterType === "all" ? "gray.800" : "white"}
-            fontSize="11px"
-            color={filterType === "all" ? "white" : "gray.800"}
-            fontWeight={600}
-            lineHeight="12px"
-            onClick={(e) => handleFilter(e, "all")}
-            _hover={{
-              bg: "gray.900",
-            }}
-            _active={{
-              bg: "gray.900",
-            }}
-            _focus={{
-              bg: "gray.900",
-            }}
+          <FilterButton
+            type="all"
+            filterType={filterType}
+            onFilter={handleFilter}
+            activeColor="gray.800"
           >
             모든 카공 카페
-          </Button>
+          </FilterButton>
           {isMapExpansion && !isMainType && (
-            <Button
-              h="32px"
-              px={4}
-              borderRadius="20px"
-              border={filterType === "good" ? "none" : "var(--border)"}
-              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-              bg={filterType === "good" ? "gray.900" : "white"}
-              fontSize="11px"
-              color={filterType === "good" ? "white" : "gray.800"}
-              fontWeight={600}
-              lineHeight="12px"
-              onClick={(e) => handleFilter(e, "good")}
-              _hover={{
-                bg: "gray.900",
-              }}
-              _active={{
-                bg: "gray.900",
-              }}
-              _focus={{
-                bg: "gray.900",
-              }}
-            >
-              인기 카공 스팟
-            </Button>
-          )}{" "}
-          {!isMainType && (
-            <Button
-              h="32px"
-              px={4}
-              borderRadius="20px"
-              border={filterType === "best" ? "none" : "var(--border)"}
-              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-              bg={filterType === "best" ? "gray.900" : "white"}
-              fontSize="11px"
-              color={filterType === "best" ? "white" : "gray.800"}
-              fontWeight={600}
-              lineHeight="12px"
-              onClick={(e) => handleFilter(e, "best")}
-              _hover={{
-                bg: "gray.900",
-              }}
-              _active={{
-                bg: "gray.900",
-              }}
-              _focus={{
-                bg: "gray.900",
-              }}
-            >
-              베스트 카공 스팟
-            </Button>
+            <FilterButton type="good" filterType={filterType} onFilter={handleFilter}>
+              별점 4.0 이상
+            </FilterButton>
           )}
-        </Flex>{" "}
+          {!isMainType && (
+            <FilterButton type="best" filterType={filterType} onFilter={handleFilter}>
+              별점 4.5 이상
+            </FilterButton>
+          )}
+          {!isMainType && (
+            <FilterButton
+              type="about"
+              filterType={filterType}
+              onFilter={handleFilter}
+              btnRef={aboutBtnRef}
+            >
+              어바웃님 PICK
+            </FilterButton>
+          )}
+        </Flex>
+        <Box ml="auto" mt={5} mr={3}>
+          <ReviewButton />
+        </Box>
         {!isMapExpansion && (
           <Button
             borderRadius="4px"
             bgColor="white"
-            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+            boxShadow="0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)"
             w="32px"
             h="32px"
             size="sm"
@@ -184,7 +188,7 @@ function TopNav({
           {/* <Button
             rounded="full"
             bgColor="white"
-            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+            boxShadow="0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)"
             w="40px"
             h="40px"
             mb={3}
@@ -203,12 +207,12 @@ function TopNav({
       )}
       {isMapExpansion && (
         <Flex flexDir="column" pos="absolute" w="full" bottom={0} left={0} zIndex={300}>
-          <Flex px={5} justify="space-between" align="center" mb={4}>
+          <Flex px={4} justify="space-between" align="center" mb={4}>
             {hasBackButton ? (
               <Button
                 rounded="full"
                 bgColor="white"
-                boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+                boxShadow="0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)"
                 w="40px"
                 h="40px"
                 size="sm"
@@ -235,7 +239,7 @@ function TopNav({
                   borderRadius="full"
                   border="var(--border-main)"
                   borderColor="var(--gray-300)"
-                  boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+                  boxShadow="0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)"
                   bg="white"
                   mt="2px"
                   fontSize="13px"
@@ -253,7 +257,7 @@ function TopNav({
                 {/* <Button
                   rounded="full"
                   bgColor="white"
-                  boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+                  boxShadow="0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)"
                   w="40px"
                   h="40px"
                   minW="40px"
@@ -300,6 +304,18 @@ function TopNav({
 }
 
 export default TopNav;
+
+const StarIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="14px"
+    viewBox="0 -960 960 960"
+    width="14px"
+    fill="#1f1f1f"
+  >
+    <path d="M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z" />
+  </svg>
+);
 
 export function AddCafeIcon() {
   return (

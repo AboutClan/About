@@ -9,8 +9,14 @@ interface IArrowBackButton {
   url?: string;
   func?: () => void;
   color?: "mint" | "white";
+  dir?: "left" | "right";
 }
-export default function ArrowBackButton({ url, func, color = "mint" }: IArrowBackButton) {
+export default function ArrowBackButton({
+  url,
+  func,
+  color = "mint",
+  dir = "left",
+}: IArrowBackButton) {
   const router = useRouter();
   const [backUrl, setBackUrl] = useRecoilState(backUrlState);
 
@@ -29,19 +35,21 @@ export default function ArrowBackButton({ url, func, color = "mint" }: IArrowBac
     } else if (window.history.length > 1) router.back();
   };
 
-  return <ArrowBackButtonUI onClick={handleGoBack} color={color} />;
+  return <ArrowBackButtonUI onClick={handleGoBack} color={color} dir={dir} />;
 }
 
 export function ArrowBackButtonUI({
   onClick,
   color,
+  dir,
 }: {
   onClick: () => void;
   color: "mint" | "white";
+  dir: "left" | "right";
 }) {
   return (
     <ButtonWrapper onClick={onClick}>
-      <ShortArrowIcon size="lg" dir="left" color={color} />
+      <ShortArrowIcon size="lg" dir={dir} color={color} />
     </ButtonWrapper>
   );
 }
