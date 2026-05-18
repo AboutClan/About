@@ -91,7 +91,6 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
             end: voteTime.end,
           },
           status: "open",
-        
         };
 
         handleStudyVote(voteData);
@@ -175,11 +174,13 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
             </Flex>
           </>
         )}
-        <BottomNav
-          isSlide={false}
-          text={isFirstPage ? "다 음" : "스터디 개설"}
-          onClick={handleBottomNav}
-        />
+      
+          <BottomNav
+            isSlide={false}
+            text={isFirstPage ? "다 음" : "스터디 개설"}
+            onClick={handleBottomNav}
+          />
+      
       </RightDrawer>
       {isMapOpen && (
         <StudyPageMap
@@ -187,6 +188,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
           isDefaultOpen
           onClose={() => setIsMapOpen(false)}
           isCafeMap={false}
+          noModalUpdate
         />
       )}
 

@@ -18,6 +18,7 @@ interface PlaceInfoDrawerProps {
   isDown?: boolean;
   isChange?: boolean;
   pickReviewPlace: (id: string) => void;
+  zIndex?: number;
 }
 
 function PlaceInfoDrawer({
@@ -27,6 +28,7 @@ function PlaceInfoDrawer({
   isDown = false,
   isChange,
   pickReviewPlace,
+  zIndex = 1000,
 }: PlaceInfoDrawerProps) {
   return (
     <>
@@ -36,7 +38,7 @@ function PlaceInfoDrawer({
         isDrawerUp
         setIsModal={onClose}
         isOverlay
-        zIndex={1000}
+        zIndex={zIndex}
       >
         <PlaceInfoBox
           placeInfo={placeInfo}

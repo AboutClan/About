@@ -36,6 +36,7 @@ interface StudyPageMapProps {
   isCafeMap: boolean;
   defaultLocation?: CoordinatesProps;
   hasBackButton?: boolean;
+  noModalUpdate?: boolean;
 }
 
 function StudyPageMap({
@@ -47,6 +48,7 @@ function StudyPageMap({
   isCafeMap,
   defaultLocation,
   hasBackButton = false,
+  noModalUpdate = false,
 }: StudyPageMapProps) {
   const router = useRouter();
 
@@ -120,6 +122,7 @@ function StudyPageMap({
   );
 
   useEffect(() => {
+    if (noModalUpdate) return;
     if (modalParam !== "reviewPlace" && modalParam !== "addReview") {
       setReviewId(null);
       if (modalParam !== "placeDrawer" && drawerType === "placeInfo") {
@@ -194,9 +197,11 @@ function StudyPageMap({
   console.log(zoomNumber);
   useEffect(() => {
     if (!placeInfo) {
-      updateQuery({
-        modal: null,
-      });
+      if (!noModalUpdate) {
+        updateQuery({
+          modal: null,
+        });
+      }
       return;
     }
     setMapOptions((prev) =>
@@ -290,9 +295,11 @@ function StudyPageMap({
       if (ids && ids.length > 1) {
         setIds(ids);
         setDrawerType("list");
-        updateQuery({
-          modal: "list",
-        });
+        if (!noModalUpdate) {
+          updateQuery({
+            modal: "list",
+          });
+        }
         return;
       }
       const findPlace = placeData?.find((place) => place._id === id);
@@ -304,11 +311,13 @@ function StudyPageMap({
         ...prev,
         zoom: currentZoom,
       }));
-      updateQuery({
-        modal: "placeDrawer",
-      });
+      if (!noModalUpdate) {
+        updateQuery({
+          modal: "placeDrawer",
+        });
+      }
     },
-    [placeData, updateQuery],
+    [placeData, updateQuery, noModalUpdate],
   );
 
   useEffect(() => {
@@ -434,7 +443,7 @@ function StudyPageMap({
           mx={!isMapExpansion ? 5 : 0}
           top={0}
           left={0}
-          zIndex={isDefaultOpen && !isDown ? 1000 : isMapExpansion ? 1000 : 0}
+          zIndex={noModalUpdate ? 3500 : isDefaultOpen && !isDown ? 1000 : isMapExpansion ? 1000 : 0}
           {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { height: "100svh" })}
           w={isMapExpansion ? "full" : "auto"}
           bg="transparent"
@@ -494,9 +503,11 @@ function StudyPageMap({
               }}
               onClose={() => {
                 if (onClose) {
-                  updateQuery({
-                    modal: undefined,
-                  });
+                  if (!noModalUpdate) {
+                    updateQuery({
+                      modal: undefined,
+                    });
+                  }
 
                   if (isMapExpansion) {
                     setIsMapExpansion(false);
@@ -546,7 +557,7 @@ function StudyPageMap({
             setDrawerType(null);
             setPlaceInfo(null);
             setSelectedPlaceId(null);
-            router.back();
+            if (!noModalUpdate) router.back();
           }}
           isDown={isDown}
           isChange={!!defaultLocation}
@@ -556,6 +567,7 @@ function StudyPageMap({
               modal: "reviewPlace",
             });
           }}
+          zIndex={noModalUpdate ? 4000 : 1000}
         />
       )}
       {drawerType === "list" && (
