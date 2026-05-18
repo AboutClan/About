@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -18,7 +18,7 @@ function LoginPage() {
   const { status, page, error: errorParam } = router.query;
   const { data: session } = useSession();
   const toast = useToast();
-
+  console.log(session?.user);
   const [errorUserUid, setErrorUserUid] = useState<string>(null);
   // 화면 비율 계산 (SSR-safe)
   const [ratio, setRatio] = useState<number | null>(null);

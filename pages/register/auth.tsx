@@ -70,7 +70,7 @@ export default function Auth() {
   const process = async () => {
     setAuthIntent();
     await signOut({ redirect: false });
-    await signIn("kakao");
+    await signIn("kakao", { callbackUrl: "/register/auth" });
   };
 
   const handleWebTransactionId = useCallback(
