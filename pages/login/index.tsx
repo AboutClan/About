@@ -89,12 +89,6 @@ function LoginPage() {
   const [isModal, setIsModal] = useState(false);
 
   const customSignin = async (type: "kakao" | "guest" | "apple") => {
-    await signIn("credentials", {
-      username: "test",
-      password: "test",
-      callbackUrl: "/home",
-    });
-    return;
     if (type === "kakao" && isWebView() && !session) {
       setIsModal(true);
       return;
