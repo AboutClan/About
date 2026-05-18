@@ -36,7 +36,7 @@ function BottomNav({
         bottom={getSafeAreaBottom(8)}
         maxW="var(--view-max-width)"
         transform="translate(-50%,0)"
-        width="calc(100% - 2*var(--gap-4))"
+        width={isSlide ? "calc(100% - 2*var(--gap-4))" : "full"}
         size="lg"
         borderRadius="12px"
         backgroundColor={isActive ? "var(--color-mint)" : "gray.400"}

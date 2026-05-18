@@ -56,6 +56,7 @@ export interface StudyRatingProps {
   table: number;
   user: string;
   createdAt: string;
+  name?: string;
 }
 export interface StudyPlaceProps extends PlaceRegisterProps {
   _id: string;

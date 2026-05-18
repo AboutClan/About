@@ -7,6 +7,8 @@ import { CAFE_REVIEW_ARR, STUDY_PLACE, STUDY_VOTE } from "../../constants/keys/q
 import { useToast } from "../../hooks/custom/CustomToast";
 
 import { useStudyPlaceReviewMutation } from "../../hooks/study/mutations";
+import { ModalLayout } from "../../modals/Modals";
+import { Input } from "../atoms/Input";
 import Textarea from "../atoms/Textarea";
 import { StarIcon } from "../Icons/StarIcon";
 import BottomNav from "../layouts/BottomNav";
@@ -17,11 +19,14 @@ export interface PlaceReviewProps2 {
   space: number;
   etc: number;
   comment: string;
+  name: string;
 }
 
 function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void }) {
   const toast = useToast();
   const [text, setText] = useState<string>("");
+  const [isNicknameModal, setIsNicknameModal] = useState(false);
+  const [nickname, setNickname] = useState("");
 
   const queryClient = useQueryClient();
 
@@ -43,11 +48,15 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
     space: 3,
     etc: 3,
     comment: "",
+    name: "",
   });
 
-  const handleSubmit = () => {
-    mutate({ ...review, comment: text });
-    return;
+  const handleSubmit = (type: "1" | "2") => {
+    if (type === "1" && (nickname.trim().length > 5 || nickname.trim().length < 1)) {
+      toast("warning", "닉네임 글자 수를 확인해 주세요!");
+      return;
+    }
+    mutate({ ...review, comment: text, name: nickname.trim() || "익명" });
   };
 
   return (
@@ -57,7 +66,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
           카페는 공부하기에 어떤가요?
         </Box>
         <Box as="span" fontSize="13px" lineHeight="20px" color="gray.600">
-          익명으로 작성됩니다. 솔직한 리뷰를 남겨주세요!
+          카공러 입장에서의 솔직한 리뷰를 남겨주세요!
         </Box>
       </Flex>
       <Flex flexDir="column" mb={5}>
@@ -66,9 +75,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
         </Box>
         <StarBlock
           rating={review.mood}
-          setRating={(value: number) => {
-            setReview((old) => ({ ...old, mood: value }));
-          }}
+          setRating={(value: number) => setReview((old) => ({ ...old, mood: value }))}
         />
       </Flex>
       <Flex flexDir="column" mb={5}>
@@ -77,9 +84,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
         </Box>
         <StarBlock
           rating={review.table}
-          setRating={(value: number) => {
-            setReview((old) => ({ ...old, table: value }));
-          }}
+          setRating={(value: number) => setReview((old) => ({ ...old, table: value }))}
         />
       </Flex>
       <Flex flexDir="column" mb={5}>
@@ -88,9 +93,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
         </Box>
         <StarBlock
           rating={review.space}
-          setRating={(value: number) => {
-            setReview((old) => ({ ...old, space: value }));
-          }}
+          setRating={(value: number) => setReview((old) => ({ ...old, space: value }))}
         />
       </Flex>
       <Flex flexDir="column" mb={5}>
@@ -99,11 +102,9 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
         </Box>
         <StarBlock
           rating={review.etc}
-          setRating={(value: number) => {
-            setReview((old) => ({ ...old, etc: value }));
-          }}
+          setRating={(value: number) => setReview((old) => ({ ...old, etc: value }))}
         />
-      </Flex>{" "}
+      </Flex>
       <FormControl mt={2} mb={3}>
         <Textarea
           placeholder="(선택) 카페 후기를 작성할 수 있습니다. 해당 내용은 다른 사람들에게 공유됩니다."
@@ -115,7 +116,28 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
           color="gray.700"
         />
       </FormControl>
-      <BottomNav isSlide={false} text="평가 완료" onClick={handleSubmit} isLoading={isLoading} />
+      <BottomNav isSlide={false} text="평가 완료" onClick={() => setIsNicknameModal(true)} />
+      {isNicknameModal && (
+        <ModalLayout
+          title="닉네임을 사용할까요?"
+          setIsModal={setIsNicknameModal}
+          isCloseButton={false}
+          footerOptions={{
+            main: { text: "닉네임 제출", func: () => handleSubmit("1"), isLoading },
+            sub: { text: "익명 제출", func: () => handleSubmit("2") },
+          }}
+        >
+          <Box>
+            <Input
+              placeholder="닉네임 (다섯 글자 이내)"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              maxLength={5}
+              size="md"
+            />
+          </Box>
+        </ModalLayout>
+      )}
     </Flex>
   );
 }
@@ -127,9 +149,7 @@ function StarBlock({ rating, setRating }: { rating: number; setRating: (value: n
         <Box
           key={star}
           as="button"
-          onClick={() => {
-            setRating(star);
-          }}
+          onClick={() => setRating(star)}
           cursor="pointer"
           mt="1.5px"
           pr="1"

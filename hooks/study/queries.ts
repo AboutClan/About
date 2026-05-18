@@ -227,6 +227,19 @@ export const useStudyPlacesQuery = (
     },
     options,
   );
+export const useStudyReviewsQuery = (
+  status: StudyPlaceFilter,
+  options?: QueryOptions<StudyPlaceProps[]>,
+) =>
+  useQuery<StudyPlaceProps[], AxiosError, StudyPlaceProps[]>(
+    [STUDY_PLACE, status, "23"],
+    async () => {
+      const res = await axios.get<StudyPlaceProps[]>(`${SERVER_URI}/place/ratings`, {});
+
+      return res.data;
+    },
+    options,
+  );
 
 // export const useStudyVoteOneQuery = (
 //   date: string,

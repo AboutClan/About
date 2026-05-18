@@ -33,7 +33,7 @@ function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
           />
           <Flex h="30px" ml={2} flexDir="column" align="start">
             <Box fontSize="11px" color="gray.800">
-              익명 {idx}
+              {!review?.name || review?.name === "익명" ? `익명 ${idx}` : review.name}
             </Box>
             <Box mt="auto" fontSize="10px" color="gray.500" lineHeight="12px">
               {dayjsToFormat(dayjs(createdAt), "YYYY.MM.DD")}

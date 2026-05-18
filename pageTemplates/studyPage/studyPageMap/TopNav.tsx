@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { MouseEvent } from "react";
 
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
@@ -223,7 +223,9 @@ function TopNav({
                 <AddCafeIcon2 />
               </Button>
             ) : (
-              <CurrentLocationBtn onClick={handleLocationRefetch} isBig={true} />
+              <Box>
+                <CurrentLocationBtn onClick={handleLocationRefetch} isBig={true} />
+              </Box>
             )}
 
             {!isMainType && (
@@ -244,7 +246,9 @@ function TopNav({
                   리스트로 보기
                 </Button>
 
-                <GuideButton />
+                <Box>
+                  <GuideButton />
+                </Box>
 
                 {/* <Button
                   rounded="full"
