@@ -505,6 +505,10 @@ function StudyPageMap({
               }}
               isMapExpansion={isMapExpansion}
               openList={() => {
+                if (filterType === "about") {
+                  setDrawerType("about");
+                  return;
+                }
                 updateQuery({
                   modal: "list",
                 });
