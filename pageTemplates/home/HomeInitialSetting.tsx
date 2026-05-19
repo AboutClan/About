@@ -125,7 +125,6 @@ function HomeInitialSetting() {
 
   const { data: userInfo } = useUserInfoQuery({
     onSuccess(data) {
-      console.log(54, data);
       if (data.isActive === false) {
         toast("warning", "신규 가입 페이지로 이동합니다.");
         router.push("/register/auth");
@@ -150,7 +149,6 @@ function HomeInitialSetting() {
       router.push("/login");
     },
   });
-  console.log(4, userInfo, session);
   const { mutate: setRole } = useUserInfoFieldMutation("role", {
     onSuccess() {
       toast("success", "동아리원이 되었습니다.");

@@ -44,7 +44,6 @@ function GatherWritingUserConditionModal({
         max: 8,
       },
   );
-  console.log(setMemberCnt);
   const [age, setAge] = useState(gatherContent?.age || [19, 28]);
 
   useEffect(() => {

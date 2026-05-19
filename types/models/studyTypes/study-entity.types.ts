@@ -49,13 +49,13 @@ export interface StudyConfirmedMemberProps extends TimeStampProps {
 
 export type StudyPlaceFilter = "main" | "best" | "good" | "all" | "about";
 export interface StudyRatingProps {
-  comment: string;
+  comment?: string;
   etc: number;
   mood: number;
   space: number;
   table: number;
-  user: string;
-  createdAt: string;
+  user?: string;
+  createdAt?: string;
   name?: string;
 }
 export interface StudyPlaceProps extends PlaceRegisterProps {

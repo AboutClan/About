@@ -223,12 +223,17 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     ],
   },
   {
+    date: "2026-05-19",
+    isCompleted: true,
+    textArr: ["실시간 카공 피드 출시 (우측 상단)", "검증된 카공러 PICK 아카이브 추가"],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
     textArr: [
       "카페 상세 정보 추가 예정 (ex. 주차, 화장실)",
       "카공 카페 랭킹 게시판 예정",
-      "최근 후기 모아보기 기능 예정",
+
       "아이폰/안드로이드 앱 출시 예정",
     ],
   },

@@ -76,7 +76,6 @@ function Notice() {
   const [tab, setTab] = useState(null);
 
   const { mutate } = useSendNotificationAllMutation("all");
-  console.log(mutate);
 
   // 제목 길이 조절하기.
   const monthAlert = {

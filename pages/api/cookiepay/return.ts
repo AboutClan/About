@@ -64,13 +64,6 @@ function encodeMsg(msg: string) {
 const RESULT_PATH = "/register/access";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log("cookiepay return content-type:", req.headers["content-type"]);
-  console.log("ENV check:", {
-    NEXT_PUBLIC_COOKIEPAY_API_ID: !!process.env.NEXT_PUBLIC_COOKIEPAY_API_ID,
-    COOKIEPAY_API_ID: !!process.env.COOKIEPAY_API_ID,
-    COOKIEPAY_API_KEY: !!process.env.COOKIEPAY_API_KEY,
-  });
-  console.log("method:", req.method);
 
   try {
     const query = normalizePayload((req.query ?? {}) as Record<string, any>);
@@ -78,12 +71,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let bodyObj: Record<string, any> = {};
     const ct = String(req.headers["content-type"] ?? "").toLowerCase();
 
-    console.log("query keys:", Object.keys(req.query ?? {}));
 
     if (req.method === "POST") {
       const raw = await readRawBody(req);
-      console.log("raw head:", raw.slice(0, 300));
-      console.log("raw includes ENC_DATA:", raw.includes("ENC_DATA"));
 
       if (ct.includes("application/x-www-form-urlencoded")) {
         bodyObj = normalizePayload((parseQs(raw) ?? {}) as any);
@@ -100,12 +90,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const RESULTMSG = String(payload.RESULTMSG ?? "");
     const ENC_DATA = payload.ENC_DATA ? String(payload.ENC_DATA) : "";
 
-    console.log("payload flags:", {
-      RESULTCODE,
-      RESULTMSG,
-      has_ENC_DATA: !!ENC_DATA,
-      enc_len: ENC_DATA?.length ?? 0,
-    });
 
     // 1) 리턴 단계 실패
     if (RESULTCODE && RESULTCODE !== "0000") {
@@ -135,7 +119,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       const cert = await paycertWithRetry(tid);
-      console.log("paycert:", { rc: cert?.RESULTCODE, msg: cert?.RESULTMSG });
 
       // 2) paycert 실패(최종 실패)
       if (cert?.RESULTCODE !== "0000") {
@@ -175,7 +158,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // ---- B) 암호화 리턴 ----
     const dec = await cookiepayDecrypt(ENC_DATA);
-    console.log("decrypt:", { rc: dec?.RESULTCODE, msg: dec?.RESULTMSG });
 
     if (dec?.RESULTCODE !== "0000" || !dec?.decryptData) {
       redirect(
@@ -203,7 +185,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const cert = await paycertWithRetry(tid);
-    console.log("paycert:", { rc: cert?.RESULTCODE, msg: cert?.RESULTMSG });
 
     if (cert?.RESULTCODE !== "0000") {
       upsertPayment({

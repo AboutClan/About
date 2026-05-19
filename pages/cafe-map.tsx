@@ -11,11 +11,9 @@ function StudyMap() {
   const { data: session } = useSession();
 
   const { data } = useStudyReviewsQuery();
-  console.log(21, data);
 
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
-  console.log(session);
 
   useEffect(() => {
     // 게스트 세션 자동 생성. redirect: false 가 핵심 —

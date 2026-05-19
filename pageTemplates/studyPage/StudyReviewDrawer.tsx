@@ -9,11 +9,7 @@ import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewB
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { CAFE_REVIEW_ARR } from "../../constants/keys/queryKeys";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
-import {
-  StudyPlaceProps,
-  StudyRatingProps,
-} from "../../types/models/studyTypes/study-entity.types";
-import { getTodayStr } from "../../utils/dateTimeUtils";
+import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { getRandomImage } from "../../utils/imageUtils";
 
 interface RightReviewDrawer2Props {
@@ -50,25 +46,40 @@ export function StudyReviewDrawer({
   const isCompleted =
     parsedIds.includes(placeInfo._id) ||
     (userInfo?.role !== "guest" && placeInfo?.ratings?.some((r) => r.user === userInfo?._id));
-  const temp: StudyRatingProps = {
-    comment: "",
-    etc: 4,
-    mood: 5,
-    space: 5,
-    table: 4,
-    user: "",
-    createdAt: getTodayStr(),
+
+  const getNaturalRatings = (
+    rating: number,
+    seed: number,
+  ): {
+    mood: number;
+    table: number;
+    space: number;
+    etc: number;
+  } => {
+    const candidates = [
+      [0, 0, 0, 0],
+      [0.5, 0, 0, -0.5],
+      [0.5, 0.5, -0.5, -0.5],
+      [1, 0, -0.5, -0.5],
+      [0.5, 0, 0, -0.5],
+    ];
+
+    const offsets = candidates[seed % candidates.length];
+
+    return {
+      mood: Math.min(5, Math.max(0, rating + offsets[0])),
+      table: Math.min(5, Math.max(0, rating + offsets[1])),
+      space: Math.min(5, Math.max(0, rating + offsets[2])),
+      etc: Math.min(5, Math.max(0, rating + offsets[3])),
+    };
   };
-  const temp2: StudyRatingProps = {
-    comment: "",
-    etc: 4,
-    mood: 5,
-    space: 3,
-    table: 5,
-    user: "",
-    createdAt: getTodayStr(),
-  };
-  const reviewArr = ratings?.length ? ratings : [temp, temp2];
+
+  const seed = Number(placeInfo?.location?.latitude?.toString().slice(-1));
+
+  const naturalRatings = getNaturalRatings(4.5, seed || 0);
+  const naturalRatings2 = getNaturalRatings(4, seed || 0);
+
+  const reviewArr = ratings?.length ? ratings : [naturalRatings, naturalRatings2];
   const isCurrentTimeInRange = (timeRange: string) => {
     const [start, end] = timeRange.split(" - ");
 
@@ -78,7 +89,7 @@ export function StudyReviewDrawer({
   };
   const hour = placeInfo?.operatingHours?.[0]?.[1] || "08:00 - 22:00";
   const isCurrent = isCurrentTimeInRange(hour);
-  console.log(5, reviewArr);
+
   return (
     <RightDrawer title="리뷰 게시판" zIndex={zIndex} onClose={onClose}>
       {/* position:relative + minHeight:100dvh로 BottomNav(position:absolute)의 기준을
@@ -119,7 +130,9 @@ export function StudyReviewDrawer({
                   </Text>
                 </Flex>
                 <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center">
-                  {isCurrent ? "영업중" : "영업 종료"}
+                  <Box color="gray.500" fontWeight={600}>
+                    {isCurrent ? "영업중" : "영업 종료"}
+                  </Box>
                   <Box color="gray.400" fontWeight={400}>
                     ・
                   </Box>

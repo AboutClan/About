@@ -67,15 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // paycert 결과가 certJson에 들어있다고 가정
   if (certJson?.RESULTCODE === "0000") {
     // 여기서 "결제 성공 처리"를 했다고 가정 (DB 대신 로그로만)
-    console.log("[COOKIEPAY SUCCESS]", {
-      orderNo: certJson.ORDERNO,
-      tid: certJson.TID,
-      amount: certJson.AMOUNT,
-      paymethod: certJson.PAYMETHOD,
-      acceptDate: certJson.ACCEPTDATE,
-    });
   } else {
-    console.log("[COOKIEPAY FAIL]", certJson);
   }
 
   return res.status(200).json(certJson);

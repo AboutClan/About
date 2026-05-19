@@ -8,21 +8,17 @@ import { DeviceInfo } from "./types";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {
-    console.log("[PushInit] effect enter", { uid, isWebView: isWebView() });
 
     if (!uid) {
-      console.log("[PushInit] no uid -> skip");
       return;
     }
 
     if (!isWebView()) {
-      console.log("[PushInit] not webview -> skip");
       return;
     }
 
     const initializePushService = async () => {
       try {
-        console.log("[PushInit] calling waitForDeviceInfo...");
         await waitForDeviceInfo(uid);
       } catch (e) {
         console.error("[PushInit] waitForDeviceInfo error", e);
@@ -43,18 +39,11 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
       window.removeEventListener("message", handleDeviceInfo as any);
       document.removeEventListener("message", handleDeviceInfo as any);
       clearTimeout(timeoutId);
-      console.log(TAG, "cleanup done");
     };
 
     const finishResolve = (deviceInfo: DeviceInfo) => {
       if (settled) return;
       settled = true;
-      console.log(TAG, "✅ RESOLVE", {
-        tookMs: Date.now() - startedAt,
-        uid,
-        platform: (deviceInfo as any)?.platform,
-        hasFcmToken: Boolean((deviceInfo as any)?.fcmToken),
-      });
       cleanup();
       resolve(deviceInfo);
     };
@@ -83,12 +72,6 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
       const raw = (event as any)?.data;
 
       // 너무 시끄러우면 아래 로그는 주석 처리
-      console.log(TAG, "message received", {
-        from,
-        rawType: typeof raw,
-        rawPreview:
-          typeof raw === "string" ? raw.slice(0, 200) : JSON.stringify(raw)?.slice(0, 200),
-      });
 
       let data: any;
       try {
@@ -99,33 +82,22 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
       }
 
       if (data?.name !== "deviceInfo") {
-        console.log(TAG, "ignored message (not deviceInfo):", data?.name);
         return;
       }
 
       const deviceInfo = data as DeviceInfo;
 
-      console.log(TAG, "🎯 deviceInfo received", {
-        uid,
-        platform: (deviceInfo as any)?.platform,
-        fcmTokenLen: String((deviceInfo as any)?.fcmToken ?? "").length,
-        appVersion: (deviceInfo as any)?.appVersion,
-        buildNumber: (deviceInfo as any)?.buildNumber,
-      });
 
       try {
-        console.log(TAG, "calling registerPushServiceWithApp...");
         await registerPushServiceWithApp({
           uid,
           fcmToken: (deviceInfo as any)?.fcmToken,
           platform: (deviceInfo as any)?.platform || "web",
         });
-        console.log(TAG, "registerPushServiceWithApp ✅ success");
 
         if (typeof window !== "undefined") {
           (window as any).AboutAppBridge = (window as any).AboutAppBridge || {};
           (window as any).AboutAppBridge.platform = (deviceInfo as any)?.platform || "web";
-          console.log(TAG, "AboutAppBridge.platform set:", (window as any).AboutAppBridge.platform);
           (window as any).__ABOUT_PLATFORM__ = (deviceInfo as any)?.platform || null;
         }
 
@@ -136,15 +108,12 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
       }
     };
 
-    console.log(TAG, "start", { uid });
 
     window.addEventListener("message", handleDeviceInfo as any);
     document.addEventListener("message", handleDeviceInfo as any);
 
-    console.log(TAG, "listeners attached -> requesting nativeMethodUtils.getDeviceInfo()");
     try {
       nativeMethodUtils.getDeviceInfo();
-      console.log(TAG, "nativeMethodUtils.getDeviceInfo() sent");
     } catch (e) {
       console.error(TAG, "nativeMethodUtils.getDeviceInfo() threw", e);
       finishReject(e);

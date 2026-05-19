@@ -14,7 +14,6 @@ export function useUserCurrentLocation() {
       const cached = sessionStorage.getItem(LOCATION_CACHE_KEY);
       if (cached) return JSON.parse(cached) as CoordinatesProps;
     } catch {
-      console.log(33);
     }
     return undefined;
   });
@@ -40,7 +39,6 @@ export function useUserCurrentLocation() {
           try {
             sessionStorage.setItem(LOCATION_CACHE_KEY, JSON.stringify(coords));
           } catch {
-            console.log(33);
           }
           setCoordinate(coords);
           setIsLoading(false);

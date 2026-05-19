@@ -19,6 +19,7 @@ import {
   RealTimesStudyStatus,
   StudyPlaceFilter,
   StudyPlaceProps,
+  StudyRatingProps,
 } from "../../types/models/studyTypes/study-entity.types";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
@@ -227,15 +228,46 @@ export const useStudyPlacesQuery = (
     },
     options,
   );
-export const useStudyReviewsQuery = (
-  status: StudyPlaceFilter,
+export const useStudyPlacesCursorQuery = (
+  cursor: number,
   options?: QueryOptions<StudyPlaceProps[]>,
 ) =>
   useQuery<StudyPlaceProps[], AxiosError, StudyPlaceProps[]>(
-    [STUDY_PLACE, status, "23"],
+    [STUDY_PLACE, "cursor", cursor],
     async () => {
-      const res = await axios.get<StudyPlaceProps[]>(`${SERVER_URI}/place/ratings`, {});
+      const res = await axios.get<StudyPlaceProps[]>(`${SERVER_URI}/place/cursor`, {
+        params: { cursor },
+      });
 
+      return res.data;
+    },
+    options,
+  );
+
+export interface StudyReviewProps {
+  placeInfo: StudyPlaceProps;
+  rating: StudyRatingProps;
+}
+
+export const useStudyReviewsQuery = (cursor: number, options?: QueryOptions<StudyReviewProps[]>) =>
+  useQuery<StudyReviewProps[], AxiosError, StudyReviewProps[]>(
+    [STUDY_PLACE, "review", cursor],
+    async () => {
+      const res = await axios.get<StudyReviewProps[]>(`${SERVER_URI}/place/ratings`, {
+        params: { cursor },
+      });
+      return res.data;
+    },
+    options,
+  );
+
+export const useStudyNewPlacesQuery = (cursor: number, options?: QueryOptions<StudyPlaceProps[]>) =>
+  useQuery<StudyPlaceProps[], AxiosError, StudyPlaceProps[]>(
+    [STUDY_PLACE, "new", cursor],
+    async () => {
+      const res = await axios.get<StudyPlaceProps[]>(`${SERVER_URI}/place/new`, {
+        params: { cursor },
+      });
       return res.data;
     },
     options,

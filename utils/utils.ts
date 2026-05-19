@@ -21,7 +21,6 @@ const key = "ESWwoYQplyTZN+vifnWcRA==";
 
 export const decodeByAES256 = (encodedTel: string) => {
   try {
-    // console.log(4, key);
     if (!key) return encodedTel;
 
     const bytes = CryptoJS.AES.decrypt(encodedTel, key);

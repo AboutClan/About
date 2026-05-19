@@ -165,7 +165,6 @@ function VoteMap({
 
       if (process.env.NODE_ENV !== "production") {
         // eslint-disable-next-line no-console
-        console.log("[VoteMap] idle fired", { lat, lng, radiusKm, viewportRadiusKm });
       }
 
       if (lat == null || lng == null) return;

@@ -36,7 +36,6 @@ function WritingStudyImage() {
       router.push(`/studyPage?date=${getStudyViewDate(dayjs())}`);
     },
   });
-  console.log(mutate);
   const onClickNext = () => {
     if (!imageProps?.mainImage || !imageProps?.coverImage) {
       toast("warning", "이미지를 선택해 주세요.");

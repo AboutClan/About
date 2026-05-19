@@ -61,6 +61,7 @@ export function PlaceInfoBox({
   isChange,
   handleClick,
   isShort = false,
+  customSubText,
 }: {
   placeInfo: StudyPlaceProps;
   isDown: boolean;
@@ -68,6 +69,7 @@ export function PlaceInfoBox({
   isChange?: boolean;
   handleClick: () => void;
   isShort?: boolean;
+  customSubText?: string;
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -77,7 +79,6 @@ export function PlaceInfoBox({
     (ratings?.length || 0) + 2 + Number(placeInfo?.location?.latitude?.toString().slice(-1));
 
   const rating = placeInfo?.rating || 3.5;
-  console.log(3232, placeInfo, ratings);
   const result = Array.isArray(ratings)
     ? ratings.reduce(
         (acc, cur) => {
@@ -191,7 +192,7 @@ export function PlaceInfoBox({
           <Flex direction="column" flex={1} minW={0} mr={3}>
             <Box mb={2}>
               <Badge px={2} py={1} fontSize="11px" color="gray.500" bg="rgba(142,160,172,0.08)">
-                {placeInfo?.registrant?.name || "어바웃"}님 PICK
+                {placeInfo?.name || placeInfo?.registrant?.name || "어바웃"}님 PICK
               </Badge>
             </Box>
 
@@ -218,7 +219,7 @@ export function PlaceInfoBox({
                   whiteSpace="nowrap"
                   width="100%"
                 >
-                  {placeInfo.location.address}
+                  {customSubText ?? placeInfo.location.address}
                 </Text>
               </Flex>
               <Flex fontSize="13px" lineHeight="20px" color="gray.600" align="center">
@@ -302,7 +303,7 @@ export function PlaceInfoBox({
             </Box> */}
           </Flex>
         )}
-        <Flex py={2} pt={1} w="full" mt="auto">
+        <Flex py={2} pt={3} w="full" mt="auto">
           <Button colorScheme="black" size="lg" mr={3} flex={1} onClick={handleReviewClick}>
             네이버 지도
           </Button>

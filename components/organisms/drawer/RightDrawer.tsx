@@ -13,6 +13,7 @@ interface RightUserDrawerProps {
   isOverlayClickable?: boolean;
   deferChildren?: boolean;
   isFull?: boolean;
+  stickyHeader?: boolean;
 }
 
 function RightDrawer({
@@ -25,6 +26,7 @@ function RightDrawer({
   isOverlayClickable = false,
   deferChildren = true,
   isFull = true,
+  stickyHeader = false,
 }: RightUserDrawerProps) {
   const [canRenderChildren, setCanRenderChildren] = useState(!deferChildren);
 
@@ -62,15 +64,22 @@ function RightDrawer({
         ml="auto"
       >
         <DrawerBody p="0" w="100%" sx={{ touchAction: "pan-y", overscrollBehavior: "contain" }}>
-          <Header
-            title={title}
-            isSlide={false}
-            func={onClose}
-            rightPadding={headerBtn ? 4 : undefined}
-            dir={isFull ? "left" : "right"}
+          <Box
+            position={stickyHeader ? "sticky" : "static"}
+            top={0}
+            zIndex={1}
+            bg="white"
           >
-            {headerBtn}
-          </Header>
+            <Header
+              title={title}
+              isSlide={false}
+              func={onClose}
+              rightPadding={headerBtn ? 4 : undefined}
+              dir={isFull ? "left" : "right"}
+            >
+              {headerBtn}
+            </Header>
+          </Box>
 
           <Box px={px ? 5 : 0}>{canRenderChildren ? children : null}</Box>
         </DrawerBody>

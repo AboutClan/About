@@ -49,7 +49,6 @@ function Access() {
     },
   });
 
-  console.log(approve);
 
   const onClickNext = () => {
     if (!session?.user.uid) {

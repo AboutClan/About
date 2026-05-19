@@ -71,7 +71,6 @@ export default function Page() {
   //   if (ticket === "on") {
   //     const removeParam = (key: string) => {
   //       const { [key]: _, ...rest } = router.query;
-  //       console.log(_);
   //       router.replace(
   //         {
   //           pathname: router.pathname,

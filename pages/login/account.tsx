@@ -26,7 +26,6 @@ function LoginId() {
       if (result?.error) {
         console.error("로그인 실패:", result?.error);
       } else {
-        console.log("로그인 성공!");
       }
     } else {
       toast("error", "아이디 비밀번호가 일치하지 않습니다.");

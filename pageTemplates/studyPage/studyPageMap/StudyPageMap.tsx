@@ -86,7 +86,6 @@ function StudyPageMap({
   // markerRadiusKm 와 달리 hysteresis 없이 idle 마다 직접 반영 — 리스트는
   // 사용자가 보는 것과 어긋나면 안 되고, 줌 단계마다 자연스레 단계적으로 변한다.
   const [viewportRadiusKm, setViewportRadiusKm] = useState(5);
-  console.log(42, viewportRadiusKm);
   // VoteMap idle 콜백. center 와 radius 를 한 번에 처리하고, useCallback 으로
   // 안정화해 VoteMap 의 idle listener effect 가 재등록되지 않게 한다.
   const handleCenterChange = useCallback(
@@ -196,7 +195,6 @@ function StudyPageMap({
     // 사용자가 명시적으로 "현재 위치" 버튼을 누르면 handleLocationRefetch 가 setMapOptions 를 직접 호출.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInfo, isMapExpansion, defaultLocation]);
-  console.log(zoomNumber);
   useEffect(() => {
     if (!placeInfo) {
       if (!noModalUpdate) {
@@ -265,20 +263,11 @@ function StudyPageMap({
     });
   }, [placeData, markerCenter, markerRadiusKm, filterType]);
   useEffect(() => {
-    console.log("currentMapCenter", currentMapCenter);
-    console.log("markerCenter", markerCenter);
   }, [currentMapCenter, markerCenter]);
-  console.log(56, visiblePlaceData);
   // 개발 환경에서만 필터 결과 가시화.
   useEffect(() => {
     if (process.env.NODE_ENV !== "production") {
       // eslint-disable-next-line no-console
-      console.log("[cafe-map markers]", {
-        total: placeData?.length ?? 0,
-        visible: visiblePlaceData.length,
-        markerCenter,
-        markerRadiusKm,
-      });
     }
   }, [placeData, visiblePlaceData, markerCenter, markerRadiusKm]);
 

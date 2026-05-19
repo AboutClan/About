@@ -21,7 +21,6 @@ export function CafeListDrawer({
   radiusKm,
 }: CafeListDrawerProps) {
   const a = placeData?.map((p) => p?.operatingHours?.[0]?.[1] || "08:00 - 22:00");
-  console.log("WOW", a);
   const formatRadius = (km: number) => {
     if (!Number.isFinite(km) || km <= 0) {
       return "100m";

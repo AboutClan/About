@@ -18,7 +18,6 @@ function LoginPage() {
   const { status, page, error: errorParam } = router.query;
   const { data: session } = useSession();
   const toast = useToast();
-  console.log(session?.user);
   const [errorUserUid, setErrorUserUid] = useState<string>(null);
   // 화면 비율 계산 (SSR-safe)
   const [ratio, setRatio] = useState<number | null>(null);
@@ -76,7 +75,6 @@ function LoginPage() {
         document.cookie = "signin_error_uid=; Path=/login; Max-Age=0; SameSite=Lax";
       }
     } catch {
-      console.log("error");
     }
 
     if (uid) {

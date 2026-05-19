@@ -24,7 +24,6 @@ function NoticeActive({ activeLogs }: INoticeActive) {
   const toast = useToast();
   const router = useRouter();
   const errorToast = useErrorToast();
-  console.log(activeLogs);
   let statusType: "approval" | "refusal" | "response";
 
   const resetQueryData = useResetQueryData();

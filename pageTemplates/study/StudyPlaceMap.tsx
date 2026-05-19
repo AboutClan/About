@@ -13,7 +13,6 @@ interface StudyPlaceMapProps {
 
 function StudyPlaceMap({ centerLocation }: StudyPlaceMapProps) {
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>();
-  console.log(centerLocation);
   return (
     <>
       <Box px={5} mt={1} mb={2}>

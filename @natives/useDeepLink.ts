@@ -17,14 +17,11 @@ export const useDeepLink = ({ token }: { token?: string | null }) => {
     if (token && pendingRef.current) {
       const target = pendingRef.current;
       pendingRef.current = null;
-      console.log("[DL] Pending target moved:", target);
       router.replace(target).catch(() => {});
     }
   }, [token, router]);
 
   useEffect(() => {
-    const log = (...args: any[]) => console.log("[DL]", ...args);
-
     const handleMessage = (event: any) => {
       // 1) 데이터 추출
       const raw = event?.data ?? event?.nativeEvent?.data;
@@ -62,19 +59,16 @@ export const useDeepLink = ({ token }: { token?: string | null }) => {
           : "";
 
       const target = `${normalizedPath}${qs}`;
-      log("최종 타겟 경로:", target);
 
       // 5) 이동 로직 (최신 토큰 상태 확인)
       const currentToken = tokenRef.current;
 
       if (!currentToken && !target.includes("login")) {
-        log("토큰이 없어 대기 상태로 전환:", target);
         pendingRef.current = target;
         return;
       }
 
-      log("라우터 이동 실행:", target);
-      router.push(target).catch((err) => log("이동 실패:", err));
+      router.push(target).catch(() => {});
     };
 
     // ✅ 리스너를 먼저 등록 (어떤 상황에서도 데이터 수신 가능하게)
@@ -86,7 +80,6 @@ export const useDeepLink = ({ token }: { token?: string | null }) => {
       const rnWebView = (window as any)?.ReactNativeWebView;
       if (rnWebView) {
         rnWebView.postMessage(JSON.stringify({ type: "webviewReady" }));
-        log("webviewReady 신호 전송 완료");
       }
     }, 200);
 

@@ -38,7 +38,6 @@ export const setAuthIntent = (): void => {
   try {
     sessionStorage.setItem(INTENT_KEY, String(ts));
   } catch {
-    console.log("error");
   }
 };
 
@@ -48,7 +47,6 @@ export const clearAuthIntent = (): void => {
   try {
     sessionStorage.removeItem(INTENT_KEY);
   } catch {
-    console.log("error");
   }
 };
 

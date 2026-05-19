@@ -28,7 +28,6 @@ export type StudySortedOption = "날짜순" | "인원순" | "거리순";
 
 function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectionProps) {
   const { data: session } = useSession();
-  console.log(setDate);
 
   const [lastIdx, setLastIdx] = useState(0);
 

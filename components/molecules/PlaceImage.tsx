@@ -69,7 +69,6 @@ function PlaceImage({
       typeToast("not-yet");
     }
 
-    console.log(e);
     return;
 
     switch (myPreferType) {
