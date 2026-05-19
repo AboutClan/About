@@ -36,7 +36,7 @@ function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
               {!review?.name || review?.name === "익명" ? `익명 ${idx}` : review.name}
             </Box>
             <Box mt="auto" fontSize="10px" color="gray.500" lineHeight="12px">
-              {dayjsToFormat(dayjs(createdAt), "YYYY.MM.DD")}
+              {createdAt ? dayjsToFormat(dayjs(createdAt), "YYYY.MM.DD") : "2026년 5월 17일"}
             </Box>
           </Flex>
         </Flex>

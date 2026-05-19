@@ -180,14 +180,16 @@ function ReviewButton() {
 
           {tab === "최근 후기" && (
             <Flex flexDir="column" px={4} pt={3}>
-              {reviews.items.map((item, idx) => (
-                <Box key={idx} pb={4} mb={1} borderBottom="var(--border)">
-                  <Text fontSize="13px" fontWeight={600} color="gray.700" mb={2}>
-                    {item.placeInfo?.location?.name}
-                  </Text>
-                  <StarRatingReviewBlock2 review={item.rating} idx={idx + 1} />
-                </Box>
-              ))}
+              {reviews.items.map((item, idx) => {
+                return (
+                  <Box key={idx} pb={4} mb={1} borderBottom="var(--border)">
+                    <Text fontSize="13px" fontWeight={600} color="gray.700" mb={2}>
+                      {item.placeInfo?.location?.name}
+                    </Text>
+                    <StarRatingReviewBlock2 review={item.rating} idx={idx + 1} />
+                  </Box>
+                );
+              })}
               <Box ref={reviewLoaderRef} h="1px" />
             </Flex>
           )}

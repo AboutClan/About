@@ -1,5 +1,5 @@
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { gaEvent } from "../libs/gtag";
