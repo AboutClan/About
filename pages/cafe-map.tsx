@@ -1,16 +1,13 @@
-import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { useStudyReviewsQuery } from "../hooks/study/queries";
 import { gaEvent } from "../libs/gtag";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 
 function StudyMap() {
   const { data: session } = useSession();
-
-  const { data } = useStudyReviewsQuery();
 
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
