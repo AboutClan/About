@@ -179,10 +179,10 @@ function ReviewButton() {
           </Flex>
 
           {tab === "최근 후기" && (
-            <Flex flexDir="column" px={4} pt={3}>
+            <Flex flexDir="column" px={4} pt={1}>
               {reviews.items.map((item, idx) => {
                 return (
-                  <Box key={idx} pb={4} mb={1} borderBottom="var(--border)">
+                  <Box key={idx} pt={2} pb={3} borderBottom="var(--border)">
                     <Text fontSize="13px" fontWeight={600} color="gray.700" mb={2}>
                       {item.placeInfo?.location?.name}
                     </Text>

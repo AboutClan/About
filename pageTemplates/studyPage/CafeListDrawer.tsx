@@ -20,7 +20,6 @@ export function CafeListDrawer({
   type,
   radiusKm,
 }: CafeListDrawerProps) {
-  const a = placeData?.map((p) => p?.operatingHours?.[0]?.[1] || "08:00 - 22:00");
   const formatRadius = (km: number) => {
     if (!Number.isFinite(km) || km <= 0) {
       return "100m";
@@ -37,57 +36,63 @@ export function CafeListDrawer({
     // 1km 이상이면 km 표시
     return `${Math.round(km)}km`;
   };
+
   return (
     <>
       <BottomFlexDrawer
         isDrawerUp
         isOverlay
-        height={600}
+        height={580}
         isHideBottom
         zIndex={1000}
         setIsModal={onClose}
+        headerSlot={
+          <>
+            <Flex pt={1} pb={0} w="100%" align="center">
+              <Box
+                lineHeight="32px"
+                flex="1"
+                minW={0}
+                fontWeight="semibold"
+                fontSize="20px"
+                textAlign="start"
+              >
+                {type === "about"
+                  ? "어바웃님 PICK 카공 카페"
+                  : type === "drawer"
+                  ? "근처에 있는 카공 카페"
+                  : "해당 위치 카공 카페"}
+              </Box>
+              <IconButton
+                aria-label="닫기"
+                icon={<XIcon />}
+                variant="ghost"
+                size="sm"
+                ml={2}
+                border="none"
+                cursor="pointer"
+                onClick={onClose}
+              />
+            </Flex>
+            <Box color="gray.500" mr="auto" fontSize="12px">
+              {type === "about" ? (
+                <>
+                  항상 자리 여유가 있는 <b>{placeData?.length}개</b>의 카공 카페
+                </>
+              ) : type === "drawer" ? (
+                <>
+                  반경 <b>{formatRadius(radiusKm ?? 0)}</b>에 <b>{placeData?.length}개</b>의 카공
+                  카페가 있어요!
+                </>
+              ) : (
+                <>
+                  해당 위치에 <b>{placeData?.length}개</b>의 카공 카페가 있어요!
+                </>
+              )}
+            </Box>
+          </>
+        }
       >
-        <Flex pt={1} pb={0} w="100%" align="center">
-          <Box
-            lineHeight="32px"
-            flex="1"
-            minW={0}
-            fontWeight="semibold"
-            fontSize="20px"
-            textAlign="start"
-          >
-            {type === "about"
-              ? "어바웃님 PICK 카공 카페"
-              : type === "drawer"
-              ? "근처에 있는 카공 카페"
-              : "해당 위치 카공 카페"}
-          </Box>
-          <IconButton
-            aria-label="닫기"
-            icon={<XIcon />}
-            variant="ghost"
-            size="sm"
-            ml={2}
-            border="none"
-            onClick={onClose}
-          />
-        </Flex>{" "}
-        <Box color="gray.500" mr="auto" fontSize="12px">
-          {type === "about" ? (
-            <>
-              항상 자리 여유가 있는 <b>{placeData?.length}개</b>의 카공 카페
-            </>
-          ) : type === "drawer" ? (
-            <>
-              반경 <b>{formatRadius(radiusKm ?? 0)}</b>에 <b>{placeData?.length}개</b>의 카공 카페가
-              있어요!
-            </>
-          ) : (
-            <>
-              해당 위치에 <b>{placeData?.length}개</b>의 카공 카페가 있어요!
-            </>
-          )}
-        </Box>
         <Flex
           flexDir="column"
           w="full"
@@ -96,7 +101,6 @@ export function CafeListDrawer({
           minH={0}
           overflowY="auto"
           borderTop="var(--border-main)"
-          borderTopWidth="2px"
           sx={{
             "::-webkit-scrollbar": { display: "none" },
             scrollbarWidth: "none",

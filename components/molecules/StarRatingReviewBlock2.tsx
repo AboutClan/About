@@ -54,7 +54,7 @@ function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
           {comment}
         </Box>
       )}
-      <Flex align="start" color="gray.500" mt={1} mb={2} ml={0.5}>
+      <Flex align="start" color="gray.500" mt={1} ml={0.5}>
         <Grid
           gridTemplateColumns="repeat(2,1fr)"
           gridGap="4px"
@@ -66,7 +66,6 @@ function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
           py={2}
           borderRadius="8px"
           color="gray.800"
-          mb={1}
         >
           <Flex>
             <Box w="56px">공부 분위기</Box>

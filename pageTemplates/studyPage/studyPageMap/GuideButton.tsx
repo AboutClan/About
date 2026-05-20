@@ -119,7 +119,9 @@ function GuideButton() {
               ? FAQ_ITEMS.map((item) => (
                   <FaqCard key={item.label} question={item.label} answer={item.text} />
                 ))
-              : UPDATE_ITEMS.map((item) => <UpdateCard key={item.date} {...item} />)}
+              : UPDATE_ITEMS.slice()
+                  .reverse()
+                  .map((item) => <UpdateCard key={item.date} {...item} />)}
           </Flex>
         </RightDrawer>
       )}
@@ -206,7 +208,7 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     date: "2026-05-17",
     isCompleted: true,
     textArr: [
-      "전체 인터페이스 UI 개선",
+      "전반적인 UI/UX 및 사용성 개선",
       "FAQ 및 업데이트 소식 기능 추가",
       "장소 추가 및 후기 작성 버튼 노출 문제 해결",
       "동일 카페 중복 등록 방지 기능 적용",
@@ -228,12 +230,16 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["실시간 카공 피드 출시 (우측 상단)", "검증된 카공러 PICK 아카이브 추가"],
   },
   {
+    date: "2026-05-20",
+    isCompleted: true,
+    textArr: ["전반적인 UI/UX 및 사용성 개선", "일부 오류 수정 및 안정성 개선"],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
     textArr: [
       "카페 상세 정보 추가 예정 (ex. 주차, 화장실)",
       "카공 카페 랭킹 게시판 예정",
-
       "아이폰/안드로이드 앱 출시 예정",
     ],
   },

@@ -59,7 +59,7 @@ function PlaceImage({
       : size === "lg"
       ? "100px"
       : size === "lg2"
-      ? "112px"
+      ? "108px"
       : "180px";
 
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {

@@ -27,7 +27,7 @@ export interface BottomFlexDrawerOptions {
 
 interface BottomFlexDrawerProps extends IModal {
   isHideBottom?: boolean;
-
+  headerSlot?: React.ReactNode;
   children: React.ReactNode;
   isDrawerUp: boolean;
   height: number;
@@ -39,6 +39,7 @@ interface BottomFlexDrawerProps extends IModal {
 export default function BottomFlexDrawer({
   setIsModal,
   isHideBottom,
+  headerSlot,
   drawerOptions,
   children,
   isDrawerUp,
@@ -71,12 +72,14 @@ export default function BottomFlexDrawer({
     if (isDrawerUp) setDrawerHeight(maxHeight);
     else setDrawerHeight(DRAWER_MIN_HEIGHT);
   }, [isDrawerUp, maxHeight]);
+
   useEffect(() => {
     return () => {
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
     };
   }, []);
+
   const handlePointerDown = (event) => {
     // 🔥 여기는 모달을 "닫으면 안 됨"
     const clientY = event.clientY ?? event.touches?.[0]?.clientY;
@@ -154,6 +157,11 @@ export default function BottomFlexDrawer({
               {drawerOptions?.header.subTitle}
             </Box>
           </Flex>
+        )}
+        {headerSlot && (
+          <Box w="full" cursor="grab" onPointerDown={handlePointerDown}>
+            {headerSlot}
+          </Box>
         )}
         <Flex
           direction="column"
