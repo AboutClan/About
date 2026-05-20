@@ -8,7 +8,7 @@ import { XIcon } from "./studyPageMap/TopNav";
 interface CafeListDrawerProps {
   onClose: () => void;
   placeData: StudyPlaceProps[];
-  pickReviewPlace: (id: string) => void;
+  pickReviewPlace: (place: StudyPlaceProps) => void;
   type: "ids" | "drawer" | "about";
   radiusKm?: number;
 }
@@ -117,7 +117,7 @@ export function CafeListDrawer({
                   isDown={false}
                   isShort
                   handleClick={() => {
-                    pickReviewPlace(place._id);
+                    pickReviewPlace(place);
                   }}
                 />
               </Box>

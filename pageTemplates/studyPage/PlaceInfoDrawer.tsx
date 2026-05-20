@@ -17,7 +17,7 @@ interface PlaceInfoDrawerProps {
   handleVotePick?: () => void;
   isDown?: boolean;
   isChange?: boolean;
-  pickReviewPlace: (id: string) => void;
+  pickReviewPlace: (place: StudyPlaceProps) => void;
   zIndex?: number;
 }
 
@@ -45,7 +45,7 @@ function PlaceInfoDrawer({
           isDown={isDown}
           handleVotePick={handleVotePick}
           isChange={isChange}
-          handleClick={() => pickReviewPlace(placeInfo._id)}
+          handleClick={() => pickReviewPlace(placeInfo)}
         />
       </BottomFlexDrawer>
     </>

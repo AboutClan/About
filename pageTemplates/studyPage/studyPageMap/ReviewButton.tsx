@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import StarRatingReviewBlock2 from "../../../components/molecules/StarRatingReviewBlock2";
@@ -9,6 +10,7 @@ import {
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
 } from "../../../hooks/study/queries";
+import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
 import { PlaceInfoBox } from "../PlaceInfoDrawer";
 
@@ -71,13 +73,11 @@ function useScrollInfinite({
 }) {
   const loaderEl = useRef<HTMLDivElement | null>(null);
   const [loaderMounted, setLoaderMounted] = useState(false);
-  // onLoadMore를 ref로 래핑해 deps 없이 최신 값 사용
   const onLoadMoreRef = useRef(onLoadMore);
   useEffect(() => {
     onLoadMoreRef.current = onLoadMore;
   });
 
-  // RightDrawer의 deferChildren 때문에 callback ref로 마운트 시점을 감지
   const loaderRef = useCallback((el: HTMLDivElement | null) => {
     loaderEl.current = el;
     setLoaderMounted(!!el);
@@ -102,9 +102,16 @@ function useScrollInfinite({
   return { loaderRef };
 }
 
-function ReviewButton() {
-  const [isDrawer, setIsDrawer] = useState(false);
+interface ReviewButtonProps {
+  pickReviewPlace: (place: StudyPlaceProps) => void;
+}
+
+function ReviewButton({ pickReviewPlace }: ReviewButtonProps) {
+  const router = useRouter();
+  const { updateQuery } = useOverlayRouter();
   const [tab, setTab] = useState<TabType>("최근 후기");
+
+  const isDrawer = router.query.modal === "reviewFeed";
 
   const reviews = useCursorData<StudyReviewProps>(useStudyReviewsQuery);
   const newPlaces = useCursorData<StudyPlaceProps>(useStudyPlacesCursorQuery);
@@ -125,8 +132,6 @@ function ReviewButton() {
     onLoadMore: newPlaces.loadMore,
   });
 
-  console.log(newPlaces);
-
   return (
     <>
       <Button
@@ -140,7 +145,7 @@ function ReviewButton() {
         border="var(--border-main)"
         borderWidth="1px"
         borderColor="var(--gray-300)"
-        onClick={() => setIsDrawer(true)}
+        onClick={() => updateQuery({ modal: "reviewFeed" })}
       >
         <BoardIcon />
       </Button>
@@ -148,7 +153,7 @@ function ReviewButton() {
       {isDrawer && (
         <RightDrawer
           title="실시간 카공 피드"
-          onClose={() => setIsDrawer(false)}
+          onClose={() => router.back()}
           px={false}
           stickyHeader
         >
@@ -202,7 +207,7 @@ function ReviewButton() {
                     placeInfo={place}
                     isDown={false}
                     isShort
-                    handleClick={() => {}}
+                    handleClick={() => pickReviewPlace(place)}
                     customSubText={
                       place.registerDate
                         ? dayjs(place.registerDate).format("등록일: YYYY년 M월 D일")

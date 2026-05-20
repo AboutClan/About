@@ -24,7 +24,7 @@ export function StudyReviewDrawer({
 }: RightReviewDrawer2Props) {
   const userInfo = useUserInfo();
   const ratings = placeInfo?.ratings || [];
-
+  console.log(25, placeInfo);
   const getSavedReviewIds = () => {
     if (typeof window === "undefined") return [];
 

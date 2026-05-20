@@ -112,7 +112,7 @@ function StudyPageMap({
   const [filterType, setFilterType] = useState<StudyPlaceFilter>(
     type === "mainPlace" ? "main" : null,
   );
-  const [reviewId, setReviewId] = useState<string>();
+  const [reviewPlaceInfo, setReviewPlaceInfo] = useState<StudyPlaceProps | null>(null);
   const [drawerType, setDrawerType] = useState<"menu" | "list" | "placeInfo" | "addCafe" | "about">(
     null,
   );
@@ -125,7 +125,7 @@ function StudyPageMap({
   useEffect(() => {
     if (noModalUpdate) return;
     if (modalParam !== "reviewPlace" && modalParam !== "addReview") {
-      setReviewId(null);
+      setReviewPlaceInfo(null);
       if (modalParam !== "placeDrawer" && drawerType === "placeInfo") {
         setDrawerType(null);
         setSelectedPlaceId(null);
@@ -534,6 +534,10 @@ function StudyPageMap({
               }}
               filterType={filterType}
               setFilterType={setFilterType}
+              pickReviewPlace={(place: StudyPlaceProps) => {
+                setReviewPlaceInfo(place);
+                updateQuery({ modal: "reviewPlace" });
+              }}
             />
           
             <VoteMap
@@ -575,8 +579,8 @@ function StudyPageMap({
           }}
           isDown={isDown}
           isChange={!!defaultLocation}
-          pickReviewPlace={(id: string) => {
-            setReviewId(id);
+          pickReviewPlace={(place: StudyPlaceProps) => {
+            setReviewPlaceInfo(place);
             updateQuery({
               modal: "reviewPlace",
             });
@@ -592,8 +596,8 @@ function StudyPageMap({
             router.back();
             setDrawerType(null);
           }}
-          pickReviewPlace={(id: string) => {
-            setReviewId(id);
+          pickReviewPlace={(place: StudyPlaceProps) => {
+            setReviewPlaceInfo(place);
             updateQuery({
               modal: "reviewPlace",
             });
@@ -606,19 +610,19 @@ function StudyPageMap({
         <CafeListDrawer
           type="about"
           onClose={() => setDrawerType(null)}
-          pickReviewPlace={(id: string) => {
-            setReviewId(id);
+          pickReviewPlace={(place: StudyPlaceProps) => {
+            setReviewPlaceInfo(place);
             updateQuery({ modal: "reviewPlace" });
           }}
           placeData={placeData?.filter((p) => p.pick === "어바웃") ?? []}
         />
       )}
-      {reviewId && (
+      {reviewPlaceInfo && (
         <StudyReviewDrawer
-          placeInfo={placeData.find((p) => p._id === reviewId)}
+          placeInfo={reviewPlaceInfo}
           onClose={() => {
             router.back();
-            setReviewId(null);
+            setReviewPlaceInfo(null);
           }}
           zIndex={3000}
           handleClick={() => {
@@ -628,9 +632,9 @@ function StudyPageMap({
           }}
         />
       )}
-      {modalParam === "addReview" && (
+      {modalParam === "addReview" && reviewPlaceInfo && (
         <RightReviewDrawer
-          placeId={placeData.find((p) => p._id === reviewId)._id}
+          placeId={reviewPlaceInfo._id}
           onClose={() => {
             router.back();
           }}
