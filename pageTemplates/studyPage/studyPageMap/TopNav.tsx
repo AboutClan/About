@@ -165,26 +165,6 @@ function TopNav({
               어바웃님 PICK
             </FilterButton>
           )}
-          {!isMainType && (
-            <FilterButton
-              type="about"
-              filterType={filterType}
-              onFilter={handleFilter}
-              btnRef={aboutBtnRef}
-            >
-              기획자 PICK
-            </FilterButton>
-          )}
-          {!isMainType && (
-            <FilterButton
-              type="about"
-              filterType={filterType}
-              onFilter={handleFilter}
-              btnRef={aboutBtnRef}
-            >
-              개발자 PICK
-            </FilterButton>
-          )}
         </Flex>
         <Box ml="auto" mt={5} mr={3}>
           <ReviewButton pickReviewPlace={pickReviewPlace} />
