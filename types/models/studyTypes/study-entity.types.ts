@@ -47,7 +47,7 @@ export interface StudyConfirmedMemberProps extends TimeStampProps {
   status?: RealTimesStudyStatus;
 }
 
-export type StudyPlaceFilter = "main" | "best" | "good" | "all" | "about";
+export type StudyPlaceFilter = "main" | "best" | "good" | "all" | "about" | "bad";
 export interface StudyRatingProps {
   comment?: string;
   etc: number;

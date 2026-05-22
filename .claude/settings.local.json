@@ -20,7 +20,10 @@
       "Bash(del _remove_logs.js)",
       "Bash(rm _remove_logs.js)",
       "Bash(dir \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\" /a:h)",
-      "Bash(Format-Table FullName)"
+      "Bash(Format-Table FullName)",
+      "Bash(Format-Table -Property FullName)",
+      "Bash(Get-Content \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\\\\pageTemplates\\\\studyPage\\\\studyPageMap\\\\TopNav.tsx\")",
+      "Bash(Select-Object -Skip 250)"
     ]
   }
 }

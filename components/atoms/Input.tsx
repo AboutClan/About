@@ -2,6 +2,7 @@ import {
   Input as ChakraInput,
   InputGroup as ChakraInputGroup,
   InputLeftElement,
+  InputRightElement,
   type InputProps as ChakraInputProps,
 } from "@chakra-ui/react";
 import { type ForwardedRef,forwardRef } from "react";
@@ -40,23 +41,25 @@ export const Input = forwardRef(function Input(
 
 interface InputGroupProps extends InputProps {
   icon?: React.ReactNode;
+  rightElement?: React.ReactNode;
 }
 
 export const InputGroup = forwardRef(function InputGroup(
-  { isDisabled, value, onChange, placeholder, disabled, icon, ...props }: InputGroupProps,
+  { isDisabled, value, onChange, placeholder, disabled, icon, rightElement, ...props }: InputGroupProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   return (
     <ChakraInputGroup display="flex" alignItems="center">
       <ChakraInput
         pl="44px"
+        pr={rightElement ? "44px" : undefined}
         h="52px"
         value={value}
         ref={ref}
         isDisabled={isDisabled}
         onChange={onChange}
         placeholder={placeholder}
-        focusBorderColor={props?.h === "44px" ? "none" : "#00c2b3"}
+        focusBorderColor={props?.h === "44px" || props?.h === "40px" ? "none" : "#00c2b3"}
         backgroundColor="white"
         disabled={disabled}
         fontWeight={300}
@@ -65,15 +68,20 @@ export const InputGroup = forwardRef(function InputGroup(
         borderRadius="12px"
         _placeholder={{ color: "var(--gray-500)" }}
         _focus={{
-          outline: props?.h === "44px" ? "none" : undefined,
-          boxShadow: props?.h === "44px" ? "none" : undefined,
-          border: props?.h === "44px" ? "1px solid var(--gray-200)" : undefined,
+          outline: props?.h === "44px" || props?.h === "40px" ? "none" : undefined,
+          boxShadow: props?.h === "44px" || props?.h === "40px" ? "none" : undefined,
+          border: props?.h === "44px" || props?.h === "40px" ? "1px solid var(--gray-200)" : undefined,
         }}
         {...props}
       />
       <InputLeftElement h="100%" display="flex" pl={2}>
         {icon || <SearchIcon />}
       </InputLeftElement>
+      {rightElement && (
+        <InputRightElement h="100%" display="flex" pr={1}>
+          {rightElement}
+        </InputRightElement>
+      )}
     </ChakraInputGroup>
   );
 });

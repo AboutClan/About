@@ -14,19 +14,17 @@ import RegisterOverview from "../register/RegisterOverview";
 interface LocationAddDrawerProps {
   placeArr?: StudyPlaceProps[];
   onClose: () => void;
+  prefilledLocation?: LocationProps;
 }
 
-export function LocationAddDrawer({ onClose, placeArr }: LocationAddDrawerProps) {
+export function LocationAddDrawer({ onClose, placeArr, prefilledLocation }: LocationAddDrawerProps) {
   const toast = useToast();
 
   const [isFirstPage, setIsFirstPage] = useState(true);
 
-  const [placeInfo, setPlaceInfo] = useState<LocationProps>({
-    name: "",
-    address: "",
-    latitude: null,
-    longitude: null,
-  });
+  const [placeInfo, setPlaceInfo] = useState<LocationProps>(
+    prefilledLocation ?? { name: "", address: "", latitude: null, longitude: null },
+  );
   const [content, setContent] = useState("");
 
   const { mutate, isLoading } = useStudyAdditionMutation({

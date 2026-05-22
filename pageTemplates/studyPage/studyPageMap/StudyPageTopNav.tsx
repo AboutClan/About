@@ -117,6 +117,7 @@ export function StudyPageTopNav({
             setInfo={setPlaceInfo}
             size="sm"
             setIsFocus={setIsFocus}
+            placeHolder="찾고 싶은 지역 검색"
           />
         </Box>
       </Flex>

@@ -11,6 +11,7 @@ interface CafeListDrawerProps {
   pickReviewPlace: (place: StudyPlaceProps) => void;
   type: "ids" | "drawer" | "about";
   radiusKm?: number;
+  pickNickname?: string;
 }
 
 export function CafeListDrawer({
@@ -19,6 +20,7 @@ export function CafeListDrawer({
   pickReviewPlace,
   type,
   radiusKm,
+  pickNickname,
 }: CafeListDrawerProps) {
   const formatRadius = (km: number) => {
     if (!Number.isFinite(km) || km <= 0) {
@@ -58,7 +60,7 @@ export function CafeListDrawer({
                 textAlign="start"
               >
                 {type === "about"
-                  ? "어바웃님 PICK 카공 카페"
+                  ? `${pickNickname ?? "어바웃"}님 PICK 카공 카페`
                   : type === "drawer"
                   ? "근처에 있는 카공 카페"
                   : "해당 위치 카공 카페"}

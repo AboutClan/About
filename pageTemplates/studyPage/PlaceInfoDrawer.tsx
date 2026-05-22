@@ -34,7 +34,7 @@ function PlaceInfoDrawer({
     <>
       <BottomFlexDrawer
         isHideBottom
-        height={!handleVotePick ? 422 : 476}
+        height={!handleVotePick ? 432 : 476}
         isDrawerUp
         setIsModal={onClose}
         isOverlay
@@ -69,9 +69,7 @@ export function PlaceInfoCard({
   const total = Array.isArray(ratings)
     ? ratings.reduce((acc, cur) => acc + cur.mood + cur.table + cur.space + cur.etc, 0)
     : 0;
-  const totalScore = Number(
-    placeInfo?.ratings?.length > 3 ? total / (ratings.length * 4) : rating,
-  );
+  const totalScore = Number(placeInfo?.ratings?.length > 3 ? total / (ratings.length * 4) : rating);
   const reviewCnt =
     (ratings?.length || 0) + 2 + Number(placeInfo?.location?.latitude?.toString().slice(-1));
 
@@ -103,10 +101,10 @@ export function PlaceInfoCard({
             {placeInfo.location.name}
           </Box>
           <Flex flexDir="column">
-            <Flex align="center" mb={1} width="90%" minW={0}>
-              <Box lineHeight="20px" mr={1}>
+            <Flex align="center" mb={1} width="95%" minW={0}>
+              <Flex justify="center" align="center" h="20px" lineHeight="20px" mr={1}>
                 <LocationIcon />
-              </Box>
+              </Flex>
               <Text
                 fontSize="13px"
                 lineHeight="20px"
@@ -120,16 +118,16 @@ export function PlaceInfoCard({
               </Text>
             </Flex>
             <Flex fontSize="13px" lineHeight="20px" color="gray.500" align="center">
-              <Box lineHeight="20px" mr={1}>
+              <Flex justify="center" align="center" h="20px" lineHeight="20px" mr={1}>
                 <ClockIcon />
-              </Box>
-              <Box color="gray.500" fontWeight={600}>
+              </Flex>
+              <Box color="gray.500" fontWeight={600} lineHeight="20px">
                 {isCurrent ? "영업중" : "영업 종료"}
               </Box>
-              <Box color="gray.400" fontWeight={400}>
+              <Box color="gray.400" fontWeight={400} lineHeight="20px">
                 ・
               </Box>
-              <Box>{hour}</Box>
+              <Box lineHeight="20px">{hour}</Box>
             </Flex>
           </Flex>
         </Flex>
@@ -145,14 +143,14 @@ export function PlaceInfoCard({
       </Flex>
 
       <Flex align="center">
-        <Box>
+        <Box lineHeight="24px">
           <StarRating rating={totalScore} size="lg" />
         </Box>
-        <Box fontWeight={600} fontSize="16px" ml={1.5} mr={1}>
+        <Box fontWeight={600} fontSize="16px" ml={1.5} mr={1.5} color="mint" lineHeight="24px">
           {Number.isFinite(totalScore) ? totalScore.toFixed(1) : "0.0"}
         </Box>
-        <Box color="gray.500" fontSize="13px">
-          (총 {reviewCnt}명 평가 반영)
+        <Box color="gray.400" fontSize="11px" lineHeight="24px">
+          ({reviewCnt}명 평가 반영)
         </Box>
       </Flex>
     </>
@@ -248,36 +246,62 @@ export function PlaceInfoBox({
         {!isShort && (
           <Flex
             mt={4}
-            flexDir="column"
-            bg="gray.50"
-            border="var(--border-main)"
+            direction="column"
             w="full"
-            borderRadius="8px"
+            border="1px solid"
+            borderColor="gray.200"
+            borderRadius="16px"
             px={5}
-            py={4}
-            pb={2}
-            mb={1}
+            py={3}
+            pb={3}
+            boxShadow="0 2px 8px rgba(0,0,0,0.03)"
           >
+            <InfoRow label="분위기" value={averageRatings.mood || naturalRatings.mood} hasBorder />
+
             <InfoRow
-              label="공부 분위기"
-              value={averageRatings.mood || naturalRatings.mood}
-              hasBorder
-            />
-            <InfoRow
-              label="콘센트/테이블"
+              label="콘센트"
               value={averageRatings.table || naturalRatings.table}
               hasBorder
             />
-            <InfoRow
-              label="자리 여유"
-              value={averageRatings.space || naturalRatings.space}
-              hasBorder
-            />
-            <InfoRow label="기타" value={averageRatings.etc || naturalRatings.etc} />
+
+            <InfoRow label="자리 여유" value={averageRatings.space || naturalRatings.space} />
+
+            <Flex mt={1} pt={3} borderTop="1px solid" borderColor="gray.100" wrap="wrap" gap="6px">
+              {["의자 편함", "단체석", "주차 가능", "화장실 깔끔"].map((item) => (
+                <Badge
+                  h="20px"
+                  variant="subtle"
+                  px={2}
+                  py={1}
+                  color="gray.500"
+                  lineHeight="12px"
+                  fontSize="9px"
+                  borderRadius="10px"
+                  colorScheme="gray"
+                >
+                  {item}
+                </Badge>
+                // <Flex
+                //   key={item}
+                //   h="28px"
+                //   px="10px"
+                //   borderRadius="999px"
+                //   bg="gray.50"
+                //   border="1px solid"
+                //   borderColor="gray.100"
+                //   align="center"
+                //   fontSize="12px"
+                //   fontWeight={500}
+                //   color="gray.600"
+                // >
+                //   {item}
+                // </Flex>
+              ))}
+            </Flex>
           </Flex>
         )}
 
-        <Flex w="full" mt={3}>
+        <Flex w="full" mt={3} pb={2}>
           <Button
             color="mint"
             w="full"
@@ -320,27 +344,31 @@ export function PlaceInfoBox({
 }
 
 function LocationIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="14px"
-    viewBox="0 -960 960 960"
-    width="14px"
-    fill="var(--gray-400)"
-  >
-    <path d="M452-112q-14-5-25-15-65-60-115-117t-83.5-110.5q-33.5-53.5-51-103T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 45-17.5 94.5t-51 103Q698-301 648-244T533-127q-11 10-25 15t-28 5q-14 0-28-5Zm84.5-391.5Q560-527 560-560t-23.5-56.5Q513-640 480-640t-56.5 23.5Q400-593 400-560t23.5 56.5Q447-480 480-480t56.5-23.5Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="14px"
+      viewBox="0 -960 960 960"
+      width="14px"
+      fill="var(--gray-400)"
+    >
+      <path d="M452-112q-14-5-25-15-65-60-115-117t-83.5-110.5q-33.5-53.5-51-103T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 45-17.5 94.5t-51 103Q698-301 648-244T533-127q-11 10-25 15t-28 5q-14 0-28-5Zm84.5-391.5Q560-527 560-560t-23.5-56.5Q513-640 480-640t-56.5 23.5Q400-593 400-560t23.5 56.5Q447-480 480-480t56.5-23.5Z" />
+    </svg>
+  );
 }
 
 function ClockIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="14px"
-    viewBox="0 -960 960 960"
-    width="14px"
-    fill="var(--gray-400)"
-  >
-    <path d="M520-496v-144q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v159q0 8 3 15.5t9 13.5l132 132q11 11 28 11t28-11q11-11 11-28t-11-28L520-496ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="14px"
+      viewBox="0 -960 960 960"
+      width="14px"
+      fill="var(--gray-400)"
+    >
+      <path d="M520-496v-144q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v159q0 8 3 15.5t9 13.5l132 132q11 11 28 11t28-11q11-11 11-28t-11-28L520-496ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
+    </svg>
+  );
 }
 
 function ReviewIcon() {
@@ -368,6 +396,24 @@ function ReviewIcon() {
   );
 }
 
+const LABEL_SCORE_MAP: Record<string, { min: number; text: string }[]> = {
+  분위기: [
+    { min: 4, text: "공부 분위기" },
+    { min: 3, text: "대화 + 공부" },
+    { min: 0, text: "대화 분위기" },
+  ],
+  콘센트: [
+    { min: 4, text: "여유 있음" },
+    { min: 3, text: "보통" },
+    { min: 0, text: "부족함" },
+  ],
+  자리여유: [
+    { min: 4, text: "여유 있음" },
+    { min: 3, text: "보통" },
+    { min: 0, text: "부족함" },
+  ],
+};
+
 function InfoRow({
   label,
   value = 0,
@@ -379,32 +425,34 @@ function InfoRow({
   children?: React.ReactNode;
   hasBorder?: boolean;
 }) {
-  const stars = Array.from({ length: 5 }, (_, index) => {
-    const starValue = index + 1;
-    if (value >= starValue) return "fill";
-    if (value >= starValue - 0.5) return "half";
-    return "empty";
-  });
+  const key = label.replace(/\s/g, "");
+  const thresholds = LABEL_SCORE_MAP[key] ?? LABEL_SCORE_MAP["기타"];
+  const scoreLabel = thresholds.find((s) => value >= s.min)?.text ?? "";
 
   return (
     <Flex
       w="full"
-      py={1}
-      mb={1}
-      borderBottom={hasBorder ? "var(--border)" : undefined}
+      py={2}
+      borderBottom={hasBorder ? "1px solid" : undefined}
+      borderColor="gray.100"
       justify="space-between"
-      fontSize="13px"
-      lineHeight="20px"
+      align="center"
     >
-      <Box fontWeight="medium">{label}</Box>
+      <Box fontSize="13px" lineHeight="20px" fontWeight={500} color="gray.700">
+        {label}
+      </Box>
 
       {children || (
-        <Flex color="gray.600" fontWeight="regular" align="center" lineHeight="20px">
-          <Flex mx="2px">
-            {stars.map((type, index) => (
-              <StarIcon key={index} type={type} size="md" />
-            ))}
+        <Flex align="center" gap="4px" whiteSpace="nowrap" fontSize="13px" lineHeight="20px">
+          <Box fontWeight={600} lineHeight="20px" w="26px" textAlign="right">
+            {value.toFixed(1)}
+          </Box>
+          <Flex align="center" lineHeight="20px" flexShrink={0}>
+            <StarIcon type="fill" size="md" />
           </Flex>
+          <Box color="gray.500" lineHeight="20px" fontSize="11px" w="60px">
+            {scoreLabel}
+          </Box>
         </Flex>
       )}
     </Flex>

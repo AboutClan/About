@@ -63,6 +63,8 @@ function UserProfileBar({ user }: UserProfileBarProps) {
             bg="gray.100"
             color="gray.500"
             borderRadius="12px"
+            px={2}
+            py={1}
           >
             프로필 수정
           </Button>

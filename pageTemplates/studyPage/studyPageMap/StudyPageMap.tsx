@@ -7,10 +7,12 @@ import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/load
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
 import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
+import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
+import { ModalLayout } from "../../../modals/Modals";
 import { CoordinatesProps } from "../../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../../types/externals/naverMapTypes";
 import {
@@ -24,8 +26,7 @@ import { LocationAddDrawer } from "../LocationAddDrawer";
 import PlaceInfoDrawer from "../PlaceInfoDrawer";
 import StudyMapMenuDrawer from "../StudyMapMenuDrawer";
 import { StudyReviewDrawer } from "../StudyReviewDrawer";
-import { StudyPageTopNav } from "./StudyPageTopNav";
-import StudyMapTopNav from "./TopNav";
+import StudyMapNav from "./TopNav";
 
 interface StudyPageMapProps {
   isDefaultOpen?: boolean;
@@ -113,6 +114,19 @@ function StudyPageMap({
     type === "mainPlace" ? "main" : null,
   );
   const [reviewPlaceInfo, setReviewPlaceInfo] = useState<StudyPlaceProps | null>(null);
+  const [amenityFilters, setAmenityFilters] = useState<string[]>([]);
+  const [unregisteredCafe, setUnregisteredCafe] = useState<NaverLocationProps | null>(null);
+  const [prefilledCafeLocation, setPrefilledCafeLocation] = useState<{
+    name: string;
+    address: string;
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [selectedPickNickname, setSelectedPickNickname] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (filterType !== "about") setSelectedPickNickname(null);
+  }, [filterType]);
   const [drawerType, setDrawerType] = useState<"menu" | "list" | "placeInfo" | "addCafe" | "about">(
     null,
   );
@@ -248,22 +262,51 @@ function StudyPageMap({
   // markerRadiusKm 가 바뀔 때만 재계산. currentMapCenter 가 계속 흔들려도 영향 없음.
   const visiblePlaceData = useMemo(() => {
     if (!placeData?.length) return [];
+
+    let result = placeData;
+
     if (filterType === "about") {
-      return placeData.filter((place) => place.pick === "어바웃");
+      result = result.filter((place) => place.pick === selectedPickNickname);
+    } else if (markerCenter) {
+      result = result.filter((place) => {
+        const d = getDistanceFromLatLonInKm(
+          markerCenter.lat,
+          markerCenter.lon,
+          place.location.latitude,
+          place.location.longitude,
+        );
+        return d < markerRadiusKm;
+      });
     }
-    if (!markerCenter) return [];
-    return placeData.filter((place) => {
-      const d = getDistanceFromLatLonInKm(
-        markerCenter.lat,
-        markerCenter.lon,
-        place.location.latitude,
-        place.location.longitude,
-      );
-      return d < markerRadiusKm;
-    });
-  }, [placeData, markerCenter, markerRadiusKm, filterType]);
-  useEffect(() => {
-  }, [currentMapCenter, markerCenter]);
+
+    if (amenityFilters.length > 0) {
+      result = result.filter((place) => {
+        const ratings = place.ratings;
+        if (!ratings?.length) return true; // 리뷰 없으면 통과 (검증 불가)
+        const count = ratings.length;
+        const avg = ratings.reduce(
+          (acc, r) => ({
+            mood: acc.mood + r.mood,
+            table: acc.table + r.table,
+            space: acc.space + r.space,
+          }),
+          { mood: 0, table: 0, space: 0 },
+        );
+        avg.mood /= count;
+        avg.table /= count;
+        avg.space /= count;
+        return amenityFilters.every((f) => {
+          if (f === "study") return avg.mood >= 4.0;
+          if (f === "outlet") return avg.table >= 4.0;
+          if (f === "space") return avg.space >= 4.0;
+          return true; // parking, group: 데이터 없어 통과
+        });
+      });
+    }
+
+    return result;
+  }, [placeData, markerCenter, markerRadiusKm, filterType, amenityFilters, selectedPickNickname]);
+  useEffect(() => {}, [currentMapCenter, markerCenter]);
   // 개발 환경에서만 필터 결과 가시화.
   useEffect(() => {
     if (process.env.NODE_ENV !== "production") {
@@ -391,14 +434,14 @@ function StudyPageMap({
   }, [isMapExpansion]);
 
   useEffect(() => {
-    if (filterType === "about") {
+    if (filterType === "about" && selectedPickNickname) {
       setZoomNumber(11);
       setMapOptions((prev) => (prev ? { ...prev, zoom: 11 } : prev));
       setDrawerType("about");
-    } else {
+    } else if (filterType !== "about") {
       setDrawerType((prev) => (prev === "about" ? null : prev));
     }
-  }, [filterType]);
+  }, [filterType, selectedPickNickname]);
 
   useEffect(() => {
     if (!isMapExpansion) return;
@@ -466,31 +509,24 @@ function StudyPageMap({
           }}
         >
           <ClipLayer $rounded={!isMapExpansion}>
-            {isMapExpansion && (
-              <StudyPageTopNav
-                isCafeMap={isCafeMap}
-                handleCenterLocation={(location) => {
-                  setMapOptions(getMapOptions(location, zoomNumber));
-                }}
-                openMenu={() => {
-                  updateQuery({
-                    modal: "menu",
-                  });
-                  setDrawerType("menu");
-                }}
-                onClose={onClose}
-              />
-            )}
-            <StudyMapTopNav
+            <StudyMapNav
               isCafeMap={isCafeMap}
               isMainType={type === "mainPlace"}
+              isMapExpansion={isMapExpansion}
+              hasBackButton={hasBackButton}
+              handleCenterLocation={(location, zoomBoost = 0) => {
+                const newZoom = zoomNumber + zoomBoost;
+                if (zoomBoost > 0) setZoomNumber(newZoom);
+                setMapOptions(getMapOptions(location, newZoom));
+              }}
+              openMenu={() => {
+                updateQuery({ modal: "menu" });
+                setDrawerType("menu");
+              }}
               addCafe={() => {
-                updateQuery({
-                  modal: "addCafe",
-                });
+                updateQuery({ modal: "addCafe" });
                 setDrawerType("addCafe");
               }}
-              hasBackButton={hasBackButton}
               handleLocationRefetch={async () => {
                 setTempToggle(true);
                 const newPos = await refetchCurrentLocation();
@@ -503,29 +539,18 @@ function StudyPageMap({
                   prev ? { ...prev, center } : getMapOptions({ lat, lon }, 13),
                 );
               }}
-              isMapExpansion={isMapExpansion}
               openList={() => {
                 if (filterType === "about") {
                   setDrawerType("about");
                   return;
                 }
-                updateQuery({
-                  modal: "list",
-                });
+                updateQuery({ modal: "list" });
                 setDrawerType("list");
               }}
               onClose={() => {
                 if (onClose) {
-                  if (!noModalUpdate) {
-                    updateQuery({
-                      modal: undefined,
-                    });
-                  }
-
-                  if (isMapExpansion) {
-                    setIsMapExpansion(false);
-                  }
-
+                  if (!noModalUpdate) updateQuery({ modal: undefined });
+                  if (isMapExpansion) setIsMapExpansion(false);
                   onClose();
                 } else {
                   router.back();
@@ -534,12 +559,36 @@ function StudyPageMap({
               }}
               filterType={filterType}
               setFilterType={setFilterType}
+              amenityFilters={amenityFilters}
+              setAmenityFilters={setAmenityFilters}
+              selectedPickNickname={selectedPickNickname}
+              setSelectedPickNickname={setSelectedPickNickname}
+              onCafeSearch={(result) => {
+                const existingPlace = placeData?.find((p) => {
+                  if (p.location.name === result.title) return true;
+                  const dist = getDistanceFromLatLonInKm(
+                    result.latitude,
+                    result.longitude,
+                    p.location.latitude,
+                    p.location.longitude,
+                  );
+                  return dist < 0.1;
+                });
+                if (existingPlace) {
+                  setSelectedPlaceId(existingPlace._id);
+                  setPlaceInfo(existingPlace);
+                  setDrawerType("placeInfo");
+                  if (!noModalUpdate) updateQuery({ modal: "placeDrawer" });
+                } else {
+                  setUnregisteredCafe(result);
+                }
+              }}
               pickReviewPlace={(place: StudyPlaceProps) => {
                 setReviewPlaceInfo(place);
                 updateQuery({ modal: "reviewPlace" });
               }}
             />
-          
+
             <VoteMap
               mapOptions={mapOptions}
               markersOptions={markersOptions}
@@ -559,12 +608,95 @@ function StudyPageMap({
       {drawerType === "addCafe" && (
         <LocationAddDrawer
           placeArr={placeData}
+          prefilledLocation={prefilledCafeLocation}
           onClose={() => {
             router.back();
             setDrawerType(null);
+            setPrefilledCafeLocation(null);
           }}
         />
       )}
+      {unregisteredCafe && (
+        <ModalLayout
+          title={unregisteredCafe.title}
+          footerOptions={{
+            main: {
+              text: "장소 등록",
+              func: () => {
+                setPrefilledCafeLocation({
+                  name: unregisteredCafe.title,
+                  address: unregisteredCafe.address ?? unregisteredCafe.roadAddress ?? "",
+                  latitude: unregisteredCafe.latitude,
+                  longitude: unregisteredCafe.longitude,
+                });
+                setUnregisteredCafe(null);
+                updateQuery({ modal: "addCafe" });
+                setDrawerType("addCafe");
+              },
+            },
+            sub: {
+              text: "닫 기",
+              func: () => {
+                setUnregisteredCafe(null);
+              },
+            },
+          }}
+          setIsModal={() => setUnregisteredCafe(null)}
+        >
+          카공지도에 존재하지 않는 카페입니다.
+          <br />
+          해당 카페를 카공지도에 추가할까요?
+        </ModalLayout>
+      )}
+      {/* {unregisteredCafe && (
+        <Modal isOpen onClose={() => setUnregisteredCafe(null)} isCentered>
+          <ModalOverlay />
+          <ModalContent mx={4} borderRadius="16px">
+            <ModalHeader fontSize="16px" fontWeight={700} pb={1}>
+              {unregisteredCafe.title}
+            </ModalHeader>
+            <ModalBody pb={4}>
+              <Text fontSize="14px" color="gray.700" fontWeight={500}>
+                등록되지 않은 카페입니다.
+              </Text>
+              <Text fontSize="12px" color="gray.400" mt={1}>
+                {unregisteredCafe.address ?? unregisteredCafe.roadAddress}
+              </Text>
+            </ModalBody>
+            <ModalFooter gap={2} pt={0}>
+              <Button
+                flex={1}
+                variant="outline"
+                borderColor="gray.200"
+                fontSize="14px"
+                h="48px"
+                onClick={() => setUnregisteredCafe(null)}
+              >
+                취소
+              </Button>
+              <Button
+                flex={1}
+                colorScheme="mint"
+                fontSize="14px"
+                h="48px"
+                onClick={() => {
+                  setPrefilledCafeLocation({
+                    name: unregisteredCafe.title,
+                    address: unregisteredCafe.address ?? unregisteredCafe.roadAddress ?? "",
+                    latitude: unregisteredCafe.latitude,
+                    longitude: unregisteredCafe.longitude,
+                  });
+                  setUnregisteredCafe(null);
+                  updateQuery({ modal: "addCafe" });
+                  setDrawerType("addCafe");
+                }}
+              >
+                카페 등록
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )} */}
       {drawerType === "placeInfo" && (
         <PlaceInfoDrawer
           handleVotePick={
@@ -614,7 +746,8 @@ function StudyPageMap({
             setReviewPlaceInfo(place);
             updateQuery({ modal: "reviewPlace" });
           }}
-          placeData={placeData?.filter((p) => p.pick === "어바웃") ?? []}
+          placeData={placeData?.filter((p) => p.pick === selectedPickNickname) ?? []}
+          pickNickname={selectedPickNickname}
         />
       )}
       {reviewPlaceInfo && (

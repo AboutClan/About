@@ -34,6 +34,7 @@ interface BottomFlexDrawerProps extends IModal {
   zIndex?: number;
   drawerOptions?: BottomFlexDrawerOptions;
   isOverlay: boolean;
+  hasTopNav?: boolean;
 }
 
 export default function BottomFlexDrawer({
@@ -46,6 +47,7 @@ export default function BottomFlexDrawer({
   height: maxHeight,
   zIndex,
   isOverlay,
+  hasTopNav = true,
 }: BottomFlexDrawerProps) {
   const [drawerHeight, setDrawerHeight] = useState(isDrawerUp ? maxHeight : DRAWER_MIN_HEIGHT); // 닫힘/드래그 판단용
   const startYRef = useRef(0); // 드래그 시작 위치 저장
@@ -145,9 +147,11 @@ export default function BottomFlexDrawer({
         as={motion.div}
         style={{ y }}
       >
-        <Flex justify="center" py={3} w="full" cursor="grab" onPointerDown={handlePointerDown}>
-          <TopNav />
-        </Flex>
+        {hasTopNav && (
+          <Flex justify="center" py={3} w="full" cursor="grab" onPointerDown={handlePointerDown}>
+            <TopNav />
+          </Flex>
+        )}
         {drawerOptions?.header && (
           <Flex mb={4} w="full" direction="column" align="flex-start">
             <Box lineHeight="28px" fontWeight={800} mb={1} fontSize="18px">

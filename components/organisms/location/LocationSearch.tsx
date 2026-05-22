@@ -16,11 +16,13 @@ interface ISearchLocation {
   placeHolder?: string;
   setIsFocus?: DispatchBoolean;
   size?: "sm" | "md";
+  rightElement?: React.ReactNode;
+  onSelect?: (result: NaverLocationProps) => void;
 }
 
 export const mapxyToLatLng = (mapx: string | number, mapy: string | number) => {
-  const lng = Number(mapx) / 1e7; // x → 경도
-  const lat = Number(mapy) / 1e7; // y → 위도
+  const lng = Number(mapx) / 1e7;
+  const lat = Number(mapy) / 1e7;
   return { latitude: Number(lat.toFixed(6)), longitude: Number(lng.toFixed(6)) };
 };
 
@@ -33,6 +35,8 @@ function LocationSearch({
   placeHolder,
   setIsFocus,
   size = "md",
+  rightElement,
+  onSelect,
 }: ISearchLocation) {
   const defaultName = info?.name;
 
@@ -60,6 +64,7 @@ function LocationSearch({
     const { latitude, longitude } = mapxyToLatLng(searchInfo.mapx, searchInfo.mapy);
     setInfo({ name: placeName, address: searchInfo.address, latitude, longitude });
     setResults([]);
+    onSelect?.({ ...searchInfo, latitude, longitude });
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,60 +82,66 @@ function LocationSearch({
           isDisabled={!isActive}
           onFocus={() => setIsFocus && setIsFocus(true)}
           onBlur={() => setIsFocus && setIsFocus(false)}
-          h={size === "sm" ? "44px" : "52px"}
+          h={size === "sm" ? "40px" : "52px"}
+          rightElement={rightElement}
+          borderRadius="8px"
         />
       </Wrapper>
 
       <SearchContent isContent={results.length !== 0} isSmall={isSmall}>
         {results.length > 0 && (
           <>
-            {results.map((result, idx) => {
-              return (
-                <Item key={idx} onClick={() => onClickItem(result)}>
-                  <Box fontSize="13px">{result.title}</Box>
-                  <Box color="var(--gray-500)" fontSize="11px">
-                    {result.address}
-                  </Box>
-                </Item>
-              );
-            })}
+            {results.map((result, idx) => (
+              <Item key={idx} onClick={() => onClickItem(result)}>
+                <Box fontSize="13px">{result.title}</Box>
+
+                <Box color="var(--gray-500)" fontSize="11px">
+                  {result.address}
+                </Box>
+              </Item>
+            ))}
           </>
         )}
       </SearchContent>
     </Layout>
   );
 }
+
 const Layout = styled.div`
   width: inherit;
   background-color: inherit;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-
   display: flex;
   align-items: center;
 `;
 
 const SearchContent = styled.div<{ isContent: boolean; isSmall: boolean }>`
   display: ${(props) => (props.isContent ? "block" : "none")};
-  margin-top: var(--gap-3);
+  position: absolute;
+  top: calc(100% + var(--gap-2));
+  left: 0;
+  right: 0;
   height: ${(props) => props.isContent && (props.isSmall ? "120px" : "240px")};
   padding: 12px 16px;
   overflow: auto;
   border: ${(props) => (props.isContent ? "1px solid var(--gray-200)" : null)};
   border-radius: 12px;
   background-color: white;
-  position: relative;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   z-index: 150;
 `;
 
 const Item = styled.div`
   padding: var(--gap-1) 0;
   margin-bottom: 8px;
+  cursor: pointer;
 `;
 
 export default LocationSearch;

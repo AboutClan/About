@@ -1,17 +1,55 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import { MouseEvent, ReactNode, RefObject, useEffect, useRef } from "react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { MouseEvent, ReactNode, RefObject, useEffect, useRef, useState } from "react";
 
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
+import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
+import { StarIcon } from "../../../components/Icons/StarIcon";
+import Header from "../../../components/layouts/Header";
+import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
+import LocationSearch, { mapxyToLatLng } from "../../../components/organisms/location/LocationSearch";
+import { AboutLogo } from "../../../components/services/AboutLogo";
+import { useToast } from "../../../hooks/custom/CustomToast";
+import { NaverLocationProps } from "../../../hooks/external/queries";
+import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
+import { LocationProps } from "../../../types/common";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import {
   StudyPlaceFilter,
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
-import { getSafeAreaBottom } from "../../../utils/validationUtils";
 import GuideButton from "./GuideButton";
-import ReviewButton from "./ReviewButton";
 
 const MAP_BTN_SHADOW = "0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)";
+
+const RATING_OPTIONS: { label: string; value: string; filterType: StudyPlaceFilter }[] = [
+  { label: "전체", value: "all", filterType: "all" },
+  { label: "4.5점 이상", value: "4.5", filterType: "best" },
+  { label: "4.0점 이상", value: "4.0", filterType: "good" },
+  { label: "3.5점 이상", value: "3.5", filterType: "bad" },
+];
+
+const AMENITY_OPTIONS = [
+  { label: "공부 분위기 BEST", value: "study" },
+  { label: "콘센트 BEST", value: "outlet" },
+  { label: "자리 여유 많음", value: "space" },
+  { label: "주차 가능", value: "parking" },
+  { label: "단체석 보유", value: "group" },
+];
+
+const ARCHIVE_OPTIONS: { title: string; subtitle: string; nickname: string }[] = [
+  { title: "어바웃님 PICK", subtitle: "항상 자리 여유가 있는 카공 카페 모음", nickname: "어바웃" },
+  {
+    title: "눕눕님 PICK",
+    subtitle: "소파가 푹신해서 편안한 카공 카페 모음",
+    nickname: "눕눕",
+  },
+  {
+    title: "새벽님 PICK",
+    subtitle: "늦게까지 운영해서 오래있기 좋은 카공 카페 모음",
+    nickname: "새벽",
+  },
+];
 
 interface FilterButtonProps {
   type: StudyPlaceFilter;
@@ -59,7 +97,10 @@ function FilterButton({
   );
 }
 
-interface TopNavProps {
+interface StudyMapNavProps {
+  handleCenterLocation: (location: { lat: number; lon: number }, zoomBoost?: number) => void;
+  onCafeSearch?: (result: NaverLocationProps) => void;
+  openMenu: () => void;
   handleLocationRefetch: () => void;
   isMapExpansion: boolean;
   onClose: () => void;
@@ -71,9 +112,15 @@ interface TopNavProps {
   addCafe: () => void;
   hasBackButton?: boolean;
   pickReviewPlace: (place: StudyPlaceProps) => void;
+  amenityFilters: string[];
+  setAmenityFilters: DispatchType<string[]>;
+  selectedPickNickname: string | null;
+  setSelectedPickNickname: (n: string | null) => void;
 }
 
-function TopNav({
+function StudyMapNav({
+  handleCenterLocation,
+  openMenu,
   handleLocationRefetch,
   isMapExpansion,
   filterType,
@@ -82,10 +129,62 @@ function TopNav({
   openList,
   hasBackButton,
   onClose,
+  isCafeMap,
   pickReviewPlace,
-}: TopNavProps) {
+  amenityFilters,
+  setAmenityFilters,
+  selectedPickNickname,
+  setSelectedPickNickname,
+  onCafeSearch,
+}: StudyMapNavProps) {
+  const router = useRouter();
+  const { updateQuery } = useOverlayRouter();
+  const toast = useToast();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const aboutBtnRef = useRef<HTMLButtonElement>(null);
+
+  const [isFocus, setIsFocus] = useState(true);
+  const [placeInfo, setPlaceInfo] = useState<LocationProps>({
+    name: "",
+    address: "",
+    latitude: null,
+    longitude: null,
+  });
+  console.log(52, placeInfo);
+  const isFilterOpen = router.query.modal === "ratingFilter";
+  const isAmenityOpen = router.query.modal === "amenityFilter";
+  const isArchiveOpen = router.query.modal === "archiveFilter";
+
+  const isAmenityActive = amenityFilters.length > 0;
+  const isArchiveActive = filterType === "about" && selectedPickNickname !== null;
+  const activeArchive = ARCHIVE_OPTIONS.find((o) => o.nickname === selectedPickNickname) ?? null;
+
+  const toggleAmenity = (value: string) => {
+    if (filterType === "about") {
+      setSelectedPickNickname(null);
+      setFilterType("all");
+    }
+    setAmenityFilters((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
+    );
+  };
+
+  const selectedRatingOption =
+    RATING_OPTIONS.find((o) => o.filterType === filterType && filterType !== "all") ?? null;
+  const ratingButtonLabel = selectedRatingOption ? selectedRatingOption.label : "별점";
+  const isRatingActive = !!selectedRatingOption;
+
+  useEffect(() => {
+    if (!placeInfo?.latitude) return;
+    handleCenterLocation({ lat: placeInfo.latitude, lon: placeInfo.longitude }, 2);
+  }, [placeInfo]);
+
+  const handleSearchSelect = (result: NaverLocationProps) => {
+    if (result.category?.includes("카페")) {
+      const { latitude, longitude } = mapxyToLatLng(result.mapx, result.mapy);
+      onCafeSearch?.({ ...result, latitude, longitude });
+    }
+  };
 
   const handleFilter = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
@@ -107,111 +206,219 @@ function TopNav({
 
   return (
     <>
-      <Flex
-        w="100%"
-        flexDir="column"
-        align="center"
-        py={4}
-        position="absolute"
-        top={isMapExpansion ? "112px" : "0"}
-        left="0"
-        zIndex={100}
-        bg="transparent"
-      >
-        <Flex
-          w="full"
-          ref={scrollContainerRef}
-          gap={2}
-          flex={1}
-          px={4}
-          overflowX="auto"
-          mr={!isMapExpansion ? 2 : 0}
-          bg="transparent"
-          sx={{
-            "::-webkit-scrollbar": { display: "none" },
-            scrollbarWidth: "none",
-          }}
-        >
-          {isMainType && (
-            <FilterButton type="main" filterType={filterType} onFilter={handleFilter}>
-              About 스터디 장소
-            </FilterButton>
-          )}
-          <FilterButton
-            type="all"
-            filterType={filterType}
-            onFilter={handleFilter}
-            activeColor="gray.800"
-          >
-            모든 카공 카페
-          </FilterButton>
-          {isMapExpansion && !isMainType && (
-            <FilterButton type="good" filterType={filterType} onFilter={handleFilter}>
-              별점 4.0 이상
-            </FilterButton>
-          )}
-          {!isMainType && (
-            <FilterButton type="best" filterType={filterType} onFilter={handleFilter}>
-              별점 4.5 이상
-            </FilterButton>
-          )}
-          {!isMainType && (
-            <FilterButton
-              type="about"
-              filterType={filterType}
-              onFilter={handleFilter}
-              btnRef={aboutBtnRef}
-            >
-              어바웃님 PICK
-            </FilterButton>
-          )}
-        </Flex>
-        <Box ml="auto" mt={5} mr={3}>
-          <ReviewButton pickReviewPlace={pickReviewPlace} />
-        </Box>
-        {!isMapExpansion && (
-          <Button
-            borderRadius="4px"
-            bgColor="white"
-            boxShadow="0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)"
-            w="32px"
-            h="32px"
-            size="sm"
-            p="0"
-            border="var(--border-main)"
-          >
-            <ExpansionIcon />
-          </Button>
-        )}
-      </Flex>
+      {/* 상단 헤더 + 검색바 (확장 시에만) */}
       {isMapExpansion && (
-        <Flex
-          flexDir="column"
-          pos="absolute"
-          bottom={getSafeAreaBottom(80)}
-          right="20px"
-          zIndex={300}
-        >
-          {/* <Button
-            rounded="full"
-            bgColor="white"
-            boxShadow="0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)"
-            w="40px"
-            h="40px"
-            mb={3}
-            size="sm"
-            p="0"
-            border="var(--border-main)"
-            borderColor="var(--gray-300)"
-            onClick={() => {
-              openAddCafeDrawer();
-            }}
-          >
-            <AddCafeIcon />
-          </Button> */}
-          {/* <CurrentLocationBtn onClick={handleLocationRefetch} isBig={true} /> */}
-        </Flex>
+        <>
+          {!isFocus && (
+            <Box
+              h="calc(100dvh - 112px)"
+              w="full"
+              bg="linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0) 20%)"
+              pos="fixed"
+              top="112px"
+              zIndex={30}
+              pointerEvents="none"
+            />
+          )}
+          <Flex flexDir="column" w="full" bg="white">
+            <Flex
+              w="full"
+              h="var(--header-h)"
+              pl={isCafeMap ? 3 : 0}
+              as="header"
+              align="center"
+              justify="space-between"
+              pr={2}
+              bg="white"
+              maxW="var(--max-width)"
+              margin="0 auto"
+              borderColor="gray.100"
+            >
+              {isCafeMap ? (
+                <>
+                  <Box px={2} py={2}>
+                    <AboutLogo />
+                  </Box>
+                  <Flex align="center" mr={1}>
+                    <Button variant="unstyled" p={2} onClick={() => openMenu()}>
+                      <MenuIcon2 />
+                    </Button>
+                  </Flex>
+                </>
+              ) : (
+                <Box w="full">
+                  <Header title="카공 지도" func={() => onClose()} isSlide={false} />
+                </Box>
+              )}
+            </Flex>
+
+            <Flex w="full" px={5} bg="white">
+              <LocationSearch
+                info={placeInfo}
+                setInfo={setPlaceInfo}
+                size="sm"
+                setIsFocus={setIsFocus}
+                placeHolder="찾고 싶은 지역 검색"
+                onSelect={handleSearchSelect}
+                rightElement={
+                  <Button
+                    variant="unstyled"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    w="32px"
+                    h="32px"
+                    minW="unset"
+                    onClick={() => toast("info", "다음 업데이트에 출시 예정")}
+                  >
+                    <FavoriteIcon />
+                  </Button>
+                }
+              />
+            </Flex>
+
+            {/* 필터 버튼 행 */}
+            <Flex w="100%" flexDir="column" align="center">
+              <Flex
+                w="full"
+                ref={scrollContainerRef}
+                gap={2}
+                flex={1}
+                px={4}
+                overflowX="auto"
+                bg="transparent"
+                py={3}
+                sx={{
+                  "::-webkit-scrollbar": { display: "none" },
+                  scrollbarWidth: "none",
+                }}
+              >
+                {/* 별점 필터 버튼 */}
+                <Button
+                  flexShrink={0}
+                  h="32px"
+                  px={2.5}
+                  borderRadius="20px"
+                  bg={isRatingActive ? "gray.900" : "white"}
+                  border={isRatingActive ? "none" : "var(--border-main)"}
+                  borderColor="gray.300"
+                  _hover={{ bg: isRatingActive ? "gray.900" : "gray.100" }}
+                  _active={{ opacity: 0.8 }}
+                  _focus={{ bg: isRatingActive ? "gray.900" : "white" }}
+                  onClick={() => updateQuery({ modal: "ratingFilter" })}
+                >
+                  <Flex align="center">
+                    <Box lineHeight="20px">
+                      <StarIcon type="fill" size="lg" />
+                    </Box>
+                    <Text
+                      fontSize="12px"
+                      lineHeight="20px"
+                      ml={1}
+                      mr={1.5}
+                      color={isRatingActive ? "white" : "gray.800"}
+                    >
+                      {ratingButtonLabel}
+                    </Text>
+                    <ShortArrowIcon dir="bottom" />
+                  </Flex>
+                </Button>
+
+                {/* 카공 필터 버튼 */}
+                <Button
+                  flexShrink={0}
+                  h="32px"
+                  px={3}
+                  borderRadius="20px"
+                  bg={isAmenityActive ? "gray.900" : "white"}
+                  border={isAmenityActive ? "none" : "var(--border-main)"}
+                  borderColor="gray.300"
+                  _hover={{ bg: isAmenityActive ? "gray.900" : "gray.100" }}
+                  _active={{ opacity: 0.8 }}
+                  _focus={{ bg: isAmenityActive ? "gray.900" : "white" }}
+                  onClick={() => updateQuery({ modal: "amenityFilter" })}
+                >
+                  <Flex align="center" gap="4px" lineHeight="20px">
+                    <Box lineHeight="20px">
+                      <AmenityFilterIcon color={isAmenityActive ? "white" : "var(--gray-800)"} />
+                    </Box>
+                    <Box
+                      fontSize="12px"
+                      lineHeight="20px"
+                      color={isAmenityActive ? "white" : "gray.800"}
+                    >
+                      카공 필터
+                    </Box>
+                    {isAmenityActive && (
+                      <Flex
+                        align="center"
+                        justify="center"
+                        w="16px"
+                        h="16px"
+                        borderRadius="full"
+                        bg="var(--color-mint)"
+                        flexShrink={0}
+                      >
+                        <Text fontSize="10px" fontWeight={700} color="white" lineHeight="1">
+                          {amenityFilters.length}
+                        </Text>
+                      </Flex>
+                    )}
+                  </Flex>
+                </Button>
+
+                {/* 아카이브 버튼 */}
+                {!isMainType && (
+                  <Button
+                    flexShrink={0}
+                    h="32px"
+                    px="12px"
+                    borderRadius="20px"
+                    bg={isArchiveActive ? "gray.900" : "white"}
+                    border={isArchiveActive ? "none" : "var(--border-main)"}
+                    borderColor="gray.300"
+                    _hover={{ bg: isArchiveActive ? "gray.900" : "gray.100" }}
+                    _active={{ opacity: 0.8 }}
+                    _focus={{ bg: isArchiveActive ? "gray.900" : "white" }}
+                    onClick={() => updateQuery({ modal: "archiveFilter" })}
+                  >
+                    <Flex align="center">
+                      <ArchiveIcon color={isArchiveActive ? "white" : "var(--gray-800)"} />
+                      <Text
+                        fontSize="12px"
+                        fontWeight={600}
+                        color={isArchiveActive ? "white" : "gray.800"}
+                        lineHeight="12px"
+                        ml={1}
+                        mr={1.5}
+                      >
+                        {isArchiveActive && activeArchive ? activeArchive.title : "아카이브"}
+                      </Text>
+                      <ShortArrowIcon dir="bottom" />
+                    </Flex>
+                  </Button>
+                )}
+              </Flex>
+              {!isMapExpansion && (
+                <Button
+                  borderRadius="4px"
+                  bgColor="white"
+                  boxShadow={MAP_BTN_SHADOW}
+                  w="32px"
+                  h="32px"
+                  size="sm"
+                  p="0"
+                  border="var(--border-main)"
+                >
+                  <ExpansionIcon />
+                </Button>
+              )}
+            </Flex>
+          </Flex>
+        </>
       )}
+
+      {/* 하단 버튼 행 (확장 시에만) */}
       {isMapExpansion && (
         <Flex flexDir="column" pos="absolute" w="full" bottom={0} left={0} zIndex={300}>
           <Flex px={4} justify="space-between" align="center" mb={4}>
@@ -219,7 +426,7 @@ function TopNav({
               <Button
                 rounded="full"
                 bgColor="white"
-                boxShadow="0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)"
+                boxShadow={MAP_BTN_SHADOW}
                 w="40px"
                 h="40px"
                 size="sm"
@@ -227,9 +434,7 @@ function TopNav({
                 border="var(--border-main)"
                 borderWidth="1px"
                 borderColor="var(--gray-300)"
-                onClick={() => {
-                  onClose();
-                }}
+                onClick={() => onClose()}
               >
                 <AddCafeIcon2 />
               </Button>
@@ -246,7 +451,7 @@ function TopNav({
                   borderRadius="full"
                   border="var(--border-main)"
                   borderColor="var(--gray-300)"
-                  boxShadow="0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)"
+                  boxShadow={MAP_BTN_SHADOW}
                   bg="white"
                   mt="2px"
                   fontSize="13px"
@@ -258,70 +463,300 @@ function TopNav({
                 </Button>
 
                 <Box>
-                  <GuideButton />
+                  <GuideButton pickReviewPlace={pickReviewPlace} />
                 </Box>
-
-                {/* <Button
-                  rounded="full"
-                  bgColor="white"
-                  boxShadow="0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)"
-                  w="40px"
-                  h="40px"
-                  minW="40px"
-                  size="sm"
-                  p="0"
-                  border="var(--border-main)"
-                  borderWidth="1px"
-                  borderColor="var(--gray-300)"
-                  onClick={() => setIsOpen((prev) => !prev)}
-                  _hover={{ bgColor: "white" }}
-                  _active={{ bgColor: "white" }}
-                  bg="gray.900"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="20px"
-                    viewBox="0 -960 960 960"
-                    width="20px"
-                    fill="white"
-                  >
-                    <path d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-66.5 93.5Q441-188 430-194q-39-23-82-34.5T260-240q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-45 0-88 11.5T530-194q-11 6-23.5 9.5T480-181q-14 0-26.5-3.5ZM280-494Zm280-115q0-9 6.5-18.5T581-640q29-10 58-15t61-5q20 0 39.5 2.5T778-651q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-600q-26 0-51 5t-48 13q-18 7-29.5-1T560-609Zm0 220q0-9 6.5-18.5T581-420q29-10 58-15t61-5q20 0 39.5 2.5T778-431q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-380q-26 0-51 4.5T601-363q-18 7-29.5-.5T560-389Zm0-110q0-9 6.5-18.5T581-530q29-10 58-15t61-5q20 0 39.5 2.5T778-541q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-490q-26 0-51 5t-48 13q-18 7-29.5-1T560-499Z" />
-                  </svg>
-                </Button> */}
               </>
             )}
           </Flex>
-          {/* {isCafeMap && (
-            <Flex
-              justify="center"
-              fontWeight={600}
-              align="center"
-              w="full"
-              alignItems="flex-end"
-              justifyContent="center"
-              overflow="hidden"
-            >
-              <KakaoAdfit unitId="DAN-yjQDVIbCjd5Xbowz" width={320} height={50} />
-            </Flex>
-          )} */}
         </Flex>
+      )}
+
+      {/* 아카이브 BottomSheet */}
+      {isArchiveOpen && (
+        <BottomFlexDrawer
+          isDrawerUp
+          setIsModal={() => router.back()}
+          height={isArchiveActive ? 346 : 300}
+          isOverlay
+          isHideBottom
+          hasTopNav={false}
+          zIndex={1100}
+        >
+          <Flex direction="column" w="full" h="full">
+            <Flex justify="center" align="center" py={3} pb={1}>
+              <Text fontSize="12px" color="gray.500">
+                아카이브
+              </Text>
+            </Flex>
+
+            <Flex direction="column" w="full" flex={1} overflowY="auto">
+              {isArchiveActive && (
+                <Flex
+                  py={3}
+                  align="center"
+                  justify="space-between"
+                  cursor="pointer"
+                  borderBottom="var(--border-main)"
+                  onClick={() => {
+                    setSelectedPickNickname(null);
+                    setFilterType("all");
+                    router.back();
+                  }}
+                >
+                  <Text fontSize="13px" color="gray.400">
+                    선택 해제
+                  </Text>
+                  <Text fontSize="16px" color="gray.300" lineHeight="1" mr={0.5}>
+                    ×
+                  </Text>
+                </Flex>
+              )}
+
+              {ARCHIVE_OPTIONS.map((archive, idx) => (
+                <Flex
+                  key={archive.nickname}
+                  py={4}
+                  borderBottom={idx !== ARCHIVE_OPTIONS.length - 1 ? "var(--border-main)" : "none"}
+                  align="center"
+                  justify="space-between"
+                  cursor="pointer"
+                  onClick={() => {
+                    setSelectedPickNickname(archive.nickname);
+                    setAmenityFilters([]);
+                    setFilterType("about");
+                    router.back();
+                  }}
+                >
+                  <Flex direction="column" gap={0.5} flex={1} minW={0} mr={3}>
+                    <Text fontSize="14px" fontWeight={600} color="gray.800" lineHeight="20px">
+                      {archive.title}
+                    </Text>
+                    <Text fontSize="12px" color="gray.500" lineHeight="18px" noOfLines={1}>
+                      {archive.subtitle}
+                    </Text>
+                  </Flex>
+                  <ShortArrowIcon dir="right" />
+                </Flex>
+              ))}
+            </Flex>
+
+            <Box w="full">
+              <Button
+                w="full"
+                py={6}
+                borderTop="var(--border-main)"
+                borderRadius="0"
+                bg="white"
+                fontSize="14px"
+                fontWeight={600}
+                _hover={{ bg: "gray.50" }}
+                onClick={() => router.back()}
+              >
+                닫기
+              </Button>
+            </Box>
+          </Flex>
+        </BottomFlexDrawer>
+      )}
+
+      {/* 카공 필터 BottomSheet */}
+      {isAmenityOpen && (
+        <BottomFlexDrawer
+          isDrawerUp
+          setIsModal={() => router.back()}
+          height={391}
+          isOverlay
+          isHideBottom
+          hasTopNav={false}
+          zIndex={1100}
+        >
+          <Flex direction="column" w="full" h="full">
+            <Flex justify="center" align="center" pos="relative" py={3} pb={1}>
+              <Text fontSize="12px" color="gray.500">
+                카공 필터
+              </Text>
+              {/* {isAmenityActive && (
+                <Button
+                  variant="unstyled"
+                  pos="absolute"
+                  right={0}
+                  top="50%"
+                  transform="translateY(-50%)"
+                  display="flex"
+                  alignItems="center"
+                  gap={1}
+                  onClick={() => setAmenityFilters([])}
+                >
+                  <ResetIcon />
+                  <Text fontSize="12px" color="gray.400">
+                    초기화
+                  </Text>
+                </Button>
+              )} */}
+            </Flex>
+
+            <Flex direction="column" w="full">
+              {AMENITY_OPTIONS.map((option) => {
+                const isChecked = amenityFilters.includes(option.value);
+                return (
+                  <Flex
+                    h="60px"
+                    key={option.value}
+                    align="center"
+                    justify="space-between"
+                    cursor="pointer"
+                    onClick={() => toggleAmenity(option.value)}
+                  >
+                    <Text fontSize="14px" fontWeight={isChecked ? 700 : 500} color="black">
+                      {option.label}
+                    </Text>
+                    {<CheckIcon2 isSelected={isChecked} />}
+                  </Flex>
+                );
+              })}
+            </Flex>
+
+            <Box mt="auto" w="full">
+              <Button
+                w="full"
+                py={6}
+                borderTop="var(--border-main)"
+                borderRadius="0"
+                bg="white"
+                fontSize="14px"
+                fontWeight={600}
+                _hover={{ bg: "gray.50" }}
+                onClick={() => router.back()}
+              >
+                완료
+              </Button>
+            </Box>
+          </Flex>
+        </BottomFlexDrawer>
+      )}
+
+      {/* 별점 필터 BottomSheet */}
+      {isFilterOpen && (
+        <BottomFlexDrawer
+          isDrawerUp
+          setIsModal={() => router.back()}
+          height={331}
+          isOverlay
+          isHideBottom
+          hasTopNav={false}
+          zIndex={1100}
+        >
+          <Flex direction="column" w="full" h="full">
+            <Flex justify="center" align="center" py={3} pb={1}>
+              <Text fontSize="12px" color="gray.500">
+                별점
+              </Text>
+            </Flex>
+
+            <Flex direction="column" w="full">
+              {RATING_OPTIONS.map((option) => {
+                const isSelected =
+                  filterType === option.filterType ||
+                  (option.value === "all" &&
+                    !RATING_OPTIONS.slice(1).some((o) => o.filterType === filterType));
+                return (
+                  <Flex
+                    h="60px"
+                    key={option.value}
+                    align="center"
+                    justify="space-between"
+                    cursor="pointer"
+                    onClick={() => {
+                      setFilterType(option.filterType);
+                      setAmenityFilters([]);
+                      router.back();
+                    }}
+                  >
+                    <Text fontSize="14px" fontWeight={isSelected ? 700 : 500} color="black">
+                      {option.label}
+                    </Text>
+                    {isSelected && <CheckIcon2 isSelected />}
+                  </Flex>
+                );
+              })}
+            </Flex>
+
+            <Box mt="auto" w="full">
+              <Button
+                w="full"
+                py={6}
+                borderTop="var(--border-main)"
+                borderRadius="0"
+                bg="white"
+                fontSize="14px"
+                fontWeight={600}
+                _hover={{ bg: "gray.50" }}
+                onClick={() => router.back()}
+              >
+                닫기
+              </Button>
+            </Box>
+          </Flex>
+        </BottomFlexDrawer>
       )}
     </>
   );
 }
 
-export default TopNav;
+export default StudyMapNav;
 
-function StarIcon() {
+function ResetIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="16px"
+      viewBox="0 -960 960 960"
+      width="16px"
+      fill="var(--gray-400)"
+    >
+      <path d="M440-122q-121-15-200.5-105.5T160-440q0-66 26-126t72-110l57 57q-38 42-56.5 93T240-440q0 88 56 152t144 78v68Zm80 0v-68q87-14 143.5-78.5T720-440q0-100-70-170t-170-70h-3l44 44-56 56-140-140 140-140 56 56-44 44h3q134 0 227 93t93 227q0 121-79.5 211.5T520-122Z" />
+    </svg>
+  );
+}
+
+function FavoriteIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20px"
+      viewBox="0 -960 960 960"
+      width="20px"
+      fill="var(--gray-500)"
+    >
+      <path d="M451.5-152q-14.5-5-25.5-16l-69-63q-106-97-191.5-192.5T80-634q0-94 63-157t157-63q53 0 100 22.5t80 61.5q33-39 80-61.5T660-854q94 0 157 63t63 157q0 115-85 211T602-230l-68 62q-11 11-25.5 16t-28.5 5q-14 0-28.5-5ZM442-690q-29-41-62-62.5T300-774q-60 0-100 40t-40 100q0 52 37 110.5T285.5-410q51.5 55 106 103t88.5 79q34-31 88.5-79t106-103Q726-465 763-523.5T800-634q0-60-40-100t-100-40q-47 0-80 21.5T518-690q-7 10-17 15t-21 5q-11 0-21-5t-17-15Zm38 189Z" />
+    </svg>
+  );
+}
+
+function ArchiveIcon({ color }: { color?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="14px"
       viewBox="0 -960 960 960"
       width="14px"
-      fill="#1f1f1f"
+      fill={color}
     >
-      <path d="M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z" />
+      <path d="M200-120q-17 0-28.5-11.5T160-160q0-17 11.5-28.5T200-200h560q17 0 28.5 11.5T800-160q0 17-11.5 28.5T760-120H200Zm120-160q-66 0-113-47t-47-113v-320q0-33 23.5-56.5T240-840h560q33 0 56.5 23.5T880-760v120q0 33-23.5 56.5T800-560h-80v120q0 66-47 113t-113 47H320Zm400-360h80v-120h-80v120Z" />
+    </svg>
+  );
+}
+
+function AmenityFilterIcon({ color }: { color: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="14px"
+      viewBox="0 -960 960 960"
+      width="14px"
+      fill={color}
+    >
+      <path d="M451.5-131.5Q440-143 440-160v-160q0-17 11.5-28.5T480-360q17 0 28.5 11.5T520-320v40h280q17 0 28.5 11.5T840-240q0 17-11.5 28.5T800-200H520v40q0 17-11.5 28.5T480-120q-17 0-28.5-11.5ZM160-200q-17 0-28.5-11.5T120-240q0-17 11.5-28.5T160-280h160q17 0 28.5 11.5T360-240q0 17-11.5 28.5T320-200H160Zm131.5-171.5Q280-383 280-400v-40H160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h120v-40q0-17 11.5-28.5T320-600q17 0 28.5 11.5T360-560v160q0 17-11.5 28.5T320-360q-17 0-28.5-11.5ZM480-440q-17 0-28.5-11.5T440-480q0-17 11.5-28.5T480-520h320q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H480Zm131.5-171.5Q600-623 600-640v-160q0-17 11.5-28.5T640-840q17 0 28.5 11.5T680-800v40h120q17 0 28.5 11.5T840-720q0 17-11.5 28.5T800-680H680v40q0 17-11.5 28.5T640-600q-17 0-28.5-11.5ZM160-680q-17 0-28.5-11.5T120-720q0-17 11.5-28.5T160-760h320q17 0 28.5 11.5T520-720q0 17-11.5 28.5T480-680H160Z" />
     </svg>
   );
 }
@@ -362,6 +797,20 @@ function MenuIcon() {
       viewBox="0 -960 960 960"
       width="16px"
       fill="var(--gray-800)"
+    >
+      <path d="M160-240q-17 0-28.5-11.5T120-280q0-17 11.5-28.5T160-320h640q17 0 28.5 11.5T840-280q0 17-11.5 28.5T800-240H160Zm0-200q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h640q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H160Zm0-200q-17 0-28.5-11.5T120-680q0-17 11.5-28.5T160-720h640q17 0 28.5 11.5T840-680q0 17-11.5 28.5T800-640H160Z" />
+    </svg>
+  );
+}
+
+function MenuIcon2() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="28px"
+      viewBox="0 -960 960 960"
+      width="28px"
+      fill="var(--color-gray)"
     >
       <path d="M160-240q-17 0-28.5-11.5T120-280q0-17 11.5-28.5T160-320h640q17 0 28.5 11.5T840-280q0 17-11.5 28.5T800-240H160Zm0-200q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h640q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H160Zm0-200q-17 0-28.5-11.5T120-680q0-17 11.5-28.5T160-720h640q17 0 28.5 11.5T840-680q0 17-11.5 28.5T800-640H160Z" />
     </svg>
@@ -444,3 +893,15 @@ export function StudyIcon({ color }) {
     </div>
   );
 }
+
+const CheckIcon2 = ({ isSelected }: { isSelected: boolean }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="24px"
+    viewBox="0 -960 960 960"
+    width="24px"
+    fill={isSelected ? "var(--gray-900)" : "var(--gray-300)"}
+  >
+    <path d="m382-354 339-339q12-12 28-12t28 12q12 12 12 28.5T777-636L410-268q-12 12-28 12t-28-12L182-440q-12-12-11.5-28.5T183-497q12-12 28.5-12t28.5 12l142 143Z" />
+  </svg>
+);
