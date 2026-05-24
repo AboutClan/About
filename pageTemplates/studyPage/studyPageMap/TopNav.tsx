@@ -20,6 +20,7 @@ import {
   StudyPlaceFilter,
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
+import { getSafeAreaBottom } from "../../../utils/validationUtils";
 import GuideButton from "./GuideButton";
 import StatusButton from "./StatusButton";
 
@@ -439,8 +440,16 @@ function StudyMapNav({
 
       {/* 하단 버튼 행 (확장 시에만) */}
       {isMapExpansion && (
-        <Flex flexDir="column" pos="absolute" w="full" bottom={0} left={0} zIndex={300}>
-          <Flex px={4} justify="space-between" align="center" mb={4}>
+        <Flex
+          flexDir="column"
+          pos="absolute"
+          w="full"
+          bottom={0}
+          left={0}
+          zIndex={300}
+          sx={{ paddingBottom: getSafeAreaBottom(16) }}
+        >
+          <Flex px={4} justify="space-between" align="center">
             {hasBackButton ? (
               <Button
                 rounded="full"
