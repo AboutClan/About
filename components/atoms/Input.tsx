@@ -2,8 +2,8 @@ import {
   Input as ChakraInput,
   InputGroup as ChakraInputGroup,
   InputLeftElement,
-  InputRightElement,
   type InputProps as ChakraInputProps,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { type ForwardedRef,forwardRef } from "react";
 

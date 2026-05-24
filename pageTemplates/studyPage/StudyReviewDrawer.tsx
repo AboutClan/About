@@ -7,7 +7,7 @@ import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { CAFE_REVIEW_ARR } from "../../constants/keys/queryKeys";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { PlaceInfoCard } from "./PlaceInfoDrawer";
+import { PlaceInfoBox } from "./PlaceInfoDrawer";
 
 interface RightReviewDrawer2Props {
   placeInfo: StudyPlaceProps;
@@ -85,7 +85,7 @@ export function StudyReviewDrawer({
       <Box position="relative" minHeight="calc(100dvh - var(--header-h))">
         <Box mb={10}>
           <Box mb={3}>
-            <PlaceInfoCard placeInfo={placeInfo} isDown={false} />
+            <PlaceInfoBox placeInfo={placeInfo} hasButton={false} isDown />
           </Box>
           <Divider />
           <Flex flexDir="column" borderRadius="8px" mt={2} mb={20}>

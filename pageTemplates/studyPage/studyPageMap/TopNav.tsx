@@ -7,7 +7,9 @@ import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import { StarIcon } from "../../../components/Icons/StarIcon";
 import Header from "../../../components/layouts/Header";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import LocationSearch, { mapxyToLatLng } from "../../../components/organisms/location/LocationSearch";
+import LocationSearch, {
+  mapxyToLatLng,
+} from "../../../components/organisms/location/LocationSearch";
 import { AboutLogo } from "../../../components/services/AboutLogo";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { NaverLocationProps } from "../../../hooks/external/queries";
@@ -19,6 +21,7 @@ import {
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
 import GuideButton from "./GuideButton";
+import StatusButton from "./StatusButton";
 
 const MAP_BTN_SHADOW = "0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)";
 
@@ -30,19 +33,24 @@ const RATING_OPTIONS: { label: string; value: string; filterType: StudyPlaceFilt
 ];
 
 const AMENITY_OPTIONS = [
-  { label: "공부 분위기 BEST", value: "study" },
-  { label: "콘센트 BEST", value: "outlet" },
-  { label: "자리 여유 많음", value: "space" },
-  { label: "주차 가능", value: "parking" },
-  { label: "단체석 보유", value: "group" },
+  { label: "단체석 보유", value: "hasGroupSeats" },
+  { label: "와이파이 빵빵", value: "hasWifi" },
+  { label: "24시간 운영", value: "is24Hours" },
+  { label: "주차 가능", value: "hasParking" },
+  { label: "자리 여유", value: "isUsuallySpacious" },
 ];
 
-const ARCHIVE_OPTIONS: { title: string; subtitle: string; nickname: string }[] = [
+export const ARCHIVE_OPTIONS: { title: string; subtitle: string; nickname: string }[] = [
   { title: "어바웃님 PICK", subtitle: "항상 자리 여유가 있는 카공 카페 모음", nickname: "어바웃" },
   {
     title: "눕눕님 PICK",
     subtitle: "소파가 푹신해서 편안한 카공 카페 모음",
     nickname: "눕눕",
+  },
+  {
+    title: "프로님 PICK",
+    subtitle: "작업실에 더 가까운 카공 카페 모음",
+    nickname: "새벽",
   },
   {
     title: "새벽님 PICK",
@@ -116,6 +124,7 @@ interface StudyMapNavProps {
   setAmenityFilters: DispatchType<string[]>;
   selectedPickNickname: string | null;
   setSelectedPickNickname: (n: string | null) => void;
+  openAboutDrawer: () => void;
 }
 
 function StudyMapNav({
@@ -135,6 +144,7 @@ function StudyMapNav({
   setAmenityFilters,
   selectedPickNickname,
   setSelectedPickNickname,
+  openAboutDrawer,
   onCafeSearch,
 }: StudyMapNavProps) {
   const router = useRouter();
@@ -150,7 +160,7 @@ function StudyMapNav({
     latitude: null,
     longitude: null,
   });
-  console.log(52, placeInfo);
+
   const isFilterOpen = router.query.modal === "ratingFilter";
   const isAmenityOpen = router.query.modal === "amenityFilter";
   const isArchiveOpen = router.query.modal === "archiveFilter";
@@ -415,6 +425,15 @@ function StudyMapNav({
               )}
             </Flex>
           </Flex>
+          <Box
+            pos="fixed"
+            top="calc(var(--header-h) + 40px + 56px + 16px)"
+            left={4}
+            zIndex={100}
+            pointerEvents="auto"
+          >
+            <StatusButton />
+          </Box>
         </>
       )}
 
@@ -476,7 +495,7 @@ function StudyMapNav({
         <BottomFlexDrawer
           isDrawerUp
           setIsModal={() => router.back()}
-          height={isArchiveActive ? 346 : 300}
+          height={isArchiveActive ? 346 : 373}
           isOverlay
           isHideBottom
           hasTopNav={false}
@@ -524,6 +543,7 @@ function StudyMapNav({
                     setSelectedPickNickname(archive.nickname);
                     setAmenityFilters([]);
                     setFilterType("about");
+                    openAboutDrawer();
                     router.back();
                   }}
                 >
@@ -610,7 +630,7 @@ function StudyMapNav({
                     <Text fontSize="14px" fontWeight={isChecked ? 700 : 500} color="black">
                       {option.label}
                     </Text>
-                    {<CheckIcon2 isSelected={isChecked} />}
+                    <CheckIcon2 isSelected={isChecked} />
                   </Flex>
                 );
               })}
@@ -894,8 +914,8 @@ export function StudyIcon({ color }) {
   );
 }
 
-const CheckIcon2 = ({ isSelected }: { isSelected: boolean }) => (
-  <svg
+function CheckIcon2({ isSelected }: { isSelected: boolean }) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24px"
     viewBox="0 -960 960 960"
@@ -904,4 +924,4 @@ const CheckIcon2 = ({ isSelected }: { isSelected: boolean }) => (
   >
     <path d="m382-354 339-339q12-12 28-12t28 12q12 12 12 28.5T777-636L410-268q-12 12-28 12t-28-12L182-440q-12-12-11.5-28.5T183-497q12-12 28.5-12t28.5 12l142 143Z" />
   </svg>
-);
+}

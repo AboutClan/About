@@ -12,6 +12,8 @@ interface CafeListDrawerProps {
   type: "ids" | "drawer" | "about";
   radiusKm?: number;
   pickNickname?: string;
+  pickTitle?: string;
+  pickSubtitle?: string;
 }
 
 export function CafeListDrawer({
@@ -21,6 +23,8 @@ export function CafeListDrawer({
   type,
   radiusKm,
   pickNickname,
+  pickTitle,
+  pickSubtitle,
 }: CafeListDrawerProps) {
   const formatRadius = (km: number) => {
     if (!Number.isFinite(km) || km <= 0) {
@@ -60,7 +64,7 @@ export function CafeListDrawer({
                 textAlign="start"
               >
                 {type === "about"
-                  ? `${pickNickname ?? "어바웃"}님 PICK 카공 카페`
+                  ? (pickTitle ?? `${pickNickname ?? "어바웃"}님 PICK`)
                   : type === "drawer"
                   ? "근처에 있는 카공 카페"
                   : "해당 위치 카공 카페"}
@@ -79,7 +83,7 @@ export function CafeListDrawer({
             <Box color="gray.500" mr="auto" fontSize="12px">
               {type === "about" ? (
                 <>
-                  항상 자리 여유가 있는 <b>{placeData?.length}개</b>의 카공 카페
+                  {pickSubtitle ?? ""} <b>{placeData?.length}개</b>
                 </>
               ) : type === "drawer" ? (
                 <>

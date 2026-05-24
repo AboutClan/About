@@ -70,6 +70,18 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
   ratings?: StudyRatingProps[];
   operatingHours?: string[];
   pick?: string;
+  studyCafeMeta?: StudyCafeMetaProps;
+}
+
+export interface StudyCafeMetaProps {
+  is24Hours: boolean;
+  hasParking: boolean;
+  hasGroupSeats: boolean;
+  hasComfortableSeats: boolean;
+  hasCleanRestroom: boolean;
+  hasGoodWifi: boolean;
+  hasGoodValueDrinks: boolean;
+  hasTimeLimit: boolean;
 }
 
 // export interface RealTimeMemberProps extends StudyConfirmedMemberProps {

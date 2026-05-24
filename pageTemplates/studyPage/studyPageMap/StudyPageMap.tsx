@@ -26,7 +26,7 @@ import { LocationAddDrawer } from "../LocationAddDrawer";
 import PlaceInfoDrawer from "../PlaceInfoDrawer";
 import StudyMapMenuDrawer from "../StudyMapMenuDrawer";
 import { StudyReviewDrawer } from "../StudyReviewDrawer";
-import StudyMapNav from "./TopNav";
+import StudyMapNav, { ARCHIVE_OPTIONS } from "./TopNav";
 
 interface StudyPageMapProps {
   isDefaultOpen?: boolean;
@@ -60,7 +60,7 @@ function StudyPageMap({
     isLoadingLocation,
   } = useUserCurrentLocation();
   const modalParam = router.query.modal;
-  const currentLocation = defaultLocation || currentLocation2;
+  const currentLocation = null;
   const { updateQuery } = useOverlayRouter();
 
   /* 네이버 지도와 마커 옵션 */
@@ -135,7 +135,7 @@ function StudyPageMap({
     (filterType === "about" ? "all" : filterType) || "best",
     null,
   );
-
+  console.log(21, placeData);
   useEffect(() => {
     if (noModalUpdate) return;
     if (modalParam !== "reviewPlace" && modalParam !== "addReview") {
@@ -280,28 +280,27 @@ function StudyPageMap({
     }
 
     if (amenityFilters.length > 0) {
-      result = result.filter((place) => {
-        const ratings = place.ratings;
-        if (!ratings?.length) return true; // 리뷰 없으면 통과 (검증 불가)
-        const count = ratings.length;
-        const avg = ratings.reduce(
-          (acc, r) => ({
-            mood: acc.mood + r.mood,
-            table: acc.table + r.table,
-            space: acc.space + r.space,
-          }),
-          { mood: 0, table: 0, space: 0 },
-        );
-        avg.mood /= count;
-        avg.table /= count;
-        avg.space /= count;
-        return amenityFilters.every((f) => {
-          if (f === "study") return avg.mood >= 4.0;
-          if (f === "outlet") return avg.table >= 4.0;
-          if (f === "space") return avg.space >= 4.0;
-          return true; // parking, group: 데이터 없어 통과
-        });
-      });
+      result = result.filter((place) =>
+        amenityFilters.every((f) => {
+          if (f === "hasGroupSeats") return place.studyCafeMeta?.hasGroupSeats === true;
+          if (f === "hasWifi") return place.studyCafeMeta?.hasGoodWifi === true;
+          if (f === "is24Hours") return place.studyCafeMeta?.is24Hours === true;
+          if (f === "hasParking") return place.studyCafeMeta?.hasParking === true;
+          if (f === "isUsuallySpacious") {
+            const ratings = place.ratings;
+            if (!ratings?.length) {
+              if (place.rating >= 4) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+            const avgSpace = ratings.reduce((acc, r) => acc + r.space, 0) / ratings.length;
+            return avgSpace >= 4;
+          }
+          return true;
+        }),
+      );
     }
 
     return result;
@@ -563,6 +562,7 @@ function StudyPageMap({
               setAmenityFilters={setAmenityFilters}
               selectedPickNickname={selectedPickNickname}
               setSelectedPickNickname={setSelectedPickNickname}
+              openAboutDrawer={() => setDrawerType("about")}
               onCafeSearch={(result) => {
                 const existingPlace = placeData?.find((p) => {
                   if (p.location.name === result.title) return true;
@@ -748,6 +748,8 @@ function StudyPageMap({
           }}
           placeData={placeData?.filter((p) => p.pick === selectedPickNickname) ?? []}
           pickNickname={selectedPickNickname}
+          pickTitle={ARCHIVE_OPTIONS.find((o) => o.nickname === selectedPickNickname)?.title}
+          pickSubtitle={ARCHIVE_OPTIONS.find((o) => o.nickname === selectedPickNickname)?.subtitle}
         />
       )}
       {reviewPlaceInfo && (

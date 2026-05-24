@@ -11,18 +11,18 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, isValidMotionProp, motion } from "framer-motion";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import StarRatingReviewBlock2 from "../../../components/molecules/StarRatingReviewBlock2";
-import { useRouter } from "next/router";
-import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
 } from "../../../hooks/study/queries";
+import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
 import { PlaceInfoBox } from "../PlaceInfoDrawer";
 
@@ -197,7 +197,7 @@ function GuideButton({ pickReviewPlace }: GuideButtonProps) {
                 text="업데이트 소식"
                 onClick={() => openMenu("업데이트 소식")}
               />
-              <FloatingMenuItem
+              {/* <FloatingMenuItem
                 icon={
                   <Flex borderRadius="full" align="center" justify="center">
                     <InfoIcon />
@@ -205,7 +205,7 @@ function GuideButton({ pickReviewPlace }: GuideButtonProps) {
                 }
                 text="이용 가이드"
                 onClick={() => openMenu("이용 가이드")}
-              />
+              /> */}
             </MotionFlex>
           )}
         </AnimatePresence>
@@ -362,7 +362,7 @@ function UpdateCard({
 const FAQ_ITEMS = [
   {
     label: "카공 지도는 무엇인가요?",
-    text: "카공하기 좋은 카페는 따로 있는 거 아시나요? '카공 지도'는 실제 카공러들의 평가를 기반으로 공부하기 좋은 카페를 바로 찾을 수 있는 서비스예요.",
+    text: "카공하기 좋은 카페는 따로 있는 거 아시나요? '카공 지도'는 실제 카공러 평가를 기반으로 공부하기 좋은 카페를 바로 찾을 수 있는 서비스예요.",
   },
   {
     label: "별점은 어떻게 평가되나요?",
@@ -422,11 +422,16 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["전반적인 UI/UX 및 사용성 개선", "일부 오류 수정 및 안정성 개선"],
   },
   {
+    date: "2026-05-24",
+    isCompleted: true,
+    textArr: ["카공지도 V2 대규모 리뉴얼 업데이트"],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
     textArr: [
-      "카페 상세 정보 추가 예정 (ex. 주차, 화장실)",
-      "카공 카페 랭킹 게시판 예정",
+      "카페 좋아요 + 모아보기 기능 예정",
+      "스터디 기능 오픈 예정",
       "아이폰/안드로이드 앱 출시 예정",
     ],
   },

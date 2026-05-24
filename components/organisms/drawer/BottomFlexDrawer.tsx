@@ -203,6 +203,7 @@ const Layout = styled.div<{
   maxheight: number;
 }>`
   position: fixed;
+  left: 0;
   overflow: hidden;
   bottom: ${(props) => (props.ishide === "true" ? 0 : 52)}px;
   width: 100%;

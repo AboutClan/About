@@ -1,171 +1,246 @@
 import { CloseIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { createPortal } from "react-dom";
+
+import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
+import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
+
+type CafeStatus = "great" | "good" | "bad";
+
+function getCafeStatus(): CafeStatus {
+  const now = new Date();
+  const day = now.getDay();
+  const hour = now.getHours();
+  const isWeekend = day === 0 || day === 6;
+
+  if (isWeekend) {
+    if (hour >= 11 && hour < 13) return "good";
+    if (hour >= 13 && hour < 17) return "bad";
+    if (hour >= 17 && hour < 18) return "good";
+  } else {
+    if (hour >= 12 && hour < 14) return "good";
+    if (hour >= 14 && hour < 17) return "bad";
+    if (hour >= 17 && hour < 18) return "good";
+  }
+  return "great";
+}
+
+const STATUS_CONFIG: Record<
+  CafeStatus,
+  { label: string; image: string; barColor: string; desc: string; bg: string }
+> = {
+  great: {
+    label: "여유",
+    image: "/cafe/great.png",
+    barColor: "var(--color-mint)",
+    desc: "지금 카공하기 딱 좋아요!",
+    bg: "rgba(0,194,179,0.08)",
+  },
+  good: {
+    label: "보통",
+    image: "/cafe/good.png",
+    barColor: "var(--color-orange)",
+    desc: "조금 붐비지만 자리가 있어요",
+    bg: "rgba(255,165,1,0.08)",
+  },
+  bad: {
+    label: "부족",
+    image: "/cafe/bad.png",
+    barColor: "var(--color-red)",
+    desc: "지금은 카공 자리가 부족해요",
+    bg: "rgba(255,105,105,0.08)",
+  },
+};
+
+type TimeSlot = { time: string; status: CafeStatus; from: number; to: number };
+
+// to > 24 이면 자정을 넘는 슬롯 (18~06시 → from=18, to=30)
+function isCurrentSlot(slot: TimeSlot, hour: number): boolean {
+  if (slot.to <= 24) return hour >= slot.from && hour < slot.to;
+  // wrap-around: 18시~06시 → hour >= 18 OR hour < 6
+  return hour >= slot.from || hour < slot.to - 24;
+}
+
+function getTimeSlots(isWeekend: boolean): TimeSlot[] {
+  if (isWeekend) {
+    return [
+      { time: "06시~11시", status: "great", from: 6, to: 11 },
+      { time: "11시~13시", status: "good", from: 11, to: 13 },
+      { time: "13시~17시", status: "bad", from: 13, to: 17 },
+      { time: "17시~18시", status: "good", from: 17, to: 18 },
+      { time: "18시~06시", status: "great", from: 18, to: 30 },
+    ];
+  }
+  return [
+    { time: "06시~12시", status: "great", from: 6, to: 12 },
+    { time: "12시~14시", status: "good", from: 12, to: 14 },
+    { time: "14시~17시", status: "bad", from: 14, to: 17 },
+    { time: "17시~18시", status: "good", from: 17, to: 18 },
+    { time: "18시~06시", status: "great", from: 18, to: 30 },
+  ];
+}
 
 function StatusButton() {
+  const router = useRouter();
+  const { updateQuery } = useOverlayRouter();
+
+  const isSheetOpen = router.query.modal === "statusSheet";
+  const status = getCafeStatus();
+  const { label, image, barColor } = STATUS_CONFIG[status];
+
   return (
     <>
       <Flex
         as="button"
-        w="48px"
-        h="88px"
-        pb={0.5}
+        w="40px"
         direction="column"
         align="center"
-        justify="center"
         bg="white"
-        borderRadius="999px"
-        boxShadow="0 10px 24px rgba(0,0,0,0.18)"
-        position="relative"
+        borderRadius="20px"
+        py={1.5}
+        boxShadow="0px 4px 12px rgba(0,0,0,0.12)"
+        onClick={() => updateQuery({ modal: "statusSheet" })}
       >
-        <Flex justify="center" align="center" pos="relative" w="48px" h="48px">
-          <Flex justify="center" align="center" pos="absolute">
-            <Image src="/cafe/자산 7.png" width={32} height={32} alt="imoji" />
-          </Flex>
-          <Box
-            fontSize="10px"
-            pos="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%,-50%)"
-            fontWeight={600}
-          >
-            여유
-          </Box>
-        </Flex>
-
-        <Box w="28px" h="2px" bg="blue.400" borderRadius="999px" my={2}></Box>
-        <Text fontSize="10px" fontWeight={800} color="gray.800" lineHeight="1">
-          카페 자리
+        <Image src={image} alt="status" width={28} height={28} objectFit="contain" />
+        <Text fontSize="12px" fontWeight={800} color="gray.900" mt={0.5}>
+          {label}
+        </Text>
+        <Box mb={0.5} w="24px" h="3px" borderRadius="999px" bg={barColor} />
+        <Text fontSize="10px" color="gray.500" fontWeight={600}>
+          자리
         </Text>
       </Flex>
-      {/* {<BottomSheet />} */}
+
+      {isSheetOpen &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <BottomFlexDrawer
+            isDrawerUp
+            isOverlay
+            isHideBottom
+            hasTopNav={false}
+            height={394}
+            zIndex={5000}
+            setIsModal={() => router.back()}
+          >
+            <BottomSheetContent onClose={() => router.back()} />
+          </BottomFlexDrawer>,
+          document.body,
+        )}
     </>
   );
 }
 
 export default StatusButton;
 
-function BottomSheet() {
-  return (
-    <Flex
-      direction="column"
-      w="full"
-      bg="white"
-      borderTopRadius="28px"
-      px="24px"
-      pt="20px"
-      pb="32px"
-    >
-      {/* 헤더 */}
-      <Flex justify="space-between" align="center" mb="28px">
-        <Text fontSize="20px" fontWeight="800">
-          수원시 영통구 광교1동
-        </Text>
+function BottomSheetContent({ onClose }: { onClose: () => void }) {
+  const now = new Date();
+  const day = now.getDay();
+  const hour = now.getHours();
+  const isWeekend = day === 0 || day === 6;
+  const dayLabel = isWeekend ? "주말" : "평일";
 
+  const status = getCafeStatus();
+  const { label, image, desc, bg } = STATUS_CONFIG[status];
+  const slots = getTimeSlots(isWeekend);
+
+  return (
+    <Flex direction="column" w="full" h="full" overflowY="auto">
+      {/* 헤더 */}
+      <Flex justify="space-between" align="center" py={4}>
+        <Text fontSize="18px" fontWeight={800}>
+          카페에 자리가 있을까?
+        </Text>
         <IconButton
           aria-label="close"
-          icon={<CloseIcon boxSize={4} />}
+          icon={<CloseIcon boxSize={3} />}
           borderRadius="full"
-          bg="gray.100"
-          minW="48px"
-          h="48px"
+          bg="none"
+          minW="36px"
+          h="36px"
+          onClick={onClose}
         />
       </Flex>
 
-      {/* 메인 날씨 */}
-      <Flex direction="column" align="center" mb="32px">
-        <Flex align="center" mb="12px">
-          <Box mr="16px">
-            <Image src="/weather/moon.png" width={72} height={72} alt="weather" />
-          </Box>
-
-          <Text fontSize="72px" fontWeight="300" lineHeight="1">
-            18.3°
+      {/* 현재 상태 카드 */}
+      <Flex align="center" bg={bg} borderRadius="16px" px={4} py={3} mb={3} gap={3}>
+        <Image src={image} alt={label} width={50} height={50} objectFit="contain" />
+        <Flex direction="column">
+          <Flex align="center" mb={0.5}>
+            <Text fontSize="18px" lineHeight="28px" fontWeight={800} color="gray.900">
+              {label}
+            </Text>
+          </Flex>
+          <Text fontSize="13px" color="gray.600" lineHeight="20px">
+            {desc}
           </Text>
         </Flex>
-
-        <Text fontSize="24px" fontWeight="700" mb="6px">
-          맑음
-        </Text>
-
-        <Text fontSize="18px" color="gray.600">
-          체감온도 19.3° · 미세{" "}
-          <Text as="span" color="blue.400" fontWeight="700">
-            좋음
-          </Text>{" "}
-          · 초미세{" "}
-          <Text as="span" color="blue.400" fontWeight="700">
-            좋음
-          </Text>
-        </Text>
       </Flex>
 
-      {/* 시간대별 */}
-      <Box bg="#f7f7f8" borderRadius="24px" px="20px" py="20px">
-        <Flex justify="space-between" align="center" mb="20px">
-          <Text fontSize="18px" fontWeight="800">
-            시간대별{" "}
-            <Text as="span" color="gray.400" fontWeight="600">
-              · 일별
-            </Text>
-          </Text>
+      {/* 시간대별 혼잡도 */}
+      <Box bg="gray.50" borderRadius="16px" px={4} py={4}>
+        <Text fontSize="13px" fontWeight={700} mb={4} color="gray.800">
+          {dayLabel} 시간대별 혼잡도
+        </Text>
 
-          <Text fontSize="18px" color="gray.600" fontWeight="600">
-            날씨 더보기 ›
-          </Text>
-        </Flex>
-
-        <Box h="1px" bg="gray.200" mb="20px" />
-
-        <Flex justify="space-between">
-          {[
-            { time: "23시", temp: "17°" },
-            { time: "내일", temp: "17°", badge: true },
-            { time: "1시", temp: "16°" },
-            { time: "2시", temp: "15°" },
-            { time: "3시", temp: "14°" },
-            { time: "4시", temp: "14°" },
-          ].map((item) => (
-            <Flex key={item.time} direction="column" align="center">
-              {item.badge ? (
+        <Flex direction="column" gap={2}>
+          {(() => {
+            const currentIdx = slots.findIndex((s) => isCurrentSlot(s, hour));
+            const n = slots.length;
+            const visible = [-1, 0, 1].map((offset) => slots[(currentIdx + offset + n) % n]);
+            return visible;
+          })().map((slot) => {
+            const cfg = STATUS_CONFIG[slot.status];
+            const isCurrent = isCurrentSlot(slot, hour);
+            return (
+              <Flex key={slot.time} align="center" gap={3}>
+                {/* 색상 바 */}
                 <Box
-                  px="10px"
-                  py="4px"
+                  w="4px"
+                  h="36px"
                   borderRadius="999px"
-                  bg="gray.500"
-                  color="white"
-                  fontSize="12px"
-                  fontWeight="700"
-                  mb="12px"
+                  bg={cfg.barColor}
+                  flexShrink={0}
+                  opacity={isCurrent ? 1 : 0.35}
+                />
+                {/* 시간 */}
+                <Text
+                  fontSize="13px"
+                  color={isCurrent ? "gray.900" : "gray.400"}
+                  fontWeight={isCurrent ? 700 : 400}
+                  w="68px"
+                  flexShrink={0}
                 >
-                  {item.time}
-                </Box>
-              ) : (
-                <Text fontSize="16px" color="gray.500" fontWeight="700" mb="12px" mt="6px">
-                  {item.time}
+                  {slot.time}
                 </Text>
-              )}
-
-              <Box mb="10px">
-                <Image src="/weather/cloud.png" width={40} height={40} alt="weather" />
-              </Box>
-
-              <Text fontSize="18px" fontWeight="700">
-                {item.temp}
-              </Text>
-            </Flex>
-          ))}
+                {/* 상태 라벨 */}
+                <Flex
+                  align="center"
+                  justify="center"
+                  px={3}
+                  py={1}
+                  borderRadius="999px"
+                  bg={isCurrent ? cfg.barColor : "transparent"}
+                >
+                  <Text fontSize="12px" fontWeight={700} color={isCurrent ? "white" : cfg.barColor}>
+                    {cfg.label}
+                  </Text>
+                </Flex>
+                {isCurrent && (
+                  <Text fontSize="11px" color="gray.400">
+                    ← 지금
+                  </Text>
+                )}
+              </Flex>
+            );
+          })}
         </Flex>
       </Box>
 
-      {/* 하단 */}
-      <Text mt="24px" fontSize="15px" color="gray.500">
-        제공{" "}
-        <Text as="span" color="blue.400">
-          기상청
-        </Text>{" "}
-        · 2026.05.21 22:27 업데이트
+      <Text mt={4} mb={4} fontSize="11px" color="gray.400">
+        ※ 실제 혼잡도는 카페별로 다를 수 있어요.
       </Text>
     </Flex>
   );

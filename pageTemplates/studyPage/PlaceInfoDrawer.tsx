@@ -157,6 +157,17 @@ export function PlaceInfoCard({
   );
 }
 
+const CAFE_META_LABELS: Record<string, string> = {
+  hasCleanRestroom: "화장실 깨끗",
+  hasComfortableSeats: "편한 좌석",
+  hasGoodValueDrinks: "가성비",
+  hasGoodWifi: "와이파이",
+  hasGroupSeats: "단체석",
+  hasParking: "주차 가능",
+  hasTimeLimit: "시간 제한",
+  is24Hours: "24시간",
+};
+
 export function PlaceInfoBox({
   placeInfo,
   isDown,
@@ -165,14 +176,16 @@ export function PlaceInfoBox({
   handleClick,
   isShort = false,
   customSubText,
+  hasButton = true,
 }: {
   placeInfo: StudyPlaceProps;
   isDown: boolean;
   handleVotePick?: () => void;
   isChange?: boolean;
-  handleClick: () => void;
+  handleClick?: () => void;
   isShort?: boolean;
   customSubText?: string;
+  hasButton?: boolean;
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -238,6 +251,12 @@ export function PlaceInfoBox({
     handleVotePick?.();
   };
 
+  const badges = Object.entries(placeInfo?.studyCafeMeta ?? {})
+    .filter(([, val]) => val === true)
+    .map(([key]) => CAFE_META_LABELS[key])
+    .filter(Boolean)
+    .slice(0, 5);
+
   return (
     <>
       <Flex mt={2} w="full" h="full" direction="column" align="start" pb={0}>
@@ -267,8 +286,9 @@ export function PlaceInfoBox({
             <InfoRow label="자리 여유" value={averageRatings.space || naturalRatings.space} />
 
             <Flex mt={1} pt={3} borderTop="1px solid" borderColor="gray.100" wrap="wrap" gap="6px">
-              {["의자 편함", "단체석", "주차 가능", "화장실 깔끔"].map((item) => (
+              {(badges.length ? badges : ["와이파이", "화장실 깨끗", "편한 좌석"]).map((label) => (
                 <Badge
+                  key={label}
                   h="20px"
                   variant="subtle"
                   px={2}
@@ -279,65 +299,51 @@ export function PlaceInfoBox({
                   borderRadius="10px"
                   colorScheme="gray"
                 >
-                  {item}
+                  {label}
                 </Badge>
-                // <Flex
-                //   key={item}
-                //   h="28px"
-                //   px="10px"
-                //   borderRadius="999px"
-                //   bg="gray.50"
-                //   border="1px solid"
-                //   borderColor="gray.100"
-                //   align="center"
-                //   fontSize="12px"
-                //   fontWeight={500}
-                //   color="gray.600"
-                // >
-                //   {item}
-                // </Flex>
               ))}
             </Flex>
           </Flex>
         )}
-
-        <Flex w="full" mt={3} pb={2}>
-          <Button
-            color="mint"
-            w="full"
-            h={isShort ? "44px" : "48px"}
-            border="1px solid var(--color-mint)"
-            borderRadius="8px"
-            borderColor="mint"
-            onClick={handleReviewClick}
-            fontSize="13px"
-            fontWeight="bold"
-            mr={2}
-            bg="white"
-            lineHeight="16px"
-          >
-            네이버 지도
-          </Button>
-          <Button
-            colorScheme="mint"
-            w="full"
-            fontSize="13px"
-            fontWeight="bold"
-            h={isShort ? "44px" : "48px"}
-            onClick={handleVotePick ? handleVoteClick : handleRatingClick}
-            borderRadius="8px"
-            isLoading={isLoading}
-          >
-            {!handleVotePick && (
-              <Box mr={1} lineHeight="16px">
-                <ReviewIcon />
+        {hasButton && (
+          <Flex w="full" mt={3} pb={2}>
+            <Button
+              color="mint"
+              w="full"
+              h={isShort ? "44px" : "48px"}
+              border="1px solid var(--color-mint)"
+              borderRadius="8px"
+              borderColor="mint"
+              onClick={handleReviewClick}
+              fontSize="13px"
+              fontWeight="bold"
+              mr={2}
+              bg="white"
+              lineHeight="16px"
+            >
+              네이버 지도
+            </Button>
+            <Button
+              colorScheme="mint"
+              w="full"
+              fontSize="13px"
+              fontWeight="bold"
+              h={isShort ? "44px" : "48px"}
+              onClick={handleVotePick ? handleVoteClick : handleRatingClick}
+              borderRadius="8px"
+              isLoading={isLoading}
+            >
+              {!handleVotePick && (
+                <Box mr={1} lineHeight="16px">
+                  <ReviewIcon />
+                </Box>
+              )}
+              <Box lineHeight="16px">
+                {handleVotePick ? `이 장소로 스터디 ${isChange ? "변경" : "개설"}` : "후기 게시판"}
               </Box>
-            )}
-            <Box lineHeight="16px">
-              {handleVotePick ? `이 장소로 스터디 ${isChange ? "변경" : "개설"}` : "후기 게시판"}
-            </Box>
-          </Button>
-        </Flex>
+            </Button>
+          </Flex>
+        )}
       </Flex>
     </>
   );
