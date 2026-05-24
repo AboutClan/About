@@ -424,7 +424,7 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
   {
     date: "2026-05-24",
     isCompleted: true,
-    textArr: ["카공지도 V2 대규모 리뉴얼 업데이트"],
+    textArr: ["카공지도 시즌2 대규모 업데이트"],
   },
   {
     date: "2026-05-18",
