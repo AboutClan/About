@@ -161,6 +161,17 @@ function StudyMapNav({
     latitude: null,
     longitude: null,
   });
+  const [extraBottomPadding, setExtraBottomPadding] = useState(0);
+
+  useEffect(() => {
+    // Instagram 인앱 브라우저는 env(safe-area-inset-bottom)이 0을 반환
+    // 하단 툴바(~49px)를 직접 감지해 보정
+    if (typeof window === "undefined") return;
+    const isInstagram = /Instagram/.test(navigator.userAgent);
+    if (isInstagram) {
+      setExtraBottomPadding(49);
+    }
+  }, []);
 
   const isFilterOpen = router.query.modal === "ratingFilter";
   const isAmenityOpen = router.query.modal === "amenityFilter";
@@ -447,7 +458,7 @@ function StudyMapNav({
           bottom={0}
           left={0}
           zIndex={300}
-          sx={{ paddingBottom: getSafeAreaBottom(16) }}
+          sx={{ paddingBottom: getSafeAreaBottom(16 + extraBottomPadding) }}
         >
           <Flex px={4} justify="space-between" align="center">
             {hasBackButton ? (
