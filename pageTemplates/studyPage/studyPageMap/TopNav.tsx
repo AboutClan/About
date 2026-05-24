@@ -51,7 +51,7 @@ export const ARCHIVE_OPTIONS: { title: string; subtitle: string; nickname: strin
   {
     title: "프로님 PICK",
     subtitle: "작업실에 더 가까운 카공 카페 모음",
-    nickname: "새벽",
+    nickname: "프로카공러",
   },
   {
     title: "새벽님 PICK",
@@ -935,13 +935,15 @@ export function StudyIcon({ color }) {
 }
 
 function CheckIcon2({ isSelected }: { isSelected: boolean }) {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="24px"
-    viewBox="0 -960 960 960"
-    width="24px"
-    fill={isSelected ? "var(--gray-900)" : "var(--gray-300)"}
-  >
-    <path d="m382-354 339-339q12-12 28-12t28 12q12 12 12 28.5T777-636L410-268q-12 12-28 12t-28-12L182-440q-12-12-11.5-28.5T183-497q12-12 28.5-12t28.5 12l142 143Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 -960 960 960"
+      width="24px"
+      fill={isSelected ? "var(--gray-900)" : "var(--gray-300)"}
+    >
+      <path d="m382-354 339-339q12-12 28-12t28 12q12 12 12 28.5T777-636L410-268q-12 12-28 12t-28-12L182-440q-12-12-11.5-28.5T183-497q12-12 28.5-12t28.5 12l142 143Z" />
+    </svg>
+  );
 }
