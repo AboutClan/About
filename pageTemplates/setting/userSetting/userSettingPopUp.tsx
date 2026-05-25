@@ -6,6 +6,7 @@ import FAQModal from "../../../components/overlay/FAQModal";
 import FriendInviteModal from "../../../components/overlay/FriendInviteModal";
 import GatherRecordDrawer from "../../../components/overlay/GatherRecordDrawer";
 import KakaoFriendModal from "../../../components/overlay/KakaoFriendModal";
+import LimitModal from "../../../components/overlay/LimitModal";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
 import NewbieBenefitModal from "../../../components/overlay/NewbieBenefitModal";
 import NewMemberModal from "../../../components/overlay/NewMemberModal";
@@ -34,7 +35,8 @@ export type PopUpType =
   | "pointReceive"
   | "kakaoFriend"
   | "membership"
-  | "friend";
+  | "friend"
+  | "limit";
 
 interface PopUpProps extends CloseProps {}
 
@@ -49,6 +51,7 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
   kakaoFriend: KakaoFriendModal,
   membership: NewbieBenefitModal,
   friend: FriendInviteModal,
+  limit: LimitModal,
 };
 
 export default function UserSettingPopUp({ user }: { user: IUser }) {
@@ -65,6 +68,12 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
 
   useEffect(() => {
     if (data === undefined || !session) return;
+
+    if (user.point <= 0) {
+      setPopUpType((old) => [...old, "limit"]);
+      return;
+    }
+
     // if (
     //   dayjs(user.registerDate).diff(dayjs(), "d") >= -30 &&
     //   !checkAndSetLocalStorage(NEW_MEMBER_MODAL_AT, 3)

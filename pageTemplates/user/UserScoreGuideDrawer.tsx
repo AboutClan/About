@@ -125,11 +125,9 @@ function UserScoreGuideDrawer({ onClose }: UserScoreGuideDrawerProps) {
             동아리 규칙
           </Box>
           <Box as="p" textAlign="end">
-            월 최소 활동 점수는 <b>10점</b>으로,
-            <br />
-            출석만 해도 쉽게 채울 수 있어요.
-            <br />
-            미달 시 <b>1,000 포인트</b>가 차감돼요.
+            한달 동안 접속 조차 안한 인원은
+            <br /> <b>1,000원</b>의 패널티가 발생합니다.
+            <br /> 출석체크만 해도 충분해요!
           </Box>
         </Flex>
       </Flex>{" "}
