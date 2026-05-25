@@ -240,7 +240,7 @@ function BottomSheetContent({ onClose }: { onClose: () => void }) {
       </Box>
 
       <Text mt={4} mb={4} fontSize="11px" color="gray.400">
-        ※ 실제 혼잡도는 카페별로 다를 수 있어요.
+        ※ 실제 혼잡도는 카페별로 다를 수 있습니다.
       </Text>
     </Flex>
   );
