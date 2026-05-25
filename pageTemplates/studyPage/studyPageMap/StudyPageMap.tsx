@@ -60,7 +60,7 @@ function StudyPageMap({
     isLoadingLocation,
   } = useUserCurrentLocation();
   const modalParam = router.query.modal;
-  const currentLocation = null;
+  const currentLocation = defaultLocation || currentLocation2;
   const { updateQuery } = useOverlayRouter();
 
   /* 네이버 지도와 마커 옵션 */
