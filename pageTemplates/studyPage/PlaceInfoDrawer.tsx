@@ -69,7 +69,8 @@ export function PlaceInfoCard({
   const total = Array.isArray(ratings)
     ? ratings.reduce((acc, cur) => acc + cur.mood + cur.table + cur.space + cur.etc, 0)
     : 0;
-  const totalScore = Number(placeInfo?.ratings?.length > 3 ? total / (ratings.length * 4) : rating);
+
+  const totalScore = Number((total + rating * 4) / (ratings.length * 4 + 4));
   const reviewCnt =
     (ratings?.length || 0) + 2 + Number(placeInfo?.location?.latitude?.toString().slice(-1));
 
