@@ -306,12 +306,6 @@ function StudyPageMap({
     return result;
   }, [placeData, markerCenter, markerRadiusKm, filterType, amenityFilters, selectedPickNickname]);
   useEffect(() => {}, [currentMapCenter, markerCenter]);
-  // 개발 환경에서만 필터 결과 가시화.
-  useEffect(() => {
-    if (process.env.NODE_ENV !== "production") {
-      // eslint-disable-next-line no-console
-    }
-  }, [placeData, visiblePlaceData, markerCenter, markerRadiusKm]);
 
   useEffect(() => {
     if (!visiblePlaceData.length) return;

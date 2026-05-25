@@ -23,7 +23,9 @@
       "Bash(Format-Table FullName)",
       "Bash(Format-Table -Property FullName)",
       "Bash(Get-Content \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\\\\pageTemplates\\\\studyPage\\\\studyPageMap\\\\TopNav.tsx\")",
-      "Bash(Select-Object -Skip 250)"
+      "Bash(Select-Object -Skip 250)",
+      "Bash(grep -E \"\\\\.\\(tsx|ts\\)$\")",
+      "Bash(xargs grep -l \"GROUP_CURSOR_NUM\")"
     ]
   }
 }

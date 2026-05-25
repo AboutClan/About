@@ -114,6 +114,14 @@ export const getStudyPlaceMarkersOptions = (
       const point = data2[idx];
       const data = placeData[idx];
 
+      const rating = data?.rating || 3.5;
+      const ratings = data?.ratings || [];
+
+      const total = Array.isArray(ratings)
+        ? ratings.reduce((acc, cur) => acc + cur.mood + cur.table + cur.space + cur.etc, 0)
+        : 0;
+
+      const totalScore = Number((total + rating * 4) / (ratings.length * 4 + 4));
       return {
         _id: data._id,
         ids: [data._id],
@@ -121,7 +129,7 @@ export const getStudyPlaceMarkersOptions = (
         count: 1,
         type: "noise",
         name: data.location.name,
-        rating: data.rating,
+        rating: totalScore,
         defaultLocationLat: data.location.latitude,
       };
     });

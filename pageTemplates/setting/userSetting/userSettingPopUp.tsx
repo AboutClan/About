@@ -16,7 +16,6 @@ import {
   FRIEND_INVITE_AT,
   GATHER_REVIEW_MODAL_ID,
   MEMBERSHIP_AT,
-  POINT_RECEIVE_AT,
 } from "../../../constants/keys/localStorage";
 import { STUDY_ATTEND_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
@@ -93,10 +92,6 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
       setPopUpType((old) => [...old, "gatherReview"]);
       return;
     }
-    if (user?.point === 3000 && !checkAndSetLocalStorage(POINT_RECEIVE_AT, 30)) {
-      setPopUpType((old) => [...old, "pointReceive"]);
-      return;
-    }
 
     if (
       studyRecord &&
@@ -139,7 +134,6 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
               {...props}
               key={type}
               onClose={() => {
-              
                 filterPopUpType(type);
               }}
             />

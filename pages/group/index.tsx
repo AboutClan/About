@@ -164,6 +164,12 @@ function GroupPage() {
     isFetchingRef.current = isLoading;
   }, [isLoading]);
 
+  // 렌더 중 동기적으로 firstLoad를 false로 설정
+  // (useEffect보다 먼저 처리되어 observer 재생성 시 race condition 방지)
+  if (groups !== undefined && firstLoad.current) {
+    firstLoad.current = false;
+  }
+
   useEffect(() => {
     if (!router.isReady || !loader.current) return;
 
