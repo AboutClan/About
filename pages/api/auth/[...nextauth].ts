@@ -162,6 +162,78 @@ export const authOptions: NextAuthOptions = {
         const userUid = (user as any)?.uid;
 
         if (userUid === "1234567890" || profileIdStr === "1234567890") {
+          // 어댑터가 게스트 세션에 카카오 계정을 link한 경우 → 한 번에 자동 복구
+          const GUEST_OID = "69c4f9ce862f5d10130252ab";
+          const realKakaoId = profileIdStr && profileIdStr !== "1234567890" ? profileIdStr : null;
+
+          if (realKakaoId && (account?.provider === "kakao" || account?.provider === "apple")) {
+            // 1. 잘못 생성된 Account(userId=GUEST_OID) 삭제
+            await Account.deleteOne({
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+              userId: GUEST_OID,
+            }).catch(() => {});
+
+            // 2. 실제 유저 조회 (기존 가입자)
+            let realUser = await User.findOneAndUpdate(
+              { uid: realKakaoId },
+              {
+                $set: {
+                  profileImage:
+                    kakaoProfile?.properties?.thumbnail_image ||
+                    (user as any)?.profileImage ||
+                    DEFAULT_PROFILE_IMAGE,
+                },
+              },
+            );
+
+            // 3. 신규 유저면 생성
+            if (!realUser) {
+              realUser = await User.create({
+                uid: realKakaoId,
+                name:
+                  kakaoProfile?.kakao_account?.name ||
+                  kakaoProfile?.properties?.nickname ||
+                  realKakaoId,
+                profileImage:
+                  kakaoProfile?.properties?.thumbnail_image ||
+                  DEFAULT_PROFILE_IMAGE,
+                role: "newUser",
+                isActive: false,
+              });
+            }
+
+            // 4. 올바른 userId로 Account 재생성
+            await Account.findOneAndUpdate(
+              { provider: account.provider, providerAccountId: account.providerAccountId },
+              {
+                $setOnInsert: {
+                  userId: realUser._id,
+                  provider: account.provider,
+                  providerAccountId: account.providerAccountId,
+                  type: "oauth",
+                },
+                $set: {
+                  access_token: account.access_token,
+                  refresh_token: account.refresh_token,
+                  expires_at: account.expires_at,
+                },
+              },
+              { upsert: true },
+            );
+
+            // 5. 이후 jwt 콜백이 올바른 유저 정보를 받도록 user 업데이트
+            (user as any).uid = realUser.uid;
+            (user as any).role = realUser.role;
+            user.name = realUser.name;
+            user.id = realUser.id;
+            (user as any).isActive = realUser.isActive ?? false;
+            (user as any).profileImage =
+              realUser.profileImage || DEFAULT_PROFILE_IMAGE;
+
+            return true;
+          }
+
           return false;
         }
 
