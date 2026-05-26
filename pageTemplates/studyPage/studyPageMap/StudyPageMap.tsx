@@ -144,7 +144,7 @@ function StudyPageMap({
         setDrawerType(null);
         setSelectedPlaceId(null);
       }
-      if (modalParam !== "list" && !ids.length && drawerType === "list") {
+      if (modalParam !== "list" && drawerType === "list") {
         setDrawerType(null);
         setIds([]);
       }

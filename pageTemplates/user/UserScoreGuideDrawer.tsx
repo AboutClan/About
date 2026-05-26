@@ -125,8 +125,8 @@ function UserScoreGuideDrawer({ onClose }: UserScoreGuideDrawerProps) {
             동아리 규칙
           </Box>
           <Box as="p" textAlign="end">
-            한달 동안 접속 조차 안한 인원은
-            <br /> <b>1,000원</b>의 패널티가 발생합니다.
+            매월 유령 멤버는
+            <b>1,000원</b>의 패널티가 발생합니다.
             <br /> 출석체크만 해도 충분해요!
           </Box>
         </Flex>

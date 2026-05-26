@@ -35,7 +35,7 @@ function InfoBoxCol({ infoBoxPropsArr, size = "sm", highlightSide = "right" }: I
               </Box>
               <Box>{props?.leftChildren}</Box>
             </Flex>
-            <Flex align="center">
+            <Flex align="center" flex={1} minW={0} justify="flex-end">
               <Box
                 fontWeight={highlightSide === "right" ? "regular" : "medium"}
                 color={highlightSide === "right" ? props?.color || "gray.800" : "gray.600"}
@@ -43,7 +43,13 @@ function InfoBoxCol({ infoBoxPropsArr, size = "sm", highlightSide = "right" }: I
               >
                 {props.text}
               </Box>
-              <Box ml={props?.rightChildren && 2}>{props?.rightChildren}</Box>
+              <Box
+                ml={props?.rightChildren && 2}
+                minW={0}
+                w={props?.rightChildren ? "100%" : undefined}
+              >
+                {props?.rightChildren}
+              </Box>
             </Flex>
           </Flex>
         );

@@ -11,12 +11,24 @@ interface BlurredLinkProps {
 function BlurredLink({ isBlur, url }: BlurredLinkProps) {
   return (
     <BlurredPart isBlur={isBlur} isCenter={false}>
-      <CustomExternalLink color="var(--color-blue)" href={url} isblur={isBlur ? "true" : "false"}>
-        {url}
-      </CustomExternalLink>
+      <div
+        style={{
+          width: "100%",
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: 2,
+          overflow: "hidden",
+          wordBreak: "break-all",
+        }}
+      >
+        <CustomExternalLink color="var(--color-blue)" href={url} isblur={isBlur ? "true" : "false"}>
+          {url}
+        </CustomExternalLink>
+      </div>
     </BlurredPart>
   );
 }
+
 
 const CustomExternalLink = styled(ExternalLink)<{ isblur: "true" | "false" }>`
   pointer-events: ${({ isblur }) => (isblur === "true" ? "none" : "unset")};
