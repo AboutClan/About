@@ -1,6 +1,7 @@
 import { Box, Button, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import Script from "next/script";
-import { useState } from "react";
+import { signIn, signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -8,6 +9,7 @@ import ValueBoxCol, { ValueBoxColItemProps } from "../../../components/molecules
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import RegisterPaymentButton from "../../../pageTemplates/register/access/RegisterPaymentButton";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
+import { setAuthIntent } from "../../../utils/authIntentUtils";
 
 const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
 
@@ -15,6 +17,17 @@ function Charge() {
   const { data: userInfo } = useUserInfoQuery();
 
   const [chargePoint, setChargePoint] = useState(3000);
+
+  useEffect(() => {
+    if (userInfo?.role === "guest") {
+      const login = async () => {
+        setAuthIntent();
+        await signOut({ redirect: false });
+        await signIn("kakao", { callbackUrl: "/home" });
+      };
+      login();
+    }
+  }, [userInfo]);
 
   const valueBoxColItems: ValueBoxColItemProps[] = [
     {

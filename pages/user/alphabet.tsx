@@ -156,6 +156,9 @@ function CollectionAlphabet() {
       {!isLoading ? (
         <Slide isNoPadding>
           <Members>
+            <Box color="gray.500" fontWeight={600} fontSize="13px" my={3} pt={3}>
+              ※ 친구 추가된 인원만 표시 됩니다.
+            </Box>
             {members
               ?.filter((member) => member?.user?.name !== "어바웃")
               .map((who) => {

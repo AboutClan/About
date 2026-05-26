@@ -19,7 +19,9 @@ export const useCollectionAlphabetAllQuery = (options?: QueryOptions<ICollection
   useQuery<ICollectionAlphabet[], AxiosError, ICollectionAlphabet[]>(
     "alphabetAll",
     async () => {
-      const res = await axios.get<ICollectionAlphabet[]>(`${SERVER_URI}/collection/alphabet/all`);
+      const res = await axios.get<ICollectionAlphabet[]>(
+        `${SERVER_URI}/collection/alphabet/friend`,
+      );
       return res.data;
     },
     options,
