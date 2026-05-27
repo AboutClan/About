@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup, Stack, Text } from "@chakra-ui/react";
+import { Checkbox, CheckboxGroup, Flex, Stack, Text } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 
@@ -73,74 +73,82 @@ function RequestSecedeModal({ setIsModal }: IModal) {
 
   return (
     <RightDrawer title="회원 탈퇴" onClose={() => setIsModal(false)}>
-      <RegisterLayout isSlide={false} isNoPx>
-        {isFirstPage ? (
-          <>
-            <RegisterOverview>
-              <span>ABOUT을 탈퇴하시겠어요?</span>
-              <span>나중을 위해 휴식 신청만 진행할 수도 있어요!</span>
-            </RegisterOverview>
+      <Flex direction="column" h="calc(100dvh - var(--header-h))" overflow="hidden">
+        {/* 스크롤 영역 */}
+        <Flex flex={1} overflowY="auto" direction="column">
+          <RegisterLayout isSlide={false} isNoPx>
+            {isFirstPage ? (
+              <>
+                <RegisterOverview>
+                  <span>ABOUT을 탈퇴하시겠어요?</span>
+                  <span>나중을 위해 휴식 신청만 진행할 수도 있어요!</span>
+                </RegisterOverview>
 
-            <InfoList
-              items={[
-                "회원님의 모든 활동 정보와 기록이 삭제됩니다.",
-                "이후 재가입시 가입비를 다시 지불해야 합니다.",
-                "부정 이용 방지를 위해 탈퇴 후 30일간 재가입 할 수 없습니다.",
-              ]}
-            />
-          </>
-        ) : (
-          <>
-            <RegisterOverview>
-              <span>탈퇴하시려는 이유를 선택해 주세요</span>
-              <span>더 발전하는 ABOUT이 될 수 있도록 최선을 다하겠습니다.</span>
-            </RegisterOverview>
+                <InfoList
+                  items={[
+                    "회원님의 모든 활동 정보와 기록이 삭제됩니다.",
+                    "이후 재가입시 가입비를 다시 지불해야 합니다.",
+                    "부정 이용 방지를 위해 탈퇴 후 30일간 재가입 할 수 없습니다.",
+                  ]}
+                />
+              </>
+            ) : (
+              <>
+                <RegisterOverview>
+                  <span>탈퇴하시려는 이유를 선택해 주세요</span>
+                  <span>더 발전하는 ABOUT이 될 수 있도록 최선을 다하겠습니다.</span>
+                </RegisterOverview>
 
-            <CheckboxGroup value={values} onChange={(val) => setValues(val as string[])}>
-              <Stack spacing="16px">
-                {reasons.map((reason) => {
-                  const needsTextarea =
-                    reason === "맘에 들지 않는 멤버 또는 비매너 멤버를 만나서" || reason === "기타";
+                <CheckboxGroup value={values} onChange={(val) => setValues(val as string[])}>
+                  <Stack spacing="16px">
+                    {reasons.map((reason) => {
+                      const needsTextarea =
+                        reason === "맘에 들지 않는 멤버 또는 비매너 멤버를 만나서" ||
+                        reason === "기타";
 
-                  const showTextarea = needsTextarea && values.includes(reason);
+                      const showTextarea = needsTextarea && values.includes(reason);
 
-                  return (
-                    <Stack key={reason} spacing="12px">
-                      <Checkbox value={reason} colorScheme="mint" alignItems="flex-start">
-                        <Text fontSize="md" lineHeight="1.4">
-                          {reason}
-                        </Text>
-                      </Checkbox>
+                      return (
+                        <Stack key={reason} spacing="12px">
+                          <Checkbox value={reason} colorScheme="mint" alignItems="flex-start">
+                            <Text fontSize="md" lineHeight="1.4">
+                              {reason}
+                            </Text>
+                          </Checkbox>
 
-                      {showTextarea && (
-                        <Textarea
-                          placeholder="해당 내용은 관리자만 확인합니다. 더 나은 어바웃이 될 수 있도록 소중한 의견 감사드립니다."
-                          fontSize="sm"
-                          minH="100px"
-                          value={textMap[reason] || ""}
-                          onChange={(e) =>
-                            setTextMap((prev) => ({
-                              ...prev,
-                              [reason]: e.target.value,
-                            }))
-                          }
-                        />
-                      )}
-                    </Stack>
-                  );
-                })}
-              </Stack>
-            </CheckboxGroup>
-          </>
-        )}
-      </RegisterLayout>
+                          {showTextarea && (
+                            <Textarea
+                              placeholder="해당 내용은 관리자만 확인합니다. 더 나은 어바웃이 될 수 있도록 소중한 의견 감사드립니다."
+                              fontSize="sm"
+                              minH="100px"
+                              value={textMap[reason] || ""}
+                              onChange={(e) =>
+                                setTextMap((prev) => ({
+                                  ...prev,
+                                  [reason]: e.target.value,
+                                }))
+                              }
+                            />
+                          )}
+                        </Stack>
+                      );
+                    })}
+                  </Stack>
+                </CheckboxGroup>
+              </>
+            )}
+          </RegisterLayout>
+        </Flex>
 
-      <BottomNav
-        isSlide={false}
-        onClick={handleBottomNav}
-        text={isFirstPage ? "다 음" : "회원 탈퇴"}
-        isLoading={isLoading || isLoading2}
-      />
+        {/* BottomNav 하단 고정 */}
+
+        <BottomNav
+          isSlide={false}
+          onClick={handleBottomNav}
+          text={isFirstPage ? "다 음" : "회원 탈퇴"}
+          isLoading={isLoading || isLoading2}
+        />
+      </Flex>
     </RightDrawer>
   );
 }

@@ -68,35 +68,28 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
       <div>
         <BlockName>계정 설정</BlockName>
         <NavBlock>
-          <button onClick={() => onClickBlock("modal", "profile")}>프로필 공개 설정</button>
-          <button onClick={() => onClickBlock("modal", "isLocationSharingDenided")}>
-            스터디 위치 공개 설정
-          </button>
-          <button onClick={() => onClickBlock("modal", "mainPlace")}>주 활동 장소 변경</button>
-        </NavBlock>
-      </div>
-      <div>
-        <BlockName>프로모션</BlockName>
-        <NavBlock>
-          <button onClick={() => onClickBlock("modal", "friend")}>추천인 코드 (친구 초대용)</button>
+          <button onClick={() => onClickBlock("modal", "friend")}>추천인 코드 발급</button>
           <button onClick={() => onClickBlock("modal", "coupon")}>쿠폰 입력</button>
+          <button onClick={() => onClickBlock("modal", "profile")}>프로필 공개 설정</button>
           <button onClick={() => onClickBlock("modal", "id")}>계정 ID 확인</button>
+          {/* <button onClick={() => onClickBlock("modal", "isLocationSharingDenided")}>
+            스터디 위치 공개 설정
+            </button>
+          <button onClick={() => onClickBlock("modal", "mainPlace")}>주 활동 장소 변경</button> */}
         </NavBlock>
       </div>
+
       <div>
-        <BlockName>문의 및 요청</BlockName>
+        <BlockName>문의 사항</BlockName>
         <NavBlock>
           <button
             onClick={() => {
               navigateExternalLink("https://pf.kakao.com/_SaWXn/chat");
             }}
           >
-            어바웃 채널로 문의하기
+            실시간 문의하기
           </button>
-          <button onClick={() => onClickBlock("modal", "suggest")}>건의하기</button>
-          <button onClick={() => onClickBlock("modal", "rest")}>
-            {userInfo?.role === "resting" ? "휴식 해제" : "휴식 신청"}
-          </button>
+          <button onClick={() => onClickBlock("modal", "suggest")}>건의 및 제보하기</button>
         </NavBlock>
       </div>
       <div>
@@ -115,6 +108,9 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         <BlockName>계정 관리</BlockName>
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "secede")}>회원 탈퇴</button>
+          <button onClick={() => onClickBlock("modal", "rest")}>
+            {userInfo?.role === "resting" ? "휴식 해제" : "휴식 신청"}
+          </button>
           <button onClick={() => onClickBlock("modal", "logout")}>로그아웃</button>
         </NavBlock>
       </div>

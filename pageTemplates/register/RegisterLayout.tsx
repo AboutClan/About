@@ -23,14 +23,14 @@ function RegisterLayout({
     <>
       {isSlide ? (
         <Slide>
-          <Layout onSubmit={handleSubmit(onValid)}>
+          <Layout $hasMinHeight onSubmit={handleSubmit(onValid)}>
             {children}
             <Message>{errorMessage}</Message>
           </Layout>
         </Slide>
       ) : (
         <Box px={isNoPx ? 0 : 5}>
-          <Layout onSubmit={handleSubmit(onValid)}>
+          <Layout $hasMinHeight={false} onSubmit={handleSubmit(onValid)}>
             {children}
             <Message>{errorMessage}</Message>
           </Layout>
@@ -40,9 +40,9 @@ function RegisterLayout({
   );
 }
 
-const Layout = styled.div`
+const Layout = styled.div<{ $hasMinHeight: boolean }>`
   padding-bottom: 40px;
-  min-height: calc(100vh - 68px);
+  ${({ $hasMinHeight }) => $hasMinHeight && `min-height: calc(100vh - 68px);`}
 `;
 
 const Message = styled.div`

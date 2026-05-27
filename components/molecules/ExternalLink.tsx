@@ -1,6 +1,6 @@
 import { Link, LinkProps } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React, { forwardRef, useCallback } from "react";
+import { forwardRef, useCallback } from "react";
 
 import { isWebView } from "../../utils/appEnvUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
@@ -20,14 +20,29 @@ const ExternalLink = forwardRef<HTMLAnchorElement, ExternalLinkProps>(
 
     if (isWebView()) {
       return (
-        <Link as="button" className={className} onClick={handleClick} ref={ref} {...rest}>
+        <Link
+          as="button"
+          className={className}
+          color="blue"
+          onClick={handleClick}
+          ref={ref}
+          {...rest}
+        >
           {children}
         </Link>
       );
     }
 
     return (
-      <Link href={href} as={NextLink} className={className} isExternal ref={ref} {...rest}>
+      <Link
+        href={href}
+        as={NextLink}
+        className={className}
+        color="blue"
+        isExternal
+        ref={ref}
+        {...rest}
+      >
         {children}
       </Link>
     );

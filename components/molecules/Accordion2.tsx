@@ -10,13 +10,8 @@ import styled from "styled-components";
 
 import { OPEN_KAKAO_LINK } from "../../constants/contentsText/Private";
 import { ShortArrowIcon } from "../Icons/ArrowIcons";
+import { IAccordionContent } from "./Accordion";
 import ExternalLink from "./ExternalLink";
-
-export interface IAccordionContent {
-  title: string;
-  content: string | string[];
-  url?: string;
-}
 
 interface IAccordion {
   contentArr: IAccordionContent[];
@@ -25,7 +20,7 @@ interface IAccordion {
   defaultIndex?: number;
 }
 
-function Accordion({ contentArr, isFull, isQ = true, defaultIndex }: IAccordion) {
+function Accordion2({ contentArr, isFull, isQ = true, defaultIndex }: IAccordion) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(defaultIndex ?? null);
   const handleAccordionChange = (index: number | null) => {
     setSelectedIndex(index);
@@ -95,14 +90,20 @@ function Accordion({ contentArr, isFull, isQ = true, defaultIndex }: IAccordion)
               {Array.isArray(content) ? (
                 content.map((list, idx) => <li key={idx}>{list}</li>)
               ) : (
-                <Box as="p" fontSize="13px" lineHeight="20px " color="gray.700">
+                <Box fontSize="13px" lineHeight="20px " color="gray.700">
                   <Box as="span" mr={2} color="mint" fontWeight="extrabold">
                     A.
                   </Box>
                   <br />
-                  {content}
-                  {content === "" && (
-                    <ExternalLink href={OPEN_KAKAO_LINK}>{OPEN_KAKAO_LINK}</ExternalLink>
+                  {!item?.url && (
+                    <Box as="pre" fontFamily="apple">
+                      {content}
+                    </Box>
+                  )}
+                  {(content === "" || !!item?.url) && (
+                    <ExternalLink href={item?.url || OPEN_KAKAO_LINK}>
+                      {content || OPEN_KAKAO_LINK}
+                    </ExternalLink>
                   )}
                 </Box>
               )}
@@ -120,4 +121,4 @@ const Container = styled.div<{ isFull: boolean }>`
   color: var(--gray-800);
 `;
 
-export default Accordion;
+export default Accordion2;

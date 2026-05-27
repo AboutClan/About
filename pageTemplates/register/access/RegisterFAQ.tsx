@@ -1,7 +1,7 @@
 import { Badge, Box, Button, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-import Accordion from "../../../components/molecules/Accordion";
+import Accordion2 from "../../../components/molecules/Accordion2";
 import { ACCORDION_CONTENT_FAQ } from "../../../constants/contentsText/accordionContents";
 
 function RegisterFAQ() {
@@ -11,8 +11,9 @@ function RegisterFAQ() {
     ...ACCORDION_CONTENT_FAQ.slice(0, 2),
     {
       title: "가입 완료 후에는 어떻게 하나요?",
-      content:
-        "회비 결제와 함께 동아리 가입이 완료됩니다. 가입 후 안내되는 [신규 인원 가이드]를 확인해 주세요!",
+      content: `
+회비 결제와 함께 동아리 가입이 완료됩니다.
+가입 후 안내되는 [신규 인원 가이드]를 확인해 주세요!`,
     },
     ...ACCORDION_CONTENT_FAQ.slice(2),
   ];
@@ -31,7 +32,7 @@ function RegisterFAQ() {
           </Text>
         </Stack>{" "}
         <Box w="full" textAlign="start">
-          <Accordion contentArr={content.slice(0, size)} />
+          <Accordion2 contentArr={content.slice(0, size)} />
           {content.length > size && (
             <Button
               mt={2}

@@ -29,16 +29,39 @@ function BottomNav({
   const params = searchParams.toString();
 
   function BottomButton() {
+    if (isSlide) {
+      return (
+        <Button
+          position="fixed"
+          left="50%"
+          bottom={getSafeAreaBottom(8)}
+          maxW="var(--view-max-width)"
+          transform="translate(-50%,0)"
+          width="calc(100% - 2*var(--gap-4))"
+          size="lg"
+          borderRadius="12px"
+          backgroundColor={isActive ? "var(--color-mint)" : "gray.400"}
+          color="white"
+          fontSize="14px"
+          isLoading={isLoading}
+          fontWeight={700}
+          onClick={onClick}
+          _focus={{ backgroundColor: "var(--color-mint)", color: "white" }}
+          isDisabled={!isActive}
+          opacity={!isActive && "1 !important"}
+        >
+          {text || "다 음"}
+        </Button>
+      );
+    }
+
+    // isSlide=false: normal flow → width 100%가 부모 padding을 존중
     return (
       <Button
-        position={isSlide ? "fixed" : "absolute"}
-        left="50%"
-        bottom={getSafeAreaBottom(8)}
-        maxW="var(--view-max-width)"
-        transform="translate(-50%,0)"
-        width={isSlide ? "calc(100% - 2*var(--gap-4))" : "full"}
+        width="100%"
         size="lg"
         borderRadius="12px"
+        sx={{ marginBottom: getSafeAreaBottom(8) }}
         backgroundColor={isActive ? "var(--color-mint)" : "gray.400"}
         color="white"
         fontSize="14px"
