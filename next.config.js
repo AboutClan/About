@@ -11,6 +11,22 @@ const withPWA = require("next-pwa")({
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const baseNextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "guide.about20s.club",
+          },
+        ],
+        destination:
+          "https://mewing-sombrero-e36.notion.site/13d86fb9086b80039300e211948103c7?pvs=73",
+        permanent: false,
+      },
+    ];
+  },
   // async redirects() {
   //   return [
   //     {

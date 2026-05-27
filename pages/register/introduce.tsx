@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { MouseEvent, useRef, useState } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 
 import Textarea from "../../components/atoms/Textarea";
 import BottomNav from "../../components/layouts/BottomNav";
@@ -13,6 +14,7 @@ import { gaEvent } from "../../libs/gtag";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
+import { setAuthIntent } from "../../utils/authIntentUtils";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 function Comment() {
   const toast = useToast();
@@ -56,6 +58,17 @@ function Comment() {
   const [text, setText] = useState(info?.introduceText || "");
 
   const { mutate: request } = useUserRequestMutation();
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (session?.user.role === "guest" || session?.user.uid === "1234567890") {
+      toast("error", "안전한 정보 확인을 위해 다시 한번만 로그인해주세요!");
+      setTimeout(async () => {
+        setAuthIntent();
+        await signOut({ redirect: false });
+        await signIn("kakao", { callbackUrl: "/register/introduce" });
+      }, 1000);
+    }
+  }, [session]);
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (text.length < 30) {

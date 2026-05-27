@@ -125,9 +125,11 @@ function UserScoreGuideDrawer({ onClose }: UserScoreGuideDrawerProps) {
             동아리 규칙
           </Box>
           <Box as="p" textAlign="end">
-            매월 유령 멤버는
+            월간 점수가 <b>0점</b>인 멤버는
+            <br />
             <b>1,000원</b>의 패널티가 발생합니다.
-            <br /> 출석체크만 해도 충분해요!
+            <br />
+            출석체크만 해도 OK!
           </Box>
         </Flex>
       </Flex>{" "}

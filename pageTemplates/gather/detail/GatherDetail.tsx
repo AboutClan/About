@@ -29,7 +29,7 @@ function GatherDetailInfo({ data, isMember, isOpenGather }: IGatherDetailInfo) {
               category: "장 소",
               rightChildren: (
                 <Flex align="center">
-                  <Box ml={1} color="gray.600">
+                  <Box ml="auto" color="gray.600">
                     {data?.location.main || "온라인"}{" "}
                   </Box>
                 </Flex>
@@ -44,7 +44,9 @@ function GatherDetailInfo({ data, isMember, isOpenGather }: IGatherDetailInfo) {
                   {
                     category: "단톡방",
                     rightChildren: !data?.kakaoUrl ? (
-                      <Box color="gray.600">미 개설</Box>
+                      <Box color="gray.600" ml="auto" textAlign="end">
+                        미 개설
+                      </Box>
                     ) : (
                       <BlurredLink isBlur={!isMember} url={data?.kakaoUrl} />
                     ),

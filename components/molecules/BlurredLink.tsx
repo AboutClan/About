@@ -16,7 +16,7 @@ function BlurredLink({ isBlur, url }: BlurredLinkProps) {
           width: "100%",
           display: "-webkit-box",
           WebkitBoxOrient: "vertical",
-          WebkitLineClamp: 2,
+          WebkitLineClamp: 1,
           overflow: "hidden",
           wordBreak: "break-all",
         }}
@@ -28,7 +28,6 @@ function BlurredLink({ isBlur, url }: BlurredLinkProps) {
     </BlurredPart>
   );
 }
-
 
 const CustomExternalLink = styled(ExternalLink)<{ isblur: "true" | "false" }>`
   pointer-events: ${({ isblur }) => (isblur === "true" ? "none" : "unset")};

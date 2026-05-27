@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -15,6 +15,7 @@ import {
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
 import { gaEvent } from "../../../libs/gtag";
 import { isWebView } from "../../../utils/appEnvUtils";
+import { setAuthIntent } from "../../../utils/authIntentUtils";
 import { navigateExternalLink } from "../../../utils/navigateUtils";
 
 function first(v: string | string[] | undefined) {
@@ -62,12 +63,16 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     const status = first(router.query.status);
     if (status) return;
 
-    if (!session?.user?.uid) {
+    if (
+      !session?.user?.uid ||
+      session?.user.role === "guest" ||
+      session?.user.uid === "1234567890"
+    ) {
       toast("error", "안전한 정보 확인을 위해 다시 한번만 로그인해주세요!");
-      setTimeout(() => {
-        signIn("kakao", {
-          callbackUrl: `${window.location.origin}/register/access`,
-        });
+      setTimeout(async () => {
+        setAuthIntent();
+        await signOut({ redirect: false });
+        await signIn("kakao", { callbackUrl: "/register/access" });
       }, 1000);
     }
   }, [router.isReady, router.query.status, session, toast, router]);
@@ -287,7 +292,6 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
 
     const apiId = process.env.NEXT_PUBLIC_COOKIEPAY_API_ID;
 
-    
     cookiepayments.init({ api_id: apiId as string });
     setReady(true);
   }, []);
