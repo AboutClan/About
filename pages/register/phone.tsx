@@ -8,7 +8,7 @@ import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
-import { useUserKakaoInfoQuery } from "../../hooks/user/queries";
+import { useUserInfoQuery , useUserKakaoInfoQuery } from "../../hooks/user/queries";
 import { gaEvent } from "../../libs/gtag";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
@@ -30,13 +30,14 @@ function Phone() {
   const [isModal, setIsModal] = useState(false);
 
   const { mutate: changeRole } = useUserInfoFieldMutation("role");
+  const { data: userInfo } = useUserInfoQuery();
 
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {
       const moving = localStorage.getItem("moving");
       if (moving) gaEvent("register_complete_by_cafe_map");
       else gaEvent("register_complete");
-      changeRole({ role: "waiting" });
+      if (userInfo?.role !== "member") changeRole({ role: "waiting" });
 
       setLocalStorageObj(REGISTER_INFO, null);
       toast("success", "신청 완료! 최종 가입 페이지로 이동합니다.");

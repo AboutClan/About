@@ -344,7 +344,6 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, account, user, trigger }) {
       try {
         if (trigger === "update") {
-          token.role = "waiting";
           return token;
         }
 
