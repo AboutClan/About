@@ -169,7 +169,7 @@ function SecondPageSection({
             })}
         </>
       )}
-      <Box h={20} />
+      <Box h="100px" />
     </>
   );
 }

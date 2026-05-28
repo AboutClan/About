@@ -61,7 +61,7 @@ function Comment() {
   const { data: session } = useSession();
   useEffect(() => {
     if (session?.user.role === "guest" || session?.user.uid === "1234567890") {
-      toast("error", "안전한 정보 확인을 위해 다시 한번만 로그인해주세요!");
+      toast("error", "안전한 계정 확인을 위해 다시 한번 로그인 할게요!");
       setTimeout(async () => {
         setAuthIntent();
         await signOut({ redirect: false });

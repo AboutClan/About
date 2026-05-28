@@ -496,9 +496,20 @@ function StudyNavigation({
               flex={1}
               colorScheme={navigationProps.colorScheme}
               onClick={
-                studyType !== "soloRealTimes" &&
-                userInfo?.temperature?.cnt > 3 &&
-                userInfo?.temperature?.temperature < 36
+                isGuest
+                  ? () => {
+                      router.replace({
+                        pathname: router.pathname,
+                        query: {
+                          ...router.query,
+                          guest: "on",
+                        },
+                      });
+                      return;
+                    }
+                  : studyType !== "soloRealTimes" &&
+                    userInfo?.temperature?.cnt > 3 &&
+                    userInfo?.temperature?.temperature < 36
                   ? () => {
                       toast("warning", "소셜링 온도가 낮아서 참여가 불가능합니다.");
                     }

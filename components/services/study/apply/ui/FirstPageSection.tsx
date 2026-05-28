@@ -27,8 +27,6 @@ function FirstPageSection({
   beforeMyDates,
   defaultDate,
 }: FirstPageSectionProps) {
-
-  
   useEffect(() => {
     if (!canChange) {
       const date =
@@ -106,9 +104,6 @@ function FirstPageSection({
           </Box>
           <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
             매일 <b>오전 9시</b>에 그날의 스터디 결과가 확정됩니다.
-          </Box>
-          <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
-            최대 일주일 이내의 스터디 신청이 가능합니다.
           </Box>
         </>
       )}

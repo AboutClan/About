@@ -1,4 +1,4 @@
-import { Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 import Textarea from "../../components/atoms/Textarea";
@@ -78,17 +78,59 @@ export function MBTILayout({
       </RegisterOverview>
 
       <RadioGroup onChange={setValue} value={value}>
-        <Stack spacing="16px">
+        <Stack spacing={3}>
           {ROUTES.map((route) => {
-            const showTextarea = route === "기타" && value === "기타";
+            const isSelected = value === route;
+            const showTextarea = route === "기타" && isSelected;
 
             return (
-              <Stack key={route} spacing="12px">
-                <Radio value={route} colorScheme="mint" alignItems="flex-start">
-                  <Text fontSize="md" lineHeight="1.4">
-                    {route}
-                  </Text>
-                </Radio>
+              <Stack key={route} spacing={2}>
+                <Box
+                  as="label"
+                  display="flex"
+                  alignItems="center"
+                  px={4}
+                  py={3}
+                  borderRadius="12px"
+                  border="1px solid"
+                  borderColor={isSelected ? "var(--color-mint)" : "var(--gray-200)"}
+                  bg={isSelected ? "rgba(0,194,179,0.05)" : "white"}
+                  cursor="pointer"
+                  transition="all 0.15s"
+                >
+                  <Radio
+                    value={route}
+                    colorScheme="mint"
+                    size="md"
+                    sx={{ display: "none" }}
+                  />
+                  <Flex align="center" gap={3} w="full">
+                    <Box
+                      w="20px"
+                      h="20px"
+                      borderRadius="full"
+                      border="2px solid"
+                      borderColor={isSelected ? "var(--color-mint)" : "var(--gray-300)"}
+                      bg={isSelected ? "var(--color-mint)" : "white"}
+                      flexShrink={0}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      {isSelected && (
+                        <Box w="8px" h="8px" borderRadius="full" bg="white" />
+                      )}
+                    </Box>
+                    <Text
+                      fontSize="15px"
+                      fontWeight={isSelected ? 600 : 400}
+                      color={isSelected ? "gray.800" : "gray.700"}
+                      lineHeight="1"
+                    >
+                      {route}
+                    </Text>
+                  </Flex>
+                </Box>
 
                 {showTextarea && (
                   <Textarea

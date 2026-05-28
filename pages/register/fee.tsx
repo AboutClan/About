@@ -31,7 +31,7 @@ export const VALUE_BOX_COL_ITEMS: ValueBoxCol2ItemProps[] = [
   {
     left: "포인트 충전",
     right: "5,000원",
-    leftSub: "(보증금 등에 사용)",
+    leftSub: "(노쇼 방지· 활동 보증 목적)",
   },
   {
     left: "최종 결제 금액",

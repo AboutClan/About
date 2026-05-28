@@ -25,7 +25,7 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/friend.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%B9%9C%EA%B5%AC%EC%B4%88%EB%8C%80%EC%9D%B4%EB%B2%A4%ED%8A%B8%EA%B0%80%EB%A1%9C.png",
     category: "friendInvite",
   },
 ];

@@ -109,6 +109,12 @@ export default function Auth() {
           return;
         }
 
+        const birthYear = resultData?.birthdate ? Number(resultData.birthdate.slice(0, 4)) : null;
+        if (!birthYear || birthYear < 1997 || birthYear > 2008) {
+          toast("info", "어바웃은 20대 멤버만 가입이 가능해요!");
+          return;
+        }
+
         setLocalStorageObj(REGISTER_INFO, {
           name: resultData?.name ?? "",
           gender: resultData?.gender === "1" ? "남성" : resultData?.gender === "2" ? "여성" : "",

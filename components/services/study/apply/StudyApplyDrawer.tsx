@@ -1,3 +1,4 @@
+import { Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
@@ -201,27 +202,31 @@ function StudyApplyDrawer({
           />
         }
       >
-        {isFirstPage ? (
-          <FirstPageSection
-            date={date}
-            changeDate={setDate}
-            canChange={canChange}
-            selectDates={(d: string[]) => setSelectedDates(d)}
-            defaultDate={defaultDate}
-            selectedDates={selectedDates}
-            beforeMyDates={beforeMyDates}
-          />
-        ) : (
-          <SecondPageSection
-            rangeNum={rangeNum}
-            changeRangeNum={setRangeNum}
-            voteLocation={voteLocation}
-            participants={participants}
-              pickLocation={setVoteLocation}
-              defaultLocation={location}
-          />
-        )}
-        <BottomNav isSlide={false} text="다 음" onClick={handleBottomNav} />
+        <Flex direction="column" h="calc(100dvh - var(--header-h))" overflow="hidden">
+          <Flex flex={1} overflowY="auto" direction="column" pb={isFirstPage ? 0 : 5}>
+            {isFirstPage ? (
+              <FirstPageSection
+                date={date}
+                changeDate={setDate}
+                canChange={canChange}
+                selectDates={(d: string[]) => setSelectedDates(d)}
+                defaultDate={defaultDate}
+                selectedDates={selectedDates}
+                beforeMyDates={beforeMyDates}
+              />
+            ) : (
+              <SecondPageSection
+                rangeNum={rangeNum}
+                changeRangeNum={setRangeNum}
+                voteLocation={voteLocation}
+                participants={participants}
+                pickLocation={setVoteLocation}
+                defaultLocation={location}
+              />
+            )}
+          </Flex>
+          <BottomNav isSlide={false} text="다 음" onClick={handleBottomNav} />
+        </Flex>
       </RightDrawer>
       {isTimeDrawer && (
         <StudyVoteTimeRulletDrawer

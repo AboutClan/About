@@ -123,7 +123,7 @@ function HomeHeader() {
                 bgColor="white"
                 borderRadius="50%"
               >
-                <AlertCirclePoint isActive={noticeAlert.notice} />
+                <AlertCirclePoint isActive={!isGuest && noticeAlert.notice} />
               </Box>
             </Box>
           </Flex>
