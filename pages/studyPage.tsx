@@ -56,6 +56,7 @@ export default function StudyPage() {
   const tabParam = router.query.tab as TabQuery | undefined;
   const dateParam = router.query.date as string | undefined;
   const resultParam = router.query.result as string | undefined;
+  const isCardNews = router.query.cardNews === "true";
 
   const isPassedDate = useMemo(
     () => !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day")),
@@ -233,6 +234,7 @@ export default function StudyPage() {
             studySet={isPassedDate ? passedStudyData : studySet}
             date={date}
             setDate={setDate}
+            isCardNews={isCardNews}
           />
         </Slide>
       ) : tab === "카공 지도.ZIP" ? (

@@ -13,6 +13,7 @@ export interface ITimeBoardParticipant {
 
 interface ITimeBoard {
   members: ITimeBoardParticipant[];
+  isCardNews?: boolean;
 }
 
 interface IUserTimeBlock {
@@ -23,7 +24,7 @@ interface IUserTimeBlock {
   end: string;
 }
 
-export default function UserTimeBoard({ members }: ITimeBoard) {
+export default function UserTimeBoard({ members, isCardNews }: ITimeBoard) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [blockWidth, setBlockWidth] = useState<number>(0);
   const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);
@@ -54,38 +55,46 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
     setUserBlocks(newUserBlocks);
   }, [members]);
 
+  const rowH = isCardNews ? 56 : 36;
+  const headerH = isCardNews ? 44 : 28;
+
   return (
-    <Box h={`${members.length * 36 + 32}px`} position="relative">
+    <Box h={`${members.length * rowH + headerH + 4}px`} position="relative">
       <Flex h="100%" w="100%" position="absolute">
         {STUDY_VOTE_HOUR_ARR.map((hour, idx) => (
           <Flex key={idx} direction="column" align="center" flex={1}>
-            <Box py="6px" h="28px" color="gray.500" fontSize="11px">
+            <Box
+              py={isCardNews ? "10px" : "6px"}
+              h={`${headerH}px`}
+              color="gray.500"
+              fontSize={isCardNews ? "16px" : "11px"}
+            >
               {hour}
             </Box>
             <Box w="1px" h="100%" bg="gray.100" />
           </Flex>
         ))}
       </Flex>
-      <Box position="absolute" mt="30px" w="full">
+      <Box position="absolute" mt={`${headerH - 2}px`} w="full">
         <Box ref={containerRef}>
           {userBlocks.map((props, idx) => (
             <Box
               key={idx}
               w={`${props.startToEndInterval * blockWidth}px`}
               ml={`${(props.startInterval + 0.5) * blockWidth}px`}
-              fontSize="9px"
-              py={1}
-              px="1px"
+              fontSize={isCardNews ? "14px" : "9px"}
+              py={isCardNews ? 2 : 1}
+              px={isCardNews ? "3px" : "1px"}
             >
               <Box
-                borderRadius="4px"
-                lineHeight="12px"
-                px={1}
+                borderRadius={isCardNews ? "6px" : "4px"}
+                lineHeight={isCardNews ? "20px" : "12px"}
+                px={isCardNews ? 2 : 1}
                 color="white"
                 py={0.5}
                 bg={COLOR_400_ARR[idx]}
               >
-                {props.name}
+                {props.name.slice(0, 1) + "*" + props.name.slice(2)}
                 <br />
                 {props.start} - {props.startToEndInterval >= 2 && props.end}
               </Box>

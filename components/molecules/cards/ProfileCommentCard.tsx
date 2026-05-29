@@ -34,6 +34,7 @@ export interface IProfileCommentCard {
   crownType?: "main" | "sub";
   isStudy?: boolean;
   pendingType?: "pendingOwner" | "pending" | null;
+  isCardNews?: boolean;
 }
 
 // ...
@@ -61,6 +62,7 @@ export default function ProfileCommentCard({
   crownType,
   isStudy,
   pendingType,
+  isCardNews,
 }: IProfileCommentCard) {
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -84,16 +86,25 @@ export default function ProfileCommentCard({
   return (
     <>
       <BlurredPart isBlur={pendingType === "pending"} text="참여 승인 대기중...">
-        <Flex py={3} align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>
+        <Flex
+          py={isCardNews ? 5 : 3}
+          align="center"
+          {...(!isNoBorder && { borderBottom: "var(--border)" })}
+        >
           {leftComponent && <Box mr={4}>{leftComponent}</Box>}
 
           <Flex flex={1} opacity={pendingType === "pendingOwner" ? 0.5 : 1}>
-            <Avatar user={user} size="md1" />
+            <Avatar user={user} size={isCardNews ? "xl1" : "md1"} />
 
-            <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
-              <Flex align="center" mb={memo || comment ? 1 : 0}>
-                <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
-                  {user?.name || "익명"}
+            <Flex direction="column" flex={0.95} justify="center" ml={isCardNews ? 4 : 3} my={1}>
+              <Flex align="center" mb={memo || comment ? 1.5 : 0}>
+                <Box
+                  lineHeight={isCardNews ? "30px" : "20px"}
+                  mr={1}
+                  fontWeight="semibold"
+                  fontSize={isCardNews ? "20px" : "13px"}
+                >
+                  {user?.name.slice(0, 1) + "*" + user?.name.slice(2) || "익명"}
                 </Box>
 
                 {!isStudy && <UserBadge badgeIdx={user?.badge?.badgeIdx} />}
@@ -107,19 +118,25 @@ export default function ProfileCommentCard({
                             studyUser?.studyRecord?.accumulationCnt +
                             studyUser?.studyRecord?.accumulationMinutes
                           }
+                          isCardNews={isCardNews}
                         />
                       </Box>
                     </PlainPopover>
                     {studyUser?.studyIntroduce?.studyStyle && (
                       <>
-                        <StudyPopoverIcon size="md" content={STUDY_POPOVER_TEXT.subject}>
-                          <Box fontSize="9px" px={1.5} fontWeight={600}>
+                        <StudyPopoverIcon
+                          size="md"
+                          content={STUDY_POPOVER_TEXT.subject}
+                          isCardNews={isCardNews}
+                        >
+                          <Box fontSize={isCardNews ? "14px" : "9px"} px={1.5} fontWeight={600}>
                             {studyUser?.studyIntroduce?.subject}
                           </Box>
                         </StudyPopoverIcon>
 
                         <StudyPopoverIcon
                           size="md2"
+                          isCardNews={isCardNews}
                           content={
                             STUDY_STYLE?.[
                               studyUser?.studyIntroduce?.studyStyle
@@ -128,10 +145,12 @@ export default function ProfileCommentCard({
                             ]
                           }
                         >
-                          <Box fontSize="9px" px={1.5} fontWeight={600}>
-                            {studyUser?.studyIntroduce?.studyStyle
-                              ?.split(" ")?.[0]
-                              ?.replace(/^\[|\]$/g, "")}
+                          <Box fontSize={isCardNews ? "14px" : "9px"} px={1.5} fontWeight={600}>
+                            {studyUser?.name === "조수연"
+                              ? "쉬엄쉬엄"
+                              : studyUser?.studyIntroduce?.studyStyle
+                                  ?.split(" ")?.[0]
+                                  ?.replace(/^\[|\]$/g, "")}
                           </Box>
                         </StudyPopoverIcon>
                       </>
@@ -152,8 +171,19 @@ export default function ProfileCommentCard({
                 )}
               </Flex>
 
-              <Flex lineHeight="16px" alignItems="center" color="gray.500" fontSize="12px">
-                <Text as="span" noOfLines={1} color="gray.500" fontSize="12px" lineHeight="16px">
+              <Flex
+                lineHeight={isCardNews ? "24px" : "16px"}
+                alignItems="center"
+                color="gray.500"
+                fontSize={isCardNews ? "18px" : "12px"}
+              >
+                <Text
+                  as="span"
+                  noOfLines={1}
+                  color="gray.500"
+                  fontSize={isCardNews ? "18px" : "12px"}
+                  lineHeight={isCardNews ? "24px" : "16px"}
+                >
                   {text || memo || "코멘트 없음"}
                 </Text>
 
@@ -248,9 +278,15 @@ type StudyPopoverIconProps = {
   children: ReactNode;
   content: ReactNode;
   size: "sm" | "md" | "sm2" | "md2";
+  isCardNews?: boolean;
 };
 
-function StudyPopoverIcon({ children, content, size: sizeType }: StudyPopoverIconProps) {
+function StudyPopoverIcon({
+  children,
+  content,
+  size: sizeType,
+  isCardNews,
+}: StudyPopoverIconProps) {
   const size = sizeType === "sm2" ? "sm" : sizeType === "md2" ? "md" : sizeType;
 
   return (
@@ -259,7 +295,7 @@ function StudyPopoverIcon({ children, content, size: sizeType }: StudyPopoverIco
         <Flex
           ml={1}
           align="center"
-          h="20px"
+          h={isCardNews ? "32px" : "20px"}
           borderRadius={size === "sm" ? "full" : "8px"}
           bg={
             sizeType === "md2" || sizeType === "sm2"
@@ -297,13 +333,13 @@ function StudyPopoverIcon({ children, content, size: sizeType }: StudyPopoverIco
   );
 }
 
-export function StudyBadge({ cnt }: { cnt: number }) {
+export function StudyBadge({ cnt, isCardNews }: { cnt: number; isCardNews?: boolean }) {
   return (
     <Flex
       ml={1}
       fontWeight={600}
-      fontSize="9px"
-      h="20px"
+      fontSize={isCardNews ? "14px" : "9px"}
+      h={isCardNews ? "32px" : "20px"}
       bg="red.50"
       pl={1}
       pr={1.5}

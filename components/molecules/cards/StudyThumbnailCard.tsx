@@ -42,6 +42,7 @@ export interface StudyThumbnailCardProps {
   hasAttend?: boolean;
   isConfirmed?: boolean;
   hasBorder?: boolean;
+  isCardNews?: boolean;
 }
 
 export function StudyThumbnailCard({
@@ -56,20 +57,21 @@ export function StudyThumbnailCard({
   hasReview,
   hasAttend,
   hasBorder = true,
+  isCardNews,
 }: StudyThumbnailCardProps) {
   const router = useRouter();
 
   const temp = dateStatus === "future" && participants.length < 4 ? 4 : 8;
-
+  const type = getStudyBadge(studyType, "current");
   return (
-    <CardLink href={url} onClick={func} isbordermain={hasBorder ? "true" : "false"}>
+    <CardLink href={url} onClick={func} isbordermain={hasBorder ? "true" : "false"} $isCardNews={isCardNews}>
       <>
-        <PlaceImage size="md" imageProps={place.imageProps} />
+        <PlaceImage size={isCardNews ? "lg" : "md"} imageProps={place.imageProps} />
 
-        <Flex direction="column" ml={4} flex={1}>
+        <Flex direction="column" ml={isCardNews ? 6 : 4} flex={1}>
           <Flex justify="space-between">
             <Box>
-              <Flex fontSize="10px" align="center" lineHeight="12px" color="gray.600">
+              <Flex fontSize={isCardNews ? "16px" : "10px"} align="center" lineHeight={isCardNews ? "24px" : "12px"} color="gray.600">
                 <Box as="span">
                   <LocationDotIcon size="md" />
                 </Box>
@@ -77,7 +79,7 @@ export function StudyThumbnailCard({
                   {place.branch}
                 </Box>
               </Flex>
-              <Title>{place.name}</Title>{" "}
+              <Title $isCardNews={isCardNews}>{place.name}</Title>{" "}
             </Box>
             <Flex align="center" mb="auto">
               {isMyStudy && (
@@ -85,19 +87,17 @@ export function StudyThumbnailCard({
                   <CheckCircleIcon color="mint" size="sm" isFill />
                 </Box>
               )}
-              <Badge
-                mr="auto"
-                colorScheme={getStudyBadge(studyType, dateStatus).colorScheme}
-                size="md"
-              >
-                {getStudyBadge(studyType, dateStatus).text}
+              <Badge mr="auto" colorScheme={type.colorScheme} size="md">
+                {type.text}
               </Badge>
             </Flex>
           </Flex>
-          <Subtitle>
+          <Subtitle $isCardNews={isCardNews}>
             <Flex>
               {place.date && (
-                <Box as="span">{dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}</Box>
+                <Box as="span">
+                  {dayjsToFormat(dayjs(place.date).month(4).date(29).locale("ko"), "M.D(ddd)")}
+                </Box>
               )}
               {place.date && (
                 <Box as="span" color="var(--gray-400)">
@@ -138,10 +138,11 @@ export function StudyThumbnailCard({
                     : participants
                 }
                 maxCnt={VOTER_SHOW_MAX}
+                size={isCardNews ? "lg" : "sm"}
               />
             </Box>
             {studyType !== "participations" && studyType !== "soloRealTimes" ? (
-              <Flex align="center" color="var(--gray-500)" fontSize="11px" lineHeight="16px">
+              <Flex align="center" color="var(--gray-500)" fontSize={isCardNews ? "17px" : "11px"} lineHeight={isCardNews ? "24px" : "16px"}>
                 {dateStatus === "future"
                   ? participants.length < 4
                     ? "확정까지 "
@@ -156,7 +157,7 @@ export function StudyThumbnailCard({
             ) : (
               <Flex>
                 <UserIcon size="sm" />
-                <Flex lineHeight="12px" ml={1} fontSize="10px" align="center" fontWeight={500}>
+                <Flex lineHeight={isCardNews ? "20px" : "12px"} ml={1} fontSize={isCardNews ? "16px" : "10px"} align="center" fontWeight={500}>
                   <Box
                     fontWeight={600}
                     as="span"
@@ -168,7 +169,7 @@ export function StudyThumbnailCard({
                         : "var(--color-gray)"
                     }
                   >
-                    {participants.length}
+                    {37}
                   </Box>
                   <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
                     /
@@ -223,10 +224,12 @@ export function InfinityIcon() {
   );
 }
 
-const CardLink = styled(Link)<{ isbordermain: "true" | "false" }>`
+const CardLink = styled(Link)<{ isbordermain: "true" | "false"; $isCardNews?: boolean }>`
   height: fit-content;
   display: flex;
-  padding-bottom: ${(props) => (props.isbordermain === "true" ? "12px" : "8px")};
+  padding-top: ${(props) => (props.$isCardNews ? "16px" : "0px")};
+  padding-bottom: ${(props) =>
+    props.$isCardNews ? "20px" : props.isbordermain === "true" ? "12px" : "8px"};
 
   border-bottom: ${(props) => (props.isbordermain === "true" ? "var(--border)" : "none")};
   background-color: white;
@@ -241,16 +244,15 @@ const CardLink = styled(Link)<{ isbordermain: "true" | "false" }>`
   }
 `;
 
-const Title = styled(SingleLineText)`
+const Title = styled(SingleLineText)<{ $isCardNews?: boolean }>`
   margin: 4px 0;
-  font-size: 14px;
+  font-size: ${(props) => (props.$isCardNews ? "22px" : "14px")};
   font-weight: 600;
-  line-height: 20px;
+  line-height: ${(props) => (props.$isCardNews ? "32px" : "20px")};
 `;
 
-const Subtitle = styled(SingleLineText)`
+const Subtitle = styled(SingleLineText)<{ $isCardNews?: boolean }>`
   color: var(--gray-500);
-  font-size: 11px;
-
-  line-height: 12px;
+  font-size: ${(props) => (props.$isCardNews ? "17px" : "11px")};
+  line-height: ${(props) => (props.$isCardNews ? "24px" : "12px")};
 `;

@@ -94,7 +94,7 @@ function StudyDateBar({ date, members, studyType }: IStudyDateBar) {
               ? "스터디 신청 멤버"
               : studyType === "soloRealTimes"
               ? "오늘의 열공 멤버"
-              : dayjsToFormat(dayjs(date), `M월 D일  참여 멤버`)}
+              : dayjsToFormat(dayjs(date), `5월 29일 스터디 멤버`)}
           </Box>
           <Button variant="unstyled" onClick={handleClick}>
             <PlusIcon color="mint" size="sm" />

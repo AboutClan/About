@@ -35,6 +35,7 @@ interface IStudyMembers {
   isAttend?: boolean;
   isCrew: boolean;
   coordinates: CoordinatesProps;
+  isCardNews?: boolean;
 }
 
 export default function StudyMembers({
@@ -42,7 +43,7 @@ export default function StudyMembers({
   date,
   members: prevMembers,
   isAttend,
-
+  isCardNews,
   coordinates,
 }: IStudyMembers) {
   const userInfo = useUserInfo();
@@ -315,12 +316,14 @@ export default function StudyMembers({
             }
             hasCommentButton={studyType !== "participations" && isAttend}
             isStudy={true}
+            isCardNews={isCardNews}
           />
           {!isOpen && userCardArr.length > 10 && (
             <Button
               mt={2}
               w="100%"
-              h="40px"
+              h={isCardNews ? "56px" : "40px"}
+              fontSize={isCardNews ? "16px" : undefined}
               bgColor="white"
               border="0.5px solid #E8E8E8"
               onClick={() => setIsOpen(true)}
@@ -354,6 +357,8 @@ export default function StudyMembers({
           border="1px solid var(--color-mint)"
           bg="white"
           w="full"
+          h={isCardNews ? "56px" : undefined}
+          fontSize={isCardNews ? "18px" : undefined}
           onClick={() => {
             if (isGuest) {
               typeToast("guest");

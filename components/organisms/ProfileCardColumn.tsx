@@ -6,11 +6,13 @@ interface IProfileCardColumn {
   changeComment?: (comment: string) => void;
   hasCommentButton: boolean;
   isStudy?: boolean;
+  isCardNews?: boolean;
 }
 export default function ProfileCardColumn({
   userCardArr,
   hasCommentButton,
   isStudy,
+  isCardNews,
 }: IProfileCardColumn) {
   return (
     <Layout>
@@ -28,6 +30,7 @@ export default function ProfileCardColumn({
           isNoBorder={idx === userCardArr.length - 1}
           isStudy={isStudy}
           pendingType={userCard?.pendingType}
+          isCardNews={isCardNews}
         />
       ))}
     </Layout>

@@ -5,11 +5,12 @@ import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-e
 
 interface IStudyTimeBoard {
   members: StudyConfirmedMemberProps[];
+  isCardNews?: boolean;
 }
-export default function StudyTimeBoard({ members }: IStudyTimeBoard) {
+export default function StudyTimeBoard({ members, isCardNews }: IStudyTimeBoard) {
   const timeBoardMembers: ITimeBoardParticipant[] = transformToTimeBoardProp(members);
 
-  return <UserTimeBoard members={timeBoardMembers} />;
+  return <UserTimeBoard members={timeBoardMembers} isCardNews={isCardNews} />;
 }
 
 const transformToTimeBoardProp = (members: StudyConfirmedMemberProps[]) => {

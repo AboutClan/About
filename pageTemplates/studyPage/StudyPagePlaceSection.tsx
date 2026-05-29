@@ -2,7 +2,6 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import Select from "../../components/atoms/Select";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
@@ -15,18 +14,18 @@ import {
 } from "../../libs/study/thumbnailCardLibs";
 import { DispatchString } from "../../types/hooks/reactTypes";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
-import { CheckBox } from "../gather/GatherMain";
 
 interface StudyPagePlaceSectionProps {
   studySet: StudySetProps;
   date: string;
   setDate: DispatchString;
+  isCardNews?: boolean;
 }
 
 export type FilterType = "예정 스터디" | "지난 스터디";
 export type StudySortedOption = "날짜순" | "인원순" | "거리순";
 
-function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectionProps) {
+function StudyPagePlaceSection({ studySet, date, setDate, isCardNews }: StudyPagePlaceSectionProps) {
   const { data: session } = useSession();
 
   const [lastIdx, setLastIdx] = useState(0);
@@ -93,7 +92,8 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
 
   return (
     <>
-      <Flex mt={3} py={1} mb={4} justify="space-between" align="center">
+      <Box h={5} />
+      {/* <Flex mt={3} py={1} mb={4} justify="space-between" align="center">
         <Flex>
           <Box mr={4}>
             <CheckBox
@@ -127,15 +127,15 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
           setValue={setSortedOption}
           isBorder={false}
         />
-      </Flex>
+      </Flex> */}
 
       <Flex flexDir="column" mb={20}>
         <Box>
           <Box>
             {thumbnailCardInfoArr?.length && !isLoading
               ? thumbnailCardInfoArr.map((thumbnailCardInfo, idx) => (
-                  <Box key={idx} mb={3}>
-                    <StudyThumbnailCard {...thumbnailCardInfo} />
+                  <Box key={idx} mb={isCardNews ? 5 : 3}>
+                    <StudyThumbnailCard {...thumbnailCardInfo} isCardNews={isCardNews} />
                   </Box>
                 ))
               : [1, 2, 3, 4, 5, 6, 7].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
@@ -143,7 +143,8 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
             {thumbnailCardInfoArr?.length && (
               <Button
                 w="100%"
-                h="40px"
+                h={isCardNews ? "56px" : "40px"}
+                fontSize={isCardNews ? "16px" : undefined}
                 bgColor="white"
                 border="0.5px solid #E8E8E8"
                 onClick={() => setLastIdx((old) => old + 1)}

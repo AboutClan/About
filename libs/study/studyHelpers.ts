@@ -45,7 +45,7 @@ export const getStudyBadge = (studyType: StudyType, dateStatus: "future" | "curr
       return { text: "공부 인증", colorScheme: "red" };
     default:
       if (dateStatus === "current") {
-        return { text: "오늘의 스터디", colorScheme: "mint" };
+        return { text: "진행중인 스터디", colorScheme: "mint" };
       } else if (dateStatus === "future") {
         return { text: "예정된 스터디", colorScheme: "purple" };
       } else {

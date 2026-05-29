@@ -11,7 +11,7 @@ import { GroupThumbnailCard } from "../../../../components/molecules/cards/Group
 import TabNav from "../../../../components/molecules/navs/TabNav";
 import {
   STUDY_CREW_ID_MAPPING,
-  STUDY_CREW_PLACE_MAPPING
+  STUDY_CREW_PLACE_MAPPING,
 } from "../../../../constants/service/study/place";
 import { useToast } from "../../../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
@@ -24,8 +24,6 @@ import StudyLinkModal from "../../../../pageTemplates/study/modals/StudyLinkModa
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
-import StudyExtraButton from "../../../../pageTemplates/study/StudyExtraButton";
-import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyNearMap from "../../../../pageTemplates/study/StudyNearMap";
@@ -38,12 +36,12 @@ import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
   StudyCrew,
-  StudyParticipationProps
+  StudyParticipationProps,
 } from "../../../../types/models/studyTypes/study-entity.types";
 import {
   StudyConfirmedSetProps,
   StudyParticipationsSetProps,
-  StudyType
+  StudyType,
 } from "../../../../types/models/studyTypes/study-set.types";
 import { dayjsToStr, getTodayStr } from "../../../../utils/dateTimeUtils";
 import { createGroupThumbnailProps } from "../../../group";
@@ -52,7 +50,8 @@ export default function Page() {
   const router = useRouter();
 
   const toast = useToast();
-  const { id, date: date2, type, studyLocation } = router.query;
+  const { id, date: date2, type, studyLocation, cardNews } = router.query;
+  const isCardNews = cardNews === "true";
   const userInfo = useUserInfo();
   const date = date2 as string;
   const studyType = type as StudyType;
@@ -132,8 +131,6 @@ export default function Page() {
       ? studyPassedData && studyPassedData[studyType]
       : studySet && studySet[studyType];
 
- 
-
   const participationsSet =
     studyType === "participations" && (studyData as StudyParticipationsSetProps[]);
   const confirmedSet = studyType !== "participations" && (studyData as StudyConfirmedSetProps[]);
@@ -141,7 +138,7 @@ export default function Page() {
   const findStudy =
     studyType !== "participations" &&
     confirmedSet?.find((set) => set.study.place._id === id)?.study;
- 
+
   const userId = userInfo?._id;
 
   const getMyStudyInfo = () => {
@@ -167,7 +164,7 @@ export default function Page() {
 
   const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
   const findTodayStudy = myStudyArr?.filter((myStudy) => myStudy.date === date);
- 
+
   let myStudyStatus: MyStudyStatus;
 
   switch (studyType) {
@@ -248,7 +245,7 @@ export default function Page() {
     <>
       {isPassedSolo || studyPassedData || studySet ? (
         <>
-          <StudyHeader date={date} placeInfo={placeInfo} />
+          {/* <StudyHeader date={date} placeInfo={placeInfo} /> */}
           <Box mb="92px">
             <Slide isNoPadding>
               <StudyCover studyType={studyType} coverImage={placeInfo?.coverImage} />
@@ -298,9 +295,12 @@ export default function Page() {
             <Slide>
               <StudyDateBar date={date} members={members} studyType={studyType} />
               {isOpenStudy && members?.length && (
-                <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
+                <StudyTimeBoard
+                  members={members as StudyConfirmedMemberProps[]}
+                  isCardNews={isCardNews}
+                />
               )}
-              <Box h="1px" bg="gray.100" my={4} />
+              <Box h="4px" />
               <Box pb={2} pos="relative">
                 {/* {(studyType === "soloRealTimes" || studyType === "participations") &&
                   tab === "일반 스터디" && (
@@ -322,6 +322,7 @@ export default function Page() {
                       members={members || []}
                       studyType={studyType}
                       isCrew={tab === "스터디 크루"}
+                      isCardNews={isCardNews}
                       coordinates={{
                         lat: placeInfo?.location.latitude,
                         lon: placeInfo?.location?.longitude,
@@ -466,9 +467,9 @@ export default function Page() {
               />
             )} */}
 
-          {(studyType === "openRealTimes" || studyType === "results") && (
+          {/* {(studyType === "openRealTimes" || studyType === "results") && (
             <StudyExtraButton myStudyInfo={myStudyInfo as StudyConfirmedMemberProps} />
-          )}
+          )} */}
 
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}
         </>
