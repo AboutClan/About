@@ -78,14 +78,14 @@ export const getPlaceBasicIcon = (
   <div style="width:120px; height:60px; display:flex; justify-content:flex-end;  flex-direction:column; align-items:center;" >
   ${
     text
-      ? `<div  style="display:flex; 
+      ? `<div  style="display:flex; align-items:center;
            padding:4px 8px; padding-right:${
              isBig ? "8px" : "4px"
            }; margin-bottom:4px; text-align:center; line-height:12px; font-weight:600;font-size:10px;color:#424242; background:white; border:1px solid #eeeeee; border-radius:4px; height:20px; " >
     <div style="max-width:${
       isBig ? "72px" : "80px"
-    }; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;"> ${text}</div> 
-    <span style="margin:0 2px; margin-bottom:2px;">${StarIcon()}</span> 
+    }; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;"> ${text}</div>
+    <span style="margin:0 2px;">${StarIcon()}</span>
     ${formattedRating}</div>`
       : ``
   }
