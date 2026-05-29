@@ -12,7 +12,7 @@ function UnderlinedLines({ lines, size }: { lines: string[]; size: "md" | "lg" }
         return (
           <Box key={idx} pos="relative" mb={0.5}>
             <Text
-              fontSize={isSummary ? "11px" : "13px"}
+              fontSize={isSummary ? "12px" : "13px"}
               textAlign="center"
               color={
                 isSummary

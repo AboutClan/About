@@ -26,7 +26,8 @@
       "Bash(Select-Object -Skip 250)",
       "Bash(grep -E \"\\\\.\\(tsx|ts\\)$\")",
       "Bash(xargs grep -l \"GROUP_CURSOR_NUM\")",
-      "Bash(powershell *)"
+      "Bash(powershell *)",
+      "Bash(Select-Object -ExpandProperty FullName)"
     ]
   }
 }
