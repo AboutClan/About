@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 
 import InfoList from "../../../components/atoms/lists/InfoList";
+import { useCheckGuest } from "../../../hooks/custom/UserHooks";
 
 interface GatherGuideProps {
   isAdmin: boolean;
@@ -8,6 +9,7 @@ interface GatherGuideProps {
 }
 
 function GatherGuide({ isAdmin, isOpenGather }: GatherGuideProps) {
+  const isGuest = useCheckGuest();
   return (
     <>
       {isAdmin && (
@@ -55,7 +57,7 @@ function GatherGuide({ isAdmin, isOpenGather }: GatherGuideProps) {
           <InfoList
             items={[
               "모임 안내를 위해 모임장에게 연락처가 공개될 수 있습니다.",
-              "참여 시 티켓 1장이 소모됩니다. (취소 시 자동 반환)",
+              ...(isGuest ? [] : ["참여 시 티켓 1장이 소모됩니다. (취소 시 자동 반환)"]),
               "모임 종료 후, 멤버 후기 평가를 할 수 있습니다.",
               "승인제 모임의 경우, 승인 여부는 모임장이 결정합니다.",
               "노쇼 패널티: 하루 전 취소 1,000원 / 당일 취소 2,000원",
