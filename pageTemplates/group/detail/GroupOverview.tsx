@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import MainBadge from "../../../components/atoms/MainBadge";
 import BlurredLink from "../../../components/molecules/BlurredLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
+import { useCheckGuest } from "../../../hooks/custom/UserHooks";
 import { IGroup } from "../../../types/models/groupTypes/group";
 
 interface GroupOverviewProps {
@@ -14,6 +15,8 @@ interface GroupOverviewProps {
 }
 
 function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverviewProps) {
+  const isGuest = useCheckGuest();
+
   return (
     <Flex direction="column" px={5} pt={4} pb={2}>
       <Flex mb={2}>
@@ -42,9 +45,9 @@ function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverview
                 : `모임 ${gatherCnt}번 / 후기 ${reviewCnt}개`,
           },
           {
-            category: group.meetingType === "online" ? "최근 활동 날짜" : "티 켓",
+            category: group.meetingType === "online" || isGuest ? "최근 활동 날짜" : "티 켓",
             text:
-              group.meetingType === "online"
+              group.meetingType === "online" || isGuest
                 ? `${dayjs().subtract(1, "day").format("YY년 M월 D일")}`
                 : `월 ${group.requiredTicket}장 소모`,
           },
