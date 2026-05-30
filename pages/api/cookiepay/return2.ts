@@ -152,7 +152,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         raw: { payload, cert },
       });
 
-      redirect(res, `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}`);
+      redirect(
+        res,
+        `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}&amount=${encodeURIComponent(amount)}`,
+      );
       return;
     }
 
@@ -216,7 +219,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       raw: { payload, dec, cert },
     });
 
-    redirect(res, `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}`);
+    redirect(
+      res,
+      `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}&amount=${encodeURIComponent(amount)}`,
+    );
   } catch (e: any) {
     redirect(
       res,

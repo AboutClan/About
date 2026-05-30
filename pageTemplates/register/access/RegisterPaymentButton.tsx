@@ -271,7 +271,8 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     setIsLoading2(false);
 
     if (type === "point") {
-      chargePoint({ value, message: "포인트 충전", sub: "point" });
+      const urlAmount = Number(first(router.query.amount));
+      chargePoint({ value: urlAmount || value, message: "포인트 충전", sub: "point" });
     } else {
       approve(session.user.uid);
     }

@@ -29,7 +29,10 @@
       "Bash(powershell *)",
       "Bash(Select-Object -ExpandProperty FullName)",
       "Bash(xargs ls -la)",
-      "Bash(xargs -I {} basename \"{}\")"
+      "Bash(xargs -I {} basename \"{}\")",
+      "Bash(xargs grep -l \"user/point\")",
+      "Bash(xargs grep -l \"payrequest\\\\|RETURNURL\")",
+      "Bash(grep -E \"\\\\.ts$\")"
     ]
   }
 }
