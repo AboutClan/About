@@ -118,69 +118,72 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   return (
     <>
       <RightDrawer title="" onClose={isFirstPage ? onClose : () => setIsFirstPage(true)}>
-        <PageIntro
-          main={{
-            first: isFirstPage ? "언제 스터디를 진행하나요?" : "어디서 스터디를 진행하나요?",
-          }}
-          sub={isFirstPage ? "날짜를 선택해 주세요" : "공부하기 좋은 카페를 선택해 주세요."}
-        />
-        {isFirstPage ? (
-          <>
-            <Box fontSize="20px" mb={4} pb={4} px={2} borderBottom="var(--border)">
-              <CalendarHeader
-                goNext={() => setDate((old) => old.add(1, "month"))}
-                goPrev={() => setDate((old) => old.subtract(1, "month"))}
-                leftDisabled={date.month() === dayjs().month()}
-                rightDisabled={date.month() === dayjs().month() + 1}
-                date={dayjsToStr(date)}
-              />
-            </Box>
-            <MonthCalendar
-              standardDate={dayjsToStr(date)}
-              selectedDates={[selectedDate]}
-              func={handleClickDate}
-              passedDisabled
-              mintDateArr={[]}
-            />
-
-            <Box h={3} />
-            <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
-              최대 일주일 이내의 스터디를 개설할 수 있습니다.
-            </Box>
-            <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
-              스터디 개설은 전날 오후 9시까지 가능합니다.
-            </Box>
-          </>
-        ) : (
-          <>
-            <Box>
-              <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} hasDetail={false} />
-            </Box>
-
-            <Flex w="full" mt={4} align="center" as="button" onClick={() => setIsMapOpen(true)}>
-              <Badge colorScheme="mint" size="lg" mr={2}>
-                TIP
-              </Badge>
-
-              <Box
-                textDecoration="underline"
-                textDecorationColor="gray.400"
-                fontSize="14px"
-                lineHeight="20px"
-                color="gray.500"
-              >
-                카공하기 좋은 카페를 찾고있다면?
-              </Box>
-            </Flex>
-          </>
-        )}
-      
-          <BottomNav
-            isSlide={false}
-            text={isFirstPage ? "다 음" : "스터디 개설"}
-            onClick={handleBottomNav}
+        <Flex direction="column" h="calc(100dvh - var(--header-h))">
+          <PageIntro
+            main={{
+              first: isFirstPage ? "언제 스터디를 진행하나요?" : "어디서 스터디를 진행하나요?",
+            }}
+            sub={isFirstPage ? "날짜를 선택해 주세요" : "공부하기 좋은 카페를 선택해 주세요."}
           />
-      
+          {isFirstPage ? (
+            <>
+              <Box fontSize="20px" mb={4} pb={4} px={2} borderBottom="var(--border)">
+                <CalendarHeader
+                  goNext={() => setDate((old) => old.add(1, "month"))}
+                  goPrev={() => setDate((old) => old.subtract(1, "month"))}
+                  leftDisabled={date.month() === dayjs().month()}
+                  rightDisabled={date.month() === dayjs().month() + 1}
+                  date={dayjsToStr(date)}
+                />
+              </Box>
+              <MonthCalendar
+                standardDate={dayjsToStr(date)}
+                selectedDates={[selectedDate]}
+                func={handleClickDate}
+                passedDisabled
+                mintDateArr={[]}
+              />
+
+              <Box h={3} />
+              <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+                최대 일주일 이내의 스터디를 개설할 수 있습니다.
+              </Box>
+              <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+                스터디 개설은 전날 오후 9시까지 가능합니다.
+              </Box>
+            </>
+          ) : (
+            <>
+              <Box>
+                <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} hasDetail={false} />
+              </Box>
+
+              <Flex w="full" mt={4} align="center" as="button" onClick={() => setIsMapOpen(true)}>
+                <Badge colorScheme="mint" size="lg" mr={2}>
+                  TIP
+                </Badge>
+
+                <Box
+                  textDecoration="underline"
+                  textDecorationColor="gray.400"
+                  fontSize="14px"
+                  lineHeight="20px"
+                  color="gray.500"
+                >
+                  카공하기 좋은 카페를 찾고있다면?
+                </Box>
+              </Flex>
+            </>
+          )}
+
+          <Box mt="auto">
+            <BottomNav
+              isSlide={false}
+              text={isFirstPage ? "다 음" : "스터디 개설"}
+              onClick={handleBottomNav}
+            />
+          </Box>
+        </Flex>
       </RightDrawer>
       {isMapOpen && (
         <StudyPageMap

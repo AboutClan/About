@@ -64,12 +64,7 @@ function RightDrawer({
         ml="auto"
       >
         <DrawerBody p="0" w="100%" sx={{ touchAction: "pan-y", overscrollBehavior: "contain" }}>
-          <Box
-            position={stickyHeader ? "sticky" : "static"}
-            top={0}
-            zIndex={1}
-            bg="white"
-          >
+          <Box position={stickyHeader ? "sticky" : "static"} top={0} zIndex={1} bg="white">
             <Header
               title={title}
               isSlide={false}

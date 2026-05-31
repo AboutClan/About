@@ -1,4 +1,5 @@
 import { Box, Button, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import Script from "next/script";
 import { signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -15,6 +16,7 @@ const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
 
 function Charge() {
   const { data: userInfo } = useUserInfoQuery();
+  const router = useRouter();
 
   const [chargePoint, setChargePoint] = useState(3000);
 
@@ -26,6 +28,8 @@ function Charge() {
         await signIn("kakao", { callbackUrl: "/home" });
       };
       login();
+    } else if (userInfo?.role === "waiting") {
+      router.replace("/register/access");
     }
   }, [userInfo]);
 

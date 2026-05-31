@@ -32,6 +32,7 @@ function BottomNav({
     if (isSlide) {
       return (
         <Button
+          mt="auto"
           position="fixed"
           left="50%"
           bottom={getSafeAreaBottom(8)}
