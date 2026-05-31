@@ -492,7 +492,7 @@ function StudyPageMap({
           zIndex={
             noModalUpdate ? 3500 : isDefaultOpen && !isDown ? 1000 : isMapExpansion ? 1000 : 0
           }
-          {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { height: "100svh" })}
+          {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { bottom: 0 })}
           w={isMapExpansion ? "full" : "auto"}
           bg="transparent"
           onClick={() => {
