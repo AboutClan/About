@@ -59,10 +59,17 @@ function LocationSearch({
   }, [data]);
 
   const onClickItem = (searchInfo: NaverLocationProps) => {
+    console.log(searchInfo);
     const placeName = searchInfo.title;
     setValue(placeName);
     const { latitude, longitude } = mapxyToLatLng(searchInfo.mapx, searchInfo.mapy);
-    setInfo({ name: placeName, address: searchInfo.address, latitude, longitude });
+    setInfo({
+      name: placeName,
+      address: searchInfo.address,
+      latitude,
+      longitude,
+      category: searchInfo?.category,
+    });
     setResults([]);
     onSelect?.({ ...searchInfo, latitude, longitude });
   };

@@ -16,6 +16,7 @@ export interface NaverLocationProps extends LocationProps {
   description?: string;
   telephone?: string;
 
+
   roadAddress?: string;
   mapx?: string;
   mapy?: string;

@@ -14,6 +14,7 @@ export interface LocationProps {
   longitude: number;
   address: string;
   _id?: string;
+  category?: string;
 }
 
 export interface CoordinatesProps {

@@ -32,7 +32,8 @@
       "Bash(xargs -I {} basename \"{}\")",
       "Bash(xargs grep -l \"user/point\")",
       "Bash(xargs grep -l \"payrequest\\\\|RETURNURL\")",
-      "Bash(grep -E \"\\\\.ts$\")"
+      "Bash(grep -E \"\\\\.ts$\")",
+      "Read(//mnt/c/Users/user/Desktop/당근/개발/**)"
     ]
   }
 }

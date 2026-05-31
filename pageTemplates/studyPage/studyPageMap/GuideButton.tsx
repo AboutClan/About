@@ -181,6 +181,18 @@ function GuideButton({ pickReviewPlace }: GuideButtonProps) {
               <FloatingMenuItem
                 icon={
                   <Flex borderRadius="full" align="center" justify="center">
+                    <AddIcon />
+                  </Flex>
+                }
+                text="카공 카페 등록"
+                onClick={() => {
+                  setIsOpen(false);
+                  updateQuery({ modal: "addCafe" });
+                }}
+              />
+              <FloatingMenuItem
+                icon={
+                  <Flex borderRadius="full" align="center" justify="center">
                     <BoardIcon />
                   </Flex>
                 }
@@ -427,10 +439,21 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["카공지도 시즌2 대규모 업데이트"],
   },
   {
+    date: "2026-05-31",
+    isCompleted: true,
+    textArr: [
+      "카공 카페 등록 편의 개선",
+      "AI 기반 실시간 카페 별점 판단",
+      "AI 기반 실시간 정보 업데이트",
+      "신규 카공 카페 30곳 추가",
+      "폐업한 카페 30곳 제거",
+    ],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
     textArr: [
-      "카페 좋아요 + 모아보기 기능 예정",
+      "카페 좋아요 모아보기 기능 예정",
       "스터디 기능 오픈 예정",
       "아이폰/안드로이드 앱 출시 예정",
     ],
@@ -461,7 +484,7 @@ function FloatingMenuItem({
       py={2.5}
     >
       {icon}
-      <Text ml={text === "이용 가이드" ? "3px" : text === "실시간 카공 피드" ? "3px" : "-1px"}>
+      <Text ml={text === "카공 카페 등록" ? "3px" : text === "실시간 카공 피드" ? "3px" : "-2px"}>
         {text}
       </Text>
     </Flex>
@@ -520,6 +543,19 @@ export function BoardIcon() {
       fill="var(--gray-800)"
     >
       <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm360-80h280v-480H520v480Zm-280-80h120q17 0 28.5-11.5T400-360q0-17-11.5-28.5T360-400H240q-17 0-28.5 11.5T200-360q0 17 11.5 28.5T240-320Zm0-120h120q17 0 28.5-11.5T400-480q0-17-11.5-28.5T360-520H240q-17 0-28.5 11.5T200-480q0 17 11.5 28.5T240-440Zm0-120h120q17 0 28.5-11.5T400-600q0-17-11.5-28.5T360-640H240q-17 0-28.5 11.5T200-600q0 17 11.5 28.5T240-560Zm360 240h120q17 0 28.5-11.5T760-360q0-17-11.5-28.5T720-400H600q-17 0-28.5 11.5T560-360q0 17 11.5 28.5T600-320Zm0-120h120q17 0 28.5-11.5T760-480q0-17-11.5-28.5T720-520H600q-17 0-28.5 11.5T560-480q0 17 11.5 28.5T600-440Zm0-120h120q17 0 28.5-11.5T760-600q0-17-11.5-28.5T720-640H600q-17 0-28.5 11.5T560-600q0 17 11.5 28.5T600-560Z" />
+    </svg>
+  );
+}
+export function AddIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20px"
+      viewBox="0 -960 960 960"
+      width="20px"
+      fill="var(--gray-800)"
+    >
+      <path d="M720-160h-80q-17 0-28.5-11.5T600-200q0-17 11.5-28.5T640-240h80v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80h80q17 0 28.5 11.5T920-200q0 17-11.5 28.5T880-160h-80v80q0 17-11.5 28.5T760-40q-17 0-28.5-11.5T720-80v-80Zm-600 0q-17 0-28.5-11.5T80-200v-200h-7q-19 0-31-14.5T34-448l40-200q3-14 14-23t25-9h534q14 0 25 9t14 23l40 200q4 19-8 33.5T687-400h-7v80q0 17-11.5 28.5T640-280q-17 0-28.5-11.5T600-320v-80H440v200q0 17-11.5 28.5T400-160H120Zm40-80h200v-160H160v160Zm-40-480q-17 0-28.5-11.5T80-760q0-17 11.5-28.5T120-800h520q17 0 28.5 11.5T680-760q0 17-11.5 28.5T640-720H120Z" />
     </svg>
   );
 }

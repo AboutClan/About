@@ -149,6 +149,9 @@ function StudyPageMap({
         setIds([]);
       }
     }
+    if (modalParam === "addCafe" && drawerType !== "addCafe") {
+      setDrawerType("addCafe");
+    }
     if (modalParam !== "addCafe" && drawerType === "addCafe") {
       setDrawerType(null);
     }

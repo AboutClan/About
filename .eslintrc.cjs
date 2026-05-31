@@ -55,6 +55,7 @@ module.exports = {
     "react/react-in-jsx-scope": "off", // jsx를 쓸 때 React가 scope 에 있어야 하는지 여부
     "react-hooks/exhaustive-deps": "off", // React Hook useEffect의 의존성 배열 검사 비활성화
     "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "no-empty": "off",
   },
 };
