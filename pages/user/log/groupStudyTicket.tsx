@@ -9,6 +9,7 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGroupsMineQuery } from "../../../hooks/groupStudy/queries";
 import { usePointSystemMutation, useUserTicketMutation } from "../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { getTemperatureTicket } from "../../../pageTemplates/user/UserSocialGuideDrawer";
 import UserSocialGuideDrawer2 from "../../../pageTemplates/user/UserSocialGuideDrawer2";
 
 function GroupStudyTicketLogSection() {
@@ -45,6 +46,10 @@ function GroupStudyTicketLogSection() {
   const sum = data?.slice()?.reduce((acc, cur) => {
     return acc + (cur.isMember ? 0 : cur.requiredTicket);
   }, 0);
+  const { gather, group } = getTemperatureTicket(
+    userInfo?.temperature.temperature,
+    userInfo?.gender === "여성",
+  );
 
   return (
     <>
@@ -55,7 +60,7 @@ function GroupStudyTicketLogSection() {
             <Box py={4}>
               <Box fontSize="11px">매월 받는 참여권</Box>
               <Box fontSize="20px" fontWeight="semibold">
-                {userInfo?.ticket?.groupStudyTicket}개
+                {group}개
               </Box>
             </Box>
 

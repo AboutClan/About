@@ -67,7 +67,7 @@ export function AdminSection({ groupId, users, randomTicket }: AdminSectionProps
   const queryClient = useQueryClient();
 
   const { data } = useGroupIdMannerQuery(groupId, null, { enabled: !!groupId });
-  const { data: activityData } = useGroupsMemberActivityQuery(groupId, "this", {
+  const { data: activityData } = useGroupsMemberActivityQuery(groupId, "last", {
     enabled: !!groupId,
   });
 
@@ -242,23 +242,23 @@ function UserBlock({
           </Flex>
           <Flex align="center" ml="auto">
             <Button
-              isDisabled={who.user?.uid === userInfo.uid}
+              isDisabled={who.user?.uid === userInfo?.uid}
               onClick={() => setSelectMember({ type: "member", userId: who.user._id })}
               colorScheme="mint"
               size="sm"
-              ml={3}
+              ml={2}
               variant="subtle"
               isLoading={isLoading}
             >
               멤버 전환
             </Button>
             <Button
-              isDisabled={who.user?.uid === userInfo.uid}
+              isDisabled={who.user?.uid === userInfo?.uid}
               onClick={() => setSelectMember({ type: "ticket", userId: who.user._id })}
               colorScheme="red"
               variant="subtle"
               size="sm"
-              ml={3}
+              ml={2}
               isLoading={isLoading}
             >
               열활 티켓 부여

@@ -80,8 +80,7 @@ function Notice() {
   // 제목 길이 조절하기.
   const monthAlert = {
     title: "🚀소셜링 온도 업데이트🚀",
-    description:
-      "4월 멤버 후기가 반영되었어요! 접속해서 변경된 소셜링 온도를 확인해 보세요! (이전 알림을 잘못 발송되었어요🥲)",
+    description: "5월 멤버 후기가 반영되었어요! 접속해서 변경된 소셜링 온도를 확인해 보세요!",
   };
   const onSubmit = () => {
     mutate(monthAlert);
