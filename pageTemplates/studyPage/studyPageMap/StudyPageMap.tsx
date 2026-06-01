@@ -799,6 +799,7 @@ function StudyPageMap({
 }
 
 const ClipLayer = styled.div<{ $rounded: boolean }>`
+  position: relative;
   width: 100%;
   height: 100%;
   /* 라운드/클리핑/보더는 랩퍼에서만 */
