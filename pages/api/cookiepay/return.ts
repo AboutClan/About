@@ -110,6 +110,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const paymethod = String(payload.PAY_METHOD ?? payload.PAYMETHOD ?? "");
       const acceptDate = String(payload.ACCEPTDATE ?? "");
 
+      const uid = String(payload.BUYERID ?? "");
+
       if (!orderNo || !tid) {
         redirect(
           res,
@@ -129,6 +131,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           paymethod,
           acceptDate,
           status: "VERIFY_PENDING",
+          uid,
+          type: "register",
           raw: { payload, cert },
         });
 
@@ -176,6 +180,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const paymethod = String(d.PAY_METHOD ?? d.PAYMETHOD ?? "");
     const acceptDate = String(d.ACCEPTDATE ?? "");
 
+    const uid = String(d.BUYERID ?? "");
+
     if (!orderNo || !tid) {
       redirect(
         res,
@@ -194,6 +200,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         paymethod,
         acceptDate,
         status: "VERIFY_PENDING",
+        uid,
+        type: "register",
         raw: { payload, dec, cert },
       });
 

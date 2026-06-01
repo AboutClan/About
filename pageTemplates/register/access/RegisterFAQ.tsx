@@ -13,6 +13,7 @@ function RegisterFAQ() {
       title: "가입 완료 후에는 어떻게 하나요?",
       content: `
 회비 결제와 함께 동아리 가입이 완료됩니다.
+어바웃 앱에서는 [동아리 활동 시작하기]를 누르고,
 가입 후 안내되는 [신규 인원 가이드]를 확인해 주세요!`,
     },
     ...ACCORDION_CONTENT_FAQ.slice(2),

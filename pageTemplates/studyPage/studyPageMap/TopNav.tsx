@@ -5,10 +5,12 @@ import { MouseEvent, ReactNode, RefObject, useEffect, useRef, useState } from "r
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import { StarIcon } from "../../../components/Icons/StarIcon";
+import Header from "../../../components/layouts/Header";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import LocationSearch, {
   mapxyToLatLng,
 } from "../../../components/organisms/location/LocationSearch";
+import { AboutLogo } from "../../../components/services/AboutLogo";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
@@ -240,22 +242,39 @@ function StudyMapNav({
               pointerEvents="none"
             />
           )}
-          <Flex
-            flexDir="column"
-            px={4}
-            pt={3}
-            pb={2}
-            mx={4}
-            position="absolute"
-            top={4}
-            left={0}
-            right={0}
-            zIndex={50}
-            bg="white"
-            borderRadius="16px"
-            boxShadow="0 2px 12px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.07)"
-          >
-            <Flex w="full">
+          <Flex flexDir="column" w="full" bg="white">
+            <Flex
+              w="full"
+              h="var(--header-h)"
+              pl={isCafeMap ? 3 : 0}
+              as="header"
+              align="center"
+              justify="space-between"
+              pr={2}
+              bg="white"
+              maxW="var(--max-width)"
+              margin="0 auto"
+              borderColor="gray.100"
+            >
+              {isCafeMap ? (
+                <>
+                  <Box px={2} py={2}>
+                    <AboutLogo />
+                  </Box>
+                  <Flex align="center" mr={1}>
+                    <Button variant="unstyled" p={2} onClick={() => openMenu()}>
+                      <MenuIcon2 />
+                    </Button>
+                  </Flex>
+                </>
+              ) : (
+                <Box w="full">
+                  <Header title="카공 지도" func={() => onClose()} isSlide={false} />
+                </Box>
+              )}
+            </Flex>
+
+            <Flex w="full" px={5} bg="white">
               <LocationSearch
                 info={placeInfo}
                 setInfo={setPlaceInfo}
@@ -281,122 +300,139 @@ function StudyMapNav({
             </Flex>
 
             {/* 필터 버튼 행 */}
-            <Flex
-              w="full"
-              ref={scrollContainerRef}
-              gap={2}
-              overflowX="auto"
-              bg="transparent"
-              mt={3}
-              mb={1}
-              sx={{
-                "::-webkit-scrollbar": { display: "none" },
-                scrollbarWidth: "none",
-              }}
-            >
-              {/* 별점 필터 버튼 */}
-              <Button
-                flexShrink={0}
-                h="32px"
-                px={2.5}
-                borderRadius="20px"
-                bg={isRatingActive ? "gray.900" : "white"}
-                border={isRatingActive ? "none" : "var(--border-main)"}
-                borderColor="gray.300"
-                _hover={{ bg: isRatingActive ? "gray.900" : "gray.100" }}
-                _active={{ opacity: 0.8 }}
-                _focus={{ bg: isRatingActive ? "gray.900" : "white" }}
-                onClick={() => updateQuery({ modal: "ratingFilter" })}
+            <Flex w="100%" flexDir="column" align="center">
+              <Flex
+                w="full"
+                ref={scrollContainerRef}
+                gap={2}
+                flex={1}
+                px={4}
+                overflowX="auto"
+                bg="transparent"
+                py={3}
+                sx={{
+                  "::-webkit-scrollbar": { display: "none" },
+                  scrollbarWidth: "none",
+                }}
               >
-                <Flex align="center">
-                  <Box lineHeight="20px">
-                    <StarIcon type="fill" size="lg" />
-                  </Box>
-                  <Text
-                    fontSize="12px"
-                    lineHeight="20px"
-                    ml={1}
-                    mr={1.5}
-                    color={isRatingActive ? "white" : "gray.800"}
-                  >
-                    {ratingButtonLabel}
-                  </Text>
-                  <ShortArrowIcon dir="bottom" />
-                </Flex>
-              </Button>
-
-              {/* 카공 필터 버튼 */}
-              <Button
-                flexShrink={0}
-                h="32px"
-                px={3}
-                borderRadius="20px"
-                bg={isAmenityActive ? "gray.900" : "white"}
-                border={isAmenityActive ? "none" : "var(--border-main)"}
-                borderColor="gray.300"
-                _hover={{ bg: isAmenityActive ? "gray.900" : "gray.100" }}
-                _active={{ opacity: 0.8 }}
-                _focus={{ bg: isAmenityActive ? "gray.900" : "white" }}
-                onClick={() => updateQuery({ modal: "amenityFilter" })}
-              >
-                <Flex align="center" gap="4px" lineHeight="20px">
-                  <Box lineHeight="20px">
-                    <AmenityFilterIcon color={isAmenityActive ? "white" : "var(--gray-800)"} />
-                  </Box>
-                  <Box
-                    fontSize="12px"
-                    lineHeight="20px"
-                    color={isAmenityActive ? "white" : "gray.800"}
-                  >
-                    카공 필터
-                  </Box>
-                  {isAmenityActive && (
-                    <Flex
-                      align="center"
-                      justify="center"
-                      w="16px"
-                      h="16px"
-                      borderRadius="full"
-                      bg="var(--color-mint)"
-                      flexShrink={0}
-                    >
-                      <Text fontSize="10px" fontWeight={700} color="white" lineHeight="1">
-                        {amenityFilters.length}
-                      </Text>
-                    </Flex>
-                  )}
-                </Flex>
-              </Button>
-
-              {/* 아카이브 버튼 */}
-              {!isMainType && (
+                {/* 별점 필터 버튼 */}
                 <Button
                   flexShrink={0}
                   h="32px"
-                  px="12px"
+                  px={2.5}
                   borderRadius="20px"
-                  bg={isArchiveActive ? "gray.900" : "white"}
-                  border={isArchiveActive ? "none" : "var(--border-main)"}
+                  bg={isRatingActive ? "gray.900" : "white"}
+                  border={isRatingActive ? "none" : "var(--border-main)"}
                   borderColor="gray.300"
-                  _hover={{ bg: isArchiveActive ? "gray.900" : "gray.100" }}
+                  _hover={{ bg: isRatingActive ? "gray.900" : "gray.100" }}
                   _active={{ opacity: 0.8 }}
-                  _focus={{ bg: isArchiveActive ? "gray.900" : "white" }}
-                  onClick={() => updateQuery({ modal: "archiveFilter" })}
+                  _focus={{ bg: isRatingActive ? "gray.900" : "white" }}
+                  onClick={() => updateQuery({ modal: "ratingFilter" })}
                 >
                   <Flex align="center">
-                    <ArchiveIcon color={isArchiveActive ? "white" : "var(--gray-800)"} />
+                    <Box lineHeight="20px">
+                      <StarIcon type="fill" size="lg" />
+                    </Box>
                     <Text
                       fontSize="12px"
-                      fontWeight={600}
-                      color={isArchiveActive ? "white" : "gray.800"}
-                      lineHeight="12px"
+                      lineHeight="20px"
                       ml={1}
                       mr={1.5}
+                      color={isRatingActive ? "white" : "gray.800"}
                     >
-                      {isArchiveActive && activeArchive ? activeArchive.title : "아카이브"}
+                      {ratingButtonLabel}
                     </Text>
                     <ShortArrowIcon dir="bottom" />
                   </Flex>
+                </Button>
+
+                {/* 카공 필터 버튼 */}
+                <Button
+                  flexShrink={0}
+                  h="32px"
+                  px={3}
+                  borderRadius="20px"
+                  bg={isAmenityActive ? "gray.900" : "white"}
+                  border={isAmenityActive ? "none" : "var(--border-main)"}
+                  borderColor="gray.300"
+                  _hover={{ bg: isAmenityActive ? "gray.900" : "gray.100" }}
+                  _active={{ opacity: 0.8 }}
+                  _focus={{ bg: isAmenityActive ? "gray.900" : "white" }}
+                  onClick={() => updateQuery({ modal: "amenityFilter" })}
+                >
+                  <Flex align="center" gap="4px" lineHeight="20px">
+                    <Box lineHeight="20px">
+                      <AmenityFilterIcon color={isAmenityActive ? "white" : "var(--gray-800)"} />
+                    </Box>
+                    <Box
+                      fontSize="12px"
+                      lineHeight="20px"
+                      color={isAmenityActive ? "white" : "gray.800"}
+                    >
+                      카공 필터
+                    </Box>
+                    {isAmenityActive && (
+                      <Flex
+                        align="center"
+                        justify="center"
+                        w="16px"
+                        h="16px"
+                        borderRadius="full"
+                        bg="var(--color-mint)"
+                        flexShrink={0}
+                      >
+                        <Text fontSize="10px" fontWeight={700} color="white" lineHeight="1">
+                          {amenityFilters.length}
+                        </Text>
+                      </Flex>
+                    )}
+                  </Flex>
+                </Button>
+
+                {/* 아카이브 버튼 */}
+                {!isMainType && (
+                  <Button
+                    flexShrink={0}
+                    h="32px"
+                    px="12px"
+                    borderRadius="20px"
+                    bg={isArchiveActive ? "gray.900" : "white"}
+                    border={isArchiveActive ? "none" : "var(--border-main)"}
+                    borderColor="gray.300"
+                    _hover={{ bg: isArchiveActive ? "gray.900" : "gray.100" }}
+                    _active={{ opacity: 0.8 }}
+                    _focus={{ bg: isArchiveActive ? "gray.900" : "white" }}
+                    onClick={() => updateQuery({ modal: "archiveFilter" })}
+                  >
+                    <Flex align="center">
+                      <ArchiveIcon color={isArchiveActive ? "white" : "var(--gray-800)"} />
+                      <Text
+                        fontSize="12px"
+                        fontWeight={600}
+                        color={isArchiveActive ? "white" : "gray.800"}
+                        lineHeight="12px"
+                        ml={1}
+                        mr={1.5}
+                      >
+                        {isArchiveActive && activeArchive ? activeArchive.title : "아카이브"}
+                      </Text>
+                      <ShortArrowIcon dir="bottom" />
+                    </Flex>
+                  </Button>
+                )}
+              </Flex>
+              {!isMapExpansion && (
+                <Button
+                  borderRadius="4px"
+                  bgColor="white"
+                  boxShadow={MAP_BTN_SHADOW}
+                  w="32px"
+                  h="32px"
+                  size="sm"
+                  p="0"
+                  border="var(--border-main)"
+                >
+                  <ExpansionIcon />
                 </Button>
               )}
             </Flex>

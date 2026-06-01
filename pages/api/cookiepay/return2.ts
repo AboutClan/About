@@ -110,6 +110,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const paymethod = String(payload.PAY_METHOD ?? payload.PAYMETHOD ?? "");
       const acceptDate = String(payload.ACCEPTDATE ?? "");
 
+      const uid = String(payload.BUYERID ?? "");
+
       if (!orderNo || !tid) {
         redirect(
           res,
@@ -129,6 +131,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           paymethod,
           acceptDate,
           status: "VERIFY_PENDING",
+          uid,
+          type: "point",
           raw: { payload, cert },
         });
 
@@ -142,19 +146,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       // ✅ 성공
+      const certAmount = String(cert.AMOUNT ?? amount);
       upsertPayment({
         orderNo,
         tid,
-        amount: String(cert.AMOUNT ?? amount),
+        amount: certAmount,
         paymethod: String(cert.PAYMETHOD ?? paymethod),
         acceptDate: String(cert.ACCEPTDATE ?? acceptDate),
         status: "SUCCESS",
+        uid,
+        type: "point",
         raw: { payload, cert },
       });
 
       redirect(
         res,
-        `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}&amount=${encodeURIComponent(amount)}`,
+        `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}&amount=${encodeURIComponent(certAmount)}`,
       );
       return;
     }
@@ -179,6 +186,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const paymethod = String(d.PAY_METHOD ?? d.PAYMETHOD ?? "");
     const acceptDate = String(d.ACCEPTDATE ?? "");
 
+    const uid = String(d.BUYERID ?? "");
+
     if (!orderNo || !tid) {
       redirect(
         res,
@@ -197,6 +206,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         paymethod,
         acceptDate,
         status: "VERIFY_PENDING",
+        uid,
+        type: "point",
         raw: { payload, dec, cert },
       });
 
@@ -209,19 +220,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
+    const certAmount = String(cert.AMOUNT ?? amount);
     upsertPayment({
       orderNo,
       tid,
-      amount: String(cert.AMOUNT ?? amount),
+      amount: certAmount,
       paymethod: String(cert.PAYMETHOD ?? paymethod),
       acceptDate: String(cert.ACCEPTDATE ?? acceptDate),
       status: "SUCCESS",
+      uid,
+      type: "point",
       raw: { payload, dec, cert },
     });
 
     redirect(
       res,
-      `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}&amount=${encodeURIComponent(amount)}`,
+      `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}&amount=${encodeURIComponent(certAmount)}`,
     );
   } catch (e: any) {
     redirect(

@@ -33,7 +33,8 @@
       "Bash(xargs grep -l \"user/point\")",
       "Bash(xargs grep -l \"payrequest\\\\|RETURNURL\")",
       "Bash(grep -E \"\\\\.ts$\")",
-      "Read(//mnt/c/Users/user/Desktop/당근/개발/**)"
+      "Read(//mnt/c/Users/user/Desktop/당근/개발/**)",
+      "Bash(xargs grep -l \"confirm\\\\|SUCCESS\")"
     ]
   }
 }

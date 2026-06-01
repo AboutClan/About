@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -50,9 +50,9 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
   const [isLoading2, setIsLoading2] = useState(false);
 
   // 가입 승인/결제리턴 처리 중복 방지
-
   const approveOnceRef = useRef(false);
   const handledReturnRef = useRef(false);
+  const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [ready, setReady] = useState(false);
 
@@ -222,6 +222,71 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     }
   }, [router.isReady, router.query]);
 
+  // ✅ PAYCERT_FAIL: noti 웹훅이 결제를 나중에 확인할 때까지 폴링
+  const triggerPaymentAction = useCallback(
+    (amount?: string) => {
+      if (approveOnceRef.current) return;
+      approveOnceRef.current = true;
+      handledReturnRef.current = true;
+      if (type === "point") {
+        const resolvedAmount = Number(amount) || value;
+        chargePoint({ value: resolvedAmount, message: "포인트 충전", sub: "point" });
+      } else {
+        if (!session?.user?.uid) return;
+        approve(session.user.uid);
+      }
+    },
+    [type, value, chargePoint, approve, session],
+  );
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    const status = first(router.query.status);
+    const reason = first(router.query.reason);
+    const orderNo = first(router.query.orderNo);
+
+    if (status !== "fail" || reason !== "PAYCERT_FAIL" || !orderNo) return;
+    if (!session?.user?.uid) return;
+    if (approveOnceRef.current) return;
+
+    let attempts = 0;
+    const maxAttempts = 24; // 24 * 5s = 2분
+
+    const poll = async () => {
+      if (approveOnceRef.current) return;
+      attempts++;
+      if (attempts > maxAttempts) return;
+
+      try {
+        const res = await fetch(
+          `/api/cookiepay/check-payment?orderNo=${encodeURIComponent(orderNo)}`,
+        );
+        if (res.ok) {
+          const data = await res.json();
+          if (data.status === "SUCCESS") {
+            router.replace(
+              type === "point" ? "/user/point/charge" : "/register/access",
+              undefined,
+              { shallow: true },
+            );
+            triggerPaymentAction(data.amount);
+            return;
+          }
+        }
+      } catch {
+        // 네트워크 오류는 무시하고 계속 폴링
+      }
+
+      pollingTimerRef.current = setTimeout(poll, 5000);
+    };
+
+    pollingTimerRef.current = setTimeout(poll, 5000);
+
+    return () => {
+      if (pollingTimerRef.current) clearTimeout(pollingTimerRef.current);
+    };
+  }, [router.isReady, session?.user?.uid, router.query.status, router.query.reason, triggerPaymentAction]);
+
   // ✅ 결제 리턴 처리: 성공이면 approve, 실패면 toast만 (UI는 그대로 유지)
   useEffect(() => {
     if (!router.isReady) return;
@@ -229,7 +294,17 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     const status = first(router.query.status);
     if (!status) return; // 결제 리턴 아님
 
-    if (!session?.user?.uid) return;
+    // 세션 로딩 중이면 대기
+    if (session === undefined) return;
+
+    // 세션이 로드됐는데 uid가 없으면 (만료 등) → 현재 URL로 돌아오도록 재로그인
+    if (!session?.user?.uid) {
+      setAuthIntent();
+      signOut({ redirect: false }).then(() => {
+        signIn("kakao", { callbackUrl: window.location.href });
+      });
+      return;
+    }
 
     if (handledReturnRef.current) return;
 

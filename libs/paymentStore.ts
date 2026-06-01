@@ -13,6 +13,8 @@ export type PaymentRecord = {
   paymethod?: string;
   acceptDate?: string;
   status: PayStatus;
+  uid?: string;
+  type?: "register" | "point";
   raw?: any;
   updatedAt: string;
 };
