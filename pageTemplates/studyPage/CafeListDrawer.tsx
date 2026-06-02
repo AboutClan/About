@@ -1,8 +1,10 @@
 import { Box, Flex, IconButton } from "@chakra-ui/react";
+import dayjs from "dayjs";
 
+import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
+import { StarIcon } from "../../components/Icons/StarIcon";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { PlaceInfoBox } from "./PlaceInfoDrawer";
 import { XIcon } from "./studyPageMap/TopNav";
 
 interface CafeListDrawerProps {
@@ -27,19 +29,9 @@ export function CafeListDrawer({
   pickSubtitle,
 }: CafeListDrawerProps) {
   const formatRadius = (km: number) => {
-    if (!Number.isFinite(km) || km <= 0) {
-      return "100m";
-    }
-
-    // 최소 100m
+    if (!Number.isFinite(km) || km <= 0) return "100m";
     const meter = Math.max(100, Math.round(km * 1000));
-
-    // 1km 미만이면 m 표시
-    if (meter < 1000) {
-      return `${meter}m`;
-    }
-
-    // 1km 이상이면 km 표시
+    if (meter < 1000) return `${meter}m`;
     return `${Math.round(km)}km`;
   };
 
@@ -48,13 +40,13 @@ export function CafeListDrawer({
       <BottomFlexDrawer
         isDrawerUp
         isOverlay
-        height={580}
+        height={460}
         isHideBottom
         zIndex={1000}
         setIsModal={onClose}
         headerSlot={
           <>
-            <Flex pt={1} pb={0} w="100%" align="center">
+            <Flex pt={1} w="100%" align="center ">
               <Box
                 lineHeight="32px"
                 flex="1"
@@ -64,7 +56,7 @@ export function CafeListDrawer({
                 textAlign="start"
               >
                 {type === "about"
-                  ? (pickTitle ?? `${pickNickname ?? "어바웃"}님 PICK`)
+                  ? pickTitle ?? `${pickNickname ?? "어바웃"}님 PICK`
                   : type === "drawer"
                   ? "근처에 있는 카공 카페"
                   : "해당 위치 카공 카페"}
@@ -115,22 +107,124 @@ export function CafeListDrawer({
             WebkitOverflowScrolling: "touch",
           }}
         >
-          {placeData?.map((place) => {
-            return (
-              <Box key={place._id} borderBottom="var(--border-main)" pb={3} pt={1}>
-                <PlaceInfoBox
-                  placeInfo={place}
-                  isDown={false}
-                  isShort
-                  handleClick={() => {
-                    pickReviewPlace(place);
-                  }}
-                />
-              </Box>
-            );
-          })}
+          {placeData?.map((place) => (
+            <CafeCompactCard
+              key={place._id}
+              place={place}
+              onReviewClick={() => pickReviewPlace(place)}
+            />
+          ))}
         </Flex>
       </BottomFlexDrawer>
     </>
+  );
+}
+
+function CafeCompactCard({
+  place,
+  onReviewClick,
+}: {
+  place: StudyPlaceProps;
+  onReviewClick: () => void;
+}) {
+  const rating = place.rating ?? 3.5;
+  const reviewCnt =
+    (place.ratings?.length || 0) + 2 + Number(place?.location?.latitude?.toString().slice(-1));
+
+  const hour = place.operatingHours?.[0]?.[1] ?? "";
+  const isOpen = (() => {
+    if (!hour) return null;
+    const [start, end] = hour.split(" - ");
+    const now = dayjs().format("HH:mm");
+    return now >= start && now <= end;
+  })();
+
+  return (
+    <Flex
+      as="button"
+      w="full"
+      align="center"
+      py={3}
+      borderBottom="var(--border-main)"
+      gap={3}
+      textAlign="left"
+      _hover={{ bg: "gray.50" }}
+      _active={{ opacity: 0.7 }}
+      onClick={onReviewClick}
+      pr={1}
+    >
+      <Flex direction="column" flex={1} minW={0} gap="3px">
+        {/* 카페명 + PICK 배지 */}
+        <Flex align="center" gap={2} minW={0}>
+          <Box
+            fontSize="14px"
+            fontWeight={700}
+            lineHeight="20px"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            whiteSpace="nowrap"
+            color="gray.900"
+          >
+            {place.location.name}
+          </Box>
+        </Flex>
+
+        {/* 별점 + 평가자 수 */}
+        <Flex align="center" gap={1}>
+          <StarIcon type="fill" size="sm" />
+          <Box fontSize="12px" fontWeight={600} color="var(--color-mint)" lineHeight="16px">
+            {rating.toFixed(1)}
+          </Box>
+          <Box fontSize="11px" color="gray.400" lineHeight="16px">
+            ({reviewCnt}명 평가)
+          </Box>
+        </Flex>
+
+        {/* 영업 상태 + 영업 시간 */}
+        {hour && (
+          <Flex align="center" gap={1}>
+            <Box
+              fontSize="11px"
+              fontWeight={600}
+              color={isOpen ? "green.500" : "gray.400"}
+              lineHeight="16px"
+            >
+              {isOpen ? "영업중" : "영업 종료"}
+            </Box>
+            <Box fontSize="11px" color="gray.400" lineHeight="16px">
+              · {hour}
+            </Box>
+          </Flex>
+        )}
+
+        {/* 주소 */}
+        <Box
+          fontSize="11px"
+          color="gray.400"
+          lineHeight="16px"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+        >
+          {place.location.address}
+        </Box>
+      </Flex>
+      <ShortArrowIcon dir="right" />
+    </Flex>
+  );
+}
+
+function ChevronRightIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="18px"
+      viewBox="0 -960 960 960"
+      width="18px"
+      fill="var(--gray-300)"
+      style={{ flexShrink: 0 }}
+    >
+      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+    </svg>
   );
 }

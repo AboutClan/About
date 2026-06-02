@@ -13,9 +13,9 @@ interface StarRatingReviewBlockProps {
 }
 
 function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
-  const { etc, mood, space, table, comment, createdAt } = review;
+  const { etc, mood, space, power, comment, createdAt } = review;
 
-  const total = (etc + mood + space + table) / 4;
+  const total = (etc + mood + space + power) / 4;
 
   return (
     <Flex flexDir="column">
@@ -79,7 +79,7 @@ function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
             <Box mx="1px">
               <StarIcon type="empty" size="md" />
             </Box>
-            {table?.toFixed(1)}
+            {power?.toFixed(1)}
           </Flex>
           <Flex>
             <Box>자리 여유</Box>

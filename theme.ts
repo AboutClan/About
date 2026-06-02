@@ -89,7 +89,7 @@ const theme = extendTheme({
       900: "#282828",
     },
     black: {
-      500: "#424242", // 명도 46% (유지)
+      500: "#222222", // 명도 46% (유지)
     },
     mint: {
       50: "#e0f7f5",
@@ -255,8 +255,7 @@ const theme = extendTheme({
     },
   },
   fonts: {
-    body: `apple, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
-    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif`,
+    body: `"Pretendard", sans-serif`,
   },
   components: {
     Badge: {

@@ -1,26 +1,40 @@
-:root {
-  --chakra-fonts-body: unset;
-}
-
 @font-face {
-  font-family: "apple";
-  src: url("/fonts/subsetAppleSDGothicNeoR.woff2") format("woff2");
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Regular.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "apple";
-  src: url("/fonts/subsetAppleSDGothicNeoB.woff2") format("woff2");
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Bold.woff2") format("woff2");
   font-weight: 700;
   font-display: swap;
+}
+
+:root {
+  --chakra-fonts-body: unset;
 }
 
 html {
   background-color: var(--gray-100);
 }
 body {
-  font-family: apple;
+  font-family: "Pretendard", sans-serif;
   font-size: 14px;
   background-color: white;
   color: var(--gray-800);

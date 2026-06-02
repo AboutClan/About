@@ -59,7 +59,6 @@ function LocationSearch({
   }, [data]);
 
   const onClickItem = (searchInfo: NaverLocationProps) => {
-    console.log(searchInfo);
     const placeName = searchInfo.title;
     setValue(placeName);
     const { latitude, longitude } = mapxyToLatLng(searchInfo.mapx, searchInfo.mapy);
@@ -71,6 +70,7 @@ function LocationSearch({
       category: searchInfo?.category,
     });
     setResults([]);
+    setIsFocus?.(true);
     onSelect?.({ ...searchInfo, latitude, longitude });
   };
 
@@ -95,7 +95,7 @@ function LocationSearch({
         />
       </Wrapper>
 
-      <SearchContent isContent={results.length !== 0} isSmall={isSmall}>
+      <SearchContent isContent={results.length !== 0} isSmall={isSmall} onMouseDown={(e) => e.preventDefault()}>
         {results.length > 0 && (
           <>
             {results.map((result, idx) => (

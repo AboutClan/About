@@ -30,11 +30,15 @@ function PlaceInfoDrawer({
   pickReviewPlace,
   zIndex = 1000,
 }: PlaceInfoDrawerProps) {
+  const baseH = !handleVotePick ? 432 : 476;
+  const drawerHeight =
+    typeof window !== "undefined" ? Math.min(baseH, window.innerHeight - 80) : baseH;
+
   return (
     <>
       <BottomFlexDrawer
         isHideBottom
-        height={!handleVotePick ? 432 : 476}
+        height={drawerHeight}
         isDrawerUp
         setIsModal={onClose}
         isOverlay
@@ -67,7 +71,7 @@ export function PlaceInfoCard({
   const rating = placeInfo?.rating || 3.5;
 
   const total = Array.isArray(ratings)
-    ? ratings.reduce((acc, cur) => acc + cur.mood + cur.table + cur.space + cur.etc, 0)
+    ? ratings.reduce((acc, cur) => acc + cur.mood + cur.power + cur.space + cur.etc, 0)
     : 0;
 
   const totalScore = Number((total + rating * 4) / (ratings.length * 4 + 4));
@@ -160,7 +164,7 @@ export function PlaceInfoCard({
 
 const CAFE_META_LABELS: Record<string, string> = {
   hasCleanRestroom: "화장실 깨끗",
-  hasComfortableSeats: "편한 좌석",
+  hasComforpowerSeats: "편한 좌석",
   hasGoodValueDrinks: "가성비",
   hasGoodWifi: "와이파이",
   hasGroupSeats: "단체석",
@@ -197,20 +201,20 @@ export function PlaceInfoBox({
     ? ratings.reduce(
         (acc, cur) => {
           acc.mood += cur.mood;
-          acc.table += cur.table;
+          acc.power += cur.power;
           acc.space += cur.space;
           acc.etc += cur.etc;
           return acc;
         },
-        { mood: 0, table: 0, space: 0, etc: 0 },
+        { mood: 0, power: 0, space: 0, etc: 0 },
       )
-    : { mood: 0, table: 0, space: 0, etc: 0 };
+    : { mood: 0, power: 0, space: 0, etc: 0 };
 
   const count = ratings.length;
 
   const averageRatings = {
     mood: result.mood / count,
-    table: result.table / count,
+    power: result.power / count,
     space: result.space / count,
     etc: result.etc / count,
   };
@@ -218,7 +222,7 @@ export function PlaceInfoBox({
   const getNaturalRatings = (
     rating: number,
     seed: number,
-  ): { mood: number; table: number; space: number; etc: number } => {
+  ): { mood: number; power: number; space: number; etc: number } => {
     const candidates = [
       [0, 0, 0, 0],
       [0.5, 0, 0, -0.5],
@@ -229,7 +233,7 @@ export function PlaceInfoBox({
     const offsets = candidates[seed % candidates.length];
     return {
       mood: Math.min(5, Math.max(0, rating + offsets[0])),
-      table: Math.min(5, Math.max(0, rating + offsets[1])),
+      power: Math.min(5, Math.max(0, rating + offsets[1])),
       space: Math.min(5, Math.max(0, rating + offsets[2])),
       etc: Math.min(5, Math.max(0, rating + offsets[3])),
     };
@@ -280,7 +284,7 @@ export function PlaceInfoBox({
 
             <InfoRow
               label="콘센트"
-              value={averageRatings.table || naturalRatings.table}
+              value={averageRatings.power || naturalRatings.power}
               hasBorder
             />
 
@@ -414,7 +418,7 @@ const LABEL_SCORE_MAP: Record<string, { min: number; text: string }[]> = {
     { min: 3, text: "보통" },
     { min: 0, text: "부족함" },
   ],
-  자리여유: [
+  "자리 여유": [
     { min: 4, text: "여유 있음" },
     { min: 3, text: "보통" },
     { min: 0, text: "부족함" },
@@ -432,8 +436,7 @@ function InfoRow({
   children?: React.ReactNode;
   hasBorder?: boolean;
 }) {
-  const key = label.replace(/\s/g, "");
-  const thresholds = LABEL_SCORE_MAP[key] ?? LABEL_SCORE_MAP["기타"];
+  const thresholds = LABEL_SCORE_MAP[label] ?? LABEL_SCORE_MAP["분위기"];
   const scoreLabel = thresholds.find((s) => value >= s.min)?.text ?? "";
 
   return (

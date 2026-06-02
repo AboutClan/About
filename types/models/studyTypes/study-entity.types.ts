@@ -53,7 +53,7 @@ export interface StudyRatingProps {
   etc: number;
   mood: number;
   space: number;
-  table: number;
+  power: number;
   user?: string;
   createdAt?: string;
   name?: string;

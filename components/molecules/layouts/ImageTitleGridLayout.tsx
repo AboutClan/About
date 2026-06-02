@@ -122,7 +122,7 @@ const GridContainer = styled.div<{ row: number; col: number; size: "sm" | "lg" }
 const TextContainer = styled(SingleLineText)<{ selected: "main" | "sub" | null }>`
   margin-top: 8px;
   font-size: 11px;
-  font-weight: ${(props) => (props.selected ? "700" : "500")};
+  font-weight: ${(props) => (props.selected ? "700" : "400")};
   color: ${(props) =>
     props.selected === "main"
       ? "var(--color-mint)"

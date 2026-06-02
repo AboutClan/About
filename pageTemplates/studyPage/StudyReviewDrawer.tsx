@@ -53,7 +53,7 @@ export function StudyReviewDrawer({
     const offsets = candidates[seed % candidates.length];
     return {
       mood: Math.min(5, Math.max(0, rating + offsets[0])),
-      table: Math.min(5, Math.max(0, rating + offsets[1])),
+      power: Math.min(5, Math.max(0, rating + offsets[1])),
       space: Math.min(5, Math.max(0, rating + offsets[2])),
       etc: Math.min(5, Math.max(0, rating + offsets[3])),
     };
@@ -67,11 +67,7 @@ export function StudyReviewDrawer({
   return (
     <RightDrawer title="리뷰 게시판" zIndex={zIndex} onClose={onClose}>
       {/* flex 컬럼: 콘텐츠 스크롤 + 버튼 하단 고정 */}
-      <Flex
-        direction="column"
-        h="calc(100dvh - var(--header-h))"
-        overflow="hidden"
-      >
+      <Flex direction="column" h="calc(100dvh - var(--header-h))" overflow="hidden">
         {/* 스크롤 영역 */}
         <Flex flex={1} overflowY="auto" direction="column" pb={4}>
           <Box mb={3}>
@@ -108,7 +104,10 @@ export function StudyReviewDrawer({
             fontWeight={700}
             isDisabled={isCompleted}
             opacity={isCompleted ? "1 !important" : undefined}
-            _focus={{ backgroundColor: isCompleted ? "gray.400" : "var(--color-mint)", color: "white" }}
+            _focus={{
+              backgroundColor: isCompleted ? "gray.400" : "var(--color-mint)",
+              color: "white",
+            }}
             onClick={handleClick}
           >
             {isCompleted ? "별점 평가를 완료했어요!" : "카공 장소 별점 남기기"}

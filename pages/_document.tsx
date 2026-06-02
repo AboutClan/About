@@ -151,14 +151,16 @@ export default class MyDocument extends Document<MyDocumentProps> {
         <Head>
           <link
             rel="preload"
-            href="/fonts/subsetAppleSDGothicNeoB.woff2"
+            href="/fonts/Pretendard-Regular.woff2"
             as="font"
+            type="font/woff2"
             crossOrigin="anonymous"
           />
           <link
             rel="preload"
-            href="/fonts/subsetAppleSDGothicNeoR.woff2"
+            href="/fonts/Pretendard-Bold.woff2"
             as="font"
+            type="font/woff2"
             crossOrigin="anonymous"
           />
           {/* <link rel="manifest" href="/manifest.json" /> */}

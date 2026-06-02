@@ -118,7 +118,7 @@ export const getStudyPlaceMarkersOptions = (
       const ratings = data?.ratings || [];
 
       const total = Array.isArray(ratings)
-        ? ratings.reduce((acc, cur) => acc + cur.mood + cur.table + cur.space + cur.etc, 0)
+        ? ratings.reduce((acc, cur) => acc + cur.mood + cur.power + cur.space + cur.etc, 0)
         : 0;
 
       const totalScore = Number((total + rating * 4) / (ratings.length * 4 + 4));

@@ -32,7 +32,7 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
     etc: 5,
     mood: 5,
     space: 5,
-    table: 5,
+    power: 5,
     user: "",
     createdAt: getTodayStr(),
   };

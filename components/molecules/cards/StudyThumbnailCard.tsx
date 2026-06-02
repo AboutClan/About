@@ -73,7 +73,7 @@ export function StudyThumbnailCard({
                 <Box as="span">
                   <LocationDotIcon size="md" />
                 </Box>
-                <Box as="span" ml={1} mt="0.5px" color="var(--gray-600)">
+                <Box as="span" ml={1} color="var(--gray-600)" fontWeight="medium">
                   {place.branch}
                 </Box>
               </Flex>

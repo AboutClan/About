@@ -271,6 +271,7 @@ const CardLink = styled(Link)<{ has: "true" | "false" }>`
 const Title = styled(SingleLineText)`
   font-weight: 700;
   font-size: 14px;
+  line-height: 20px;
   margin: 8px 0;
   color: var(--gray-800);
 `;
@@ -278,4 +279,5 @@ const Title = styled(SingleLineText)`
 const Subtitle = styled(SingleLineText)`
   color: var(--gray-500);
   font-size: 11px;
+  line-height: 16px;
 `;

@@ -311,7 +311,10 @@ function StudyPageMap({
   useEffect(() => {}, [currentMapCenter, markerCenter]);
 
   useEffect(() => {
-    if (!visiblePlaceData.length) return;
+    if (!visiblePlaceData.length) {
+      setMarkersOptions([]);
+      return;
+    }
     setMarkersOptions(
       getStudyPlaceMarkersOptions(
         visiblePlaceData,
@@ -492,7 +495,9 @@ function StudyPageMap({
           zIndex={
             noModalUpdate ? 3500 : isDefaultOpen && !isDown ? 1000 : isMapExpansion ? 1000 : 0
           }
-          {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { bottom: 0 })}
+          {...(!isMapExpansion
+            ? { aspectRatio: 1 / 1, height: "inherit" }
+            : { bottom: isCafeMap ? "52px" : 0 })}
           w={isMapExpansion ? "full" : "auto"}
           bg="transparent"
           onClick={() => {
