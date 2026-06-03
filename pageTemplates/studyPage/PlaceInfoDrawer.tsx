@@ -7,6 +7,7 @@ import StarRating from "../../components/atoms/StarRating";
 import { StarIcon } from "../../components/Icons/StarIcon";
 import PlaceImage from "../../components/molecules/PlaceImage";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
+import { getPlaceScore } from "../../libs/study/studyUtils";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { getRandomImage } from "../../utils/imageUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
@@ -68,13 +69,8 @@ export function PlaceInfoCard({
   customSubText?: string;
 }) {
   const ratings = placeInfo?.ratings || [];
-  const rating = placeInfo?.rating || 3.5;
 
-  const total = Array.isArray(ratings)
-    ? ratings.reduce((acc, cur) => acc + cur.mood + cur.power + cur.space + cur.etc, 0)
-    : 0;
-
-  const totalScore = Number((total + rating * 4) / (ratings.length * 4 + 4));
+  const score = getPlaceScore(ratings);
   const reviewCnt =
     (ratings?.length || 0) + 2 + Number(placeInfo?.location?.latitude?.toString().slice(-1));
 
@@ -149,10 +145,10 @@ export function PlaceInfoCard({
 
       <Flex align="center">
         <Box lineHeight="24px">
-          <StarRating rating={totalScore} size="lg" />
+          <StarRating rating={score.total} size="lg" />
         </Box>
         <Box fontWeight={600} fontSize="16px" ml={1.5} mr={1.5} color="mint" lineHeight="24px">
-          {Number.isFinite(totalScore) ? totalScore.toFixed(1) : "0.0"}
+          {score.total > 0 ? score.total.toFixed(1) : "0.0"}
         </Box>
         <Box color="gray.400" fontSize="11px" lineHeight="24px">
           ({reviewCnt}명 평가 반영)
@@ -194,53 +190,7 @@ export function PlaceInfoBox({
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const ratings = placeInfo?.ratings || [];
-  const rating = placeInfo?.rating || 3.5;
-
-  const result = Array.isArray(ratings)
-    ? ratings.reduce(
-        (acc, cur) => {
-          acc.mood += cur.mood;
-          acc.power += cur.power;
-          acc.space += cur.space;
-          acc.etc += cur.etc;
-          return acc;
-        },
-        { mood: 0, power: 0, space: 0, etc: 0 },
-      )
-    : { mood: 0, power: 0, space: 0, etc: 0 };
-
-  const count = ratings.length;
-
-  const averageRatings = {
-    mood: result.mood / count,
-    power: result.power / count,
-    space: result.space / count,
-    etc: result.etc / count,
-  };
-
-  const getNaturalRatings = (
-    rating: number,
-    seed: number,
-  ): { mood: number; power: number; space: number; etc: number } => {
-    const candidates = [
-      [0, 0, 0, 0],
-      [0.5, 0, 0, -0.5],
-      [0.5, 0.5, -0.5, -0.5],
-      [1, 0, -0.5, -0.5],
-      [0.5, 0, 0, -0.5],
-    ];
-    const offsets = candidates[seed % candidates.length];
-    return {
-      mood: Math.min(5, Math.max(0, rating + offsets[0])),
-      power: Math.min(5, Math.max(0, rating + offsets[1])),
-      space: Math.min(5, Math.max(0, rating + offsets[2])),
-      etc: Math.min(5, Math.max(0, rating + offsets[3])),
-    };
-  };
-
-  const seed = Number(placeInfo?.location?.latitude?.toString().slice(-1));
-  const naturalRatings = getNaturalRatings(rating, seed || 0);
+  const score = getPlaceScore(placeInfo?.ratings);
 
   const handleReviewClick = () => {
     navigateExternalLink(`https://map.naver.com/p/search/${placeInfo.location.name}`);
@@ -280,15 +230,9 @@ export function PlaceInfoBox({
             pb={3}
             boxShadow="0 2px 8px rgba(0,0,0,0.03)"
           >
-            <InfoRow label="분위기" value={averageRatings.mood || naturalRatings.mood} hasBorder />
-
-            <InfoRow
-              label="콘센트"
-              value={averageRatings.power || naturalRatings.power}
-              hasBorder
-            />
-
-            <InfoRow label="자리 여유" value={averageRatings.space || naturalRatings.space} />
+            <InfoRow label="분위기" value={score.mood} hasBorder />
+            <InfoRow label="콘센트" value={score.power} hasBorder />
+            <InfoRow label="자리 여유" value={score.space} />
 
             <Flex mt={1} pt={3} borderTop="1px solid" borderColor="gray.100" wrap="wrap" gap="6px">
               {(badges.length ? badges : ["와이파이", "화장실 깨끗", "편한 좌석"]).map((label) => (

@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import { StarIcon } from "../../components/Icons/StarIcon";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
+import { getPlaceScore } from "../../libs/study/studyUtils";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { XIcon } from "./studyPageMap/TopNav";
 
@@ -146,7 +147,7 @@ function CafeCompactCard({
   place: StudyPlaceProps;
   onReviewClick: () => void;
 }) {
-  const rating = place.rating ?? 3.5;
+  const rating = getPlaceScore(place.ratings).total;
   const reviewCnt =
     (place.ratings?.length || 0) + 2 + Number(place?.location?.latitude?.toString().slice(-1));
 

@@ -12,6 +12,7 @@ import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
+import { getPlaceScore } from "../../../libs/study/studyUtils";
 import { ModalLayout } from "../../../modals/Modals";
 import { CoordinatesProps } from "../../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../../types/externals/naverMapTypes";
@@ -290,16 +291,7 @@ function StudyPageMap({
           if (f === "is24Hours") return place.studyCafeMeta?.is24Hours === true;
           if (f === "hasParking") return place.studyCafeMeta?.hasParking === true;
           if (f === "isUsuallySpacious") {
-            const ratings = place.ratings;
-            if (!ratings?.length) {
-              if (place.rating >= 4) {
-                return true;
-              } else {
-                return false;
-              }
-            }
-            const avgSpace = ratings.reduce((acc, r) => acc + r.space, 0) / ratings.length;
-            return avgSpace >= 4;
+            return getPlaceScore(place.ratings).space >= 4;
           }
           return true;
         }),

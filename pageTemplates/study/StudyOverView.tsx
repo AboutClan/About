@@ -6,6 +6,7 @@ import StarRating from "../../components/atoms/StarRating";
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { getStudyBadge } from "../../libs/study/studyHelpers";
+import { getPlaceScore } from "../../libs/study/studyUtils";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
@@ -93,7 +94,7 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
               <Box mt={1} mr={2} fontSize="20px" fontWeight="bold">
                 {placeInfo?.location?.name}
               </Box>
-              <StarRating rating={placeInfo?.rating || 4} size="lg" />
+              <StarRating rating={getPlaceScore(placeInfo?.ratings).total} size="lg" />
             </Flex>
           </>
         ) : (

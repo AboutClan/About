@@ -66,7 +66,6 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
   reviews?: PlaceReviewProps[];
   image?: string;
   coverImage?: string;
-  rating?: number;
   ratings?: StudyRatingProps[];
   operatingHours?: string[];
   pick?: string;
