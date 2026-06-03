@@ -24,8 +24,8 @@ function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
           <Avatar
             user={{
               avatar: {
-                type: Math.ceil(Math.random() * 35),
-                bg: Math.ceil(Math.random() * 8),
+                type: ((idx * 13) % 35) + 1,
+                bg: ((idx * 7) % 8) + 1,
               },
             }}
             size="xs1"

@@ -1,47 +1,108 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { MouseEvent, ReactNode, RefObject, useEffect, useRef, useState } from "react";
+import { Box, Button, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import { Bell } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
-import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import { StarIcon } from "../../../components/Icons/StarIcon";
 import Header from "../../../components/layouts/Header";
-import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
+import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import LocationSearch, {
   mapxyToLatLng,
 } from "../../../components/organisms/location/LocationSearch";
-import { AboutLogo } from "../../../components/services/AboutLogo";
-import { useToast } from "../../../hooks/custom/CustomToast";
 import { NaverLocationProps } from "../../../hooks/external/queries";
-import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
 import { LocationProps } from "../../../types/common";
 import { DispatchType } from "../../../types/hooks/reactTypes";
-import {
-  StudyPlaceFilter,
-  StudyPlaceProps,
-} from "../../../types/models/studyTypes/study-entity.types";
+import { StudyPlaceFilter } from "../../../types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "../../../utils/validationUtils";
-import GuideButton from "./GuideButton";
 import StatusButton from "./StatusButton";
 
-const MAP_BTN_SHADOW = "0 1px 4px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.08)";
+const MAP_BTN_SHADOW = "0 1px 3px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.05)";
 
-const RATING_OPTIONS: { label: string; value: string; filterType: StudyPlaceFilter }[] = [
-  { label: "전체", value: "all", filterType: "all" },
-  { label: "4.5점 이상", value: "4.5", filterType: "best" },
-  { label: "4.0점 이상", value: "4.0", filterType: "good" },
-  { label: "3.5점 이상", value: "3.5", filterType: "bad" },
+const INLINE_FILTER_BUTTONS = [
+  {
+    label: "콘센트 많음",
+    value: "hasGroupSeats",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="16px"
+        viewBox="0 -960 960 960"
+        width="16px"
+        fill="currentColor"
+      >
+        <path d="M460-200h40v-74l140-140v-186H320v186l140 140v74Zm-80 40v-80L263-357q-11-11-17-25.5t-6-30.5v-187q0-33 23.5-56.5T320-680h40l-40 40v-160q0-17 11.5-28.5T360-840q17 0 28.5 11.5T400-800v120h160v-120q0-17 11.5-28.5T600-840q17 0 28.5 11.5T640-800v160l-40-40h40q33 0 56.5 23.5T720-600v187q0 16-6 30.5T697-357L580-240v80q0 17-11.5 28.5T540-120H420q-17 0-28.5-11.5T380-160Zm100-240Z" />
+      </svg>
+    ),
+  },
+  {
+    label: "와이파이 빵빵",
+    value: "hasWifi",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="16px"
+        viewBox="0 -960 960 960"
+        width="16px"
+        fill="currentColor"
+      >
+        <path d="M409-149q-29-29-29-71t29-71q29-29 71-29t71 29q29 29 29 71t-29 71q-29 29-71 29t-71-29Zm213.5-387Q690-512 745-470q20 15 20.5 39.5T748-388q-17 17-42 17.5T661-384q-38-26-84-41t-97-15q-51 0-97 15t-84 41q-20 14-45 13t-42-18q-17-18-17-42.5t20-39.5q55-42 122.5-65.5T480-560q75 0 142.5 24Zm93-223Q826-718 914-643q20 17 21 42t-17 43q-17 17-42 17.5T831-556q-72-59-161.5-91.5T480-680q-100 0-189.5 32.5T129-556q-20 16-45 15.5T42-558q-18-18-17-43t21-42q88-75 198.5-116T480-800q125 0 235.5 41Z" />
+      </svg>
+    ),
+  },
+  {
+    label: "24시간 운영",
+    value: "is24Hours",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="16px"
+        viewBox="0 -960 960 960"
+        width="16px"
+        fill="currentColor"
+      >
+        <path d="M480-80q-134 0-227-93t-93-227v-200q0-122 96-201t224-79q128 0 224 79t96 201v440q0 33-23.5 56.5T720-80H480Zm0-80h80q-19-25-29.5-55.5T520-280v-42q-10 1-20 1.5t-20 .5q-67 0-129.5-23.5T240-415v15q0 100 70 170t170 70Zm120-120q0 50 35 85t85 35v-255q-26 26-56 44.5T600-340v60ZM480-400q95 0 167.5-55.5T720-600q0-35-12-65.5T674-720q-64 2-109 48t-45 112q0 17-11.5 28.5T480-520q-17 0-28.5-11.5T440-560q0-66-45-111t-109-48q-22 24-34 54t-12 65q0 89 72.5 144.5T480-400ZM311.5-571.5Q300-583 300-600t11.5-28.5Q323-640 340-640t28.5 11.5Q380-617 380-600t-11.5 28.5Q357-560 340-560t-28.5-11.5Zm280 0Q580-583 580-600t11.5-28.5Q603-640 620-640t28.5 11.5Q660-617 660-600t-11.5 28.5Q637-560 620-560t-28.5-11.5ZM370-778q34 14 62 37t48 52q20-29 47.5-52t61.5-37q-25-11-52.5-16.5T480-800q-29 0-56.5 5.5T370-778Zm430 618H520h280Zm-320 0q-100 0-170-70t-70-170q0 100 70 170t170 70h80-80Zm120-120q0 50 35 85t85 35q-50 0-85-35t-35-85ZM480-689Z" />
+      </svg>
+    ),
+  },
+  {
+    label: "주차 가능",
+    value: "hasParking",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="16px"
+        viewBox="0 -960 960 960"
+        width="16px"
+        fill="currentColor"
+      >
+        <path d="M400-360v160q0 33-23.5 56.5T320-120q-33 0-56.5-23.5T240-200v-560q0-33 23.5-56.5T320-840h200q100 0 170 70t70 170q0 100-70 170t-170 70H400Zm0-160h128q33 0 56.5-23.5T608-600q0-33-23.5-56.5T528-680H400v160Z" />
+      </svg>
+    ),
+  },
+  {
+    label: "자리 여유",
+    value: "isUsuallySpacious",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="16px"
+        viewBox="0 -960 960 960"
+        width="16px"
+        fill="currentColor"
+      >
+        <path d="M200-120q-17 0-28.5-11.5T160-160v-40q-50 0-85-35t-35-85v-200q0-50 35-85t85-35v-80q0-50 35-85t85-35h400q50 0 85 35t35 85v80q50 0 85 35t35 85v200q0 50-35 85t-85 35v40q0 17-11.5 28.5T760-120q-17 0-28.5-11.5T720-160v-40H240v40q0 17-11.5 28.5T200-120Zm-40-160h640q17 0 28.5-11.5T840-320v-200q0-17-11.5-28.5T800-560q-17 0-28.5 11.5T760-520v160H200v-160q0-17-11.5-28.5T160-560q-17 0-28.5 11.5T120-520v200q0 17 11.5 28.5T160-280Zm120-160h400v-80q0-27 11-49t29-39v-112q0-17-11.5-28.5T680-760H280q-17 0-28.5 11.5T240-720v112q18 17 29 39t11 49v80Zm200 0Zm0 160Zm0-80Z" />
+      </svg>
+    ),
+  },
 ];
 
-const AMENITY_OPTIONS = [
-  { label: "단체석 보유", value: "hasGroupSeats" },
-  { label: "와이파이 빵빵", value: "hasWifi" },
-  { label: "24시간 운영", value: "is24Hours" },
-  { label: "주차 가능", value: "hasParking" },
-  { label: "자리 여유", value: "isUsuallySpacious" },
-];
-
-export const ARCHIVE_OPTIONS: { title: string; subtitle: string; nickname: string }[] = [
+export const ARCHIVE_OPTIONS: {
+  title: string;
+  subtitle: string;
+  nickname: string;
+  instagram?: string;
+}[] = [
   { title: "어바웃님 PICK", subtitle: "항상 자리 여유가 있는 카공 카페 모음", nickname: "어바웃" },
   {
     title: "눕눕님 PICK",
@@ -52,6 +113,7 @@ export const ARCHIVE_OPTIONS: { title: string; subtitle: string; nickname: strin
     title: "프로님 PICK",
     subtitle: "작업실에 더 가까운 카공 카페 모음",
     nickname: "프로카공러",
+    instagram: "kafe_danigi",
   },
   {
     title: "새벽님 PICK",
@@ -59,52 +121,6 @@ export const ARCHIVE_OPTIONS: { title: string; subtitle: string; nickname: strin
     nickname: "새벽",
   },
 ];
-
-interface FilterButtonProps {
-  type: StudyPlaceFilter;
-  filterType: StudyPlaceFilter;
-  onFilter: (
-    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
-    type: StudyPlaceFilter,
-  ) => void;
-  activeColor?: string;
-  btnRef?: RefObject<HTMLButtonElement>;
-  children: ReactNode;
-}
-
-function FilterButton({
-  type,
-  filterType,
-  onFilter,
-  activeColor = "gray.900",
-  btnRef,
-  children,
-}: FilterButtonProps) {
-  const isActive = filterType === type;
-  const bg = isActive ? activeColor : "white";
-  return (
-    <Button
-      ref={btnRef}
-      flexShrink={0}
-      h="32px"
-      px={4}
-      borderRadius="20px"
-      boxShadow={MAP_BTN_SHADOW}
-      fontSize="11px"
-      fontWeight={600}
-      lineHeight="12px"
-      bg={bg}
-      color={isActive ? "white" : "gray.800"}
-      border={isActive ? "none" : "var(--border)"}
-      _hover={{ bg: isActive ? activeColor : "gray.100" }}
-      _active={{ opacity: 0.8 }}
-      _focus={{ bg }}
-      onClick={(e) => onFilter(e, type)}
-    >
-      {children}
-    </Button>
-  );
-}
 
 interface StudyMapNavProps {
   handleCenterLocation: (location: { lat: number; lon: number }, zoomBoost?: number) => void;
@@ -120,7 +136,6 @@ interface StudyMapNavProps {
   isCafeMap: boolean;
   addCafe: () => void;
   hasBackButton?: boolean;
-  pickReviewPlace: (place: StudyPlaceProps) => void;
   amenityFilters: string[];
   setAmenityFilters: DispatchType<string[]>;
   selectedPickNickname: string | null;
@@ -140,7 +155,7 @@ function StudyMapNav({
   hasBackButton,
   onClose,
   isCafeMap,
-  pickReviewPlace,
+  addCafe,
   amenityFilters,
   setAmenityFilters,
   selectedPickNickname,
@@ -148,13 +163,11 @@ function StudyMapNav({
   openAboutDrawer,
   onCafeSearch,
 }: StudyMapNavProps) {
-  const router = useRouter();
-  const { updateQuery } = useOverlayRouter();
-  const toast = useToast();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const aboutBtnRef = useRef<HTMLButtonElement>(null);
 
   const [isFocus, setIsFocus] = useState(true);
+  const [updateMenu, setUpdateMenu] = useState(false);
+  const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [placeInfo, setPlaceInfo] = useState<LocationProps>({
     name: "",
     address: "",
@@ -173,28 +186,24 @@ function StudyMapNav({
     }
   }, []);
 
-  const isFilterOpen = router.query.modal === "ratingFilter";
-  const isAmenityOpen = router.query.modal === "amenityFilter";
-  const isArchiveOpen = router.query.modal === "archiveFilter";
+  const isRating40Active = filterType === "good";
+  const hasActiveFilters = filterType !== "all" || amenityFilters.length > 0;
 
-  const isAmenityActive = amenityFilters.length > 0;
-  const isArchiveActive = filterType === "about" && selectedPickNickname !== null;
-  const activeArchive = ARCHIVE_OPTIONS.find((o) => o.nickname === selectedPickNickname) ?? null;
+  const handleResetFilters = () => {
+    setFilterType("all");
+    setAmenityFilters([]);
+    setSelectedPickNickname(null);
+  };
+
+  const handleRating40Toggle = () => {
+    setFilterType(filterType === "good" ? "all" : "good");
+  };
 
   const toggleAmenity = (value: string) => {
-    if (filterType === "about") {
-      setSelectedPickNickname(null);
-      setFilterType("all");
-    }
     setAmenityFilters((prev) =>
       prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
     );
   };
-
-  const selectedRatingOption =
-    RATING_OPTIONS.find((o) => o.filterType === filterType && filterType !== "all") ?? null;
-  const ratingButtonLabel = selectedRatingOption ? selectedRatingOption.label : "별점";
-  const isRatingActive = !!selectedRatingOption;
 
   useEffect(() => {
     if (!placeInfo?.latitude) return;
@@ -207,24 +216,6 @@ function StudyMapNav({
       onCafeSearch?.({ ...result, latitude, longitude });
     }
   };
-
-  const handleFilter = (
-    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
-    type: StudyPlaceFilter,
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.currentTarget.blur();
-    setFilterType(filterType === type ? "all" : type);
-  };
-
-  useEffect(() => {
-    if (filterType !== "about" || !scrollContainerRef.current || !aboutBtnRef.current) return;
-    const container = scrollContainerRef.current;
-    const btn = aboutBtnRef.current;
-    const scrollLeft = btn.offsetLeft + btn.offsetWidth - container.clientWidth + 16;
-    container.scrollTo({ left: Math.max(0, scrollLeft), behavior: "smooth" });
-  }, [filterType]);
 
   return (
     <>
@@ -242,11 +233,11 @@ function StudyMapNav({
               pointerEvents="none"
             />
           )}
-          <Flex flexDir="column" w="full" bg="white">
+          <Flex flexDir="column" pb={2} w="full" bg="white" boxShadow="0 2px 12px rgba(0,0,0,0.07)">
             <Flex
               w="full"
-              h="var(--header-h)"
-              pl={isCafeMap ? 3 : 0}
+              h="64px"
+              pl={isCafeMap ? 2 : 0}
               as="header"
               align="center"
               justify="space-between"
@@ -254,17 +245,94 @@ function StudyMapNav({
               bg="white"
               maxW="var(--max-width)"
               margin="0 auto"
-              borderColor="gray.100"
             >
               {isCafeMap ? (
                 <>
-                  <Box px={2} py={2}>
-                    <AboutLogo />
+                  <Box pl={2} py={2}>
+                    <svg
+                      width="109"
+                      height="25"
+                      viewBox="0 0 104 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g transform="translate(-1 -0.5) scale(1.08)">
+                        {/* Coffee icon */}
+                        <path
+                          d="M3 7.5H15.5V13.2C15.5 16.1 13.1 18.5 10.2 18.5H8.3C5.4 18.5 3 16.1 3 13.2V7.5Z"
+                          stroke="#00C2B3"
+                          strokeWidth="2.2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M15.5 9.5H17.2C19 9.5 20.3 10.7 20.3 12.3C20.3 13.9 19 15.1 17.2 15.1H15.5"
+                          stroke="#00C2B3"
+                          strokeWidth="2.2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M6.2 4.2C6.2 4.2 5.4 3.1 6.3 2"
+                          stroke="#00C2B3"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                        <path
+                          d="M10 4.2C10 4.2 9.2 3.1 10.1 2"
+                          stroke="#00C2B3"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                        <path
+                          d="M13.8 4.2C13.8 4.2 13 3.1 13.9 2"
+                          stroke="#00C2B3"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+
+                        {/* Text */}
+                        <text
+                          x="27"
+                          y="17"
+                          fill="#00C2B3"
+                          fontSize="18"
+                          fontWeight="900"
+                          fontFamily="Pretendard, Apple SD Gothic Neo, sans-serif"
+                          letterSpacing="-0.8"
+                        >
+                          카공지도
+                        </text>
+                      </g>
+                    </svg>
                   </Box>
-                  <Flex align="center" mr={1}>
-                    <Button variant="unstyled" p={2} onClick={() => openMenu()}>
-                      <MenuIcon2 />
-                    </Button>
+                  <Flex flexDir="column" flex={1} ml={0.5}>
+                    <Box fontWeight={700} fontSize="11px" color="gray.800">
+                      AI가 분석한 공부하기 좋은 카페
+                    </Box>
+                    <Box color="gray.500" fontSize="10px" mt="1px">
+                      실제 카공러 리뷰{" "}
+                      <Box as="span" color="var(--color-mint)" fontWeight={600}>
+                        100만개+
+                      </Box>{" "}
+                      기반
+                    </Box>
+                  </Flex>
+                  <Flex
+                    as="button"
+                    mr={1}
+                    align="center"
+                    justify="center"
+                    w="36px"
+                    h="36px"
+                    borderRadius="full"
+                    flexShrink={0}
+                    cursor="pointer"
+                    _hover={{ bg: "gray.50" }}
+                    _active={{ bg: "gray.100" }}
+                    onClick={() => setUpdateMenu(true)}
+                  >
+                    <Bell size={24} strokeWidth={1.5} color="var(--gray-800)" />
                   </Flex>
                 </>
               ) : (
@@ -274,168 +342,163 @@ function StudyMapNav({
               )}
             </Flex>
 
-            <Flex w="full" px={5} bg="white">
+            <Flex w="full" px={4} bg="white" pb={1} mt={-1}>
               <LocationSearch
                 info={placeInfo}
                 setInfo={setPlaceInfo}
                 size="sm"
                 setIsFocus={setIsFocus}
-                placeHolder="찾고 싶은 지역 검색"
+                placeHolder="지역, 카페 이름으로 검색"
                 onSelect={handleSearchSelect}
-                rightElement={
-                  <Button
-                    variant="unstyled"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    w="32px"
-                    h="32px"
-                    minW="unset"
-                    onClick={() => toast("info", "다음 업데이트에 출시 예정")}
-                  >
-                    <FavoriteIcon />
-                  </Button>
-                }
               />
             </Flex>
+          </Flex>
+          <Flex
+            w="100%"
+            flexDir="column"
+            align="center"
+            pos="fixed"
+            top="calc(112px)"
+            left={0}
+            zIndex={100}
+          >
+            <Flex
+              w="full"
+              ref={scrollContainerRef}
+              gap={2}
+              flex={1}
+              px={4}
+              overflowX="auto"
+              bg="transparent"
+              py={3}
+              sx={{
+                "::-webkit-scrollbar": { display: "none" },
+                scrollbarWidth: "none",
+              }}
+            >
+              {/* 초기화 버튼 */}
+              {hasActiveFilters && (
+                <Button
+                  flexShrink={0}
+                  h="32px"
+                  w="32px"
+                  p={0}
+                  borderRadius="full"
+                  bg="white"
+                  border="var(--border-main)"
+                  boxShadow={MAP_BTN_SHADOW}
+                  _hover={{ bg: "gray.100" }}
+                  _active={{ opacity: 0.8 }}
+                  _focus={{ bg: "white" }}
+                  onClick={handleResetFilters}
+                >
+                  <ResetIcon />
+                </Button>
+              )}
 
-            {/* 필터 버튼 행 */}
-            <Flex w="100%" flexDir="column" align="center">
-              <Flex
-                w="full"
-                ref={scrollContainerRef}
-                gap={2}
-                flex={1}
-                px={4}
-                overflowX="auto"
-                bg="transparent"
-                py={3}
-                sx={{
-                  "::-webkit-scrollbar": { display: "none" },
-                  scrollbarWidth: "none",
-                }}
+              {/* 별점 4.0이상 */}
+              <Button
+                flexShrink={0}
+                h="32px"
+                px={3}
+                borderRadius="20px"
+                boxShadow={MAP_BTN_SHADOW}
+                fontSize="11px"
+                fontWeight={600}
+                lineHeight="12px"
+                bg={isRating40Active ? "gray.900" : "white"}
+                color={isRating40Active ? "white" : "gray.800"}
+                border={isRating40Active ? "none" : "var(--border-main)"}
+                _hover={{ bg: isRating40Active ? "gray.900" : "gray.100" }}
+                _active={{ opacity: 0.8 }}
+                _focus={{ bg: isRating40Active ? "gray.900" : "white" }}
+                onClick={handleRating40Toggle}
               >
-                {/* 별점 필터 버튼 */}
-                <Button
-                  flexShrink={0}
-                  h="32px"
-                  px={2.5}
-                  borderRadius="20px"
-                  bg={isRatingActive ? "gray.900" : "white"}
-                  border={isRatingActive ? "none" : "var(--border-main)"}
-                  borderColor="gray.300"
-                  _hover={{ bg: isRatingActive ? "gray.900" : "gray.100" }}
-                  _active={{ opacity: 0.8 }}
-                  _focus={{ bg: isRatingActive ? "gray.900" : "white" }}
-                  onClick={() => updateQuery({ modal: "ratingFilter" })}
-                >
-                  <Flex align="center">
-                    <Box lineHeight="20px">
-                      <StarIcon type="fill" size="lg" />
-                    </Box>
-                    <Text
-                      fontSize="12px"
-                      lineHeight="20px"
-                      ml={1}
-                      mr={1.5}
-                      color={isRatingActive ? "white" : "gray.800"}
-                    >
-                      {ratingButtonLabel}
-                    </Text>
-                    <ShortArrowIcon dir="bottom" />
-                  </Flex>
-                </Button>
+                <Flex align="center" gap={1}>
+                  <StarIcon type="fill" size="md" />
+                  <Box as="span">별점 4.0+</Box>
+                </Flex>
+              </Button>
 
-                {/* 카공 필터 버튼 */}
-                <Button
-                  flexShrink={0}
-                  h="32px"
-                  px={3}
-                  borderRadius="20px"
-                  bg={isAmenityActive ? "gray.900" : "white"}
-                  border={isAmenityActive ? "none" : "var(--border-main)"}
-                  borderColor="gray.300"
-                  _hover={{ bg: isAmenityActive ? "gray.900" : "gray.100" }}
-                  _active={{ opacity: 0.8 }}
-                  _focus={{ bg: isAmenityActive ? "gray.900" : "white" }}
-                  onClick={() => updateQuery({ modal: "amenityFilter" })}
-                >
-                  <Flex align="center" gap="4px" lineHeight="20px">
-                    <Box lineHeight="20px">
-                      <AmenityFilterIcon color={isAmenityActive ? "white" : "var(--gray-800)"} />
-                    </Box>
-                    <Box
-                      fontSize="12px"
-                      lineHeight="20px"
-                      color={isAmenityActive ? "white" : "gray.800"}
-                    >
-                      카공 필터
-                    </Box>
-                    {isAmenityActive && (
-                      <Flex
-                        align="center"
-                        justify="center"
-                        w="16px"
-                        h="16px"
-                        borderRadius="full"
-                        bg="var(--color-mint)"
-                        flexShrink={0}
-                      >
-                        <Text fontSize="10px" fontWeight={700} color="white" lineHeight="1">
-                          {amenityFilters.length}
-                        </Text>
-                      </Flex>
-                    )}
-                  </Flex>
-                </Button>
+              {/* 나머지 필터 버튼들 */}
+              {INLINE_FILTER_BUTTONS.map((btn) => {
+                const isActive = amenityFilters.includes(btn.value);
+                return (
+                  <Button
+                    key={btn.value}
+                    flexShrink={0}
+                    h="32px"
+                    px={3}
+                    borderRadius="20px"
+                    boxShadow={MAP_BTN_SHADOW}
+                    fontSize="11px"
+                    fontWeight={600}
+                    lineHeight="12px"
+                    bg={isActive ? "gray.900" : "white"}
+                    color={isActive ? "white" : "gray.800"}
+                    border={isActive ? "none" : "var(--border-main)"}
+                    _hover={{ bg: isActive ? "gray.900" : "gray.100" }}
+                    _active={{ opacity: 0.8 }}
+                    _focus={{ bg: isActive ? "gray.900" : "white" }}
+                    onClick={() => toggleAmenity(btn.value)}
+                  >
+                    <Flex align="center" gap={1}>
+                      {btn?.icon}
+                      <Box as="span"> {btn.label}</Box>
+                    </Flex>
+                  </Button>
+                );
+              })}
 
-                {/* 아카이브 버튼 */}
-                {!isMainType && (
+              {/* PICK 아카이브 버튼 */}
+              {(() => {
+                const isActive = filterType === "about";
+                return (
                   <Button
                     flexShrink={0}
                     h="32px"
-                    px="12px"
+                    px={3}
                     borderRadius="20px"
-                    bg={isArchiveActive ? "gray.900" : "white"}
-                    border={isArchiveActive ? "none" : "var(--border-main)"}
-                    borderColor="gray.300"
-                    _hover={{ bg: isArchiveActive ? "gray.900" : "gray.100" }}
+                    boxShadow={MAP_BTN_SHADOW}
+                    fontSize="11px"
+                    fontWeight={600}
+                    lineHeight="12px"
+                    bg={isActive ? "gray.900" : "white"}
+                    color={isActive ? "white" : "gray.800"}
+                    border={isActive ? "none" : "var(--border-main)"}
+                    _hover={{ bg: isActive ? "gray.900" : "gray.100" }}
                     _active={{ opacity: 0.8 }}
-                    _focus={{ bg: isArchiveActive ? "gray.900" : "white" }}
-                    onClick={() => updateQuery({ modal: "archiveFilter" })}
+                    _focus={{ bg: isActive ? "gray.900" : "white" }}
+                    onClick={() => {
+                      if (isActive) {
+                        handleResetFilters();
+                      } else {
+                        setIsArchiveOpen(true);
+                      }
+                    }}
                   >
-                    <Flex align="center">
-                      <ArchiveIcon color={isArchiveActive ? "white" : "var(--gray-800)"} />
-                      <Text
-                        fontSize="12px"
-                        fontWeight={600}
-                        color={isArchiveActive ? "white" : "gray.800"}
-                        lineHeight="12px"
-                        ml={1}
-                        mr={1.5}
-                      >
-                        {isArchiveActive && activeArchive ? activeArchive.title : "아카이브"}
-                      </Text>
-                      <ShortArrowIcon dir="bottom" />
+                    <Flex align="center" gap={1}>
+                      <ArchiveIcon />
+                      <Box as="span">PICK 아카이브</Box>
                     </Flex>
                   </Button>
-                )}
-              </Flex>
-              {!isMapExpansion && (
-                <Button
-                  borderRadius="4px"
-                  bgColor="white"
-                  boxShadow={MAP_BTN_SHADOW}
-                  w="32px"
-                  h="32px"
-                  size="sm"
-                  p="0"
-                  border="var(--border-main)"
-                >
-                  <ExpansionIcon />
-                </Button>
-              )}
+                );
+              })()}
             </Flex>
+            {!isMapExpansion && (
+              <Button
+                borderRadius="4px"
+                bgColor="white"
+                boxShadow={MAP_BTN_SHADOW}
+                w="32px"
+                h="32px"
+                size="sm"
+                p="0"
+                border="var(--border-main)"
+              >
+                <ExpansionIcon />
+              </Button>
+            )}
           </Flex>
           <Box
             pos="fixed"
@@ -449,16 +512,89 @@ function StudyMapNav({
         </>
       )}
 
+      {/* PICK 아카이브 선택 바텀시트 */}
+      {isArchiveOpen && (
+        <>
+          <Box
+            pos="fixed"
+            inset={0}
+            zIndex={700}
+            bg="rgba(0,0,0,0.45)"
+            onClick={() => setIsArchiveOpen(false)}
+          />
+          <Flex
+            pos="fixed"
+            left={0}
+            right={0}
+            bottom={0}
+            zIndex={701}
+            bg="white"
+            borderTopRadius="20px"
+            flexDir="column"
+            maxW="var(--max-width)"
+            mx="auto"
+            pb={getSafeAreaBottom(16)}
+          >
+            {/* 핸들 */}
+            <Flex justify="center" pt={3} pb={1}>
+              <Box w="56px" h="4px" borderRadius="2px" bg="gray.300" />
+            </Flex>
+            {/* 타이틀 */}
+            <Box fontWeight={700} fontSize="16px" px={5} pt={2} pb={3}>
+              PICK 아카이브
+            </Box>
+            {/* 선택지 */}
+            {ARCHIVE_OPTIONS.map((option) => (
+              <Flex
+                key={option.nickname}
+                px={5}
+                py={3}
+                align="center"
+                cursor="pointer"
+                _hover={{ bg: "gray.50" }}
+                onClick={() => {
+                  setSelectedPickNickname(option.nickname);
+                  setFilterType("about");
+                  setIsArchiveOpen(false);
+                }}
+              >
+                <Box>
+                  <Box fontWeight={700} fontSize="14px" color="gray.900">
+                    {option.title}
+                  </Box>
+                  <Box fontSize="12px" color="gray.500" mt="2px">
+                    {option.subtitle}
+                  </Box>
+                </Box>
+              </Flex>
+            ))}
+          </Flex>
+        </>
+      )}
+
+      {/* 업데이트 소식 드로어 */}
+      {updateMenu && (
+        <RightDrawer title="업데이트 소식" onClose={() => setUpdateMenu(false)} isFull={false}>
+          <Flex flex={1} overflowY="auto" direction="column" px={4} pt={2}>
+            {UPDATE_ITEMS.slice()
+              .reverse()
+              .map((item) => (
+                <UpdateCard key={item.date + item.isCompleted} {...item} />
+              ))}
+          </Flex>
+        </RightDrawer>
+      )}
+
       {/* 하단 버튼 행 (확장 시에만) */}
       {isMapExpansion && (
         <Flex
           flexDir="column"
           pos="absolute"
           w="full"
-          bottom={0}
+          bottom={isCafeMap ? "0px" : 0}
           left={0}
           zIndex={300}
-          sx={{ paddingBottom: getSafeAreaBottom(16 + extraBottomPadding) }}
+          sx={{ paddingBottom: isCafeMap ? "16px" : getSafeAreaBottom(16 + extraBottomPadding) }}
         >
           <Flex px={4} justify="space-between" align="center">
             {hasBackButton ? (
@@ -502,248 +638,144 @@ function StudyMapNav({
                 </Button>
 
                 <Box>
-                  <GuideButton pickReviewPlace={pickReviewPlace} />
+                  <Button
+                    rounded="full"
+                    bgColor="white"
+                    boxShadow={MAP_BTN_SHADOW}
+                    w="40px"
+                    h="40px"
+                    minW="40px"
+                    size="sm"
+                    p="0"
+                    border="var(--border-main)"
+                    borderColor="var(--gray-300)"
+                    borderWidth="1px"
+                    onClick={() => addCafe()}
+                    _hover={{ bgColor: "white" }}
+                    _active={{ bgColor: "white" }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="18px"
+                      viewBox="0 -960 960 960"
+                      width="18px"
+                      fill="var(--gray-800)"
+                    >
+                      <path d="M720-40v-120H600v-80h120v-120h80v120h120v80H800v120h-80ZM80-160v-240H40v-80l40-200h600l40 200v80h-40v120h-80v-120H440v240H80Zm80-80h200v-160H160v160Zm-38-240h516-516ZM80-720v-80h600v80H80Zm42 240h516l-24-120H146l-24 120Z" />
+                    </svg>
+                  </Button>
                 </Box>
               </>
             )}
           </Flex>
         </Flex>
       )}
-
-      {/* 아카이브 BottomSheet */}
-      {isArchiveOpen && (
-        <BottomFlexDrawer
-          isDrawerUp
-          setIsModal={() => router.back()}
-          height={isArchiveActive ? 346 : 373}
-          isOverlay
-          isHideBottom
-          hasTopNav={false}
-          zIndex={1100}
-        >
-          <Flex direction="column" w="full" h="full">
-            <Flex justify="center" align="center" py={3} pb={1}>
-              <Text fontSize="12px" color="gray.500">
-                아카이브
-              </Text>
-            </Flex>
-
-            <Flex direction="column" w="full" flex={1} overflowY="auto">
-              {isArchiveActive && (
-                <Flex
-                  py={3}
-                  align="center"
-                  justify="space-between"
-                  cursor="pointer"
-                  borderBottom="var(--border-main)"
-                  onClick={() => {
-                    setSelectedPickNickname(null);
-                    setFilterType("all");
-                    router.back();
-                  }}
-                >
-                  <Text fontSize="13px" color="gray.400">
-                    선택 해제
-                  </Text>
-                  <Text fontSize="16px" color="gray.300" lineHeight="1" mr={0.5}>
-                    ×
-                  </Text>
-                </Flex>
-              )}
-
-              {ARCHIVE_OPTIONS.map((archive, idx) => (
-                <Flex
-                  key={archive.nickname}
-                  py={4}
-                  borderBottom={idx !== ARCHIVE_OPTIONS.length - 1 ? "var(--border-main)" : "none"}
-                  align="center"
-                  justify="space-between"
-                  cursor="pointer"
-                  onClick={() => {
-                    setSelectedPickNickname(archive.nickname);
-                    setAmenityFilters([]);
-                    setFilterType("about");
-                    openAboutDrawer();
-                    router.back();
-                  }}
-                >
-                  <Flex direction="column" gap={0.5} flex={1} minW={0} mr={3}>
-                    <Text fontSize="14px" fontWeight={600} color="gray.800" lineHeight="20px">
-                      {archive.title}
-                    </Text>
-                    <Text fontSize="12px" color="gray.500" lineHeight="18px" noOfLines={1}>
-                      {archive.subtitle}
-                    </Text>
-                  </Flex>
-                  <ShortArrowIcon dir="right" />
-                </Flex>
-              ))}
-            </Flex>
-
-            <Box w="full">
-              <Button
-                w="full"
-                py={6}
-                borderTop="var(--border-main)"
-                borderRadius="0"
-                bg="white"
-                fontSize="14px"
-                fontWeight={600}
-                _hover={{ bg: "gray.50" }}
-                onClick={() => router.back()}
-              >
-                닫기
-              </Button>
-            </Box>
-          </Flex>
-        </BottomFlexDrawer>
-      )}
-
-      {/* 카공 필터 BottomSheet */}
-      {isAmenityOpen && (
-        <BottomFlexDrawer
-          isDrawerUp
-          setIsModal={() => router.back()}
-          height={391}
-          isOverlay
-          isHideBottom
-          hasTopNav={false}
-          zIndex={1100}
-        >
-          <Flex direction="column" w="full" h="full">
-            <Flex justify="center" align="center" pos="relative" py={3} pb={1}>
-              <Text fontSize="12px" color="gray.500">
-                카공 필터
-              </Text>
-              {/* {isAmenityActive && (
-                <Button
-                  variant="unstyled"
-                  pos="absolute"
-                  right={0}
-                  top="50%"
-                  transform="translateY(-50%)"
-                  display="flex"
-                  alignItems="center"
-                  gap={1}
-                  onClick={() => setAmenityFilters([])}
-                >
-                  <ResetIcon />
-                  <Text fontSize="12px" color="gray.400">
-                    초기화
-                  </Text>
-                </Button>
-              )} */}
-            </Flex>
-
-            <Flex direction="column" w="full">
-              {AMENITY_OPTIONS.map((option) => {
-                const isChecked = amenityFilters.includes(option.value);
-                return (
-                  <Flex
-                    h="60px"
-                    key={option.value}
-                    align="center"
-                    justify="space-between"
-                    cursor="pointer"
-                    onClick={() => toggleAmenity(option.value)}
-                  >
-                    <Text fontSize="14px" fontWeight={isChecked ? 700 : 500} color="black">
-                      {option.label}
-                    </Text>
-                    <CheckIcon2 isSelected={isChecked} />
-                  </Flex>
-                );
-              })}
-            </Flex>
-
-            <Box mt="auto" w="full">
-              <Button
-                w="full"
-                py={6}
-                borderTop="var(--border-main)"
-                borderRadius="0"
-                bg="white"
-                fontSize="14px"
-                fontWeight={600}
-                _hover={{ bg: "gray.50" }}
-                onClick={() => router.back()}
-              >
-                완료
-              </Button>
-            </Box>
-          </Flex>
-        </BottomFlexDrawer>
-      )}
-
-      {/* 별점 필터 BottomSheet */}
-      {isFilterOpen && (
-        <BottomFlexDrawer
-          isDrawerUp
-          setIsModal={() => router.back()}
-          height={331}
-          isOverlay
-          isHideBottom
-          hasTopNav={false}
-          zIndex={1100}
-        >
-          <Flex direction="column" w="full" h="full">
-            <Flex justify="center" align="center" py={3} pb={1}>
-              <Text fontSize="12px" color="gray.500">
-                별점
-              </Text>
-            </Flex>
-
-            <Flex direction="column" w="full">
-              {RATING_OPTIONS.map((option) => {
-                const isSelected =
-                  filterType === option.filterType ||
-                  (option.value === "all" &&
-                    !RATING_OPTIONS.slice(1).some((o) => o.filterType === filterType));
-                return (
-                  <Flex
-                    h="60px"
-                    key={option.value}
-                    align="center"
-                    justify="space-between"
-                    cursor="pointer"
-                    onClick={() => {
-                      setFilterType(option.filterType);
-                      setAmenityFilters([]);
-                      router.back();
-                    }}
-                  >
-                    <Text fontSize="14px" fontWeight={isSelected ? 700 : 500} color="black">
-                      {option.label}
-                    </Text>
-                    {isSelected && <CheckIcon2 isSelected />}
-                  </Flex>
-                );
-              })}
-            </Flex>
-
-            <Box mt="auto" w="full">
-              <Button
-                w="full"
-                py={6}
-                borderTop="var(--border-main)"
-                borderRadius="0"
-                bg="white"
-                fontSize="14px"
-                fontWeight={600}
-                _hover={{ bg: "gray.50" }}
-                onClick={() => router.back()}
-              >
-                닫기
-              </Button>
-            </Box>
-          </Flex>
-        </BottomFlexDrawer>
-      )}
     </>
   );
 }
 
 export default StudyMapNav;
+
+function ArchiveIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="16px"
+      viewBox="0 -960 960 960"
+      width="16px"
+      fill="currentColor"
+    >
+      <path d="M480-301 240-541l56-56 184 184 184-184 56 56-240 240Zm0-239L240-780l56-56 184 184 184-184 56 56-240 240Z" />
+    </svg>
+  );
+}
+
+const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] = [
+  {
+    date: "2026-05-17",
+    isCompleted: true,
+    textArr: [
+      "전반적인 UI/UX 및 사용성 개선",
+      "FAQ 및 업데이트 소식 기능 추가",
+      "장소 추가 및 후기 작성 버튼 노출 문제 해결",
+      "동일 카페 중복 등록 방지 기능 적용",
+      "신규 카공 카페 등록",
+    ],
+  },
+  {
+    date: "2026-05-18",
+    isCompleted: true,
+    textArr: [
+      "카페 리뷰 시 닉네임 작성 가능",
+      "후기 신뢰도 검증 알고리즘 적용",
+      "신규 카공 카페 등록",
+    ],
+  },
+  {
+    date: "2026-05-19",
+    isCompleted: true,
+    textArr: ["실시간 카공 피드 출시 (우측 상단)", "검증된 카공러 PICK 아카이브 추가"],
+  },
+  {
+    date: "2026-05-20",
+    isCompleted: true,
+    textArr: ["전반적인 UI/UX 및 사용성 개선", "일부 오류 수정 및 안정성 개선"],
+  },
+  {
+    date: "2026-05-24",
+    isCompleted: true,
+    textArr: ["카공지도 시즌2 대규모 업데이트"],
+  },
+  {
+    date: "2026-05-31",
+    isCompleted: true,
+    textArr: [
+      "카공 카페 등록 편의 개선",
+      "AI 기반 실시간 카페 별점 판단",
+      "AI 기반 실시간 정보 업데이트",
+      "신규 카공 카페 30곳 추가",
+      "폐업한 카페 30곳 제거",
+    ],
+  },
+  {
+    date: "2026-06-03",
+    isCompleted: true,
+    textArr: ["AI 기반 알고리즘 강화", "카페 상세 정보 업데이트", "전반적인 UI/UX 및 사용성 개선"],
+  },
+  {
+    date: "2026-05-18",
+    isCompleted: false,
+    textArr: ["스터디 기능 오픈 예정", "아이폰/안드로이드 앱 출시 예정"],
+  },
+];
+
+function UpdateCard({
+  isCompleted,
+  date,
+  textArr,
+}: {
+  isCompleted: boolean;
+  date: string;
+  textArr: string[];
+}) {
+  return (
+    <Box bg="gray.50" borderRadius="8px" p={3} border="1px solid" borderColor="gray.100" mb={2}>
+      <Flex as="h3" align="flex-start" mb={2} fontSize="14px" fontWeight={700} color="gray.900">
+        <Text as="span" color="mint.500" mr={2}>
+          {isCompleted ? "[완료]" : "[예정]"}
+        </Text>
+        {isCompleted ? `${dayjs(date).format("M월 D일")} 업데이트` : "다음 업데이트 예정"}
+      </Flex>
+      <UnorderedList ml={0}>
+        {textArr.map((text) => (
+          <ListItem key={text} fontSize="12px" lineHeight="24px">
+            {text}
+          </ListItem>
+        ))}
+      </UnorderedList>
+    </Box>
+  );
+}
 
 function ResetIcon() {
   return (
@@ -755,48 +787,6 @@ function ResetIcon() {
       fill="var(--gray-400)"
     >
       <path d="M440-122q-121-15-200.5-105.5T160-440q0-66 26-126t72-110l57 57q-38 42-56.5 93T240-440q0 88 56 152t144 78v68Zm80 0v-68q87-14 143.5-78.5T720-440q0-100-70-170t-170-70h-3l44 44-56 56-140-140 140-140 56 56-44 44h3q134 0 227 93t93 227q0 121-79.5 211.5T520-122Z" />
-    </svg>
-  );
-}
-
-function FavoriteIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="20px"
-      viewBox="0 -960 960 960"
-      width="20px"
-      fill="var(--gray-500)"
-    >
-      <path d="M451.5-152q-14.5-5-25.5-16l-69-63q-106-97-191.5-192.5T80-634q0-94 63-157t157-63q53 0 100 22.5t80 61.5q33-39 80-61.5T660-854q94 0 157 63t63 157q0 115-85 211T602-230l-68 62q-11 11-25.5 16t-28.5 5q-14 0-28.5-5ZM442-690q-29-41-62-62.5T300-774q-60 0-100 40t-40 100q0 52 37 110.5T285.5-410q51.5 55 106 103t88.5 79q34-31 88.5-79t106-103Q726-465 763-523.5T800-634q0-60-40-100t-100-40q-47 0-80 21.5T518-690q-7 10-17 15t-21 5q-11 0-21-5t-17-15Zm38 189Z" />
-    </svg>
-  );
-}
-
-function ArchiveIcon({ color }: { color?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="14px"
-      viewBox="0 -960 960 960"
-      width="14px"
-      fill={color}
-    >
-      <path d="M200-120q-17 0-28.5-11.5T160-160q0-17 11.5-28.5T200-200h560q17 0 28.5 11.5T800-160q0 17-11.5 28.5T760-120H200Zm120-160q-66 0-113-47t-47-113v-320q0-33 23.5-56.5T240-840h560q33 0 56.5 23.5T880-760v120q0 33-23.5 56.5T800-560h-80v120q0 66-47 113t-113 47H320Zm400-360h80v-120h-80v120Z" />
-    </svg>
-  );
-}
-
-function AmenityFilterIcon({ color }: { color: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="14px"
-      viewBox="0 -960 960 960"
-      width="14px"
-      fill={color}
-    >
-      <path d="M451.5-131.5Q440-143 440-160v-160q0-17 11.5-28.5T480-360q17 0 28.5 11.5T520-320v40h280q17 0 28.5 11.5T840-240q0 17-11.5 28.5T800-200H520v40q0 17-11.5 28.5T480-120q-17 0-28.5-11.5ZM160-200q-17 0-28.5-11.5T120-240q0-17 11.5-28.5T160-280h160q17 0 28.5 11.5T360-240q0 17-11.5 28.5T320-200H160Zm131.5-171.5Q280-383 280-400v-40H160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h120v-40q0-17 11.5-28.5T320-600q17 0 28.5 11.5T360-560v160q0 17-11.5 28.5T320-360q-17 0-28.5-11.5ZM480-440q-17 0-28.5-11.5T440-480q0-17 11.5-28.5T480-520h320q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H480Zm131.5-171.5Q600-623 600-640v-160q0-17 11.5-28.5T640-840q17 0 28.5 11.5T680-800v40h120q17 0 28.5 11.5T840-720q0 17-11.5 28.5T800-680H680v40q0 17-11.5 28.5T640-600q-17 0-28.5-11.5ZM160-680q-17 0-28.5-11.5T120-720q0-17 11.5-28.5T160-760h320q17 0 28.5 11.5T520-720q0 17-11.5 28.5T480-680H160Z" />
     </svg>
   );
 }
@@ -837,20 +827,6 @@ function MenuIcon() {
       viewBox="0 -960 960 960"
       width="16px"
       fill="var(--gray-800)"
-    >
-      <path d="M160-240q-17 0-28.5-11.5T120-280q0-17 11.5-28.5T160-320h640q17 0 28.5 11.5T840-280q0 17-11.5 28.5T800-240H160Zm0-200q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h640q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H160Zm0-200q-17 0-28.5-11.5T120-680q0-17 11.5-28.5T160-720h640q17 0 28.5 11.5T840-680q0 17-11.5 28.5T800-640H160Z" />
-    </svg>
-  );
-}
-
-function MenuIcon2() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="28px"
-      viewBox="0 -960 960 960"
-      width="28px"
-      fill="var(--color-gray)"
     >
       <path d="M160-240q-17 0-28.5-11.5T120-280q0-17 11.5-28.5T160-320h640q17 0 28.5 11.5T840-280q0 17-11.5 28.5T800-240H160Zm0-200q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h640q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H160Zm0-200q-17 0-28.5-11.5T120-680q0-17 11.5-28.5T160-720h640q17 0 28.5 11.5T840-680q0 17-11.5 28.5T800-640H160Z" />
     </svg>
@@ -931,19 +907,5 @@ export function StudyIcon({ color }) {
         </defs>
       </svg>
     </div>
-  );
-}
-
-function CheckIcon2({ isSelected }: { isSelected: boolean }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="24px"
-      viewBox="0 -960 960 960"
-      width="24px"
-      fill={isSelected ? "var(--gray-900)" : "var(--gray-300)"}
-    >
-      <path d="m382-354 339-339q12-12 28-12t28 12q12 12 12 28.5T777-636L410-268q-12 12-28 12t-28-12L182-440q-12-12-11.5-28.5T183-497q12-12 28.5-12t28.5 12l142 143Z" />
-    </svg>
   );
 }

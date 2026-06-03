@@ -2,17 +2,23 @@ import styled from "styled-components";
 
 import Spinner from "../Spinner";
 
-export function MainLoading({ size = "md" }: { size?: "sm" | "md" }) {
+export function MainLoading({
+  size = "md",
+  top = "50%",
+}: {
+  size?: "sm" | "md";
+  top?: string;
+}) {
   return (
-    <MainLoadingLayout>
+    <MainLoadingLayout $top={top}>
       <Spinner size={size} />
     </MainLoadingLayout>
   );
 }
 
-const MainLoadingLayout = styled.div<{ top?: number }>`
+const MainLoadingLayout = styled.div<{ $top: string }>`
   position: fixed;
-  top: 50%;
+  top: ${({ $top }) => $top};
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2000;

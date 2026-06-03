@@ -16,6 +16,7 @@ interface CafeListDrawerProps {
   pickNickname?: string;
   pickTitle?: string;
   pickSubtitle?: string;
+  pickInstagram?: string;
 }
 
 export function CafeListDrawer({
@@ -27,6 +28,7 @@ export function CafeListDrawer({
   pickNickname,
   pickTitle,
   pickSubtitle,
+  pickInstagram,
 }: CafeListDrawerProps) {
   const formatRadius = (km: number) => {
     if (!Number.isFinite(km) || km <= 0) return "100m";
@@ -88,6 +90,23 @@ export function CafeListDrawer({
                 </>
               )}
             </Box>
+            {type === "about" && pickInstagram && (
+              <Flex align="center" gap={1.5} mt="6px" mr="auto">
+                <InstagramIcon />
+                <Box
+                  as="a"
+                  href={`https://instagram.com/${pickInstagram.replace("@", "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  fontSize="12px"
+                  fontWeight={600}
+                  color="gray.600"
+                  _hover={{ textDecoration: "underline" }}
+                >
+                  {pickInstagram}
+                </Box>
+              </Flex>
+            )}
           </>
         }
       >
@@ -211,6 +230,27 @@ function CafeCompactCard({
       </Flex>
       <ShortArrowIcon dir="right" />
     </Flex>
+  );
+}
+
+function InstagramIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#C13584"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ flexShrink: 0 }}
+    >
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1" fill="#C13584" stroke="none" />
+    </svg>
   );
 }
 

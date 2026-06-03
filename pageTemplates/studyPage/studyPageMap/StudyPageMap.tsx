@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
+import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
 import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
@@ -585,10 +585,6 @@ function StudyPageMap({
                   setUnregisteredCafe(result);
                 }
               }}
-              pickReviewPlace={(place: StudyPlaceProps) => {
-                setReviewPlaceInfo(place);
-                updateQuery({ modal: "reviewPlace" });
-              }}
             />
 
             <VoteMap
@@ -600,10 +596,6 @@ function StudyPageMap({
               zoomChange={(zoom: number) => setZoomNumber(zoom)}
               centerChange={handleCenterChange}
             />
-
-            {((isLoading && !isLoading2) || (isLoadingLocation && tempToggle)) && (
-              <MainLoadingAbsolute size="sm" />
-            )}
           </ClipLayer>
         </Box>
       </Box>
@@ -793,10 +785,10 @@ function StudyPageMap({
         />
       )}
 
-      {(isLoading || isLoading2) && (
+      {(isLoading || isLoading2 || (isLoadingLocation && tempToggle)) && (
         <>
           <ScreenOverlay zIndex={2000} />
-          <MainLoading />
+          <MainLoading top={isCafeMap ? "calc(50vh + 28px)" : "50%"} />
         </>
       )}
     </>

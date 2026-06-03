@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 
 import Divider from "../../components/atoms/Divider";
 import Slide from "../../components/layouts/PageSlide";
+import { useStudyPlacesCursorQuery,useStudyPlacesQuery } from "../../hooks/study/queries";
 import ChallengeSection from "../../pageTemplates/home/ChallengeSection";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
 import HomeFooter from "../../pageTemplates/home/HomeFooter";
@@ -14,6 +15,8 @@ import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 
 function Home() {
+
+  const a = useStudyPlacesCursorQuery(null);
   return (
     <>
       <HomeInitialSetting />

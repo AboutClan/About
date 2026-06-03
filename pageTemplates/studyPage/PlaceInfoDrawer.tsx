@@ -247,7 +247,7 @@ export function PlaceInfoBox({
   };
 
   const handleRatingClick = () => {
-    handleClick();
+    handleClick?.();
   };
 
   const handleVoteClick = () => {

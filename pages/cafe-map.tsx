@@ -2,8 +2,11 @@ import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+import CafeMapBottomNav from "../components/CafeMapBottomNav";
 import { gaEvent } from "../libs/gtag";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
+import CafeMapArchivePage from "../pageTemplates/studyPage/CafeMapArchivePage";
+import CafeMapFeedPage from "../pageTemplates/studyPage/CafeMapFeedPage";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 
 function StudyMap() {
@@ -11,6 +14,8 @@ function StudyMap() {
 
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
+
+  const activeTab = (router.query.tab as string) || "map";
 
   useEffect(() => {
     // 게스트 세션 자동 생성. redirect: false 가 핵심 —
@@ -47,7 +52,12 @@ function StudyMap() {
 
   return (
     <>
-      <StudyPageMap isDefaultOpen onClose={onClose} isDown isCafeMap />
+      {activeTab === "map" && (
+        <StudyPageMap isDefaultOpen onClose={onClose} isDown isCafeMap />
+      )}
+      {activeTab === "feed" && <CafeMapFeedPage />}
+      {activeTab === "bookmark" && <CafeMapArchivePage />}
+      <CafeMapBottomNav />
       {isModal && (
         <ModalLayout title="안내사항" footerOptions={footerOptions} setIsModal={setIsModal}>
           <p>
