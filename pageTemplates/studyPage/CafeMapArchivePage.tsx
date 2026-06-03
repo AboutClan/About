@@ -45,7 +45,7 @@ export default function CafeMapArchivePage() {
       >
         <Header title="아카이브" isBack={false} isSlide={false} />
 
-        <Box flex={1} overflowY="auto" borderTop="var(--border-main)" mt="var(--header-h)">
+        <Box flex={1} overflowY="auto" borderTop="var(--border-main)">
           <Flex flexDir="column">
             {ARCHIVE_OPTIONS.map((option) => {
               const count = placeData?.filter((p) => p.pick === option.nickname).length ?? 0;

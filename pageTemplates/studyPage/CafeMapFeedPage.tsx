@@ -139,7 +139,7 @@ export default function CafeMapFeedPage() {
       <Header title="실시간 카공 피드" isBack={false} isSlide={false}></Header>
 
       {/* 탭 바 */}
-      <Flex w="full" borderBottom="var(--border)" flexShrink={0} mt="var(--header-h)">
+      <Flex w="full" borderBottom="var(--border)" flexShrink={0}>
         {FEED_TABS.map((text, idx) => {
           const selected = feedTab === text;
           return (
