@@ -97,11 +97,14 @@ export function LocationAddDrawer({
       }
       const { latitude, longitude, address, name } = placeInfo;
       const status = (placeInfo as any)?.category?.includes("카페") ? "sub" : "inactive";
+
+      console.log(52, nickname);
+
       mutate({
         location: { name, latitude, longitude, address },
         status,
         name: nickname,
-        review: { ...review },
+        review: { ...review, name: nickname },
       } as any);
     }
   };

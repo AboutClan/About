@@ -254,7 +254,7 @@ export function PlaceInfoBox({
             </Flex>
           </Flex>
         )}
-        {hasButton && (
+        {hasButton ? (
           <Flex w="full" mt={3} pb={2}>
             <Button
               color="mint"
@@ -292,6 +292,21 @@ export function PlaceInfoBox({
               </Box>
             </Button>
           </Flex>
+        ) : (
+          <Button
+            mt={4}
+            mb={2}
+            borderRadius={8}
+            color="mint"
+            border="1px solid var(--color-mint)"
+            bg="white"
+            w="full"
+            onClick={() => {
+              handleReviewClick();
+            }}
+          >
+            네이버 지도 바로가기
+          </Button>
         )}
       </Flex>
     </>

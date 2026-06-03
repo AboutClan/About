@@ -105,6 +105,12 @@ export const ARCHIVE_OPTIONS: {
 }[] = [
   { title: "어바웃님 PICK", subtitle: "항상 자리 여유가 있는 카공 카페 모음", nickname: "어바웃" },
   {
+    title: "현님 PICK",
+    subtitle: "[대구] 오래 공부하기 좋은 카공 카페 모음",
+    nickname: "hyeon",
+    instagram: "sh___cs",
+  },
+  {
     title: "눕눕님 PICK",
     subtitle: "소파가 푹신해서 편안한 카공 카페 모음",
     nickname: "눕눕",

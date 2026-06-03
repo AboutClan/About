@@ -15,7 +15,7 @@ import BottomNav from "../layouts/BottomNav";
 
 export interface PlaceReviewProps2 {
   mood: number;
-  table: number;
+  power: number;
   space: number;
   etc: number;
   comment: string;
@@ -44,7 +44,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
 
   const [review, setReview] = useState<PlaceReviewProps2>({
     mood: 3,
-    table: 3,
+    power: 3,
     space: 3,
     etc: 3,
     comment: "",
@@ -56,6 +56,8 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
       toast("warning", "닉네임 글자 수를 확인해 주세요!");
       return;
     }
+    console.log(nickname);
+    return;
     mutate({ ...review, comment: text, name: nickname.trim() || "익명" });
   };
 
@@ -83,7 +85,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
           콘센트/테이블
         </Box>
         <StarBlock
-          rating={review.table}
+          rating={review.power}
           setRating={(value: number) => setReview((old) => ({ ...old, table: value }))}
         />
       </Flex>
