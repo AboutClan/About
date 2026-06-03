@@ -71,7 +71,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
       </Flex>
       <Flex flexDir="column" mb={5}>
         <Box color="gray.600" fontSize="13px" fontWeight={600}>
-          공부 분위기
+          공부 분위기인가요?
         </Box>
         <StarBlock
           rating={review.mood}

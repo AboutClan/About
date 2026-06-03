@@ -126,8 +126,8 @@ export function LocationAddDrawer({
               <RegisterOverview>
                 <span>등록하고 싶은 카페를 입력해 주세요</span>
                 <span>
-                  AI가 카공 관련 리뷰를 검토해 최초 별점을 산정한 뒤,
-                  <br /> 10분 이내 자동 등록합니다.
+                  AI가 실제 카공 후기를 찾아 분석한 뒤, 카페의 특징과 카공 별점을 산정해 5분 이내
+                  자동 등록합니다.
                 </span>
               </RegisterOverview>
               <SearchLocation
@@ -152,7 +152,7 @@ export function LocationAddDrawer({
 
               <Flex flexDir="column" mb={5}>
                 <Box color="gray.600" fontSize="13px" fontWeight={600}>
-                  공부 분위기
+                  공부하기 좋은 분위기인가요?
                 </Box>
                 <StarBlock
                   rating={review.mood}
@@ -161,7 +161,7 @@ export function LocationAddDrawer({
               </Flex>
               <Flex flexDir="column" mb={5}>
                 <Box color="gray.600" fontSize="13px" fontWeight={600}>
-                  콘센트/테이블
+                  콘센트는 충분한가요?
                 </Box>
                 <StarBlock
                   rating={review.table}
@@ -170,7 +170,7 @@ export function LocationAddDrawer({
               </Flex>
               <Flex flexDir="column" mb={5}>
                 <Box color="gray.600" fontSize="13px" fontWeight={600}>
-                  혼잡도 & 자리 여유
+                  자리는 여유로운가요?
                 </Box>
                 <StarBlock
                   rating={review.space}
@@ -179,7 +179,7 @@ export function LocationAddDrawer({
               </Flex>
               <Flex flexDir="column" mb={5}>
                 <Box color="gray.600" fontSize="13px" fontWeight={600}>
-                  기타
+                  기타 만족도
                 </Box>
                 <StarBlock
                   rating={review.etc}
