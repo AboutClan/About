@@ -136,7 +136,7 @@ export default function CafeMapFeedPage() {
       maxW="var(--max-width)"
       mx="auto"
     >
-      <Header title="실시간 카공 피드" isBack={false}></Header>
+      <Header title="실시간 카공 피드" isBack={false} isSlide={false}></Header>
 
       {/* 탭 바 */}
       <Flex w="full" borderBottom="var(--border)" flexShrink={0} mt="var(--header-h)">
@@ -219,11 +219,7 @@ export default function CafeMapFeedPage() {
         />
       )}
       {modalParam === "addReview" && reviewPlace && (
-        <RightReviewDrawer
-          placeId={reviewPlace._id}
-          onClose={() => router.back()}
-          zIndex={4000}
-        />
+        <RightReviewDrawer placeId={reviewPlace._id} onClose={() => router.back()} zIndex={4000} />
       )}
     </Flex>
   );

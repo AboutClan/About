@@ -133,7 +133,7 @@ function StudyPageMap({
   );
 
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
-    (filterType === "about" ? "all" : filterType) || "best",
+    (filterType === "about" || filterType === "good" ? "all" : filterType) || "best",
     null,
   );
   console.log(21, placeData);
@@ -281,6 +281,10 @@ function StudyPageMap({
         );
         return d < markerRadiusKm;
       });
+    }
+
+    if (filterType === "good") {
+      result = result.filter((place) => getPlaceScore(place.ratings).total >= 4);
     }
 
     if (amenityFilters.length > 0) {

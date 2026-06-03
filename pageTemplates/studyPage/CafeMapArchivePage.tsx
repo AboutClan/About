@@ -43,7 +43,7 @@ export default function CafeMapArchivePage() {
         maxW="var(--max-width)"
         mx="auto"
       >
-        <Header title="아카이브" isBack={false} />
+        <Header title="아카이브" isBack={false} isSlide={false} />
 
         <Box flex={1} overflowY="auto" borderTop="var(--border-main)" mt="var(--header-h)">
           <Flex flexDir="column">
