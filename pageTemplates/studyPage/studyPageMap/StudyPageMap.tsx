@@ -489,9 +489,11 @@ function StudyPageMap({
       <Box>
         <Box
           position={isMapExpansion ? "fixed" : "relative"}
-          mx={!isMapExpansion ? 5 : 0}
+          mx={!isMapExpansion ? 5 : "auto"}
           top={0}
           left={0}
+          right={isMapExpansion ? 0 : undefined}
+          maxW={isMapExpansion ? "var(--max-width)" : undefined}
           zIndex={
             noModalUpdate ? 3500 : isDefaultOpen && !isDown ? 1000 : isMapExpansion ? 1000 : 0
           }

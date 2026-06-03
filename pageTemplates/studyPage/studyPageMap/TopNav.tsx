@@ -229,6 +229,10 @@ function StudyMapNav({
               bg="linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0) 20%)"
               pos="fixed"
               top="112px"
+              left={0}
+              right={0}
+              maxW="var(--max-width)"
+              mx="auto"
               zIndex={30}
               pointerEvents="none"
             />
@@ -360,6 +364,9 @@ function StudyMapNav({
             pos="fixed"
             top="calc(112px)"
             left={0}
+            right={0}
+            maxW="var(--max-width)"
+            mx="auto"
             zIndex={100}
           >
             <Flex
@@ -503,7 +510,7 @@ function StudyMapNav({
           <Box
             pos="fixed"
             top="calc(var(--header-h) + 40px + 56px + 16px)"
-            left={4}
+            left="max(16px, calc((100vw - var(--max-width)) / 2 + 16px))"
             zIndex={100}
             pointerEvents="auto"
           >
