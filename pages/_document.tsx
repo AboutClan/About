@@ -32,7 +32,7 @@ const resolveOg = (host: string | undefined, asPath: string): OG => {
   if (isCafeMapHost) {
     return {
       title: "카공 지도 | 내 근처 카공 카페 찾기",
-      description: "100만개+ 카공 리뷰를 기반으로 콘센트·좌석·분위기까지 고려한 진짜 카공 지도",
+      description: "100만개 이상의 카공 리뷰를 기반으로 제작된, 진짜 카공 지도",
       url: "https://xn--ob0b42knwutje.com/",
       image: CAFE_MAP_IMAGE,
     };
