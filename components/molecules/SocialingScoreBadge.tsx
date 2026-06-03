@@ -37,13 +37,12 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
         as="div"
         w={size === "sm" ? "52px" : "60px"}
         size="sm"
-        fontSize={size === "sm" ? "12px" : "14px"}
+        fontSize={size === "sm" ? "11px" : "13px"}
         bg={bg}
         color={color}
-        lineHeight="22px"
-        fontWeight={500}
         borderRadius="full"
         position="relative"
+        fontWeight={500}
       >
         {getTemperature(user)}
         {size === "sm" && (
@@ -62,7 +61,7 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
             borderRadius="full"
             lineHeight="1"
           >
-            <Text lineHeight="1" textAlign="center">
+            <Text lineHeight="1" textAlign="center" fontWeight={400}>
               {Math.round(user?.temperature?.cnt ?? 0)}명
             </Text>
           </Flex>

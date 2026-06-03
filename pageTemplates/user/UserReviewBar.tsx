@@ -28,15 +28,18 @@ function UserReviewBar({ user, hasTop = true }: UserReviewBarProps) {
         <Box>
           <Flex align="center">
             <Box mr="auto" color="var(--gray-800)" fontSize="16px" fontWeight={600}>
-              소셜링 온도
-              <Box
-                ml={0.5}
-                as="b"
-                fontSize="13px"
-                color={getTemperatureColor(user?.temperature?.temperature, null)?.color}
-              >
-                {user?.temperature?.temperature}°C
-              </Box>
+              <Flex align="center">
+                <Box>소셜링 온도</Box>
+                <Box
+                  ml={1}
+                  fontWeight={600}
+                  fontSize="14px"
+                  lineHeight={1}
+                  color={getTemperatureColor(user?.temperature?.temperature, null)?.color}
+                >
+                  {user?.temperature?.temperature}°C
+                </Box>
+              </Flex>
               <Box fontSize="10px" color="gray.400" fontWeight={400}>
                 멤버 평가 {user?.temperature?.cnt}회 반영
               </Box>
@@ -50,14 +53,14 @@ function UserReviewBar({ user, hasTop = true }: UserReviewBarProps) {
           <Box ml={2} mr={1}>
             최고예요 😘
           </Box>
-          <Box fontWeight="bold">{calculatePercent(reviewArr?.greatCnt)}%</Box>
+          <Box fontWeight="600">{calculatePercent(reviewArr?.greatCnt)}%</Box>
         </Flex>
         <Flex align="center" flex={1}>
           <Avatar user={{ avatar: { type: 11, bg: 6 } }} size="xs1" />
           <Box ml={2} mr={1}>
             좋아요 😉
           </Box>
-          <Box fontWeight="bold">{calculatePercent(reviewArr?.goodCnt)}%</Box>
+          <Box fontWeight="600">{calculatePercent(reviewArr?.goodCnt)}%</Box>
         </Flex>
       </Flex>
     </>

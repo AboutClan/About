@@ -113,7 +113,7 @@ export default function ProfileCommentCard({
                     {studyUser?.studyIntroduce?.studyStyle && (
                       <>
                         <StudyPopoverIcon size="md" content={STUDY_POPOVER_TEXT.subject}>
-                          <Box fontSize="9px" px={1.5} fontWeight={600}>
+                          <Box fontSize="9px" px={1.5} fontWeight={500}>
                             {studyUser?.studyIntroduce?.subject}
                           </Box>
                         </StudyPopoverIcon>
@@ -128,7 +128,7 @@ export default function ProfileCommentCard({
                             ]
                           }
                         >
-                          <Box fontSize="9px" px={1.5} fontWeight={600}>
+                          <Box fontSize="9px" px={1.5} fontWeight={500}>
                             {studyUser?.studyIntroduce?.studyStyle
                               ?.split(" ")?.[0]
                               ?.replace(/^\[|\]$/g, "")}
@@ -301,7 +301,7 @@ export function StudyBadge({ cnt }: { cnt: number }) {
   return (
     <Flex
       ml={1}
-      fontWeight={600}
+      fontWeight={500}
       fontSize="9px"
       h="20px"
       bg="red.50"
