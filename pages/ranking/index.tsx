@@ -47,7 +47,19 @@ function Ranking() {
   const [commentText, setCommentText] = useState<{ first: string; value: number }>();
   const [users2, setUsers2] = useState<UserRankingProps[]>();
 
-  const [tab, setTab] = useState<RankingTab>("월간 활동 랭킹");
+  const tab: RankingTab =
+    tabParam === "study"
+      ? "스터디 랭킹"
+      : tabParam === "temperature"
+      ? "누적 인기 랭킹"
+      : "월간 활동 랭킹";
+
+  const setTab = (newTab: RankingTab) => {
+    const param =
+      newTab === "스터디 랭킹" ? "study" : newTab === "누적 인기 랭킹" ? "temperature" : "monthScore";
+    router.replace({ query: { ...router.query, tab: param } }, undefined, { shallow: true });
+  };
+
   const [medal, setMedal] = useState<MedalType>("골드");
 
   const { data: userInfo } = useUserInfoQuery();
@@ -67,18 +79,6 @@ function Ranking() {
       [],
     [allUserData2],
   );
-
-  useEffect(() => {
-    if (tabParam) {
-      setTab(
-        tabParam === "study"
-          ? "스터디 랭킹"
-          : tabParam === "monthScore"
-          ? "월간 활동 랭킹"
-          : "누적 인기 랭킹",
-      );
-    }
-  }, [tabParam]);
 
   useEffect(() => {
     setSortedUsers(null);
@@ -168,27 +168,9 @@ function Ranking() {
   }, [allUserData, session, tab, medal]);
 
   const tabOptionsArr: { text: RankingTab; func: () => void }[] = [
-    {
-      text: "월간 활동 랭킹",
-      func: () => {
-        setTab("월간 활동 랭킹");
-        setSortedUsers(null);
-      },
-    },
-    {
-      text: "스터디 랭킹",
-      func: () => {
-        setTab("스터디 랭킹");
-        setSortedUsers(null);
-      },
-    },
-    {
-      text: "누적 인기 랭킹",
-      func: () => {
-        setTab("누적 인기 랭킹");
-        setSortedUsers(null);
-      },
-    },
+    { text: "월간 활동 랭킹", func: () => setTab("월간 활동 랭킹") },
+    { text: "스터디 랭킹", func: () => setTab("스터디 랭킹") },
+    { text: "누적 인기 랭킹", func: () => setTab("누적 인기 랭킹") },
   ];
 
   useEffect(() => {
