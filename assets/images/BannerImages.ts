@@ -41,10 +41,10 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
 //     image:
 //       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20240708_164733650.png",
 //     category: "mt",
-//   },
+//   },`
 // ];
 // export const CLUB_BANNER_IMAGE: BannerProps[] = [
-//   {
+//   {`
 //     image:
 //       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/%EB%8F%99%EC%95%84%EB%A6%AC+%EC%BA%98%EB%A6%B0%EB%8D%94.png",
 //     category: "calendar",

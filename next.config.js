@@ -25,6 +25,12 @@ const baseNextConfig = {
           "https://mewing-sombrero-e36.notion.site/13d86fb9086b80039300e211948103c7?pvs=73",
         permanent: false,
       },
+      {
+        source: "/SUMMER-MT",
+        destination:
+          "https://mewing-sombrero-e36.notion.site/About-Summer-MT-2026-37086fb9086b809bb537cf4166338d54?pvs=74",
+        permanent: false,
+      },
     ];
   },
   // async redirects() {

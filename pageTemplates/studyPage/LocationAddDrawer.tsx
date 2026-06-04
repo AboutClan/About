@@ -21,7 +21,7 @@ interface LocationAddDrawerProps {
 
 interface ReviewState {
   mood: number;
-  table: number;
+  power: number;
   space: number;
   etc: number;
   comment: string;
@@ -60,7 +60,7 @@ export function LocationAddDrawer({
   );
   const [review, setReview] = useState<ReviewState>({
     mood: 3,
-    table: 3,
+    power: 3,
     space: 3,
     etc: 3,
     comment: "",
@@ -167,8 +167,8 @@ export function LocationAddDrawer({
                   콘센트는 충분한가요?
                 </Box>
                 <StarBlock
-                  rating={review.table}
-                  setRating={(v) => setReview((r) => ({ ...r, table: v }))}
+                  rating={review.power}
+                  setRating={(v) => setReview((r) => ({ ...r, power: v }))}
                 />
               </Flex>
               <Flex flexDir="column" mb={5}>

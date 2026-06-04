@@ -56,8 +56,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
       toast("warning", "닉네임 글자 수를 확인해 주세요!");
       return;
     }
-    console.log(nickname);
-    return;
+
     mutate({ ...review, comment: text, name: nickname.trim() || "익명" });
   };
 
@@ -86,7 +85,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
         </Box>
         <StarBlock
           rating={review.power}
-          setRating={(value: number) => setReview((old) => ({ ...old, table: value }))}
+          setRating={(value: number) => setReview((old) => ({ ...old, power: value }))}
         />
       </Flex>
       <Flex flexDir="column" mb={5}>
