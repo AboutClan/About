@@ -7,6 +7,7 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
 import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
@@ -53,6 +54,7 @@ function StudyPageMap({
   noModalUpdate = false,
 }: StudyPageMapProps) {
   const router = useRouter();
+  const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
   const {
@@ -70,6 +72,10 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loading2TimedOut, setLoading2TimedOut] = useState(false);
+  const [pickCenter, setPickCenter] = useState<{ lat: number; lng: number } | null>(null);
+  const wasPickFilterRef = useRef(false);
+  const currentLocationRef = useRef(currentLocation);
+  currentLocationRef.current = currentLocation;
   const scrollLockY = useRef(0);
   const [zoomNumber, setZoomNumber] = useState<number>(14);
   const [tempToggle, setTempToggle] = useState(false);
@@ -133,11 +139,33 @@ function StudyPageMap({
     null,
   );
 
+  const placeDataRef = useRef<typeof placeData>(undefined);
+
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
     (filterType === "about" || filterType === "good" ? "all" : filterType) || "best",
     null,
   );
+  placeDataRef.current = placeData;
   console.log(21, placeData);
+
+  // PICK 아카이브 선택 시 필터된 장소들의 중심점으로 지도 이동
+  // placeDataRef 로 stale closure 없이 항상 최신 데이터 사용
+  const applyPickCentroid = useCallback((nickname: string) => {
+    console.log("[PICK] applyPickCentroid called:", nickname);
+    console.log("[PICK] placeDataRef.current:", placeDataRef.current?.length);
+    const filtered = placeDataRef.current?.filter((p) => p.pick === nickname);
+    console.log("[PICK] filtered:", filtered?.length, filtered?.map(p => p.pick));
+    if (!filtered?.length) return;
+    const lat = filtered.reduce((sum, p) => sum + p.location.latitude, 0) / filtered.length;
+    const lon = filtered.reduce((sum, p) => sum + p.location.longitude, 0) / filtered.length;
+    console.log("[PICK] centroid:", lat, lon);
+    const zoom = 11;
+    setZoomNumber(zoom);
+    const opts = getMapOptions({ lat, lon }, zoom);
+    console.log("[PICK] opts:", opts);
+    if (opts) setMapOptions(opts);
+    setPickCenter({ lat, lng: lon });
+  }, []);
   useEffect(() => {
     if (noModalUpdate) return;
     if (modalParam !== "reviewPlace" && modalParam !== "addReview") {
@@ -430,11 +458,23 @@ function StudyPageMap({
   }, [isMapExpansion]);
 
   useEffect(() => {
+    console.log("[PICK] effect fired: filterType=", filterType, "selectedPickNickname=", selectedPickNickname);
     if (filterType === "about" && selectedPickNickname) {
-      setZoomNumber(11);
-      setMapOptions((prev) => (prev ? { ...prev, zoom: 11 } : prev));
+      wasPickFilterRef.current = true;
+      applyPickCentroid(selectedPickNickname);
       setDrawerType("about");
     } else if (filterType !== "about") {
+      if (wasPickFilterRef.current) {
+        wasPickFilterRef.current = false;
+        const loc = currentLocationRef.current;
+        if (loc) {
+          const opts = getMapOptions(loc, 14);
+          if (opts) {
+            setMapOptions(opts);
+            setZoomNumber(14);
+          }
+        }
+      }
       setDrawerType((prev) => (prev === "about" ? null : prev));
     }
   }, [filterType, selectedPickNickname]);
@@ -541,17 +581,19 @@ function StudyPageMap({
               handleLocationRefetch={async () => {
                 setTempToggle(true);
                 const newPos = await refetchCurrentLocation();
+                if (!newPos) {
+                  toast("error", "위치 정보를 확인할 수 없습니다.");
+                  return;
+                }
                 if (typeof window === "undefined" || !("naver" in window)) return;
-                const lat = newPos?.lat ?? userInfo?.locationDetail?.latitude;
-                const lon = newPos?.lon ?? userInfo?.locationDetail?.longitude;
-                if (lat == null || lon == null) return;
-                const center = new naver.maps.LatLng(lat, lon);
+                const center = new naver.maps.LatLng(newPos.lat, newPos.lon);
                 setMapOptions((prev) =>
-                  prev ? { ...prev, center } : getMapOptions({ lat, lon }, 13),
+                  prev ? { ...prev, center } : getMapOptions(newPos, 13),
                 );
               }}
               openList={() => {
                 if (filterType === "about") {
+                  applyPickCentroid(selectedPickNickname);
                   setDrawerType("about");
                   return;
                 }
@@ -605,6 +647,7 @@ function StudyPageMap({
               selectedMarkerId={selectedPlaceId}
               zoomChange={(zoom: number) => setZoomNumber(zoom)}
               centerChange={handleCenterChange}
+              centerValue={pickCenter}
             />
           </ClipLayer>
         </Box>
@@ -798,7 +841,7 @@ function StudyPageMap({
       {(isLoading || (isLoading2 && !loading2TimedOut) || (isLoadingLocation && tempToggle)) && (
         <>
           <ScreenOverlay zIndex={2000} />
-          <MainLoading top={isCafeMap ? "calc(50vh + 30px - env(safe-area-inset-bottom, 0px) / 2)" : "50%"} />
+          <MainLoading top={isCafeMap ? "calc(50dvh + 30px - env(safe-area-inset-bottom, 0px) / 2)" : "50%"} />
         </>
       )}
     </>

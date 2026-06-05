@@ -322,7 +322,7 @@ function VoteMap({
   useEffect(() => {
     if (!centerValue || !mapInstanceRef.current || typeof naver === "undefined") return;
 
-    mapInstanceRef.current.setCenter(new naver.maps.LatLng(centerValue.lat, centerValue.lng));
+    mapInstanceRef.current.panTo(new naver.maps.LatLng(centerValue.lat, centerValue.lng));
   }, [centerValue]);
 
   return <Map ref={mapRef} id="map" />;
