@@ -8,6 +8,7 @@ import GatherRecordDrawer from "../../../components/overlay/GatherRecordDrawer";
 import KakaoFriendModal from "../../../components/overlay/KakaoFriendModal";
 import LimitModal from "../../../components/overlay/LimitModal";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
+import MTModal from "../../../components/overlay/MTModal";
 import NewbieBenefitModal from "../../../components/overlay/NewbieBenefitModal";
 import NewMemberModal from "../../../components/overlay/NewMemberModal";
 import PointLowModal from "../../../components/overlay/PointLowModal";
@@ -17,6 +18,7 @@ import {
   FRIEND_INVITE_AT,
   GATHER_REVIEW_MODAL_ID,
   MEMBERSHIP_AT,
+  MT_AT,
 } from "../../../constants/keys/localStorage";
 import { STUDY_ATTEND_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
@@ -36,7 +38,8 @@ export type PopUpType =
   | "kakaoFriend"
   | "membership"
   | "friend"
-  | "limit";
+  | "limit"
+  | "mt";
 
 interface PopUpProps extends CloseProps {}
 
@@ -52,6 +55,7 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
   membership: NewbieBenefitModal,
   friend: FriendInviteModal,
   limit: LimitModal,
+  mt: MTModal,
 };
 
 export default function UserSettingPopUp({ user }: { user: IUser }) {
@@ -90,6 +94,10 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
     //   return;
     // }
 
+    if (!checkAndSetLocalStorage(MT_AT, 3)) {
+      setPopUpType((old) => [...old, "mt"]);
+      return;
+    }
     if (!checkAndSetLocalStorage(FRIEND_INVITE_AT, 7)) {
       setPopUpType((old) => [...old, "friend"]);
       return;

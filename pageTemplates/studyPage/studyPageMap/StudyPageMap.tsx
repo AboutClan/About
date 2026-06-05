@@ -69,6 +69,7 @@ function StudyPageMap({
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>(null);
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loading2TimedOut, setLoading2TimedOut] = useState(false);
   const scrollLockY = useRef(0);
   const [zoomNumber, setZoomNumber] = useState<number>(14);
   const [tempToggle, setTempToggle] = useState(false);
@@ -447,6 +448,17 @@ function StudyPageMap({
     return () => clearTimeout(timer);
   }, [isMapExpansion, filterType]);
 
+  // isLoading2(데이터 쿼리)가 5초 초과 시 로딩 오버레이를 강제 숨김
+  useEffect(() => {
+    if (!isLoading2) {
+      setLoading2TimedOut(false);
+      return;
+    }
+    setLoading2TimedOut(false);
+    const timer = setTimeout(() => setLoading2TimedOut(true), 5000);
+    return () => clearTimeout(timer);
+  }, [isLoading2]);
+
   // CafeListDrawer로 넘길 정렬된 placeData. 부모 리렌더마다 새 배열이 만들어지는
   // 것을 막고, filter 안에서 cache 객체를 mutate 하던 side-effect도 제거.
   const sortedListPlaces = useMemo(() => {
@@ -495,7 +507,7 @@ function StudyPageMap({
           }
           {...(!isMapExpansion
             ? { aspectRatio: 1 / 1, height: "inherit" }
-            : { bottom: isCafeMap ? "52px" : 0 })}
+            : { bottom: isCafeMap ? "calc(52px + env(safe-area-inset-bottom, 0px))" : 0 })}
           w={isMapExpansion ? "full" : "auto"}
           bg="transparent"
           onClick={() => {
@@ -783,10 +795,10 @@ function StudyPageMap({
         />
       )}
 
-      {(isLoading || isLoading2 || (isLoadingLocation && tempToggle)) && (
+      {(isLoading || (isLoading2 && !loading2TimedOut) || (isLoadingLocation && tempToggle)) && (
         <>
           <ScreenOverlay zIndex={2000} />
-          <MainLoading top={isCafeMap ? "calc(50vh + 28px)" : "50%"} />
+          <MainLoading top={isCafeMap ? "calc(50vh + 30px - env(safe-area-inset-bottom, 0px) / 2)" : "50%"} />
         </>
       )}
     </>
