@@ -50,7 +50,7 @@ export function useUserCurrentLocation() {
           setIsLoading(false);
           resolve(null);
         },
-        { enableHighAccuracy: false, timeout: 5000, maximumAge: 60_000 },
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 60_000 },
       );
     });
   };
