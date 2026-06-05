@@ -16,7 +16,13 @@ import { shortenParticipations } from "./studyConverters";
 //   placeImageCache.set(placeId, picked);
 //   return picked;
 // }
+const parseStudyTime = (date: dayjs.ConfigType) => {
+  if (typeof date === "string") {
+    return dayjs(date.replace("Z", ""));
+  }
 
+  return dayjs(date);
+};
 export const setStudyThumbnailCard = (
   date: string,
   studySet: StudySetProps,
@@ -104,11 +110,17 @@ export const setStudyThumbnailCard = (
     const study = data.study;
     const placeInfo = study.place;
     const textArr = placeInfo.location?.address.split(" ");
-
     const members = study.members as StudyConfirmedMemberProps[];
 
+    const parseStudyTime = (date: dayjs.ConfigType) => {
+      if (typeof date === "string") {
+        return dayjs(date.replace("Z", "")).add(9, "hour");
+      }
+      return dayjs(date);
+    };
+
     const floorTo30 = (date: dayjs.ConfigType) => {
-      const d = dayjs(date);
+      const d = parseStudyTime(date);
       const minute = d.minute();
 
       if (minute < 30) {
@@ -119,7 +131,7 @@ export const setStudyThumbnailCard = (
     };
 
     const ceilTo30 = (date: dayjs.ConfigType) => {
-      const d = dayjs(date);
+      const d = parseStudyTime(date);
       const minute = d.minute();
 
       if (minute === 0 || minute === 30) {
@@ -132,23 +144,65 @@ export const setStudyThumbnailCard = (
 
       return d.add(1, "hour").minute(0).second(0).millisecond(0);
     };
-    const result = members.reduce<{
-      earliestStart: Dayjs;
-      latestEnd: Dayjs;
-    } | null>((acc, cur) => {
-      const start = floorTo30(cur.time.start);
-      const end = ceilTo30(cur.time.end);
+    // 멤버마다 투표 날짜가 달라 valueOf()(날짜 포함 ms)를 키로 쓰면
+    // 같은 시간대여도 날짜가 달라 슬롯이 겹치지 않는 문제가 생김.
+    // → "자정 기준 분 수(hour×60+minute)"만 키로 사용해 날짜 무관 비교.
+    const toMinKey = (d: Dayjs) => d.hour() * 60 + d.minute();
+    const minToTime = (min: number) =>
+      dayjs().startOf("day").add(min, "minute");
 
-      if (!acc) {
-        return { earliestStart: start, latestEnd: end };
-      }
+    const getOverlapTimeRange = () => {
+      const slotMap = new Map<number, number>();
+
+      members.forEach((m) => {
+        if (!m.time?.start || !m.time?.end) return;
+        const startD = floorTo30(m.time.start);
+        const endD = ceilTo30(m.time.end);
+
+        let curMin = toMinKey(startD);
+        const endMin = toMinKey(endD);
+
+        while (curMin < endMin) {
+          slotMap.set(curMin, (slotMap.get(curMin) ?? 0) + 1);
+          curMin += 30;
+        }
+      });
+
+      const overlapKeys = Array.from(slotMap.entries())
+        .filter(function(entry) { return entry[1] >= 2; })
+        .map(function(entry) { return entry[0]; })
+        .sort((a, b) => a - b);
+
+      if (overlapKeys.length === 0) return null;
 
       return {
-        earliestStart: start.isBefore(acc.earliestStart) ? start : acc.earliestStart,
-        latestEnd: end.isAfter(acc.latestEnd) ? end : acc.latestEnd,
+        earliestStart: minToTime(overlapKeys[0]),
+        latestEnd: minToTime(overlapKeys[overlapKeys.length - 1] + 30),
       };
-    }, null);
-    
+    };
+
+    const getFallbackTimeRange = () => {
+      return members
+        .filter((m) => m.time?.start && m.time?.end)
+        .reduce<{ earliestStart: Dayjs; latestEnd: Dayjs } | null>((acc, cur) => {
+          const start = floorTo30(cur.time.start);
+          const end = ceilTo30(cur.time.end);
+          const startMin = toMinKey(start);
+          const endMin = toMinKey(end);
+
+          if (!acc) return { earliestStart: start, latestEnd: end };
+
+          return {
+            earliestStart: startMin < toMinKey(acc.earliestStart) ? start : acc.earliestStart,
+            latestEnd: endMin > toMinKey(acc.latestEnd) ? end : acc.latestEnd,
+          };
+        }, null);
+    };
+
+    console.log(members);
+    // 2명 이상 겹치는 구간이 없으면(1인 스터디 등) 전체 구간으로 폴백
+
+    const result = getOverlapTimeRange() ?? getFallbackTimeRange();
     return {
       place: {
         name: placeInfo.location.name,
