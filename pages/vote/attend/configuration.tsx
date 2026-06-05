@@ -124,7 +124,7 @@ function Configuration() {
   const formData = new FormData();
 
   const handleSubmit = () => {
-    if (!image) {
+    if (isSoloRealTimesPage && !image) {
       toast("warning", "이미지를 등록해 주세요");
       return;
     }
@@ -199,7 +199,9 @@ function Configuration() {
 
           <Box mb={5}>
             <Box mb={3}>
-              <SectionTitle text={isSoloRealTimesPage ? "오늘의 공부 사진" : "현재 테이블 사진"} />
+              <SectionTitle
+                text={isSoloRealTimesPage ? "오늘의 공부 사진" : "현재 테이블 사진 (선택)"}
+              />
             </Box>
             <ImageUploadInput setImageUrl={setImage} />
           </Box>
