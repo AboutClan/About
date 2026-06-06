@@ -758,7 +758,11 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
   {
     date: "2026-05-18",
     isCompleted: false,
-    textArr: ["스터디 기능 오픈 예정", "아이폰/안드로이드 앱 출시 예정"],
+    textArr: [
+      "수도권 외 지역 데이터 대규모 확장 예정",
+      "스터디 기능 오픈 예정",
+      "아이폰/안드로이드 앱 출시 예정",
+    ],
   },
 ];
 
