@@ -225,9 +225,8 @@ function StudyApplyDrawer({
               />
             )}
           </Flex>
+          <BottomNav isSlide={false} text="다 음" onClick={handleBottomNav} />
         </Flex>
-
-        <BottomNav isSlide={false} text="다 음" onClick={handleBottomNav} />
       </RightDrawer>
       {isTimeDrawer && (
         <StudyVoteTimeRulletDrawer

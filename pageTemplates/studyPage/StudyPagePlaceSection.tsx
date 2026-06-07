@@ -2,7 +2,6 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import Select from "../../components/atoms/Select";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
@@ -15,18 +14,18 @@ import {
 } from "../../libs/study/thumbnailCardLibs";
 import { DispatchString } from "../../types/hooks/reactTypes";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
-import { CheckBox } from "../gather/GatherMain";
 
 interface StudyPagePlaceSectionProps {
   studySet: StudySetProps;
   date: string;
   setDate: DispatchString;
+  hideLounge?: boolean;
 }
 
 export type FilterType = "예정 스터디" | "지난 스터디";
 export type StudySortedOption = "날짜순" | "인원순" | "거리순";
 
-function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectionProps) {
+function StudyPagePlaceSection({ studySet, date, setDate, hideLounge }: StudyPagePlaceSectionProps) {
   const { data: session } = useSession();
 
   const [lastIdx, setLastIdx] = useState(0);
@@ -59,7 +58,12 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
       setThumbnailCardinfoArr(null);
       return;
     }
-    const getThumbnailCardInfoArr = setStudyThumbnailCard(date, studySet, session?.user.id);
+    let getThumbnailCardInfoArr = setStudyThumbnailCard(date, studySet, session?.user.id, undefined, undefined, undefined, hideLounge);
+    if (hideLounge) {
+      getThumbnailCardInfoArr = getThumbnailCardInfoArr.filter(
+        (card) => card.place.name !== "카공 스터디 라운지",
+      );
+    }
     setThumbnailCardinfoArr(
       sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr, session?.user.id),
     );
@@ -93,7 +97,7 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
 
   return (
     <>
-      <Flex mt={3} py={1} mb={4} justify="space-between" align="center">
+      {/* <Flex mt={3} py={1} mb={4} justify="space-between" align="center">
         <Flex>
           <Box mr={4}>
             <CheckBox
@@ -127,9 +131,9 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
           setValue={setSortedOption}
           isBorder={false}
         />
-      </Flex>
+      </Flex> */}
 
-      <Flex flexDir="column" mb={20}>
+      <Flex flexDir="column" mb={20} mt={3}>
         <Box>
           <Box>
             {thumbnailCardInfoArr?.length && !isLoading

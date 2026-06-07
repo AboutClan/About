@@ -22,6 +22,7 @@ import {
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
 import { getDistanceFromLatLonInKm } from "../../../utils/mathUtils";
+import { getSafeAreaBottom } from "../../../utils/validationUtils";
 import { RightReviewDrawer } from "../../study/StudyReview";
 import { CafeListDrawer } from "../CafeListDrawer";
 import { LocationAddDrawer } from "../LocationAddDrawer";
@@ -547,7 +548,7 @@ function StudyPageMap({
           }
           {...(!isMapExpansion
             ? { aspectRatio: 1 / 1, height: "inherit" }
-            : { bottom: isCafeMap ? "calc(52px + env(safe-area-inset-bottom, 0px))" : 0 })}
+            : { bottom: isCafeMap ? getSafeAreaBottom(52) : 0 })}
           w={isMapExpansion ? "full" : "auto"}
           bg="transparent"
           onClick={() => {

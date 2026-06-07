@@ -31,7 +31,6 @@ const TABS: TabItem[] = [
   {
     id: "study",
     label: "스터디",
-    isComingSoon: true,
     icon: (isActive) => <StudyTabIcon isActive={isActive} />,
   },
   {
@@ -65,7 +64,7 @@ export default function CafeMapBottomNav() {
       bottom={0}
       h={getSafeAreaBottom(52)}
       bg="white"
-      zIndex={600}
+      zIndex={10}
       pb={getSafeAreaBottom(0)}
       borderTop="var(--border-main)"
       maxW="var(--max-width)"
@@ -157,7 +156,7 @@ function FeedTabIcon({ isActive }: { isActive: boolean }) {
 }
 
 function StudyTabIcon({ isActive }: { isActive: boolean }) {
-  const color = isActive ? "var(--color-mint)" : "var(--gray-300)";
+  const color = isActive ? "var(--color-mint)" : "var(--gray-500)";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

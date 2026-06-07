@@ -57,7 +57,7 @@ function StudyHeader({ placeInfo, date }: IStudyHeader) {
 
   return (
     <>
-      <Header title="스터디" url={`/studyPage?date=${date}`}>
+      <Header title="스터디">
         <MenuButton menuArr={menuArr} />
       </Header>
       {isModal && (

@@ -2,7 +2,7 @@ import "swiper/css";
 
 import { Box, Flex, ModalHeader } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -28,6 +28,7 @@ function DateCalendarModal({
   setIsModal,
 }: DateCalendarModalProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const newSearchParams = useMemo(() => new URLSearchParams(searchParams), [searchParams]);
 
@@ -76,7 +77,8 @@ function DateCalendarModal({
     const newDate = handleChangeDate(date, "date", date.date());
     changeDate(newDate);
     newSearchParams.set("date", newDate);
-    router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
+    const basePath = pathname === "/cafe-map" ? "/cafe-map" : "/studyPage";
+    router.replace(`${basePath}?${newSearchParams.toString()}`, { scroll: false });
     setIsModal(false);
   }, [changeDate, date, newSearchParams, router, selectedDate, setIsModal]);
 
@@ -107,7 +109,7 @@ function DateCalendarModal({
       </ModalHeader>
     );
   }
-
+  console.log(monthArr);
   return (
     <ModalLayout
       headerOptions={{ children: <Header /> }}

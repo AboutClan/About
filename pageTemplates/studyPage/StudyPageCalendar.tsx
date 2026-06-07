@@ -8,9 +8,10 @@ import StudyPagePlaceSectionHeader from "./studyPageDrawer/StudyPagePlaceBlockHe
 interface StudyPageCalendarProps {
   date: string;
   setDate: DispatchString;
+  onDateChange?: (date: string) => void;
 }
 
-function StudyPageCalendar({ date, setDate }: StudyPageCalendarProps) {
+function StudyPageCalendar({ date, setDate, onDateChange }: StudyPageCalendarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -18,12 +19,16 @@ function StudyPageCalendar({ date, setDate }: StudyPageCalendarProps) {
   const handleSelectDate = (moveDate: string) => {
     if (date === moveDate) return;
     setDate(moveDate);
+    if (onDateChange) {
+      onDateChange(moveDate);
+      return;
+    }
     newSearchParams.set("date", moveDate);
     router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
   };
 
   return (
-    <Box mt={5} h="110px">
+    <Box>
       <StudyPagePlaceSectionHeader date={date} setDate={setDate} />
       <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
     </Box>

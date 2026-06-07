@@ -168,7 +168,7 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
                       position={item?.textPosition}
                       isTwoLine={item?.content.length > 8}
                     >
-                      {item?.isFirst ? item?.content : "\u00A0"}
+                      {item?.isFirst ? item?.content : " "}
                     </EventBlock>
                   );
                 })}

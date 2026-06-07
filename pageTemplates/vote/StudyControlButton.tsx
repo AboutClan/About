@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import ControlButton from "../../components/ControlButton";
@@ -16,6 +16,7 @@ interface StudyControlButtonProps {
 
 function StudyControlButton({ date }: StudyControlButtonProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const drawerParam = searchParams.get("drawer");
@@ -26,7 +27,8 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
     if (drawerParam === "on" || drawerParam === "apply") {
       setIsModal(true);
       newSearchParams.delete("drawer");
-      router.replace(`/studyPage?${newSearchParams.toString()}`);
+      const basePath = pathname === "/cafe-map" ? "/cafe-map" : "/studyPage";
+      router.replace(`${basePath}?${newSearchParams.toString()}`);
     }
   }, [drawerParam]);
 

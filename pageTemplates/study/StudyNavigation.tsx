@@ -47,6 +47,7 @@ interface IStudyNavigation {
   findStudy: StudyConfirmedProps;
   tempCheck: boolean;
   myStudyDateArr: string[];
+  isCafeMap?: boolean;
 }
 
 interface NavigationProps {
@@ -70,6 +71,7 @@ function StudyNavigation({
   findStudy,
   tempCheck,
   myStudyDateArr,
+  isCafeMap = false,
 }: IStudyNavigation) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -206,7 +208,7 @@ function StudyNavigation({
                   func: () => {
                     realTimeCancel();
                     setTimeout(() => {
-                      router.push(`/studyPage?date=${dayjsToStr(dayjs())}`);
+                      router.back();
                     }, 300);
                   },
                 });
@@ -437,7 +439,7 @@ function StudyNavigation({
   return (
     <>
       <Slide isFixed={true} posZero="top" zIndex={200}>
-        {navigationProps && (
+        {navigationProps && !isCafeMap && (
           <Flex
             borderTop="var(--border)"
             align="center"

@@ -6,7 +6,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { ReactNode, useState } from "react";
 
@@ -67,7 +67,7 @@ export default function ProfileCommentCard({
   const [text, setText] = useState(comment?.comment || "");
 
   const { data: userInfo } = useUserInfoQuery();
-
+  const isGuest = userInfo?.role === "guest";
   const studyUser = user as IUser;
 
   const changeText = () => {
@@ -88,12 +88,14 @@ export default function ProfileCommentCard({
           {leftComponent && <Box mr={4}>{leftComponent}</Box>}
 
           <Flex flex={1} opacity={pendingType === "pendingOwner" ? 0.5 : 1}>
-            <Avatar user={user} size="md1" />
+            <Avatar user={user} size="md1" isLink={false} />
 
-            <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
-              <Flex align="center" mb={memo || comment ? 1 : 0}>
+            <Flex direction="column" flex={1} justify="center" ml={3} my={1} minW={0}>
+              <Flex align="center" mb={memo || comment ? 1 : 0} overflow="hidden" flexWrap="nowrap">
                 <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
-                  {user?.name || "익명"}
+                  {isGuest
+                    ? user?.name.slice(0, 1) + `*` + user?.name.slice(2)
+                    : user?.name || "익명"}
                 </Box>
 
                 {!isStudy && <UserBadge badgeIdx={user?.badge?.badgeIdx} />}
@@ -166,7 +168,9 @@ export default function ProfileCommentCard({
             </Flex>
           </Flex>
 
-          <Box ml="auto">{rightComponent}</Box>
+          <Box ml={2} flexShrink={0}>
+            {rightComponent}
+          </Box>
         </Flex>
       </BlurredPart>
 

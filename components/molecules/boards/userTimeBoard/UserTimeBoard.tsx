@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { COLOR_400_ARR } from "../../../../constants/colorConstants";
 import { STUDY_VOTE_HOUR_ARR } from "../../../../constants/serviceConstants/studyConstants/studyTimeConstant";
+import { useCheckGuest } from "../../../../hooks/custom/UserHooks";
 import { TimeRangeProps } from "../../../../types/models/utilTypes";
 import { transformToUserBlocks } from "./_lib/transformToUserBlocks";
 
@@ -24,6 +25,8 @@ interface IUserTimeBlock {
 }
 
 export default function UserTimeBoard({ members }: ITimeBoard) {
+  const isGuest = useCheckGuest();
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [blockWidth, setBlockWidth] = useState<number>(0);
   const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);
@@ -85,7 +88,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
                 py={0.5}
                 bg={COLOR_400_ARR[idx]}
               >
-                {props.name}
+                {isGuest ? props.name.slice(0, 1) + "*" + props.name.slice(2) : props.name}
                 <br />
                 {props.start} - {props.startToEndInterval >= 2 && props.end}
               </Box>

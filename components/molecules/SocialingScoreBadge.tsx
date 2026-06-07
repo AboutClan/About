@@ -10,7 +10,7 @@ interface SocialingScoreBadgeProps {
 
 export const getTemperature = (user: UserSimpleInfoProps) => {
   return `${
-    user?.temperature?.temperature < 36.5 && user?.temperature?.cnt <= 2
+    user?.temperature?.temperature < 36.5 && Math.round(user?.temperature?.cnt) <= 2
       ? "36.5"
       : typeof user?.temperature?.temperature === "number"
       ? user.temperature.temperature.toFixed(1)
@@ -29,7 +29,10 @@ export const getTemperatureColor = (temp: number, cnt: number): { color: string;
 };
 
 function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
-  const { color, bg } = getTemperatureColor(user?.temperature?.temperature, user?.temperature?.cnt);
+  const { color, bg } = getTemperatureColor(
+    user?.temperature?.temperature,
+    Math.round(user?.temperature?.cnt),
+  );
 
   return (
     <Flex flexDir="column" mr={size === "sm" ? 1 : -1} justify="center" align="center">
@@ -62,7 +65,7 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
             lineHeight="1"
           >
             <Text lineHeight="1" textAlign="center" fontWeight={400}>
-              {Math.round(user?.temperature?.cnt ?? 0)}명
+              {Math.round(Math.round(user?.temperature?.cnt) ?? 0)}명
             </Text>
           </Flex>
         )}
@@ -74,7 +77,7 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
             maxWidth={200}
             type="info"
             size="xs"
-            rightText={`${user?.temperature?.cnt || 0}명의 평가 반영`}
+            rightText={`${Math.round(user?.temperature?.cnt) || 0}명의 평가 반영`}
             text="소셜링 온도는 모임 종료 후 참여자들의 익명 리뷰를 바탕으로 산정되는 멤버 후기 지표입니다. 소셜링 온도가 높을수록 모임 승인률이 올라가고, 다양한 혜택을 받을 수 있습니다."
           />
         </Box>

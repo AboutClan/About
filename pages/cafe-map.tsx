@@ -7,6 +7,7 @@ import { gaEvent } from "../libs/gtag";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
 import CafeMapArchivePage from "../pageTemplates/studyPage/CafeMapArchivePage";
 import CafeMapFeedPage from "../pageTemplates/studyPage/CafeMapFeedPage";
+import CafeMapStudyPage from "../pageTemplates/studyPage/CafeMapStudyPage";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 
 function StudyMap() {
@@ -14,6 +15,7 @@ function StudyMap() {
 
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
+  const [isGuestModal, setIsGuestModal] = useState(false);
 
   const activeTab = (router.query.tab as string) || "map";
 
@@ -36,6 +38,8 @@ function StudyMap() {
     setIsModal(true);
   };
 
+  useEffect(() => {}, [activeTab]);
+
   const footerOptions: IFooterOptions = {
     main: {
       text: "이 동",
@@ -52,11 +56,10 @@ function StudyMap() {
 
   return (
     <>
-      {activeTab === "map" && (
-        <StudyPageMap isDefaultOpen onClose={onClose} isDown isCafeMap />
-      )}
+      {activeTab === "map" && <StudyPageMap isDefaultOpen onClose={onClose} isDown isCafeMap />}
       {activeTab === "feed" && <CafeMapFeedPage />}
       {activeTab === "bookmark" && <CafeMapArchivePage />}
+      {activeTab === "study" && <CafeMapStudyPage />}
       <CafeMapBottomNav />
       {isModal && (
         <ModalLayout title="안내사항" footerOptions={footerOptions} setIsModal={setIsModal}>

@@ -9,7 +9,14 @@ import { AVATAR_BG_IMAGES } from "../../assets/images/avatarBgImages";
 import { AVATAR_IMAGES } from "../../assets/images/avatarImages";
 import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
+import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+
+const hashUserId = (id: string): number => {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (Math.imul(31, h) + id.charCodeAt(i)) | 0;
+  return Math.abs(h);
+};
 
 // type Size = "2xs" | "xs" | "sm" | "smd" | "mds" | "md" | "lg" | "xl" | "slg" | "xxl";
 type Size = "xxs1" | "xs1" | "sm1" | "md1" | "lg1" | "xl1" | "xl2" | "xxl1";
@@ -55,6 +62,7 @@ function AvatarComponent({
 }: IAvatar) {
   const router = useRouter();
   const isPublic = router.query.isPublic === "true";
+  const isGuest = useCheckGuest();
   const avatar = user?.avatar;
   const userId = user?._id;
   const profileImage = user?.profileImage;
@@ -72,17 +80,32 @@ function AvatarComponent({
     avatar?.bg !== null &&
     avatar?.type !== undefined;
 
-  const [imageUrl, setImageUrl] = useState(!hasAvatar ? image : AVATAR_IMAGES[avatar.type].image);
+  const guestAvatarType = userId ? hashUserId(userId) % AVATAR_IMAGES.length : 0;
+  const guestAvatarBg = userId ? hashUserId(userId + "bg") % COLOR_TABLE_LIGHT.length : 0;
+  const shouldMaskImage = isGuest && !hasAvatar && !!image;
+
+  const [imageUrl, setImageUrl] = useState(
+    shouldMaskImage
+      ? AVATAR_IMAGES[guestAvatarType].image
+      : !hasAvatar
+      ? image
+      : AVATAR_IMAGES[avatar.type].image,
+  );
   const [bgImage, setBgImage] = useState<string | null>(null);
 
   useEffect(() => {
+    if (shouldMaskImage) {
+      setImageUrl(AVATAR_IMAGES[guestAvatarType].image);
+      setBgImage(null);
+      return;
+    }
     setImageUrl(!hasAvatar ? image : AVATAR_IMAGES[avatar.type].image);
     if (avatar?.bg >= 100) {
       setBgImage(`url(${AVATAR_BG_IMAGES[avatar?.bg - 100].image})`);
     } else {
       setBgImage(null);
     }
-  }, [image, avatar]);
+  }, [image, avatar, shouldMaskImage]);
 
   const onError = () => {
     setImageUrl(AVATAR_IMAGES[0].image);
@@ -99,6 +122,8 @@ function AvatarComponent({
           bg={
             isWhite
               ? "white"
+              : shouldMaskImage
+              ? COLOR_TABLE_LIGHT[guestAvatarBg]
               : (!shadowAvatar && bgImage) ||
                 (shadowAvatar
                   ? "var(--gray-200)"

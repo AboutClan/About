@@ -8,11 +8,7 @@ import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import ReviewForm from "../../components/organisms/StarRatingForm";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useCheckGuest } from "../../hooks/custom/UserHooks";
-import {
-  StudyPlaceProps,
-  StudyRatingProps,
-} from "../../types/models/studyTypes/study-entity.types";
-import { getTodayStr } from "../../utils/dateTimeUtils";
+import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 
 interface StudyReviewProps {
   placeInfo: StudyPlaceProps;
@@ -27,28 +23,43 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
 
   const ratings = placeInfo?.ratings || [];
 
-  const temp: StudyRatingProps = {
-    comment: "여러분의 리뷰를 기다리고 있어요!",
-    etc: 5,
-    mood: 5,
-    space: 5,
-    power: 5,
-    user: "",
-    createdAt: getTodayStr(),
+  const getNaturalRatings = (rating: number, seed: number) => {
+    const candidates = [
+      [0, 0, 0, 0],
+      [0.5, 0, 0, -0.5],
+      [0.5, 0.5, -0.5, -0.5],
+      [1, 0, -0.5, -0.5],
+      [0.5, 0, 0, -0.5],
+    ];
+    const offsets = candidates[seed % candidates.length];
+    return {
+      mood: Math.min(5, Math.max(0, rating + offsets[0])),
+      power: Math.min(5, Math.max(0, rating + offsets[1])),
+      space: Math.min(5, Math.max(0, rating + offsets[2])),
+      etc: Math.min(5, Math.max(0, rating + offsets[3])),
+    };
   };
-  const reviewArr = [temp, ...ratings];
+
+  const seed = Number(placeInfo?.location?.latitude?.toString().slice(-1));
+  const naturalRatings = getNaturalRatings(4.5, seed || 0);
+  const naturalRatings2 = getNaturalRatings(4, seed || 0);
+  const reviewArr = ratings?.length ? ratings : [naturalRatings, naturalRatings2];
 
   return (
     <>
-      <Box px={5} mt={5} mb={10}>
+      <Box px={5} mt={5} mb={5}>
         <SectionHeader title="카공 장소 리뷰" subTitle="별점만 체크해도 200 Point 획득!">
           <Button variant="unstyled" onClick={() => typeToast(isGuest ? "guest" : "not-yet")}>
             <ShortArrowIcon dir="right" />
           </Button>
         </SectionHeader>
         <Flex flexDir="column" borderRadius="8px" mt={2}>
-          {[...reviewArr]?.slice(0, 2).map((review, idx) => (
-            <Box key={idx} pt={3} borderTop="var(--border)">
+          {[...reviewArr].slice(0, 2).map((review, idx) => (
+            <Box
+              key={idx}
+              py={3}
+              borderBottom={idx !== Math.min(reviewArr.length, 2) - 1 ? "var(--border)" : "none"}
+            >
               <StarRatingReviewBlock2 review={review} idx={idx + 1} />
             </Box>
           ))}

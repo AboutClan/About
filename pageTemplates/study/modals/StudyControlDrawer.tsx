@@ -1,12 +1,14 @@
 import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { StudyUserCheckIcon } from "../../../components/Icons/ControlButtonIcon";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import StudyApplyDrawer from "../../../components/services/study/apply/StudyApplyDrawer";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useCheckGuest } from "../../../hooks/custom/UserHooks";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyOpenDrawer from "../../vote/StudyOpenDrawer";
 
@@ -18,7 +20,11 @@ interface StudyControlDrawerProps {
 }
 
 function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
+  const isGuest = useCheckGuest();
+  const typeToast = useTypeToast();
   const router = useRouter();
+  const pathname = usePathname();
+  const isCafeMap = pathname === "/cafe-map";
   const searchParams = useSearchParams();
   const modalParam = searchParams.get("modal") as DrawerType;
 
@@ -41,6 +47,10 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
       text: "스터디 신청",
       icon: <StudyApplyIcon />,
       func: () => {
+        if (isGuest) {
+          typeToast("guest");
+          return;
+        }
         router.push(
           { pathname: router.pathname, query: { ...router.query, modal: "apply" } },
           undefined,
@@ -65,6 +75,7 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
         setDrawerType("open");
       },
     },
+
     {
       text: "실시간 공부 인증",
       icon: <StudyUserCheckIcon color="gray" />,

@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewBlock2";
 import {
@@ -184,25 +185,31 @@ export default function CafeMapFeedPage() {
 
         {feedTab === "신규 장소" && (
           <Flex flexDir="column" pt={2}>
-            {newPlaces.items.map((place) => (
-              <Box key={place._id} borderBottom="var(--border-main)" pb={3} px={4} pt={1}>
-                <PlaceInfoBox
-                  placeInfo={place}
-                  isDown={false}
-                  isShort
-                  customSubText={
-                    place.registerDate
-                      ? dayjs(place.registerDate).format("등록일: YYYY년 M월 D일")
-                      : undefined
-                  }
-                  handleClick={() => {
-                    setReviewPlace(place);
-                    updateQuery({ modal: "reviewPlace" });
-                  }}
-                />
+            {newPlaces?.items?.length ? (
+              <Box>
+                {newPlaces.items.map((place) => (
+                  <Box key={place._id} borderBottom="var(--border-main)" pb={3} px={4} pt={1}>
+                    <PlaceInfoBox
+                      placeInfo={place}
+                      isDown={false}
+                      isShort
+                      customSubText={
+                        place.registerDate
+                          ? dayjs(place.registerDate).format("등록일: YYYY년 M월 D일")
+                          : undefined
+                      }
+                      handleClick={() => {
+                        setReviewPlace(place);
+                        updateQuery({ modal: "reviewPlace" });
+                      }}
+                    />
+                  </Box>
+                ))}
+                <Box ref={newPlaceLoaderRef} h="1px" />
               </Box>
-            ))}
-            <Box ref={newPlaceLoaderRef} h="1px" />
+            ) : (
+              <MainLoadingAbsolute />
+            )}
           </Flex>
         )}
       </Box>

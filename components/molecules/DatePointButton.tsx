@@ -45,7 +45,7 @@ function DatePointButton({
   }
 
   const dateNum = dayjs(date).date();
-
+  console.log(31, date, dateNum);
   return (
     <Button
       variant="unstyled"
@@ -54,7 +54,7 @@ function DatePointButton({
       alignItems="center"
       fontWeight={400}
       pos="relative"
-      fontSize="15px"
+      fontSize="14px"
       onClick={func}
       isDisabled={isDisabled}
       _disabled={{
@@ -67,8 +67,8 @@ function DatePointButton({
           isSelected ? "white" : isMint ? "var(--color-mint)" : isDisabled ? "gray.400" : "gray.800"
         }
         align="center"
-        w={size === "md" ? "40px" : "26px"}
-        h={size === "md" ? "40px" : "26px"}
+        w={size === "md" ? "36px" : "26px"}
+        h={size === "md" ? "36px" : "26px"}
         position="relative"
         zIndex={4}
       >

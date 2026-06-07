@@ -76,7 +76,7 @@ export default function StudyStep() {
   const steps: StepItem[] = [
     {
       step: 1,
-      title: "원하는 날짜와 장소로 스터디를 신청해요",
+      title: "스터디 희망 날짜와 지역을 선택해요",
       description: "해당 위치를 기준으로 가까운 스터디가 매칭돼요",
       date: "스터디 신청",
     },

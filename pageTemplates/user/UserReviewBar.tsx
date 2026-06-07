@@ -41,7 +41,7 @@ function UserReviewBar({ user, hasTop = true }: UserReviewBarProps) {
                 </Box>
               </Flex>
               <Box fontSize="10px" color="gray.400" fontWeight={400}>
-                멤버 평가 {user?.temperature?.cnt}회 반영
+                멤버 평가 {Math.round(Math.round(user?.temperature?.cnt))}회 반영
               </Box>
             </Box>
           </Flex>

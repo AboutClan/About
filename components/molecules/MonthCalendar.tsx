@@ -28,7 +28,7 @@ function MonthCalendar({
     mintDateArr,
     selectedDates,
   );
-
+  console.log(12, calendarArr);
   return (
     <>
       <Flex mb="12px">

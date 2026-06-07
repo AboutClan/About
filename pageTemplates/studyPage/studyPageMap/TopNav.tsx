@@ -756,12 +756,18 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["AI 기반 알고리즘 강화", "카페 상세 정보 업데이트", "전반적인 UI/UX 및 사용성 개선"],
   },
   {
+    date: "2026-06-08",
+    isCompleted: true,
+    textArr: ["전국 카공 카페 데이터 추가", "스터디 기능 프리뷰 오픈"],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
     textArr: [
-      "수도권 외 지역 데이터 대규모 확장 예정",
-      "스터디 기능 오픈 예정",
-      "아이폰/안드로이드 앱 출시 예정",
+      "기타 업데이트 (6월 9일)",
+      "아이폰 앱 출시 (6월 10일)",
+      "안드로이드 앱 출시 (6월 20일)",
+      "스터디 기능 오픈 (6월 20일) ",
     ],
   },
 ];
