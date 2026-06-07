@@ -44,7 +44,8 @@
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\\\\pageTemplates\\\\studyPage\" -File | Select-Object Name | Where-Object {$_.Name -match \"\\(Drawer|Add\\)\"})",
       "Bash(Select-Object Name)",
       "Bash(Sort-Object)",
-      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\\\\pageTemplates\\\\studyPage\" | Where-Object { $_.PSIsContainer -eq $false } | Select-Object Name | Sort-Object Name)"
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\\\\pageTemplates\\\\studyPage\" | Where-Object { $_.PSIsContainer -eq $false } | Select-Object Name | Sort-Object Name)",
+      "Bash(git *)"
     ]
   }
 }

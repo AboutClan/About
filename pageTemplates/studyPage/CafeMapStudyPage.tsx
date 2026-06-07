@@ -80,7 +80,7 @@ export default function CafeMapStudyPage() {
               <br />
               언제 어디서든 카공할 사람을 찾고,
               <br />
-              함께 성장할 수 있는 카공 문화를 만들어갑니다.
+              함께 성장할 수 있는 카공 문화를 만들어가고자 합니다.
             </Box>
 
             <Box
