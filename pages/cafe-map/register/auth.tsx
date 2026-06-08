@@ -4,18 +4,18 @@
 // ✅ 둘 다 handleWebTransactionId() 하나로 처리
 
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef } from "react";
 
-import BottomNav from "../../components/layouts/BottomNav";
-import Slide from "../../components/layouts/PageSlide";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { useToken } from "../../hooks/custom/CustomHooks";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { isWebView } from "../../utils/appEnvUtils";
-import { setAuthIntent } from "../../utils/authIntentUtils";
-import { setLocalStorageObj } from "../../utils/storageUtils";
+import BottomNav from "../../../components/layouts/BottomNav";
+import Slide from "../../../components/layouts/PageSlide";
+import { REGISTER_INFO } from "../../../constants/keys/localStorage";
+import { useToken } from "../../../hooks/custom/CustomHooks";
+import { useToast } from "../../../hooks/custom/CustomToast";
+import { isWebView } from "../../../utils/appEnvUtils";
+import { setAuthIntent } from "../../../utils/authIntentUtils";
+import { setLocalStorageObj } from "../../../utils/storageUtils";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URI ?? "http://localhost:3001";
 const NICE_REQUEST_NO_KEY = "nice_request_no";
@@ -69,7 +69,7 @@ export default function Auth() {
   const process = async () => {
     setAuthIntent();
     await signOut({ redirect: false });
-    await signIn("kakao", { callbackUrl: "/register/auth" });
+    await signIn("kakao", { callbackUrl: "/cafe-map/register/auth" });
   };
 
   const handleWebTransactionId = useCallback(
@@ -109,8 +109,10 @@ export default function Auth() {
         }
 
         const birthYear = resultData?.birthdate ? Number(resultData.birthdate.slice(0, 4)) : null;
-        if (!birthYear || birthYear < 1997 || birthYear > 2008) {
-          toast("info", "어바웃은 20대 멤버만 가입이 가능해요!");
+        const currentYear = new Date().getFullYear();
+        const age = currentYear - (birthYear ?? 0);
+        if (!birthYear || age < 19 || age > 35) {
+          toast("info", "현재 19세 ~ 35세만 가입이 가능해요!");
           return;
         }
 
@@ -124,7 +126,7 @@ export default function Auth() {
         // 1회성 값 정리(선택)
         sessionStorage.removeItem(NICE_REQUEST_NO_KEY);
 
-        router.push(`/register/gender2`);
+        router.push(`/cafe-map/register/gender`);
         clearStoredRequestNo();
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
@@ -161,7 +163,7 @@ export default function Auth() {
     const webTransactionId = router.query.web_transaction_id;
     if (typeof webTransactionId === "string" && webTransactionId) {
       pendingTransactionRef.current = webTransactionId;
-      router.replace("/register/auth2", undefined, { shallow: true });
+      router.replace("/cafe-map/register/auth", undefined, { shallow: true });
     }
   }, [router.isReady, router.query.web_transaction_id, router]);
 
@@ -246,7 +248,9 @@ export default function Auth() {
       <Slide>
         <Box my={5}>
           <Box fontSize="24px" fontWeight="semibold" lineHeight="32px">
-            카공 스터디 참여 전<br />본인인증을 진행할게요
+            안전한 서비스 이용을 위해
+            <br />
+            본인인증을 진행할게요
           </Box>
           <Box color="gray.500" fontSize="14px" mt={1.5}>
             딱 30초면 끝나요!
@@ -257,12 +261,12 @@ export default function Auth() {
           <InfoCard
             emoji="🔒"
             title="왜 본인인증이 필요한가요?"
-            desc="카공 스터디는 오프라인 모임이에요. 실제로 만나는 만큼, 신원이 확인된 멤버들만 참여할 수 있도록 본인인증 시스템을 운영하고 있어요."
+            desc="카공지도는 실제 이용자들이 함께 만드는 커뮤니티예요. 믿을 수 있는 후기와 안전한 이용 환경을 위해 본인인증을 진행하고 있어요."
           />
           <InfoCard
-            emoji="🎂"
-            title="참여 가능 나이는 19세 ~ 35세예요"
-            desc="너무 나이 차이가 나면 서로 불편할 수 있어서요. 지금은 이 범위에서 시작하고, 수요에 따라 점차 확장해 나갈 예정이에요!"
+            emoji="✨"
+            title="가입하면 어떤 기능을 이용할 수 있나요?"
+            desc="비회원은 카페 탐색 외에 대부분의 기능이 제한되어 있어요. 가입 후에는 카페 저장, 친구와 아카이브 공유, 활동 기록 관리, 스터디 시스템 등 모든 기능을 이용할 수 있어요."
           />
           <InfoCard
             emoji="🛡️"

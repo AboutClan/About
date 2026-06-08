@@ -36,7 +36,6 @@ const TABS: TabItem[] = [
   {
     id: "profile",
     label: "내 정보",
-    isComingSoon: true,
     icon: (isActive) => <ProfileTabIcon isActive={isActive} />,
   },
 ];
@@ -49,6 +48,11 @@ export default function CafeMapBottomNav() {
   const handleTabClick = (tab: TabItem) => {
     if (tab.isComingSoon) return;
     if (activeTab === tab.id) return;
+
+    if (tab.id === "profile") {
+      router.push(`/cafe-map/login`);
+      return;
+    }
 
     if (tab.id === "map") {
       router.push("/cafe-map");
@@ -95,25 +99,6 @@ export default function CafeMapBottomNav() {
           >
             <Box pos="relative" display="flex" alignItems="center" justifyContent="center">
               {tab.icon(isActive)}
-              {tab.isComingSoon && (
-                <Box
-                  pos="absolute"
-                  top="-3px"
-                  right="-10px"
-                  bg="var(--color-orange)"
-                  color="white"
-                  fontSize="6px"
-                  fontWeight={800}
-                  px="3px"
-                  py="1.5px"
-                  borderRadius="3px"
-                  lineHeight="1.2"
-                  letterSpacing="-0.2px"
-                  whiteSpace="nowrap"
-                >
-                  준비중
-                </Box>
-              )}
             </Box>
             <Box as="span" mt="2px" fontSize="11px" color={textColor} lineHeight="14px">
               {tab.label}
@@ -186,7 +171,7 @@ function BookmarkTabIcon({ isActive }: { isActive: boolean }) {
 }
 
 function ProfileTabIcon({ isActive }: { isActive: boolean }) {
-  const color = isActive ? "var(--color-mint)" : "var(--gray-300)";
+  const color = isActive ? "var(--color-mint)" : "var(--gray-500)";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -86,7 +86,13 @@ function PageTracker() {
             break;
           }
 
-          if (!["home", "studyList", "studyPage"].includes(prevSegments?.[0])) {
+          if (!["home", "studyList", "studyPage", "cafe-map"].includes(prevSegments?.[0])) {
+            setLeftSlide();
+          }
+          break;
+
+        case "cafe-map":
+          if (prevSegments?.[0] === "study") {
             setLeftSlide();
           }
           break;

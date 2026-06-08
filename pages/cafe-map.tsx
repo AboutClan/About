@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import CafeMapBottomNav from "../components/CafeMapBottomNav";
@@ -8,6 +8,7 @@ import { IFooterOptions, ModalLayout } from "../modals/Modals";
 import CafeMapArchivePage from "../pageTemplates/studyPage/CafeMapArchivePage";
 import CafeMapFeedPage from "../pageTemplates/studyPage/CafeMapFeedPage";
 import CafeMapStudyPage from "../pageTemplates/studyPage/CafeMapStudyPage";
+import MyPage from "../pageTemplates/studyPage/MyPage";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 
 function StudyMap() {
@@ -38,8 +39,6 @@ function StudyMap() {
     setIsModal(true);
   };
 
-  useEffect(() => {}, [activeTab]);
-
   const footerOptions: IFooterOptions = {
     main: {
       text: "이 동",
@@ -60,6 +59,7 @@ function StudyMap() {
       {activeTab === "feed" && <CafeMapFeedPage />}
       {activeTab === "bookmark" && <CafeMapArchivePage />}
       {activeTab === "study" && <CafeMapStudyPage />}
+   
       <CafeMapBottomNav />
       {isModal && (
         <ModalLayout title="안내사항" footerOptions={footerOptions} setIsModal={setIsModal}>
