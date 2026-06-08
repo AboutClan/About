@@ -33,7 +33,7 @@ function RegisterLocation() {
 
     setLocalStorageObj(REGISTER_INFO, {
       ...info,
-      location: placeInfo,
+      locationDetail: placeInfo,
     });
   };
 

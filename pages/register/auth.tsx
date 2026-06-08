@@ -226,6 +226,8 @@ export default function Auth() {
       if (!data?.auth_url) throw new Error("auth_url 누락");
       if (!data?.request_no) throw new Error("request_no 누락");
 
+      localStorage.setItem("nice_auth_return_page", "/register/auth");
+
       sessionStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no);
       localStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no); // ✅ 추가
       currentRequestNoRef.current = data.request_no;

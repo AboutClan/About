@@ -221,6 +221,9 @@ export default function Auth() {
       if (!data?.auth_url) throw new Error("auth_url 누락");
       if (!data?.request_no) throw new Error("request_no 누락");
 
+      // callback 페이지가 모바일 redirect 후 돌아올 경로를 기록
+      localStorage.setItem("nice_auth_return_page", "/cafe-map/register/auth");
+
       sessionStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no);
       localStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no);
       currentRequestNoRef.current = data.request_no;

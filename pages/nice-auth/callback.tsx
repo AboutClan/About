@@ -1,12 +1,24 @@
 // pages/nice-auth/callback.tsx
 // ✅ PC(팝업): opener로 postMessage 후 close
-// ✅ 모바일/인앱(redirect): /register/auth?web_transaction_id=... 로 redirect
+// ✅ 모바일/인앱(redirect): localStorage "nice_auth_return_page" 기준으로 redirect
+//    (기본값: /register/auth, cafe-map 흐름에서는 /cafe-map/register/auth)
 
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect } from "react";
 
-const AUTH_RETURN_TO = "/register/auth"; // ✅ 인증 시작 페이지로 통일
+const DEFAULT_RETURN_TO = "/register/auth";
+
+function getReturnPage(): string {
+  try {
+    const saved = localStorage.getItem("nice_auth_return_page");
+    if (saved) {
+      localStorage.removeItem("nice_auth_return_page");
+      return saved;
+    }
+  } catch {}
+  return DEFAULT_RETURN_TO;
+}
 
 export default function NiceAuthCallbackPage() {
   useEffect(() => {
@@ -28,7 +40,8 @@ export default function NiceAuthCallbackPage() {
       return;
     }
 
-    const nextUrl = `${AUTH_RETURN_TO}?web_transaction_id=${encodeURIComponent(webTransactionId)}`;
+    const returnTo = getReturnPage();
+    const nextUrl = `${returnTo}?web_transaction_id=${encodeURIComponent(webTransactionId)}`;
     const payload = { web_transaction_id: webTransactionId };
     const targetOrigin = window.location.origin;
 

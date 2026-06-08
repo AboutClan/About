@@ -47,7 +47,8 @@
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\About\\\\pageTemplates\\\\studyPage\" | Where-Object { $_.PSIsContainer -eq $false } | Select-Object Name | Sort-Object Name)",
       "Bash(git *)",
       "PowerShell(Get-ChildItem -Recurse \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\nest-back\\\\src\\\\MSA\\\\Auth\" -File | ForEach-Object { $_.FullName })",
-      "Bash(del *)"
+      "Bash(del *)",
+      "Bash(Select-Object -ExpandProperty Name)"
     ]
   }
 }
