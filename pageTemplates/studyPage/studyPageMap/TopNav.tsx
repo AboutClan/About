@@ -137,7 +137,7 @@ interface StudyMapNavProps {
   onClose: () => void;
   filterType: StudyPlaceFilter;
   setFilterType: DispatchType<StudyPlaceFilter>;
-  isMainType?: boolean;
+
   openList: () => void;
   isCafeMap: boolean;
   addCafe: () => void;
@@ -156,7 +156,6 @@ function StudyMapNav({
   isMapExpansion,
   filterType,
   setFilterType,
-  isMainType,
   openList,
   hasBackButton,
   onClose,
@@ -632,54 +631,52 @@ function StudyMapNav({
               </Box>
             )}
 
-            {!isMainType && (
-              <>
+            <>
+              <Button
+                leftIcon={<MenuIcon />}
+                borderRadius="full"
+                border="var(--border-main)"
+                borderColor="var(--gray-300)"
+                boxShadow={MAP_BTN_SHADOW}
+                bg="white"
+                mt="2px"
+                fontSize="13px"
+                iconSpacing={3}
+                h="40px"
+                onClick={() => openList()}
+              >
+                리스트로 보기
+              </Button>
+
+              <Box>
                 <Button
-                  leftIcon={<MenuIcon />}
-                  borderRadius="full"
+                  rounded="full"
+                  bgColor="white"
+                  boxShadow={MAP_BTN_SHADOW}
+                  w="40px"
+                  h="40px"
+                  minW="40px"
+                  size="sm"
+                  p="0"
                   border="var(--border-main)"
                   borderColor="var(--gray-300)"
-                  boxShadow={MAP_BTN_SHADOW}
-                  bg="white"
-                  mt="2px"
-                  fontSize="13px"
-                  iconSpacing={3}
-                  h="40px"
-                  onClick={() => openList()}
+                  borderWidth="1px"
+                  onClick={() => addCafe()}
+                  _hover={{ bgColor: "white" }}
+                  _active={{ bgColor: "white" }}
                 >
-                  리스트로 보기
-                </Button>
-
-                <Box>
-                  <Button
-                    rounded="full"
-                    bgColor="white"
-                    boxShadow={MAP_BTN_SHADOW}
-                    w="40px"
-                    h="40px"
-                    minW="40px"
-                    size="sm"
-                    p="0"
-                    border="var(--border-main)"
-                    borderColor="var(--gray-300)"
-                    borderWidth="1px"
-                    onClick={() => addCafe()}
-                    _hover={{ bgColor: "white" }}
-                    _active={{ bgColor: "white" }}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="18px"
+                    viewBox="0 -960 960 960"
+                    width="18px"
+                    fill="var(--gray-800)"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="18px"
-                      viewBox="0 -960 960 960"
-                      width="18px"
-                      fill="var(--gray-800)"
-                    >
-                      <path d="M720-40v-120H600v-80h120v-120h80v120h120v80H800v120h-80ZM80-160v-240H40v-80l40-200h600l40 200v80h-40v120h-80v-120H440v240H80Zm80-80h200v-160H160v160Zm-38-240h516-516ZM80-720v-80h600v80H80Zm42 240h516l-24-120H146l-24 120Z" />
-                    </svg>
-                  </Button>
-                </Box>
-              </>
-            )}
+                    <path d="M720-40v-120H600v-80h120v-120h80v120h120v80H800v120h-80ZM80-160v-240H40v-80l40-200h600l40 200v80h-40v120h-80v-120H440v240H80Zm80-80h200v-160H160v160Zm-38-240h516-516ZM80-720v-80h600v80H80Zm42 240h516l-24-120H146l-24 120Z" />
+                  </svg>
+                </Button>
+              </Box>
+            </>
           </Flex>
         </Flex>
       )}

@@ -85,7 +85,7 @@ export function PlaceInfoCard({
         <Flex direction="column" flex={1} minW={0} mr={3}>
           <Box mb={1}>
             <Badge px={2} py={1} fontSize="11px" color="gray.500" bg="rgba(142,160,172,0.08)">
-              {placeInfo?.name || placeInfo?.registrant?.name || "어바웃"}님 PICK
+              {placeInfo?.name || "어바웃"}님 PICK
             </Badge>
           </Box>
 

@@ -13,7 +13,6 @@ import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/Study
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
-import { useStudyPlacesQuery } from "../../hooks/study/queries";
 import { CalendarHeader } from "../../modals/aboutHeader/DateCalendarModal";
 import { transferStudyRewardState } from "../../recoils/transferRecoils";
 import { LocationProps } from "../../types/common";
@@ -42,7 +41,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
 
   // const myStudyDateArr = getMyStudyDateArr(studySet, userInfo?._id);
 
-  useStudyPlacesQuery("main");
+  // useStudyPlacesQuery("main");
 
   const { mutate: handleStudyVote, isLoading } = useRealtimeVoteMutation(selectedDate, {
     onSuccess(data) {
@@ -155,7 +154,11 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
           ) : (
             <>
               <Box>
-                <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} hasDetail={false} />
+                <SearchLocation
+                  placeInfo={placeInfo}
+                  setPlaceInfo={setPlaceInfo}
+                  hasDetail={false}
+                />
               </Box>
 
               <Flex w="full" mt={4} align="center" as="button" onClick={() => setIsMapOpen(true)}>

@@ -36,7 +36,6 @@ interface StudyPageMapProps {
   handleVotePick?: (place: StudyPlaceProps) => void;
   onClose?: () => void;
   isDown?: boolean;
-  type?: "mainPlace";
   isCafeMap: boolean;
   defaultLocation?: CoordinatesProps;
   hasBackButton?: boolean;
@@ -48,7 +47,6 @@ function StudyPageMap({
   onClose,
   handleVotePick,
   isDown,
-  type,
   isCafeMap,
   defaultLocation,
   hasBackButton = false,
@@ -119,9 +117,7 @@ function StudyPageMap({
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [ids, setIds] = useState<string[]>([]);
-  const [filterType, setFilterType] = useState<StudyPlaceFilter>(
-    type === "mainPlace" ? "main" : null,
-  );
+  const [filterType, setFilterType] = useState<StudyPlaceFilter>("all");
   const [reviewPlaceInfo, setReviewPlaceInfo] = useState<StudyPlaceProps | null>(null);
   const [amenityFilters, setAmenityFilters] = useState<string[]>([]);
   const [unregisteredCafe, setUnregisteredCafe] = useState<NaverLocationProps | null>(null);
@@ -142,28 +138,22 @@ function StudyPageMap({
 
   const placeDataRef = useRef<typeof placeData>(undefined);
 
-  const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
-    (filterType === "about" || filterType === "good" ? "all" : filterType) || "best",
-    null,
-  );
+  const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery("all");
   placeDataRef.current = placeData;
-  console.log(21, placeData);
 
   // PICK 아카이브 선택 시 필터된 장소들의 중심점으로 지도 이동
   // placeDataRef 로 stale closure 없이 항상 최신 데이터 사용
   const applyPickCentroid = useCallback((nickname: string) => {
-    console.log("[PICK] applyPickCentroid called:", nickname);
-    console.log("[PICK] placeDataRef.current:", placeDataRef.current?.length);
     const filtered = placeDataRef.current?.filter((p) => p.pick === nickname);
-    console.log("[PICK] filtered:", filtered?.length, filtered?.map(p => p.pick));
+
     if (!filtered?.length) return;
     const lat = filtered.reduce((sum, p) => sum + p.location.latitude, 0) / filtered.length;
     const lon = filtered.reduce((sum, p) => sum + p.location.longitude, 0) / filtered.length;
-    console.log("[PICK] centroid:", lat, lon);
+
     const zoom = 11;
     setZoomNumber(zoom);
     const opts = getMapOptions({ lat, lon }, zoom);
-    console.log("[PICK] opts:", opts);
+
     if (opts) setMapOptions(opts);
     setPickCenter({ lat, lng: lon });
   }, []);
@@ -314,7 +304,7 @@ function StudyPageMap({
     }
 
     if (filterType === "good") {
-      result = result.filter((place) => getPlaceScore(place.ratings).total >= 4);
+      result = result.filter((place) => getPlaceScore(place.ratings).total >= 4.0);
     }
 
     if (amenityFilters.length > 0) {
@@ -334,8 +324,6 @@ function StudyPageMap({
 
     return result;
   }, [placeData, markerCenter, markerRadiusKm, filterType, amenityFilters, selectedPickNickname]);
-  useEffect(() => {}, [currentMapCenter, markerCenter]);
-
   useEffect(() => {
     if (!visiblePlaceData.length) {
       setMarkersOptions([]);
@@ -400,10 +388,7 @@ function StudyPageMap({
       document.body.style.overflow = "";
       window.scrollTo(0, scrollLockY.current);
     }
-    if (type === "mainPlace") {
-      setFilterType("main");
-      return;
-    }
+
     if (isMapExpansion) {
       setFilterType("all");
     } else setFilterType("all");
@@ -459,7 +444,12 @@ function StudyPageMap({
   }, [isMapExpansion]);
 
   useEffect(() => {
-    console.log("[PICK] effect fired: filterType=", filterType, "selectedPickNickname=", selectedPickNickname);
+    console.log(
+      "[PICK] effect fired: filterType=",
+      filterType,
+      "selectedPickNickname=",
+      selectedPickNickname,
+    );
     if (filterType === "about" && selectedPickNickname) {
       wasPickFilterRef.current = true;
       applyPickCentroid(selectedPickNickname);
@@ -563,7 +553,6 @@ function StudyPageMap({
           <ClipLayer $rounded={!isMapExpansion}>
             <StudyMapNav
               isCafeMap={isCafeMap}
-              isMainType={type === "mainPlace"}
               isMapExpansion={isMapExpansion}
               hasBackButton={hasBackButton}
               handleCenterLocation={(location, zoomBoost = 0) => {
@@ -588,9 +577,7 @@ function StudyPageMap({
                 }
                 if (typeof window === "undefined" || !("naver" in window)) return;
                 const center = new naver.maps.LatLng(newPos.lat, newPos.lon);
-                setMapOptions((prev) =>
-                  prev ? { ...prev, center } : getMapOptions(newPos, 13),
-                );
+                setMapOptions((prev) => (prev ? { ...prev, center } : getMapOptions(newPos, 13)));
               }}
               openList={() => {
                 if (filterType === "about") {
@@ -842,7 +829,9 @@ function StudyPageMap({
       {(isLoading || (isLoading2 && !loading2TimedOut) || (isLoadingLocation && tempToggle)) && (
         <>
           <ScreenOverlay zIndex={2000} />
-          <MainLoading top={isCafeMap ? "calc(50dvh + 30px - env(safe-area-inset-bottom, 0px) / 2)" : "50%"} />
+          <MainLoading
+            top={isCafeMap ? "calc(50dvh + 30px - env(safe-area-inset-bottom, 0px) / 2)" : "50%"}
+          />
         </>
       )}
     </>

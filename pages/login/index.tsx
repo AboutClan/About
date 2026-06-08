@@ -74,8 +74,7 @@ function LoginPage() {
         // 읽은 즉시 삭제 (1회성)
         document.cookie = "signin_error_uid=; Path=/login; Max-Age=0; SameSite=Lax";
       }
-    } catch {
-    }
+    } catch {}
 
     if (uid) {
       setErrorUserUid(uid);
@@ -261,7 +260,7 @@ function LoginPage() {
             </Button>
 
             {/* 애플 로그인 버튼 (iPhone에서만 노출) */}
-            {isIPhone && (
+            {/* {isIPhone && (
               <Button
                 variant="unstyled"
                 maxW="calc(var(--max-width) - 2 * 20px)"
@@ -284,7 +283,7 @@ function LoginPage() {
                 <span>Apple로 시작하기</span>
                 <div />
               </Button>
-            )}
+            )} */}
 
             {/* 게스트 로그인 버튼 */}
             <Button
