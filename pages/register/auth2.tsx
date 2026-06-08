@@ -14,6 +14,7 @@ import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import RegisterReview from "../../pageTemplates/register/access/RegisterReview";
+import { isWebView } from "../../utils/appEnvUtils";
 import { setAuthIntent } from "../../utils/authIntentUtils";
 import { setLocalStorageObj } from "../../utils/storageUtils";
 
@@ -161,7 +162,7 @@ export default function Auth() {
     const webTransactionId = router.query.web_transaction_id;
     if (typeof webTransactionId === "string" && webTransactionId) {
       pendingTransactionRef.current = webTransactionId;
-      router.replace("/register/auth", undefined, { shallow: true });
+      router.replace("/register/auth2", undefined, { shallow: true });
     }
   }, [router.isReady, router.query.web_transaction_id, router]);
 
@@ -188,18 +189,17 @@ export default function Auth() {
     try {
       const url = new URL(`${BACKEND_URL}/auth/nice/request`);
 
-      url.searchParams.set("returnUrl", `https://study-about.club/nice-auth/callback`);
+      const isApp = isWebView();
+      // 앱/웹 모두 동일한 callback URL 사용
+      url.searchParams.set("returnUrl", "https://study-about.club/nice-auth/callback");
       url.searchParams.set("closeUrl", "https://study-about.club/nice-auth/callback");
-
-      // url.searchParams.set("returnUrl", "localhost:3000/_open?dl=nice-auth/callback");
-      // url.searchParams.set("closeUrl", "localhost:3000/_open?dl=nice-auth/callback");
 
       const response = await fetch(url.toString(), {
         method: "GET",
         headers: { Authorization: `Bearer ${jwt}` },
       });
 
-      const text = await response.text(); // ✅ 먼저 text로 받기 (JSON 파싱 실패 대비)
+      const text = await response.text();
       let data = null;
       try {
         data = text ? JSON.parse(text) : null;
@@ -221,9 +221,16 @@ export default function Auth() {
       if (!data?.request_no) throw new Error("request_no 누락");
 
       sessionStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no);
-      localStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no); // ✅ 추가
+      localStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no);
       currentRequestNoRef.current = data.request_no;
 
+      if (isApp) {
+        // 웹뷰: 팝업 없이 현재 탭에서 NICE 인증 진행
+        window.location.href = data.auth_url;
+        return;
+      }
+
+      // 웹 PC: 팝업으로 인증 (기존 흐름 유지)
       const popup = window.open(data.auth_url, "niceAuthPopup", "width=500,height=700");
       if (!popup || popup.closed) {
         window.location.href = data.auth_url;
