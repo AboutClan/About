@@ -288,7 +288,7 @@ function VoteMap({
         prevSelectedMarkerIdRef.current = currentSelectedId;
       }
     }
-  }, [markersOptions, circleCenter, handleMarker]);
+  }, [markersOptions, circleCenter, handleMarker, mapReady]);
 
   useEffect(() => {
     const prevMarkerId = prevSelectedMarkerIdRef.current;
