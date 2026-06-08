@@ -4,8 +4,8 @@
 // ✅ 둘 다 handleWebTransactionId() 하나로 처리
 
 import { Box, Flex } from "@chakra-ui/react";
-import { signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+import { signIn, signOut } from "next-auth/react";
 import { useCallback, useEffect, useRef } from "react";
 
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -247,7 +247,7 @@ export default function Auth() {
     <>
       <Slide>
         <Box my={5}>
-          <Box fontSize="24px" fontWeight="semibold" lineHeight="32px">
+          <Box fontSize="24px" fontWeight="bold" lineHeight="32px">
             안전한 서비스 이용을 위해
             <br />
             본인인증을 진행할게요
@@ -257,11 +257,11 @@ export default function Auth() {
           </Box>
         </Box>
 
-        <Flex flexDir="column" gap={3} mt={2}>
+        <Flex flexDir="column" gap={3} mt={8}>
           <InfoCard
             emoji="🔒"
             title="왜 본인인증이 필요한가요?"
-            desc="카공지도는 실제 이용자들이 함께 만드는 커뮤니티예요. 믿을 수 있는 후기와 안전한 이용 환경을 위해 본인인증을 진행하고 있어요."
+            desc="카공지도는 실제 이용자들이 함께 만들어가는 서비스예요. 믿을 수 있는 후기와 안전한 이용 환경을 위해 본인인증을 진행하고 있어요."
           />
           <InfoCard
             emoji="✨"

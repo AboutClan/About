@@ -59,7 +59,7 @@ function StudyMap() {
       {activeTab === "feed" && <CafeMapFeedPage />}
       {activeTab === "bookmark" && <CafeMapArchivePage />}
       {activeTab === "study" && <CafeMapStudyPage />}
-   
+      {activeTab === "myPage" && <MyPage />}
       <CafeMapBottomNav />
       {isModal && (
         <ModalLayout title="안내사항" footerOptions={footerOptions} setIsModal={setIsModal}>

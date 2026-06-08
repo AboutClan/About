@@ -1,22 +1,38 @@
 import { Input } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import BottomNav from "../../components/layouts/BottomNav";
-import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import { MESSAGE_DATA } from "../../constants/contentsText/ProfileData";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
+import BottomNav from "../../../components/layouts/BottomNav";
+import ProgressHeader from "../../../components/molecules/headers/ProgressHeader";
+import { MESSAGE_DATA } from "../../../constants/contentsText/ProfileData";
+import { REGISTER_INFO } from "../../../constants/keys/localStorage";
+import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
+import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../../hooks/user/mutations";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { gaEvent } from "../../../libs/gtag";
+import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
+import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
+import { IUserRegisterFormWriting } from "../../../types/models/userTypes/userInfoTypes";
+import { setAuthIntent } from "../../../utils/authIntentUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "../../../utils/storageUtils";
 
 function Comment() {
+  const router = useRouter();
+  const toast = useToast();
+  const errorToast = useErrorToast();
+  const { data: session } = useSession();
   const info = getLocalStorageObj(REGISTER_INFO);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState("");
   const [index, setIndex] = useState<number>();
+  const [isModal, setIsModal] = useState(false);
+
+  const { mutate: changeRole } = useUserInfoFieldMutation("role");
+  const { data: userInfo } = useUserInfoQuery();
 
   useEffect(() => {
     const comment = info?.comment;
@@ -33,21 +49,44 @@ function Comment() {
       setIndex(findIdx + 1);
     }
     return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
+      if (timeoutId) clearTimeout(timeoutId);
     };
   }, []);
 
   const scrollToInput = () => {
     if (!containerRef.current) return;
-    const OFFSET = 108; // 👈 원하는 만큼 조절 (px)
+    const OFFSET = 108;
     const elementTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({
-      top: elementTop - OFFSET,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: elementTop - OFFSET, behavior: "smooth" });
   };
+
+  const { mutate, isLoading } = useUserRegisterMutation({
+    onSuccess() {
+      const moving = localStorage.getItem("moving");
+      if (moving) gaEvent("register_complete_by_cafe_map");
+      else gaEvent("register_complete");
+      if (userInfo?.role !== "member") changeRole({ role: "waiting" });
+
+      setLocalStorageObj(REGISTER_INFO, null);
+      toast("success", "신청 완료! 최종 가입 페이지로 이동합니다.");
+      setIsModal(true);
+      setTimeout(() => {
+        router.push("/register/access");
+      }, 1000);
+    },
+    onError: errorToast,
+  });
+
+  useEffect(() => {
+    if (session?.user.role === "guest" || session?.user.uid === "1234567890") {
+      toast("error", "안전한 계정 확인을 위해 다시 한번 로그인 할게요!");
+      setTimeout(async () => {
+        setAuthIntent();
+        await signOut({ redirect: false });
+        await signIn("kakao", { callbackUrl: "/cafe-map/register/comment" });
+      }, 1000);
+    }
+  }, [session]);
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if ((index === null || index === 0) && value === "") {
@@ -60,12 +99,14 @@ function Comment() {
     if (index === 0 || index === null) tempComment = value;
     else tempComment = MESSAGE_DATA[index - 1];
 
-    setLocalStorageObj(REGISTER_INFO, { ...info, comment: tempComment });
+    const { name, gender, telephone, birth, location } = info;
+    setLocalStorageObj(REGISTER_INFO, { name, gender, telephone, birth, location, comment: tempComment });
+    mutate({ name, gender, telephone, birth, location, comment: tempComment } as IUserRegisterFormWriting);
   };
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={84} />
+      <ProgressHeader title="회원가입" value={100} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
@@ -86,9 +127,7 @@ function Comment() {
             focusBorderColor="#00c2b3"
             border={index === 0 ? "var(--border-mint)" : "var(--border-main)"}
             boxShadow="none !important"
-            _placeholder={{
-              color: "var(--gray-500)",
-            }}
+            _placeholder={{ color: "var(--gray-500)" }}
             onFocus={scrollToInput}
           />
         </div>
@@ -101,7 +140,9 @@ function Comment() {
         </Container>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} url="/register/tracking" />
+      {!isModal && (
+        <BottomNav isLoading={isLoading || isModal} onClick={onClickNext} text="가입 신청 완료" />
+      )}
     </>
   );
 }

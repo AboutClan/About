@@ -36,6 +36,7 @@ const TABS: TabItem[] = [
   {
     id: "profile",
     label: "내 정보",
+    isComingSoon: true,
     icon: (isActive) => <ProfileTabIcon isActive={isActive} />,
   },
 ];
@@ -99,6 +100,24 @@ export default function CafeMapBottomNav() {
           >
             <Box pos="relative" display="flex" alignItems="center" justifyContent="center">
               {tab.icon(isActive)}
+              {tab.isComingSoon && (
+                <Box
+                  pos="absolute"
+                  top="-4px"
+                  right="-18px"
+                  bg="var(--gray-200)"
+                  color="var(--gray-500)"
+                  fontSize="8px"
+                  fontWeight={600}
+                  px="3px"
+                  py="1px"
+                  borderRadius="4px"
+                  whiteSpace="nowrap"
+                  lineHeight="12px"
+                >
+                  출시예정
+                </Box>
+              )}
             </Box>
             <Box as="span" mt="2px" fontSize="11px" color={textColor} lineHeight="14px">
               {tab.label}
@@ -171,7 +190,7 @@ function BookmarkTabIcon({ isActive }: { isActive: boolean }) {
 }
 
 function ProfileTabIcon({ isActive }: { isActive: boolean }) {
-  const color = isActive ? "var(--color-mint)" : "var(--gray-500)";
+  const color = isActive ? "var(--color-mint)" : "var(--gray-300)";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
