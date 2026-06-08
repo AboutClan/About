@@ -50,6 +50,17 @@ export const useUserRegisterMutation = (options?: MutationOptions<IUserRegisterF
     options,
   );
 
+export const useUserCafeRegisterMutation = (options?: MutationOptions<IUserRegisterFormWriting>) =>
+  useMutation<void, AxiosError, IUserRegisterFormWriting>(
+    (param) =>
+      requestServer<IUserRegisterFormWriting>({
+        method: "post",
+        url: `register/cafe`,
+        body: param,
+      }),
+    options,
+  );
+
 export const useUserTicketMutation = (
   options?: MutationOptions<{ ticketNum: number; type: "gather" | "groupStudy" }>,
 ) =>

@@ -13,4 +13,5 @@ export const USER_ROLE: Record<UserRole, string> = {
   support: "서포터즈",
   block: "정지멤버",
   secede: "탈퇴멤버",
+  cafe_user: "카페맵 유저",
 };

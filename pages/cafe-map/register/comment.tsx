@@ -9,7 +9,7 @@ import ProgressHeader from "../../../components/molecules/headers/ProgressHeader
 import { MESSAGE_DATA } from "../../../constants/contentsText/ProfileData";
 import { REGISTER_INFO } from "../../../constants/keys/localStorage";
 import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../../hooks/user/mutations";
+import { useUserCafeRegisterMutation, useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { gaEvent } from "../../../libs/gtag";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
@@ -60,12 +60,12 @@ function Comment() {
     window.scrollTo({ top: elementTop - OFFSET, behavior: "smooth" });
   };
 
-  const { mutate, isLoading } = useUserRegisterMutation({
+  const { mutate, isLoading } = useUserCafeRegisterMutation({
     onSuccess() {
       const moving = localStorage.getItem("moving");
       if (moving) gaEvent("register_complete_by_cafe_map");
       else gaEvent("register_complete");
-      if (userInfo?.role !== "member") changeRole({ role: "waiting" });
+      changeRole({ role: "cafe_user" });
 
       setLocalStorageObj(REGISTER_INFO, null);
       toast("success", "신청 완료! 최종 가입 페이지로 이동합니다.");
