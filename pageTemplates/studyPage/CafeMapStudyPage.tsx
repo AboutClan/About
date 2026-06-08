@@ -67,7 +67,7 @@ export default function CafeMapStudyPage() {
           isOverlay
           zIndex={701}
         >
-          <Flex flexDir="column" w="full">``
+          <Flex flexDir="column" w="full">
             <Box fontSize="20px" fontWeight={800} mb={1}>
               🚀 우리 동네 카공 스터디
             </Box>
