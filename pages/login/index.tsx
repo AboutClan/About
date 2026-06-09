@@ -238,7 +238,7 @@ function LoginPage() {
             {/* 카카오 로그인 버튼 */}
             <Button
               variant="unstyled"
-              maxW="calc(var(--max-width) - 2 * 20px)"
+              maxW="400px"
               width="100%"
               aspectRatio={7.4 / 1}
               backgroundColor="#FEE500"
@@ -288,7 +288,7 @@ function LoginPage() {
             {/* 게스트 로그인 버튼 */}
             <Button
               variant="unstyled"
-              maxW="calc(var(--max-width) - 2 * 20px)"
+              maxW="400px"
               width="100%"
               aspectRatio={7.42 / 1}
               backgroundColor="gray.900"

@@ -71,6 +71,8 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loading2TimedOut, setLoading2TimedOut] = useState(false);
+  // naver SDK가 준비된 시점(VoteMap에서 map 생성 완료)을 감지해 마커 재계산을 트리거
+  const [naverReadyTick, setNaverReadyTick] = useState(0);
   const [pickCenter, setPickCenter] = useState<{ lat: number; lng: number } | null>(null);
   const wasPickFilterRef = useRef(false);
   const currentLocationRef = useRef(currentLocation);
@@ -338,7 +340,7 @@ function StudyPageMap({
         defaultLocation,
       ),
     );
-  }, [visiblePlaceData, zoomNumber, currentLocation, defaultLocation, isMapExpansion]);
+  }, [visiblePlaceData, zoomNumber, currentLocation, defaultLocation, isMapExpansion, naverReadyTick]);
 
   const handleMarker = useCallback(
     (id: string, currentZoom: number, ids?: string[]) => {
@@ -636,6 +638,7 @@ function StudyPageMap({
               zoomChange={(zoom: number) => setZoomNumber(zoom)}
               centerChange={handleCenterChange}
               centerValue={pickCenter}
+              onMapReady={() => setNaverReadyTick((t) => t + 1)}
             />
           </ClipLayer>
         </Box>

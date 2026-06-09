@@ -204,6 +204,8 @@ const Layout = styled.div<{
 }>`
   position: fixed;
   left: 0;
+  right: 0;
+  margin: 0 auto;
   overflow: hidden;
   bottom: ${(props) => (props.ishide === "true" ? 0 : 52)}px;
   width: 100%;

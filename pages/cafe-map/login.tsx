@@ -139,19 +139,20 @@ function LoginPage() {
           objectFit="cover"
         />
         <Flex
-          justify="align-center"
+          justify="center"
           direction="column"
           position="fixed"
           align="center"
           w="90%"
+          maxW="var(--max-width)"
           top="43%"
           left="50%"
           transform="translate(-50%,-50%)"
         >
-          <Box mb={3} position="relative" w="full" aspectRatio={3 / 2}>
+          <Box mb={3} position="relative" maxW="400px" w="full" aspectRatio={3 / 2}>
             <Image src="/카공지도.png" alt="main-logo" fill />
           </Box>
-          <Flex flexDir="column" align="center" mt="-88px" w="full">
+          <Flex flexDir="column" align="center" mt="-11dvh" w="full">
             <Box mb={6} fontWeight="bold" fontSize="16px" lineHeight="20px" color="gray.100">
               오늘의 카공이 더 쉬워지도록
             </Box>
@@ -176,7 +177,7 @@ function LoginPage() {
             {/* 카카오 로그인 버튼 */}
             <Button
               variant="unstyled"
-              maxW="calc(var(--max-width) - 2 * 20px)"
+              maxW="400px"
               width="100%"
               aspectRatio={7.4 / 1}
               backgroundColor="#FEE500"
@@ -226,7 +227,7 @@ function LoginPage() {
             {/* 게스트 로그인 버튼 */}
             <Button
               variant="unstyled"
-              maxW="calc(var(--max-width) - 2 * 20px)"
+              maxW="400px"
               width="100%"
               aspectRatio={7.42 / 1}
               backgroundColor="gray.900"

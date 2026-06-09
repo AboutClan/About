@@ -32,6 +32,7 @@ interface VoteMapProps {
     lat: number;
     lng: number;
   };
+  onMapReady?: () => void;
 }
 
 function VoteMap({
@@ -44,6 +45,7 @@ function VoteMap({
   selectedMarkerId,
   circleCenter,
   centerValue,
+  onMapReady,
 }: VoteMapProps) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
@@ -91,6 +93,7 @@ function VoteMap({
       map.setZoom(mapOptions.zoom);
       mapInstanceRef.current = map;
       setMapReady(true);
+      onMapReady?.();
       return;
     }
 
@@ -181,10 +184,11 @@ function VoteMap({
 
     if (!mapRef.current || !map || typeof naver === "undefined") return;
 
-    mapElementsRef.current.markers.forEach((marker) => marker.setMap(null));
-    mapElementsRef.current.polylines.forEach((polyline) => polyline.setMap(null));
-    mapElementsRef.current.infoWindow.forEach((info) => info.close());
-    mapElementsRef.current.circles.forEach((circle) => circle.setMap(null));
+    // 기존 요소를 미리 보관 (새 마커 생성 후 제거해 깜박임 방지)
+    const prevMarkers = mapElementsRef.current.markers;
+    const prevPolylines = mapElementsRef.current.polylines;
+    const prevInfoWindows = mapElementsRef.current.infoWindow;
+    const prevCircles = mapElementsRef.current.circles;
 
     mapElementsRef.current = {
       markers: [],
@@ -197,6 +201,7 @@ function VoteMap({
     markerIconMapRef.current = {};
     markerSelectedIconMapRef.current = {};
 
+    // ① 새 마커를 먼저 생성
     markersOptions?.forEach((markerOptions) => {
       const marker = new naver.maps.Marker({
         map,
@@ -288,6 +293,12 @@ function VoteMap({
         prevSelectedMarkerIdRef.current = currentSelectedId;
       }
     }
+
+    // ② 새 마커 생성 완료 후 기존 마커 제거 (깜박임 방지)
+    prevMarkers.forEach((marker) => marker.setMap(null));
+    prevPolylines.forEach((polyline) => polyline.setMap(null));
+    prevInfoWindows.forEach((info) => info.close());
+    prevCircles.forEach((circle) => circle.setMap(null));
   }, [markersOptions, circleCenter, handleMarker, mapReady]);
 
   useEffect(() => {
