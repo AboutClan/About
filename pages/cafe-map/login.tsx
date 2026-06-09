@@ -104,7 +104,7 @@ function LoginPage() {
     console.log("[cafe-map] pending cookie api completed");
 
     await signIn("kakao", {
-      callbackUrl: `${window.location.origin}/cafe-map/login/callback`,
+      callbackUrl: "/cafe-map/login/callback",
     });
 
     setLoadingType(null);
