@@ -112,10 +112,10 @@ export default function Auth() {
         const birthYear = resultData?.birthdate ? Number(resultData.birthdate.slice(0, 4)) : null;
         const currentYear = new Date().getFullYear();
         const age = currentYear - (birthYear ?? 0);
-        if (!birthYear || age < 19 || age > 35) {
-          toast("info", "현재 19세 ~ 35세만 가입이 가능해요!");
-          return;
-        }
+        // if (!birthYear || age < 19 || age > 35) {
+        //   toast("info", "현재 19세 ~ 35세만 가입이 가능해요!");
+        //   return;
+        // }
 
         setLocalStorageObj(REGISTER_INFO, {
           name: resultData?.name ?? "",
