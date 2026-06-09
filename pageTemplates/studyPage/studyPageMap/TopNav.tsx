@@ -707,7 +707,7 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: [
       "전반적인 UI/UX 및 사용성 개선",
       "FAQ 및 업데이트 소식 기능 추가",
-      "장소 추가 및 후기 작성 버튼 노출 문제 해결",
+      "장소 추가 및 후기 작성 버그 해결",
       "동일 카페 중복 등록 방지 기능 적용",
       "신규 카공 카페 등록",
     ],
@@ -759,7 +759,7 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
   },
   {
     date: "2026-06-09",
-    isCompleted: false,
+    isCompleted: true,
     textArr: ["마이페이지 기능 업데이트", "카페 저장, 기록 관리, 프로필 기능 등"],
   },
   {

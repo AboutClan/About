@@ -8,7 +8,7 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
 import { ModalLayout } from "../../modals/Modals";
-import { isAuthIntentActive, setAuthIntent } from "../../utils/authIntentUtils";
+import { setAuthIntent } from "../../utils/authIntentUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
 import { getSafeAreaBottom, isApp, isIOS } from "../../utils/validationUtils";
 
@@ -88,7 +88,7 @@ function LoginPage() {
     // 카공지도.com에서 접근한 경우 OAuth 시작 도메인을 study-about.club로 통일
     // (state 쿠키 도메인과 redirect_uri 도메인 불일치 방지)
     if (typeof window !== "undefined" && /xn--ob0b42knwutje\.com$/.test(window.location.hostname)) {
-      window.location.href = "https://study-about.club/cafe-map/login?autoLogin=true";
+      window.location.href = "https://study-about.club/cafe-map/login";
       return;
     }
 
@@ -119,18 +119,6 @@ function LoginPage() {
 
     setLoadingType(null);
   };
-
-  // 카공지도.com에서 넘어온 경우 (?autoLogin=true) 카카오 OAuth 자동 시작.
-  // LoginPage(자식) effect가 Layout(부모) effect보다 먼저 실행되므로
-  // setAuthIntent()가 Layout의 게스트 자동 로그인 체크보다 먼저 설정됨.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (new URLSearchParams(window.location.search).get("autoLogin") !== "true") return;
-    // 이미 진행 중이면 재시작하지 않음 (Kakao 페이지에서 뒤로가기 방어)
-    if (isAuthIntentActive()) return;
-    customSignin();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     setIsIPhone(isApp() && isIOS()); // 클라에서만 계산
