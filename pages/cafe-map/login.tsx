@@ -85,6 +85,13 @@ function LoginPage() {
   const [isModal, setIsModal] = useState(false);
 
   const customSignin = async () => {
+    // 카공지도.com에서 접근한 경우 OAuth 시작 도메인을 study-about.club로 통일
+    // (state 쿠키 도메인과 redirect_uri 도메인 불일치 방지)
+    if (typeof window !== "undefined" && /xn--ob0b42knwutje\.com$/.test(window.location.hostname)) {
+      window.location.href = "https://study-about.club/cafe-map/login";
+      return;
+    }
+
     // 소셜 로그인 진행 중 자동 게스트 로그인이 끼어들지 않도록 플래그 설정
     setAuthIntent();
 
