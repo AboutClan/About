@@ -16,6 +16,7 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import { isWebView } from "../../../utils/appEnvUtils";
 import { setAuthIntent } from "../../../utils/authIntentUtils";
 import { setLocalStorageObj } from "../../../utils/storageUtils";
+import { isMobileWeb } from "../../../utils/validationUtils";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URI ?? "http://localhost:3001";
 const NICE_REQUEST_NO_KEY = "nice_request_no";
@@ -126,7 +127,7 @@ export default function Auth() {
         // 1회성 값 정리(선택)
         sessionStorage.removeItem(NICE_REQUEST_NO_KEY);
 
-        router.push(`/cafe-map/register/gender`);
+        router.push(`/cafe-map/register/nickname`);
         clearStoredRequestNo();
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
@@ -228,13 +229,15 @@ export default function Auth() {
       localStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no);
       currentRequestNoRef.current = data.request_no;
 
-      if (isApp) {
-        // 웹뷰: 팝업 없이 현재 탭에서 NICE 인증 진행
+      if (isApp || isMobileWeb()) {
+        // 웹뷰 / 모바일 웹: 현재 탭에서 리다이렉트
+        // 모바일에서 window.open은 새 탭으로 열리고 window.close()가 막혀
+        // callback fallback이 auth 페이지로 돌아오는 문제 방지
         window.location.href = data.auth_url;
         return;
       }
 
-      // 웹 PC: 팝업으로 인증 (기존 흐름 유지)
+      // 데스크톱 웹: 팝업으로 인증
       const popup = window.open(data.auth_url, "niceAuthPopup", "width=500,height=700");
       if (!popup || popup.closed) {
         window.location.href = data.auth_url;

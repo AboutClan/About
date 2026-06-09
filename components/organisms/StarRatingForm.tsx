@@ -72,7 +72,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
       </Flex>
       <Flex flexDir="column" mb={5}>
         <Box color="gray.600" fontSize="13px" fontWeight={600}>
-          공부 분위기인가요?
+          공부하기 좋은 분위기인가요?
         </Box>
         <StarBlock
           rating={review.mood}
@@ -81,7 +81,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
       </Flex>
       <Flex flexDir="column" mb={5}>
         <Box color="gray.600" fontSize="13px" fontWeight={600}>
-          콘센트/테이블
+          콘센트는 충분한가요?
         </Box>
         <StarBlock
           rating={review.power}
@@ -90,7 +90,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
       </Flex>
       <Flex flexDir="column" mb={5}>
         <Box color="gray.600" fontSize="13px" fontWeight={600}>
-          혼잡도 & 자리 여유
+          자리는 여유로운가요?
         </Box>
         <StarBlock
           rating={review.space}
@@ -99,7 +99,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
       </Flex>
       <Flex flexDir="column" mb={5}>
         <Box color="gray.600" fontSize="13px" fontWeight={600}>
-          기타
+          기타 만족도
         </Box>
         <StarBlock
           rating={review.etc}

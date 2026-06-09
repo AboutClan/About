@@ -120,6 +120,7 @@ export interface IUserRegisterFormWriting {
   locationDetail: LocationDetailProps;
   introduceText?: string;
   route?: string;
+  nickname?: string;
 }
 export interface AvatarProps {
   type: number;

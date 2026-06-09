@@ -91,7 +91,7 @@ function LoginPage() {
     // 게스트 → 정회원 로그인으로 전환 시, 먼저 guest 세션 정리
     await signOut({ redirect: false });
     await signIn("kakao", {
-      callbackUrl: `${window.location.origin}/cafe-map/register/auth`,
+      callbackUrl: `${window.location.origin}/cafe-map/login/callback`,
     });
 
     setLoadingType(null);
@@ -139,21 +139,22 @@ function LoginPage() {
           direction="column"
           position="fixed"
           align="center"
-          maxW="293px"
-          w="68.5%"
-          top="46%"
+          w="90%"
+          top="43%"
           left="50%"
           transform="translate(-50%,-50%)"
         >
-          <Box mb={3} position="relative" w="full" aspectRatio={3.8 / 1}>
-            <Image src="/23.png" alt="main-logo" fill />
+          <Box mb={3} position="relative" w="full" aspectRatio={3 / 2}>
+            <Image src="/카공지도.png" alt="main-logo" fill />
           </Box>
-          <Box mb={6} fontWeight="bold" fontSize="14px" lineHeight="20px" color="gray.100">
-            20대의 모든 순간을 위한 플랫폼
-          </Box>
-          <Box w="58.7%" position="relative" aspectRatio={5 / 4}>
-            <Image src="/main.png" alt="main-icon" fill />
-          </Box>
+          <Flex flexDir="column" align="center" mt="-88px" w="full">
+            <Box mb={6} fontWeight="bold" fontSize="16px" lineHeight="20px" color="gray.100">
+              오늘의 카공이 더 쉬워지도록
+            </Box>
+            <Box w="40%" position="relative" aspectRatio={5 / 4}>
+              <Image src="/main.png" alt="main-icon" fill />
+            </Box>
+          </Flex>
         </Flex>
 
         <Flex w="full" h="full" bg="mint" direction="column" alignItems="center" overflow="hidden">
@@ -168,19 +169,6 @@ function LoginPage() {
             left="50%"
             transform="translate(-50%,0)"
           >
-            {/* 🔹 위 안내 문구: 항상 자리 차지 + opacity만 변경 (레이아웃 점프 방지) */}
-            <Box
-              mb={5}
-              h="16px"
-              fontSize="12px"
-              lineHeight="16px"
-              color="white"
-              opacity={showTopText ? 0.6 : 0}
-              transition="opacity 0.2s ease-out"
-            >
-              Sign up with Social Networks
-            </Box>
-
             {/* 카카오 로그인 버튼 */}
             <Button
               variant="unstyled"
@@ -257,20 +245,6 @@ function LoginPage() {
               <span>로그인 없이 이용하기</span>
               <div />
             </Button>
-
-            {/* 🔹 하단 안내 문구도 동일하게 고정 높이 + opacity만 변경 */}
-            <Box
-              mt={0}
-              h="16px"
-              as="u"
-              fontSize="12px"
-              fontWeight="medium"
-              opacity={showBottomText ? 0.6 : 0}
-              color="white"
-              transition="opacity 0.2s ease-out"
-            >
-              동아리 가입은 &apos;카카오 로그인&apos;을 이용해주세요.
-            </Box>
           </Flex>
           <ForceLogoutDialog />
         </Flex>

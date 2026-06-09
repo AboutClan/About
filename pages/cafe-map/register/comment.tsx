@@ -2,15 +2,19 @@ import { Input } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useRef, useState } from "react";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import BottomNav from "../../../components/layouts/BottomNav";
 import ProgressHeader from "../../../components/molecules/headers/ProgressHeader";
-import { MESSAGE_DATA } from "../../../constants/contentsText/ProfileData";
+import { MESSAGE_DATA2 } from "../../../constants/contentsText/ProfileData";
 import { REGISTER_INFO } from "../../../constants/keys/localStorage";
+import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
-import { useUserCafeRegisterMutation, useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
+import {
+  useUserCafeRegisterMutation,
+  useUserInfoFieldMutation,
+} from "../../../hooks/user/mutations";
 import { gaEvent } from "../../../libs/gtag";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -32,12 +36,11 @@ function Comment() {
   const [isModal, setIsModal] = useState(false);
 
   const { mutate: changeRole } = useUserInfoFieldMutation("role");
-  const { data: userInfo } = useUserInfoQuery();
 
   useEffect(() => {
     const comment = info?.comment;
     let timeoutId: ReturnType<typeof setTimeout>;
-    const findIdx = MESSAGE_DATA.findIndex((message) => message === comment);
+    const findIdx = MESSAGE_DATA2.findIndex((message) => message === comment);
     if (findIdx === -1) {
       setIndex(0);
       setValue(comment ?? "");
@@ -60,18 +63,20 @@ function Comment() {
     window.scrollTo({ top: elementTop - OFFSET, behavior: "smooth" });
   };
 
+  const queryClient = useQueryClient();
   const { mutate, isLoading } = useUserCafeRegisterMutation({
     onSuccess() {
+      queryClient.invalidateQueries({ queryKey: [USER_INFO], exact: false });
       const moving = localStorage.getItem("moving");
       if (moving) gaEvent("register_complete_by_cafe_map");
       else gaEvent("register_complete");
       changeRole({ role: "cafe_user" });
 
       setLocalStorageObj(REGISTER_INFO, null);
-      toast("success", "신청 완료! 최종 가입 페이지로 이동합니다.");
-      setIsModal(true);
+      toast("success", "가입이 완료되었어요!");
+
       setTimeout(() => {
-        router.push("/register/access");
+        router.push("/cafe-map?tab=profile");
       }, 1000);
     },
     onError: errorToast,
@@ -97,11 +102,25 @@ function Comment() {
 
     let tempComment = "";
     if (index === 0 || index === null) tempComment = value;
-    else tempComment = MESSAGE_DATA[index - 1];
+    else tempComment = MESSAGE_DATA2[index - 1];
 
     const { name, gender, telephone, birth, locationDetail } = info;
-    setLocalStorageObj(REGISTER_INFO, { name, gender, telephone, birth, locationDetail, comment: tempComment });
-    mutate({ name, gender, telephone, birth, locationDetail, comment: tempComment } as IUserRegisterFormWriting);
+    setLocalStorageObj(REGISTER_INFO, {
+      name,
+      gender,
+      telephone,
+      birth,
+      locationDetail,
+      comment: tempComment,
+    });
+    mutate({
+      name,
+      gender,
+      telephone,
+      birth,
+      locationDetail,
+      comment: tempComment,
+    } as IUserRegisterFormWriting);
   };
 
   return (
@@ -111,7 +130,7 @@ function Comment() {
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>한 줄 코멘트를 입력해 주세요</span>
-          <span>프로필에 노출되는 내용으로, 한 마디를 남겨주세요!</span>
+          <span>자유로운 한 마디를 남겨주세요!</span>
         </RegisterOverview>
         <div ref={containerRef} onClick={() => setIndex(0)}>
           <Input
@@ -132,7 +151,7 @@ function Comment() {
           />
         </div>
         <Container>
-          {MESSAGE_DATA?.map((item, idx) => (
+          {MESSAGE_DATA2?.map((item, idx) => (
             <Item key={idx} onClick={() => setIndex(idx + 1)} $isSelected={idx + 1 === index}>
               {item}
             </Item>
@@ -141,7 +160,7 @@ function Comment() {
       </RegisterLayout>
 
       {!isModal && (
-        <BottomNav isLoading={isLoading || isModal} onClick={onClickNext} text="가입 신청 완료" />
+        <BottomNav isLoading={isLoading || isModal} onClick={onClickNext} text="가입 완료" />
       )}
     </>
   );

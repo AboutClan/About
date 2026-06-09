@@ -1,5 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 import { getSafeAreaBottom } from "../utils/validationUtils";
 
@@ -35,14 +36,15 @@ const TABS: TabItem[] = [
   },
   {
     id: "profile",
-    label: "내 정보",
-    isComingSoon: true,
+    label: "마이페이지",
     icon: (isActive) => <ProfileTabIcon isActive={isActive} />,
   },
 ];
 
 export default function CafeMapBottomNav() {
   const router = useRouter();
+  const { data: session } = useSession();
+  const isLoggedIn = !!session && session.user?.role !== "guest";
 
   const activeTab: TabId = (router.query.tab as TabId) || "map";
 
@@ -51,7 +53,11 @@ export default function CafeMapBottomNav() {
     if (activeTab === tab.id) return;
 
     if (tab.id === "profile") {
-      router.push(`/cafe-map/login`);
+      if (isLoggedIn) {
+        router.push({ pathname: "/cafe-map", query: { tab: "profile" } });
+      } else {
+        router.push("/cafe-map/login");
+      }
       return;
     }
 
@@ -100,24 +106,6 @@ export default function CafeMapBottomNav() {
           >
             <Box pos="relative" display="flex" alignItems="center" justifyContent="center">
               {tab.icon(isActive)}
-              {tab.isComingSoon && (
-                <Box
-                  pos="absolute"
-                  top="-4px"
-                  right="-18px"
-                  bg="var(--gray-200)"
-                  color="var(--gray-500)"
-                  fontSize="8px"
-                  fontWeight={600}
-                  px="3px"
-                  py="1px"
-                  borderRadius="4px"
-                  whiteSpace="nowrap"
-                  lineHeight="12px"
-                >
-                  출시예정
-                </Box>
-              )}
             </Box>
             <Box as="span" mt="2px" fontSize="11px" color={textColor} lineHeight="14px">
               {tab.label}
@@ -190,7 +178,7 @@ function BookmarkTabIcon({ isActive }: { isActive: boolean }) {
 }
 
 function ProfileTabIcon({ isActive }: { isActive: boolean }) {
-  const color = isActive ? "var(--color-mint)" : "var(--gray-300)";
+  const color = isActive ? "var(--color-mint)" : "var(--gray-500)";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

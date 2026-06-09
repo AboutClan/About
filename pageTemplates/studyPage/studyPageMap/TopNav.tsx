@@ -758,6 +758,11 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["전국 카공 카페 데이터 추가", "스터디 기능 프리뷰 오픈"],
   },
   {
+    date: "2026-06-09",
+    isCompleted: false,
+    textArr: ["마이페이지 기능 업데이트", "카페 저장, 기록 관리, 프로필 기능 등"],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
     textArr: [

@@ -50,6 +50,16 @@ export const useUserInfoQuery = (options?: QueryOptions<IUser>) =>
     },
     options,
   );
+export const useUserNicknamesQuery = (options?: QueryOptions<string[]>) =>
+  useQuery<string[], AxiosError, string[]>(
+    [USER_INFO, "all", "nicknames"],
+    async () => {
+      const res = await axios.get<string[]>(`${SERVER_URI}/user/nicknames`);
+
+      return res.data;
+    },
+    options,
+  );
 
 interface ReviewMember {
   message: string;
@@ -186,7 +196,7 @@ export const useTicketSystemLogQuery = (
 
 export const useUserInfoByUidQuery = (
   uid: string,
- 
+
   options?: QueryOptions<IUser>,
 ) =>
   useQuery<IUser, AxiosError, IUser>(

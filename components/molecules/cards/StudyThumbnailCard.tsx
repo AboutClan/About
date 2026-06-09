@@ -145,11 +145,15 @@ export function StudyThumbnailCard({
                 {dateStatus === "future"
                   ? participants.length < 4
                     ? "확정까지 "
-                    : "마감까지 "
+                    : participants.length < 8
+                    ? "마감까지 "
+                    : "인원 마감"
                   : dateStatus === "current"
                   ? `${participants.length}명의 멤버가 참여하고 있어요!`
                   : ""}
-                {dateStatus === "future" ? `${temp - participants.length}명 남았어요!` : ""}
+                {dateStatus === "future" && participants.length < 8
+                  ? `${temp - participants.length}명 남았어요!`
+                  : ""}
                 {/* {dateStatus === "future" && participants.length < 4 ? "확정까지 " : "마감까지 "}
                 {temp - participants.length}명 남았어요! */}
               </Flex>

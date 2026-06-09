@@ -39,7 +39,7 @@ function RegisterLocation() {
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={75} />
+      <ProgressHeader title="회원가입" value={84} />
       <RegisterLocationLayout
         handleButton={onClickNext}
         url="/cafe-map/register/comment"

@@ -15,6 +15,7 @@ import { SERVER_URI } from "../../constants/system";
 import { setStudyOneDayData, setStudyWeekData } from "../../libs/study/studyConverters";
 import { CoordinatesProps, TimeRangeProps } from "../../types/common";
 import { QueryOptions } from "../../types/hooks/reactTypes";
+import { PlaceProps } from "../../types/models/studyTypes/entityTypes";
 import {
   RealTimesStudyStatus,
   StudyPlaceFilter,
@@ -350,6 +351,21 @@ export const useStudyArrivedCntQuery = (uid: string, options?: QueryOptions<numb
       if (!uid) return;
       const res = await axios.get<IArrivedTotal>(`${SERVER_URI}/vote/arriveCnt`);
       return res.data?.[uid];
+    },
+    options,
+  );
+
+export interface MyCafePlaceProps {
+  registeredPlaces: PlaceProps[];
+  myRatings: { rating: StudyRatingProps }[];
+}
+
+export const useMyPlaceQuery = (options?: QueryOptions<MyCafePlaceProps>) =>
+  useQuery(
+    ["place", "mine"],
+    async () => {
+      const res = await axios.get<MyCafePlaceProps>(`${SERVER_URI}/place/my`);
+      return res.data;
     },
     options,
   );

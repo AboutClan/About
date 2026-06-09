@@ -22,6 +22,14 @@ const REGISTER_WRITING_SEQUENCE = {
   access: 9,
 };
 
+const CAFE_MAP_REGISTER_SEQUENCE = {
+  auth: 1,
+  nickname: 2,
+  gender: 3,
+  location: 4,
+  comment: 5,
+};
+
 const GATHER_WRITING_SEQUENCE = {
   category: 1,
   content: 2,
@@ -92,6 +100,19 @@ function PageTracker() {
           break;
 
         case "cafe-map":
+          if (currentSegments[1] === "register") {
+            const prevVal =
+              prevSegments[0] === "cafe-map" && prevSegments[1] === "register"
+                ? CAFE_MAP_REGISTER_SEQUENCE[prevSegments[2]]
+                : undefined;
+            const curVal = CAFE_MAP_REGISTER_SEQUENCE[currentSegments[2]];
+            if (prevVal !== undefined && curVal !== undefined) {
+              curVal > prevVal ? setRightSlide() : setLeftSlide();
+            } else {
+              setRightSlide();
+            }
+            break;
+          }
           if (prevSegments?.[0] === "study") {
             setLeftSlide();
           }

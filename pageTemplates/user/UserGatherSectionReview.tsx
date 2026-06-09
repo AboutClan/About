@@ -1,46 +1,26 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import { useState } from "react";
 
-import AlertDot from "../../components/atoms/AlertDot";
-import { GATHER_REVIEW_RECEIVE, GATHER_REVIEW_WRITE } from "../../constants/keys/localStorage";
+import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewBlock2";
+import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { useFeedCntQuery, useFeedTypeQuery } from "../../hooks/feed/queries";
-import GathersReviewDrawer from "../../modals/gather/gatherExpireModal/GathersReviewDrawer";
+import { useMyPlaceQuery } from "../../hooks/study/queries";
 
 function UserGatherSectionReview() {
-  const router = useRouter();
-  const modalParam = router.query.modal as "mine" | "receive";
-
   const toast = useToast();
-  const [modalType, setModalType] = useState<"mine" | "receive">(null);
+  const [showCafeDrawer, setShowCafeDrawer] = useState(false);
+  const [showReviewDrawer, setShowReviewDrawer] = useState(false);
 
-  const { data } = useFeedTypeQuery(modalType, { enabled: !!modalType });
-  const { data: feeds } = useFeedCntQuery();
+  const { data } = useMyPlaceQuery();
 
-  const feedSumWriteSave = localStorage.getItem(GATHER_REVIEW_WRITE);
-  const feedSumReceiveSave = localStorage.getItem(GATHER_REVIEW_RECEIVE);
-
-  useEffect(() => {
-    if (!data) return;
-    if (modalType === "mine") {
-      localStorage.setItem(GATHER_REVIEW_WRITE, data?.length + "");
-    } else {
-      localStorage.setItem(GATHER_REVIEW_RECEIVE, data?.length + "");
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (!modalParam) {
-      setModalType(null);
-    } else {
-      setModalType(modalParam);
-    }
-  }, [modalParam]);
-
+  const cafeCount = data?.registeredPlaces?.length ?? 0;
+  const reviewCount = data?.myRatings?.length ?? 0;
+  console.log(2, data);
   return (
     <>
       <Flex h="44px" bg="rgba(66,66,66,0.04)" mb={3}>
+        {/* 등록한 카페 */}
         <Button
           flex={1}
           variant="unstyled"
@@ -49,19 +29,11 @@ function UserGatherSectionReview() {
           lineHeight="16px"
           color="gray.700"
           onClick={() => {
-            if (!feeds?.writtenReviewCnt) {
-              localStorage.setItem(GATHER_REVIEW_WRITE, 0 + "");
-              toast("info", "작성한 후기가 없습니다.");
+            if (!cafeCount) {
+              toast("info", "등록한 카페가 없습니다.");
               return;
             }
-            router.push(
-              { pathname: router.pathname, query: { ...router.query, modal: "mine" } },
-              undefined,
-              {
-                shallow: true,
-              },
-            );
-            setModalType("mine");
+            setShowCafeDrawer(true);
           }}
           pos="relative"
           rightIcon={
@@ -77,20 +49,18 @@ function UserGatherSectionReview() {
               bg="var(--color-mint-light)"
               color="mint"
             >
-              {feeds?.writtenReviewCnt || 0}
+              {cafeCount}
             </Flex>
           }
         >
-          작성한 후기
-          {feeds?.writtenReviewCnt > 0 && feedSumWriteSave !== feeds?.writtenReviewCnt + "" && (
-            <Box pos="absolute" bottom={3} right={6}>
-              <AlertDot />
-            </Box>
-          )}
+          등록한 카페
         </Button>
+
         <Box color="gray.300" fontWeight="light" fontSize="13px" w={1} h="20px" my="auto">
           |
         </Box>
+
+        {/* 작성한 리뷰 */}
         <Button
           flex={1}
           variant="unstyled"
@@ -99,19 +69,11 @@ function UserGatherSectionReview() {
           lineHeight="16px"
           color="gray.700"
           onClick={() => {
-            if (!feeds?.reviewReceived) {
-              localStorage.setItem(GATHER_REVIEW_RECEIVE, 0 + "");
-              toast("info", "받은 후기가 없습니다.");
+            if (!reviewCount) {
+              toast("info", "작성한 리뷰가 없습니다.");
               return;
             }
-            router.push(
-              { pathname: router.pathname, query: { ...router.query, modal: "receive" } },
-              undefined,
-              {
-                shallow: true,
-              },
-            );
-            setModalType("receive");
+            setShowReviewDrawer(true);
           }}
           pos="relative"
           rightIcon={
@@ -127,27 +89,50 @@ function UserGatherSectionReview() {
               bg="var(--color-mint-light)"
               color="mint"
             >
-              {feeds?.reviewReceived || 0}
+              {reviewCount}
             </Flex>
           }
         >
-          받은 후기
-          {feeds?.reviewReceived > 0 && feedSumReceiveSave !== feeds?.reviewReceived + "" && (
-            <Box pos="absolute" bottom={3} right={7}>
-              <AlertDot />
-            </Box>
-          )}
+          작성한 리뷰
         </Button>
       </Flex>
-      {modalType && (
-        <GathersReviewDrawer
-          isOpen
-          feeds={data}
-          onClose={() => {
-            router.back();
-            setModalType(null);
-          }}
-        />
+
+      {/* 내가 등록한 카페 Drawer */}
+      {showCafeDrawer && (
+        <RightDrawer title="내가 등록한 카페" onClose={() => setShowCafeDrawer(false)}>
+          <Flex flexDir="column" pt={1}>
+            {data?.registeredPlaces?.map((place, idx) => (
+              <Box key={place._id ?? idx} borderBottom="var(--border)" px={1} pt={2} pb={3}>
+                <Text fontSize="13px" fontWeight={600} color="gray.800" mb={0.5}>
+                  {place.location?.name}
+                </Text>
+                {place.location?.address && (
+                  <Text fontSize="12px" color="gray.500" mb={1} noOfLines={1}>
+                    {place.location.address}
+                  </Text>
+                )}
+                {place.registerDate && (
+                  <Text fontSize="11px" color="gray.400">
+                    {dayjs(place.registerDate).format("등록일: YYYY년 M월 D일")}
+                  </Text>
+                )}
+              </Box>
+            ))}
+          </Flex>
+        </RightDrawer>
+      )}
+
+      {/* 내가 작성한 리뷰 Drawer */}
+      {showReviewDrawer && (
+        <RightDrawer title="내가 작성한 리뷰" onClose={() => setShowReviewDrawer(false)}>
+          <Flex flexDir="column" pt={1}>
+            {data?.myRatings?.map((review, idx) => (
+              <Box key={idx} pt={2} pb={3} borderBottom="var(--border)">
+                <StarRatingReviewBlock2 review={review?.rating} idx={idx + 1} />
+              </Box>
+            ))}
+          </Flex>
+        </RightDrawer>
       )}
     </>
   );

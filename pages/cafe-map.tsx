@@ -7,8 +7,8 @@ import { gaEvent } from "../libs/gtag";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
 import CafeMapArchivePage from "../pageTemplates/studyPage/CafeMapArchivePage";
 import CafeMapFeedPage from "../pageTemplates/studyPage/CafeMapFeedPage";
+import CafeMapMyPage from "../pageTemplates/studyPage/CafeMapMyPage";
 import CafeMapStudyPage from "../pageTemplates/studyPage/CafeMapStudyPage";
-import MyPage from "../pageTemplates/studyPage/MyPage";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 
 function StudyMap() {
@@ -59,7 +59,7 @@ function StudyMap() {
       {activeTab === "feed" && <CafeMapFeedPage />}
       {activeTab === "bookmark" && <CafeMapArchivePage />}
       {activeTab === "study" && <CafeMapStudyPage />}
-      {activeTab === "myPage" && <MyPage />}
+      {activeTab === "profile" && <CafeMapMyPage />}
       <CafeMapBottomNav />
       {isModal && (
         <ModalLayout title="안내사항" footerOptions={footerOptions} setIsModal={setIsModal}>

@@ -108,8 +108,8 @@ export default function CafeMapStudyPage() {
                 "스터디 개설 및 참여 신청",
                 "스터디장 & 승인제 시스템",
                 "출석 체크 및 스터디 편의 기능",
-                "노쇼 패널티 시스템 / 모임 후 멤버 평가",
-                "매너 온도 기반 신뢰 관리",
+                "노쇼 패널티 시스템 & 모임 후 멤버 평가",
+                "매너온도 기반 신뢰 관리",
               ].map((text) => (
                 <Flex key={text} align="center" gap={2}>
                   <Box w="4px" h="4px" borderRadius="full" bg="var(--color-mint)" flexShrink={0} />

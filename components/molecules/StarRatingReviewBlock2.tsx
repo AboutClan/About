@@ -13,6 +13,7 @@ interface StarRatingReviewBlockProps {
 }
 
 function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
+  console.log(4, review);
   const { etc, mood, space, power, comment, createdAt } = review;
 
   const total = (etc + mood + space + power) / 4;
