@@ -325,16 +325,22 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async redirect({ url, baseUrl }) {
-      // cafe-map 플로우 에러 차단: callbackUrl에 /cafe-map이 포함된 경우
-      // /home 등 외부 경로 대신 /cafe-map/login으로 돌려보냄
+      // cafe-map 플로우 에러 차단
+      // 1차: callbackUrl에 /cafe-map이 포함된 경우 (signOut 제거 후 callbackUrl이 보존될 때)
+      // 2차: callbackUrl이 유실되어 base URL만 남아있어도 /home?error= URL 자체를 차단
       try {
         const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : url;
         const parsed = new URL(fullUrl);
         const hasError = parsed.searchParams.has("error");
         const callbackUrl = parsed.searchParams.get("callbackUrl") ?? "";
+
         if (hasError && callbackUrl.includes("/cafe-map")) {
+          // signOut 제거 후 next-auth.callback-url 쿠키가 보존되면 여기서 1차 차단
           return `${baseUrl}/cafe-map/login`;
         }
+
+        // callbackUrl이 유실된 경우: middleware의 cafe_map_auth_pending 쿠키로 2차 차단
+        // (redirect callback은 request 쿠키 접근 불가 — 추가 처리 불가)
       } catch {}
 
       if (url.startsWith("https://xn--ob0b42knwutje.com")) {

@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -89,11 +89,18 @@ function LoginPage() {
     setAuthIntent();
 
     // OAuth 에러 발생 시 미들웨어가 cafe-map으로 돌려보낼 수 있도록 마커 쿠키 설정
-    // (callbackUrl이 유실되더라도 /home 등으로 빠지지 않게 하기 위함)
-    document.cookie = "cafe_map_auth_pending=1; path=/; SameSite=None; Secure; Max-Age=300";
+    // SameSite=Lax: 카카오→study-about.club top-level redirect에서도 전달됨
+    document.cookie = "cafe_map_auth_pending=1; path=/; SameSite=Lax; Secure; Max-Age=300";
 
-    // 게스트 → 정회원 로그인으로 전환 시, 먼저 guest 세션 정리
-    await signOut({ redirect: false });
+    // [디버깅] 쿠키 설정 확인 - 운영 배포 전 제거
+    if (process.env.NODE_ENV !== "production") {
+      console.log("[cafe-map/login] cookies after pending set:", document.cookie);
+    }
+
+    // signOut을 제거한 이유:
+    // signOut({ redirect: false })가 next-auth.callback-url 쿠키를 base URL로 리셋해서
+    // callbackUrl이 유실되고 redirect 콜백의 /cafe-map 감지가 실패함.
+    // JWT 전략이므로 signIn("kakao") 호출 시 새 JWT가 발급되어 guest 세션이 자동 교체됨.
     await signIn("kakao", {
       callbackUrl: `${window.location.origin}/cafe-map/login/callback`,
     });
