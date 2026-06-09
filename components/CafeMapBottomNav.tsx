@@ -56,8 +56,7 @@ export default function CafeMapBottomNav() {
       if (isLoggedIn) {
         router.push({ pathname: "/cafe-map", query: { tab: "profile" } });
       } else if (typeof window !== "undefined" && /xn--ob0b42knwutje\.com$/.test(window.location.hostname)) {
-        const returnTo = encodeURIComponent(`${window.location.origin}/cafe-map?tab=profile`);
-        window.location.href = `https://study-about.club/cafe-map/login?returnTo=${returnTo}`;
+        window.location.href = "https://study-about.club/cafe-map/login?autoLogin=true";
       } else {
         router.push("/cafe-map/login");
       }
