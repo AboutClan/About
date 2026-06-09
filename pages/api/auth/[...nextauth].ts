@@ -72,7 +72,25 @@ export const authOptions: NextAuthOptions = {
       name: "next-auth.pkce.code_verifier",
       options: {
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
+    state: {
+      name: "next-auth.state",
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
+    callbackUrl: {
+      name: "next-auth.callback-url",
+      options: {
+        httpOnly: true,
+        sameSite: "none",
         path: "/",
         secure: true,
       },
@@ -307,6 +325,18 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async redirect({ url, baseUrl }) {
+      // cafe-map 플로우 에러 차단: callbackUrl에 /cafe-map이 포함된 경우
+      // /home 등 외부 경로 대신 /cafe-map/login으로 돌려보냄
+      try {
+        const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : url;
+        const parsed = new URL(fullUrl);
+        const hasError = parsed.searchParams.has("error");
+        const callbackUrl = parsed.searchParams.get("callbackUrl") ?? "";
+        if (hasError && callbackUrl.includes("/cafe-map")) {
+          return `${baseUrl}/cafe-map/login`;
+        }
+      } catch {}
+
       if (url.startsWith("https://xn--ob0b42knwutje.com")) {
         return url;
       }

@@ -88,6 +88,10 @@ function LoginPage() {
     // 소셜 로그인 진행 중 자동 게스트 로그인이 끼어들지 않도록 플래그 설정
     setAuthIntent();
 
+    // OAuth 에러 발생 시 미들웨어가 cafe-map으로 돌려보낼 수 있도록 마커 쿠키 설정
+    // (callbackUrl이 유실되더라도 /home 등으로 빠지지 않게 하기 위함)
+    document.cookie = "cafe_map_auth_pending=1; path=/; SameSite=None; Secure; Max-Age=300";
+
     // 게스트 → 정회원 로그인으로 전환 시, 먼저 guest 세션 정리
     await signOut({ redirect: false });
     await signIn("kakao", {
