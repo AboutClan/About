@@ -16,10 +16,19 @@ export default function CafeMapLoginCallback() {
     }
 
     const role = session.user?.role;
+    const returnTo = typeof router.query.returnTo === "string" ? router.query.returnTo : null;
 
     if (role === "newUser") {
       router.replace("/cafe-map/register/auth");
-    } else if (!role || role === "guest") {
+      return;
+    }
+
+    if (returnTo) {
+      window.location.href = returnTo;
+      return;
+    }
+
+    if (!role || role === "guest") {
       router.replace("/cafe-map");
     } else {
       router.replace("/cafe-map?tab=profile");

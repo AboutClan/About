@@ -88,7 +88,8 @@ function LoginPage() {
     // 카공지도.com에서 접근한 경우 OAuth 시작 도메인을 study-about.club로 통일
     // (state 쿠키 도메인과 redirect_uri 도메인 불일치 방지)
     if (typeof window !== "undefined" && /xn--ob0b42knwutje\.com$/.test(window.location.hostname)) {
-      window.location.href = "https://study-about.club/cafe-map/login";
+      const returnTo = encodeURIComponent(`${window.location.origin}/cafe-map`);
+      window.location.href = `https://study-about.club/cafe-map/login?returnTo=${returnTo}`;
       return;
     }
 
@@ -110,9 +111,12 @@ function LoginPage() {
 
     console.log("[cafe-map] pending cookie api completed");
 
-    await signIn("kakao", {
-      callbackUrl: "/cafe-map/login/callback",
-    });
+    const returnTo = typeof router.query.returnTo === "string" ? router.query.returnTo : null;
+    const callbackUrl = returnTo
+      ? `/cafe-map/login/callback?returnTo=${encodeURIComponent(returnTo)}`
+      : "/cafe-map/login/callback";
+
+    await signIn("kakao", { callbackUrl });
 
     setLoadingType(null);
   };
