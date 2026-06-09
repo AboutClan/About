@@ -91,10 +91,17 @@ function LoginPage() {
     // OAuth 에러 발생 시 미들웨어가 cafe-map으로 돌려보낼 수 있도록 마커 쿠키 설정
     // 서버 Set-Cookie로 마커 설정 (JS document.cookie 방식은 OAuth 리다이렉트 중 유실됨)
     // HttpOnly 쿠키로 설정하여 미들웨어에서 안정적으로 읽을 수 있음
-    await fetch("/api/auth/cafe-map-pending", {
+    const res = await fetch("/api/auth/cafe-map-pending", {
       method: "POST",
       credentials: "include",
     });
+
+    if (!res.ok) {
+      console.error("[cafe-map] failed to set cafe_map_auth_pending cookie", res.status);
+      return;
+    }
+
+    console.log("[cafe-map] pending cookie api completed");
 
     await signIn("kakao", {
       callbackUrl: `${window.location.origin}/cafe-map/login/callback`,
