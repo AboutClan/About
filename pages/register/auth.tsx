@@ -154,6 +154,18 @@ export default function Auth() {
     return () => window.removeEventListener("message", handleMessage);
   }, [handleMessage]);
 
+  // cafe-map 신규 유저: NextAuth pages.newUser redirect는 redirect 콜백을 거치지 않으므로
+  // callbackUrl에 /cafe-map이 포함된 경우 직접 이동 → /cafe-map/login/callback이 역할 분기 처리
+  useEffect(() => {
+    if (!router.isReady) return;
+    const callbackUrl = router.query.callbackUrl;
+    if (typeof callbackUrl === "string" && callbackUrl.includes("/cafe-map")) {
+      router.replace(callbackUrl);
+    }
+    // router 객체 자체는 dep에 넣지 않음 — 매 렌더마다 새 참조가 생성되어 무한 재실행 유발
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, router.query.callbackUrl]);
+
   // ✅ 모바일/인앱: Step 1 - URL에서 web_transaction_id를 ref에 저장하고 쿼리 즉시 제거
   // token이 아직 없을 수 있으므로 여기서 처리하지 않고 ref에만 보관
   useEffect(() => {

@@ -85,41 +85,47 @@ function LoginPage() {
   const [isModal, setIsModal] = useState(false);
 
   const customSignin = async () => {
-    // 카공지도.com에서 접근한 경우 OAuth 시작 도메인을 study-about.club로 통일
-    // (state 쿠키 도메인과 redirect_uri 도메인 불일치 방지)
-    if (typeof window !== "undefined" && /xn--ob0b42knwutje\.com$/.test(window.location.hostname)) {
-      window.location.href = "https://study-about.club/cafe-map/login";
-      return;
+    if (loadingType) return;
+    setLoadingType("kakao");
+
+    try {
+      // 카공지도.com에서 접근한 경우 OAuth 시작 도메인을 study-about.club로 통일
+      // (state 쿠키 도메인과 redirect_uri 도메인 불일치 방지)
+      if (typeof window !== "undefined" && /xn--ob0b42knwutje\.com$/.test(window.location.hostname)) {
+        window.location.href = "https://study-about.club/cafe-map/login";
+        return;
+      }
+
+      // 소셜 로그인 진행 중 자동 게스트 로그인이 끼어들지 않도록 플래그 설정
+      setAuthIntent();
+
+      // OAuth 에러 발생 시 미들웨어가 cafe-map으로 돌려보낼 수 있도록 마커 쿠키 설정
+      const res = await fetch("/api/auth/cafe-map-pending", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        console.error("[cafe-map] failed to set cafe_map_auth_pending cookie", res.status);
+        setLoadingType(null);
+        return;
+      }
+
+      console.log("[cafe-map] pending cookie api completed");
+
+      await signOut({ redirect: false });
+
+      const returnTo = typeof router.query.returnTo === "string" ? router.query.returnTo : null;
+      const callbackUrl = returnTo
+        ? `/cafe-map/login/callback?returnTo=${encodeURIComponent(returnTo)}`
+        : "/cafe-map/login/callback";
+
+      await signIn("kakao", { callbackUrl });
+      // signIn은 브라우저를 Kakao로 redirect하므로 여기 이후는 실행되지 않음
+    } catch (err) {
+      console.error("[cafe-map] customSignin error", err);
+      setLoadingType(null);
     }
-
-    // 소셜 로그인 진행 중 자동 게스트 로그인이 끼어들지 않도록 플래그 설정
-    setAuthIntent();
-
-    // OAuth 에러 발생 시 미들웨어가 cafe-map으로 돌려보낼 수 있도록 마커 쿠키 설정
-    // 서버 Set-Cookie로 마커 설정 (JS document.cookie 방식은 OAuth 리다이렉트 중 유실됨)
-    // HttpOnly 쿠키로 설정하여 미들웨어에서 안정적으로 읽을 수 있음
-    const res = await fetch("/api/auth/cafe-map-pending", {
-      method: "POST",
-      credentials: "include",
-    });
-
-    if (!res.ok) {
-      console.error("[cafe-map] failed to set cafe_map_auth_pending cookie", res.status);
-      return;
-    }
-
-    console.log("[cafe-map] pending cookie api completed");
-
-    await signOut({ redirect: false });
-
-    const returnTo = typeof router.query.returnTo === "string" ? router.query.returnTo : null;
-    const callbackUrl = returnTo
-      ? `/cafe-map/login/callback?returnTo=${encodeURIComponent(returnTo)}`
-      : "/cafe-map/login/callback";
-
-    await signIn("kakao", { callbackUrl });
-
-    setLoadingType(null);
   };
 
   useEffect(() => {

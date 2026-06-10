@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import CafeMapBottomNav from "../components/CafeMapBottomNav";
 import { gaEvent } from "../libs/gtag";
@@ -12,11 +12,12 @@ import CafeMapStudyPage from "../pageTemplates/studyPage/CafeMapStudyPage";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 
 function StudyMap() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
   const [isGuestModal, setIsGuestModal] = useState(false);
+  const guestSignInTriedRef = useRef(false);
 
   const activeTab = (router.query.tab as string) || "map";
 
@@ -24,16 +25,19 @@ function StudyMap() {
     // 게스트 세션 자동 생성. redirect: false 가 핵심 —
     // 디폴트 redirect:true 는 /api/auth/callback/guest → /cafe-map 풀 네비게이션을 일으켜
     // 디바이스 최초 진입 시 iOS Kakao 인앱 webview 에서 흰 화면 구간이 길게 노출됨.
-    // 쿠키가 한 번 박히면 그 뒤로는 session !== null 이라 이 분기 자체를 안 탐.
+    if (status === "loading") return;
+    if (guestSignInTriedRef.current) return;
+    if (session) return;  // 세션이 있으면(guest/member/newUser 모두) 건드리지 않음
+
+    guestSignInTriedRef.current = true;
+
     const temp = async () => {
       await signOut({ redirect: false });
       await signIn("guest", { redirect: false });
     };
 
-    if (session === null) {
-      temp();
-    }
-  }, [session]);
+    temp();
+  }, [session, status]);
 
   const onClose = () => {
     setIsModal(true);

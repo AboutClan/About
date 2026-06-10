@@ -274,40 +274,34 @@ export const authOptions: NextAuthOptions = {
             (user as any).uid = findUser.uid ?? userUid;
             user.id = findUser.id ?? user.id;
 
-            const existingAccount = await Account.findOne({
-              provider: account.provider,
-              providerAccountId: account.providerAccountId,
-            });
-
-            if (existingAccount) {
-              const GUEST_OID = "69c4f9ce862f5d10130252ab";
-              if (String(existingAccount.userId) === GUEST_OID) {
-                await Account.updateOne(
-                  { _id: existingAccount._id },
-                  { $set: { userId: findUser._id } },
-                );
-              } else {
-              }
-            } else {
-              await Account.findOneAndUpdate(
-                {
+            // findOne + 조건부 upsert 분리 제거 → 단일 원자적 upsert
+            const accountDoc = await Account.findOneAndUpdate(
+              {
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+              },
+              {
+                $setOnInsert: {
+                  userId: findUser._id,
                   provider: account.provider,
                   providerAccountId: account.providerAccountId,
+                  type: "oauth",
                 },
-                {
-                  $setOnInsert: {
-                    userId: findUser._id,
-                    provider: account.provider,
-                    providerAccountId: account.providerAccountId,
-                    type: "oauth",
-                  },
-                  $set: {
-                    access_token: account.access_token,
-                    refresh_token: account.refresh_token,
-                    expires_at: account.expires_at,
-                  },
+                $set: {
+                  access_token: account.access_token,
+                  refresh_token: account.refresh_token,
+                  expires_at: account.expires_at,
                 },
-                { upsert: true, new: true },
+              },
+              { upsert: true, new: true },
+            );
+
+            // GUEST_OID가 userId로 남아있는 경우 올바른 userId로 보정
+            const GUEST_OID = "69c4f9ce862f5d10130252ab";
+            if (accountDoc && String(accountDoc.userId) === GUEST_OID) {
+              await Account.updateOne(
+                { _id: accountDoc._id },
+                { $set: { userId: findUser._id } },
               );
             }
           }
@@ -325,9 +319,6 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async redirect({ url, baseUrl }) {
-      // cafe-map 플로우 에러 차단
-      // 1차: callbackUrl에 /cafe-map이 포함된 경우 (signOut 제거 후 callbackUrl이 보존될 때)
-      // 2차: callbackUrl이 유실되어 base URL만 남아있어도 /home?error= URL 자체를 차단
       try {
         const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : url;
         const parsed = new URL(fullUrl);
@@ -335,12 +326,14 @@ export const authOptions: NextAuthOptions = {
         const callbackUrl = parsed.searchParams.get("callbackUrl") ?? "";
 
         if (hasError && callbackUrl.includes("/cafe-map")) {
-          // signOut 제거 후 next-auth.callback-url 쿠키가 보존되면 여기서 1차 차단
           return `${baseUrl}/cafe-map/login`;
         }
 
-        // callbackUrl이 유실된 경우: middleware의 cafe_map_auth_pending 쿠키로 2차 차단
-        // (redirect callback은 request 쿠키 접근 불가 — 추가 처리 불가)
+        // pages.newUser("/register/auth")로 향하는 redirect이지만 cafe-map 플로우인 경우
+        // callbackUrl(/cafe-map/login/callback)로 이동 → callback.tsx가 /cafe-map/register/auth로 라우팅
+        if (parsed.pathname.startsWith("/register") && callbackUrl.includes("/cafe-map")) {
+          return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
+        }
       } catch {}
 
       if (url.startsWith("https://xn--ob0b42knwutje.com")) {
