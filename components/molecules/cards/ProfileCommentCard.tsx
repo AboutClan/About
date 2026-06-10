@@ -168,9 +168,11 @@ export default function ProfileCommentCard({
             </Flex>
           </Flex>
 
-          <Box ml={2} flexShrink={0}>
-            {rightComponent}
-          </Box>
+          {user?.name !== "익명" && (
+            <Box ml={2} flexShrink={0}>
+              {rightComponent}
+            </Box>
+          )}
         </Flex>
       </BlurredPart>
 

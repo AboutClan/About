@@ -46,7 +46,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
   const { data: session } = useSession();
 
   const isAdmin =
-    (gatherData?.user as UserSimpleInfoProps)._id === session?.user.id ||
+    (gatherData?.user as UserSimpleInfoProps)?._id === session?.user.id ||
     session?.user.uid === "2259633694" ||
     session?.user.uid === "3224546232";
 

@@ -46,7 +46,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
 
   const { data: userInfo } = useUserInfoQuery();
   const myGather =
-    (data.user as UserSimpleInfoProps).uid === userInfo?.uid || userInfo?.name === "어바웃";
+    (data.user as UserSimpleInfoProps)?.uid === userInfo?.uid || userInfo?.name === "어바웃";
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
   const [isExpirationModal, setIsExpirationModal] = useState(false);
 
