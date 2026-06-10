@@ -3,23 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { CoordinatesProps } from "../../types/common";
 import { useToast } from "./CustomToast";
 
-const LOCATION_PROMPTED_KEY = "location_prompted_once";
-const LOCATION_CACHE_KEY = "current_location_cache";
-
 export function useUserCurrentLocation() {
   const toast = useToast();
-  const [coordinate, setCoordinate] = useState<CoordinatesProps | null | undefined>(() => {
-    if (typeof window === "undefined") return undefined;
-    try {
-      const cached = sessionStorage.getItem(LOCATION_CACHE_KEY);
-      if (cached) return JSON.parse(cached) as CoordinatesProps;
-    } catch {
-    }
-    return undefined;
-  });
+  const [coordinate, setCoordinate] = useState<CoordinatesProps | null | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const mountedRef = useRef(false);
 
+  // 수동 refetch 및 granted 자동 요청 공통 실행 함수
   const requestCurrentLocation = async () => {
     if (!("geolocation" in navigator)) {
       setCoordinate(null);
@@ -36,10 +26,6 @@ export function useUserCurrentLocation() {
             lat: position.coords.latitude,
             lon: position.coords.longitude,
           };
-          try {
-            sessionStorage.setItem(LOCATION_CACHE_KEY, JSON.stringify(coords));
-          } catch {
-          }
           setCoordinate(coords);
           setIsLoading(false);
           resolve(coords);
@@ -55,65 +41,62 @@ export function useUserCurrentLocation() {
     });
   };
 
-  const getCurrentLocation = async () => {
-    if (!("geolocation" in navigator)) {
-      setCoordinate(null);
-      return null;
-    }
-
-    try {
-      // 일부 브라우저는 permissions 미지원일 수 있음
-      if ("permissions" in navigator && navigator.permissions?.query) {
-        const permission = await navigator.permissions.query({
-          name: "geolocation" as PermissionName,
-        });
-
-        if (permission.state === "granted") {
-          return await requestCurrentLocation();
-        }
-
-        if (permission.state === "denied") {
-          setCoordinate(null);
-          return null;
-        }
-
-        // prompt 상태일 때: 이미 한 번 물어봤으면 다시 자동 요청 안 함
-        const promptedOnce = localStorage.getItem(LOCATION_PROMPTED_KEY) === "true";
-        if (promptedOnce) {
-          setCoordinate(null);
-          return null;
-        }
-
-        localStorage.setItem(LOCATION_PROMPTED_KEY, "true");
-        return await requestCurrentLocation();
-      }
-
-      // permissions API 미지원 브라우저 fallback
-      const promptedOnce = localStorage.getItem(LOCATION_PROMPTED_KEY) === "true";
-      if (promptedOnce) {
-        setCoordinate(null);
-        return null;
-      }
-
-      localStorage.setItem(LOCATION_PROMPTED_KEY, "true");
-      return await requestCurrentLocation();
-    } catch (error) {
-      console.error("권한 확인 오류:", error);
-      setCoordinate(null);
-      return null;
-    }
-  };
-
-  // 자동 요청은 최초 1회만
   useEffect(() => {
     if (mountedRef.current) return;
     mountedRef.current = true;
-    getCurrentLocation();
+
+    if (!("geolocation" in navigator)) {
+      setCoordinate(null);
+      return;
+    }
+
+    if (!("permissions" in navigator) || !navigator.permissions?.query) {
+      // permissions API 미지원 → 자동 요청 안 함
+      setCoordinate(null);
+      return;
+    }
+
+    let permissionStatus: PermissionStatus | null = null;
+    let handleChange: (() => void) | null = null;
+
+    navigator.permissions
+      .query({ name: "geolocation" as PermissionName })
+      .then((permission) => {
+        permissionStatus = permission;
+
+        if (permission.state === "granted") {
+          requestCurrentLocation();
+          return;
+        }
+
+        // denied / prompt → 즉시 null 확정 (userInfo fallback)
+        setCoordinate(null);
+
+        if (permission.state === "prompt") {
+          // 사용자가 나중에 권한을 승인하면 자동으로 위치 갱신
+          handleChange = () => {
+            if (permission.state === "granted") {
+              requestCurrentLocation();
+            }
+          };
+          permission.addEventListener("change", handleChange);
+        }
+      })
+      .catch((error) => {
+        console.error("권한 확인 오류:", error);
+        setCoordinate(null);
+      });
+
+    return () => {
+      if (permissionStatus && handleChange) {
+        permissionStatus.removeEventListener("change", handleChange);
+      }
+    };
   }, []);
 
   return {
     currentLocation: coordinate,
     isLoadingLocation: isLoading,
-    refetchCurrentLocation: requestCurrentLocation, // 수동 재요청은 이걸로
+    refetchCurrentLocation: requestCurrentLocation,
   };
 }
