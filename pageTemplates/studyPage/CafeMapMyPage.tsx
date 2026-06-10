@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -8,7 +9,6 @@ import Divider from "../../components/atoms/Divider";
 import Header from "../../components/layouts/Header";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { useMyPlaceQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import RequestSuggestModal from "../../modals/userRequest/RequestSuggestModal";
 import { navigateExternalLink } from "../../utils/navigateUtils";
@@ -25,7 +25,6 @@ function CafeMapMyPage() {
   const [showTempDrawer, setShowTempDrawer] = useState(false);
   const [showSettingDrawer, setShowSettingDrawer] = useState(false);
   const [showSuggestModal, setShowSuggestModal] = useState(false);
-
 
   const temperature = userInfo?.temperature?.temperature ?? 36.5;
   const tempMin = 36.5;
@@ -165,6 +164,18 @@ function CafeMapMyPage() {
               }}
             >
               건의 및 제보하기
+            </button>
+            <button
+              onClick={async () => {
+                await signOut({ redirect: false });
+                await signIn("guest", {
+                  callbackUrl: "/cafe-map",
+                }).catch((err) => {
+                  console.error("Guest sign-in failed:", err);
+                });
+              }}
+            >
+              로그아웃
             </button>
           </NavBlock>
         </RightDrawer>

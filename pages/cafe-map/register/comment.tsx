@@ -104,7 +104,8 @@ function Comment() {
     if (index === 0 || index === null) tempComment = value;
     else tempComment = MESSAGE_DATA2[index - 1];
 
-    const { name, gender, telephone, birth, locationDetail } = info;
+    const { name, gender, telephone, birth, locationDetail, nickname } = info;
+
     setLocalStorageObj(REGISTER_INFO, {
       name,
       gender,
@@ -112,14 +113,16 @@ function Comment() {
       birth,
       locationDetail,
       comment: tempComment,
+      nickname,
     });
     mutate({
-      name,
+      name: "이승주",
       gender,
-      telephone,
+      telephone: "010-6230-0206",
       birth,
       locationDetail,
       comment: tempComment,
+      nickname,
     } as IUserRegisterFormWriting);
   };
 

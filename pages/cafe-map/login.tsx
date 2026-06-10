@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -22,7 +22,7 @@ function LoginPage() {
   const [ratio, setRatio] = useState<number | null>(null);
   const [isIPhone, setIsIPhone] = useState(false);
   // 디바이스 타입 (iPhone 여부 등)
-
+  console.log(32, session);
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -109,6 +109,8 @@ function LoginPage() {
     }
 
     console.log("[cafe-map] pending cookie api completed");
+
+    await signOut({ redirect: false });
 
     const returnTo = typeof router.query.returnTo === "string" ? router.query.returnTo : null;
     const callbackUrl = returnTo
