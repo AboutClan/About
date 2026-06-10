@@ -6,7 +6,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { ReactNode, useState } from "react";
 
@@ -88,7 +88,7 @@ export default function ProfileCommentCard({
           {leftComponent && <Box mr={4}>{leftComponent}</Box>}
 
           <Flex flex={1} opacity={pendingType === "pendingOwner" ? 0.5 : 1}>
-            <Avatar user={user} size="md1" isLink={false} />
+            <Avatar user={user} size="md1" isLink={isGuest ? false : true} />
 
             <Flex direction="column" flex={1} justify="center" ml={3} my={1} minW={0}>
               <Flex align="center" mb={memo || comment ? 1 : 0} overflow="hidden" flexWrap="nowrap">
