@@ -762,12 +762,17 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     isCompleted: true,
     textArr: ["마이페이지 기능 업데이트", "카페 저장, 기록 관리, 프로필 기능 등"],
   },
+
+  {
+    date: "2026-06-10",
+    isCompleted: true,
+    textArr: ["속도 개선 (5배 이상 빨라졌습니다.)"],
+  },
   {
     date: "2026-05-18",
     isCompleted: false,
     textArr: [
-      "기타 업데이트 (6월 9일)",
-      "아이폰 앱 출시 (6월 10일)",
+      "아이폰 앱 출시 (6월 11일)",
       "안드로이드 앱 출시 (6월 20일)",
       "스터디 기능 오픈 (6월 20일) ",
     ],
