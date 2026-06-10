@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 
 import { Input } from "../../../components/atoms/Input";
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -11,20 +11,16 @@ import { IUserRegisterFormWriting } from "../../../types/models/userTypes/userIn
 import { getLocalStorageObj, setLocalStorageObj } from "../../../utils/storageUtils";
 
 function Nickname() {
-  const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
+  const infoRef = useRef<IUserRegisterFormWriting>(getLocalStorageObj(REGISTER_INFO));
+  const info = infoRef.current;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [value, setValue] = useState<string>(info?.name ?? "");
+  // 저장된 nickname이 있으면 우선 사용, 없으면 NICE 인증에서 받은 name 사용
+  const [value, setValue] = useState<string>(info?.nickname ?? info?.name ?? "");
 
   const { data } = useUserNicknamesQuery();
-
-  useEffect(() => {
-    if (!info?.nickname) return;
-
-    setValue(info.nickname);
-  }, [info]);
 
   const scrollToInput = () => {
     if (!containerRef.current) return;

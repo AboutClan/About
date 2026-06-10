@@ -116,9 +116,9 @@ function Comment() {
       nickname,
     });
     mutate({
-      name: "이승주",
+      name,
       gender,
-      telephone: "010-6230-0206",
+      telephone,
       birth,
       locationDetail,
       comment: tempComment,
