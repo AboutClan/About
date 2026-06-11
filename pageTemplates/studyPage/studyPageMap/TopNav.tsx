@@ -16,6 +16,7 @@ import { DispatchType } from "../../../types/hooks/reactTypes";
 import { StudyPlaceFilter } from "../../../types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "../../../utils/validationUtils";
 import StatusButton from "./StatusButton";
+import { CafeMapLogo } from "./StudyPageMap";
 
 const MAP_BTN_SHADOW = "0 1px 3px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.05)";
 
@@ -258,75 +259,9 @@ function StudyMapNav({
               {isCafeMap ? (
                 <>
                   <Box pl={2} py={2}>
-                    <svg
-                      width="109"
-                      height="25"
-                      viewBox="0 0 104 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g transform="translate(-1 -0.5) scale(1.08)">
-                        {/* Coffee icon */}
-                        <path
-                          d="M3 7.5H15.5V13.2C15.5 16.1 13.1 18.5 10.2 18.5H8.3C5.4 18.5 3 16.1 3 13.2V7.5Z"
-                          stroke="#00C2B3"
-                          strokeWidth="2.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M15.5 9.5H17.2C19 9.5 20.3 10.7 20.3 12.3C20.3 13.9 19 15.1 17.2 15.1H15.5"
-                          stroke="#00C2B3"
-                          strokeWidth="2.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M6.2 4.2C6.2 4.2 5.4 3.1 6.3 2"
-                          stroke="#00C2B3"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M10 4.2C10 4.2 9.2 3.1 10.1 2"
-                          stroke="#00C2B3"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M13.8 4.2C13.8 4.2 13 3.1 13.9 2"
-                          stroke="#00C2B3"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-
-                        {/* Text */}
-                        <text
-                          x="27"
-                          y="17"
-                          fill="#00C2B3"
-                          fontSize="18"
-                          fontWeight="900"
-                          fontFamily="Pretendard, Apple SD Gothic Neo, sans-serif"
-                          letterSpacing="-0.8"
-                        >
-                          카공지도
-                        </text>
-                      </g>
-                    </svg>
+                    <CafeMapLogo />
                   </Box>
-                  <Flex flexDir="column" flex={1} ml={0.5}>
-                    <Box fontWeight={700} fontSize="11px" color="gray.800">
-                      AI가 분석한 공부하기 좋은 카페
-                    </Box>
-                    <Box color="gray.500" fontSize="10px" mt="1px">
-                      실제 카공러 리뷰{" "}
-                      <Box as="span" color="var(--color-mint)" fontWeight={600}>
-                        100만개+
-                      </Box>{" "}
-                      기반
-                    </Box>
-                  </Flex>
+
                   <Flex
                     as="button"
                     mr={1}
@@ -341,7 +276,7 @@ function StudyMapNav({
                     _active={{ bg: "gray.100" }}
                     onClick={() => setUpdateMenu(true)}
                   >
-                    <Bell size={24} strokeWidth={1.5} color="var(--gray-800)" />
+                    <Bell size={24} strokeWidth={1.5} color="var(--gray-600)" />
                   </Flex>
                 </>
               ) : (
@@ -766,16 +701,17 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
   {
     date: "2026-06-10",
     isCompleted: true,
-    textArr: ["속도 개선 (5배 이상 빨라졌습니다.)"],
+    textArr: ["속도 개선 (5배 이상 빨라졌어요!)"],
+  },
+  {
+    date: "2026-06-11",
+    isCompleted: true,
+    textArr: ["타이틀 및 로고 추가", "아이폰 앱 출시 (저녁)"],
   },
   {
     date: "2026-05-18",
     isCompleted: false,
-    textArr: [
-      "아이폰 앱 출시 (6월 11일)",
-      "안드로이드 앱 출시 (6월 20일)",
-      "스터디 기능 오픈 (6월 20일) ",
-    ],
+    textArr: ["안드로이드 앱 출시 (6월 20일)", "스터디 기능 오픈 (6월 20일) "],
   },
 ];
 

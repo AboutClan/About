@@ -135,7 +135,7 @@ function HomeInitialSetting() {
         router.push("/register/auth");
         return;
       }
-      if (data.role === "newUser") {
+      if (data.role === "newUser" || data.role === "cafe_user") {
         router.push("/register/auth");
         return;
       }

@@ -94,54 +94,56 @@ function LoginPage() {
       router.push(`/login/guest`);
       return;
     }
+    if (loadingType) return;
     setLoadingType(type);
 
-    // 소셜 로그인 진행 중 자동 게스트 로그인이 끼어들지 않도록 플래그 설정
-    setAuthIntent();
+    try {
+      // 소셜 로그인 진행 중 자동 게스트 로그인이 끼어들지 않도록 플래그 설정
+      setAuthIntent();
 
-    // 게스트 → 정회원 로그인으로 전환 시, 먼저 guest 세션 정리
-    await signOut({ redirect: false });
+      // 게스트 → 정회원 로그인으로 전환 시, 먼저 guest 세션 정리
+      await signOut({ redirect: false });
 
-    // 다양한 statusParam에 따른 callbackUrl 분기
-    if (statusParam === "before") {
-      await signIn(type, {
-        callbackUrl: `${window.location.origin}/${pageParam}`,
-      });
-      return;
-    }
-    if (statusParam === "access" || userInfo?.role === "waiting") {
-      await signIn(type, {
-        callbackUrl: `${window.location.origin}/register/access`,
-      });
-      return;
-    }
-    if (statusParam === "kakao") {
-      await signIn(type, {
-        callbackUrl: `${window.location.origin}/accessKakao`,
-      });
-      return;
-    }
-    if (statusParam === "friend") {
-      await signIn(type, {
-        callbackUrl: `${window.location.origin}/register/friend`,
-      });
-      return;
-    }
+      // 다양한 statusParam에 따른 callbackUrl 분기
+      if (statusParam === "before") {
+        await signIn(type, {
+          callbackUrl: `${window.location.origin}/${pageParam}`,
+        });
+        return;
+      }
+      if (statusParam === "access" || userInfo?.role === "waiting") {
+        await signIn(type, {
+          callbackUrl: `${window.location.origin}/register/access`,
+        });
+        return;
+      }
+      if (statusParam === "kakao") {
+        await signIn(type, {
+          callbackUrl: `${window.location.origin}/accessKakao`,
+        });
+        return;
+      }
+      if (statusParam === "friend") {
+        await signIn(type, {
+          callbackUrl: `${window.location.origin}/register/friend`,
+        });
+        return;
+      }
+      if (statusParam === "waiting") {
+        await signIn(type, {
+          callbackUrl: `${window.location.origin}/register/access`,
+        });
+        return;
+      }
 
-    // 가입 대기 중인 경우
-    if (statusParam === "waiting") {
+      // 기본: 로그인 후 /home
       await signIn(type, {
-        callbackUrl: `${window.location.origin}/register/access`,
+        callbackUrl: `/home`,
       });
-      return; // FIX: 누락된 return — 없으면 아래 signIn("/home")까지 실행되어 OAuth가 두 번 시작됨
+    } catch (err) {
+      console.error("[login] customSignin error", err);
+      setLoadingType(null);
     }
-
-    // 기본: 로그인 후 /home
-    await signIn(type, {
-      callbackUrl: `/home`,
-    });
-
-    setLoadingType(null);
   };
 
   useEffect(() => {
@@ -189,7 +191,7 @@ function LoginPage() {
           objectFit="cover"
         />
         <Flex
-          justify="align-center"
+          justify="center"
           direction="column"
           position="fixed"
           align="center"

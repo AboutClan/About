@@ -22,7 +22,6 @@ function LoginPage() {
   const [ratio, setRatio] = useState<number | null>(null);
   const [isIPhone, setIsIPhone] = useState(false);
   // 디바이스 타입 (iPhone 여부 등)
-  console.log(32, session);
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -91,7 +90,10 @@ function LoginPage() {
     try {
       // 카공지도.com에서 접근한 경우 OAuth 시작 도메인을 study-about.club로 통일
       // (state 쿠키 도메인과 redirect_uri 도메인 불일치 방지)
-      if (typeof window !== "undefined" && /xn--ob0b42knwutje\.com$/.test(window.location.hostname)) {
+      if (
+        typeof window !== "undefined" &&
+        /xn--ob0b42knwutje\.com$/.test(window.location.hostname)
+      ) {
         window.location.href = "https://study-about.club/cafe-map/login";
         return;
       }
@@ -159,7 +161,7 @@ function LoginPage() {
         </Button>
 
         <Image
-          src="/background-clip.png"
+          src="/배경.png"
           alt="loginBackground"
           layout="fill"
           sizes="1624px"
@@ -170,23 +172,15 @@ function LoginPage() {
           direction="column"
           position="fixed"
           align="center"
-          w="90%"
+          w="38%"
           maxW="var(--max-width)"
-          top="43%"
+          top="36%"
           left="50%"
           transform="translate(-50%,-50%)"
         >
-          <Box mb={3} position="relative" maxW="400px" w="full" aspectRatio={3 / 2}>
-            <Image src="/카공지도.png" alt="main-logo" fill />
+          <Box mb={3} position="relative" w="full" aspectRatio={0.65 / 1}>
+            <Image src="/심볼2.png" alt="main-logo" fill />
           </Box>
-          <Flex flexDir="column" align="center" mt="-11dvh" w="full">
-            <Box mb={6} fontWeight="bold" fontSize="16px" lineHeight="20px" color="gray.100">
-              오늘의 카공이 더 쉬워지도록
-            </Box>
-            <Box w="40%" position="relative" aspectRatio={5 / 4}>
-              <Image src="/main.png" alt="main-icon" fill />
-            </Box>
-          </Flex>
         </Flex>
 
         <Flex w="full" h="full" bg="mint" direction="column" alignItems="center" overflow="hidden">
