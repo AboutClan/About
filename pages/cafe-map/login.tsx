@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -138,11 +138,7 @@ function LoginPage() {
 
   return (
     <>
-      <Box
-        height="100dvh"
-        bg="linear-gradient(0deg, rgba(40, 40, 40, 0.87) 0%, rgba(40, 40, 40, 0.54) 100%)"
-        position="relative"
-      >
+      <Box height="100dvh" position="relative">
         <Button
           position="fixed"
           top="12px"
@@ -150,7 +146,7 @@ function LoginPage() {
           right="12px"
           zIndex={1000}
           p={1}
-          color="white"
+          color="gray.600"
           fontWeight={600}
           variant="unstyled"
           onClick={() => {
@@ -174,7 +170,7 @@ function LoginPage() {
           align="center"
           w="38%"
           maxW="var(--max-width)"
-          top="36%"
+          top="37%"
           left="50%"
           transform="translate(-50%,-50%)"
         >
@@ -183,7 +179,7 @@ function LoginPage() {
           </Box>
         </Flex>
 
-        <Flex w="full" h="full" bg="mint" direction="column" alignItems="center" overflow="hidden">
+        <Flex w="full" h="full" direction="column" alignItems="center" overflow="hidden">
           <Flex
             direction="column"
             align="center"
