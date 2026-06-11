@@ -149,6 +149,7 @@ function HomeInitialSetting() {
       router.push("/login");
     },
   });
+  console.log(userInfo);
   const { mutate: setRole } = useUserInfoFieldMutation("role", {
     onSuccess() {
       toast("success", "동아리원이 되었습니다.");

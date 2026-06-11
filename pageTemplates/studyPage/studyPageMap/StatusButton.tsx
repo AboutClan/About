@@ -10,6 +10,7 @@ import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
 type CafeStatus = "great" | "good" | "bad";
 
 function getCafeStatus(): CafeStatus {
+
   const now = new Date();
   const day = now.getDay();
   const hour = now.getHours();

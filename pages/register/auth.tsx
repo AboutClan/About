@@ -13,6 +13,7 @@ import Slide from "../../components/layouts/PageSlide";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfo } from "../../hooks/custom/UserHooks";
 import RegisterReview from "../../pageTemplates/register/access/RegisterReview";
 import { isWebView } from "../../utils/appEnvUtils";
 import { setAuthIntent } from "../../utils/authIntentUtils";
@@ -50,6 +51,9 @@ export default function Auth() {
   const router = useRouter();
   const toast = useToast();
   const token = useToken();
+
+  const userInfo = useUserInfo();
+  console.log("user", userInfo);
 
   const getStoredRequestNo = () =>
     currentRequestNoRef.current ||
