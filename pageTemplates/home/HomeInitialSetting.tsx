@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -122,7 +122,7 @@ function HomeInitialSetting() {
     : undefined;
 
   // const [isGuide, setIsGuide] = useState(false);
-
+  console.log(process.env.MONGODB_URI);
   const { data: userInfo } = useUserInfoQuery({
     onSuccess(data) {
       if (data.isActive === false) {
