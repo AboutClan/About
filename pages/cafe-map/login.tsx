@@ -83,9 +83,9 @@ function LoginPage() {
 
   const [isModal, setIsModal] = useState(false);
 
-  const customSignin = async () => {
+  const customSignin = async (provider: "kakao" | "apple" = "kakao") => {
     if (loadingType) return;
-    setLoadingType("kakao");
+    setLoadingType(provider);
 
     try {
       // 카공지도.com에서 접근한 경우 OAuth 시작 도메인을 study-about.club로 통일
@@ -122,8 +122,8 @@ function LoginPage() {
         ? `/cafe-map/login/callback?returnTo=${encodeURIComponent(returnTo)}`
         : "/cafe-map/login/callback";
 
-      await signIn("kakao", { callbackUrl });
-      // signIn은 브라우저를 Kakao로 redirect하므로 여기 이후는 실행되지 않음
+      await signIn(provider, { callbackUrl });
+      // signIn은 브라우저를 OAuth 공급자로 redirect하므로 여기 이후는 실행되지 않음
     } catch (err) {
       console.error("[cafe-map] customSignin error", err);
       setLoadingType(null);
@@ -216,13 +216,15 @@ function LoginPage() {
             </Button>
 
             {/* 애플 로그인 버튼 (iPhone에서만 노출) */}
-            {/* {isIPhone && (
+            {isIOS() && (
               <Button
                 variant="unstyled"
-                maxW="calc(var(--max-width) - 2 * 20px)"
+                maxW="400px"
                 width="100%"
-                aspectRatio={7.42 / 1}
+                aspectRatio={7.4 / 1}
                 backgroundColor="white"
+                border="1px solid"
+                borderColor="gray.200"
                 isLoading={loadingType === "apple"}
                 onClick={() => customSignin("apple")}
                 display="flex"
@@ -239,7 +241,7 @@ function LoginPage() {
                 <span>Apple로 시작하기</span>
                 <div />
               </Button>
-            )} */}
+            )}
 
             {/* 게스트 로그인 버튼 */}
             <Button

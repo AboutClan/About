@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ComponentProps } from "react";
 import styled from "styled-components";
 
+import { getGroupKeyByValue } from "../../../pageTemplates/gather/GatherMain";
 import { SingleLineText } from "../../../styles/layout/components";
 import {
   GroupParicipantProps,
@@ -76,7 +77,7 @@ export function GroupThumbnailCard({
             }}
           >
             <Box as="span" fontWeight="medium" lineHeight="12px" color="mint">
-              {category?.main}
+              {getGroupKeyByValue(category?.main)}
             </Box>
 
             <Box as="span" fontWeight="regular" color="var(--gray-400)">

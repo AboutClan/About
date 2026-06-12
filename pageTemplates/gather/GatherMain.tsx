@@ -14,6 +14,21 @@ import GatherSkeletonMain from "./GatherSkeletonMain";
 
 type SortedType = "최신 개설 순" | "일정 빠른 순" | "기본순";
 
+export const GROUP_MAPPING = {
+  크루: ["크루"],
+  "공부·자기계발": ["스터디", "자기계발", "말하기", "크루"],
+  취미: ["힐링", "소셜 게임", "요리"],
+  "문화·감상": ["감상"],
+  액티비티: ["운동"],
+  친목: ["친목", "파티", "푸드"],
+};
+
+export const getGroupKeyByValue = (value: string) => {
+  return Object.entries(GROUP_MAPPING).find(([_, values]) =>
+    values.includes(value as never)
+  )?.[0];
+}
+
 export default function GatherMain() {
   const [gathers, setGathers] = useState<IGather[]>([]);
   const [cursor, setCursor] = useState(0);

@@ -6,6 +6,7 @@ import BlurredLink from "../../../components/molecules/BlurredLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import { useCheckGuest } from "../../../hooks/custom/UserHooks";
 import { IGroup } from "../../../types/models/groupTypes/group";
+import { getGroupKeyByValue } from "../../gather/GatherMain";
 
 interface GroupOverviewProps {
   group: IGroup;
@@ -21,7 +22,7 @@ function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverview
     <Flex direction="column" px={5} pt={4} pb={2}>
       <Flex mb={2}>
         <Box mr={1}>
-          <MainBadge text={group?.category?.main} />
+          <MainBadge text={getGroupKeyByValue(group?.category?.main)} />
         </Box>
         <MainBadge text={group?.isFree ? "자유 가입" : "승인제"} type="sub" />
       </Flex>
@@ -36,13 +37,13 @@ function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverview
               group?.participants?.length >= 3 ? `총 ${group?.participants?.length}명` : `모집중`,
           },
           {
-            category: group.meetingType === "online" ? "방 식" : "활 동",
+            category: group.meetingType === "online" ? "방 식" : "모 임",
             text:
               group.meetingType === "online"
                 ? `온라인 진행`
                 : gatherCnt === 0
                 ? "진행중"
-                : `모임 ${gatherCnt}번 / 후기 ${reviewCnt}개`,
+                : `${gatherCnt}회 개설`,
           },
           {
             category: group.meetingType === "online" || isGuest ? "최근 활동 날짜" : "티 켓",

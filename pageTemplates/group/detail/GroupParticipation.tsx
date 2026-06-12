@@ -83,7 +83,7 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
       </Flex>
       <ProfileCardColumn
         hasCommentButton={false}
-        userCardArr={!isOpen ? userCardArr?.slice(0, 5) : userCardArr}
+        userCardArr={!isOpen ? userCardArr?.slice(0, 10) : userCardArr}
       />
       {!isOpen && userCardArr?.length >= 3 && (
         <Button
