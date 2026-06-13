@@ -706,7 +706,7 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
   {
     date: "2026-06-11",
     isCompleted: true,
-    textArr: ["타이틀 및 로고 추가", "아이폰 앱 출시 (저녁)"],
+    textArr: ["타이틀 및 로고 추가", "아이폰 앱 출시"],
   },
   {
     date: "2026-05-18",
