@@ -72,9 +72,12 @@ export function GatherThumbnailCard({
   memberReview,
   homePath,
 }: GatherThumbnailCardProps) {
-  const participantsMember = participants.filter(
-    (par) => par.user?._id !== "65df1ddcd73ecfd250b42c89",
-  );
+  const participantsMember =
+    gatherType === "gather"
+      ? participants.filter((par) => par.user?._id !== "65df1ddcd73ecfd250b42c89")
+      : participants?.[0]?.user?._id === "65df1ddcd73ecfd250b42c89"
+      ? participants.slice(1)
+      : participants;
 
   const has = !!(gatherReview || memberReview);
 
