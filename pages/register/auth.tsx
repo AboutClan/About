@@ -53,7 +53,18 @@ export default function Auth() {
   const token = useToken();
 
   const userInfo = useUserInfo();
-  console.log("user", userInfo);
+
+  useEffect(() => {
+    if (!userInfo?.role) return;
+    const registeredRoles = ["member", "human", "manager", "previliged", "resting", "enthusiastic", "support"];
+    if (registeredRoles.includes(userInfo.role)) {
+      router.replace("/home");
+    } else if (userInfo.role === "waiting") {
+      router.replace("/register/access");
+    } else if (userInfo.role === "block") {
+      router.replace("/login");
+    }
+  }, [userInfo?.role]);
 
   const getStoredRequestNo = () =>
     currentRequestNoRef.current ||
