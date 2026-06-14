@@ -37,7 +37,7 @@ function UserProfileBar({ user, editUrl }: UserProfileBarProps) {
         <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
           <Flex align="center" mb={1}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
-              {user?.nickname || "익명"}
+              {user?.role === "cafe_user" ? user?.nickname : user?.name || "익명"}
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
           </Flex>
