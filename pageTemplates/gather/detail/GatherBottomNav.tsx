@@ -170,63 +170,6 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
       }
     }
 
-    return {
-      text: data?.isApprovalRequired ? "참여 신청" : "참여하기",
-      handleFunction: () => {
-        if (isGuest) {
-          router.replace({
-            pathname: router.pathname,
-            query: {
-              ...router.query,
-              guest: "on",
-            },
-          });
-          return;
-        }
-        if (userInfo?.temperature?.cnt > 3 && userInfo?.temperature?.temperature < 36) {
-          toast("warning", "소셜링 온도가 낮아서 참여가 불가능합니다.");
-          return;
-        }
-
-        const myOld = birthToAge(userInfo.birth);
-
-        if ((data.age[0] !== 19 && myOld < data.age[0]) || myOld > data.age[1]) {
-          toast("error", "나이 조건이 맞지 않습니다.");
-          return;
-        }
-
-        if (data.genderCondition) {
-          const organizerGender = (data.user as IUser).gender;
-
-          const participants = data.participants;
-          let manCnt = participants.filter((who) => (who.user as IUser).gender === "남성").length;
-          let womanCnt = participants.length - manCnt;
-          if (organizerGender === "남성") manCnt++;
-          else womanCnt++;
-
-          if (userInfo.gender === "남성") {
-            if (
-              (womanCnt === 0 && manCnt >= 3) ||
-              (womanCnt === 1 && manCnt >= 4) ||
-              (womanCnt >= 2 && manCnt >= womanCnt * 2)
-            ) {
-              toast("error", "현재 멤버의 성별이 맞지 않습니다. 참여 대기 신청만 가능합니다.");
-            }
-          }
-          if (userInfo.gender === "여성") {
-            if (
-              (manCnt === 0 && womanCnt >= 3) ||
-              (manCnt === 1 && womanCnt >= 4) ||
-              (manCnt >= 2 && womanCnt >= manCnt * 2)
-            ) {
-              toast("error", "현재 멤버의 성별이 맞지 않습니다. 참여 대기 신청만 가능합니다.");
-            }
-          }
-        }
-
-        setIsModal(true);
-      },
-    };
     switch (data?.status) {
       case "open":
         if (feed) {
