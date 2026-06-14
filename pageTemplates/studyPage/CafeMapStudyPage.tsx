@@ -96,7 +96,7 @@ export default function CafeMapStudyPage() {
             >
               현재는 프리뷰 서비스로 미리보기만 가능합니다.
               <br />
-              동아리 어바웃의 스터디가 연동되어 있어요!
+              오픈 후 누구나 이용할 수 있어요!
             </Box>
 
             <Box fontSize="14px" fontWeight={700} mb={2}>
