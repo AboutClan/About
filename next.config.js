@@ -61,6 +61,9 @@ const baseNextConfig = {
   // },
   // output: "standalone",
   images: {
+    unoptimized: true,
+
+    // 2) 최신 포맷으로 자동 변환 (용량↓)
     formats: ["image/avif", "image/webp"],
 
     domains: [
