@@ -18,7 +18,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   const userInfo = useUserInfo();
   const status = data.status;
   const participantsCnt = data.participants.length;
-  console.log(data);
+
   const isMyGather = data.participants?.some((p) => p.user._id === userInfo?._id);
 
   const isSecret = gatherType === "openGather" || (gatherType === "secretGather" && !isMyGather);
@@ -45,7 +45,8 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
     }),
   );
 
-  const isAdminOpen = (data?.user as IUser)?._id === "65df1ddcd73ecfd250b42c89";
+  const isAdminOpen =
+    (data?.user as IUser)?._id === "65df1ddcd73ecfd250b42c89" && data?.memberCnt?.max !== 1;
 
   return (
     <>

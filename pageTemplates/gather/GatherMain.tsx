@@ -24,10 +24,8 @@ export const GROUP_MAPPING = {
 };
 
 export const getGroupKeyByValue = (value: string) => {
-  return Object.entries(GROUP_MAPPING).find(([_, values]) =>
-    values.includes(value as never)
-  )?.[0];
-}
+  return Object.entries(GROUP_MAPPING).find(([_, values]) => values.includes(value as never))?.[0];
+};
 
 export default function GatherMain() {
   const [gathers, setGathers] = useState<IGather[]>([]);
@@ -42,7 +40,7 @@ export default function GatherMain() {
   const sortKey = sortBy === "기본순" ? "basic" : sortBy === "최신 개설 순" ? "createdAt" : "date";
 
   const { data: gatherData, isLoading } = useGatherQuery(cursor, checkType, sortKey);
-
+  console.log(34, gatherData);
   // 필터 / 정렬 변경 시 리스트 & 커서 초기화
   useEffect(() => {
     setGathers([]);

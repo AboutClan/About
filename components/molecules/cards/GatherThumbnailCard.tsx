@@ -75,7 +75,7 @@ export function GatherThumbnailCard({
   const participantsMember =
     gatherType === "gather"
       ? participants.filter((par) => par.user?._id !== "65df1ddcd73ecfd250b42c89")
-      : participants?.[0]?.user?._id === "65df1ddcd73ecfd250b42c89"
+      : participants?.[0]?.user?._id === "65df1ddcd73ecfd250b42c89" && gatherType !== "group"
       ? participants.slice(1)
       : participants;
 
