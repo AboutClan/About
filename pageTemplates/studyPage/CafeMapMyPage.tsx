@@ -1,5 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
@@ -106,7 +105,7 @@ function CafeMapMyPage() {
             <Divider />
 
             {/* 포인트 블록 */}
-            <Flex p={4} borderRadius="12px" align="center">
+            {/* <Flex p={4} borderRadius="12px" align="center">
               <Flex
                 w="44px"
                 h="44px"
@@ -136,7 +135,7 @@ function CafeMapMyPage() {
                   <ChevronRightIcon />
                 </Flex>
               </Box>
-            </Flex>
+            </Flex> */}
             <Divider />
 
             {/* 소셜링 온도 블록 */}

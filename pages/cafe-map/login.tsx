@@ -150,10 +150,12 @@ function LoginPage() {
           fontWeight={600}
           variant="unstyled"
           onClick={() => {
+            router.push(`/cafe-map/login/account`);
+            return;
             navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
           }}
         >
-          문의하기
+          관리자 로그인
         </Button>
 
         <Image
@@ -216,7 +218,7 @@ function LoginPage() {
             </Button>
 
             {/* 애플 로그인 버튼 (iPhone에서만 노출) */}
-            {isIOS() && (
+            {isIOS() && isApp() && (
               <Button
                 variant="unstyled"
                 maxW="400px"

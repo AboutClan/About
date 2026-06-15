@@ -37,34 +37,42 @@ function UserProfileBar({ user, editUrl }: UserProfileBarProps) {
         <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
           <Flex align="center" mb={1}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
-              {user?.role === "cafe_user" ? user?.nickname : user?.name || "익명"}
+              {user?.role === "guest"
+                ? "테스트"
+                : user?.role === "cafe_user"
+                ? user?.nickname
+                : user?.name || "익명"}
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
           </Flex>
           <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
-            <CommentText>{user?.comment}</CommentText>
+            <CommentText>
+              {user?.role === "guest" ? "테스트 계정으로 접속중" : user?.comment}
+            </CommentText>
           </Flex>
         </Flex>
-        <Box ml="auto">
-          <Button
-            onClick={() => {
-              if (isGuest) {
-                typeToast("guest");
-                return;
-              }
-              router.push(editUrl || "/user/profile");
-            }}
-            size="sm"
-            h="20px"
-            bg="gray.100"
-            color="gray.500"
-            borderRadius="12px"
-            px={2}
-            py={1}
-          >
-            프로필 수정
-          </Button>
-        </Box>
+        {!isGuest && (
+          <Box ml="auto">
+            <Button
+              onClick={() => {
+                if (isGuest) {
+                  typeToast("guest");
+                  return;
+                }
+                router.push(editUrl || "/user/profile");
+              }}
+              size="sm"
+              h="20px"
+              bg="gray.100"
+              color="gray.500"
+              borderRadius="12px"
+              px={2}
+              py={1}
+            >
+              프로필 수정
+            </Button>
+          </Box>
+        )}
       </Flex>
       {isDrawer && <ProfileCamera setIsModal={setIsDrawer} />}
     </>
