@@ -329,9 +329,10 @@ export const authOptions: NextAuthOptions = {
           return `${baseUrl}/cafe-map/login`;
         }
 
-        // 신규 유저 redirect(/register/auth)인데 cafe-map 플로우면 /register/auth 방문 없이 바로 /cafe-map/register/name으로
+        // pages.newUser("/register/auth")로 향하는 redirect이지만 cafe-map 플로우인 경우
+        // callbackUrl(/cafe-map/login/callback)로 이동 → callback.tsx가 /cafe-map/register/name으로 라우팅
         if (parsed.pathname.startsWith("/register") && callbackUrl.includes("/cafe-map")) {
-          return `${baseUrl}/cafe-map/register/name`;
+          return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
         }
       } catch {}
 
