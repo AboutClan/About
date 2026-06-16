@@ -124,3 +124,38 @@ function Admin() {
 }
 
 export default Admin;
+
+import { GetServerSideProps } from "next";
+import { getServerSession } from "next-auth/next";
+
+import { authOptions } from "../../../pages/api/auth/[...nextauth]";
+
+const GATHER_ADMIN_UIDS = ["2259633694", "3224546232"];
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return { redirect: { destination: "/login", permanent: false } };
+  }
+
+  const id = context.params?.id;
+  const SERVER_URI = process.env.NEXT_PUBLIC_SERVER_URI;
+
+  try {
+    const res = await fetch(`${SERVER_URI}/gather?gatherId=${id}`);
+    if (res.ok) {
+      const gather = await res.json();
+      const ownerId =
+        typeof gather?.user === "string" ? gather.user : gather?.user?._id;
+      const isOwner = ownerId === session.user.id;
+      const isSuperAdmin = GATHER_ADMIN_UIDS.includes(session.user.uid);
+
+      if (!isOwner && !isSuperAdmin) {
+        return { redirect: { destination: "/home", permanent: false } };
+      }
+    }
+  } catch {}
+
+  return { props: {} };
+};

@@ -60,3 +60,11 @@ const Item = styled.div`
 `;
 
 export default AdminBadge;
+
+import { GetServerSideProps } from "next";
+
+import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return checkAdminAuth(context);
+};

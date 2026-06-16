@@ -26,3 +26,11 @@ function Badge() {
 }
 
 export default Badge;
+
+import { GetServerSideProps } from "next";
+
+import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return checkAdminAuth(context);
+};

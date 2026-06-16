@@ -178,3 +178,11 @@ export default StudyType;
 // const Delete = styled.div``;
 
 // export default AdminStudyStatus;
+
+import { GetServerSideProps } from "next";
+
+import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return checkAdminAuth(context);
+};

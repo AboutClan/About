@@ -48,3 +48,11 @@ function AdminResetstudy() {
 }
 
 export default AdminResetstudy;
+
+import { GetServerSideProps } from "next";
+
+import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return checkAdminAuth(context);
+};

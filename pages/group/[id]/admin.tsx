@@ -62,3 +62,42 @@ function Admin() {
 }
 
 export default Admin;
+
+import { GetServerSideProps } from "next";
+import { getServerSession } from "next-auth/next";
+
+import { authOptions } from "../../../pages/api/auth/[...nextauth]";
+
+const GROUP_SUPER_ADMIN_UIDS = ["2259633694"];
+const GROUP_ADMIN_ROLES = ["admin", "manager"];
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return { redirect: { destination: "/login", permanent: false } };
+  }
+
+  const id = context.params?.id;
+  const SERVER_URI = process.env.NEXT_PUBLIC_SERVER_URI;
+
+  try {
+    const res = await fetch(`${SERVER_URI}/groupStudy?groupStudyId=${id}`);
+    if (res.ok) {
+      const group = await res.json();
+      const myParticipant = group?.participants?.find(
+        (p: { user: { _id: string }; role: string }) =>
+          p.user?._id === session.user.id,
+      );
+      const isGroupAdmin =
+        myParticipant && GROUP_ADMIN_ROLES.includes(myParticipant.role);
+      const isSuperAdmin = GROUP_SUPER_ADMIN_UIDS.includes(session.user.uid);
+
+      if (!isGroupAdmin && !isSuperAdmin) {
+        return { redirect: { destination: "/home", permanent: false } };
+      }
+    }
+  } catch {}
+
+  return { props: {} };
+};
