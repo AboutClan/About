@@ -369,6 +369,15 @@ export const useMyPlaceQuery = (options?: QueryOptions<MyCafePlaceProps>) =>
     },
     options,
   );
+export const usePlaceRankingQuery = (options?: QueryOptions<{ place: PlaceProps; totalScore: number }[]>) =>
+  useQuery(
+    ["place", "ranking"],
+    async () => {
+      const res = await axios.get<{ place: PlaceProps; totalScore: number }[]>(`${SERVER_URI}/place/ranking`);
+      return res.data;
+    },
+    options,
+  );
 
 export const useStudyPreferenceQuery = (options?: QueryOptions<IStudyVotePlaces>) =>
   useQuery(

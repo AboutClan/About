@@ -1,19 +1,26 @@
-import { Box, Button, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import { Box, Button, Flex, IconButton, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { Bell } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
+import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import { StarIcon } from "../../../components/Icons/StarIcon";
 import Header from "../../../components/layouts/Header";
+import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import LocationSearch, {
   mapxyToLatLng,
 } from "../../../components/organisms/location/LocationSearch";
 import { NaverLocationProps } from "../../../hooks/external/queries";
+import { usePlaceRankingQuery } from "../../../hooks/study/queries";
 import { LocationProps } from "../../../types/common";
 import { DispatchType } from "../../../types/hooks/reactTypes";
-import { StudyPlaceFilter } from "../../../types/models/studyTypes/study-entity.types";
+import { PlaceProps } from "../../../types/models/studyTypes/entityTypes";
+import {
+  StudyPlaceFilter,
+  StudyPlaceProps,
+} from "../../../types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "../../../utils/validationUtils";
 import StatusButton from "./StatusButton";
 import { CafeMapLogo } from "./StudyPageMap";
@@ -148,6 +155,7 @@ interface StudyMapNavProps {
   selectedPickNickname: string | null;
   setSelectedPickNickname: (n: string | null) => void;
   openAboutDrawer: () => void;
+  pickReviewPlace: (place: StudyPlaceProps) => void;
 }
 
 function StudyMapNav({
@@ -168,12 +176,16 @@ function StudyMapNav({
   setSelectedPickNickname,
   openAboutDrawer,
   onCafeSearch,
+  pickReviewPlace,
 }: StudyMapNavProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [isFocus, setIsFocus] = useState(true);
   const [updateMenu, setUpdateMenu] = useState(false);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
+  const [isRankingOpen, setIsRankingOpen] = useState(false);
+
+  const { data: rankingData } = usePlaceRankingQuery({ enabled: isRankingOpen });
   const [placeInfo, setPlaceInfo] = useState<LocationProps>({
     name: "",
     address: "",
@@ -222,7 +234,7 @@ function StudyMapNav({
       onCafeSearch?.({ ...result, latitude, longitude });
     }
   };
-
+  console.log(35, rankingData);
   return (
     <>
       {/* 상단 헤더 + 검색바 (확장 시에만) */}
@@ -447,15 +459,47 @@ function StudyMapNav({
               </Button>
             )}
           </Flex>
-          <Box
+          <Flex
             pos="fixed"
             top="calc(var(--header-h) + 40px + 56px + 16px)"
-            left="max(16px, calc((100vw - var(--max-width)) / 2 + 16px))"
             zIndex={100}
             pointerEvents="auto"
+            justify="space-between"
+            w="full"
+            px="max(16px, calc((100vw - var(--max-width)) / 2 + 16px))"
           >
-            <StatusButton />
-          </Box>
+            <Box>
+              <StatusButton />
+            </Box>
+            <Box>
+              <Button
+                rounded="full"
+                bgColor="white"
+                boxShadow={MAP_BTN_SHADOW}
+                w="40px"
+                h="40px"
+                minW="40px"
+                size="sm"
+                p="0"
+                border="var(--border-main)"
+                borderColor="var(--gray-300)"
+                borderWidth="1px"
+                onClick={() => setIsRankingOpen(true)}
+                _hover={{ bgColor: "white" }}
+                _active={{ bgColor: "white" }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="21px"
+                  viewBox="0 -960 960 960"
+                  width="21px"
+                  fill="var(--gray-800)"
+                >
+                  <path d="M536.5-543.5Q560-567 560-600t-23.5-56.5Q513-680 480-680t-56.5 23.5Q400-633 400-600t23.5 56.5Q447-520 480-520t56.5-23.5ZM440-200v-124q-49-11-87.5-41.5T296-442q-75-9-125.5-65.5T120-640v-40q0-33 23.5-56.5T200-760h80q0-33 23.5-56.5T360-840h240q33 0 56.5 23.5T680-760h80q33 0 56.5 23.5T840-680v40q0 76-50.5 132.5T664-442q-18 46-56.5 76.5T520-324v124h120q17 0 28.5 11.5T680-160q0 17-11.5 28.5T640-120H320q-17 0-28.5-11.5T280-160q0-17 11.5-28.5T320-200h120ZM280-528v-152h-80v40q0 38 22 68.5t58 43.5Zm285 93q35-35 35-85v-240H360v240q0 50 35 85t85 35q50 0 85-35Zm115-93q36-13 58-43.5t22-68.5v-40h-80v152Zm-200-52Z" />
+                </svg>
+              </Button>
+            </Box>
+          </Flex>
         </>
       )}
 
@@ -517,6 +561,74 @@ function StudyMapNav({
             ))}
           </Flex>
         </>
+      )}
+
+      {/* 카공 랭킹 드로어 */}
+      {isRankingOpen && (
+        <BottomFlexDrawer
+          isDrawerUp
+          isOverlay
+          height={460}
+          isHideBottom
+          zIndex={1000}
+          setIsModal={() => setIsRankingOpen(false)}
+          headerSlot={
+            <>
+              <Flex pt={1} w="100%" align="center">
+                <Box
+                  lineHeight="32px"
+                  flex="1"
+                  minW={0}
+                  fontWeight="semibold"
+                  fontSize="20px"
+                  textAlign="start"
+                >
+                  카공 랭킹 TOP 100
+                </Box>
+                <IconButton
+                  aria-label="닫기"
+                  icon={<XIcon />}
+                  variant="ghost"
+                  size="sm"
+                  ml={2}
+                  border="none"
+                  cursor="pointer"
+                  onClick={() => setIsRankingOpen(false)}
+                />
+              </Flex>
+              <Box color="gray.500" mr="auto" fontSize="12px">
+                실제 카공러 후기를 바탕으로 선정한 카공 카페 랭킹
+              </Box>
+            </>
+          }
+        >
+          <Flex
+            flexDir="column"
+            w="full"
+            mt={3}
+            flex="1"
+            minH={0}
+            overflowY="auto"
+            borderTop="var(--border-main)"
+            sx={{
+              "::-webkit-scrollbar": { display: "none" },
+              scrollbarWidth: "none",
+              touchAction: "pan-y",
+              overscrollBehavior: "contain",
+              WebkitOverflowScrolling: "touch",
+            }}
+          >
+            {rankingData?.map((item, idx) => (
+              <RankingCafeCard
+                key={item.place._id}
+                place={item.place}
+                rank={idx + 1}
+                totalScore={item.totalScore}
+                onReviewClick={() => pickReviewPlace(item.place as unknown as StudyPlaceProps)}
+              />
+            ))}
+          </Flex>
+        </BottomFlexDrawer>
       )}
 
       {/* 업데이트 소식 드로어 */}
@@ -824,6 +936,75 @@ export function ExpansionIcon() {
     >
       <path d="M160-120q-17 0-28.5-11.5T120-160v-240q0-17 11.5-28.5T160-440q17 0 28.5 11.5T200-400v144l504-504H560q-17 0-28.5-11.5T520-800q0-17 11.5-28.5T560-840h240q17 0 28.5 11.5T840-800v240q0 17-11.5 28.5T800-520q-17 0-28.5-11.5T760-560v-144L256-200h144q17 0 28.5 11.5T440-160q0 17-11.5 28.5T400-120H160Z" />
     </svg>
+  );
+}
+
+function RankingCafeCard({
+  place,
+  rank,
+  totalScore,
+  onReviewClick,
+}: {
+  place: PlaceProps;
+  rank: number;
+  totalScore: number;
+  onReviewClick: () => void;
+}) {
+  return (
+    <Flex
+      as="button"
+      w="full"
+      align="center"
+      py={3}
+      borderBottom="var(--border-main)"
+      gap={3}
+      textAlign="left"
+      pr={1}
+      _hover={{ bg: "gray.50" }}
+      _active={{ opacity: 0.7 }}
+      onClick={onReviewClick}
+    >
+      <Box
+        fontSize="13px"
+        fontWeight={700}
+        color={rank <= 3 ? "var(--color-mint)" : "var(--gray-400)"}
+        minW="32px"
+        textAlign="center"
+        flexShrink={0}
+      >
+        #{rank}
+      </Box>
+      <Flex direction="column" flex={1} minW={0} gap="3px">
+        <Box
+          fontSize="14px"
+          fontWeight={700}
+          lineHeight="20px"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+          color="gray.900"
+        >
+          {place.location?.name}
+        </Box>
+        <Flex align="center" gap={1}>
+          <StarIcon type="fill" size="sm" />
+          <Box fontSize="12px" fontWeight={600} color="var(--color-mint)" lineHeight="16px">
+            {totalScore.toFixed(1)}
+          </Box>
+        </Flex>
+        <Box
+          fontSize="11px"
+          color="gray.400"
+          lineHeight="16px"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+        >
+          {place.location.address}
+        </Box>
+      </Flex>
+      <ShortArrowIcon dir="right" />
+    </Flex>
   );
 }
 

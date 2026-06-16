@@ -56,6 +56,7 @@ function StudyPageMap({
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
+
   const {
     currentLocation: currentLocation2,
     refetchCurrentLocation,
@@ -613,6 +614,10 @@ function StudyPageMap({
               selectedPickNickname={selectedPickNickname}
               setSelectedPickNickname={setSelectedPickNickname}
               openAboutDrawer={() => setDrawerType("about")}
+              pickReviewPlace={(place) => {
+                setReviewPlaceInfo(place);
+                updateQuery({ modal: "reviewPlace" });
+              }}
               onCafeSearch={(result) => {
                 const existingPlace = placeData?.find((p) => {
                   if (p.location.name === result.title) return true;
