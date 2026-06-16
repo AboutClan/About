@@ -18,7 +18,7 @@ export default function CafeMapLoginCallback() {
     const role = session.user?.role;
 
     if (role === "newUser") {
-      router.replace("/cafe-map/register/auth");
+      router.replace("/cafe-map/register/name");
     } else if (!role || role === "guest") {
       router.replace("/cafe-map");
     } else {

@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -82,6 +82,27 @@ function LoginPage() {
   }, [errorCode, toast]);
 
   const [isModal, setIsModal] = useState(false);
+
+  // 약관 동의 바텀시트
+  const [consentOpen, setConsentOpen] = useState(false);
+  const [consentPending, setConsentPending] = useState<"kakao" | "apple" | null>(null);
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [agreePrivacy, setAgreePrivacy] = useState(false);
+  const allAgreed = agreeTerms && agreePrivacy;
+
+  const openConsent = (provider: "kakao" | "apple") => {
+    if (loadingType) return;
+    setConsentPending(provider);
+    setAgreeTerms(false);
+    setAgreePrivacy(false);
+    setConsentOpen(true);
+  };
+
+  const handleConsentConfirm = () => {
+    if (!allAgreed || !consentPending) return;
+    setConsentOpen(false);
+    customSignin(consentPending);
+  };
 
   const customSignin = async (provider: "kakao" | "apple" = "kakao") => {
     if (loadingType) return;
@@ -201,7 +222,7 @@ function LoginPage() {
               aspectRatio={7.4 / 1}
               backgroundColor="#FEE500"
               isLoading={loadingType === "kakao"}
-              onClick={() => customSignin()}
+              onClick={() => openConsent("kakao")}
               display="flex"
               justifyContent="space-between"
               leftIcon={<KakaoIcon />}
@@ -228,7 +249,7 @@ function LoginPage() {
                 border="1px solid"
                 borderColor="gray.200"
                 isLoading={loadingType === "apple"}
-                onClick={() => customSignin("apple")}
+                onClick={() => openConsent("apple")}
                 display="flex"
                 justifyContent="space-between"
                 leftIcon={<AppleIcon />}
@@ -275,6 +296,114 @@ function LoginPage() {
           <ForceLogoutDialog />
         </Flex>
       </Box>
+      {consentOpen && (
+        <>
+          <Box
+            pos="fixed"
+            inset={0}
+            zIndex={800}
+            bg="rgba(0,0,0,0.5)"
+            onClick={() => setConsentOpen(false)}
+          />
+          <Flex
+            pos="fixed"
+            left={0}
+            right={0}
+            bottom={0}
+            zIndex={801}
+            bg="white"
+            borderTopRadius="20px"
+            flexDir="column"
+            maxW="var(--max-width)"
+            mx="auto"
+            px={5}
+            pb={getSafeAreaBottom(24)}
+          >
+            <Flex justify="center" pt={3} pb={2}>
+              <Box w="40px" h="4px" borderRadius="2px" bg="gray.200" />
+            </Flex>
+
+            <Box fontWeight={700} fontSize="17px" color="gray.900" pt={1} pb={3}>
+              카공지도 이용을 위해 약관 동의가 필요해요
+            </Box>
+
+            <Box
+              fontSize="13px"
+              color="gray.500"
+              lineHeight="22px"
+              bg="gray.50"
+              borderRadius="12px"
+              px={4}
+              py={3}
+              mb={5}
+            >
+              카공지도는 누구나 믿고 사용할 수 있는 카공 장소 정보를 위해
+              <br />
+              허위 리뷰, 광고성 리뷰, 불쾌한 콘텐츠, 스팸, 사칭, 악용 행위를 허용하지 않습니다.
+              <br />
+              <br />
+              부적절한 리뷰나 사용자는 신고 또는 차단할 수 있으며,
+              <br />
+              신고된 내용뿐 아니라 전체 리뷰를 정기적으로 확인해,
+              <br />
+              24시간 이내 삭제 및 이용 제한 조치를 진행합니다.
+            </Box>
+
+            <Flex
+              flexDir="column"
+              gap={3}
+              pb={4}
+              borderBottom="1px solid"
+              borderColor="gray.100"
+              mb={5}
+            >
+              <Checkbox
+                isChecked={agreeTerms}
+                onChange={(e) => setAgreeTerms(e.target.checked)}
+                colorScheme="mint"
+                size="md"
+              >
+                <Box fontSize="13px" color="gray.700">
+                  <Box as="span" fontWeight={600} color="gray.900">
+                    [필수]{" "}
+                  </Box>
+                  이용약관 및 커뮤니티 안전 정책에 동의합니다
+                </Box>
+              </Checkbox>
+              <Checkbox
+                isChecked={agreePrivacy}
+                onChange={(e) => setAgreePrivacy(e.target.checked)}
+                colorScheme="mint"
+                size="md"
+              >
+                <Box fontSize="13px" color="gray.700">
+                  <Box as="span" fontWeight={600} color="gray.900">
+                    [필수]{" "}
+                  </Box>
+                  개인정보처리방침에 동의합니다
+                </Box>
+              </Checkbox>
+            </Flex>
+
+            <Button
+              w="full"
+              h="52px"
+              borderRadius="10px"
+              colorScheme={allAgreed ? "mint" : undefined}
+              bg={allAgreed ? undefined : "gray.200"}
+              color={allAgreed ? "white" : "gray.400"}
+              fontWeight={700}
+              fontSize="15px"
+              isDisabled={!allAgreed}
+              onClick={handleConsentConfirm}
+              _disabled={{ cursor: "not-allowed", opacity: 1 }}
+            >
+              동의하고 시작하기
+            </Button>
+          </Flex>
+        </>
+      )}
+
       {errorUserUid && (
         <ModalLayout
           title="로그인 실패"

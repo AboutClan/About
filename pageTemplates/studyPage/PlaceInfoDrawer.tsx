@@ -11,6 +11,7 @@ import { getPlaceScore } from "../../libs/study/studyUtils";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { getRandomImage } from "../../utils/imageUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
+import { getSafeAreaBottom,isApp  } from "../../utils/validationUtils";
 
 interface PlaceInfoDrawerProps {
   placeInfo: StudyPlaceProps;
@@ -189,11 +190,31 @@ export function PlaceInfoBox({
   hasButton?: boolean;
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isMapPickerOpen, setIsMapPickerOpen] = useState(false);
 
   const score = getPlaceScore(placeInfo?.ratings);
 
-  const handleReviewClick = () => {
-    navigateExternalLink(`https://map.naver.com/p/search/${placeInfo.location.name}`);
+  const openInMap = (type: "naver" | "kakao" | "apple") => {
+    const { name, latitude, longitude } = placeInfo.location;
+    const query = encodeURIComponent(name);
+    let url: string;
+    if (isApp()) {
+      const deepLinks = {
+        naver: `nmap://search?query=${query}`,
+        kakao: `kakaomap://search?q=${query}`,
+        apple: `maps://?q=${query}&ll=${latitude},${longitude}`,
+      };
+      url = deepLinks[type];
+    } else {
+      const webUrls = {
+        naver: `https://map.naver.com/p/search/${query}`,
+        kakao: `https://map.kakao.com/link/search/${query}`,
+        apple: `https://maps.apple.com/?q=${query}`,
+      };
+      url = webUrls[type];
+    }
+    navigateExternalLink(url);
+    setIsMapPickerOpen(false);
   };
 
   const handleRatingClick = () => {
@@ -263,14 +284,14 @@ export function PlaceInfoBox({
               border="1px solid var(--color-mint)"
               borderRadius="8px"
               borderColor="mint"
-              onClick={handleReviewClick}
+              onClick={() => setIsMapPickerOpen(true)}
               fontSize="13px"
               fontWeight="bold"
               mr={2}
               bg="white"
               lineHeight="16px"
             >
-              네이버 지도
+              지도에서 보기
             </Button>
             <Button
               colorScheme="mint"
@@ -301,12 +322,65 @@ export function PlaceInfoBox({
             border="1px solid var(--color-mint)"
             bg="white"
             w="full"
-            onClick={() => {
-              handleReviewClick();
-            }}
+            onClick={() => setIsMapPickerOpen(true)}
           >
-            네이버 지도 바로가기
+            지도에서 보기
           </Button>
+        )}
+
+        {isMapPickerOpen && (
+          <>
+            <Box
+              pos="fixed"
+              inset={0}
+              zIndex={2000}
+              bg="rgba(0,0,0,0.45)"
+              onClick={() => setIsMapPickerOpen(false)}
+            />
+            <Flex
+              pos="fixed"
+              left={0}
+              right={0}
+              bottom={0}
+              zIndex={2001}
+              bg="white"
+              borderTopRadius="20px"
+              flexDir="column"
+              maxW="var(--max-width)"
+              mx="auto"
+              pb={getSafeAreaBottom(16)}
+            >
+              <Flex justify="center" pt={3} pb={1}>
+                <Box w="56px" h="4px" borderRadius="2px" bg="gray.300" />
+              </Flex>
+              <Box fontWeight={700} fontSize="16px" px={5} pt={2} pb={1}>
+                지도 앱 선택
+              </Box>
+              {(
+                [
+                  { type: "naver", label: "네이버 지도" },
+                  { type: "kakao", label: "카카오맵" },
+                  { type: "apple", label: "Apple 지도" },
+                ] as { type: "naver" | "kakao" | "apple"; label: string }[]
+              ).map(({ type, label }) => (
+                <Flex
+                  key={type}
+                  px={5}
+                  py={4}
+                  align="center"
+                  cursor="pointer"
+                  borderBottom="1px solid"
+                  borderColor="gray.100"
+                  _hover={{ bg: "gray.50" }}
+                  onClick={() => openInMap(type)}
+                >
+                  <Box fontWeight={600} fontSize="14px" color="gray.900">
+                    {label}
+                  </Box>
+                </Flex>
+              ))}
+            </Flex>
+          </>
         )}
       </Flex>
     </>
