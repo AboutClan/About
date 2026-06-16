@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { Bell } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import AlertCirclePoint from "../../../components/atoms/AlertCirclePoint";
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import { StarIcon } from "../../../components/Icons/StarIcon";
@@ -286,9 +287,29 @@ function StudyMapNav({
                     cursor="pointer"
                     _hover={{ bg: "gray.50" }}
                     _active={{ bg: "gray.100" }}
-                    onClick={() => setUpdateMenu(true)}
+                    onClick={() => {
+                      localStorage.setItem(
+                        "cafe-notice",
+                        UPDATE_ITEMS.slice().reverse()?.[1]?.date,
+                      );
+                      setUpdateMenu(true);
+                    }}
+                    pos="relative"
                   >
                     <Bell size={24} strokeWidth={1.5} color="var(--gray-600)" />
+                    {localStorage.getItem("cafe-notice") !==
+                      UPDATE_ITEMS.slice().reverse()?.[1]?.date && (
+                      <Box
+                        position="absolute"
+                        right="8px"
+                        top="6px"
+                        p="1px"
+                        bgColor="white"
+                        borderRadius="50%"
+                      >
+                        <AlertCirclePoint isActive={true} />
+                      </Box>
+                    )}
                   </Flex>
                 </>
               ) : (
@@ -821,9 +842,18 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["타이틀 및 로고 추가", "아이폰 앱 출시"],
   },
   {
+    date: "2026-06-17",
+    isCompleted: true,
+    textArr: ["카공 카페 랭킹 기능 추가"],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
-    textArr: ["안드로이드 앱 출시 (6월 20일)", "스터디 기능 오픈 (6월 20일) "],
+    textArr: [
+      "안드로이드 앱 출시 (6월 20일)",
+      "스터디 기능 오픈 (6월 20일)",
+      "리뷰 작성 시 리워드 지급 (6월 20일)",
+    ],
   },
 ];
 
