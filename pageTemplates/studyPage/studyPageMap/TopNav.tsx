@@ -989,7 +989,7 @@ function RankingCafeCard({
         <Flex align="center" gap={1}>
           <StarIcon type="fill" size="sm" />
           <Box fontSize="12px" fontWeight={600} color="var(--color-mint)" lineHeight="16px">
-            {totalScore.toFixed(1)}
+            {Number(totalScore.toFixed(2))}
           </Box>
         </Flex>
         <Box
