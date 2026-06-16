@@ -161,7 +161,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/home",
     error: "/login",
-    newUser: "/register/new-user",
+    newUser: "/register/auth",
   },
 
   callbacks: {
@@ -329,8 +329,8 @@ export const authOptions: NextAuthOptions = {
           return `${baseUrl}/cafe-map/login`;
         }
 
-        // pages.newUser("/register/new-user")로 향하는 redirect에서 cafe-map 플로우면 바로 register/name으로
-        if (parsed.pathname === "/register/new-user" && callbackUrl.includes("/cafe-map")) {
+        // 신규 유저 redirect(/register/auth)인데 cafe-map 플로우면 /register/auth 방문 없이 바로 /cafe-map/register/name으로
+        if (parsed.pathname.startsWith("/register") && callbackUrl.includes("/cafe-map")) {
           return `${baseUrl}/cafe-map/register/name`;
         }
       } catch {}
