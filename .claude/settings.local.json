@@ -49,7 +49,8 @@
       "PowerShell(Get-ChildItem -Recurse \"C:\\\\Users\\\\user\\\\Desktop\\\\당근\\\\개발\\\\nest-back\\\\src\\\\MSA\\\\Auth\" -File | ForEach-Object { $_.FullName })",
       "Bash(del *)",
       "Bash(Select-Object -ExpandProperty Name)",
-      "Skill(claude-api)"
+      "Skill(claude-api)",
+      "Bash(xargs grep -l \"admin\")"
     ]
   }
 }

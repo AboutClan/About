@@ -218,7 +218,7 @@ function LoginPage() {
             </Button>
 
             {/* 애플 로그인 버튼 (iPhone에서만 노출) */}
-            {isIOS() && isApp() && (
+            {isIOS() && (
               <Button
                 variant="unstyled"
                 maxW="400px"

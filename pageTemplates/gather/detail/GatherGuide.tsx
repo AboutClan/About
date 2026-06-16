@@ -56,7 +56,7 @@ function GatherGuide({ isAdmin, isOpenGather }: GatherGuideProps) {
           </Box>
           <InfoList
             items={[
-              "모임 안내를 위해 모임장에게 연락처가 공개될 수 있습니다.",
+              "모임 진행를 위해 모임장에게 연락처가 공개될 수 있습니다.",
               ...(isGuest ? [] : ["참여 시 티켓 1장이 소모됩니다. (취소 시 자동 반환)"]),
               "모임 종료 후, 멤버 후기 평가를 할 수 있습니다.",
               "승인제 모임의 경우, 승인 여부는 모임장이 결정합니다.",
