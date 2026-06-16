@@ -844,7 +844,11 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
   {
     date: "2026-06-17",
     isCompleted: true,
-    textArr: ["카공 카페 랭킹 기능 추가", "허위 리뷰 및 관계자성 리뷰 검수 처리"],
+    textArr: [
+      "카공 카페 랭킹 기능 추가",
+      "신고 및 차단 기능 추가",
+      "허위 리뷰 및 관계자성 리뷰 검수 처리",
+    ],
   },
   {
     date: "2026-05-18",
