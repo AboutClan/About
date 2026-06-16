@@ -140,11 +140,14 @@ export default function GatherMain() {
         <Box minH="1000px">
           {cardDataArr?.length ? (
             <>
-              {cardDataArr.map((cardData, idx) => (
-                <Box mb="12px" key={idx}>
-                  <GatherThumbnailCard {...cardData} />
-                </Box>
-              ))}
+              {cardDataArr
+                .slice()
+                .sort((a, b) => (a.id === 5019 || b.id === 5019 ? -1 : 1))
+                .map((cardData, idx) => (
+                  <Box mb="12px" key={idx}>
+                    <GatherThumbnailCard {...cardData} />
+                  </Box>
+                ))}
             </>
           ) : (
             <>
