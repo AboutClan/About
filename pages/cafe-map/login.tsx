@@ -151,8 +151,10 @@ function LoginPage() {
     }
   };
 
+  const [showAppleButton, setShowAppleButton] = useState(false);
   useEffect(() => {
     setIsIPhone(isApp() && isIOS()); // 클라에서만 계산
+    setShowAppleButton(isIOS() && !isApp());
   }, []);
   const showTopText = !isIPhone && ratio !== null && ratio >= 1.75;
   const showBottomText = ratio !== null && ratio >= 1.55;
@@ -239,7 +241,7 @@ function LoginPage() {
             </Button>
 
             {/* 애플 로그인 버튼 (iPhone에서만 노출) */}
-            {isIOS() && (
+            {showAppleButton && (
               <Button
                 variant="unstyled"
                 maxW="400px"

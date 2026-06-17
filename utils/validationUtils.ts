@@ -88,6 +88,11 @@ export const getDeviceOS = (): DeviceOS => {
 };
 
 export const isIOS = () => getDeviceOS() === "iOS";
+export const isSafariBrowser = (): boolean => {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent;
+  return /Safari/i.test(ua) && !/Chrome|CriOS|FxiOS|EdgiOS/i.test(ua);
+};
 export const isApp = (): boolean => {
   if (typeof window === "undefined") return false;
 
