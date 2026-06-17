@@ -37,6 +37,7 @@ interface ILayout {
 }
 
 function Layout({ children }: ILayout) {
+  console.log(3535353);
   const toast = useToast();
   const router = useRouter();
   const pathname = usePathname();
