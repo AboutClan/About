@@ -46,7 +46,7 @@ function LoginPage() {
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
   });
-
+  console.log(35);
   useEffect(() => {
     switch (statusParam) {
       case "logout":
