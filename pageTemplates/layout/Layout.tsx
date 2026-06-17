@@ -62,7 +62,8 @@ function Layout({ children }: ILayout) {
     PUBLIC_SEGMENT.includes(segment) ||
     pathname === "/user/info/policy" ||
     pathname === "/user/info/privacy" ||
-    pathname === "/faq";
+    pathname === "/faq" ||
+    pathname?.startsWith("/cafe-map/login");
 
   const isGuest = session?.user.role === "guest";
   const [isErrorModal, setIsErrorModal] = useState(false);

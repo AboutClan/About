@@ -64,7 +64,8 @@ export const generateClientSecret = () => {
   return jwt.sign(payload, privateKey, { algorithm: "ES256", header });
 };
 
-export const authOptions: NextAuthOptions = {
+function buildAuthOptions(): NextAuthOptions {
+  return {
   secret,
   debug: true,
   cookies: {
@@ -435,6 +436,11 @@ export const authOptions: NextAuthOptions = {
       }
     },
   },
-};
+  };
+}
 
-export default NextAuth(authOptions);
+export const authOptions: NextAuthOptions = buildAuthOptions();
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  return NextAuth(req, res, buildAuthOptions());
+}
