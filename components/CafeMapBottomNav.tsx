@@ -46,11 +46,10 @@ export default function CafeMapBottomNav() {
   const { data: session } = useSession();
   const isLoggedIn =
     !!session && session.user?.role !== "guest" && session.user?.role !== "newUser";
-
+  console.log(session, isLoggedIn);
   const activeTab: TabId = (router.query.tab as TabId) || "map";
 
   const handleTabClick = (tab: TabItem) => {
-    console.log(315);
     if (tab.isComingSoon) return;
     if (activeTab === tab.id) return;
     if (tab.id === "profile") {

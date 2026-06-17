@@ -9,6 +9,7 @@ import Header from "../../components/layouts/Header";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import CafeMapSecedeModal from "../../modals/cafeMap/CafeMapSecedeModal";
 import RequestSuggestModal from "../../modals/userRequest/RequestSuggestModal";
 import { navigateExternalLink } from "../../utils/navigateUtils";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
@@ -24,6 +25,7 @@ function CafeMapMyPage() {
   const [showTempDrawer, setShowTempDrawer] = useState(false);
   const [showSettingDrawer, setShowSettingDrawer] = useState(false);
   const [showSuggestModal, setShowSuggestModal] = useState(false);
+  const [showSecedeModal, setShowSecedeModal] = useState(false);
 
   const temperature = userInfo?.temperature?.temperature ?? 36.5;
   const tempMin = 36.5;
@@ -82,7 +84,7 @@ function CafeMapMyPage() {
               <UserGatherSectionReview />
             </Box>
 
-            {/* A안: 좋아요 한 카페 */}
+      
             <NavCard
               emoji="❤️"
               label="내가 좋아요 한 카페"
@@ -165,6 +167,14 @@ function CafeMapMyPage() {
               건의 및 제보하기
             </button>
             <button
+              onClick={() => {
+                setShowSettingDrawer(false);
+                setShowSecedeModal(true);
+              }}
+            >
+              탈퇴하기
+            </button>
+            <button
               onClick={async () => {
                 await signOut({ redirect: false });
                 await signIn("guest", {
@@ -183,6 +193,8 @@ function CafeMapMyPage() {
       {showSuggestModal && (
         <RequestSuggestModal type="suggest" setIsModal={() => setShowSuggestModal(false)} />
       )}
+
+      {showSecedeModal && <CafeMapSecedeModal setIsModal={() => setShowSecedeModal(false)} />}
     </>
   );
 }

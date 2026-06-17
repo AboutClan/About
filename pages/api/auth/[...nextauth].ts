@@ -389,7 +389,7 @@ function buildAuthOptions(): NextAuthOptions {
           case "guest":
             return { ...token, ...GUEST_USER };
           case "credentials":
-            return { ...token, ...MEMBER_GUEST_USER };
+            return { ...token, ...TEST_USER };
           case "kakao":
           case "apple":
             {
