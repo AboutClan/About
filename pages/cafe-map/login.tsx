@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox, Flex } from "@chakra-ui/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -10,7 +10,7 @@ import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
 import { ModalLayout } from "../../modals/Modals";
 import { setAuthIntent } from "../../utils/authIntentUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getSafeAreaBottom, isIOS } from "../../utils/validationUtils";
+import { getSafeAreaBottom } from "../../utils/validationUtils";
 
 function LoginPage() {
   const router = useRouter();
@@ -149,8 +149,6 @@ function LoginPage() {
     }
   };
 
-
-
   return (
     <>
       <Box height="100dvh" position="relative">
@@ -233,7 +231,7 @@ function LoginPage() {
             </Button>
 
             {/* 애플 로그인 버튼 (iPhone에서만 노출) */}
-            {isIOS() && (
+            {true && (
               <Button
                 variant="unstyled"
                 maxW="400px"
