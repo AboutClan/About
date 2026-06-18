@@ -20,8 +20,6 @@ function LoginPage() {
   const [errorUserUid, setErrorUserUid] = useState<string>(null);
   // 화면 비율 계산 (SSR-safe)
   const [ratio, setRatio] = useState<number | null>(null);
-  const [isIPhone, setIsIPhone] = useState(false);
-  // 디바이스 타입 (iPhone 여부 등)
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -33,7 +31,6 @@ function LoginPage() {
     };
 
     updateRatio();
-    setIsIPhone(isIOS());
     window.addEventListener("resize", updateRatio);
     return () => window.removeEventListener("resize", updateRatio);
   }, []);
@@ -152,8 +149,7 @@ function LoginPage() {
     }
   };
 
-  const showTopText = !isIPhone && ratio !== null && ratio >= 1.75;
-  const showBottomText = ratio !== null && ratio >= 1.55;
+
 
   return (
     <>
@@ -237,7 +233,7 @@ function LoginPage() {
             </Button>
 
             {/* 애플 로그인 버튼 (iPhone에서만 노출) */}
-            {isIPhone && (
+            {isIOS() && (
               <Button
                 variant="unstyled"
                 maxW="400px"
