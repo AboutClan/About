@@ -24,7 +24,7 @@ interface HomeGatherColProps {
 export default function HomeGatherCol({ gathers: prevGathers, isPriority }: HomeGatherColProps) {
   const setBackUrl = useSetRecoilState(backUrlState);
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
-
+  console.log(24, prevGathers);
   useEffect(() => {
     if (!prevGathers) return;
     const gathers = prevGathers?.filter((gather) => !!gather);
