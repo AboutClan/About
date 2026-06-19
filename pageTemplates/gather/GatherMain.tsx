@@ -15,8 +15,8 @@ import GatherSkeletonMain from "./GatherSkeletonMain";
 type SortedType = "최신 개설 순" | "일정 빠른 순" | "기본순";
 
 export const GROUP_MAPPING = {
-  크루: ["크루"],
-  "공부·자기계발": ["스터디", "자기계발", "말하기", "크루"],
+  스터디: ["스터디", "말하기", "크루"],
+  자기계발: ["자기계발"],
   취미: ["힐링", "소셜 게임", "요리"],
   "문화·감상": ["감상"],
   액티비티: ["운동"],

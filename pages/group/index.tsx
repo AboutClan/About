@@ -39,7 +39,8 @@ const enToStatus: Record<string, Status> = Object.entries(statusToEn).reduce(
 
 const categoryArr = [
   { title: "전체" },
-  { title: "공부·자기계발" },
+  { title: "스터디" },
+  { title: "자기계발" },
   { title: "취미" },
   { title: "액티비티" },
   { title: "문화·감상" },

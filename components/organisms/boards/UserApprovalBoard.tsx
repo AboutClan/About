@@ -14,28 +14,30 @@ function UserApprovalBoard({ users, handleApprove, handleRefuse }: UserApprovalB
   return (
     <Flex direction="column">
       <Box mb={10} mx={5}>
-        {[...users]?.map((member) => {
-          const { user } = member;
-          return (
-            <Block
-              key={user.uid}
-              user={user as Partial<IUser>}
-              changeUserVote={(type: "agree" | "refuse") => {
-                if (type === "agree") {
-                  handleApprove(user._id);
-                } else {
-                  handleRefuse(user._id);
-                }
-                // setUserReviewArr((old) => {
-                //   const temp = old.filter((p) => p.user.uid !== user.uid);
-                //   const findUser = old.find((p) => p.user.uid === user.uid);
-                //   const data = [...temp, { user: findUser.user, type }];
-                //   return data;
-                // });
-              }}
-            />
-          );
-        })}
+        {[...users]
+          ?.filter((u) => !!u?.user?.uid)
+          ?.map((member) => {
+            const { user } = member;
+            return (
+              <Block
+                key={user.uid}
+                user={user as Partial<IUser>}
+                changeUserVote={(type: "agree" | "refuse") => {
+                  if (type === "agree") {
+                    handleApprove(user._id);
+                  } else {
+                    handleRefuse(user._id);
+                  }
+                  // setUserReviewArr((old) => {
+                  //   const temp = old.filter((p) => p.user.uid !== user.uid);
+                  //   const findUser = old.find((p) => p.user.uid === user.uid);
+                  //   const data = [...temp, { user: findUser.user, type }];
+                  //   return data;
+                  // });
+                }}
+              />
+            );
+          })}
       </Box>
     </Flex>
   );

@@ -483,11 +483,14 @@ function StudyMapNav({
           <Flex
             pos="fixed"
             top="calc(var(--header-h) + 40px + 56px + 16px)"
+            left={0}
+            right={0}
+            maxW="var(--max-width)"
+            mx="auto"
             zIndex={100}
             pointerEvents="auto"
             justify="space-between"
-            w="full"
-            px="max(16px, calc((100vw - var(--max-width)) / 2 + 16px))"
+            px={4}
           >
             <Box>
               <StatusButton />
