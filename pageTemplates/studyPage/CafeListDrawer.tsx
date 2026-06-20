@@ -140,7 +140,7 @@ export function CafeListDrawer({
   );
 }
 
-function CafeCompactCard({
+export function CafeCompactCard({
   place,
   onReviewClick,
 }: {

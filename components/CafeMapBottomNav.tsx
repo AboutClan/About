@@ -52,19 +52,6 @@ export default function CafeMapBottomNav() {
   const handleTabClick = (tab: TabItem) => {
     if (tab.isComingSoon) return;
     if (activeTab === tab.id) return;
-    if (tab.id === "profile") {
-      if (isLoggedIn) {
-        router.push({ pathname: "/cafe-map", query: { tab: "profile" } });
-      } else if (
-        typeof window !== "undefined" &&
-        /xn--ob0b42knwutje\.com$/.test(window.location.hostname)
-      ) {
-        window.location.href = "https://study-about.club/cafe-map/login";
-      } else {
-        router.push("/cafe-map/login");
-      }
-      return;
-    }
 
     if (tab.id === "map") {
       router.push("/cafe-map");

@@ -138,6 +138,8 @@ export function PlaceInfoCard({
           imageProps={{
             image: placeInfo?.image || getRandomImage(STUDY_MAIN_IMAGES),
           }}
+          id={placeInfo?._id}
+          likes={placeInfo?.likes}
           size="lg2"
           hasToggleHeart
           isDown={isDown}

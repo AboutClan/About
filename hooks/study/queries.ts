@@ -379,6 +379,21 @@ export const usePlaceRankingQuery = (options?: QueryOptions<{ place: PlaceProps;
     options,
   );
 
+export interface MyPlaceFavoritesProps {
+  likes: StudyPlaceProps[];
+  picks: StudyPlaceProps[];
+}
+
+export const useMyPlaceFavoritesQuery = (options?: QueryOptions<MyPlaceFavoritesProps>) =>
+  useQuery<MyPlaceFavoritesProps, AxiosError, MyPlaceFavoritesProps>(
+    ["place", "my-favorites"],
+    async () => {
+      const res = await axios.get<MyPlaceFavoritesProps>(`${SERVER_URI}/place/my-favorites`);
+      return res.data;
+    },
+    options,
+  );
+
 export const useStudyPreferenceQuery = (options?: QueryOptions<IStudyVotePlaces>) =>
   useQuery(
     [STUDY_PREFERENCE],

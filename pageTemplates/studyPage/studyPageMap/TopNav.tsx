@@ -854,6 +854,11 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     ],
   },
   {
+    date: "2026-06-20",
+    isCompleted: true,
+    textArr: ["카페 좋아요 기능 추가", "나만의 아카이브 & 친구 공유하기 기능"],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
     textArr: [

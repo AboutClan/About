@@ -152,33 +152,24 @@ function LoginPage() {
   return (
     <>
       <Box height="100dvh" position="relative">
-        <Flex
+        <Button
           position="fixed"
           top="12px"
-          left="50%"
-          transform="translateX(-50%)"
-          width="100%"
-          maxW="var(--max-width)"
-          justify="flex-end"
-          px="12px"
+          opacity={0.8}
+          right="12px"
           zIndex={1000}
+          p={1}
+          color="gray.600"
+          fontWeight={600}
+          variant="unstyled"
+          onClick={() => {
+            router.push(`/cafe-map/login/account`);
+            return;
+            navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
+          }}
         >
-          <Button
-            opacity={0.8}
-            p={1}
-            color="gray.600"
-            fontWeight={600}
-            variant="unstyled"
-            onClick={() => {
-              router.push(`/cafe-map/login/account`);
-              return;
-              navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
-            }}
-          >
-            관리자 로그인
-          </Button>
-        </Flex>
-
+          관리자 로그인
+        </Button>
         <Image
           src="/배경.png"
           alt="loginBackground"

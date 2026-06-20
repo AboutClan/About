@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useState } from "react";
 
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { usePlaceLikeMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { HeartIcon } from "../Icons/HeartIcons";
 
@@ -13,6 +14,7 @@ interface PlaceHeartImageProps {
     isPriority?: boolean;
   };
   id?: string;
+  likes?: string[];
   hasToggleHeart?: boolean;
   selected?: "main" | "sub" | null;
   size: "sm" | "md" | "md2" | "lg" | "lg2";
@@ -23,6 +25,7 @@ interface PlaceHeartImageProps {
 function PlaceImage({
   imageProps,
   id,
+  likes,
   hasToggleHeart,
   selected,
   size,
@@ -30,24 +33,22 @@ function PlaceImage({
   isDown,
 }: PlaceHeartImageProps) {
   const { data: session } = useSession();
-  const toast = useToast();
-  const typeToast = useTypeToast();
   const isGuest = session?.user.role === "guest";
 
   const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,
   });
-  const preference = userInfo?.studyPreference;
-  const myPreferType =
-    preference?.place === id ? "main" : preference?.subPlace?.includes(id) ? "sub" : null;
 
-  // const toggleHeart = useTogglePlaceHeart();
-
-  const [heartType, setHeartType] = useState<"main" | "sub" | null>();
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
-    setHeartType(myPreferType);
-  }, [myPreferType]);
+    if (!userInfo?._id || !likes) return;
+    setIsLiked(likes.includes(userInfo._id));
+  }, [likes, userInfo?._id]);
+
+  const { mutate: toggleLike } = usePlaceLikeMutation({
+    onSuccess: ({ liked }) => setIsLiked(liked),
+  });
 
   const sizeLength =
     size === "sm"
@@ -63,22 +64,10 @@ function PlaceImage({
       : "180px";
 
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
-    toast("info", "다음 업데이트에 출시 예정");
-
-    return;
-
-    switch (myPreferType) {
-      case "main":
-        setHeartType(null);
-        break;
-      case "sub":
-        setHeartType(null);
-        break;
-      default:
-        if (preference?.place) setHeartType("sub");
-        else setHeartType("main");
-    }
-    // toggleHeart(e, preference, id);
+    e.stopPropagation();
+    if (!id) return;
+    setIsLiked((prev) => !prev);
+    toggleLike({ placeId: id });
   };
 
   return (
@@ -117,13 +106,16 @@ function PlaceImage({
         </Box>
       )}
       {hasToggleHeart && (
+        <Box pos="absolute" inset={0} bg="rgba(0,0,0,0.12)" pointerEvents="none" />
+      )}
+      {hasToggleHeart && (
         <Button
           variant="unstyled"
           pos="absolute"
           w={5}
           h={5}
-          bottom={1}
-          right={1}
+          bottom={size === "lg2" ? 2 : 1}
+          right={size === "lg2" ? 2 : 1}
           color="white"
           onClick={(e) => onClickHeart(e)}
           _before={{
@@ -140,11 +132,11 @@ function PlaceImage({
             pointerEvents: "none", // 이벤트가 부모 요소로 전달되도록 설정
           }}
         >
-          {heartType ? (
-            <HeartIcon fill color={heartType === "main" ? "red" : "orange"} />
-          ) : (
-            <HeartIcon fill={false} color="gray" />
-          )}
+          <HeartIcon
+            fill={isLiked}
+            color={isLiked ? "red" : "gray"}
+            size={size === "lg2" ? "lg" : "md"}
+          />
         </Button>
       )}
     </Box>

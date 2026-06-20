@@ -5,14 +5,16 @@ import { useState } from "react";
 import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewBlock2";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import { useMyPlaceQuery } from "../../hooks/study/queries";
 
 function UserGatherSectionReview() {
   const toast = useToast();
+  const isGuest = useCheckGuest();
   const [showCafeDrawer, setShowCafeDrawer] = useState(false);
   const [showReviewDrawer, setShowReviewDrawer] = useState(false);
 
-  const { data } = useMyPlaceQuery();
+  const { data } = useMyPlaceQuery({ enabled: !isGuest });
 
   const cafeCount = data?.registeredPlaces?.length ?? 0;
   const reviewCount = data?.myRatings?.length ?? 0;

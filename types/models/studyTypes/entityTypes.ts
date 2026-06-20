@@ -10,6 +10,7 @@ export interface PlaceProps extends PlaceRegisterProps {
   reviews?: PlaceReviewProps[];
   rating?: number;
   registrant: UserSimpleInfoProps;
+  likes?: string[];
 }
 export interface PlaceRegisterProps {
   status?: PlaceStatus;

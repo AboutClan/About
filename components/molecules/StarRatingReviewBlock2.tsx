@@ -90,6 +90,7 @@ function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
             size="xs1"
             isLink={false}
           />
+
           <Flex h="30px" ml={2} flexDir="column" align="start">
             <Box fontSize="11px" color="gray.800">
               {!review?.name || review?.name === "익명" ? `익명 ${idx}` : review.name}

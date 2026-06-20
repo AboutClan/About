@@ -68,6 +68,7 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
   ratings?: StudyRatingProps[];
   operatingHours?: string[];
   pick?: string;
+  likes?: string[];
   studyCafeMeta?: StudyCafeMetaProps;
 }
 

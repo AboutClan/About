@@ -13,9 +13,10 @@ import { CameraIcon, ProfileCamera } from "./UserProfileSection";
 interface UserProfileBarProps {
   user: IUser;
   editUrl?: string;
+  name?: string;
 }
 
-function UserProfileBar({ user, editUrl }: UserProfileBarProps) {
+function UserProfileBar({ user, editUrl, name }: UserProfileBarProps) {
   const router = useRouter();
   const typeToast = useTypeToast();
   const isGuest = user?.role === "guest";
@@ -37,17 +38,18 @@ function UserProfileBar({ user, editUrl }: UserProfileBarProps) {
         <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
           <Flex align="center" mb={1}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
-              {user?.role === "guest"
-                ? "테스트"
-                : user?.role === "cafe_user"
-                ? user?.nickname
-                : user?.name || "익명"}
+              {name ||
+                (user?.role === "guest"
+                  ? "게스트"
+                  : user?.role === "cafe_user"
+                  ? user?.nickname
+                  : user?.name || "익명")}
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
           </Flex>
           <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
             <CommentText>
-              {user?.role === "guest" ? "테스트 계정으로 접속중" : user?.comment}
+              {user?.role === "guest" ? "게스트 계정으로 접속중" : user?.comment}
             </CommentText>
           </Flex>
         </Flex>

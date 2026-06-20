@@ -1,4 +1,5 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
@@ -7,25 +8,36 @@ import styled from "styled-components";
 import Divider from "../../components/atoms/Divider";
 import Header from "../../components/layouts/Header";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
+import { WEB_URL } from "../../constants/system";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { useKakaoShare } from "../../hooks/custom/KakaoShareHook2";
+import { useMyPlaceFavoritesQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import CafeMapSecedeModal from "../../modals/cafeMap/CafeMapSecedeModal";
 import RequestSuggestModal from "../../modals/userRequest/RequestSuggestModal";
+import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { navigateExternalLink } from "../../utils/navigateUtils";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
 import UserGatherSectionReview from "../user/UserGatherSectionReview";
 import UserProfileBar from "../user/UserProfileBar";
 import UserReviewBar from "../user/UserReviewBar";
 import UserSocialGuideDrawer from "../user/UserSocialGuideDrawer";
+import { CafeCompactCard } from "./CafeListDrawer";
+import { StudyReviewDrawer } from "./StudyReviewDrawer";
 
 function CafeMapMyPage() {
   const toast = useToast();
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
+  const isGuest = userInfo?.role === "guest";
+  const { data: favorites } = useMyPlaceFavoritesQuery();
+  const { shareToKakao } = useKakaoShare();
   const [showTempDrawer, setShowTempDrawer] = useState(false);
   const [showSettingDrawer, setShowSettingDrawer] = useState(false);
   const [showSuggestModal, setShowSuggestModal] = useState(false);
   const [showSecedeModal, setShowSecedeModal] = useState(false);
+  const [favoriteDrawer, setFavoriteDrawer] = useState<"likes" | "picks" | null>(null);
+  const [reviewPlace, setReviewPlace] = useState<StudyPlaceProps | null>(null);
 
   const temperature = userInfo?.temperature?.temperature ?? 36.5;
   const tempMin = 36.5;
@@ -75,7 +87,7 @@ function CafeMapMyPage() {
         {userInfo && (
           <>
             {/* 프로필 바 */}
-            <UserProfileBar user={userInfo} editUrl="/cafe-map/profile" />
+            <UserProfileBar user={userInfo} editUrl="/cafe-map/profile" name={userInfo?.nickname} />
 
             <Box h="1px" bg="gray.100" />
 
@@ -84,13 +96,24 @@ function CafeMapMyPage() {
               <UserGatherSectionReview />
             </Box>
 
-      
             <NavCard
               emoji="❤️"
               label="내가 좋아요 한 카페"
-              count={0}
-              onClick={() => {
-                toast("info", "6월 20일부터 이용할 수 있어요!");
+              count={favorites?.likes?.length ?? 0}
+              onClick={() => setFavoriteDrawer("likes")}
+              onShare={() => {
+                if (favorites?.likes?.length === 0) {
+                  toast("info", "등록한 카공 카페가 없어요!");
+                  return;
+                }
+                toast("info", "7월 1일 출시 예정! 조금만 기다려 주세요!");
+                return;
+                shareToKakao({
+                  title: `${userInfo?.nickname ?? ""}님의 카공 카페 모음`,
+                  subtitle: `좋아요한 카페 ${favorites?.likes?.length ?? 0}곳을 확인해봐요 ☕`,
+                  img: `${WEB_URL}/배경.png`,
+                  url: `${WEB_URL}/cafe-map`,
+                });
               }}
             />
 
@@ -98,49 +121,69 @@ function CafeMapMyPage() {
             <NavCard
               emoji="📁"
               label="내가 만든 카페 아카이브"
-              onClick={() => {
-                toast("info", "6월 20일부터 이용할 수 있어요!");
+              count={favorites?.picks?.length ?? 0}
+              onClick={() => setFavoriteDrawer("picks")}
+              onShare={() => {
+                if (favorites?.picks?.length === 0) {
+                  toast("info", "등록한 카공 카페가 없어요!");
+                  return;
+                }
+
+                toast("info", "7월 1일 출시 예정! 조금만 기다려 주세요!");
+                return;
+                shareToKakao({
+                  title: `${userInfo?.nickname ?? ""}님의 카공 카페 아카이브`,
+                  subtitle: `${favorites?.picks?.length ?? 0}곳의 카공 카페 아카이브`,
+                  img: `${WEB_URL}/배경.png`,
+                  url: `${WEB_URL}/cafe-map`,
+                });
               }}
             />
 
             {/* 구분선 */}
             <Divider />
 
-            {/* 포인트 블록 */}
-            {/* <Flex p={4} borderRadius="12px" align="center">
-              <Flex
-                w="44px"
-                h="44px"
-                bg="rgba(0,194,179,0.08)"
-                borderRadius="50%"
-                align="center"
-                justify="center"
-                flexShrink={0}
-              >
-                <Image src="/point.png" alt="point" width={28} height={28} />
-              </Flex>
-              <Box ml={3} flex={1}>
-                <Box fontSize="11px" color="gray.400" mb={0.5}>
-                  보유 포인트
-                </Box>
-                <Box fontSize="18px" fontWeight={700} color="gray.900" lineHeight="22px">
-                  0P
-                </Box>
-              </Box>
-              <Box
-                onClick={() => {
-                  toast("info", "6월 20일부터 이용할 수 있어요!");
-                }}
-              >
-                <Flex align="center" gap={0.5} color="gray.400" fontSize="12px">
-                  내역 보기
-                  <ChevronRightIcon />
+            <Box>
+              <Flex px={5} pt={4} pb={2} align="center">
+                <Flex
+                  w="44px"
+                  h="44px"
+                  bg="rgba(0,194,179,0.08)"
+                  borderRadius="50%"
+                  align="center"
+                  justify="center"
+                  flexShrink={0}
+                >
+                  <Image src="/point.png" alt="point" width={28} height={28} />
                 </Flex>
+                <Box ml={3} flex={1}>
+                  <Box fontSize="11px" color="gray.400" mb={0.5}>
+                    보유 포인트
+                  </Box>
+                  <Box fontSize="18px" fontWeight={700} color="gray.900" lineHeight="22px">
+                    {userInfo?.role === "previliged" ? "3270P" : "0P"}
+                  </Box>
+                </Box>
+                <Box
+                  cursor="pointer"
+                  onClick={() => {
+                    toast("info", "6월 24일부터 이용할 수 있어요!");
+                  }}
+                >
+                  <Flex align="center" gap={0.5} color="gray.400" fontSize="12px">
+                    내역 보기
+                    <ChevronRightIcon />
+                  </Flex>
+                </Box>
+              </Flex>
+              <Box px={5} pb={4}>
+                <Box fontSize="11px" color="var(--color-mint)" fontWeight={500}>
+                  카공 리뷰 작성하고 기프티콘으로 받아가세요!
+                </Box>
               </Box>
-            </Flex> */}
+            </Box>
             <Divider />
 
-            {/* 소셜링 온도 블록 */}
             <Box borderBottom="var(--border)" pb={2} mt={5}>
               <UserReviewBar hasTop={false} user={userInfo} />
             </Box>
@@ -149,6 +192,53 @@ function CafeMapMyPage() {
           </>
         )}
       </Box>
+
+      {favoriteDrawer === "likes" && (
+        <RightDrawer title="내가 좋아요 한 카페" onClose={() => setFavoriteDrawer(null)}>
+          {favorites?.likes?.length ? (
+            favorites.likes.map((place) => (
+              <CafeCompactCard
+                key={place._id}
+                place={place}
+                onReviewClick={() => setReviewPlace(place)}
+              />
+            ))
+          ) : (
+            <Box px={5} py={10} textAlign="center" color="gray.400" fontSize="14px">
+              좋아요한 카페가 없어요
+            </Box>
+          )}
+        </RightDrawer>
+      )}
+
+      {favoriteDrawer === "picks" && (
+        <RightDrawer title="내가 만든 카페 아카이브" onClose={() => setFavoriteDrawer(null)}>
+          {favorites?.picks?.length ? (
+            favorites.picks.map((place) => (
+              <CafeCompactCard
+                key={place._id}
+                place={place}
+                onReviewClick={() => setReviewPlace(place)}
+              />
+            ))
+          ) : (
+            <Box px={5} py={10} textAlign="center" color="gray.400" fontSize="14px">
+              아카이브한 카페가 없어요
+            </Box>
+          )}
+        </RightDrawer>
+      )}
+
+      {reviewPlace && (
+        <StudyReviewDrawer
+          placeInfo={reviewPlace}
+          onClose={() => setReviewPlace(null)}
+          zIndex={4000}
+          handleClick={() => setReviewPlace(null)}
+        />
+      )}
+
+      {isGuest && <CafeMapGuestBottomNav />}
 
       {showTempDrawer && <UserSocialGuideDrawer onClose={() => setShowTempDrawer(false)} />}
 
@@ -204,33 +294,34 @@ function NavCard({
   label,
   count,
   onClick,
+  onShare,
 }: {
   emoji: string;
   label: string;
   count?: number;
   onClick: () => void;
+  onShare?: () => void;
 }) {
   return (
-    <Flex
-      px={5}
-      py={4}
-      align="center"
-      justify="space-between"
-      borderBottom="var(--border)"
-      cursor="pointer"
-      onClick={onClick}
-      _active={{ bg: "gray.50" }}
-    >
-      <Flex align="center" gap={3}>
-        <Box fontSize="18px" lineHeight="1">
-          {emoji}
-        </Box>
-        <Box fontSize="14px" fontWeight={500} color="gray.800">
-          {label}
-        </Box>
-      </Flex>
-      <Flex align="center" gap={2}>
-        {count !== undefined && (
+    <Box borderBottom="var(--border)">
+      <Flex
+        px={5}
+        py={4}
+        align="center"
+        justify="space-between"
+        cursor="pointer"
+        onClick={onClick}
+        _active={{ bg: "gray.50" }}
+      >
+        <Flex align="center" gap={3}>
+          <Box fontSize="18px" lineHeight="1">
+            {emoji}
+          </Box>
+          <Box fontSize="14px" fontWeight={500} color="gray.800">
+            {label}
+          </Box>
+        </Flex>
+        <Flex align="center" gap={2}>
           <Flex
             align="center"
             justify="center"
@@ -243,12 +334,43 @@ function NavCard({
             borderRadius="10px"
             minW="20px"
           >
-            {count}
+            {count || 0}
           </Flex>
-        )}
-        <ChevronRightIcon />
+          <ChevronRightIcon />
+        </Flex>
       </Flex>
-    </Flex>
+      {onShare && (
+        <Flex
+          px={5}
+          py={2.5}
+          align="center"
+          gap={2}
+          bg="gray.50"
+          cursor="pointer"
+          onClick={onShare}
+          _active={{ bg: "gray.100" }}
+        >
+          <ShareIcon />
+          <Box fontSize="12px" color="gray.500">
+            친구에게 공유하기
+          </Box>
+        </Flex>
+      )}
+    </Box>
+  );
+}
+
+function ShareIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="16px"
+      viewBox="0 -960 960 960"
+      width="16px"
+      fill="var(--gray-400)"
+    >
+      <path d="M720-80q-50 0-85-35t-35-85q0-7 1-14.5t3-13.5L322-392q-17 15-38 23.5t-44 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q23 0 44 8.5t38 23.5l282-164q-2-6-3-13.5t-1-14.5q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-23 0-44-8.5T638-672L356-508q2 6 3 13.5t1 14.5q0 7-1 14.5t-3 13.5l282 164q17-15 38-23.5t44-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Z" />
+    </svg>
   );
 }
 
@@ -277,6 +399,42 @@ function ChevronRightIcon() {
     >
       <path d="M504-480 348-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L404-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l156-156Z" />
     </svg>
+  );
+}
+
+function CafeMapGuestBottomNav() {
+  const router = useRouter();
+
+  return (
+    <Flex
+      position="fixed"
+      bottom="0"
+      transform={`translateY(calc(-1 * var(--bottom-nav-height) + 1px - ${getSafeAreaBottom(0)}))`}
+      w="100%"
+      maxW="var(--max-width)"
+      bg="gray.50"
+      zIndex={600}
+      px={4}
+      py={2}
+      align="center"
+      justify="space-between"
+      borderTop="1px solid"
+      borderColor="gray.200"
+      boxShadow="0px -4px 12px rgba(0, 0, 0, 0.05)"
+      borderTopRadius="lg"
+      fontSize="13px"
+      fontWeight="500"
+    >
+      <Flex direction="column" fontSize="11px" lineHeight="short">
+        <Box fontWeight="700" color="gray.700">
+          게스트 모드로 둘러보는 중 👀
+        </Box>
+        <Box color="gray.500">로그인 후에 모든 기능을 무료로 이용할 수 있어요!</Box>
+      </Flex>
+      <Button size="sm" colorScheme="mint" onClick={() => router.push("/cafe-map/login")}>
+        카공지도 시작하기
+      </Button>
+    </Flex>
   );
 }
 

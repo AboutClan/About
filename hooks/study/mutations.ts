@@ -280,3 +280,16 @@ export const useStudyCommentMutation = (date: string, options?: MutationOptions<
       }),
     options,
   );
+
+export const usePlaceLikeMutation = (
+  options?: MutationOptions<{ placeId: string }, { liked: boolean }>,
+) =>
+  useMutation<{ liked: boolean }, AxiosError, { placeId: string }>(
+    (params) =>
+      requestServer<{ placeId: string }, { liked: boolean }>({
+        method: "post",
+        url: `place/like`,
+        body: params,
+      }),
+    options,
+  );
