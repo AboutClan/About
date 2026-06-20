@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useState } from "react";
 
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { usePlaceLikeMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { HeartIcon } from "../Icons/HeartIcons";
@@ -34,6 +34,7 @@ function PlaceImage({
 }: PlaceHeartImageProps) {
   const { data: session } = useSession();
   const isGuest = session?.user.role === "guest";
+  const typeToast = useTypeToast();
 
   const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,
@@ -65,6 +66,10 @@ function PlaceImage({
 
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     e.stopPropagation();
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
     if (!id) return;
     setIsLiked((prev) => !prev);
     toggleLike({ placeId: id });
