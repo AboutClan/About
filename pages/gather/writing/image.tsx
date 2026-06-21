@@ -64,10 +64,10 @@ function GatherWritingImagePage() {
     }
     return result;
   }
-
+  console.log(category);
   const mainImageArr = [
-    ...(category ? GATHER_MAIN_IMAGE_ARR[category] : []),
-    ...GATHER_MAIN_IMAGE_ARR["공통"],
+    ...(GATHER_MAIN_IMAGE_ARR?.[category] ?? []),
+    ...(GATHER_MAIN_IMAGE_ARR?.["공통"] ?? []),
   ].map((item) => ({
     imageUrl: item,
     func: () => {
@@ -79,8 +79,8 @@ function GatherWritingImagePage() {
     },
   }));
   const coverImageArr = [
-    ...(category ? GATHER_COVER_IMAGE_ARR[category] : []),
-    ...GATHER_COVER_IMAGE_ARR["공통"],
+    ...(GATHER_COVER_IMAGE_ARR?.[category] ?? []),
+    ...(GATHER_COVER_IMAGE_ARR?.["공통"] ?? []),
   ].map((item) => ({
     imageUrl: item,
     func: () => {
