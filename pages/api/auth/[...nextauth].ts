@@ -40,13 +40,12 @@ const TEST_USER = {
 };
 
 const ADMIN_USER = {
-  id: "3224546232",
+  id: "65df1ddcd73ecfd250b42c89",
   uid: "3224546232",
   name: "어바웃",
   role: "previliged",
   isActive: true,
-  profileImage:
-    "http://k.kakaocdn.net/dn/x99nu/dJMcaffmnEu/3WbcWHKpZhj9TBc5ebD7vk/img_110x110.jpg",
+  profileImage: "http://k.kakaocdn.net/dn/x99nu/dJMcaffmnEu/3WbcWHKpZhj9TBc5ebD7vk/img_110x110.jpg",
   location: "기타" as ActiveLocation,
 };
 
@@ -77,136 +76,196 @@ export const generateClientSecret = () => {
 
 function buildAuthOptions(): NextAuthOptions {
   return {
-  secret,
-  debug: true,
-  cookies: {
-    pkceCodeVerifier: {
-      name: "next-auth.pkce.code_verifier",
-      options: {
-        httpOnly: true,
-        sameSite: "none",
-        path: "/",
-        secure: true,
+    secret,
+    debug: true,
+    cookies: {
+      pkceCodeVerifier: {
+        name: "next-auth.pkce.code_verifier",
+        options: {
+          httpOnly: true,
+          sameSite: "none",
+          path: "/",
+          secure: true,
+        },
+      },
+      state: {
+        name: "next-auth.state",
+        options: {
+          httpOnly: true,
+          sameSite: "none",
+          path: "/",
+          secure: true,
+        },
+      },
+      callbackUrl: {
+        name: "next-auth.callback-url",
+        options: {
+          httpOnly: true,
+          sameSite: "none",
+          path: "/",
+          secure: true,
+        },
       },
     },
-    state: {
-      name: "next-auth.state",
-      options: {
-        httpOnly: true,
-        sameSite: "none",
-        path: "/",
-        secure: true,
-      },
-    },
-    callbackUrl: {
-      name: "next-auth.callback-url",
-      options: {
-        httpOnly: true,
-        sameSite: "none",
-        path: "/",
-        secure: true,
-      },
-    },
-  },
-  providers: [
-    CredentialsProvider({
-      id: "guest",
-      name: "guest",
-      credentials: {},
-      async authorize() {
-        return GUEST_USER;
-      },
-    }),
-    CredentialsProvider({
-      id: "credentials",
-      name: "Credentials",
-      credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize() {
-        return ADMIN_USER;
-      },
-    }),
-    KakaoProvider({
-      clientId: process.env.KAKAO_CLIENT_ID as string,
-      clientSecret: process.env.KAKAO_CLIENT_SECRET as string,
-      allowDangerousEmailAccountLinking: true,
-      profile: (profile: KakaoProfile) => {
-        const profileData = {
-          ...profile,
-          name:
-            profile.kakao_account?.name || profile.properties?.nickname || profile.id.toString(),
-          role: "newUser",
-          profileImage:
-            profile.properties?.thumbnail_image ||
-            profile.properties?.profile_image ||
-            DEFAULT_PROFILE_IMAGE,
-          uid: profile.id.toString(),
-          id: profile.id.toString(),
-          isActive: false,
-        };
-
-        return profileData;
-      },
-    }),
-    AppleProvider({
-      clientId: process.env.APPLE_ID as string, // Service ID
-      clientSecret: generateClientSecret(), // JWT 생성 함수
-      profile: (profile) => ({
-        id: profile.sub, // Apple User ID
-        uid: profile.sub, // 동일 ID로 저장
-        name: profile.email, // 이메일 주소
-        email: profile.email, // 이메일 주소
-        role: "newUser",
-        isActive: false,
-        profileImage: DEFAULT_PROFILE_IMAGE,
+    providers: [
+      CredentialsProvider({
+        id: "guest",
+        name: "guest",
+        credentials: {},
+        async authorize() {
+          return GUEST_USER;
+        },
       }),
-    }),
-  ],
-  adapter: MongoDBAdapter(clientPromise),
-  session: {
-    strategy: "jwt",
-    maxAge: 720 * 60 * 60, // 720시간 = 30일
-    updateAge: 72 * 60 * 60, // 72시간 = 3일
-  },
-  pages: {
-    signIn: "/home",
-    error: "/login",
-    newUser: "/register/auth",
-  },
+      CredentialsProvider({
+        id: "credentials",
+        name: "Credentials",
+        credentials: {
+          username: { label: "Username", type: "text" },
+          password: { label: "Password", type: "password" },
+        },
+        async authorize() {
+          return ADMIN_USER;
+        },
+      }),
+      KakaoProvider({
+        clientId: process.env.KAKAO_CLIENT_ID as string,
+        clientSecret: process.env.KAKAO_CLIENT_SECRET as string,
+        allowDangerousEmailAccountLinking: true,
+        profile: (profile: KakaoProfile) => {
+          const profileData = {
+            ...profile,
+            name:
+              profile.kakao_account?.name || profile.properties?.nickname || profile.id.toString(),
+            role: "newUser",
+            profileImage:
+              profile.properties?.thumbnail_image ||
+              profile.properties?.profile_image ||
+              DEFAULT_PROFILE_IMAGE,
+            uid: profile.id.toString(),
+            id: profile.id.toString(),
+            isActive: false,
+          };
 
-  callbacks: {
-    async signIn({ account, user, profile }) {
-      const kakaoProfile = profile as KakaoProfile;
+          return profileData;
+        },
+      }),
+      AppleProvider({
+        clientId: process.env.APPLE_ID as string, // Service ID
+        clientSecret: generateClientSecret(), // JWT 생성 함수
+        profile: (profile) => ({
+          id: profile.sub, // Apple User ID
+          uid: profile.sub, // 동일 ID로 저장
+          name: profile.email, // 이메일 주소
+          email: profile.email, // 이메일 주소
+          role: "newUser",
+          isActive: false,
+          profileImage: DEFAULT_PROFILE_IMAGE,
+        }),
+      }),
+    ],
+    adapter: MongoDBAdapter(clientPromise),
+    session: {
+      strategy: "jwt",
+      maxAge: 720 * 60 * 60, // 720시간 = 30일
+      updateAge: 72 * 60 * 60, // 72시간 = 3일
+    },
+    pages: {
+      signIn: "/home",
+      error: "/login",
+      newUser: "/register/auth",
+    },
 
-      try {
-        if (["guest", "credentials"].includes(account.provider)) {
-          return true;
-        }
-        if (["kakao", "apple"].includes(account.provider)) {
-          await dbConnect();
-        }
+    callbacks: {
+      async signIn({ account, user, profile }) {
+        const kakaoProfile = profile as KakaoProfile;
 
-        const profileIdStr = kakaoProfile?.id != null ? String(kakaoProfile.id) : null;
-        const userUid = (user as any)?.uid;
+        try {
+          if (["guest", "credentials"].includes(account.provider)) {
+            return true;
+          }
+          if (["kakao", "apple"].includes(account.provider)) {
+            await dbConnect();
+          }
 
-        if (userUid === "1234567890" || profileIdStr === "1234567890") {
-          // 어댑터가 게스트 세션에 카카오 계정을 link한 경우 → 한 번에 자동 복구
-          const GUEST_OID = "69c4f9ce862f5d10130252ab";
-          const realKakaoId = profileIdStr && profileIdStr !== "1234567890" ? profileIdStr : null;
+          const profileIdStr = kakaoProfile?.id != null ? String(kakaoProfile.id) : null;
+          const userUid = (user as any)?.uid;
 
-          if (realKakaoId && (account?.provider === "kakao" || account?.provider === "apple")) {
-            // 1. 잘못 생성된 Account(userId=GUEST_OID) 삭제
-            await Account.deleteOne({
-              provider: account.provider,
-              providerAccountId: account.providerAccountId,
-              userId: GUEST_OID,
-            }).catch(() => {});
+          if (userUid === "1234567890" || profileIdStr === "1234567890") {
+            // 어댑터가 게스트 세션에 카카오 계정을 link한 경우 → 한 번에 자동 복구
+            const GUEST_OID = "69c4f9ce862f5d10130252ab";
+            const realKakaoId = profileIdStr && profileIdStr !== "1234567890" ? profileIdStr : null;
 
-            // 2. 실제 유저 조회 (기존 가입자)
-            let realUser = await User.findOneAndUpdate(
-              { uid: realKakaoId },
+            if (realKakaoId && (account?.provider === "kakao" || account?.provider === "apple")) {
+              // 1. 잘못 생성된 Account(userId=GUEST_OID) 삭제
+              await Account.deleteOne({
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+                userId: GUEST_OID,
+              }).catch(() => {});
+
+              // 2. 실제 유저 조회 (기존 가입자)
+              let realUser = await User.findOneAndUpdate(
+                { uid: realKakaoId },
+                {
+                  $set: {
+                    profileImage:
+                      kakaoProfile?.properties?.thumbnail_image ||
+                      (user as any)?.profileImage ||
+                      DEFAULT_PROFILE_IMAGE,
+                  },
+                },
+              );
+
+              // 3. 신규 유저면 생성
+              if (!realUser) {
+                realUser = await User.create({
+                  uid: realKakaoId,
+                  name:
+                    kakaoProfile?.kakao_account?.name ||
+                    kakaoProfile?.properties?.nickname ||
+                    realKakaoId,
+                  profileImage: kakaoProfile?.properties?.thumbnail_image || DEFAULT_PROFILE_IMAGE,
+                  role: "newUser",
+                  isActive: false,
+                });
+              }
+
+              // 4. 올바른 userId로 Account 재생성
+              await Account.findOneAndUpdate(
+                { provider: account.provider, providerAccountId: account.providerAccountId },
+                {
+                  $setOnInsert: {
+                    userId: realUser._id,
+                    provider: account.provider,
+                    providerAccountId: account.providerAccountId,
+                    type: "oauth",
+                  },
+                  $set: {
+                    access_token: account.access_token,
+                    refresh_token: account.refresh_token,
+                    expires_at: account.expires_at,
+                  },
+                },
+                { upsert: true },
+              );
+
+              // 5. 이후 jwt 콜백이 올바른 유저 정보를 받도록 user 업데이트
+              (user as any).uid = realUser.uid;
+              (user as any).role = realUser.role;
+              user.name = realUser.name;
+              user.id = realUser.id;
+              (user as any).isActive = realUser.isActive ?? false;
+              (user as any).profileImage = realUser.profileImage || DEFAULT_PROFILE_IMAGE;
+
+              return true;
+            }
+
+            return false;
+          }
+
+          if (account.provider === "kakao" || account.provider === "apple") {
+            const findUser = await User.findOneAndUpdate(
+              { uid: profileIdStr || userUid },
               {
                 $set: {
                   profileImage:
@@ -217,236 +276,173 @@ function buildAuthOptions(): NextAuthOptions {
               },
             );
 
-            // 3. 신규 유저면 생성
-            if (!realUser) {
-              realUser = await User.create({
-                uid: realKakaoId,
-                name:
-                  kakaoProfile?.kakao_account?.name ||
-                  kakaoProfile?.properties?.nickname ||
-                  realKakaoId,
-                profileImage:
-                  kakaoProfile?.properties?.thumbnail_image ||
-                  DEFAULT_PROFILE_IMAGE,
-                role: "newUser",
-                isActive: false,
-              });
-            }
+            if (findUser) {
+              (user as any).role = findUser.role;
+              user.name = findUser.name ?? user.name;
+              (user as any).uid = findUser.uid ?? userUid;
+              user.id = findUser.id ?? user.id;
 
-            // 4. 올바른 userId로 Account 재생성
-            await Account.findOneAndUpdate(
-              { provider: account.provider, providerAccountId: account.providerAccountId },
-              {
-                $setOnInsert: {
-                  userId: realUser._id,
+              // findOne + 조건부 upsert 분리 제거 → 단일 원자적 upsert
+              const accountDoc = await Account.findOneAndUpdate(
+                {
                   provider: account.provider,
                   providerAccountId: account.providerAccountId,
-                  type: "oauth",
                 },
-                $set: {
-                  access_token: account.access_token,
-                  refresh_token: account.refresh_token,
-                  expires_at: account.expires_at,
+                {
+                  $setOnInsert: {
+                    userId: findUser._id,
+                    provider: account.provider,
+                    providerAccountId: account.providerAccountId,
+                    type: "oauth",
+                  },
+                  $set: {
+                    access_token: account.access_token,
+                    refresh_token: account.refresh_token,
+                    expires_at: account.expires_at,
+                  },
                 },
-              },
-              { upsert: true },
-            );
+                { upsert: true, new: true },
+              );
 
-            // 5. 이후 jwt 콜백이 올바른 유저 정보를 받도록 user 업데이트
-            (user as any).uid = realUser.uid;
-            (user as any).role = realUser.role;
-            user.name = realUser.name;
-            user.id = realUser.id;
-            (user as any).isActive = realUser.isActive ?? false;
-            (user as any).profileImage =
-              realUser.profileImage || DEFAULT_PROFILE_IMAGE;
+              // GUEST_OID가 userId로 남아있는 경우 올바른 userId로 보정
+              const GUEST_OID = "69c4f9ce862f5d10130252ab";
+              if (accountDoc && String(accountDoc.userId) === GUEST_OID) {
+                await Account.updateOne(
+                  { _id: accountDoc._id },
+                  { $set: { userId: findUser._id } },
+                );
+              }
+            }
 
             return true;
           }
 
+          return true;
+        } catch (error) {
+          console.error("[signIn] catch — name:", (error as any)?.name);
+          console.error("[signIn] catch — message:", (error as any)?.message);
+          console.error("[signIn] catch — stack:", (error as any)?.stack);
+          console.error("[signIn] catch — errors:", (error as any)?.errors);
           return false;
         }
+      },
+      async redirect({ url, baseUrl }) {
+        try {
+          const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : url;
+          const parsed = new URL(fullUrl);
+          const hasError = parsed.searchParams.has("error");
+          const callbackUrl = parsed.searchParams.get("callbackUrl") ?? "";
 
-        if (account.provider === "kakao" || account.provider === "apple") {
-          const findUser = await User.findOneAndUpdate(
-            { uid: profileIdStr || userUid },
-            {
-              $set: {
-                profileImage:
-                  kakaoProfile?.properties?.thumbnail_image ||
-                  (user as any)?.profileImage ||
-                  DEFAULT_PROFILE_IMAGE,
-              },
-            },
-          );
-
-          if (findUser) {
-            (user as any).role = findUser.role;
-            user.name = findUser.name ?? user.name;
-            (user as any).uid = findUser.uid ?? userUid;
-            user.id = findUser.id ?? user.id;
-
-            // findOne + 조건부 upsert 분리 제거 → 단일 원자적 upsert
-            const accountDoc = await Account.findOneAndUpdate(
-              {
-                provider: account.provider,
-                providerAccountId: account.providerAccountId,
-              },
-              {
-                $setOnInsert: {
-                  userId: findUser._id,
-                  provider: account.provider,
-                  providerAccountId: account.providerAccountId,
-                  type: "oauth",
-                },
-                $set: {
-                  access_token: account.access_token,
-                  refresh_token: account.refresh_token,
-                  expires_at: account.expires_at,
-                },
-              },
-              { upsert: true, new: true },
-            );
-
-            // GUEST_OID가 userId로 남아있는 경우 올바른 userId로 보정
-            const GUEST_OID = "69c4f9ce862f5d10130252ab";
-            if (accountDoc && String(accountDoc.userId) === GUEST_OID) {
-              await Account.updateOne(
-                { _id: accountDoc._id },
-                { $set: { userId: findUser._id } },
-              );
-            }
+          if (hasError && callbackUrl.includes("/cafe-map")) {
+            return `${baseUrl}/cafe-map/login`;
           }
 
-          return true;
+          // pages.newUser("/register/auth")로 향하는 redirect이지만 cafe-map 플로우인 경우
+          // callbackUrl(/cafe-map/login/callback)로 이동 → callback.tsx가 /cafe-map/register/nickname으로 라우팅
+          if (parsed.pathname.startsWith("/register") && callbackUrl.includes("/cafe-map")) {
+            return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
+          }
+        } catch {}
+
+        if (url.startsWith("https://xn--ob0b42knwutje.com")) {
+          return url;
+        }
+        if (url.startsWith(baseUrl)) {
+          return url;
         }
 
-        return true;
-      } catch (error) {
-        console.error("[signIn] catch — name:", (error as any)?.name);
-        console.error("[signIn] catch — message:", (error as any)?.message);
-        console.error("[signIn] catch — stack:", (error as any)?.stack);
-        console.error("[signIn] catch — errors:", (error as any)?.errors);
-        return false;
-      }
-    },
-    async redirect({ url, baseUrl }) {
-      try {
-        const fullUrl = url.startsWith("/") ? `${baseUrl}${url}` : url;
-        const parsed = new URL(fullUrl);
-        const hasError = parsed.searchParams.has("error");
-        const callbackUrl = parsed.searchParams.get("callbackUrl") ?? "";
-
-        if (hasError && callbackUrl.includes("/cafe-map")) {
-          return `${baseUrl}/cafe-map/login`;
+        if (url.startsWith("/")) {
+          return `${baseUrl}${url}`;
         }
 
-        // pages.newUser("/register/auth")로 향하는 redirect이지만 cafe-map 플로우인 경우
-        // callbackUrl(/cafe-map/login/callback)로 이동 → callback.tsx가 /cafe-map/register/nickname으로 라우팅
-        if (parsed.pathname.startsWith("/register") && callbackUrl.includes("/cafe-map")) {
-          return callbackUrl.startsWith("/") ? `${baseUrl}${callbackUrl}` : callbackUrl;
+        return baseUrl;
+      },
+      async session({ session, token, user, trigger }) {
+        if (trigger === "update") return session;
+        // uid "1234567890"은 guest/credentials 전용 하드코딩 UID — 실제 OAuth 유저는 절대 이 값을 가지지 않음
+        // name 기반 판별을 제거해 실제 유저 name이 "게스트"일 때 MEMBER_GUEST_USER로 오인하는 문제 방지
+        if (token.uid === "1234567890") {
+          session.user = token.isActive ? MEMBER_GUEST_USER : GUEST_USER;
+        } else {
+          session.user = {
+            id: token.id,
+            uid: token.uid,
+            name: token.name ?? "",
+            role: token.role,
+            isActive: token.isActive,
+            profileImage: token.profileImage,
+            location: "수원",
+          };
         }
-      } catch {}
 
-      if (url.startsWith("https://xn--ob0b42knwutje.com")) {
-        return url;
-      }
-      if (url.startsWith(baseUrl)) {
-        return url;
-      }
+        return session;
+      },
 
-      if (url.startsWith("/")) {
-        return `${baseUrl}${url}`;
-      }
+      async jwt({ token, account, user, trigger }) {
+        try {
+          if (trigger === "update") {
+            return token;
+          }
 
-      return baseUrl;
-    },
-    async session({ session, token, user, trigger }) {
-      if (trigger === "update") return session;
-      // uid "1234567890"은 guest/credentials 전용 하드코딩 UID — 실제 OAuth 유저는 절대 이 값을 가지지 않음
-      // name 기반 판별을 제거해 실제 유저 name이 "게스트"일 때 MEMBER_GUEST_USER로 오인하는 문제 방지
-      if (token.uid === "1234567890") {
-        session.user = token.isActive ? MEMBER_GUEST_USER : GUEST_USER;
-      } else {
-        session.user = {
-          id: token.id,
-          uid: token.uid,
-          name: token.name ?? "",
-          role: token.role,
-          isActive: token.isActive,
-          profileImage: token.profileImage,
-          location: "수원",
-        };
-      }
+          // TEMP DEBUG: kakao-debug → kakao로 오버라이드
+          if (account?.provider === "kakao-debug") {
+            (account as any).provider = "kakao";
+            (account as any).access_token = (account as any).access_token || "";
+            (account as any).refresh_token = (account as any).refresh_token || "";
+            (account as any).expires_at = (account as any).expires_at || 0;
+          }
 
-      return session;
-    },
-
-    async jwt({ token, account, user, trigger }) {
-      try {
-        if (trigger === "update") {
+          switch (account?.provider) {
+            case "guest":
+              return { ...token, ...GUEST_USER };
+            case "credentials":
+              return { ...token, ...ADMIN_USER };
+            case "kakao":
+            case "apple":
+              {
+                await Account.findOneAndUpdate(
+                  {
+                    provider: account.provider,
+                    providerAccountId: account.providerAccountId,
+                  },
+                  {
+                    // 신규 insert 시에만 userId 설정 — 기존 account의 userId를 덮어쓰지 않음
+                    ...(user?.id ? { $setOnInsert: { userId: user.id } } : {}),
+                    $set: {
+                      access_token: account.access_token,
+                      refresh_token: account.refresh_token ?? token.refresh_token,
+                      expires_at: account.expires_at,
+                      refresh_token_expires_in: account.refresh_token_expires_in,
+                    },
+                  },
+                  { upsert: true },
+                );
+              }
+              return {
+                accessToken: account.access_token || "",
+                refreshToken: account.refresh_token || token.refresh_token || "",
+                accessTokenExpires: (account.expires_at ?? Math.floor(Date.now() / 1000)) * 1000,
+                id: user.id ?? token.id,
+                uid: user.uid ?? token.uid,
+                name: user.name ?? token.name ?? "",
+                profileImage: user.profileImage ?? token.profileImage ?? "",
+                role: user.role ?? token.role ?? "newUser",
+                isActive: user.isActive ?? token.isActive ?? false,
+              };
+          }
+          try {
+            return token.accessTokenExpires && Date.now() < token.accessTokenExpires
+              ? token
+              : await refreshAccessToken(token, account?.provider);
+          } catch (e) {
+            return { ...token, error: "RefreshAccessTokenError" };
+          }
+        } catch (error) {
+          console.error("JWT 콜백 에러:", error);
           return token;
         }
-
-        // TEMP DEBUG: kakao-debug → kakao로 오버라이드
-        if (account?.provider === "kakao-debug") {
-          (account as any).provider = "kakao";
-          (account as any).access_token = (account as any).access_token || "";
-          (account as any).refresh_token = (account as any).refresh_token || "";
-          (account as any).expires_at = (account as any).expires_at || 0;
-        }
-
-        switch (account?.provider) {
-          case "guest":
-            return { ...token, ...GUEST_USER };
-          case "credentials":
-            return { ...token, ...ADMIN_USER };
-          case "kakao":
-          case "apple":
-            {
-              await Account.findOneAndUpdate(
-                {
-                  provider: account.provider,
-                  providerAccountId: account.providerAccountId,
-                },
-                {
-                  // 신규 insert 시에만 userId 설정 — 기존 account의 userId를 덮어쓰지 않음
-                  ...(user?.id ? { $setOnInsert: { userId: user.id } } : {}),
-                  $set: {
-                    access_token: account.access_token,
-                    refresh_token: account.refresh_token ?? token.refresh_token,
-                    expires_at: account.expires_at,
-                    refresh_token_expires_in: account.refresh_token_expires_in,
-                  },
-                },
-                { upsert: true },
-              );
-            }
-            return {
-              accessToken: account.access_token || "",
-              refreshToken: account.refresh_token || token.refresh_token || "",
-              accessTokenExpires: (account.expires_at ?? Math.floor(Date.now() / 1000)) * 1000,
-              id: user.id ?? token.id,
-              uid: user.uid ?? token.uid,
-              name: user.name ?? token.name ?? "",
-              profileImage: user.profileImage ?? token.profileImage ?? "",
-              role: user.role ?? token.role ?? "newUser",
-              isActive: user.isActive ?? token.isActive ?? false,
-            };
-        }
-        try {
-          return token.accessTokenExpires && Date.now() < token.accessTokenExpires
-            ? token
-            : await refreshAccessToken(token, account?.provider);
-        } catch (e) {
-          return { ...token, error: "RefreshAccessTokenError" };
-        }
-      } catch (error) {
-        console.error("JWT 콜백 에러:", error);
-        return token;
-      }
+      },
     },
-  },
   };
 }
 

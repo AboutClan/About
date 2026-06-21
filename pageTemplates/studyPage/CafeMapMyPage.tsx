@@ -8,7 +8,6 @@ import styled from "styled-components";
 import Divider from "../../components/atoms/Divider";
 import Header from "../../components/layouts/Header";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import { WEB_URL } from "../../constants/system";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useKakaoShare } from "../../hooks/custom/KakaoShareHook2";
 import { useMyPlaceFavoritesQuery } from "../../hooks/study/queries";
@@ -101,20 +100,6 @@ function CafeMapMyPage() {
               label="내가 좋아요 한 카페"
               count={favorites?.likes?.length ?? 0}
               onClick={() => setFavoriteDrawer("likes")}
-              onShare={() => {
-                if (favorites?.likes?.length === 0) {
-                  toast("info", "등록한 카공 카페가 없어요!");
-                  return;
-                }
-                toast("info", "7월 1일 출시 예정! 조금만 기다려 주세요!");
-                return;
-                shareToKakao({
-                  title: `${userInfo?.nickname ?? ""}님의 카공 카페 모음`,
-                  subtitle: `좋아요한 카페 ${favorites?.likes?.length ?? 0}곳을 확인해봐요 ☕`,
-                  img: `${WEB_URL}/배경.png`,
-                  url: `${WEB_URL}/cafe-map`,
-                });
-              }}
             />
 
             {/* A안: 카페 아카이브 */}
@@ -123,21 +108,6 @@ function CafeMapMyPage() {
               label="내가 만든 카페 아카이브"
               count={favorites?.picks?.length ?? 0}
               onClick={() => setFavoriteDrawer("picks")}
-              onShare={() => {
-                if (favorites?.picks?.length === 0) {
-                  toast("info", "등록한 카공 카페가 없어요!");
-                  return;
-                }
-
-                toast("info", "7월 1일 출시 예정! 조금만 기다려 주세요!");
-                return;
-                shareToKakao({
-                  title: `${userInfo?.nickname ?? ""}님의 카공 카페 아카이브`,
-                  subtitle: `${favorites?.picks?.length ?? 0}곳의 카공 카페 아카이브`,
-                  img: `${WEB_URL}/배경.png`,
-                  url: `${WEB_URL}/cafe-map`,
-                });
-              }}
             />
 
             {/* 구분선 */}
@@ -191,10 +161,20 @@ function CafeMapMyPage() {
             <Box h={10} />
           </>
         )}
+        {isGuest && <CafeMapGuestBottomNav />}
       </Box>
 
       {favoriteDrawer === "likes" && (
         <RightDrawer title="내가 좋아요 한 카페" onClose={() => setFavoriteDrawer(null)}>
+          <ShareBanner
+            onClick={() => {
+              if (!favorites?.likes?.length) {
+                toast("info", "등록한 장소가 없어요");
+                return;
+              }
+              toast("info", "7월 1일 오픈 예정이에요!");
+            }}
+          />
           {favorites?.likes?.length ? (
             favorites.likes.map((place) => (
               <CafeCompactCard
@@ -204,7 +184,7 @@ function CafeMapMyPage() {
               />
             ))
           ) : (
-            <Box px={5} py={10} textAlign="center" color="gray.400" fontSize="14px">
+            <Box py={10} textAlign="center" color="gray.400" fontSize="14px">
               좋아요한 카페가 없어요
             </Box>
           )}
@@ -213,6 +193,15 @@ function CafeMapMyPage() {
 
       {favoriteDrawer === "picks" && (
         <RightDrawer title="내가 만든 카페 아카이브" onClose={() => setFavoriteDrawer(null)}>
+          <ShareBanner
+            onClick={() => {
+              if (!favorites?.picks?.length) {
+                toast("info", "등록한 장소가 없어요");
+                return;
+              }
+              toast("info", "7월 1일 오픈 예정이에요!");
+            }}
+          />
           {favorites?.picks?.length ? (
             favorites.picks.map((place) => (
               <CafeCompactCard
@@ -222,7 +211,7 @@ function CafeMapMyPage() {
               />
             ))
           ) : (
-            <Box px={5} py={10} textAlign="center" color="gray.400" fontSize="14px">
+            <Box py={10} textAlign="center" color="gray.400" fontSize="14px">
               아카이브한 카페가 없어요
             </Box>
           )}
@@ -237,8 +226,6 @@ function CafeMapMyPage() {
           handleClick={() => setReviewPlace(null)}
         />
       )}
-
-      {isGuest && <CafeMapGuestBottomNav />}
 
       {showTempDrawer && <UserSocialGuideDrawer onClose={() => setShowTempDrawer(false)} />}
 
@@ -294,13 +281,11 @@ function NavCard({
   label,
   count,
   onClick,
-  onShare,
 }: {
   emoji: string;
   label: string;
   count?: number;
   onClick: () => void;
-  onShare?: () => void;
 }) {
   return (
     <Box borderBottom="var(--border)">
@@ -339,35 +324,59 @@ function NavCard({
           <ChevronRightIcon />
         </Flex>
       </Flex>
-      {onShare && (
-        <Flex
-          px={5}
-          py={2.5}
-          align="center"
-          gap={2}
-          bg="gray.50"
-          cursor="pointer"
-          onClick={onShare}
-          _active={{ bg: "gray.100" }}
-        >
-          <ShareIcon />
-          <Box fontSize="12px" color="gray.500">
-            친구에게 공유하기
-          </Box>
-        </Flex>
-      )}
     </Box>
   );
 }
 
-function ShareIcon() {
+function ShareBanner({ onClick }: { onClick: () => void }) {
+  return (
+    <Flex
+      my={3}
+      px={4}
+      py={3}
+      align="center"
+      gap={3}
+      bg="var(--color-mint-light)"
+      borderRadius="12px"
+      cursor="pointer"
+      onClick={onClick}
+      _active={{ opacity: 0.7 }}
+      borderBottom="var(--border)"
+      border="1px solid"
+      borderColor="rgba(0,194,179,0.2)"
+    >
+      <Flex
+        w="38px"
+        h="38px"
+        borderRadius="50%"
+        bg="var(--color-mint)"
+        align="center"
+        justify="center"
+        flexShrink={0}
+      >
+        <ShareIcon color="white" size={18} />
+      </Flex>
+      <Box flex={1}>
+        <Box fontSize="14px" fontWeight={700} color="gray.800">
+          친구에게 공유하기
+        </Box>
+        <Box fontSize="11px" color="gray.500" mt={0.5}>
+          내 카페 리스트를 카카오톡으로 공유해요
+        </Box>
+      </Box>
+      <ChevronRightIcon />
+    </Flex>
+  );
+}
+
+function ShareIcon({ color = "var(--gray-400)", size = 16 }: { color?: string; size?: number }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="16px"
+      height={`${size}px`}
       viewBox="0 -960 960 960"
-      width="16px"
-      fill="var(--gray-400)"
+      width={`${size}px`}
+      fill={color}
     >
       <path d="M720-80q-50 0-85-35t-35-85q0-7 1-14.5t3-13.5L322-392q-17 15-38 23.5t-44 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q23 0 44 8.5t38 23.5l282-164q-2-6-3-13.5t-1-14.5q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-23 0-44-8.5T638-672L356-508q2 6 3 13.5t1 14.5q0 7-1 14.5t-3 13.5l282 164q17-15 38-23.5t44-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Z" />
     </svg>
@@ -413,7 +422,7 @@ function CafeMapGuestBottomNav() {
       w="100%"
       maxW="var(--max-width)"
       bg="gray.50"
-      zIndex={600}
+      zIndex={601}
       px={4}
       py={2}
       align="center"
