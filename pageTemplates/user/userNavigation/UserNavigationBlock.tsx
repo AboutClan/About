@@ -68,6 +68,9 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
       <div>
         <BlockName>계정 설정</BlockName>
         <NavBlock>
+          <button onClick={() => onClickBlock("page", "/user/member-card")}>
+            어바웃 멤버 확인증
+          </button>
           <button onClick={() => onClickBlock("modal", "friend")}>추천인 코드 발급</button>
           <button onClick={() => onClickBlock("modal", "coupon")}>쿠폰 입력</button>
           <button onClick={() => onClickBlock("modal", "profile")}>프로필 공개 설정</button>
