@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 import RowTextBlockButton from "../../../components/atoms/buttons/RowTextBlockButton";
 import TextDevider from "../../../components/atoms/devider/TextDevider";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
+import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { DispatchString } from "../../../types/hooks/reactTypes";
 import { navigateExternalLink } from "../../../utils/navigateUtils";
@@ -20,7 +20,9 @@ type ContentByType<T extends "page" | "modal"> = T extends "page" ? string : Use
 
 function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
   const searchParams = useSearchParams();
+  const toast = useToast();
   const { data: session } = useSession();
+
   const router = useRouter();
   const failToast = useFailToast();
   const couponParams = searchParams.get("coupon");
@@ -43,6 +45,12 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
       return;
     }
     if (type === "page") {
+      if (content === "/user/member-card") {
+        if (userInfo?.point <= 0) {
+          toast("info", "보유중인 포인트가 0으로, 충전이 필요합니다.");
+          return;
+        }
+      }
       router.push(content);
     }
     if (type === "modal") {

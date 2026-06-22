@@ -6,6 +6,7 @@ import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useGroupMyStatusQuery } from "../../hooks/groupStudy/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { birthToAge } from "../../utils/convertUtils/convertTypes";
 
 const ROLE_KR: Record<string, string> = {
   member: "정회원",
@@ -90,14 +91,8 @@ export default function MemberCardPage() {
 
             {/* 아바타 (헤더와 겹침) */}
             <Box px={6} mt="-28px" mb={2}>
-              <Box
-                borderRadius="50%"
-                border="3px solid white"
-                boxShadow="0 2px 8px rgba(0,0,0,0.12)"
-                overflow="hidden"
-                w="fit-content"
-              >
-                <Avatar user={userInfo} size="lg1" />
+              <Box>
+                <Avatar user={{ profileImage: userInfo?.profileImage }} size="lg1" />
               </Box>
             </Box>
 
@@ -118,6 +113,11 @@ export default function MemberCardPage() {
             <Flex direction="column" px={6} gap={3} mb={5}>
               <InfoRow label="역할" value={roleKr} />
               <InfoRow label="가입일" value={registerDate} />
+              <InfoRow label="성별" value={userInfo.gender ?? "-"} />
+              <InfoRow
+                label="나이"
+                value={userInfo.birth ? `만 ${birthToAge(userInfo.birth)}세` : "-"}
+              />
               <InfoRow
                 label="활동 상태"
                 value={isActive ? "✅ 활동 중" : "❌ 비활동"}
@@ -134,7 +134,7 @@ export default function MemberCardPage() {
                     가입 소모임
                   </Box>
                   <Flex direction="column" gap={2}>
-                    {myGroups.slice(0, 5).map((group) => (
+                    {myGroups.slice(0, 3).map((group) => (
                       <Flex key={group.id} align="center" gap={2}>
                         <Box
                           w="6px"
