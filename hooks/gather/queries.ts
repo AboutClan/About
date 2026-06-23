@@ -14,13 +14,14 @@ export const useGatherQuery = (
   cursor?: number,
   category?: GatherFilterType,
   sortBy?: "createdAt" | "date" | "basic",
+  mode?: "future" | "past",
   options?: QueryOptions<IGather[]>,
 ) =>
   useQuery<IGather[], AxiosError>(
-    [GATHER_CONTENT, category, sortBy, cursor],
+    [GATHER_CONTENT, category, sortBy, cursor, mode],
     async () => {
       const res = await axios.get<IGather[]>(`${SERVER_URI}/gather`, {
-        params: { cursor, category, sortBy },
+        params: { cursor, category, sortBy, mode },
       });
 
       return res.data;

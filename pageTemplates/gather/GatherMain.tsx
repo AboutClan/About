@@ -1,5 +1,5 @@
 import { Box, Flex, Text, useCheckbox } from "@chakra-ui/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import Select from "../../components/atoms/Select";
@@ -27,9 +27,31 @@ export const getGroupKeyByValue = (value: string) => {
   return Object.entries(GROUP_MAPPING).find(([_, values]) => values.includes(value as never))?.[0];
 };
 
+type PaginationState = { cursor: number; futureDone: boolean };
+type PaginationAction =
+  | { type: "NEXT_PAGE" }
+  | { type: "FUTURE_EXHAUSTED" }
+  | { type: "RESET" };
+
+function paginationReducer(state: PaginationState, action: PaginationAction): PaginationState {
+  switch (action.type) {
+    case "NEXT_PAGE":
+      return { ...state, cursor: state.cursor + 1 };
+    case "FUTURE_EXHAUSTED":
+      return { cursor: 0, futureDone: true };
+    case "RESET":
+      return { cursor: 0, futureDone: false };
+  }
+}
+
+const FUTURE_GAP = 24;
+
 export default function GatherMain() {
   const [gathers, setGathers] = useState<IGather[]>([]);
-  const [cursor, setCursor] = useState(0);
+  const [{ cursor, futureDone }, dispatch] = useReducer(paginationReducer, {
+    cursor: 0,
+    futureDone: false,
+  });
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
@@ -38,32 +60,37 @@ export default function GatherMain() {
   const [checkType, setCheckType] = useState<GatherFilterType>(null);
 
   const sortKey = sortBy === "기본순" ? "basic" : sortBy === "최신 개설 순" ? "createdAt" : "date";
+  const isBasic = sortKey === "basic";
+  const mode = isBasic ? (futureDone ? "past" : "future") : undefined;
 
-  const { data: gatherData, isLoading } = useGatherQuery(cursor, checkType, sortKey);
-  console.log(34, gatherData);
+  const { data: gatherData, isLoading } = useGatherQuery(cursor, checkType, sortKey, mode, {
+    refetchOnWindowFocus: false,
+  });
+
   // 필터 / 정렬 변경 시 리스트 & 커서 초기화
   useEffect(() => {
     setGathers([]);
-    setCursor(0);
+    dispatch({ type: "RESET" });
+    firstLoad.current = true;
   }, [checkType, sortBy]);
 
-  useEffect(() => {
-    if (cursor === 0 && gatherData?.length) {
-      setCursor(1);
-    }
-  }, [cursor, gatherData]);
-
-  // 페이지네이션 데이터 합치기
+  // 페이지네이션 데이터 합치기 + 미래 데이터 소진 감지
   useEffect(() => {
     if (!gatherData) return;
 
     firstLoad.current = false;
 
     setGathers((prev) => {
-      if (cursor === 0) return gatherData;
-      return [...prev, ...gatherData];
+      if (cursor === 0 && !futureDone) return gatherData;
+      const existingIds = new Set(prev.map((g) => g.id));
+      return [...prev, ...gatherData.filter((g) => !existingIds.has(g.id))];
     });
-  }, [gatherData, cursor]);
+
+    // 반환된 항목이 FUTURE_GAP보다 적으면 미래 데이터 소진 → 과거 모드로 전환
+    if (isBasic && !futureDone && gatherData.length < FUTURE_GAP) {
+      dispatch({ type: "FUTURE_EXHAUSTED" });
+    }
+  }, [gatherData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // gathers → 카드 데이터로 변환 (파생 데이터이므로 useMemo)
   const cardDataArr: GatherThumbnailCardProps[] = useMemo(
@@ -76,7 +103,7 @@ export default function GatherMain() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !firstLoad.current && !isLoading) {
-          setCursor((prev) => prev + 1);
+          dispatch({ type: "NEXT_PAGE" });
         }
       },
       { threshold: 1.0 },
@@ -142,9 +169,13 @@ export default function GatherMain() {
             <>
               {cardDataArr
                 .slice()
-                .sort((a, b) => (a.id === 5019 || b.id === 5019 ? -1 : 1))
-                .map((cardData, idx) => (
-                  <Box mb="12px" key={idx}>
+                .sort((a, b) => {
+                  if (a.id === 5019) return -1;
+                  if (b.id === 5019) return 1;
+                  return 0;
+                })
+                .map((cardData) => (
+                  <Box mb="12px" key={cardData.id}>
                     <GatherThumbnailCard {...cardData} />
                   </Box>
                 ))}
