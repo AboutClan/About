@@ -5,11 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import CafeMapBottomNav from "../components/CafeMapBottomNav";
 import { gaEvent } from "../libs/gtag";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
+import CafeMapAppInstallDrawer from "../pageTemplates/studyPage/CafeMapAppInstallDrawer";
 import CafeMapArchivePage from "../pageTemplates/studyPage/CafeMapArchivePage";
 import CafeMapFeedPage from "../pageTemplates/studyPage/CafeMapFeedPage";
 import CafeMapMyPage from "../pageTemplates/studyPage/CafeMapMyPage";
 import CafeMapStudyPage from "../pageTemplates/studyPage/CafeMapStudyPage";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
+import { isMobileWeb } from "../utils/validationUtils";
 
 function StudyMap() {
   const { data: session, status } = useSession();
@@ -17,9 +19,18 @@ function StudyMap() {
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
   const [isGuestModal, setIsGuestModal] = useState(false);
+  const [showAppInstallDrawer, setShowAppInstallDrawer] = useState(false);
   const guestSignInTriedRef = useRef(false);
 
   const activeTab = (router.query.tab as string) || "map";
+
+  useEffect(() => {
+    if (isMobileWeb()) {
+      const savedAt = localStorage.getItem("cafeMapAppInstallDrawerHidden");
+      const hiddenUntil = savedAt ? Number(savedAt) + 24 * 60 * 60 * 1000 : 0;
+      if (Date.now() > hiddenUntil) setShowAppInstallDrawer(true);
+    }
+  }, []);
 
   useEffect(() => {
     // 게스트 세션 자동 생성. redirect: false 가 핵심 —
@@ -73,6 +84,9 @@ function StudyMap() {
             20대 커뮤니티 <b>About</b>으로 이동하시겠습니까?
           </p>
         </ModalLayout>
+      )}
+      {showAppInstallDrawer && (
+        <CafeMapAppInstallDrawer onClose={() => setShowAppInstallDrawer(false)} />
       )}
     </>
   );
