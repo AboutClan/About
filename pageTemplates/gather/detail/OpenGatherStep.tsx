@@ -84,7 +84,9 @@ export default function ProcessGuide({ type }: { type: number }) {
       title: "함께하고 싶은 멤버를 직접 선택해요",
       description: "신청한 멤버들의 프로필을 확인할 수 있어요",
       date:
-        type === 5
+        type === 6
+          ? "6월 29일(월)"
+          : type === 5
           ? "6월 21일(일)"
           : type === 4
           ? "5월 13일(수)"
@@ -99,7 +101,9 @@ export default function ProcessGuide({ type }: { type: number }) {
       title: "선택을 고려해 최종 멤버가 확정돼요",
       description: "선택 멤버, 나이, 성별, 인원 등을 고려해요",
       date:
-        type === 5
+        type === 6
+          ? "6월 30일(화)"
+          : type === 5
           ? "6월 22일(월)"
           : type === 4
           ? "5월 15일(금)"

@@ -137,7 +137,7 @@ function CafeMapMyPage() {
                 <Box
                   cursor="pointer"
                   onClick={() => {
-                    toast("info", "6월 24일부터 이용할 수 있어요!");
+                    toast("info", "7월 1일부터 이용할 수 있어요!");
                   }}
                 >
                   <Flex align="center" gap={0.5} color="gray.400" fontSize="12px">

@@ -83,33 +83,36 @@ function CollectionAlphabet() {
 
   const friends = userInfo?.friend;
   useEffect(() => {
-    if (isLoading || !userInfo || !userAlphabetAll) return;
-    const findItem = userAlphabetAll.find((who) => who?.user?.uid === session?.user.uid);
+    if (isLoading || !userInfo || !userAlphabetAll || !alphabets) return;
 
-    if (ALPHABET_COLLECTION.every((item) => findItem?.collects.includes(item))) {
+    if (ALPHABET_COLLECTION.every((item) => alphabets.collects.includes(item))) {
       setHasAlphabetAll(true);
     }
+
     const myUid = userInfo.uid;
+    const findItem = userAlphabetAll.find((who) => who?.user?.uid === myUid);
+    const allMembers = findItem
+      ? [...userAlphabetAll]
+      : [{ ...alphabets, user: userInfo as unknown as UserSimpleInfoProps }, ...userAlphabetAll];
 
-    if (findItem) {
-      userAlphabetAll.sort((a, b) => {
-        const isMeA = a?.user?.uid === myUid;
-        const isMeB = b?.user?.uid === myUid;
+    allMembers.sort((a, b) => {
+      const isMeA = a?.user?.uid === myUid;
+      const isMeB = b?.user?.uid === myUid;
 
-        if (isMeA) return -1; // 내가 최우선
-        if (isMeB) return 1;
+      if (isMeA) return -1;
+      if (isMeB) return 1;
 
-        const isFriendA = friends.includes(a?.user?.uid);
-        const isFriendB = friends.includes(b?.user?.uid);
+      const isFriendA = friends.includes(a?.user?.uid);
+      const isFriendB = friends.includes(b?.user?.uid);
 
-        if (isFriendA && !isFriendB) return -1; // 친구가 우선
-        if (!isFriendA && isFriendB) return 1;
+      if (isFriendA && !isFriendB) return -1;
+      if (!isFriendA && isFriendB) return 1;
 
-        return Math.random() - 0.5; // 그 외는 랜덤
-      });
-    }
-    setMembers(userAlphabetAll);
-  }, [isLoading, userInfo, userAlphabetAll]);
+      return Math.random() - 0.5;
+    });
+
+    setMembers(allMembers);
+  }, [isLoading, userInfo, userAlphabetAll, alphabets]);
 
   const onClickChangeBtn = (user: UserSimpleInfoProps, alphabets: Alphabet[]) => {
     const myFriends = userInfo?.friend;
