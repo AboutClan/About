@@ -72,7 +72,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
       setTimeout(async () => {
         setAuthIntent();
         await signOut({ redirect: false });
-        await signIn("kakao", { callbackUrl: "/register/access" });
+        await signIn("kakao", { callbackUrl: type === "point" ? "/user/point/charge" : "/register/access" });
       }, 1000);
     }
   }, [router.isReady, router.query.status, session, toast, router]);

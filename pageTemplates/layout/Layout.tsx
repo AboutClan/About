@@ -64,7 +64,8 @@ function Layout({ children }: ILayout) {
     pathname === "/user/info/policy" ||
     pathname === "/user/info/privacy" ||
     pathname === "/faq" ||
-    pathname?.startsWith("/cafe-map/login");
+    pathname?.startsWith("/cafe-map/login") ||
+    pathname === "/user/point/charge";
 
   const isGuest = session?.user.role === "guest";
   const [isErrorModal, setIsErrorModal] = useState(false);
