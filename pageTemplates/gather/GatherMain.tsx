@@ -28,10 +28,7 @@ export const getGroupKeyByValue = (value: string) => {
 };
 
 type PaginationState = { cursor: number; futureDone: boolean };
-type PaginationAction =
-  | { type: "NEXT_PAGE" }
-  | { type: "FUTURE_EXHAUSTED" }
-  | { type: "RESET" };
+type PaginationAction = { type: "NEXT_PAGE" } | { type: "FUTURE_EXHAUSTED" } | { type: "RESET" };
 
 function paginationReducer(state: PaginationState, action: PaginationAction): PaginationState {
   switch (action.type) {
@@ -169,11 +166,7 @@ export default function GatherMain() {
             <>
               {cardDataArr
                 .slice()
-                .sort((a, b) => {
-                  if (a.id === 5019) return -1;
-                  if (b.id === 5019) return 1;
-                  return 0;
-                })
+
                 .map((cardData) => (
                   <Box mb="12px" key={cardData.id}>
                     <GatherThumbnailCard {...cardData} />
