@@ -104,7 +104,7 @@ export const useGroupsMineQuery = (
   status: "pending" | "all",
   options?: QueryOptions<GroupMineProps[]>,
 ) =>
-  useQuery<GroupMineProps[], AxiosError, GroupMineProps[]>(
+useQuery<GroupMineProps[], AxiosError, GroupMineProps[]>(
     [GROUP_STUDY, status],
     async () => {
       const res = await axios.get<GroupMineProps[]>(`${SERVER_URI}/groupStudy/mine`, {

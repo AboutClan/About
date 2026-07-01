@@ -44,7 +44,7 @@ function GroupStudyTicketLogSection() {
   };
 
   const sum = data?.slice()?.reduce((acc, cur) => {
-    return acc + (cur.isMember ? 0 : cur.requiredTicket);
+    return acc + (cur.isMember ? cur.requiredTicket - 1 : cur.requiredTicket);
   }, 0);
   const { gather, group } = getTemperatureTicket(
     userInfo?.temperature.temperature,

@@ -75,12 +75,19 @@ function UserPage() {
                 },
               },
               {
+                text: "가입중인 소모임",
+                func: () => {
+                  router.replace(`/user?tab=group`);
+                  handleClickTab("group");
+                },
+              },
+              {
                 text: "내가 참여한 모임",
                 func: () => {
                   router.replace(`/user?tab=gather`);
                   handleClickTab("gather");
                   setIsAlert(false);
-              },
+                },
                 isAlert,
               },
               {
@@ -88,13 +95,6 @@ function UserPage() {
                 func: () => {
                   router.replace(`/user?tab=study`);
                   handleClickTab("study");
-                },
-              },
-              {
-                text: "소모임",
-                func: () => {
-                  router.replace(`/user?tab=group`);
-                  handleClickTab("group");
                 },
               },
             ]}
