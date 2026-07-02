@@ -97,23 +97,23 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
     iconImage: "/group/취미.png",
     title: "취미",
-    url: `/group?category=2`,
+    url: `/group?category=3`,
   },
   {
     iconImage: "/group/액티비티.png",
     title: "액티비티",
-    url: `/group?category=3`,
+    url: `/group?category=4`,
   },
   {
     title: "문화·감상",
     iconImage: "/group/티켓.png",
-    url: `/group?category=4`,
+    url: `/group?category=5`,
   },
 
   {
     iconImage: "/group/칵테일.png",
     title: "친목",
-    url: `/group?category=5`,
+    url: `/group?category=6`,
   },
 ];
 

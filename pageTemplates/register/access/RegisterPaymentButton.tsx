@@ -9,7 +9,7 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import { USER_INFO, USER_POINT_SYSTEM } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import {
-  usePointSystemMutation,
+  useCreditPointByOrderMutation,
   useUserRegisterControlMutation,
 } from "../../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
@@ -79,7 +79,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
 
   const { mutate: sendRequest } = useUserRequestMutation();
 
-  const { mutate: chargePoint } = usePointSystemMutation("point", {
+  const { mutate: creditPoint } = useCreditPointByOrderMutation({
     onSuccess() {
       queryClient.invalidateQueries([USER_INFO]);
       queryClient.invalidateQueries({ queryKey: [USER_POINT_SYSTEM, "point"], exact: false });
@@ -92,7 +92,9 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
       handledReturnRef.current = false;
     },
     onError() {
-      toast("error", "충전에 실패했어요. 관리자에게 문의주세요!");
+      // 서버가 orderNo 기준으로 멱등 처리하므로, 여기서 재시도 가능하게 풀어줘도
+      // 실제 포인트 지급이 두 번 일어나지 않는다.
+      toast("error", "충전 확인에 실패했어요. 잠시 후 다시 시도해 주세요.");
       setIsLoading2(false);
       approveOnceRef.current = false;
       handledReturnRef.current = false;
@@ -224,19 +226,19 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
 
   // ✅ PAYCERT_FAIL: noti 웹훅이 결제를 나중에 확인할 때까지 폴링
   const triggerPaymentAction = useCallback(
-    (amount?: string) => {
+    (orderNo?: string) => {
       if (approveOnceRef.current) return;
       approveOnceRef.current = true;
       handledReturnRef.current = true;
       if (type === "point") {
-        const resolvedAmount = Number(amount) || value;
-        chargePoint({ value: resolvedAmount, message: "포인트 충전", sub: "point" });
+        if (!orderNo) return;
+        creditPoint({ orderNo });
       } else {
         if (!session?.user?.uid) return;
         approve(session.user.uid);
       }
     },
-    [type, value, chargePoint, approve, session],
+    [type, creditPoint, approve, session],
   );
 
   useEffect(() => {
@@ -269,7 +271,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
               undefined,
               { shallow: true },
             );
-            triggerPaymentAction(data.amount);
+            triggerPaymentAction(orderNo);
             return;
           }
         }
@@ -346,8 +348,14 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     setIsLoading2(false);
 
     if (type === "point") {
-      const urlAmount = Number(first(router.query.amount));
-      chargePoint({ value: urlAmount || value, message: "포인트 충전", sub: "point" });
+      const orderNo = first(router.query.orderNo);
+      if (!orderNo) {
+        toast("error", "주문 정보를 확인할 수 없어요. 관리자에게 문의해 주세요.");
+        approveOnceRef.current = false;
+        handledReturnRef.current = false;
+        return;
+      }
+      creditPoint({ orderNo });
     } else {
       approve(session.user.uid);
     }
@@ -357,7 +365,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     router.query,
     session?.user?.uid,
     approve,
-    chargePoint,
+    creditPoint,
     toast,
     router,
   ]);

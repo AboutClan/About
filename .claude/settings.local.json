@@ -51,7 +51,8 @@
       "Bash(Select-Object -ExpandProperty Name)",
       "Skill(claude-api)",
       "Bash(xargs grep -l \"admin\")",
-      "Bash(grep -E \"cafe-map/login|cafe-map\\\\\\\\\\\\\\\\login|register/name|register\\\\\\\\\\\\\\\\name\")"
+      "Bash(grep -E \"cafe-map/login|cafe-map\\\\\\\\\\\\\\\\login|register/name|register\\\\\\\\\\\\\\\\name\")",
+      "Bash(npx eslint *)"
     ]
   }
 }

@@ -284,7 +284,7 @@ function UserBlock({
           <Flex bg="white" borderTop="1px solid" borderColor="gray.100" alignItems="center">
             <Flex direction="column" align="center" justify="center" flex="1" py={3}>
               <Text fontSize="13px" color="gray.600">
-                이번 달 참여
+                지난 달 참여
               </Text>
               <Text mt={2} fontSize="14px" color="gray.700" fontWeight="600" lineHeight="1">
                 {gatherCount?.gatherCount ? "○" : "X"}
