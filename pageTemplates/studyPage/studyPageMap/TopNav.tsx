@@ -862,9 +862,9 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     date: "2026-05-18",
     isCompleted: false,
     textArr: [
-      "안드로이드 앱 출시 (7월 1일)",
-      "스터디 기능 오픈 (7월 1일)",
-      "리뷰 작성 시 리워드 지급 (7월 1일)",
+      "안드로이드 앱 출시 (7월 10일)",
+      "스터디 기능 오픈 (7월 10일)",
+      "리뷰 작성 시 리워드 지급 (7월 10일)",
     ],
   },
 ];

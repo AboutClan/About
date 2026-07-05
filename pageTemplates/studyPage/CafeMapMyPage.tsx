@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -137,7 +137,7 @@ function CafeMapMyPage() {
                 <Box
                   cursor="pointer"
                   onClick={() => {
-                    toast("info", "7월 1일부터 이용할 수 있어요!");
+                    toast("info", "7월 10일부터 이용할 수 있어요!");
                   }}
                 >
                   <Flex align="center" gap={0.5} color="gray.400" fontSize="12px">
@@ -172,7 +172,7 @@ function CafeMapMyPage() {
                 toast("info", "등록한 장소가 없어요");
                 return;
               }
-              toast("info", "7월 1일 오픈 예정이에요!");
+              toast("info", "7월 10일 오픈 예정이에요!");
             }}
           />
           {favorites?.likes?.length ? (
@@ -199,7 +199,7 @@ function CafeMapMyPage() {
                 toast("info", "등록한 장소가 없어요");
                 return;
               }
-              toast("info", "7월 1일 오픈 예정이에요!");
+              toast("info", "7월 10일 오픈 예정이에요!");
             }}
           />
           {favorites?.picks?.length ? (
