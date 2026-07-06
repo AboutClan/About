@@ -24,7 +24,7 @@ function RegisterFAQ() {
       <Flex flexDir="column" alignItems="center" mt={10} textAlign="center" w="full">
         <Stack spacing={2} mb={5}>
           <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
-            05
+            07
           </Badge>
 
           <Heading fontSize="2xl">자주 묻는 질문</Heading>

@@ -52,7 +52,25 @@
       "Skill(claude-api)",
       "Bash(xargs grep -l \"admin\")",
       "Bash(grep -E \"cafe-map/login|cafe-map\\\\\\\\\\\\\\\\login|register/name|register\\\\\\\\\\\\\\\\name\")",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "Bash(npx --no-install tsc --noEmit -p tsconfig.json)",
+      "Bash(echo \"EXIT:$?\")",
+      "Read(//tmp/**)",
+      "Bash(curl -s -o /tmp/home.html -w \"%{http_code}\" http://localhost:3901/home)",
+      "Bash(curl -s -o /dev/null -w \"HTTP:%{http_code}\\\\n\" http://localhost:3901/home)",
+      "Bash(curl -s -o /dev/null -w \"HTTP:%{http_code}\\\\n\" http://localhost:3901/home --max-time 3)",
+      "PowerShell($conn = Get-NetTCPConnection -LocalPort 3901 -State Listen -ErrorAction SilentlyContinue; if \\($conn\\) { $conn | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue } }; Start-Sleep -Seconds 1; try { $r = Invoke-WebRequest -Uri http://localhost:3901/home -TimeoutSec 3; $r.StatusCode } catch { \"server stopped\" })",
+      "PowerShell($conn = Get-NetTCPConnection -LocalPort 3902 -State Listen -ErrorAction SilentlyContinue; if \\($conn\\) { $conn | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue } }; Start-Sleep -Seconds 1; try { $r = Invoke-WebRequest -Uri http://localhost:3902/home -TimeoutSec 3; $r.StatusCode } catch { \"server stopped\" })",
+      "Bash(curl -s -o /tmp/home3.html -w \"HTTP:%{http_code}\\\\n\" http://localhost:3903/home --max-time 5)",
+      "PowerShell(Get-NetTCPConnection *)",
+      "Bash(curl -s -o /tmp/home3.html -w \"IPv4 HTTP:%{http_code}\\\\n\" http://127.0.0.1:3903/home --max-time 8)",
+      "Bash(curl -s -o /tmp/home3b.html -w \"IPv6 HTTP:%{http_code}\\\\n\" http://[::1]:3903/home --max-time 8)",
+      "PowerShell(Get-Process *)",
+      "PowerShell(foreach \\($p in 3901,3902,3903\\) { $c = Get-NetTCPConnection -LocalPort $p -State Listen -ErrorAction SilentlyContinue; if \\($c\\) { $c | ForEach-Object { Write-Output \"Killing PID $\\($_.OwningProcess\\) on port $p\"; Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue } } })",
+      "Bash(grep -n \"black\" styles/theme.ts)",
+      "Bash(find . -iname \"theme*.ts\" -not -path \"*/node_modules/*\")",
+      "PowerShell($conn = Get-NetTCPConnection -LocalPort 3904 -State Listen -ErrorAction SilentlyContinue; if \\($conn\\) { $conn | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue } }; Start-Sleep -Seconds 1; try { Invoke-WebRequest -Uri http://localhost:3904/home -TimeoutSec 3 | Out-Null; \"still running\" } catch { \"server stopped\" })",
+      "Bash(curl -s -o /tmp/home5.html -w \"HTTP:%{http_code}\\\\n\" http://localhost:3905/home --max-time 8)"
     ]
   }
 }

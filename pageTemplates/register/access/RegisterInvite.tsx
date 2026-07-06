@@ -45,7 +45,7 @@ function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: Regist
       <Flex flexDir="column" alignItems="center" mt={10} textAlign="center" w="full" mb={20}>
         <Stack spacing={2} mb={5}>
           <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
-            06
+            08
           </Badge>
           <Heading fontSize="2xl">추천인 코드</Heading>
           <Text color="gray.500">동아리 지인에게 초대를 받으셨나요?</Text>

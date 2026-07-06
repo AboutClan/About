@@ -47,6 +47,7 @@ export const RABBIT_POP_UP = "rabbitPopUp";
 export const NEW_POINT_SYSTEM_POP_UP = "newPointSystemPopUp";
 export const ENTHUSIASTIC_POP_UP = "enthusiasticPopUp";
 export const INSTAGRAM_POP_UP = "instagramPopUp";
+export const HOME_ACTIVITY_INTRO_POPUP_AT = "aboutHomeActivityPopupLastShownAt";
 //체크
 export const RABBIT_RUN = "rabbitRun";
 export const RECENT_CHAT = "recentChat";

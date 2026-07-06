@@ -1,9 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSetRecoilState } from "recoil";
 
+import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import ExternalLink from "../../components/molecules/ExternalLink";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { transferHomeActivityDrawerOpenState } from "../../recoils/transferRecoils";
 
 interface HomeIconProps {
   title: string;
@@ -51,11 +54,26 @@ export function HomeIcon({ title, image, bgColor }: HomeIconProps) {
 }
 
 function HomeNav() {
+  const setIsActivityDrawerOpen = useSetRecoilState(transferHomeActivityDrawerOpenState);
+
   return (
     <>
-      <Box mr="auto" color="var(--gray-800)" fontSize="18px" mb={4} fontWeight={600}>
-        내 취향 소모임 찾기
-      </Box>
+      <Flex align="center" mb={4}>
+        <Box mr="auto" color="var(--gray-800)" fontSize="18px" fontWeight={600}>
+          내 취향 소모임 찾기
+        </Box>
+        <Flex
+          as="button"
+          type="button"
+          align="center"
+          onClick={() => setIsActivityDrawerOpen(true)}
+        >
+          <Box fontSize="12px" color="var(--gray-500)" fontWeight={500} mr={0.5}>
+            한눈에 보기
+          </Box>
+          <ShortArrowIcon dir="right" />
+        </Flex>
+      </Flex>
       <Flex mb={3}>
         {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => {
           const style = { flex: 1, marginLeft: idx === 0 ? 0 : "8px" };

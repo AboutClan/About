@@ -65,3 +65,9 @@ export const transferStudyAttendanceState = atom<RealTimesDirectAttendanceProps>
   key: "TransferStudyAttendance",
   default: null,
 });
+
+// 홈 화면의 "내 취향 소모임 찾기" 버튼에서 인트로 모달 없이 바로 소모임 Drawer를 여는 트리거
+export const transferHomeActivityDrawerOpenState = atom<boolean>({
+  key: "transferHomeActivityDrawerOpenState",
+  default: false,
+});

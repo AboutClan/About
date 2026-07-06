@@ -45,7 +45,7 @@ function GatherDetail() {
   const { id } = useParams<{ id: string }>() || {};
   const uid = router.query.uid;
   const kakao = router.query.kakao;
- 
+
   const setIsScrollAuto = useSetRecoilState(isScrollAutoState);
 
   const { data: gather } = useGatherIDQuery(+id, {
@@ -106,10 +106,10 @@ function GatherDetail() {
   useEffect(() => {
     if (isAdmin && !!gather) {
       const adminGatherAt = localStorage.getItem("adminGatherId");
-      if (!adminGatherAt || +adminGatherAt < gather.id) {
-        localStorage.setItem("adminGatherId", gather.id + "");
-        setIsModal(true);
-      }
+      // if (!adminGatherAt || +adminGatherAt < gather.id) {
+      //   localStorage.setItem("adminGatherId", gather.id + "");
+      //   setIsModal(true);
+      // }
     }
   }, [isAdmin, gather]);
 

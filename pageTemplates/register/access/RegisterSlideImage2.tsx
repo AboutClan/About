@@ -13,14 +13,13 @@ import ImageZoomModal from "../../../modals/ImageZoomModal";
 
 SwiperCore.use([Autoplay, Scrollbar]);
 
-function RegisterSlideImage() {
+function RegisterSlideImage2() {
   const [zoomImage, setZoomImage] = useState<string>(null);
 
   const imageArr = [
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%8A%A4%ED%84%B0%EB%94%94.png",
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B2%88%EA%B0%9C.png",
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%86%8C%EB%AA%A8%EC%9E%84.png",
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%ED%94%84%EB%A1%9C%ED%95%84.png",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EA%B3%B5%EB%B6%80.jpg",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%AC%B8%ED%99%94.jpg",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%9D%BC%EC%9D%B4%ED%94%84.png",
   ];
 
   return (
@@ -28,12 +27,12 @@ function RegisterSlideImage() {
       <Flex flexDir="column" alignItems="center" mt={10} textAlign="center">
         <Stack spacing={2} mb={5}>
           <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
-            02
+            04
           </Badge>
 
-          <Heading fontSize="2xl">활동 방식</Heading>
+          <Heading fontSize="2xl">제휴처 소개</Heading>
           <Text color="gray.500">
-            <b>어바웃 앱</b>에서 원하는 활동을 쉽게 찾고 참여할 수 있어요.
+            어바웃 멤버가 되면 아래 <b>제휴처 혜택</b>을 받을 수 있어요!
           </Text>
         </Stack>
         <StyledSwiper
@@ -43,13 +42,16 @@ function RegisterSlideImage() {
             height: "auto",
             position: "relative",
           }}
-          slidesPerView={2.2}
+          slidesPerView={1.4}
           spaceBetween={20}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          speed={4000}
+          loop
         >
           {imageArr.map((item, index) => (
             <SwiperSlide key={index}>
               <Box mr={0} borderRadius="20px" overflow="hidden" onClick={() => setZoomImage(item)}>
-                <Box position="relative" aspectRatio="1/1.78">
+                <Box position="relative" aspectRatio="4/5">
                   <Image
                     src={item}
                     fill={true}
@@ -63,9 +65,7 @@ function RegisterSlideImage() {
           ))}
         </StyledSwiper>
       </Flex>
-      {zoomImage && (
-        <ImageZoomModal imageUrl={zoomImage} setIsModal={() => setZoomImage(null)} isThumbnail />
-      )}
+      {zoomImage && <ImageZoomModal imageUrl={zoomImage} setIsModal={() => setZoomImage(null)} />}
     </>
   );
 }
@@ -76,4 +76,4 @@ const StyledSwiper = styled(Swiper)`
   }
 `;
 
-export default RegisterSlideImage;
+export default RegisterSlideImage2;

@@ -1,6 +1,7 @@
 import { Input } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { MouseEvent, useRef, useState } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import BottomNav from "../../components/layouts/BottomNav";
@@ -12,6 +13,7 @@ import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/u
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
+import { setAuthIntent } from "../../utils/authIntentUtils";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 const DEFAULT_LOCATION_DETAIL = {
@@ -34,6 +36,18 @@ function Comment2() {
   const [index, setIndex] = useState<number>(1);
 
   const { mutate: changeRole } = useUserInfoFieldMutation("role");
+
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (session?.user.role === "guest" || session?.user.uid === "1234567890") {
+      toast("error", "안전한 계정 확인을 위해 다시 한번 로그인 할게요!");
+      setTimeout(async () => {
+        setAuthIntent();
+        await signOut({ redirect: false });
+        await signIn("kakao", { callbackUrl: "/register/comment2" });
+      }, 1000);
+    }
+  }, [session]);
 
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {

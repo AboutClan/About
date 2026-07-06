@@ -48,7 +48,7 @@ function RegisterReview({
       {!isShort && (
         <Stack spacing={2} mb={5}>
           <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
-            04
+            06
           </Badge>
           <Heading fontSize="2xl">생생한 리얼 후기</Heading>
           <Text color="gray.500">

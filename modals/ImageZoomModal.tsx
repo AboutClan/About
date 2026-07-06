@@ -7,11 +7,13 @@ import { IModal } from "../types/components/modalTypes";
 interface IImageZoommodal extends IModal {
   imageUrl: string;
   isThumbnail?: boolean;
+  is4To5?: boolean;
 }
 
 export default function ImageZoomModal({
   imageUrl,
   isThumbnail = false,
+is4To5,
   setIsModal,
 }: IImageZoommodal) {
   return (
@@ -24,7 +26,7 @@ export default function ImageZoomModal({
         left="50%"
         zIndex={200}
         width="320px"
-        height={isThumbnail ? "569px" : "400px"}
+        height={ isThumbnail ? "569px" : "400px"}
         rounded="lg"
         overflow="hidden"
         onClick={() => setIsModal(null)}

@@ -2,6 +2,8 @@ import { Box } from "@chakra-ui/react";
 
 import Divider from "../../components/atoms/Divider";
 import Slide from "../../components/layouts/PageSlide";
+import HomeActivityDrawer from "../../components/overlay/HomeActivityDrawer";
+import HomeActivityIntroPopup from "../../components/overlay/HomeActivityIntroPopup";
 import ChallengeSection from "../../pageTemplates/home/ChallengeSection";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
 import HomeFooter from "../../pageTemplates/home/HomeFooter";
@@ -17,6 +19,8 @@ function Home() {
   return (
     <>
       <HomeInitialSetting />
+      <HomeActivityIntroPopup />
+      <HomeActivityDrawer />
       <HomeHeader />
       <Slide isNoPadding>
         <HomeBannerSlide />

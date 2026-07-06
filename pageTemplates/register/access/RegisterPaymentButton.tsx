@@ -68,11 +68,14 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
       session?.user.role === "guest" ||
       session?.user.uid === "1234567890"
     ) {
+      return;
       toast("error", "안전한 계정 확인을 위해 다시 한번 로그인 할게요!");
       setTimeout(async () => {
         setAuthIntent();
         await signOut({ redirect: false });
-        await signIn("kakao", { callbackUrl: type === "point" ? "/user/point/charge" : "/register/access" });
+        await signIn("kakao", {
+          callbackUrl: type === "point" ? "/user/point/charge" : "/register/access",
+        });
       }, 1000);
     }
   }, [router.isReady, router.query.status, session, toast, router]);
@@ -287,7 +290,13 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     return () => {
       if (pollingTimerRef.current) clearTimeout(pollingTimerRef.current);
     };
-  }, [router.isReady, session?.user?.uid, router.query.status, router.query.reason, triggerPaymentAction]);
+  }, [
+    router.isReady,
+    session?.user?.uid,
+    router.query.status,
+    router.query.reason,
+    triggerPaymentAction,
+  ]);
 
   // ✅ 결제 리턴 처리: 성공이면 approve, 실패면 toast만 (UI는 그대로 유지)
   useEffect(() => {

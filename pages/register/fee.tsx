@@ -1,7 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 import InfoList from "../../components/atoms/lists/InfoList";
 import BottomNav from "../../components/layouts/BottomNav";
@@ -20,6 +21,7 @@ import { ModalLayout } from "../../modals/Modals";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
+import { setAuthIntent } from "../../utils/authIntentUtils";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 export const VALUE_BOX_COL_ITEMS: ValueBoxCol2ItemProps[] = [
@@ -54,6 +56,18 @@ function Fee() {
 
   const { mutate: changeRole } = useUserInfoFieldMutation("role");
   const { data: userInfo } = useUserInfoQuery();
+
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (session?.user.role === "guest" || session?.user.uid === "1234567890") {
+      toast("error", "안전한 계정 확인을 위해 다시 한번 로그인 할게요!");
+      setTimeout(async () => {
+        setAuthIntent();
+        await signOut({ redirect: false });
+        await signIn("kakao", { callbackUrl: "/register/fee" });
+      }, 1000);
+    }
+  }, [session]);
 
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {

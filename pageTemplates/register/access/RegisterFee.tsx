@@ -9,7 +9,7 @@ function RegisterFee() {
       <Flex flexDir="column" alignItems="center" mt={10} textAlign="center">
         <Stack spacing={2} mb={5}>
           <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
-            03
+            05
           </Badge>
 
           <Heading fontSize="2xl">동아리 가입비</Heading>
