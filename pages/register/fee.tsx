@@ -22,11 +22,7 @@ import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { setAuthIntent } from "../../utils/authIntentUtils";
-import {
-  getLocalStorageObj,
-  getTrafficSourceCode,
-  setLocalStorageObj,
-} from "../../utils/storageUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 export const VALUE_BOX_COL_ITEMS: ValueBoxCol2ItemProps[] = [
   {
@@ -76,10 +72,8 @@ function Fee() {
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {
       const moving = localStorage.getItem("moving");
-      const trafficSourceCode = getTrafficSourceCode();
-      if (moving)
-        gaEvent("register_complete_by_cafe_map", { traffic_source_code: trafficSourceCode });
-      else gaEvent("register_complete", { traffic_source_code: trafficSourceCode });
+      if (moving) gaEvent("register_complete_by_cafe_map");
+      else gaEvent("register_complete");
       if (userInfo?.role !== "member") changeRole({ role: "waiting" });
 
       setLocalStorageObj(REGISTER_INFO, null);
