@@ -23,7 +23,7 @@ function BoardPage() {
       <Flex flexDir="column" mb={40}>
         <Box pos="relative" w="full" aspectRatio={4 / 5}>
           <Image
-            src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.png"
+            src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%8F%99%EC%95%84%EB%A6%AC%EC%B9%9C%EA%B5%AC%EC%B4%88%EB%8C%80.png"
             fill
             alt="1"
           />

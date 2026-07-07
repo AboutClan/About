@@ -16,7 +16,7 @@ import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
   FRIEND_INVITE_AT,
   GATHER_REVIEW_MODAL_ID,
-  MEMBERSHIP_AT,
+  MEMBERSHIP_AT
 } from "../../../constants/keys/localStorage";
 import { STUDY_ATTEND_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";

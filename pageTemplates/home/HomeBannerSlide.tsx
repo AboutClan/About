@@ -18,7 +18,7 @@ function HomeBannerSlide() {
       } else if (category === "faq") {
         router.push(`https://about20s.club/faq`);
       } else if (category === "friendInvite") {
-        navigateExternalLink("https://pf.kakao.com/_SaWXn/chat");
+        router.push(`https://about20s.club/board`);
       } else if (category == "study") {
         router.push(`/studyPage?date=${getTodayStr()}&modal=point`);
       }
