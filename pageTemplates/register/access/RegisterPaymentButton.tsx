@@ -17,6 +17,7 @@ import { gaEvent } from "../../../libs/gtag";
 import { isWebView } from "../../../utils/appEnvUtils";
 import { setAuthIntent } from "../../../utils/authIntentUtils";
 import { navigateExternalLink } from "../../../utils/navigateUtils";
+import { getTrafficSourceCode } from "../../../utils/storageUtils";
 
 function first(v: string | string[] | undefined) {
   return Array.isArray(v) ? v[0] : v;
@@ -106,7 +107,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
 
   const { mutate: approve, isLoading } = useUserRegisterControlMutation("post", {
     onSuccess() {
-      gaEvent("sign_up_complete");
+      gaEvent("sign_up_complete", { traffic_source_code: getTrafficSourceCode() });
       router.replace("/register/access", undefined, { shallow: true });
       toast("success", "가입이 완료되었습니다!");
       queryClient.resetQueries([USER_INFO]);

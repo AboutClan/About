@@ -59,7 +59,7 @@ function StudyMap() {
       text: "이 동",
       func: () => {
         localStorage.setItem("moving", "cafe-map");
-        gaEvent("cafe-map-moving");
+        gaEvent("cafe_map_moving");
         router.push("/home");
       },
     },

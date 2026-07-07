@@ -20,7 +20,11 @@ import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../../types/models/userTypes/userInfoTypes";
 import { setAuthIntent } from "../../../utils/authIntentUtils";
-import { getLocalStorageObj, setLocalStorageObj } from "../../../utils/storageUtils";
+import {
+  getLocalStorageObj,
+  getTrafficSourceCode,
+  setLocalStorageObj,
+} from "../../../utils/storageUtils";
 
 function Comment() {
   const router = useRouter();
@@ -67,9 +71,11 @@ function Comment() {
   const { mutate, isLoading } = useUserCafeRegisterMutation({
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: [USER_INFO], exact: false });
-      const moving = localStorage.getItem("moving");
-      if (moving) gaEvent("register_complete_by_cafe_map");
-      else gaEvent("register_complete");
+      // 이 페이지는 카페맵 전용 가입 마법사(auth→gender→location→comment)의 완료 지점이라
+      // "moving"(홈 화면의 별도 "이동" 버튼) 플래그와 무관하게 항상 카페맵 유입으로 집계한다.
+      gaEvent("register_complete_by_cafe_map", {
+        traffic_source_code: getTrafficSourceCode(),
+      });
       changeRole({ role: "cafe_user" });
 
       setLocalStorageObj(REGISTER_INFO, null);

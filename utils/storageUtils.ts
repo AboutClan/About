@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { LIKE_HEART } from "../constants/keys/localStorage";
+import { LIKE_HEART, TRAFFIC_SOURCE_CODE } from "../constants/keys/localStorage";
 import { LIKE_HEART_PERIOD } from "../constants/settingValue/localStorage";
 import { IInteractionLikeStorage } from "../types/globals/interaction";
 import { dayjsToStr } from "./dateTimeUtils";
@@ -57,5 +57,23 @@ export const getLocalStorageObj = (key: string, defaultValue: any = null): any =
     return JSON.parse(raw);
   } catch {
     return defaultValue;
+  }
+};
+
+export const setTrafficSourceCode = (code: string) => {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(TRAFFIC_SOURCE_CODE, code);
+  } catch {
+    // ignore
+  }
+};
+
+export const getTrafficSourceCode = (): string | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.localStorage.getItem(TRAFFIC_SOURCE_CODE);
+  } catch {
+    return null;
   }
 };

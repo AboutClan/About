@@ -14,10 +14,11 @@ import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
+import { gaEvent } from "../../libs/gtag";
 import RegisterReview from "../../pageTemplates/register/access/RegisterReview";
 import { isWebView } from "../../utils/appEnvUtils";
 import { setAuthIntent } from "../../utils/authIntentUtils";
-import { setLocalStorageObj } from "../../utils/storageUtils";
+import { getTrafficSourceCode, setLocalStorageObj } from "../../utils/storageUtils";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URI ?? "http://localhost:3001";
 const NICE_REQUEST_NO_KEY = "nice_request_no";
@@ -53,6 +54,11 @@ export default function Auth() {
   const token = useToken();
 
   const userInfo = useUserInfo();
+
+  // 어떤 버튼을 눌러 들어오든 회원가입은 항상 이 경로로 모이므로, 여기 진입을 "가입 신청" 시점으로 기록한다.
+  useEffect(() => {
+    gaEvent("register_apply", { traffic_source_code: getTrafficSourceCode() });
+  }, []);
 
   useEffect(() => {
     if (!userInfo?.role) return;

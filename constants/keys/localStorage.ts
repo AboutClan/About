@@ -48,6 +48,9 @@ export const NEW_POINT_SYSTEM_POP_UP = "newPointSystemPopUp";
 export const ENTHUSIASTIC_POP_UP = "enthusiasticPopUp";
 export const INSTAGRAM_POP_UP = "instagramPopUp";
 export const HOME_ACTIVITY_INTRO_POPUP_AT = "aboutHomeActivityPopupLastShownAt";
+
+// 짧은 트래킹 링크(about20s.club/e1, /c, /g 등)로 유입된 소스 코드를 가입 퍼널 끝까지 들고 다니기 위한 키
+export const TRAFFIC_SOURCE_CODE = "trafficSourceCode";
 //체크
 export const RABBIT_RUN = "rabbitRun";
 export const RECENT_CHAT = "recentChat";
