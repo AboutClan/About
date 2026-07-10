@@ -163,7 +163,7 @@ function LoginPage() {
           position="fixed"
           top="12px"
           opacity={0.8}
-          right="12px"
+          right="max(12px, calc(50vw - var(--max-width) / 2 + 12px))"
           zIndex={1000}
           p={1}
           color="white"

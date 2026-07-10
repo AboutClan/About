@@ -70,7 +70,12 @@
       "Bash(grep -n \"black\" styles/theme.ts)",
       "Bash(find . -iname \"theme*.ts\" -not -path \"*/node_modules/*\")",
       "PowerShell($conn = Get-NetTCPConnection -LocalPort 3904 -State Listen -ErrorAction SilentlyContinue; if \\($conn\\) { $conn | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue } }; Start-Sleep -Seconds 1; try { Invoke-WebRequest -Uri http://localhost:3904/home -TimeoutSec 3 | Out-Null; \"still running\" } catch { \"server stopped\" })",
-      "Bash(curl -s -o /tmp/home5.html -w \"HTTP:%{http_code}\\\\n\" http://localhost:3905/home --max-time 8)"
+      "Bash(curl -s -o /tmp/home5.html -w \"HTTP:%{http_code}\\\\n\" http://localhost:3905/home --max-time 8)",
+      "Skill(run)",
+      "Bash(chromium-cli --help)",
+      "Bash(npx --version)",
+      "Bash(timeout 60 bash -c 'until curl -sf http://localhost:3000/login >/dev/null; do sleep 2; done')",
+      "Bash(npx playwright *)"
     ]
   }
 }
