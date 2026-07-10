@@ -14,13 +14,13 @@ import RequestChangeProfileImageModalAvatar from "../../modals/userRequest/Reque
 import SpecialAvatarModal from "../../modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
 import { IModal } from "../../types/components/modalTypes";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import UserBenefitBanner from "./UserBenefitBanner";
 import UserCollection from "./UserCollection2";
 import UserInviteFriendSection from "./UserInviteFriendSection";
 import UserPointBlock from "./UserPointBlock";
 import UserProfile from "./UserProfile2";
 import UserProfileBar from "./UserProfileBar";
 import UserReviewBar from "./UserReviewBar";
-import UserScoreBar from "./UserScoreBar";
 import UserScoreGuideDrawer from "./UserScoreGuideDrawer";
 import UserSocialGuideDrawer from "./UserSocialGuideDrawer";
 
@@ -46,7 +46,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
 
   return (
     <>
-      <Box borderBottom="var(--border)">
+      <Box borderBottom="var(--border)" pb={3} mb={3}>
         <UserProfileBar user={user} />
         <UserPointBlock
           handleButton={() => {
@@ -60,7 +60,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
             setModalType("temperature");
           }}
         />
-        <UserScoreBar
+        {/* <UserScoreBar
           score={user?.monthScore}
           handleButton={() => {
             router.push(
@@ -72,9 +72,10 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
             );
             setModalType("score");
           }}
-        />
+        /> */}
       </Box>
-      <Box borderBottom="var(--border)" pb={2}>
+      <UserBenefitBanner />
+      <Box borderY="var(--border)" py={2}>
         <UserReviewBar hasTop={false} user={user} />
       </Box>
       <UserCollection />

@@ -144,7 +144,7 @@ export default function StudyMembers({
         memo: addressArr?.[0] + " " + addressArr?.[1],
 
         rightComponent: (
-          <Badge variant="subtle" colorScheme="blue" size="md" maxW="92px" isTruncated>
+          <Badge variant="subtle" colorScheme="blue" size="md" maxW="70px" isTruncated>
             {participant.dates.map((date, idx) => {
               const newMonth = dayjs(date).month();
               if (month !== newMonth && idx !== 0) {

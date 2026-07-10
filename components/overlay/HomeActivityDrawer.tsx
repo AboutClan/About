@@ -2,21 +2,31 @@ import { Box, Button, Flex, Grid } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import {
   ActivityCategory,
   ActivityItem,
-  BenefitItem,
   HOME_ACTIVITY_ITEMS,
-  HOME_BENEFIT_ITEMS,
 } from "../../constants/contents/groupInfo";
 import { HOME_ACTIVITY_INTRO_POPUP_AT } from "../../constants/keys/localStorage";
+import {
+  SUPPORT_CATEGORY_LABEL,
+  SUPPORT_CATEGORY_ORDER,
+  SUPPORT_LIST,
+  SupportCategory,
+  SupportItem,
+} from "../../constants/support";
 import { getGroupKeyByValue } from "../../pageTemplates/gather/GatherMain";
-import { transferHomeActivityDrawerOpenState } from "../../recoils/transferRecoils";
-import { navigateExternalLink } from "../../utils/navigateUtils";
-import TabNav from "../molecules/navs/TabNav";
+import {
+  HOME_ACTIVITY_DRAWER_QUERY_KEY,
+  HomeActivityDrawerTab,
+  transferHomeActivityDrawerOpenState,
+  transferHomeActivityDrawerTabState,
+} from "../../recoils/transferRecoils";
 import RightDrawer from "../organisms/drawer/RightDrawer";
 
 const CATEGORY_ORDER: ActivityCategory[] = ["hobby", "study", "social"];
@@ -46,7 +56,7 @@ function resolveActivityCategory(item: ActivityItem): ActivityCategory {
   return GROUP_KEY_TO_ACTIVITY_CATEGORY[groupKey] ?? FALLBACK_ACTIVITY_CATEGORY;
 }
 
-type PopupTab = "activity" | "benefit";
+type PopupTab = HomeActivityDrawerTab;
 
 const TAB_OPTIONS: { key: PopupTab; text: string }[] = [
   { key: "activity", text: "소모임" },
@@ -58,12 +68,29 @@ interface HomeActivityDrawerProps {
   isNavigationDisabled?: boolean;
 }
 
-// 홈 화면 인트로 팝업, 홈/그룹 화면의 플로팅 버튼 등 여러 진입점에서 공유하는 "소모임 한눈에 보기" Drawer.
-// transferHomeActivityDrawerOpenState 값만 보고 열고 닫힌다.
+// 홈 화면 인트로 팝업, 홈/그룹 화면의 플로팅 버튼, 제휴 혜택 배너 등 여러 진입점에서 공유하는
+// "소모임/제휴 혜택 한눈에 보기" Drawer.
+// 열림 여부는 transferHomeActivityDrawerOpenState로 관리하되, useOpenHomeActivityDrawer가 열 때마다
+// 라우터 쿼리(HOME_ACTIVITY_DRAWER_QUERY_KEY)에도 흔적을 남겨 히스토리를 만든다.
+// 그래야 뒤로가기를 누르면 이 Drawer만 닫히고, Drawer에서 들어간 내부 페이지(예: /support/[id])에서
+// 다시 뒤로가기를 누르면 쿼리가 남아있는 이 화면으로 돌아와 Drawer가 재오픈된다.
 function HomeActivityDrawer({ isNavigationDisabled = false }: HomeActivityDrawerProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const drawerParam = searchParams?.get(HOME_ACTIVITY_DRAWER_QUERY_KEY) as HomeActivityDrawerTab;
+
   const [isOpen, setIsOpen] = useRecoilState(transferHomeActivityDrawerOpenState);
-  const [tab, setTab] = useState<PopupTab>("activity");
+  const [tab, setTab] = useRecoilState(transferHomeActivityDrawerTabState);
   const sectionRefs = useRef<Partial<Record<ActivityCategory, HTMLDivElement | null>>>({});
+
+  useEffect(() => {
+    if (drawerParam) {
+      setIsOpen(true);
+      setTab(drawerParam);
+    } else {
+      setIsOpen(false);
+    }
+  }, [drawerParam]);
 
   const categorizedItems = useMemo(() => {
     const itemsByCategory = CATEGORY_ORDER.reduce(
@@ -83,7 +110,9 @@ function HomeActivityDrawer({ isNavigationDisabled = false }: HomeActivityDrawer
 
   const handleClose = () => {
     localStorage.setItem(HOME_ACTIVITY_INTRO_POPUP_AT, dayjs().toISOString());
+    router.back();
     setIsOpen(false);
+    setTab("activity");
   };
 
   const scrollToCategory = (category: ActivityCategory) => {
@@ -99,7 +128,7 @@ function HomeActivityDrawer({ isNavigationDisabled = false }: HomeActivityDrawer
       stickyHeader
       px={false}
     >
-      {!isNavigationDisabled && (
+      {/* {!isNavigationDisabled && (
         <Box
           position="sticky"
           top="var(--header-h)"
@@ -116,7 +145,7 @@ function HomeActivityDrawer({ isNavigationDisabled = false }: HomeActivityDrawer
             }))}
           />
         </Box>
-      )}
+      )} */}
 
       <Box pb="88px">
         {isNavigationDisabled || tab === "activity" ? (
@@ -131,7 +160,7 @@ function HomeActivityDrawer({ isNavigationDisabled = false }: HomeActivityDrawer
         )}
       </Box>
 
-      <Flex
+      {/* <Flex
         position="fixed"
         bottom={0}
         right={0}
@@ -145,7 +174,7 @@ function HomeActivityDrawer({ isNavigationDisabled = false }: HomeActivityDrawer
         <Button w="100%" size="lg" colorScheme="mint" onClick={handleClose}>
           {isNavigationDisabled ? "돌아가기" : "홈 화면으로"}
         </Button>
-      </Flex>
+      </Flex> */}
     </RightDrawer>
   );
 }
@@ -297,65 +326,127 @@ export function ActivityCard({ item, isNavigationDisabled }: ActivityCardProps) 
 }
 
 function BenefitTab({ isNavigationDisabled }: { isNavigationDisabled?: boolean }) {
-  if (!HOME_BENEFIT_ITEMS.length) {
-    return (
-      <Flex
-        direction="column"
-        align="center"
-        justify="center"
-        minH="50vh"
-        color="var(--gray-500)"
-        fontSize="14px"
-      >
-        곧 추가될 예정입니다
-      </Flex>
+  const sectionRefs = useRef<Partial<Record<SupportCategory, HTMLDivElement | null>>>({});
+
+  const categorizedItems = useMemo(() => {
+    const itemsByCategory = SUPPORT_CATEGORY_ORDER.reduce(
+      (acc, category) => ({ ...acc, [category]: [] as SupportItem[] }),
+      {} as Record<SupportCategory, SupportItem[]>,
     );
-  }
+
+    SUPPORT_LIST.forEach((item) => {
+      itemsByCategory[item.category].push(item);
+    });
+
+    return SUPPORT_CATEGORY_ORDER.map((category) => ({
+      category,
+      items: itemsByCategory[category],
+    })).filter((group) => group.items.length > 0);
+  }, []);
+
+  const totalCnt = SUPPORT_LIST.length;
+
+  const scrollToCategory = (category: SupportCategory) => {
+    sectionRefs.current[category]?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
-    <Box px={5} pt={4} pb={10}>
-      <Flex direction="column" gap={3}>
-        {HOME_BENEFIT_ITEMS.map((benefit) => (
-          <BenefitBanner key={benefit.id} benefit={benefit} isNavigationDisabled={isNavigationDisabled} />
-        ))}
-      </Flex>
+    <Box px={5} pb={10} mt={0}>
+      {categorizedItems.map(({ category, items }) => (
+        <Box
+          key={category}
+          ref={(el: HTMLDivElement | null) => {
+            sectionRefs.current[category] = el;
+          }}
+          pt={3}
+          pb={3}
+        >
+          <Flex align="baseline" mb={2} gap={1}>
+            <Box fontSize="15px" fontWeight={700} color="var(--gray-800)">
+              {SUPPORT_CATEGORY_LABEL[category]} 제휴 업체
+            </Box>
+            <Box fontSize="13px" color="var(--gray-500)">
+              {items.length}
+            </Box>
+          </Flex>
+          <Grid templateColumns="repeat(4, 1fr)" gap={2}>
+            {items.map((item) => (
+              <SupportCard key={item.id} item={item} isNavigationDisabled={isNavigationDisabled} />
+            ))}
+          </Grid>
+        </Box>
+      ))}
     </Box>
   );
 }
 
-function BenefitBanner({
-  benefit,
-  isNavigationDisabled,
-}: {
-  benefit: BenefitItem;
+interface SupportCardProps {
+  item: SupportItem;
   isNavigationDisabled?: boolean;
-}) {
+}
+
+export function SupportCard({ item, isNavigationDisabled }: SupportCardProps) {
   const [hasImageError, setHasImageError] = useState(false);
-  const isClickable = !isNavigationDisabled && !!benefit.href;
+
+  const content = (
+    <Box cursor={isNavigationDisabled ? "default" : "pointer"}>
+      <Box
+        position="relative"
+        w="100%"
+        aspectRatio="1 / 1"
+        borderRadius="12px"
+        overflow="hidden"
+        bg="gray.100"
+        boxShadow="0px 2px 6px 0px rgba(0,0,0,0.06)"
+      >
+        {!hasImageError && (
+          <Image
+            src={item.imageUrl}
+            alt={item.name}
+            fill
+            sizes="120px"
+            style={{ objectFit: "cover" }}
+            onError={() => setHasImageError(true)}
+          />
+        )}
+      </Box>
+      <Box
+        mt={1.5}
+        fontSize="12.5px"
+        fontWeight={600}
+        lineHeight="16px"
+        color="var(--gray-800)"
+        sx={{
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: 2,
+          overflow: "hidden",
+        }}
+      >
+        {item.name}
+      </Box>
+      <Box
+        mt="2px"
+        fontSize="11px"
+        color="var(--gray-500)"
+        sx={{
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: 1,
+          overflow: "hidden",
+        }}
+      >
+        {item.summary}
+      </Box>
+    </Box>
+  );
+
+  if (isNavigationDisabled) return content;
 
   return (
-    <Box
-      as={isClickable ? "button" : "div"}
-      onClick={isClickable ? () => navigateExternalLink(benefit.href) : undefined}
-      cursor={isClickable ? "pointer" : "default"}
-      position="relative"
-      w="100%"
-      aspectRatio="16 / 9"
-      borderRadius="12px"
-      overflow="hidden"
-      bg="gray.100"
-    >
-      {!hasImageError && (
-        <Image
-          src={benefit.imageSrc}
-          alt={benefit.alt}
-          fill
-          sizes="var(--max-width)"
-          style={{ objectFit: "cover" }}
-          onError={() => setHasImageError(true)}
-        />
-      )}
-    </Box>
+    <Link href={`/support/${item.id}`} style={{ textDecoration: "none" }}>
+      {content}
+    </Link>
   );
 }
 

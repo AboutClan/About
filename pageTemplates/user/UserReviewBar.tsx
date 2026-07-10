@@ -24,7 +24,7 @@ function UserReviewBar({ user, hasTop = true }: UserReviewBarProps) {
 
   return (
     <>
-      <Box mx={5} my={3} mt={hasTop ? 5 : 3}>
+      <Box mx={5} mb={3} mt={hasTop ? 5 : 1}>
         <Box>
           <Flex align="center">
             <Box mr="auto" color="var(--gray-800)" fontSize="16px" fontWeight={600}>

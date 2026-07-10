@@ -2,19 +2,18 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 import { HOME_ACTIVITY_INTRO_POPUP_AT } from "../../constants/keys/localStorage";
+import { useOpenHomeActivityDrawer } from "../../hooks/custom/useHomeActivityDrawer";
 import { ModalLayout } from "../../modals/Modals";
-import { transferHomeActivityDrawerOpenState } from "../../recoils/transferRecoils";
 
 const POPUP_RE_SHOW_GAP_DAY = 7;
 
 // 홈 화면 첫 진입 시(또는 마지막 노출 후 7일 경과 시) 한 번 뜨는 작은 안내 모달.
-// "소모임 둘러보기"를 누르면 HomeActivityDrawer(Layout에 전역 마운트)가 공유 atom을 통해 열린다.
+// "소모임 둘러보기"를 누르면 HomeActivityDrawer(Layout에 전역 마운트)가 라우터 쿼리를 통해 열린다.
 function HomeActivityIntroPopup() {
   const [shouldShowIntro, setShouldShowIntro] = useState(false);
-  const setIsDrawerOpen = useSetRecoilState(transferHomeActivityDrawerOpenState);
+  const openHomeActivityDrawer = useOpenHomeActivityDrawer();
 
   useEffect(() => {
     const lastShownAt = localStorage.getItem(HOME_ACTIVITY_INTRO_POPUP_AT);
@@ -35,7 +34,7 @@ function HomeActivityIntroPopup() {
   const handleExplore = () => {
     markShown();
     setShouldShowIntro(false);
-    setIsDrawerOpen(true);
+    openHomeActivityDrawer("activity");
   };
 
   if (!shouldShowIntro) return null;

@@ -4,6 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
+import SpecialBadge from "../../components/atoms/badges/SpecialBadge";
 import UserBadge from "../../components/atoms/badges/UserBadge";
 import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -46,11 +47,16 @@ function UserProfileBar({ user, editUrl, name }: UserProfileBarProps) {
                   : user?.name || "익명")}
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
+            {user?.role !== "cafe_user" && (
+              <Box ml={1}>
+                <SpecialBadge
+                  hasMembership={user?.membership !== "normal" || user?.role === "guest"}
+                />
+              </Box>
+            )}
           </Flex>
           <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
-            <CommentText>
-              {user?.role === "guest" ? "게스트 계정으로 접속중" : user?.comment}
-            </CommentText>
+            <CommentText>{user?.comment}</CommentText>
           </Flex>
         </Flex>
         {!isGuest && (

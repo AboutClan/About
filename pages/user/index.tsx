@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
 import TabNav from "../../components/molecules/navs/TabNav";
+import HomeActivityDrawer from "../../components/overlay/HomeActivityDrawer";
 import { GATHER_REVIEW_RECEIVE, GATHER_REVIEW_WRITE } from "../../constants/keys/localStorage";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import { useFeedCntQuery } from "../../hooks/feed/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserGatherSection from "../../pageTemplates/user/UserGatherSection";
@@ -22,6 +25,8 @@ function UserPage() {
   const { data: user } = useUserInfoQuery();
   const [section, setSection] = useState<Tab>("profile");
   const [isAlert, setIsAlert] = useState(false);
+  const isGuest = useCheckGuest();
+  const typeToast = useTypeToast();
 
   const { data: feeds } = useFeedCntQuery();
 
@@ -53,6 +58,7 @@ function UserPage() {
 
   return (
     <>
+      <HomeActivityDrawer />
       <UserHeader />
       <Slide isNoPadding>
         <Box borderBottom="var(--border)" px={5} mb={5}>
@@ -77,6 +83,10 @@ function UserPage() {
               {
                 text: "가입중인 소모임",
                 func: () => {
+                  if (isGuest) {
+                    typeToast("guest");
+                    return;
+                  }
                   router.replace(`/user?tab=group`);
                   handleClickTab("group");
                 },
@@ -84,6 +94,10 @@ function UserPage() {
               {
                 text: "내가 참여한 모임",
                 func: () => {
+                  if (isGuest) {
+                    typeToast("guest");
+                    return;
+                  }
                   router.replace(`/user?tab=gather`);
                   handleClickTab("gather");
                   setIsAlert(false);
@@ -93,6 +107,10 @@ function UserPage() {
               {
                 text: "내가 참여한 스터디",
                 func: () => {
+                  if (isGuest) {
+                    typeToast("guest");
+                    return;
+                  }
                   router.replace(`/user?tab=study`);
                   handleClickTab("study");
                 },

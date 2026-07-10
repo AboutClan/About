@@ -6,12 +6,14 @@ import { ComponentProps, useState } from "react";
 import styled from "styled-components";
 
 import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
+import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import { SingleLineText } from "../../../styles/layout/components";
 import {
   GatherCategory,
   GatherStatus,
   IGatherParticipants,
 } from "../../../types/models/gatherTypes/gatherTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
@@ -25,6 +27,10 @@ export interface GatherThumbnailCardProps {
   date: string;
   place: string;
   participants?: IGatherParticipants[];
+  waitings?: {
+    user: UserSimpleInfoProps;
+    phase: "first" | "second";
+  }[];
   imageProps: {
     image: string;
     isPriority?: boolean;
@@ -57,6 +63,7 @@ const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: s
 
 export function GatherThumbnailCard({
   participants,
+  waitings,
   title,
   status,
   category,
@@ -72,8 +79,12 @@ export function GatherThumbnailCard({
   memberReview,
   homePath,
 }: GatherThumbnailCardProps) {
+  const userInfo = useUserInfo();
+
+  const isAdmin = userInfo?.role === "previliged";
+
   const participantsMember =
-    maxCnt !== 1 && gatherType !== "openGather"&&gatherType!=="secretGather"
+    maxCnt !== 1 && gatherType !== "openGather" && gatherType !== "secretGather"
       ? participants.filter((par) => par.user?._id !== "65df1ddcd73ecfd250b42c89")
       : participants;
 
@@ -130,6 +141,11 @@ export function GatherThumbnailCard({
               <Badge size="md" variant="subtle" colorScheme="blue">
                 만 {age[0]} ~ {age[1]}세
               </Badge>
+            ) : null}
+            {isAdmin && waitings?.length ? (
+              <Box color="mint" fontSize="12px">
+                {waitings?.length}명 대기중
+              </Box>
             ) : null}
           </Flex>
           <Title>{title}</Title>

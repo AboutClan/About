@@ -88,18 +88,18 @@ function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavBu
   const isGuest = useCheckGuest();
 
   const onClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (isGuest && text === "내 정보") {
-      router.replace({
-        pathname: router.pathname,
-        query: {
-          ...router.query,
-          guest: "on",
-        },
-      });
-      e.stopPropagation();
-      e.preventDefault();
-      return;
-    }
+    // if (isGuest && text === "내 정보") {
+    //   router.replace({
+    //     pathname: router.pathname,
+    //     query: {
+    //       ...router.query,
+    //       guest: "on",
+    //     },
+    //   });
+    //   e.stopPropagation();
+    //   e.preventDefault();
+    //   return;
+    // }
     handleMove();
   };
 

@@ -16,6 +16,7 @@ import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 
 function Home() {
+  console.log
   return (
     <>
       <HomeInitialSetting />

@@ -191,6 +191,8 @@ function Layout({ children }: ILayout) {
       document.removeEventListener("message", handleMessage);
     };
   }, [pathname, router, toast]);
+
+  console.log(42, token, isPublicPage);
   return (
     <>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />

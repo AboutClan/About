@@ -1,15 +1,14 @@
 import { Badge, Box, Button, Grid, Heading, Stack, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
-import { useSetRecoilState } from "recoil";
 
 import { ActivityCard } from "../../../components/overlay/HomeActivityDrawer";
 import { HOME_ACTIVITY_ITEMS } from "../../../constants/contents/groupInfo";
-import { transferHomeActivityDrawerOpenState } from "../../../recoils/transferRecoils";
+import { useOpenHomeActivityDrawer } from "../../../hooks/custom/useHomeActivityDrawer";
 
 const TOP_ACTIVITY_ITEM_CNT = 9;
 
 function RegisterGroup() {
-  const setIsDrawerOpen = useSetRecoilState(transferHomeActivityDrawerOpenState);
+  const openHomeActivityDrawer = useOpenHomeActivityDrawer();
 
   const topActivityItems = useMemo(
     () =>
@@ -38,7 +37,7 @@ function RegisterGroup() {
       </Grid>
       <Button
         mt={5}
-        onClick={() => setIsDrawerOpen(true)}
+        onClick={() => openHomeActivityDrawer("activity")}
         w="100%"
         h="40px"
         bgColor="white"

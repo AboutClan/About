@@ -7,12 +7,36 @@ import InfoBoxCol from "../../components/molecules/InfoBoxCol";
 import SocialingScoreBadge from "../../components/molecules/SocialingScoreBadge";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { UserMemberShip, UserRole } from "../../types/models/userTypes/userInfoTypes";
 
 interface UserSocialGuideDrawerProps {
   onClose: () => void;
 }
 
-export const getTemperatureTicket = (temp: number, isGirl: boolean) => {
+// SpecialBadge(components/atoms/badges/SpecialBadge.tsx)의 멤버십별 혜택 중
+// "번개 참여권" / "소모임 참여권" 추가 지급분만 뽑아온 값.
+const MEMBERSHIP_TICKET_BONUS: Record<UserMemberShip, { gather: number; group: number }> = {
+  newbie: { gather: 1, group: 2 },
+  studySupporters: { gather: 0, group: 0 },
+  gatherSupporters: { gather: 2, group: 0 },
+  manager: { gather: 2, group: 4 },
+  normal: { gather: 0, group: 0 },
+};
+
+const TEMPERATURE_BRACKETS: { label: string; temp: number }[] = [
+  { label: "36.5도 - 38도", temp: 36.5 },
+  { label: "38도 - 40도", temp: 38 },
+  { label: "40도 - 42도", temp: 40 },
+  { label: "42도 - 44도", temp: 42 },
+  { label: "44도 이상", temp: 44 },
+];
+
+export const getTemperatureTicket = (
+  temp: number,
+  isGirl: boolean,
+  membership: UserMemberShip,
+  role?: UserRole,
+) => {
   let gather, group;
 
   if (temp < 36.5) {
@@ -36,10 +60,16 @@ export const getTemperatureTicket = (temp: number, isGirl: boolean) => {
   }
 
   // 여자일 경우 보정
-  if (isGirl) {
+  if (isGirl && role !== "guest") {
     gather += 1;
     group += 1;
   }
+
+  // SpecialBadge와 동일하게, 게스트는 뉴비 멤버십 기준으로 취급한다.
+  const effectiveMembership = role === "guest" ? "newbie" : membership;
+  const bonus = MEMBERSHIP_TICKET_BONUS[effectiveMembership] ?? MEMBERSHIP_TICKET_BONUS.normal;
+  gather += bonus.gather;
+  group += bonus.group;
 
   return { gather, group };
 };
@@ -51,30 +81,24 @@ function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
 
   const [isBenefit, setIsBenefit] = useState(true);
 
-  const benefitArr: { category: string; text: string }[] = isGirl
-    ? [
-        { category: "36.5도 - 38도", text: "번개 티켓 3장 / 소모임 티켓 5장" },
-        { category: "38도 - 40도", text: "번개 티켓 4장 / 소모임 티켓 5장" },
-        { category: "40도 - 42도", text: "번개 티켓 4장 / 소모임 티켓 6장" },
-        { category: "42도 - 44도", text: "번개 티켓 5장 / 소모임 티켓 6장" },
-        { category: "44도 이상", text: "번개 티켓 5장 / 소모임 티켓 7장" },
-      ]
-    : [
-        { category: "36.5도 - 38도", text: "번개 티켓 2장 / 소모임 티켓 4장" },
-        { category: "38도 - 40도", text: "번개 티켓 3장 / 소모임 티켓 4장" },
-        { category: "40도 - 42도", text: "번개 티켓 3장 / 소모임 티켓 5장" },
-        { category: "42도 - 44도", text: "번개 티켓 4장 / 소모임 티켓 5장" },
-        { category: "44도 이상", text: "번개 티켓 4장 / 소모임 티켓 6장" },
-      ];
+  const benefitArr: { category: string; text: string }[] = TEMPERATURE_BRACKETS.map(
+    ({ label, temp }) => {
+      const { gather, group } = getTemperatureTicket(
+        temp,
+        isGirl,
+        userInfo?.membership,
+        userInfo?.role,
+      );
+      return { category: label, text: `번개 티켓 ${gather}장 / 소모임 티켓 ${group}장` };
+    },
+  );
 
-  //   (
-  //   Object.entries(benefitProps) as [BenefitName, number][]
-  // ).map(([name, value]) => ({
-  //   category: BENEFIT_MAPPING[name],
-  //   text: value.toLocaleString() + "원",
-  // }));
-
-  const { gather, group } = getTemperatureTicket(userInfo?.temperature.temperature, isGirl);
+  const { gather, group } = getTemperatureTicket(
+    userInfo?.temperature.temperature,
+    isGirl,
+    userInfo?.membership,
+    userInfo?.role,
+  );
 
   return (
     <RightDrawer title="혜택" px={false} onClose={onClose}>

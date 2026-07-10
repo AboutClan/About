@@ -532,13 +532,3 @@ export const HOME_ACTIVITY_ITEMS: ActivityItem[] = [
       "https://d15r8f9iey54a4.cloudfront.net/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%97%B4%EA%B3%B5.png",
   },
 ];
-
-export type BenefitItem = {
-  id: string;
-  imageSrc: string;
-  alt: string;
-  href?: string;
-};
-
-// 제휴 혜택 데이터가 준비되면 이 배열에 추가한다. (API 호출 없이 하드코딩만 사용)
-export const HOME_BENEFIT_ITEMS: BenefitItem[] = [];

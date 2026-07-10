@@ -71,3 +71,15 @@ export const transferHomeActivityDrawerOpenState = atom<boolean>({
   key: "transferHomeActivityDrawerOpenState",
   default: false,
 });
+
+export type HomeActivityDrawerTab = "activity" | "benefit";
+
+// Drawer를 열 때 어떤 탭("소모임" | "제휴 혜택")을 먼저 보여줄지 지정한다. 닫힐 때 "activity"로 초기화된다.
+export const transferHomeActivityDrawerTabState = atom<HomeActivityDrawerTab>({
+  key: "transferHomeActivityDrawerTabState",
+  default: "activity",
+});
+
+// HomeActivityDrawer의 열림 상태를 라우터 쿼리에 실어 히스토리로 관리하기 위한 쿼리 키.
+// 이 값이 있으면 열림, 없으면(뒤로가기 등으로 사라지면) 닫힘으로 취급한다.
+export const HOME_ACTIVITY_DRAWER_QUERY_KEY = "activityDrawer";

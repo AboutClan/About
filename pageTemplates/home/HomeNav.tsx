@@ -1,12 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSetRecoilState } from "recoil";
 
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import ExternalLink from "../../components/molecules/ExternalLink";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { transferHomeActivityDrawerOpenState } from "../../recoils/transferRecoils";
+import { useOpenHomeActivityDrawer } from "../../hooks/custom/useHomeActivityDrawer";
 
 interface HomeIconProps {
   title: string;
@@ -54,7 +53,7 @@ export function HomeIcon({ title, image, bgColor }: HomeIconProps) {
 }
 
 function HomeNav() {
-  const setIsActivityDrawerOpen = useSetRecoilState(transferHomeActivityDrawerOpenState);
+  const openHomeActivityDrawer = useOpenHomeActivityDrawer();
 
   return (
     <>
@@ -66,7 +65,7 @@ function HomeNav() {
           as="button"
           type="button"
           align="center"
-          onClick={() => setIsActivityDrawerOpen(true)}
+          onClick={() => openHomeActivityDrawer("activity")}
         >
           <Box fontSize="12px" color="var(--gray-500)" fontWeight={500} mr={0.5}>
             한눈에 보기

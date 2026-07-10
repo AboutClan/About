@@ -49,6 +49,8 @@ function GroupStudyTicketLogSection() {
   const { gather, group } = getTemperatureTicket(
     userInfo?.temperature.temperature,
     userInfo?.gender === "여성",
+    userInfo?.membership,
+    userInfo?.role,
   );
 
   return (

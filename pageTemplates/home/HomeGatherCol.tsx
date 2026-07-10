@@ -87,6 +87,7 @@ export const setGatherDataToCardCol = (
         { user: gather.user as UserSimpleInfoProps, phase: "first" },
         ...gather.participants,
       ],
+      waitings: gather.waiting,
 
       age: gather.age,
       func,
