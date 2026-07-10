@@ -7,8 +7,8 @@ import Header from "../../components/layouts/Header";
 import { useToast } from "../../hooks/custom/CustomToast";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 
-const publicID = "team.about.20s@gmail.com";
-const publicPW = "abcde12345?!";
+const publicID = "teamAbout";
+const publicPW = "20260710";
 
 function LoginId() {
   const toast = useToast();
@@ -18,7 +18,7 @@ function LoginId() {
   const handleLogin = async () => {
     if (id === publicID && pw === publicPW) {
       const result = await signIn("credentials", {
-        callbackUrl: `${window.location.origin}/register/name`,
+        callbackUrl: `${window.location.origin}/home`,
         username: "테스트",
         password: "비밀번호",
       });

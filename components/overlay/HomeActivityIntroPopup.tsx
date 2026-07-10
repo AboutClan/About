@@ -2,10 +2,12 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 import { HOME_ACTIVITY_INTRO_POPUP_AT } from "../../constants/keys/localStorage";
 import { useOpenHomeActivityDrawer } from "../../hooks/custom/useHomeActivityDrawer";
 import { ModalLayout } from "../../modals/Modals";
+import { transferHomeActivityDrawerOpenState } from "../../recoils/transferRecoils";
 
 const POPUP_RE_SHOW_GAP_DAY = 7;
 
@@ -14,13 +16,18 @@ const POPUP_RE_SHOW_GAP_DAY = 7;
 function HomeActivityIntroPopup() {
   const [shouldShowIntro, setShouldShowIntro] = useState(false);
   const openHomeActivityDrawer = useOpenHomeActivityDrawer();
+  // Drawer가 이미 열려있는 상태로 이 화면에 진입했다면(예: /support/[id]에서 뒤로가기)
+  // 인트로 팝업이 Drawer와 동시에 뜨지 않도록 막는다.
+  const isActivityDrawerOpen = useRecoilValue(transferHomeActivityDrawerOpenState);
 
   useEffect(() => {
+    if (isActivityDrawerOpen) return;
+
     const lastShownAt = localStorage.getItem(HOME_ACTIVITY_INTRO_POPUP_AT);
     const shouldShow =
       !lastShownAt || dayjs().diff(dayjs(lastShownAt), "day") >= POPUP_RE_SHOW_GAP_DAY;
     setShouldShowIntro(shouldShow);
-  }, []);
+  }, [isActivityDrawerOpen]);
 
   const markShown = () => {
     localStorage.setItem(HOME_ACTIVITY_INTRO_POPUP_AT, dayjs().toISOString());
@@ -37,7 +44,7 @@ function HomeActivityIntroPopup() {
     openHomeActivityDrawer("activity");
   };
 
-  if (!shouldShowIntro) return null;
+  if (!shouldShowIntro || isActivityDrawerOpen) return null;
 
   return (
     <ModalLayout

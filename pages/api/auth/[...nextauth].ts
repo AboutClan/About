@@ -39,16 +39,6 @@ const TEST_USER = {
   location: "수원" as ActiveLocation,
 };
 
-const ADMIN_USER = {
-  id: "65df1ddcd73ecfd250b42c89",
-  uid: "3224546232",
-  name: "어바웃",
-  role: "previliged",
-  isActive: true,
-  profileImage: "http://k.kakaocdn.net/dn/x99nu/dJMcaffmnEu/3WbcWHKpZhj9TBc5ebD7vk/img_110x110.jpg",
-  location: "기타" as ActiveLocation,
-};
-
 const MEMBER_GUEST_USER = {
   ...GUEST_USER,
   name: "게스트",
@@ -124,7 +114,7 @@ function buildAuthOptions(): NextAuthOptions {
           password: { label: "Password", type: "password" },
         },
         async authorize() {
-          return ADMIN_USER;
+          return TEST_USER;
         },
       }),
       KakaoProvider({
@@ -178,7 +168,7 @@ function buildAuthOptions(): NextAuthOptions {
     callbacks: {
       async signIn({ account, user, profile }) {
         const kakaoProfile = profile as KakaoProfile;
-
+        console.log(account);
         try {
           if (["guest", "credentials"].includes(account.provider)) {
             return true;
@@ -396,7 +386,7 @@ function buildAuthOptions(): NextAuthOptions {
             case "guest":
               return { ...token, ...GUEST_USER };
             case "credentials":
-              return { ...token, ...ADMIN_USER };
+              return { ...token, ...TEST_USER };
             case "kakao":
             case "apple":
               {

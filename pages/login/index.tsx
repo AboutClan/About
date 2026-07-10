@@ -170,10 +170,11 @@ function LoginPage() {
           fontWeight={600}
           variant="unstyled"
           onClick={() => {
-            navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
+            router.push(`/login/account`);
+            // navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
           }}
         >
-          문의하기
+          관리자 로그인
         </Button>
 
         <Button
