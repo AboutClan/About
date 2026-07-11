@@ -23,6 +23,15 @@ export const getPerformanceTime = () => {
 };
 
 export const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+  const distance = getPreciseDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
+  if (distance == null) return distance;
+  // 소수점 1자리(100m)로 반올림 — 반경 필터/히스테리시스 등 대략적인 거리 비교용.
+  // 수십 m 단위로 후보를 가려내야 하는 비교(예: 가장 가까운 장소 찾기)에는
+  // getPreciseDistanceFromLatLonInKm 을 사용할 것.
+  return Number(distance.toFixed(1));
+};
+
+export const getPreciseDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
   if (!lat1 || !lon1 || !lat2 || !lon2) return;
   const R = 6371; // 지구 반경 (킬로미터)
   const dLat = deg2rad(lat2 - lat1); // 위도 차이를 라디안으로 변환
@@ -31,8 +40,7 @@ export const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distance = R * c; // 거리 계산
-  return Number(distance.toFixed(1));
+  return R * c; // 거리 계산 (반올림 없음)
 };
 
 const deg2rad = (deg) => {

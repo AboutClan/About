@@ -21,7 +21,10 @@ import {
   StudyPlaceFilter,
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
-import { getDistanceFromLatLonInKm } from "../../../utils/mathUtils";
+import {
+  getDistanceFromLatLonInKm,
+  getPreciseDistanceFromLatLonInKm,
+} from "../../../utils/mathUtils";
 import { getSafeAreaBottom } from "../../../utils/validationUtils";
 import { RightReviewDrawer } from "../../study/StudyReview";
 import { CafeListDrawer } from "../CafeListDrawer";
@@ -64,7 +67,7 @@ function StudyPageMap({
   } = useUserCurrentLocation();
   const modalParam = router.query.modal;
   const currentLocation = defaultLocation || currentLocation2;
-  const { updateQuery } = useOverlayRouter();
+  const { updateQuery, replaceQuery } = useOverlayRouter();
 
   /* 네이버 지도와 마커 옵션 */
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
@@ -160,6 +163,47 @@ function StudyPageMap({
     if (opts) setMapOptions(opts);
     setPickCenter({ lat, lng: lon });
   }, []);
+
+  // 현재 위치에서 가장 가까운 카페를 찾는다. onCafeSearch 의 동일 장소 판정 기준(0.1km)과 동일한
+  // 오차 범위 안에 있어야 "이 장소"로 추정한다.
+  const findNearestPlace = useCallback((coords: { lat: number; lon: number }) => {
+    const list = placeDataRef.current;
+    if (!list?.length) return null;
+
+    let nearest: StudyPlaceProps | null = null;
+    let minDist = Infinity;
+    for (const place of list) {
+      // 후보 카페 간 거리 차이가 수십 m 단위로 갈릴 수 있어, 반올림 없는 정밀 거리로 비교한다.
+      const dist = getPreciseDistanceFromLatLonInKm(
+        coords.lat,
+        coords.lon,
+        place.location.latitude,
+        place.location.longitude,
+      );
+      if (dist < minDist) {
+        minDist = dist;
+        nearest = place;
+      }
+    }
+    return minDist <= 0.1 ? nearest : null;
+  }, []);
+
+  // 후기 게시판을 거치지 않고 곧바로 "카공 장소 별점 남기기" 작성 폼으로 이동한다.
+  // opts.replace: LocationAddDrawer(addCafe)에서 "이미 등록된 장소"로 판정되어 넘어오는 경우,
+  // addCafe 히스토리 엔트리를 addReview로 대체해야 리뷰 작성 완료 후 뒤로가기를 눌러도
+  // addCafe 드로어가 다시 열리지 않는다.
+  const openReviewForm = useCallback(
+    (place: StudyPlaceProps, opts?: { replace?: boolean }) => {
+      setReviewPlaceInfo(place);
+      if (opts?.replace) {
+        replaceQuery({ modal: "addReview" });
+      } else {
+        updateQuery({ modal: "addReview" });
+      }
+    },
+    [updateQuery, replaceQuery],
+  );
+
   useEffect(() => {
     if (noModalUpdate) return;
     if (modalParam !== "reviewPlace" && modalParam !== "addReview") {
@@ -453,12 +497,6 @@ function StudyPageMap({
   }, [isMapExpansion]);
 
   useEffect(() => {
-    console.log(
-      "[PICK] effect fired: filterType=",
-      filterType,
-      "selectedPickNickname=",
-      selectedPickNickname,
-    );
     if (filterType === "about" && selectedPickNickname) {
       wasPickFilterRef.current = true;
       applyPickCentroid(selectedPickNickname);
@@ -582,12 +620,15 @@ function StudyPageMap({
                 const newPos = await refetchCurrentLocation();
                 if (!newPos) {
                   toast("error", "위치 정보를 확인할 수 없습니다.");
-                  return;
+                  return null;
                 }
-                if (typeof window === "undefined" || !("naver" in window)) return;
-                const center = new naver.maps.LatLng(newPos.lat, newPos.lon);
-                setMapOptions((prev) => (prev ? { ...prev, center } : getMapOptions(newPos, 13)));
+                if (typeof window !== "undefined" && "naver" in window) {
+                  const center = new naver.maps.LatLng(newPos.lat, newPos.lon);
+                  setMapOptions((prev) => (prev ? { ...prev, center } : getMapOptions(newPos, 13)));
+                }
+                return newPos;
               }}
+              findNearestPlace={findNearestPlace}
               openList={() => {
                 if (filterType === "about") {
                   applyPickCentroid(selectedPickNickname);
@@ -618,6 +659,7 @@ function StudyPageMap({
                 setReviewPlaceInfo(place);
                 updateQuery({ modal: "reviewPlace" });
               }}
+              openReviewForm={openReviewForm}
               onCafeSearch={(result) => {
                 const existingPlace = placeData?.find((p) => {
                   if (p.location.name === result.title) return true;
@@ -663,6 +705,7 @@ function StudyPageMap({
             setDrawerType(null);
             setPrefilledCafeLocation(null);
           }}
+          onExistingPlace={(place) => openReviewForm(place, { replace: true })}
         />
       )}
       {unregisteredCafe && (

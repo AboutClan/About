@@ -72,7 +72,7 @@ export default function CafeMapStudyPage() {
               🚀 우리 동네 카공 스터디
             </Box>
             <Box fontSize="13px" fontWeight={700} color="var(--color-mint)" mb={4}>
-              7월 10일 출시 예정
+              7월 20일 출시 예정
             </Box>
 
             <Box fontSize="13px" color="gray.700" lineHeight="22px" mb={4}>

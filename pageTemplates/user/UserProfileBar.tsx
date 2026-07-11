@@ -15,14 +15,15 @@ interface UserProfileBarProps {
   user: IUser;
   editUrl?: string;
   name?: string;
+  isCafeMap?: boolean;
 }
 
-function UserProfileBar({ user, editUrl, name }: UserProfileBarProps) {
+function UserProfileBar({ user, editUrl, name, isCafeMap }: UserProfileBarProps) {
   const router = useRouter();
   const typeToast = useTypeToast();
   const isGuest = user?.role === "guest";
   const [isDrawer, setIsDrawer] = useState(false);
-  console.log(4, user);
+  console.log(4, name);
   return (
     <>
       <Flex px={5} py={3} align="center">
@@ -47,7 +48,7 @@ function UserProfileBar({ user, editUrl, name }: UserProfileBarProps) {
                   : user?.name || "익명")}
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
-            {user?.role !== "cafe_user" && (
+            {!isCafeMap && (
               <Box ml={1}>
                 <SpecialBadge
                   hasMembership={user?.membership !== "normal" || user?.role === "guest"}

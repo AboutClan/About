@@ -8,9 +8,10 @@ import { IUser } from "../../types/models/userTypes/userInfoTypes";
 interface UserReviewBarProps {
   user: IUser;
   hasTop?: boolean;
+  isCafeMap?: boolean;
 }
 
-function UserReviewBar({ user, hasTop = true }: UserReviewBarProps) {
+function UserReviewBar({ user, hasTop = true, isCafeMap }: UserReviewBarProps) {
   const { data: reviewArr } = useUserReviewQuery(user?.uid, {
     enabled: !!user?.uid,
   });
@@ -41,7 +42,9 @@ function UserReviewBar({ user, hasTop = true }: UserReviewBarProps) {
                 </Box>
               </Flex>
               <Box fontSize="10px" color="gray.400" fontWeight={400}>
-                멤버 평가 {Math.round(Math.round(user?.temperature?.cnt))}회 반영
+                {isCafeMap
+                  ? "스터디 오픈 이후부터 사용할 수 있어요!"
+                  : `멤버 평가 ${Math.round(Math.round(user?.temperature?.cnt))}회 반영`}
               </Box>
             </Box>
           </Flex>

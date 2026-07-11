@@ -22,7 +22,8 @@ import {
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
 } from "../../../hooks/study/queries";
-import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
+import { ModalLayout } from "../../../modals/Modals";
+import { CoordinatesProps } from "../../../types/common";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
 import { PlaceInfoBox } from "../PlaceInfoDrawer";
 
@@ -111,16 +112,27 @@ function useScrollInfinite({
 }
 
 interface GuideButtonProps {
-  pickReviewPlace: (place: StudyPlaceProps) => void;
+  pickReviewPlace?: (place: StudyPlaceProps) => void;
+  openReviewForm?: (place: StudyPlaceProps) => void;
+  handleLocationRefetch?: () => Promise<CoordinatesProps | null>;
+  findNearestPlace?: (coords: CoordinatesProps) => StudyPlaceProps | null;
+  addCafe?: () => void;
 }
 
-function GuideButton({ pickReviewPlace }: GuideButtonProps) {
+function GuideButton({
+  pickReviewPlace,
+  openReviewForm,
+  handleLocationRefetch,
+  findNearestPlace,
+  addCafe,
+}: GuideButtonProps) {
   const router = useRouter();
-  const { updateQuery } = useOverlayRouter();
 
   const [isOpen, setIsOpen] = useState(false);
   const [menu, setMenu] = useState<MenuType | null>(null);
   const [feedTab, setFeedTab] = useState<FeedTab>("최근 후기");
+  const [confirmPlace, setConfirmPlace] = useState<StudyPlaceProps | null>(null);
+  const [isUnregistered, setIsUnregistered] = useState(false);
 
   const reviews = useCursorData<StudyReviewProps>(useStudyReviewsQuery);
   const newPlaces = useCursorData<StudyPlaceProps>(useStudyPlacesCursorQuery);
@@ -148,9 +160,33 @@ function GuideButton({ pickReviewPlace }: GuideButtonProps) {
     setMenu(item);
   };
 
-  const openFeed = () => {
+  const openAddCafe = () => {
     setIsOpen(false);
-    updateQuery({ modal: "reviewFeed" });
+    setConfirmPlace(null);
+    setIsUnregistered(false);
+    addCafe?.();
+  };
+
+  // 확인 팝업에서 "이 카페 맞아요!"를 누르면 후기 게시판을 거치지 않고
+  // 곧바로 "카공 장소 별점 남기기" 작성 폼으로 이동한다.
+  const reviewConfirmedPlace = () => {
+    if (!confirmPlace) return;
+    openReviewForm?.(confirmPlace);
+    setConfirmPlace(null);
+  };
+
+  // "카공 후기 작성 (현재 위치)": 현재 위치를 가져와 지도 중심을 옮긴 뒤(기존 현재 위치 버튼과 동일 로직),
+  // 가장 가까운 카페를 찾아 맞는지 확인받고, 있으면 그 장소 리뷰로, 없으면 신규 등록으로 안내한다.
+  const handleCurrentLocationReview = async () => {
+    setIsOpen(false);
+    const pos = await handleLocationRefetch?.();
+    if (!pos) return; // 실패 시 toast는 handleLocationRefetch 내부에서 이미 노출됨
+    const nearest = findNearestPlace?.(pos);
+    if (nearest) {
+      setConfirmPlace(nearest);
+    } else {
+      setIsUnregistered(true);
+    }
   };
 
   return (
@@ -165,11 +201,10 @@ function GuideButton({ pickReviewPlace }: GuideButtonProps) {
               bottom="72px"
               flexDirection="column"
               bg="white"
-              borderRadius="12px"
-              px={5}
-              py={2.5}
-              gap={4}
-              minW="190px"
+              borderRadius="16px"
+              py={1}
+              minW="220px"
+              overflow="hidden"
               boxShadow="0px 12px 32px rgba(0, 0, 0, 0.18)"
               initial={{ opacity: 0, y: 12, scale: 0.94 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -178,53 +213,26 @@ function GuideButton({ pickReviewPlace }: GuideButtonProps) {
               transition={{ duration: 0.18 as any }}
               zIndex={3000}
             >
-              <FloatingMenuItem
-                icon={
-                  <Flex borderRadius="full" align="center" justify="center">
-                    <AddIcon />
-                  </Flex>
-                }
-                text="카공 카페 등록"
-                onClick={() => {
-                  setIsOpen(false);
-                  updateQuery({ modal: "addCafe" });
-                }}
+              <GuideMenuItem
+                icon={<CurrentLocationIcon />}
+                title="카공 후기 작성"
+                subtitle="현재 위치"
+                onClick={handleCurrentLocationReview}
               />
-              <FloatingMenuItem
-                icon={
-                  <Flex borderRadius="full" align="center" justify="center">
-                    <BoardIcon />
-                  </Flex>
-                }
-                text="실시간 카공 피드"
-                onClick={() => openFeed()}
+              <Box h="1px" bg="gray.100" mx={4} />
+              <GuideMenuItem
+                icon={<SearchLocationIcon />}
+                title="카공 후기 작성"
+                subtitle="직접 검색"
+                onClick={openAddCafe}
               />
-
-              <FloatingMenuItem
-                icon={
-                  <Flex borderRadius="full" align="center" justify="center">
-                    <UpdateIcon />
-                  </Flex>
-                }
-                text="업데이트 소식"
-                onClick={() => openMenu("업데이트 소식")}
-              />
-              {/* <FloatingMenuItem
-                icon={
-                  <Flex borderRadius="full" align="center" justify="center">
-                    <InfoIcon />
-                  </Flex>
-                }
-                text="이용 가이드"
-                onClick={() => openMenu("이용 가이드")}
-              /> */}
             </MotionFlex>
           )}
         </AnimatePresence>
 
         <Button
           rounded="full"
-          bgColor="white"
+          bgColor={isOpen ? "white" : "var(--gray-900)"}
           boxShadow="0 1px 3px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.05)"
           w="40px"
           h="40px"
@@ -235,13 +243,44 @@ function GuideButton({ pickReviewPlace }: GuideButtonProps) {
           borderWidth="1px"
           borderColor="var(--gray-300)"
           onClick={() => setIsOpen((prev) => !prev)}
-          _hover={{ bgColor: "white" }}
-          _active={{ bgColor: "white" }}
+          _hover={{ bgColor: isOpen ? "white" : "var(--gray-900)" }}
+          _active={{ bgColor: isOpen ? "white" : "var(--gray-900)" }}
           zIndex={3000}
         >
-          {isOpen ? <CloseIcon boxSize="12px" color="gray.800" /> : <Icon2 />}
+          {isOpen ? <CloseIcon boxSize="12px" /> : <Icon2 />}
         </Button>
       </Box>
+
+      {/* 현재 위치와 가장 가까운 카페를 찾은 경우 */}
+      {confirmPlace && (
+        <ModalLayout
+          title={confirmPlace.location.name}
+          setIsModal={() => setConfirmPlace(null)}
+          footerOptions={{
+            main: { text: "이 카페 맞아요!", func: reviewConfirmedPlace },
+            sub: { text: "직접 검색", func: openAddCafe },
+          }}
+        >
+          현재 위치에서 가장 가까운 카공 카페예요.
+          <br />이 카페가 맞나요?
+        </ModalLayout>
+      )}
+
+      {/* 근처에서 등록된 카페를 찾지 못한 경우 */}
+      {isUnregistered && (
+        <ModalLayout
+          title="등록된 카페가 아니에요"
+          setIsModal={() => setIsUnregistered(false)}
+          footerOptions={{
+            main: { text: "신규 장소 등록", func: openAddCafe },
+            sub: { text: "직접 검색", func: openAddCafe },
+          }}
+        >
+          현재 위치 근처에 카공지도에 등록된 카페가 없어요.
+          <br />
+          새로운 장소로 등록해 주시겠어요?
+        </ModalLayout>
+      )}
 
       {/* 이용 가이드 / 업데이트 소식 */}
       {(menu === "이용 가이드" || menu === "업데이트 소식") && (
@@ -309,7 +348,7 @@ function GuideButton({ pickReviewPlace }: GuideButtonProps) {
                     placeInfo={place}
                     isDown={false}
                     isShort
-                    handleClick={() => pickReviewPlace(place)}
+                    handleClick={() => pickReviewPlace?.(place)}
                     customSubText={
                       place.registerDate
                         ? dayjs(place.registerDate).format("등록일: YYYY년 M월 D일")
@@ -456,13 +495,15 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
   },
 ];
 
-function FloatingMenuItem({
+function GuideMenuItem({
   icon,
-  text,
+  title,
+  subtitle,
   onClick,
 }: {
   icon: React.ReactNode;
-  text: string;
+  title: string;
+  subtitle: string;
   onClick: () => void;
 }) {
   return (
@@ -472,32 +513,33 @@ function FloatingMenuItem({
       align="center"
       gap={3}
       w="full"
-      fontSize="14px"
-      fontWeight={700}
-      color="gray.900"
-      lineHeight="1"
+      px={4}
+      py={3}
+      transition="background 0.12s"
+      _hover={{ bg: "gray.50" }}
+      _active={{ bg: "gray.100" }}
       onClick={onClick}
-      py={2.5}
     >
-      {icon}
-      <Text ml={text === "카공 카페 등록" ? "3px" : text === "실시간 카공 피드" ? "3px" : "-2px"}>
-        {text}
-      </Text>
+      <Flex
+        w="34px"
+        h="34px"
+        borderRadius="full"
+        align="center"
+        justify="center"
+        bg="mint.50"
+        flexShrink={0}
+      >
+        {icon}
+      </Flex>
+      <Flex direction="column" align="flex-start" lineHeight="1.3">
+        <Text fontWeight={600} fontSize="15px" color="gray.900">
+          {title}
+        </Text>
+        <Text fontWeight={500} fontSize="12px" color="mint">
+          {subtitle}
+        </Text>
+      </Flex>
     </Flex>
-  );
-}
-
-function UpdateIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="25px"
-      viewBox="0 -960 960 960"
-      width="25px"
-      fill="var(--gray-800)"
-    >
-      <path d="M840-440h-80q-17 0-28.5-11.5T720-480q0-17 11.5-28.5T760-520h80q17 0 28.5 11.5T880-480q0 17-11.5 28.5T840-440ZM664-288q10-14 26-16t30 8l64 48q14 10 16 26t-8 30q-10 14-26 16t-30-8l-64-48q-14-10-16-26t8-30Zm120-424-64 48q-14 10-30 8t-26-16q-10-14-8-30t16-26l64-48q14-10 30-8t26 16q10 14 8 30t-16 26ZM200-360h-40q-33 0-56.5-23.5T80-440v-80q0-33 23.5-56.5T160-600h160l139-84q20-12 40.5 0t20.5 35v338q0 23-20.5 35t-40.5 0l-139-84h-40v120q0 17-11.5 28.5T240-200q-17 0-28.5-11.5T200-240v-120Zm360 14v-268q27 24 43.5 58.5T620-480q0 41-16.5 75.5T560-346Z" />
-    </svg>
   );
 }
 
@@ -508,50 +550,37 @@ function Icon2() {
       height="20px"
       viewBox="0 -960 960 960"
       width="20px"
-      fill="var(--gray-800)"
+      fill="WHITE"
     >
-      <path d="M700-200h40v-100h100v-40H740v-100h-40v100H600v40h100v100Zm20 80q-83 0-141.5-58.5T520-320q0-83 58.5-141.5T720-520q83 0 141.5 58.5T920-320q0 83-58.5 141.5T720-120Zm-560-80v-480l320-240 320 240v92q-19-6-39-9t-41-3v-40L480-820 240-640v360h203q3 21 9 41t15 39H160Zm320-350Z" />
+      <path d="M480-87.87q-80.67 0-152.11-30.6-71.43-30.6-125.13-84.29-53.69-53.7-84.29-125.13-30.6-71.44-30.6-152.61 0-81.17 30.6-152.11 30.6-70.93 84.29-124.63 53.7-53.69 125.13-84.29 71.44-30.6 152.11-30.6 45.61 0 90.32 10.42 44.7 10.43 85.27 31.51 15.91 8 19.63 24.16 3.71 16.15-6.24 31.06-9.96 15.15-27.35 19.11-17.39 3.96-33.78-4.04-29.13-14.61-61.78-21.92-32.66-7.3-66.07-7.3-128.57 0-218.85 90.28T170.87-480q0 128.57 90.28 218.85T480-170.87q23.13 0 46.14-3.9t45.14-10.47q16.39-5 33.17.94 16.77 5.93 24.48 22.08 7.72 16.15.53 32.07-7.2 15.91-23.11 20.91-30.33 10.57-61.8 15.97-31.46 5.4-64.55 5.4ZM738.5-282.5H660q-17.15 0-29.33-12.17Q618.5-306.85 618.5-324t12.17-29.33Q642.85-365.5 660-365.5h78.5V-444q0-17.15 12.17-29.33Q762.85-485.5 780-485.5t29.33 12.17Q821.5-461.15 821.5-444v78.5H900q17.15 0 29.33 12.17Q941.5-341.15 941.5-324t-12.17 29.33Q917.15-282.5 900-282.5h-78.5v78.5q0 17.15-12.17 29.33Q797.15-162.5 780-162.5t-29.33-12.17Q738.5-186.85 738.5-204v-78.5ZM425.28-418.37l360.81-360.8q12.43-12.44 28.34-12.44 15.92 0 28.35 12.44 12.44 12.43 12.44 28.84 0 16.42-12.44 28.85l-389.43 390.2q-12.68 12.67-29.07 12.67t-29.06-12.67L288.8-437.7q-12.43-12.43-12.43-29.22 0-16.8 12.43-29.23 12.44-12.44 29.35-12.44 16.92 0 29.35 12.44l77.78 77.78Z" />
     </svg>
   );
 }
 
-function InfoIcon() {
+function SearchLocationIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="21px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="21px"
-      fill="var(--gray-800)"
+      width="20px"
+      fill="var(--gray-900)"
     >
-      <path d="M515.5-254.5Q530-269 530-290t-14.5-35.5Q501-340 480-340t-35.5 14.5Q430-311 430-290t14.5 35.5Q459-240 480-240t35.5-14.5ZM624-602q0-54-36.5-86T491-720q-45 0-79.5 18.5T357-648q-7 11-.5 24t20.5 19q12 5 25 .5t22-16.5q11-15 27.5-23t35.5-8q28 0 45.5 15t17.5 38q0 18-12 38t-36 40q-26 23-39 43t-17 47q-2 14 8.5 25.5T481-394q14 0 25.5-9.5T521-429q3-16 11-28.5t28-32.5q38-38 51-61t13-51ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Z" />
+      <path d="M579.91-380.61q69.76-69.8 69.76-169.52 0-99.72-69.8-169.48-69.8-69.76-169.52-69.76-99.72 0-169.6 69.8-69.88 69.81-69.88 169.53 0 99.71 69.85 169.47 69.85 69.77 169.64 69.77 99.79 0 169.55-69.81ZM371.5-529.22l-46.63-47.11q-12.43-12.43-30.83-11.93-18.39.5-30.94 12.93-12.56 12.44-12.44 30.83.12 18.39 12.8 31.07l78.45 78.45q12.26 12.68 29.12 12.68t29.54-12.68l156.76-157q12.43-12.9 12.43-30.94t-12.43-30.47q-12.6-12.68-30.56-12.68t-31.1 12.68L371.5-529.22Zm39.23 301.42q-135.2 0-229.03-93.99-93.83-93.99-93.83-228.3 0-134.3 94.11-228.29 94.11-93.99 228.41-93.99 134.31 0 228.3 93.76 93.98 93.77 93.98 228.86 0 55.44-17.38 105.63t-49.38 91.14l177.43 177.43q12.64 12.64 12.64 29.52t-12.44 29.16q-12.1 12.61-29.04 12.61-16.95 0-29.81-12.88L607.26-294.56q-40.96 31.76-91.07 49.26-50.11 17.5-105.46 17.5Zm-.34-322.29Z" />
     </svg>
   );
 }
 
-export function BoardIcon() {
+export function CurrentLocationIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="24px"
+      height="20px"
       viewBox="0 -960 960 960"
-      width="24px"
-      fill="#1f1f1f"
+      width="20px"
+      fill="var(--gray-900)"
     >
-      <path d="M700-200h40v-100h100v-40H740v-100h-40v100H600v40h100v100Zm20 80q-83 0-141.5-58.5T520-320q0-83 58.5-141.5T720-520q83 0 141.5 58.5T920-320q0 83-58.5 141.5T720-120Zm-560-80v-480l320-240 320 240v92q-19-6-39-9t-41-3v-40L480-820 240-640v360h203q3 21 9 41t15 39H160Zm320-350Z" />
-    </svg>
-  );
-}
-export function AddIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="24px"
-      viewBox="0 -960 960 960"
-      width="24px"
-      fill="#1f1f1f"
-    >
-      <path d="M700-200h40v-100h100v-40H740v-100h-40v100H600v40h100v100Zm20 80q-83 0-141.5-58.5T520-320q0-83 58.5-141.5T720-520q83 0 141.5 58.5T920-320q0 83-58.5 141.5T720-120Zm-560-80v-480l320-240 320 240v92q-19-6-39-9t-41-3v-40L480-820 240-640v360h203q3 21 9 41t15 39H160Zm320-350Z" />
+      <path d="m448.87-536.63-25.04-24.04q-11.48-11.48-25.96-11.48t-25.96 11.48q-11.48 11.47-11.48 26.45 0 14.98 11.48 26.46l46.89 47.89q12.68 12.67 29.57 12.67t29.56-12.67L590-573.17q11.48-11.48 11.36-25.84-.12-14.36-11.6-25.84t-25.84-11.48q-14.35 0-25.83 11.48l-89.22 88.22ZM480-197.46q117.33-105.08 177.23-192.09 59.9-87.02 59.9-160.41 0-103.32-67.66-171.25Q581.8-789.13 480-789.13t-169.47 67.92q-67.66 67.93-67.66 171.25 0 73.39 59.9 160.29 59.9 86.89 177.23 192.21Zm-26.29 80.42q-12.34-4.74-24.06-14.22-41.43-35.72-88.89-82.96-47.46-47.24-88.05-101.71-40.6-54.48-66.72-114.06-26.12-59.58-26.12-119.97 0-137.34 91.51-229.76 91.51-92.41 228.62-92.41 136.11 0 228.12 92.41 92.01 92.42 92.01 229.76 0 60.39-26.62 120.47t-66.72 114.56q-40.09 54.47-87.55 101.21-47.46 46.74-88.89 82.46-11.72 9.48-24.06 14.22-12.33 4.74-26.29 4.74-13.96 0-26.29-4.74ZM480-552Z" />
     </svg>
   );
 }

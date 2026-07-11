@@ -15,7 +15,7 @@ import LocationSearch, {
 } from "../../../components/organisms/location/LocationSearch";
 import { NaverLocationProps } from "../../../hooks/external/queries";
 import { usePlaceRankingQuery } from "../../../hooks/study/queries";
-import { LocationProps } from "../../../types/common";
+import { CoordinatesProps, LocationProps } from "../../../types/common";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { PlaceProps } from "../../../types/models/studyTypes/entityTypes";
 import {
@@ -23,6 +23,7 @@ import {
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "../../../utils/validationUtils";
+import GuideButton from "./GuideButton";
 import StatusButton from "./StatusButton";
 import { CafeMapLogo } from "./StudyPageMap";
 
@@ -141,7 +142,8 @@ interface StudyMapNavProps {
   handleCenterLocation: (location: { lat: number; lon: number }, zoomBoost?: number) => void;
   onCafeSearch?: (result: NaverLocationProps) => void;
   openMenu: () => void;
-  handleLocationRefetch: () => void;
+  handleLocationRefetch: () => Promise<CoordinatesProps | null>;
+  findNearestPlace: (coords: CoordinatesProps) => StudyPlaceProps | null;
   isMapExpansion: boolean;
   onClose: () => void;
   filterType: StudyPlaceFilter;
@@ -157,12 +159,14 @@ interface StudyMapNavProps {
   setSelectedPickNickname: (n: string | null) => void;
   openAboutDrawer: () => void;
   pickReviewPlace: (place: StudyPlaceProps) => void;
+  openReviewForm?: (place: StudyPlaceProps) => void;
 }
 
 function StudyMapNav({
   handleCenterLocation,
   openMenu,
   handleLocationRefetch,
+  findNearestPlace,
   isMapExpansion,
   filterType,
   setFilterType,
@@ -178,6 +182,7 @@ function StudyMapNav({
   openAboutDrawer,
   onCafeSearch,
   pickReviewPlace,
+  openReviewForm,
 }: StudyMapNavProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -720,7 +725,14 @@ function StudyMapNav({
               </Button>
 
               <Box>
-                <Button
+                <GuideButton
+                  pickReviewPlace={pickReviewPlace}
+                  openReviewForm={openReviewForm}
+                  handleLocationRefetch={handleLocationRefetch}
+                  findNearestPlace={findNearestPlace}
+                  addCafe={addCafe}
+                />
+                {/* <Button
                   rounded="full"
                   bgColor="white"
                   boxShadow={MAP_BTN_SHADOW}
@@ -745,7 +757,7 @@ function StudyMapNav({
                   >
                     <path d="M720-40v-120H600v-80h120v-120h80v120h120v80H800v120h-80ZM80-160v-240H40v-80l40-200h600l40 200v80h-40v120h-80v-120H440v240H80Zm80-80h200v-160H160v160Zm-38-240h516-516ZM80-720v-80h600v80H80Zm42 240h516l-24-120H146l-24 120Z" />
                   </svg>
-                </Button>
+                </Button> */}
               </Box>
             </>
           </Flex>
@@ -859,13 +871,24 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["카페 좋아요 기능 추가", "나만의 아카이브 & 친구 공유하기 기능"],
   },
   {
+    date: "2026-07-11",
+    isCompleted: true,
+    textArr: [
+      "장소 추가 및 리뷰 등록 시 '리워드' 지급",
+      "카공 후기 작성 흐름의 UI/UX 개선",
+      "현재 위치의 카페를 자동으로 탐색하고 리뷰할 수 있는 기능 추가 (베타)",
+      "포인트 스토어 출시 (베타)",
+    ],
+  },
+  {
+    date: "2026-07-12",
+    isCompleted: true,
+    textArr: ["안드로이드 앱 출시"],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
-    textArr: [
-      "안드로이드 앱 출시 (7월 10일)",
-      "스터디 기능 오픈 (7월 10일)",
-      "리뷰 작성 시 리워드 지급 (7월 10일)",
-    ],
+    textArr: ["스터디 기능 오픈 (7월 20일)"],
   },
 ];
 
@@ -887,8 +910,8 @@ function UpdateCard({
         {isCompleted ? `${dayjs(date).format("M월 D일")} 업데이트` : "다음 업데이트 예정"}
       </Flex>
       <UnorderedList ml={0}>
-        {textArr.map((text) => (
-          <ListItem key={text} fontSize="12px" lineHeight="24px">
+        {textArr.map((text, idx) => (
+          <ListItem key={text} fontSize="12px" mt={idx === 0 ? 0 : 1.5}>
             {text}
           </ListItem>
         ))}

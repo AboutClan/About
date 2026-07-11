@@ -9,7 +9,6 @@ import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading"
 import { TrophyIcon } from "../../components/Icons/icons";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import PointGuideModalButton from "../../components/modalButtons/PointGuideModalButton";
 import ImageShadowCover from "../../components/molecules/ImageShadowCover";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import WinnerTextSlider from "../../components/molecules/WinnerTextSlider";
@@ -138,9 +137,7 @@ function StorePage() {
 
   return (
     <>
-      <Header title="포인트 스토어" url="/home">
-        <PointGuideModalButton type="store" />
-      </Header>
+      <Header title="포인트 스토어">{/* <PointGuideModalButton type="store" /> */}</Header>
       <Slide isNoPadding>
         <Box minH="100dvh">
           <Box mb={3}>

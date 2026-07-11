@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -86,7 +86,12 @@ function CafeMapMyPage() {
         {userInfo && (
           <>
             {/* 프로필 바 */}
-            <UserProfileBar user={userInfo} editUrl="/cafe-map/profile" name={userInfo?.nickname} />
+            <UserProfileBar
+              user={userInfo}
+              editUrl="/cafe-map/profile"
+              name={userInfo?.nickname}
+              isCafeMap
+            />
 
             <Box h="1px" bg="gray.100" />
 
@@ -131,7 +136,7 @@ function CafeMapMyPage() {
                     보유 포인트
                   </Box>
                   <Box fontSize="18px" fontWeight={700} color="gray.900" lineHeight="22px">
-                    {userInfo?.role === "previliged" ? "3270P" : "0P"}
+                    {userInfo?.point}P
                   </Box>
                 </Box>
                 <Box
@@ -155,7 +160,7 @@ function CafeMapMyPage() {
             <Divider />
 
             <Box borderBottom="var(--border)" pb={2} mt={5}>
-              <UserReviewBar hasTop={false} user={userInfo} />
+              <UserReviewBar hasTop={false} user={userInfo} isCafeMap />
             </Box>
 
             <Box h={10} />
@@ -172,7 +177,7 @@ function CafeMapMyPage() {
                 toast("info", "등록한 장소가 없어요");
                 return;
               }
-              toast("info", "7월 10일 오픈 예정이에요!");
+              toast("info", "7월 20일 오픈 예정이에요!");
             }}
           />
           {favorites?.likes?.length ? (
@@ -199,7 +204,7 @@ function CafeMapMyPage() {
                 toast("info", "등록한 장소가 없어요");
                 return;
               }
-              toast("info", "7월 10일 오픈 예정이에요!");
+              toast("info", "7월 20일 오픈 예정이에요!");
             }}
           />
           {favorites?.picks?.length ? (
