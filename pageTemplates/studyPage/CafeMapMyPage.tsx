@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -137,7 +137,7 @@ function CafeMapMyPage() {
                 <Box
                   cursor="pointer"
                   onClick={() => {
-                    toast("info", "7월 10일부터 이용할 수 있어요!");
+                    router.push(`/cafe-map/user/point`);
                   }}
                 >
                   <Flex align="center" gap={0.5} color="gray.400" fontSize="12px">

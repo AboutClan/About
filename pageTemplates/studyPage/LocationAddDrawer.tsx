@@ -6,8 +6,9 @@ import Textarea from "../../components/atoms/Textarea";
 import { StarIcon } from "../../components/Icons/StarIcon";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import SearchLocation from "../../components/organisms/SearchLocation";
-import { useToast } from "../../hooks/custom/CustomToast";
+import { usePointToast, useToast } from "../../hooks/custom/CustomToast";
 import { useStudyAdditionMutation } from "../../hooks/study/mutations";
+import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { LocationProps } from "../../types/common";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
@@ -52,6 +53,8 @@ export function LocationAddDrawer({
   prefilledLocation,
 }: LocationAddDrawerProps) {
   const toast = useToast();
+  const pointToast = usePointToast();
+  const { mutate: updatePoint } = usePointSystemMutation("point");
 
   const [page, setPage] = useState(1);
 
@@ -73,6 +76,8 @@ export function LocationAddDrawer({
         "success",
         "요청이 완료되었습니다. AI가 해당 카페를 분석한 뒤, 5분 이내 별점을 산정해 자동 등록합니다.",
       );
+      updatePoint({ value: 30, message: "카공 장소 등록 + 리뷰", sub: "study" });
+      pointToast(30);
       onClose();
     },
   });

@@ -4,11 +4,12 @@ import { Box, Flex, FormControl } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { CAFE_REVIEW_ARR, STUDY_PLACE, STUDY_VOTE } from "../../constants/keys/queryKeys";
-import { useToast } from "../../hooks/custom/CustomToast";
+import { usePointToast, useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfo } from "../../hooks/custom/UserHooks";
 
 import { useStudyPlaceReviewMutation } from "../../hooks/study/mutations";
+import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { ModalLayout } from "../../modals/Modals";
-import { Input } from "../atoms/Input";
 import Textarea from "../atoms/Textarea";
 import { StarIcon } from "../Icons/StarIcon";
 import BottomNav from "../layouts/BottomNav";
@@ -24,11 +25,14 @@ export interface PlaceReviewProps2 {
 
 function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void }) {
   const toast = useToast();
+  const pointToast = usePointToast();
   const [text, setText] = useState<string>("");
   const [isNicknameModal, setIsNicknameModal] = useState(false);
-  const [nickname, setNickname] = useState("");
 
+  const userInfo = useUserInfo();
   const queryClient = useQueryClient();
+
+  const { mutate: updatePoint } = usePointSystemMutation("point");
 
   const { mutate, isLoading } = useStudyPlaceReviewMutation(placeId, {
     onSuccess() {
@@ -38,6 +42,8 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
       queryClient.invalidateQueries({ queryKey: [STUDY_VOTE], exact: false });
       queryClient.invalidateQueries({ queryKey: [STUDY_PLACE], exact: false });
       toast("success", "리뷰 작성 완료!");
+      updatePoint({ value: 20, message: "카공 리뷰 작성", sub: "study" });
+      pointToast(20);
       onClose();
     },
   });
@@ -52,12 +58,19 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
   });
 
   const handleSubmit = (type: "1" | "2") => {
-    if (type === "1" && (nickname.trim().length > 5 || nickname.trim().length < 1)) {
-      toast("warning", "닉네임 글자 수를 확인해 주세요!");
+    const nickname = userInfo?.role === "guest" ? "익명" : userInfo?.nickname || "익명";
+
+    mutate({ ...review, comment: text, name: nickname.trim() });
+  };
+
+  const handleClick = () => {
+    if (userInfo?.role === "guest") {
+      setIsNicknameModal(true);
       return;
     }
 
-    mutate({ ...review, comment: text, name: nickname.trim() || "익명" });
+    console.log(userInfo);
+    return;
   };
 
   return (
@@ -117,25 +130,20 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
           color="gray.700"
         />
       </FormControl>
-      <BottomNav isSlide={false} text="평가 완료" onClick={() => setIsNicknameModal(true)} />
+      <BottomNav isSlide={false} text="평가 완료" onClick={handleClick} />
       {isNicknameModal && (
         <ModalLayout
-          title="닉네임을 사용할까요?"
+          title="등록을 완료할까요?"
           setIsModal={setIsNicknameModal}
-          isCloseButton={false}
           footerOptions={{
-            main: { text: "닉네임 제출", func: () => handleSubmit("1"), isLoading },
-            sub: { text: "익명 제출", func: () => handleSubmit("2") },
+            main: { text: "게스트로 등록하기", func: () => handleSubmit("1"), isLoading },
+            sub: { text: "카공지도 가입하기", func: () => handleSubmit("2") },
           }}
         >
           <Box>
-            <Input
-              placeholder="닉네임 (다섯 글자 이내)"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              maxLength={5}
-              size="md"
-            />
+            게스트로 이용 중이라 리워드가 지급되지 않아요.
+            <br />
+            카공지도 멤버는 활동할 때마다 <b>리워드 지급!</b>
           </Box>
         </ModalLayout>
       )}
