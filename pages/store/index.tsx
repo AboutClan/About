@@ -129,7 +129,7 @@ function StorePage() {
         ?.filter((props) => props.description.split(" "))
         ?.slice(0, 5)
         ?.map((props) => ({
-          name: props.winner.name,
+          name: props.winner.name.slice(0, 1) + "*" + props.winner.name.slice(2),
           gift: props.gift,
         })),
     );

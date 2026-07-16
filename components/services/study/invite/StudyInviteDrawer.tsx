@@ -59,7 +59,7 @@ export function StudyInviteDrawer({ onClose }: CloseProps) {
   const handleInviteBtn = (who: UserSimpleInfoProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { standard, rating, address, ...placeProps } = locationInfo.sub;
-    const startHour = dayjs(date).day() <= 5 ? 18 : 14;
+    const startHour = dayjs(date).day() >= 100 ? 18 : 14;
 
     const voteInfo: StudyVoteProps = {
       ...placeProps,

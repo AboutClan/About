@@ -61,6 +61,21 @@ const INLINE_FILTER_BUTTONS = [
     ),
   },
   {
+    label: "자리 여유",
+    value: "isUsuallySpacious",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="16px"
+        viewBox="0 -960 960 960"
+        width="16px"
+        fill="currentColor"
+      >
+        <path d="M200-120q-17 0-28.5-11.5T160-160v-40q-50 0-85-35t-35-85v-200q0-50 35-85t85-35v-80q0-50 35-85t85-35h400q50 0 85 35t35 85v80q50 0 85 35t35 85v200q0 50-35 85t-85 35v40q0 17-11.5 28.5T760-120q-17 0-28.5-11.5T720-160v-40H240v40q0 17-11.5 28.5T200-120Zm-40-160h640q17 0 28.5-11.5T840-320v-200q0-17-11.5-28.5T800-560q-17 0-28.5 11.5T760-520v160H200v-160q0-17-11.5-28.5T160-560q-17 0-28.5 11.5T120-520v200q0 17 11.5 28.5T160-280Zm120-160h400v-80q0-27 11-49t29-39v-112q0-17-11.5-28.5T680-760H280q-17 0-28.5 11.5T240-720v112q18 17 29 39t11 49v80Zm200 0Zm0 160Zm0-80Z" />
+      </svg>
+    ),
+  },
+  {
     label: "24시간 운영",
     value: "is24Hours",
     icon: (
@@ -87,21 +102,6 @@ const INLINE_FILTER_BUTTONS = [
         fill="currentColor"
       >
         <path d="M400-360v160q0 33-23.5 56.5T320-120q-33 0-56.5-23.5T240-200v-560q0-33 23.5-56.5T320-840h200q100 0 170 70t70 170q0 100-70 170t-170 70H400Zm0-160h128q33 0 56.5-23.5T608-600q0-33-23.5-56.5T528-680H400v160Z" />
-      </svg>
-    ),
-  },
-  {
-    label: "자리 여유",
-    value: "isUsuallySpacious",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="16px"
-        viewBox="0 -960 960 960"
-        width="16px"
-        fill="currentColor"
-      >
-        <path d="M200-120q-17 0-28.5-11.5T160-160v-40q-50 0-85-35t-35-85v-200q0-50 35-85t85-35v-80q0-50 35-85t85-35h400q50 0 85 35t35 85v80q50 0 85 35t35 85v200q0 50-35 85t-85 35v40q0 17-11.5 28.5T760-120q-17 0-28.5-11.5T720-160v-40H240v40q0 17-11.5 28.5T200-120Zm-40-160h640q17 0 28.5-11.5T840-320v-200q0-17-11.5-28.5T800-560q-17 0-28.5 11.5T760-520v160H200v-160q0-17-11.5-28.5T160-560q-17 0-28.5 11.5T120-520v200q0 17 11.5 28.5T160-280Zm120-160h400v-80q0-27 11-49t29-39v-112q0-17-11.5-28.5T680-760H280q-17 0-28.5 11.5T240-720v112q18 17 29 39t11 49v80Zm200 0Zm0 160Zm0-80Z" />
       </svg>
     ),
   },
@@ -362,7 +362,7 @@ function StudyMapNav({
               }}
             >
               {/* 초기화 버튼 */}
-              {hasActiveFilters && (
+              {/* {hasActiveFilters && (
                 <Button
                   flexShrink={0}
                   h="32px"
@@ -379,7 +379,7 @@ function StudyMapNav({
                 >
                   <ResetIcon />
                 </Button>
-              )}
+              )} */}
 
               {/* 별점 4.0이상 */}
               <Button
@@ -728,8 +728,6 @@ function StudyMapNav({
                 <GuideButton
                   pickReviewPlace={pickReviewPlace}
                   openReviewForm={openReviewForm}
-                  handleLocationRefetch={handleLocationRefetch}
-                  findNearestPlace={findNearestPlace}
                   addCafe={addCafe}
                 />
                 {/* <Button

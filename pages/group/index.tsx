@@ -82,7 +82,7 @@ function GroupPage() {
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
-  const { data: groups, isLoading } = useGroupQuery(
+  const { data: groups, isLoading, isFetching } = useGroupQuery(
     status === "모집중" ? "pending" : status === "오픈 예정" ? "planned" : "end",
     category,
     cursor,
@@ -162,8 +162,8 @@ function GroupPage() {
 
   const isFetchingRef = useRef(false);
   useEffect(() => {
-    isFetchingRef.current = isLoading;
-  }, [isLoading]);
+    isFetchingRef.current = isFetching;
+  }, [isFetching]);
 
   // 렌더 중 동기적으로 firstLoad를 false로 설정
   // (useEffect보다 먼저 처리되어 observer 재생성 시 race condition 방지)

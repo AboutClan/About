@@ -133,16 +133,16 @@ export const getStudyPlaceMarkersOptions = (
 
   const clusters = getClusterInfo(placeData, zoomNumber);
 
-  if (centerLocation) {
-    temp.push({
-      position: new naver.maps.LatLng(centerLocation.lat, centerLocation.lon),
-      icon: {
-        content: getCurrentLocationIcon(),
-        size: new naver.maps.Size(32, 36),
-        anchor: new naver.maps.Point(16, 36),
-      },
-    });
-  }
+  // if (centerLocation) {
+  //   temp.push({
+  //     position: new naver.maps.LatLng(centerLocation.lat, centerLocation.lon),
+  //     icon: {
+  //       content: getCurrentLocationIcon(),
+  //       size: new naver.maps.Size(32, 36),
+  //       anchor: new naver.maps.Point(16, 36),
+  //     },
+  //   });
+  // }
 
   if (clusters) {
     clusters.forEach((cluster) => {

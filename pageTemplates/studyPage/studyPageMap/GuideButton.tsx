@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
+import Spinner from "../../../components/atoms/Spinner";
 import StarRatingReviewBlock2 from "../../../components/molecules/StarRatingReviewBlock2";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import {
@@ -23,7 +24,6 @@ import {
   useStudyReviewsQuery,
 } from "../../../hooks/study/queries";
 import { ModalLayout } from "../../../modals/Modals";
-import { CoordinatesProps } from "../../../types/common";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
 import { PlaceInfoBox } from "../PlaceInfoDrawer";
 
@@ -114,25 +114,17 @@ function useScrollInfinite({
 interface GuideButtonProps {
   pickReviewPlace?: (place: StudyPlaceProps) => void;
   openReviewForm?: (place: StudyPlaceProps) => void;
-  handleLocationRefetch?: () => Promise<CoordinatesProps | null>;
-  findNearestPlace?: (coords: CoordinatesProps) => StudyPlaceProps | null;
   addCafe?: () => void;
 }
 
-function GuideButton({
-  pickReviewPlace,
-  openReviewForm,
-  handleLocationRefetch,
-  findNearestPlace,
-  addCafe,
-}: GuideButtonProps) {
+function GuideButton({ pickReviewPlace, addCafe }: GuideButtonProps) {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
   const [menu, setMenu] = useState<MenuType | null>(null);
   const [feedTab, setFeedTab] = useState<FeedTab>("최근 후기");
-  const [confirmPlace, setConfirmPlace] = useState<StudyPlaceProps | null>(null);
-  const [isUnregistered, setIsUnregistered] = useState(false);
+  const [isLocationLoading, setIsLocationLoading] = useState(false);
+  const [isLocationConfirmOpen, setIsLocationConfirmOpen] = useState(false);
 
   const reviews = useCursorData<StudyReviewProps>(useStudyReviewsQuery);
   const newPlaces = useCursorData<StudyPlaceProps>(useStudyPlacesCursorQuery);
@@ -162,31 +154,18 @@ function GuideButton({
 
   const openAddCafe = () => {
     setIsOpen(false);
-    setConfirmPlace(null);
-    setIsUnregistered(false);
+    setIsLocationConfirmOpen(false);
     addCafe?.();
   };
 
-  // 확인 팝업에서 "이 카페 맞아요!"를 누르면 후기 게시판을 거치지 않고
-  // 곧바로 "카공 장소 별점 남기기" 작성 폼으로 이동한다.
-  const reviewConfirmedPlace = () => {
-    if (!confirmPlace) return;
-    openReviewForm?.(confirmPlace);
-    setConfirmPlace(null);
-  };
-
-  // "카공 후기 작성 (현재 위치)": 현재 위치를 가져와 지도 중심을 옮긴 뒤(기존 현재 위치 버튼과 동일 로직),
-  // 가장 가까운 카페를 찾아 맞는지 확인받고, 있으면 그 장소 리뷰로, 없으면 신규 등록으로 안내한다.
-  const handleCurrentLocationReview = async () => {
+  // "카공 후기 작성 (현재 위치)": 1.5초 로딩 후 현재 위치가 맞는지 확인하는 모달을 띄운다.
+  const handleCurrentLocationReview = () => {
     setIsOpen(false);
-    const pos = await handleLocationRefetch?.();
-    if (!pos) return; // 실패 시 toast는 handleLocationRefetch 내부에서 이미 노출됨
-    const nearest = findNearestPlace?.(pos);
-    if (nearest) {
-      setConfirmPlace(nearest);
-    } else {
-      setIsUnregistered(true);
-    }
+    setIsLocationLoading(true);
+    setTimeout(() => {
+      setIsLocationLoading(false);
+      setIsLocationConfirmOpen(true);
+    }, 1500);
   };
 
   return (
@@ -251,34 +230,24 @@ function GuideButton({
         </Button>
       </Box>
 
-      {/* 현재 위치와 가장 가까운 카페를 찾은 경우 */}
-      {confirmPlace && (
-        <ModalLayout
-          title={confirmPlace.location.name}
-          setIsModal={() => setConfirmPlace(null)}
-          footerOptions={{
-            main: { text: "이 카페 맞아요!", func: reviewConfirmedPlace },
-            sub: { text: "직접 검색", func: openAddCafe },
-          }}
-        >
-          현재 위치에서 가장 가까운 카공 카페예요.
-          <br />이 카페가 맞나요?
-        </ModalLayout>
-      )}
+      {/* 현재 위치 확인 로딩 */}
+      {isLocationLoading && <Spinner text="위치를 확인중입니다..." />}
 
-      {/* 근처에서 등록된 카페를 찾지 못한 경우 */}
-      {isUnregistered && (
+      {/* 현재 위치 확인 모달 */}
+      {isLocationConfirmOpen && (
         <ModalLayout
-          title="등록된 카페가 아니에요"
-          setIsModal={() => setIsUnregistered(false)}
+          title="이 카페가 맞나요?"
+          setIsModal={() => setIsLocationConfirmOpen(false)}
           footerOptions={{
-            main: { text: "신규 장소 등록", func: openAddCafe },
+            main: { text: "네, 맞아요", func: () => setIsLocationConfirmOpen(false) },
             sub: { text: "직접 검색", func: openAddCafe },
           }}
         >
-          현재 위치 근처에 카공지도에 등록된 카페가 없어요.
-          <br />
-          새로운 장소로 등록해 주시겠어요?
+          <p>
+            <b>[카페 타셴]</b> 기준으로
+            <br />
+            카공 후기를 작성할게요!
+          </p>
         </ModalLayout>
       )}
 
