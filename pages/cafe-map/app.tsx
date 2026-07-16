@@ -4,7 +4,7 @@ import Head from "next/head";
 // 스마트 앱 다운로드 리디렉션: 리트리 등록용 단일 진입점 (https://about20s.club/cafe-map/app)
 const ANDROID_APP_STORE_URL = "https://play.google.com/store/apps/details?id=club.about20s.cafemap";
 const IOS_APP_STORE_URL = "https://apps.apple.com/kr/app/id6776977905";
-const PC_FALLBACK_URL = "https://카공지도.com";
+const PC_FALLBACK_URL = "https://xn--ob0b42knwutje.com";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // UA별로 응답이 달라지므로 캐시되면 안 되고, 다운로드 링크는 검색 노출도 막는다.
