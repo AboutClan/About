@@ -8,9 +8,11 @@ import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE } from "../../constants/keys/qu
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 
 export const useToken = () => {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const [token, setToken] = useState<string | undefined>();
-  const fetchedOnceRef = useRef(false);
+  // 세션의 uid가 바뀌면(예: 게스트 → 카카오 실계정 전환) 캐시된 토큰을 반드시 재발급받아야 함
+  // 그렇지 않으면 axios 기본 헤더에 과거 게스트 토큰이 그대로 남아 백엔드가 계정을 오인함
+  const uidRef = useRef<string | undefined>(undefined);
 
   const fetchToken = async () => {
     try {
@@ -22,20 +24,15 @@ export const useToken = () => {
     }
   };
 
-  // 1) 기존처럼 마운트 시 한 번 호출 (속도 유지)
-  useEffect(() => {
-    if (fetchedOnceRef.current) return;
-    fetchedOnceRef.current = true;
-    fetchToken();
-  }, []);
-
-  // 2) 나중에 status가 authenticated로 바뀌었는데 token이 없다면 → 한 번 더 호출
   useEffect(() => {
     if (status !== "authenticated") return;
-    if (token) return;
 
+    const currentUid = (session?.user as { uid?: string } | undefined)?.uid;
+    if (currentUid === uidRef.current && token) return;
+
+    uidRef.current = currentUid;
     fetchToken();
-  }, [status, token]);
+  }, [status, session, token]);
 
   return token;
 };

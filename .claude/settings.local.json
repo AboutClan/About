@@ -75,7 +75,10 @@
       "Bash(chromium-cli --help)",
       "Bash(npx --version)",
       "Bash(timeout 60 bash -c 'until curl -sf http://localhost:3000/login >/dev/null; do sleep 2; done')",
-      "Bash(npx playwright *)"
+      "Bash(npx playwright *)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(rm -f .next/trace)",
+      "Bash(NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production npx next build)"
     ]
   }
 }
