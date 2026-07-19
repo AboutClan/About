@@ -142,11 +142,11 @@ export function GatherThumbnailCard({
                 만 {age[0]} ~ {age[1]}세
               </Badge>
             ) : null}
-            {isAdmin && waitings?.length ? (
+            {/* {isAdmin && waitings?.length ? (
               <Box color="mint" fontSize="12px">
                 {waitings?.length}명 대기중
               </Box>
-            ) : null}
+            ) : null} */}
           </Flex>
           <Title>{title}</Title>
           <Subtitle>
