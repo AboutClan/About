@@ -44,7 +44,7 @@ function HomeStudySection() {
       studySet,
       null,
       () => setBackUrl("/home"),
-      true,
+      true,null,null,true
     );
     setThumbnailCardinfoArr(sortThumbnailCardInfoArr("날짜순", getThumbnailCardInfoArr, null));
   }, [studySet]);

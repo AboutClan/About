@@ -31,6 +31,7 @@ export const setStudyThumbnailCard = (
   pathHome?: boolean,
   temp?: boolean,
   fromCafeMap?: boolean,
+  isTemp?: boolean,
 ): StudyThumbnailCardProps[] => {
   const { participations, openRealTimes, soloRealTimes, results } = studySet;
 
@@ -38,7 +39,7 @@ export const setStudyThumbnailCard = (
   const isFutureDate = dayjs(date).startOf("day").isAfter(dayjs().startOf("day"));
 
   const basicThumbnailCard: StudyThumbnailCardProps[] = [];
-  if (soloRealTimes && !isFutureDate) {
+  if (soloRealTimes && !isFutureDate && !isTemp) {
     basicThumbnailCard.push({
       place: {
         name: "실시간 공부 인증",
@@ -53,7 +54,10 @@ export const setStudyThumbnailCard = (
         _id: "",
       },
       participants: soloRealTimes?.flatMap((par) => par.study.members.map((member) => member.user)),
-      url: `/study/realTime/${date}?type=soloRealTimes` + (pathHome ? "&path=home" : "") + (fromCafeMap ? "&from=cafe-map" : ""),
+      url:
+        `/study/realTime/${date}?type=soloRealTimes` +
+        (pathHome ? "&path=home" : "") +
+        (fromCafeMap ? "&from=cafe-map" : ""),
       studyType: "soloRealTimes",
       isMyStudy: false,
       func,
@@ -74,7 +78,10 @@ export const setStudyThumbnailCard = (
         _id: "",
       },
       participants: shortenParticipations(participations, openRealTimes).map((par) => par.user),
-      url: `/study/participations/${date}?type=participations` + (pathHome ? "&path=home" : "") + (fromCafeMap ? "&from=cafe-map" : ""),
+      url:
+        `/study/participations/${date}?type=participations` +
+        (pathHome ? "&path=home" : "") +
+        (fromCafeMap ? "&from=cafe-map" : ""),
       studyType: "participations",
       isMyStudy: false,
       func,
@@ -149,8 +156,7 @@ export const setStudyThumbnailCard = (
     // 같은 시간대여도 날짜가 달라 슬롯이 겹치지 않는 문제가 생김.
     // → "자정 기준 분 수(hour×60+minute)"만 키로 사용해 날짜 무관 비교.
     const toMinKey = (d: Dayjs) => d.hour() * 60 + d.minute();
-    const minToTime = (min: number) =>
-      dayjs().startOf("day").add(min, "minute");
+    const minToTime = (min: number) => dayjs().startOf("day").add(min, "minute");
 
     const getOverlapTimeRange = () => {
       const slotMap = new Map<number, number>();
@@ -170,8 +176,12 @@ export const setStudyThumbnailCard = (
       });
 
       const overlapKeys = Array.from(slotMap.entries())
-        .filter(function(entry) { return entry[1] >= 2; })
-        .map(function(entry) { return entry[0]; })
+        .filter(function (entry) {
+          return entry[1] >= 2;
+        })
+        .map(function (entry) {
+          return entry[0];
+        })
         .sort((a, b) => a - b);
 
       if (overlapKeys.length === 0) return null;
@@ -224,7 +234,8 @@ export const setStudyThumbnailCard = (
       participants: study.members.map((att) => att.user),
       url:
         `/study/${placeInfo._id}/${data.date}?type=${data.study.status}` +
-        (pathHome ? "&path=home" : "") + (fromCafeMap ? "&from=cafe-map" : ""),
+        (pathHome ? "&path=home" : "") +
+        (fromCafeMap ? "&from=cafe-map" : ""),
       studyType: data.study.status,
       isMyStudy: study.members.map((member) => member.user._id).includes(myId),
       dateStatus: dayjs(data.date).hour(9).isAfter(dayjs())
