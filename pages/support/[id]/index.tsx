@@ -105,7 +105,7 @@ function SupportDetailPage() {
               color="gray.700"
               onClick={() => navigateExternalLink(support.link)}
             >
-              홈페이지 바로가기
+              {support.name} 방문하기
             </Button>
           )}
         </Box>

@@ -177,7 +177,7 @@ function CafeMapMyPage() {
                 toast("info", "등록한 장소가 없어요");
                 return;
               }
-              toast("info", "7월 20일 오픈 예정이에요!");
+              toast("info", "8월 1일 오픈 예정이에요!");
             }}
           />
           {favorites?.likes?.length ? (
@@ -204,7 +204,7 @@ function CafeMapMyPage() {
                 toast("info", "등록한 장소가 없어요");
                 return;
               }
-              toast("info", "7월 20일 오픈 예정이에요!");
+              toast("info", "8월 1일 오픈 예정이에요!");
             }}
           />
           {favorites?.picks?.length ? (

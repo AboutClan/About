@@ -65,35 +65,40 @@ export const generateClientSecret = () => {
 };
 
 function buildAuthOptions(): NextAuthOptions {
+  // NEXTAUTH_URL이 https가 아니면(로컬 http://localhost 등) Secure 쿠키가 브라우저에 저장되지 않아
+  // 카카오 로그인 콜백에서 state/pkce 쿠키가 사라지는 문제가 발생 → 프로토콜 기준으로 분기
+  const isSecure = process.env.NEXTAUTH_URL?.startsWith("https://") ?? true;
+  const cookiePrefix = isSecure ? "__Secure-" : "";
+
   return {
     secret,
     debug: true,
     cookies: {
       pkceCodeVerifier: {
-        name: "next-auth.pkce.code_verifier",
+        name: `${cookiePrefix}next-auth.pkce.code_verifier`,
         options: {
           httpOnly: true,
-          sameSite: "none",
+          sameSite: isSecure ? "none" : "lax",
           path: "/",
-          secure: true,
+          secure: isSecure,
         },
       },
       state: {
-        name: "next-auth.state",
+        name: `${cookiePrefix}next-auth.state`,
         options: {
           httpOnly: true,
-          sameSite: "none",
+          sameSite: isSecure ? "none" : "lax",
           path: "/",
-          secure: true,
+          secure: isSecure,
         },
       },
       callbackUrl: {
-        name: "next-auth.callback-url",
+        name: `${cookiePrefix}next-auth.callback-url`,
         options: {
           httpOnly: true,
-          sameSite: "none",
+          sameSite: isSecure ? "none" : "lax",
           path: "/",
-          secure: true,
+          secure: isSecure,
         },
       },
     },

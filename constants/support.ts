@@ -22,6 +22,19 @@ export type SupportItem = {
 
 export const SUPPORT_LIST: SupportItem[] = [
   {
+    id: "eduwill",
+    name: "에듀윌",
+    summary: "종합 온라인 교육",
+    category: "study",
+    imageUrl:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4+%EC%97%85%EC%B2%B4+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%97%90%EB%93%80%EC%9C%8C.png",
+    description:
+      "공무원, 자격증, 취업 등 다양한 분야의 온라인 강의와 학습 콘텐츠를 제공하는 국내 종합 교육 플랫폼입니다.",
+    benefits: ["기본 5% 할인", "어바웃 내 그룹 스터디 참여 시 추가 할인"],
+    link: "https://www.eduwill.net/sites/home",
+    texts: ["어바웃 멤버 및 지인 적용 가능", "어바웃 앱 [제휴 업체]에서 쿠폰 발급 가능"],
+  },
+  {
     id: "ringle",
     name: "링글",
     summary: "영어 스피킹",
@@ -124,6 +137,23 @@ export const SUPPORT_LIST: SupportItem[] = [
     ],
   },
   {
+    id: "fox-store",
+    name: "구미호 식당",
+    summary: "대학로 연극",
+    category: "hobby",
+    imageUrl:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4+%EC%97%85%EC%B2%B4+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B5%AC%EB%AF%B8%ED%98%B8%EC%8B%9D%EB%8B%B9.jpeg",
+    description:
+      "무거운 소재를 유쾌한 대사와 예측할 수 없는 반전, 관객 참여형 구성으로 풀어낸 18년 역사의 대학로 블랙코미디 연극입니다.",
+    benefits: ["평일 관람료 50,000원 → 14,000원", "주말 관람료 50,000원 → 17,000원"],
+    link: "https://nol.yanolja.com/ticket/products/26003518",
+    texts: [
+      "NOL 티켓에서 재관람으로 선택해 구매",
+      "어바웃 멤버 본인만 적용 가능",
+      "현장에서 어바웃 멤버증을 확인할 수 있음",
+    ],
+  },
+  {
     id: "lotte-museum",
     name: "롯데뮤지엄",
     summary: "미술 전시",
@@ -139,6 +169,48 @@ export const SUPPORT_LIST: SupportItem[] = [
       "https://ticket.interpark.com/Contents/PartnerClosure?BizCode=64533",
       "인증코드 verdystu 입력",
     ],
+  },
+  {
+    id: "somssidang",
+    name: "솜씨당",
+    summary: "취미·원데이클래스",
+    category: "life",
+    imageUrl:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4+%EC%97%85%EC%B2%B4+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%86%9C%EC%94%A8%EB%8B%B9.png",
+    description:
+      "공방과 원데이클래스, 온라인 클래스 등 다양한 취미·여가 활동을 쉽게 찾고 참여할 수 있는 온·오프라인 취미 플랫폼입니다.",
+    benefits: ["10% 할인 쿠폰 제공"],
+    link: "https://www.sssd.co.kr/m",
+    texts: ["어바웃 멤버 본인만 적용 가능", "어바웃 앱 [제휴 업체]에서 쿠폰 발급 가능"],
+  },
+  {
+    id: "turucar",
+    name: "투루카",
+    summary: "카셰어링·렌터카",
+    category: "life",
+    imageUrl:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4+%EC%97%85%EC%B2%B4+%EC%9D%B4%EB%AF%B8%EC%A7%80/%ED%88%AC%EB%A3%A8%EC%B9%B4.png",
+    description:
+      "필요한 시간만큼 차량을 대여하고 원하는 장소에서 반납할 수 있는 실시간 카셰어링 및 렌터카 플랫폼입니다.",
+    benefits: [
+      "50% 할인 쿠폰 제공",
+      "신규 가입자 주중 24시간 무료 제공",
+      "신규 가입자 주중·주말 3시간 무료 제공",
+    ],
+    link: "https://turucar.com/?abx_tid=1784601023964%3Abbdbe116-5620-48f8-a6bc-34c55ec676a7",
+    texts: ["하단 [제휴 쿠폰 받기] 버튼 클릭", "투루카 APP > 내정보 > 내쿠폰함 > + 쿠폰코드 등록"],
+  },
+  {
+    id: "meta-comedy-club-hongdae",
+    name: "메타코미디클럽 홍대",
+    summary: "스탠드업 코미디",
+    category: "hobby",
+    imageUrl:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4+%EC%97%85%EC%B2%B4+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%A9%94%ED%83%80%EC%BD%94%EB%AF%B8%EB%94%94.webp",
+    description: "코미디 레이블 메타코미디가 운영하는 홍대 스탠드업 코미디 공연장입니다.",
+    benefits: ["공연 티켓 20% 할인", "스페셜 공연 무료 초대권"],
+    link: "https://www.metacomedy.net/",
+    texts: ["어바웃 멤버 및 동반 1인 적용 가능", "현장에서 어바웃 멤버증 제시"],
   },
   {
     id: "musical-number-stage",

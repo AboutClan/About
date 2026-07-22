@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import {
@@ -326,8 +326,6 @@ export function ActivityCard({ item, isNavigationDisabled }: ActivityCardProps) 
 }
 
 function BenefitTab({ isNavigationDisabled }: { isNavigationDisabled?: boolean }) {
-  const sectionRefs = useRef<Partial<Record<SupportCategory, HTMLDivElement | null>>>({});
-
   const categorizedItems = useMemo(() => {
     const itemsByCategory = SUPPORT_CATEGORY_ORDER.reduce(
       (acc, category) => ({ ...acc, [category]: [] as SupportItem[] }),
@@ -344,38 +342,36 @@ function BenefitTab({ isNavigationDisabled }: { isNavigationDisabled?: boolean }
     })).filter((group) => group.items.length > 0);
   }, []);
 
-  const totalCnt = SUPPORT_LIST.length;
-
-  const scrollToCategory = (category: SupportCategory) => {
-    sectionRefs.current[category]?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
   return (
     <Box px={5} pb={10} mt={0}>
-      {categorizedItems.map(({ category, items }) => (
-        <Box
-          key={category}
-          ref={(el: HTMLDivElement | null) => {
-            sectionRefs.current[category] = el;
-          }}
-          pt={3}
-          pb={3}
-        >
-          <Flex align="baseline" mb={2} gap={1}>
-            <Box fontSize="15px" fontWeight={700} color="var(--gray-800)">
-              {SUPPORT_CATEGORY_LABEL[category]} 제휴 업체
-            </Box>
-            <Box fontSize="13px" color="var(--gray-500)">
-              {items.length}
-            </Box>
-          </Flex>
-          <Grid templateColumns="repeat(4, 1fr)" gap={2}>
-            {items.map((item) => (
-              <SupportCard key={item.id} item={item} isNavigationDisabled={isNavigationDisabled} />
-            ))}
-          </Grid>
-        </Box>
-      ))}
+      <Flex align="stretch" gap={0}>
+        {categorizedItems.map(({ category, items }, idx) => (
+          <Fragment key={category}>
+            <Flex flex={1} minW={0} direction="column" gap={2.5} px={2} pt={1}>
+              <Flex direction="column" align="center" gap={1} pb={2.5} mb={0.5}>
+                <Box
+                  fontSize="12.5px"
+                  fontWeight={700}
+                  color="var(--gray-800)"
+                  textAlign="center"
+                  whiteSpace="nowrap"
+                >
+                  {SUPPORT_CATEGORY_LABEL[category].replace(/[[\]]/g, "")}
+                </Box>
+                <Box fontSize="11px" fontWeight={600} color="var(--color-mint)">
+                  {items.length}개
+                </Box>
+              </Flex>
+              {items.map((item) => (
+                <SupportCard key={item.id} item={item} isNavigationDisabled={isNavigationDisabled} />
+              ))}
+            </Flex>
+            {idx < categorizedItems.length - 1 && (
+              <Box w="1px" alignSelf="stretch" bg="var(--gray-200)" />
+            )}
+          </Fragment>
+        ))}
+      </Flex>
     </Box>
   );
 }
