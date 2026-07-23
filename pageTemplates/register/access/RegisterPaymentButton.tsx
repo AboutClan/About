@@ -390,7 +390,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     setReady(true);
   }, []);
 
-  const onClickNext = () => {
+  const onClickNext = async () => {
     if (isWebView()) {
       if (type === "point") {
         toast("info", "원활한 결제를 위해 웹사이트로 전환합니다.");
@@ -419,6 +419,17 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     }
     setIsLoading2(true);
     const orderNo = makeOrderNo(); // ✅ 매번 새로 생성
+
+    try {
+      await fetch("/api/cookiepay/init-order", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ orderNo, uid: session.user.uid, type }),
+      });
+    } catch {
+      // 사전 기록 실패해도 결제 자체는 진행 (return 콜백/클라이언트 승인 경로는 그대로 동작)
+    }
+
     if (type === "point") {
       cookiepayments.payrequest({
         ORDERNO: orderNo,

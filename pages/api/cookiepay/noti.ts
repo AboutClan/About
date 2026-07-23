@@ -3,7 +3,8 @@
 // pages/api/cookiepay/noti.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { upsertPayment } from "../../../libs/paymentStore";
+import { findPayment, upsertPayment } from "../../../libs/paymentStore";
+import { approveRegisterWithRetry } from "../../../libs/registerApproval";
 import { cookiepayPaycert } from "../../../utils/cookiepay";
 
 export const config = {
@@ -49,6 +50,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         status: "SUCCESS",
         raw: { noti: p, cert },
       });
+
+      // ✅ 브라우저 뒤로가기/이탈로 return 콜백(클라이언트 승인 트리거)이
+      // 실행되지 못해도, 이 서버-투-서버 webhook이 orderNo로 uid/type을
+      // 조회해 가입 승인을 대신 트리거한다. register/approval은 멱등이므로
+      // return.ts나 클라이언트가 나중에 다시 호출해도 안전하다.
+      const payment = findPayment(orderNo);
+      if (payment?.type === "register" && payment?.uid) {
+        await approveRegisterWithRetry(payment.uid);
+      }
     } else {
       upsertPayment({
         orderNo,

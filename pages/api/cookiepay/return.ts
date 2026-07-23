@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { parse as parseQs } from "querystring";
 
 import { upsertPayment } from "../../../libs/paymentStore";
+import { approveRegisterWithRetry } from "../../../libs/registerApproval";
 import { cookiepayDecrypt, cookiepayPaycert } from "../../../utils/cookiepay";
 
 export const config = {
@@ -153,8 +154,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         paymethod: String(cert.PAYMETHOD ?? paymethod),
         acceptDate: String(cert.ACCEPTDATE ?? acceptDate),
         status: "SUCCESS",
+        uid,
+        type: "register",
         raw: { payload, cert },
       });
+
+      // ✅ 클라이언트가 이 페이지에서 이탈해도(뒤로가기 등) noti webhook이 대신
+      // 승인을 트리거하지만, 여기서도 먼저 시도해두면 더 빠르게 승인된다.
+      // register/approval은 멱등이라 중복 호출돼도 안전하다.
+      if (uid) await approveRegisterWithRetry(uid);
 
       redirect(res, `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}`);
       return;
@@ -221,8 +229,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       paymethod: String(cert.PAYMETHOD ?? paymethod),
       acceptDate: String(cert.ACCEPTDATE ?? acceptDate),
       status: "SUCCESS",
+      uid,
+      type: "register",
       raw: { payload, dec, cert },
     });
+
+    if (uid) await approveRegisterWithRetry(uid);
 
     redirect(res, `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}`);
   } catch (e: any) {

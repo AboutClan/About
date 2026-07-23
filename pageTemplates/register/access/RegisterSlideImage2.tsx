@@ -17,9 +17,9 @@ function RegisterSlideImage2() {
   const [zoomImage, setZoomImage] = useState<string>(null);
 
   const imageArr = [
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EA%B3%B5%EB%B6%80.jpg",
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%AC%B8%ED%99%94.jpg",
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%9D%BC%EC%9D%B4%ED%94%84.png",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/%EA%B3%B5%EB%B6%80%EC%A0%9C%ED%9C%B4.png",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/%EB%AC%B8%ED%99%94%EC%A0%9C%ED%9C%B4.png",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/%EB%9D%BC%EC%9D%B4%ED%94%84%EC%A0%9C%ED%9C%B4.png",
   ];
 
   return (
