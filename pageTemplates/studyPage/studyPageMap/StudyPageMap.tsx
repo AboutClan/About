@@ -6,18 +6,21 @@ import styled from "styled-components";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
+import { MOCK_KAGONGJOK_PLACES } from "../../../constants/service/study/mockKagongjokPlaces";
 import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { isKagongjokPlace } from "../../../libs/study/kagongjokUtils";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
 import { getPlaceScore } from "../../../libs/study/studyUtils";
 import { ModalLayout } from "../../../modals/Modals";
 import { CoordinatesProps } from "../../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../../types/externals/naverMapTypes";
 import {
+  PlaceTypeFilter,
   StudyPlaceFilter,
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
@@ -124,6 +127,8 @@ function StudyPageMap({
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [ids, setIds] = useState<string[]>([]);
   const [filterType, setFilterType] = useState<StudyPlaceFilter>("all");
+  // 전체 장소 / 일반 카페 / 카공족 — 품질 필터(filterType)와는 별도 축.
+  const [placeTypeFilter, setPlaceTypeFilter] = useState<PlaceTypeFilter>("all");
   const [reviewPlaceInfo, setReviewPlaceInfo] = useState<StudyPlaceProps | null>(null);
   const [amenityFilters, setAmenityFilters] = useState<string[]>([]);
   const [unregisteredCafe, setUnregisteredCafe] = useState<NaverLocationProps | null>(null);
@@ -144,7 +149,13 @@ function StudyPageMap({
 
   const placeDataRef = useRef<typeof placeData>(undefined);
 
-  const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery("all");
+  const { data: rawPlaceData, isLoading: isLoading2 } = useStudyPlacesQuery("all");
+  // 카공족 실제 데이터 연동 전 UI 데모용 임시 병합. 실제 연동 시 이 useMemo와
+  // mockKagongjokPlaces.ts 파일만 제거하면 원상복구된다. 서버 응답 배열/객체는 직접 변경하지 않음.
+  const placeData = useMemo(
+    () => (rawPlaceData ? [...rawPlaceData, ...MOCK_KAGONGJOK_PLACES] : rawPlaceData),
+    [rawPlaceData],
+  );
   placeDataRef.current = placeData;
 
   // PICK 아카이브 선택 시 필터된 장소들의 중심점으로 지도 이동
@@ -353,6 +364,12 @@ function StudyPageMap({
       result = result.filter((place) => getPlaceScore(place.ratings).total >= 4.0);
     }
 
+    if (placeTypeFilter === "cafe") {
+      result = result.filter((place) => !isKagongjokPlace(place));
+    } else if (placeTypeFilter === "kagongjok") {
+      result = result.filter((place) => isKagongjokPlace(place));
+    }
+
     if (amenityFilters.length > 0) {
       result = result.filter((place) =>
         amenityFilters.every((f) => {
@@ -369,7 +386,15 @@ function StudyPageMap({
     }
 
     return result;
-  }, [placeData, markerCenter, markerRadiusKm, filterType, amenityFilters, selectedPickNickname]);
+  }, [
+    placeData,
+    markerCenter,
+    markerRadiusKm,
+    filterType,
+    amenityFilters,
+    selectedPickNickname,
+    placeTypeFilter,
+  ]);
   useEffect(() => {
     if (!visiblePlaceData.length) {
       setMarkersOptions([]);
@@ -541,13 +566,20 @@ function StudyPageMap({
   // 것을 막고, filter 안에서 cache 객체를 mutate 하던 side-effect도 제거.
   const sortedListPlaces = useMemo(() => {
     if (!placeData) return undefined;
+    const typeFiltered =
+      placeTypeFilter === "cafe"
+        ? placeData.filter((place) => !isKagongjokPlace(place))
+        : placeTypeFilter === "kagongjok"
+        ? placeData.filter((place) => isKagongjokPlace(place))
+        : placeData;
+
     if (ids.length) {
-      return placeData.filter((place) => ids.includes(place._id));
+      return typeFiltered.filter((place) => ids.includes(place._id));
     }
     const centerLat = currentMapCenter?.lat ?? mapOptions?.center?.y;
     const centerLon = currentMapCenter?.lon ?? mapOptions?.center?.x;
     if (centerLat == null || centerLon == null) return [];
-    return placeData
+    return typeFiltered
       .map((place) => ({
         place,
         diffKm: getDistanceFromLatLonInKm(
@@ -568,6 +600,7 @@ function StudyPageMap({
     mapOptions?.center?.y,
     mapOptions?.center?.x,
     viewportRadiusKm,
+    placeTypeFilter,
   ]);
 
   return (
@@ -650,6 +683,8 @@ function StudyPageMap({
               }}
               filterType={filterType}
               setFilterType={setFilterType}
+              placeTypeFilter={placeTypeFilter}
+              setPlaceTypeFilter={setPlaceTypeFilter}
               amenityFilters={amenityFilters}
               setAmenityFilters={setAmenityFilters}
               selectedPickNickname={selectedPickNickname}

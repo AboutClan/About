@@ -71,7 +71,7 @@ export default function Select({
           pointerEvents="none"
         >
           <Box>
-            <ShortArrowIcon dir="bottom" size="sm" color="mint" />
+            <ShortArrowIcon dir="bottom" size="sm" color="white" />
           </Box>
         </Flex>
       }
@@ -95,19 +95,11 @@ export default function Select({
       border={!isBorder ? "none" : undefined}
       borderColor="var(--gray-200)"
       bgColor="white"
-      fontSize={
-        size === "lg"
-          ? "14px"
-          : size === "sm"
-          ? "11px"
-          : size === "xs" && !isBorder
-          ? "12px"
-          : size === "xs" || size === "md"
-          ? "11px"
-          : "13px"
-      }
+      fontSize={"12px"}
       outline={size === "md" ? "1px solid var(--gray-100)" : undefined}
-      fontWeight={isThick ? 600 : 500}
+      fontWeight={600}
+      bgColor="gray.900"
+      color="white"
       isDisabled={!isActive}
       height={
         size === "xs"

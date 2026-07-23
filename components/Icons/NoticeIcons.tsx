@@ -27,15 +27,15 @@ export function NoticeIcon({ type }: INoticeIcon) {
       pos="relative"
       justify="center"
       align="center"
-      w="44px"
-      h="44px"
+      w="16px"
+      h="16px"
       borderRadius="50%"
       bg={bg}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="22"
-        height="24"
+        width="14"
+        height="14"
         viewBox="0 0 22 24"
         fill="none"
       >

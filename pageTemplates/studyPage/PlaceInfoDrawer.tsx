@@ -2,16 +2,16 @@ import { Badge, Box, Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import StarRating from "../../components/atoms/StarRating";
+import { NoticeIcon } from "../../components/Icons/NoticeIcons";
 import { StarIcon } from "../../components/Icons/StarIcon";
 import PlaceImage from "../../components/molecules/PlaceImage";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
+import { isKagongjokPlace } from "../../libs/study/kagongjokUtils";
 import { getPlaceScore } from "../../libs/study/studyUtils";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { getRandomImage } from "../../utils/imageUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getSafeAreaBottom,isApp  } from "../../utils/validationUtils";
+import { getSafeAreaBottom, isApp } from "../../utils/validationUtils";
 
 interface PlaceInfoDrawerProps {
   placeInfo: StudyPlaceProps;
@@ -40,7 +40,7 @@ function PlaceInfoDrawer({
     <>
       <BottomFlexDrawer
         isHideBottom
-        height={drawerHeight}
+        height={392}
         isDrawerUp
         setIsModal={onClose}
         isOverlay
@@ -69,6 +69,7 @@ export function PlaceInfoCard({
   isDown: boolean;
   customSubText?: string;
 }) {
+  const isKagongjok = isKagongjokPlace(placeInfo);
   const ratings = placeInfo?.ratings || [];
 
   const score = getPlaceScore(ratings);
@@ -85,9 +86,22 @@ export function PlaceInfoCard({
       <Flex w="full" justify="space-between" align="start" mb={2} h="108px">
         <Flex direction="column" flex={1} minW={0} mr={3}>
           <Box mb={1}>
-            <Badge px={2} py={1} fontSize="11px" color="gray.500" bg="rgba(142,160,172,0.08)">
-              {placeInfo?.name || "어바웃"}님 PICK
-            </Badge>
+            {isKagongjok ? (
+              <Badge
+                px={2}
+                py={1}
+                fontSize="11px"
+                fontWeight={700}
+                color="var(--color-purple)"
+                bg="rgba(187,87,213,0.1)"
+              >
+                카공 전문 공간 · 카공족 공식 지점
+              </Badge>
+            ) : (
+              <Badge px={2} py={1} fontSize="11px" color="gray.500" bg="rgba(142,160,172,0.08)">
+                {placeInfo?.name || "어바웃"}님 PICK
+              </Badge>
+            )}
           </Box>
 
           <Box
@@ -136,7 +150,7 @@ export function PlaceInfoCard({
 
         <PlaceImage
           imageProps={{
-            image: placeInfo?.image || getRandomImage(STUDY_MAIN_IMAGES),
+            image: "/cc.png",
           }}
           id={placeInfo?._id}
           likes={placeInfo?.likes}
@@ -146,18 +160,53 @@ export function PlaceInfoCard({
         />
       </Flex>
 
-      <Flex align="center">
-        <Box lineHeight="24px">
-          <StarRating rating={score.total} size="lg" />
-        </Box>
-        <Box fontWeight={600} fontSize="16px" ml={1.5} mr={1.5} color="mint" lineHeight="24px">
-          {score.total > 0 ? score.total.toFixed(1) : "0.0"}
-        </Box>
-        <Box color="gray.400" fontSize="11px" lineHeight="24px">
-          ({reviewCnt}명 평가 반영)
-        </Box>
-      </Flex>
+      {isKagongjok ? (
+        <KagongjokAllPassBadge />
+      ) : (
+        <Flex align="center">
+          <Box lineHeight="24px">
+            <StarRating rating={score.total} size="lg" />
+          </Box>
+          <Box fontWeight={600} fontSize="16px" ml={1.5} mr={1.5} color="mint" lineHeight="24px">
+            {score.total > 0 ? score.total.toFixed(1) : "0.0"}
+          </Box>
+          <Box color="gray.400" fontSize="11px" lineHeight="24px">
+            ({reviewCnt}명 평가 반영)
+          </Box>
+        </Flex>
+      )}
     </>
+  );
+}
+
+// 카공족 상세 상단의 "총점" 자리를 대체하는 배지. 별 아이콘을 쓰지 않아 실제 평점처럼
+// 오해되지 않게 하고, 체크 아이콘 + "ALL PASS" 문구로 기준 충족을 표현한다.
+function KagongjokAllPassBadge() {
+  return (
+    <Flex align="center" gap={2}>
+      <Flex align="center" justify="center" w="24px" h="24px" borderRadius="full" flexShrink={0}>
+        <NoticeIcon type="공지" />
+      </Flex>
+      <Box>
+        <Box fontSize="13px" color="gray.500" mt={1} lineHeight="16px">
+          첫 방문 시 4,900원 이벤트 진행중!{" "}
+        </Box>
+      </Box>
+    </Flex>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20px"
+      viewBox="0 -960 960 960"
+      width="20px"
+      fill="var(--color-purple)"
+    >
+      <path d="M382-240 154-468l57-57 171 171 357-357 57 57-414 414Z" />
+    </svg>
   );
 }
 
@@ -194,6 +243,7 @@ export function PlaceInfoBox({
   const [isLoading, setIsLoading] = useState(false);
   const [isMapPickerOpen, setIsMapPickerOpen] = useState(false);
 
+  const isKagongjok = isKagongjokPlace(placeInfo);
   const score = getPlaceScore(placeInfo?.ratings);
 
   const openInMap = (type: "naver" | "kakao" | "apple") => {
@@ -229,8 +279,13 @@ export function PlaceInfoBox({
     handleVotePick?.();
   };
 
+  // 카공족은 좌석·공간/장시간 이용을 이미 PASS 그리드에서 보여주므로, 시설 태그에서는
+  // 지점마다 달라지는 정보만 남기고 중복되는 두 항목은 제외한다.
+  const KAGONGJOK_EXCLUDED_META_KEYS = [];
   const badges = Object.entries(placeInfo?.studyCafeMeta ?? {})
-    .filter(([, val]) => val === true)
+    .filter(
+      ([key, val]) => val === true && !(isKagongjok && KAGONGJOK_EXCLUDED_META_KEYS.includes(key)),
+    )
     .map(([key]) => CAFE_META_LABELS[key])
     .filter(Boolean)
     .slice(0, 5);
@@ -253,9 +308,15 @@ export function PlaceInfoBox({
             pb={3}
             boxShadow="0 2px 8px rgba(0,0,0,0.03)"
           >
-            <InfoRow label="분위기" value={score.mood} hasBorder />
-            <InfoRow label="콘센트" value={score.power} hasBorder />
-            <InfoRow label="자리 여유" value={score.space} />
+            {isKagongjok ? (
+              <KagongjokPassGrid />
+            ) : (
+              <>
+                <InfoRow label="분위기" value={score.mood} hasBorder />
+                <InfoRow label="콘센트" value={score.power} hasBorder />
+                <InfoRow label="자리 여유" value={score.space} />
+              </>
+            )}
 
             <Flex mt={1} pt={3} borderTop="1px solid" borderColor="gray.100" wrap="wrap" gap="6px">
               {(badges.length ? badges : ["와이파이", "화장실 깨끗", "편한 좌석"]).map((label) => (
@@ -501,5 +562,29 @@ function InfoRow({
         </Flex>
       )}
     </Flex>
+  );
+}
+
+const KAGONGJOK_PASS_ITEMS = ["공부 환경", "콘센트", "좌석·공간", "장시간 이용"];
+
+// 일반 카페의 분위기/콘센트/자리 여유 숫자 점수(InfoRow) 자리를 대체한다. 카공족은 처음부터
+// 이 기준들을 갖추고 설계된 공간이라는 의미라 숫자 대신 PASS 체크만 반복 표시한다.
+function KagongjokPassGrid() {
+  return (
+    <Box display="grid" gridTemplateColumns="1fr 1fr" rowGap="10px" columnGap="8px" py={2}>
+      {KAGONGJOK_PASS_ITEMS.map((label) => (
+        <Flex key={label} align="center" gap="6px">
+          <Box flexShrink={0} color="var(--color-purple)" fontWeight={700} fontSize="13px">
+            ✓
+          </Box>
+          <Box fontSize="13px" fontWeight={500} color="gray.700" whiteSpace="nowrap">
+            {label}
+          </Box>
+          <Box fontSize="11px" fontWeight={600} color="var(--color-purple)" ml="auto">
+            PASS
+          </Box>
+        </Flex>
+      ))}
+    </Box>
   );
 }

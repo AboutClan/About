@@ -8,10 +8,12 @@ import {
 } from "../../types/models/studyTypes/study-entity.types";
 import {
   getCurrentLocationIcon,
+  getPartnerPlaceIcon,
   getPlaceBasicIcon,
   getPlaceCountIcon,
   getVoteLocationIcon,
 } from "./getStudyVoteIcon";
+import { isKagongjokPlace } from "./kagongjokUtils";
 import { getPlaceScore } from "./studyUtils";
 
 export const getNearLocationCluster = (
@@ -62,6 +64,7 @@ export const getStudyPlaceMarkersOptions = (
     name: string;
     rating: number;
     defaultLocationLat?: number;
+    isPartner?: boolean;
   }
 
   const getClusterInfo = (placeData: StudyPlaceProps[], zoom: number): ClusterInfoProps[] => {
@@ -124,6 +127,7 @@ export const getStudyPlaceMarkersOptions = (
         name: data.location.name,
         rating: getPlaceScore(data?.ratings).total,
         defaultLocationLat: data.location.latitude,
+        isPartner: isKagongjokPlace(data),
       };
     });
 
@@ -146,24 +150,32 @@ export const getStudyPlaceMarkersOptions = (
 
   if (clusters) {
     clusters.forEach((cluster) => {
+      const isDefaultLocation =
+        defaultLocation && cluster?.defaultLocationLat === defaultLocation?.lat;
+      // 클러스터(2개 이상 겹침)는 카공족 포함 여부와 무관하게 기존 숫자 배지 디자인을 그대로 쓴다.
+      const isPartnerMarker = cluster.type === "noise" && cluster.isPartner && !isDefaultLocation;
+
       const normalIcon = {
-        content:
-          defaultLocation && cluster?.defaultLocationLat === defaultLocation?.lat
-            ? getPlaceBasicIcon("orange", null)
-            : cluster.count > 1
-            ? getPlaceCountIcon(cluster.count)
-            : getPlaceBasicIcon(
-                "mint",
-                zoomNumber >= 14 ? cluster.name : null,
-                false,
-                cluster.rating,
-              ),
+        content: isDefaultLocation
+          ? getPlaceBasicIcon("orange", null)
+          : cluster.count > 1
+          ? getPlaceCountIcon(cluster.count)
+          : isPartnerMarker
+          ? getPartnerPlaceIcon(zoomNumber >= 14 ? cluster.name : null, false)
+          : getPlaceBasicIcon(
+              "mint",
+              zoomNumber >= 14 ? cluster.name : null,
+              false,
+              cluster.rating,
+            ),
         size: new naver.maps.Size(120, 60),
         anchor: new naver.maps.Point(60, 60),
       };
 
       const selectedIcon = {
-        content: getPlaceBasicIcon("orange", null),
+        content: isPartnerMarker
+          ? getPartnerPlaceIcon(null, false, true)
+          : getPlaceBasicIcon("orange", null),
         size: new naver.maps.Size(120, 60),
         anchor: new naver.maps.Point(60, 60),
       };

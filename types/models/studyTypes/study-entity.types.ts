@@ -48,6 +48,17 @@ export interface StudyConfirmedMemberProps extends TimeStampProps {
 }
 
 export type StudyPlaceFilter = "all" | "about" | "good";
+
+// 장소 유형 필터(전체/일반 카페/카공족). 별점·편의시설 등 "품질" 축인 StudyPlaceFilter와는
+// 완전히 다른 축이라 별도 타입으로 분리한다.
+export type PlaceTypeFilter = "all" | "cafe" | "kagongjok";
+
+// 장소가 일반 카페인지, 카공을 목적으로 설계된 전문 공간인지. 없으면 "cafe"로 취급한다.
+export type PlaceSpaceType = "cafe" | "study_space";
+// 공식 협업 파트너 브랜드. 현재는 카공족 하나뿐이라 유니언으로 시작하고, 추후 다른 브랜드가
+// 입점하면 값을 추가한다.
+export type PlaceBrand = "kagongjok";
+
 export interface StudyRatingProps {
   comment?: string;
   etc: number;
@@ -66,10 +77,14 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
   image?: string;
   coverImage?: string;
   ratings?: StudyRatingProps[];
-  operatingHours?: string[];
+  // 실제 운영시간 데이터는 [["평일", "09:00 - 22:00"], ...] 형태의 2차원 배열로 내려오며,
+  // PlaceInfoCard/CafeCompactCard가 operatingHours?.[0]?.[1]로 시간대 문자열을 꺼내 쓴다.
+  operatingHours?: string[][];
   pick?: string;
   likes?: string[];
   studyCafeMeta?: StudyCafeMetaProps;
+  spaceType?: PlaceSpaceType;
+  brand?: PlaceBrand;
 }
 
 export interface StudyCafeMetaProps {

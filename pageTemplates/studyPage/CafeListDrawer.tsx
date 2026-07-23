@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import { StarIcon } from "../../components/Icons/StarIcon";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
+import { isKagongjokPlace } from "../../libs/study/kagongjokUtils";
 import { getPlaceScore } from "../../libs/study/studyUtils";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { XIcon } from "./studyPageMap/TopNav";
@@ -140,6 +141,19 @@ export function CafeListDrawer({
   );
 }
 
+// 카공족 카드의 보조 문구에 쓸 특징 하나. 실제 데이터에 있는 항목만 우선순위대로 노출한다.
+const KAGONGJOK_FEATURE_LABELS: { key: keyof NonNullable<StudyPlaceProps["studyCafeMeta"]>; label: string }[] = [
+  { key: "is24Hours", label: "24시간" },
+  { key: "hasTimeLimit", label: "시간제 이용" },
+  { key: "hasParking", label: "주차 가능" },
+  { key: "hasGroupSeats", label: "단체석" },
+  { key: "hasGoodWifi", label: "와이파이" },
+];
+
+function getKagongjokFeatureLabel(place: StudyPlaceProps) {
+  return KAGONGJOK_FEATURE_LABELS.find((f) => place.studyCafeMeta?.[f.key])?.label;
+}
+
 export function CafeCompactCard({
   place,
   onReviewClick,
@@ -147,9 +161,11 @@ export function CafeCompactCard({
   place: StudyPlaceProps;
   onReviewClick: () => void;
 }) {
+  const isKagongjok = isKagongjokPlace(place);
   const rating = getPlaceScore(place.ratings).total;
   const reviewCnt =
     (place.ratings?.length || 0) + 2 + Number(place?.location?.latitude?.toString().slice(-1));
+  const kagongjokFeature = isKagongjok ? getKagongjokFeatureLabel(place) : undefined;
 
   const hour = place.operatingHours?.[0]?.[1] ?? "";
   const isOpen = (() => {
@@ -189,16 +205,29 @@ export function CafeCompactCard({
           </Box>
         </Flex>
 
-        {/* 별점 + 평가자 수 */}
-        <Flex align="center" gap={1}>
-          <StarIcon type="fill" size="sm" />
-          <Box fontSize="12px" fontWeight={600} color="var(--color-mint)" lineHeight="16px">
-            {rating.toFixed(1)}
-          </Box>
-          <Box fontSize="11px" color="gray.400" lineHeight="16px">
-            ({reviewCnt}명 평가)
-          </Box>
-        </Flex>
+        {/* 별점 + 평가자 수 (카공족은 일반 카페 별점 대신 장소 유형 표기) */}
+        {isKagongjok ? (
+          <Flex align="center" gap={1}>
+            <Box fontSize="12px" fontWeight={600} color="var(--color-purple)" lineHeight="16px">
+              ✓ 카공 전문 공간
+            </Box>
+            {kagongjokFeature && (
+              <Box fontSize="11px" color="gray.400" lineHeight="16px">
+                · {kagongjokFeature}
+              </Box>
+            )}
+          </Flex>
+        ) : (
+          <Flex align="center" gap={1}>
+            <StarIcon type="fill" size="sm" />
+            <Box fontSize="12px" fontWeight={600} color="var(--color-mint)" lineHeight="16px">
+              {rating.toFixed(1)}
+            </Box>
+            <Box fontSize="11px" color="gray.400" lineHeight="16px">
+              ({reviewCnt}명 평가)
+            </Box>
+          </Flex>
+        )}
 
         {/* 영업 상태 + 영업 시간 */}
         {hour && (

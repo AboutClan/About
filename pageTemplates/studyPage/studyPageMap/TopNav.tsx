@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 import AlertCirclePoint from "../../../components/atoms/AlertCirclePoint";
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
+import Select from "../../../components/atoms/Select";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import { StarIcon } from "../../../components/Icons/StarIcon";
 import Header from "../../../components/layouts/Header";
@@ -19,6 +20,7 @@ import { CoordinatesProps, LocationProps } from "../../../types/common";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { PlaceProps } from "../../../types/models/studyTypes/entityTypes";
 import {
+  PlaceTypeFilter,
   StudyPlaceFilter,
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
@@ -28,6 +30,24 @@ import StatusButton from "./StatusButton";
 import { CafeMapLogo } from "./StudyPageMap";
 
 const MAP_BTN_SHADOW = "0 1px 3px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.05)";
+
+// 전체 장소 / 일반 카페 / 카공족 select. Select 아톰이 문자열 라벨을 값으로 그대로 쓰기
+// 때문에, 실제 필터 키(PlaceTypeFilter)와는 라벨로 서로 변환한다.
+const PLACE_TYPE_OPTION_LABELS = ["전체 장소", "일반 카페", "카공족"];
+const PLACE_TYPE_LABEL_TO_FILTER: Record<string, PlaceTypeFilter> = {
+  "전체 장소": "all",
+  "일반 카페": "cafe",
+  카공족: "kagongjok",
+};
+const PLACE_TYPE_FILTER_TO_LABEL: Record<PlaceTypeFilter, string> = {
+  all: "전체 장소",
+  cafe: "일반 카페",
+  kagongjok: "카공족",
+};
+
+// 서비스 가치 안내 팝업이 열려 있을 때 아래 statusButton/랭킹 버튼이 내려가는 높이.
+// 팝업이 닫히면 이 값 없이 원래 위치로 올라온다.
+const VALUE_PROP_POPUP_OFFSET = "76px";
 
 const INLINE_FILTER_BUTTONS = [
   {
@@ -148,6 +168,8 @@ interface StudyMapNavProps {
   onClose: () => void;
   filterType: StudyPlaceFilter;
   setFilterType: DispatchType<StudyPlaceFilter>;
+  placeTypeFilter: PlaceTypeFilter;
+  setPlaceTypeFilter: DispatchType<PlaceTypeFilter>;
 
   openList: () => void;
   isCafeMap: boolean;
@@ -170,6 +192,8 @@ function StudyMapNav({
   isMapExpansion,
   filterType,
   setFilterType,
+  placeTypeFilter,
+  setPlaceTypeFilter,
   openList,
   hasBackButton,
   onClose,
@@ -190,6 +214,8 @@ function StudyMapNav({
   const [updateMenu, setUpdateMenu] = useState(false);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [isRankingOpen, setIsRankingOpen] = useState(false);
+  // 가치 안내 팝업. 닫으면 그만큼 아래 statusButton/랭킹 버튼이 올라오도록 높이를 직접 관리한다.
+  const [isValuePropOpen, setIsValuePropOpen] = useState(true);
 
   const { data: rankingData } = usePlaceRankingQuery({ enabled: isRankingOpen });
   const [placeInfo, setPlaceInfo] = useState<LocationProps>({
@@ -361,6 +387,19 @@ function StudyMapNav({
                 scrollbarWidth: "none",
               }}
             >
+              {/* 장소 유형 선택: 전체 장소 / 일반 카페 / 카공족. 다중 선택 가능한 시설 필터와
+                  섞이지 않도록 select 형태로 필터 바 맨 앞에 둔다. */}
+              <Box flexShrink={0}>
+                <Select
+                  size="md"
+                  defaultValue={PLACE_TYPE_FILTER_TO_LABEL[placeTypeFilter]}
+                  options={PLACE_TYPE_OPTION_LABELS}
+                  setValue={(label: string) =>
+                    setPlaceTypeFilter(PLACE_TYPE_LABEL_TO_FILTER[label])
+                  }
+                />
+              </Box>
+
               {/* 초기화 버튼 */}
               {/* {hasActiveFilters && (
                 <Button
@@ -485,9 +524,78 @@ function StudyMapNav({
               </Button>
             )}
           </Flex>
+
+          {/* 서비스 가치 안내 — 필터 바와 statusButton/랭킹 버튼 사이. 지도 양옆에서 살짝
+              떨어진 흰색 카드로 노출되고, X를 누르면 그만큼 아래 statusButton/랭킹 버튼이
+              위로 올라온다. */}
+          {isValuePropOpen && (
+            <Flex
+              pos="fixed"
+              top="calc(var(--header-h) + 40px + 56px + 16px)"
+              left={0}
+              right={0}
+              maxW="var(--max-width)"
+              mx="auto"
+              zIndex={100}
+              px={4}
+            >
+              <Flex
+                w="full"
+                align="center"
+                gap={2.5}
+                bg="white"
+                borderRadius="14px"
+                boxShadow={MAP_BTN_SHADOW}
+                px={3}
+                py={3}
+              >
+                <Flex
+                  align="center"
+                  justify="center"
+                  w="32px"
+                  h="32px"
+                  borderRadius="full"
+                  bg="rgba(187,87,213,0.1)"
+                  flexShrink={0}
+                >
+                  <ValuePropIcon />
+                </Flex>
+                <Box
+                  flex={1}
+                  minW={0}
+                  fontSize="12px"
+                  fontWeight={500}
+                  color="gray.600"
+                  lineHeight="17px"
+                >
+                  <Box fontSize="14px" color="mint" fontWeight={600} mb={1}>
+                    전국 카공러들과 함께 만드는 카공지도
+                  </Box>
+                  언제 어디서든 가까운 카공 카페를 찾아보세요
+                  <br />
+                  오래 집중하는 순간에는 카공 브랜드 카공족과 함께합니다.
+                </Box>
+                <IconButton
+                  aria-label="닫기"
+                  icon={<XIcon />}
+                  variant="ghost"
+                  size="sm"
+                  flexShrink={0}
+                  border="none"
+                  cursor="pointer"
+                  onClick={() => setIsValuePropOpen(false)}
+                />
+              </Flex>
+            </Flex>
+          )}
+
           <Flex
             pos="fixed"
-            top="calc(var(--header-h) + 40px + 56px + 16px)"
+            top={
+              isValuePropOpen
+                ? `calc(var(--header-h) + 40px + 56px + 16px + ${VALUE_PROP_POPUP_OFFSET} + 8px)`
+                : "calc(var(--header-h) + 40px + 56px + 16px)"
+            }
             left={0}
             right={0}
             maxW="var(--max-width)"
@@ -766,6 +874,20 @@ function StudyMapNav({
 }
 
 export default StudyMapNav;
+
+function ValuePropIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="18px"
+      viewBox="0 -960 960 960"
+      width="18px"
+      fill="var(--color-purple)"
+    >
+      <path d="M480-80q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80Zm-160-120v-80h320v80H320Zm10-120q-69-41-109.5-110T180-580q0-125 87.5-212.5T480-880q125 0 212.5 87.5T780-580q0 81-40.5 150T630-320H330Z" />
+    </svg>
+  );
+}
 
 function ArchiveIcon() {
   return (

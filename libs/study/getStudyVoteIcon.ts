@@ -98,6 +98,31 @@ export const getPlaceBasicIcon = (
   </svg></div>`;
 };
 
+// 카공족 등 공식 협업 파트너 전용 마커. 일반 카페(getPlaceBasicIcon)와 핀 크기·형태는
+// 동일하게 유지하고, 색상과 안쪽 심볼("K")만 다르게 해서 "완전히 다른 디자인 체계"로
+// 보이지 않게 한다. 별점 파라미터 자체를 받지 않는다.
+export const getPartnerPlaceIcon = (text?: string, isBig?: boolean, isSelected?: boolean) => {
+  return `
+  <div style="width:120px; height:60px; display:flex; justify-content:flex-end;  flex-direction:column; align-items:center;" >
+  ${
+    text
+      ? `<div  style="display:flex; align-items:center;
+           padding:4px 8px; margin-bottom:4px; text-align:center; line-height:12px; font-weight:600;font-size:10px;color:#424242; background:white; border:1px solid #eeeeee; border-radius:4px; height:20px; " >
+    <div style="max-width:${
+      isBig ? "80px" : "88px"
+    }; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;"> ${text}</div>
+    </div>`
+      : ``
+  }
+  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="36" viewBox="0 0 32 36" fill="none">
+    <rect width="32" height="32" rx="16" fill="var(--color-purple)" ${
+      isSelected ? 'stroke="white" stroke-width="3"' : ""
+    }/>
+    <text x="16" y="21" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="700" fill="white">K</text>
+    <path d="M16.433 34.3999C16.2406 34.7332 15.7594 34.7332 15.567 34.3999L13.77 31.2874C13.5775 30.9541 13.8181 30.5374 14.203 30.5374L17.797 30.5374C18.1819 30.5374 18.4225 30.9541 18.23 31.2874L16.433 34.3999Z" fill="var(--color-purple)"/>
+  </svg></div>`;
+};
+
 export const getCurrentLocationIcon = () => `
 <div style="
 width:16px;
