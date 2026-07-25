@@ -181,6 +181,19 @@ export const usePointPlusLogQuery = (options?: QueryOptions<IPointLog[]>) =>
     { ...options, staleTime: 0, cacheTime: 0 },
   );
 
+export const usePointSubLogQuery = (
+  sub: string,
+  options?: QueryOptions<IPointLog | false>,
+) =>
+  useQuery<IPointLog | false, AxiosError, IPointLog | false>(
+    ["pointLog", "sub", sub],
+    async () => {
+      const res = await axios.get<IPointLog | false>(`${SERVER_URI}/log/point/sub/${sub}`);
+      return res.data;
+    },
+    { ...options, staleTime: 0, cacheTime: 0 },
+  );
+
 export const useTicketSystemLogQuery = (
   category: "gather" | "groupStudy",
   options?: QueryOptions<IPointLog[]>,

@@ -27,6 +27,19 @@ export const useUserChangeMembershipMutation = (
       }),
     options,
   );
+export const useUserPointMutation = (
+  options?: MutationOptions<{ point: number; message: string; sub?: string }>,
+) =>
+  useMutation<void, AxiosError, { point: number; message: string; sub?: string }>(
+    (param) =>
+      requestServer<{ point: number; message: string; sub?: string }>({
+        method: "patch",
+        url: `user/point`,
+        body: param,
+      }),
+    options,
+  );
+
 export const useUserRandomTicketMutation = (
   options?: MutationOptions<{ userId: string; number: number }>,
 ) =>

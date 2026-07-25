@@ -14,8 +14,9 @@ import { useState } from "react";
 
 import { getDeviceOS } from "../../utils/validationUtils";
 
-const ANDROID_APP_STORE_URL = "https://play.google.com/store/apps/details?id=club.about20s.cafemap";
-const IOS_APP_STORE_URL = "https://apps.apple.com/kr/app/id6776977905";
+export const ANDROID_APP_STORE_URL =
+  "https://play.google.com/store/apps/details?id=club.about20s.cafemap";
+export const IOS_APP_STORE_URL = "https://apps.apple.com/kr/app/id6776977905";
 const DRAWER_HIDDEN_KEY = "cafeMapAppInstallDrawerHidden";
 
 interface Props {
