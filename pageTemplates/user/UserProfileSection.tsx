@@ -1,4 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
@@ -16,7 +17,6 @@ import { IModal } from "../../types/components/modalTypes";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import UserBenefitBanner from "./UserBenefitBanner";
 import UserCollection from "./UserCollection2";
-import UserInviteFriendSection from "./UserInviteFriendSection";
 import UserPointBlock from "./UserPointBlock";
 import UserProfile from "./UserProfile2";
 import UserProfileBar from "./UserProfileBar";
@@ -80,7 +80,29 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
       </Box>
       <UserCollection />
       <UserProfile />
-      <UserInviteFriendSection />{" "}
+      {user?.role !== "guest" && (
+        <Flex
+          mt={5}
+          w="full"
+          pos="relative"
+          aspectRatio="2.12/1"
+          flexDir="column"
+          overflow="hidden"
+          as="button"
+          onClick={() => {
+            router.push(`/board`);
+          }}
+        >
+          <Image
+            fill
+            alt="friendImage"
+            sizes="500px"
+            src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%B9%9C%EA%B5%AC%EC%B4%88%EB%8C%80%EC%9D%B4%EB%B2%A4%ED%8A%B8%EA%B0%80%EB%A1%9C.png"
+          />
+        </Flex>
+      )}
+      <Box h={5} />
+      {/* <UserInviteFriendSection />{" "} */}
       {modalType === "score" && (
         <UserScoreGuideDrawer
           onClose={() => {

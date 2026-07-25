@@ -1,39 +1,76 @@
+import { CheckIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
 import MainBadge from "../../../components/atoms/MainBadge";
+import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { SUPPORT_CATEGORY_LABEL, SUPPORT_LIST } from "../../../constants/support";
-import { useDenyGuest } from "../../../hooks/custom/UserHooks";
+import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useCheckGuest, useDenyGuest } from "../../../hooks/custom/UserHooks";
+import SupportCouponModal from "../../../pageTemplates/support/SupportCouponModal";
 import MemberCardModal from "../../../pageTemplates/user/MemberCardModal";
 import { navigateExternalLink } from "../../../utils/navigateUtils";
-import { getSafeAreaBottom } from "../../../utils/validationUtils";
 
-const IMAGE_SIZE = 112;
+const IMAGE_SIZE = 96;
 
 function SupportDetailPage() {
+  const isGuest = useCheckGuest();
+  const typeToast = useTypeToast();
+  const toast = useToast();
   const { id } = useParams<{ id: string }>() || {};
   const support = SUPPORT_LIST.find((item) => item.id === id);
   const [isMemberCardModal, setIsMemberCardModal] = useState(false);
+  const [isCouponModal, setIsCouponModal] = useState(false);
   const denyGuest = useDenyGuest();
+
+  const handleClickBenefit = () => {
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
+    if (support?.coupon) {
+      setIsCouponModal(true);
+      return;
+    }
+    if (support?.useLink) {
+      navigateExternalLink(support.useLink);
+      return;
+    }
+    toast("info", "7월 28일부터 사용 가능");
+  };
 
   return (
     <>
-      <Header title="" />
+      <Header title="">
+        <Button
+          p={1}
+          color="gray.500"
+          fontWeight={600}
+          variant="unstyled"
+          onClick={() => {
+            navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
+          }}
+        >
+          어바웃에 문의하기
+        </Button>
+      </Header>
       <Slide>
-        <Box pb="100px">
-          <Flex gap={3} align="flex-start">
+        <Box pb="96px">
+          <Flex gap={3.5} align="flex-start">
             <Box
               position="relative"
               w={`${IMAGE_SIZE}px`}
               h={`${IMAGE_SIZE}px`}
               flexShrink={0}
-              borderRadius="12px"
+              borderRadius="14px"
               overflow="hidden"
               bg="gray.100"
+              border="1px solid"
+              borderColor="gray.100"
             >
               {support?.imageUrl && (
                 <Image
@@ -49,7 +86,7 @@ function SupportDetailPage() {
               <MainBadge
                 text={support && SUPPORT_CATEGORY_LABEL[support.category].replace(/^\[|\]$/g, "")}
               />
-              <Box mt={1.5} fontSize="18px" fontWeight={800} lineHeight="24px" color="gray.800">
+              <Box mt={1.5} fontSize="19px" fontWeight={800} lineHeight="24px" color="gray.800">
                 {support?.name}
               </Box>
               <Box mt={1} fontSize="13px" lineHeight="18px" color="gray.500">
@@ -59,21 +96,38 @@ function SupportDetailPage() {
           </Flex>
 
           {support?.description && (
-            <Box mt={5} fontSize="14px" lineHeight="22px" color="gray.700">
+            <Box mt={5} fontSize="14px" lineHeight="22px" color="gray.600">
               {support.description}
             </Box>
           )}
 
           {!!support?.benefits?.length && (
-            <Box mt={5}>
-              <Box fontSize="12px" fontWeight={700} color="gray.500" mb={2}>
-                혜택
+            <Box
+              mt={5}
+              p={4}
+              borderRadius="14px"
+              bg="rgba(0, 194, 179, 0.06)"
+              border="1px solid rgba(0, 194, 179, 0.16)"
+            >
+              <Box fontSize="12px" fontWeight={700} color="var(--color-mint)" mb={2.5}>
+                제휴 혜택
               </Box>
-              <Flex direction="column" gap={2}>
+              <Flex direction="column" gap={2.5}>
                 {support.benefits.map((benefit, idx) => (
-                  <Flex key={idx} align="center" gap={2}>
-                    <Box w="6px" h="6px" borderRadius="50%" bg="var(--color-mint)" flexShrink={0} />
-                    <Box fontSize="13px" color="gray.700" fontWeight={500}>
+                  <Flex key={idx} align="flex-start" gap={2}>
+                    <Flex
+                      align="center"
+                      justify="center"
+                      w="16px"
+                      h="16px"
+                      mt="1px"
+                      borderRadius="50%"
+                      bg="var(--color-mint)"
+                      flexShrink={0}
+                    >
+                      <CheckIcon boxSize="8px" color="white" />
+                    </Flex>
+                    <Box fontSize="13.5px" lineHeight="19px" color="gray.700" fontWeight={600}>
                       {benefit}
                     </Box>
                   </Flex>
@@ -83,15 +137,34 @@ function SupportDetailPage() {
           )}
 
           {!!support?.texts?.length && (
-            <Box mt={5}>
-              <Box fontSize="12px" fontWeight={700} color="gray.500" mb={2}>
+            <Box mt={5} pt={5} borderTop="var(--border)">
+              <Box fontSize="12px" fontWeight={700} color="gray.500" mb={2.5}>
                 이용 안내
               </Box>
-              <Box as="ul" color="gray.600" lineHeight="20px" fontSize="12px">
+              <Flex direction="column" gap={1.5}>
                 {support.texts.map((text, idx) => (
-                  <li key={idx}>{text}</li>
+                  <Flex key={idx} align="flex-start" gap={1.5}>
+                    <Flex
+                      align="center"
+                      justify="center"
+                      w="15px"
+                      h="15px"
+                      mt="1px"
+                      borderRadius="4px"
+                      bg="gray.100"
+                      flexShrink={0}
+                      fontSize="9.5px"
+                      fontWeight={700}
+                      color="gray.500"
+                    >
+                      {idx + 1}
+                    </Flex>
+                    <Box fontSize="12.5px" lineHeight="18px" color="gray.600">
+                      {text}
+                    </Box>
+                  </Flex>
                 ))}
-              </Box>
+              </Flex>
             </Box>
           )}
 
@@ -99,10 +172,14 @@ function SupportDetailPage() {
             <Button
               mt={5}
               w="100%"
-              h="44px"
+              h="46px"
               variant="outline"
-              borderColor="gray.300"
+              borderColor="gray.200"
               color="gray.700"
+              fontSize="14px"
+              rightIcon={<ChevronRightIcon boxSize="18px" color="gray.400" />}
+              justifyContent="space-between"
+              px={4}
               onClick={() => navigateExternalLink(support.link)}
             >
               {support.name} 방문하기
@@ -110,42 +187,16 @@ function SupportDetailPage() {
           )}
         </Box>
       </Slide>
-
-      <Slide isFixed posZero="top">
-        <Flex
-          w="full"
-          position="fixed"
-          bottom={getSafeAreaBottom(0)}
-          bg="white"
-          borderTop="var(--border)"
-          px={5}
-          py={3}
-          gap={2}
-        >
-          <Button
-            flex={1}
-            h="48px"
-            variant="outline"
-            borderColor="mint"
-            color="mint"
-            borderRadius="12px"
-            onClick={() => denyGuest(() => setIsMemberCardModal(true))}
-          >
-            어바웃 멤버증
-          </Button>
-          <Button
-            flex={1}
-            h="48px"
-            colorScheme="mint"
-            borderRadius="12px"
-            onClick={() => navigateExternalLink("https://pf.kakao.com/_SaWXn/chat")}
-          >
-            채널에 문의하기
-          </Button>
-        </Flex>
-      </Slide>
+      <BottomNav text="제휴 혜택 받기" onClick={handleClickBenefit} />
 
       {isMemberCardModal && <MemberCardModal onClose={() => setIsMemberCardModal(false)} />}
+      {isCouponModal && support?.coupon && (
+        <SupportCouponModal
+          name={support.name}
+          coupon={support.coupon}
+          onClose={() => setIsCouponModal(false)}
+        />
+      )}
     </>
   );
 }

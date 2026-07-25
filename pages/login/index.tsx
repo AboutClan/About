@@ -91,7 +91,16 @@ function LoginPage() {
       return;
     }
     if (type === "guest") {
-      router.push(`/login/guest`);
+      setLoadingType("guest");
+      const process = async () => {
+        // 기존 세션 제거 (guest 포함)
+        await signOut({ redirect: false });
+
+        // 카카오 로그인 시작
+        await signIn("guest", { callbackUrl: `${window.location.origin}/home` });
+      };
+
+      process();
       return;
     }
     if (loadingType) return;
@@ -308,6 +317,9 @@ function LoginPage() {
               mb={5}
               fontWeight="semibold"
               borderRadius="8px"
+              _hover={{
+                bg: "gray.900",
+              }}
             >
               <span>게스트로 구경하기</span>
               <div />

@@ -21,7 +21,7 @@ function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: Regist
     enabled: !!trigger,
     onSuccess(result) {
       const temperature = result.temperature.temperature;
-      if (result.role === "manager") {
+      if (result.role === "manager" || result.role === "previliged") {
         setDiscount(20000);
       }
       if (temperature >= 42) {

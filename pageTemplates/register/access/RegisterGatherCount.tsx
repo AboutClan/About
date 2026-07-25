@@ -92,7 +92,7 @@ function DigitColumn({ digit, delay = 0 }: { digit: number; delay?: number }) {
 }
 
 export default function RegisterGatherCount() {
-  const digits = [0, 9, 3];
+  const digits = [1, 0, 7];
 
   return (
     <Flex flexDir="column" align="center" bg="gray.800" pt={4} pb={5} px={5}>
