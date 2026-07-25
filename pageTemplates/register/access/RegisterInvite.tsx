@@ -23,8 +23,7 @@ function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: Regist
       const temperature = result.temperature.temperature;
       if (result.role === "manager" || result.role === "previliged") {
         setDiscount(20000);
-      }
-      if (temperature >= 42) {
+      } else if (temperature >= 42) {
         setDiscount(15000);
       } else if (temperature >= 40) {
         setDiscount(10000);
