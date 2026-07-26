@@ -23,6 +23,7 @@ import UserProfileBar from "./UserProfileBar";
 import UserReviewBar from "./UserReviewBar";
 import UserScoreGuideDrawer from "./UserScoreGuideDrawer";
 import UserSocialGuideDrawer from "./UserSocialGuideDrawer";
+import UserTicketDeductionNotice from "./UserTicketDeductionNotice";
 
 interface UserProfileSectionProps {
   user: IUser;
@@ -74,6 +75,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
           }}
         /> */}
       </Box>
+      <UserTicketDeductionNotice />
       <UserBenefitBanner />
       <Box borderY="var(--border)" py={2}>
         <UserReviewBar hasTop={false} user={user} />

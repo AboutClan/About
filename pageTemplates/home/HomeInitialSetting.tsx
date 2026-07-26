@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { createGlobalStyle } from "styled-components";
 
 import AppDownloadModal from "../../components/overlay/AppDownloadModal";
 import ForceUpdateModal from "../../components/overlay/UpdateModal";
@@ -202,56 +201,56 @@ function HomeInitialSetting() {
   return (
     <>
       {userInfo && !isGuest && !isLegacyApp && <UserSettingPopUp user={userInfo} />}
-      <GlobalStyle />
+      {/* <GlobalStyle /> */}
       {isLegacyApp && isApp() && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
       {isWeb && <AppDownloadModal onClose={closeModal} />}
     </>
   );
 }
 
-const GlobalStyle = createGlobalStyle`
+// const GlobalStyle = createGlobalStyle`
 
-  .react-joyride__tooltip{
-    height:180px !important;
-    padding:16px !important;
- display:flex;
- flex-direction:column;
-    >div:nth-child(2){
-      margin-top:auto !important;
-      display:flex !important;
-      align-items:flex-end !important;
-    >div:first-child{
-      >button{
-      font-size:16px !important;
-      }
+//   .react-joyride__tooltip{
+//     height:180px !important;
+//     padding:16px !important;
+//  display:flex;
+//  flex-direction:column;
+//     >div:nth-child(2){
+//       margin-top:auto !important;
+//       display:flex !important;
+//       align-items:flex-end !important;
+//     >div:first-child{
+//       >button{
+//       font-size:16px !important;
+//       }
 
-    }
-      >button{
-        margin-left:var(--gap-2) !important;
-      padding:0 !important;
-        background-color:inherit !important;
-        :focus{
-          outline:none;
-        }
-        >div{
-          font-size:15px;
-          padding:4px 16px;
-        }
-      }
-    }
-  }
-  .react-joyride__beacon {
-    >span:first-child{
-      background-color:var(--color-mint) !important;
+//     }
+//       >button{
+//         margin-left:var(--gap-2) !important;
+//       padding:0 !important;
+//         background-color:inherit !important;
+//         :focus{
+//           outline:none;
+//         }
+//         >div{
+//           font-size:15px;
+//           padding:4px 16px;
+//         }
+//       }
+//     }
+//   }
+//   .react-joyride__beacon {
+//     >span:first-child{
+//       background-color:var(--color-mint) !important;
 
-    }
-    >span:last-child{
-    border-color:var(--color-mint) !important;
- background-color:var(--color-mint-light) !important;
-      
-    }
-   
-  }
-`;
+//     }
+//     >span:last-child{
+//     border-color:var(--color-mint) !important;
+//  background-color:var(--color-mint-light) !important;
+
+//     }
+
+//   }
+// `;
 
 export default HomeInitialSetting;

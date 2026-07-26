@@ -118,11 +118,9 @@ function RegisterPaymentButton({
       toast("success", "가입이 완료되었습니다!");
       queryClient.resetQueries([USER_INFO]);
       setTimeout(() => {
-        router.push("/home");
+        // replace: 가입 완료 후 뒤로가기로 결제/가입 페이지에 돌아가지 않도록 함
+        router.replace("/newbie-guide");
       }, 500);
-      setTimeout(() => {
-        navigateExternalLink("https://pf.kakao.com/_SaWXn/109551233");
-      }, 1000);
     },
     onError() {
       // 요구사항: 실패는 toast만 띄우고 UI 유지

@@ -248,14 +248,16 @@ function CafeMapMyPage() {
             >
               건의 및 제보하기
             </button>
-            <button
-              onClick={() => {
-                setShowSettingDrawer(false);
-                setShowSecedeModal(true);
-              }}
-            >
-              탈퇴하기
-            </button>
+            {!isGuest && (
+              <button
+                onClick={() => {
+                  setShowSettingDrawer(false);
+                  setShowSecedeModal(true);
+                }}
+              >
+                탈퇴하기
+              </button>
+            )}
             <button
               onClick={async () => {
                 await signOut({ redirect: false });
