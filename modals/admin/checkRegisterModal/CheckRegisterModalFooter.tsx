@@ -31,14 +31,14 @@ function CheckRegisterModalFooter({ setIsModal, setIsRefetch, uid }: ICheckRegis
   });
 
   const onClickAgree = () => {
-    approve(uid);
+    approve({ uid });
     setIsRefetch(true);
     setIsModal(false);
   };
 
   const onClickDelete = () => {
     onClose();
-    deleteForm(uid);
+    deleteForm({ uid });
     setIsModal(false);
     setIsRefetch(true);
   };

@@ -86,16 +86,21 @@ export const useUserTicketMutation = (
       }),
     options,
   );
+interface UserRegisterControlProps {
+  uid: string;
+  referrerUid?: string;
+}
+
 export const useUserRegisterControlMutation = <T extends "post" | "delete">(
   method: T,
-  options?: MutationOptions<string>,
+  options?: MutationOptions<UserRegisterControlProps>,
 ) =>
-  useMutation<void, AxiosError, string>(
+  useMutation<void, AxiosError, UserRegisterControlProps>(
     (param) =>
-      requestServer<{ uid: string }>({
+      requestServer<UserRegisterControlProps>({
         method,
         url: `register/approval`,
-        body: { uid: param },
+        body: param,
       }),
     options,
   );

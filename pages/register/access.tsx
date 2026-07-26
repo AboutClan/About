@@ -48,7 +48,12 @@ function Access() {
         />
         <Box h={20} />
       </Slide>
-      <RegisterPaymentButton type="register" value={20000} discount={discount} />
+      <RegisterPaymentButton
+        type="register"
+        value={20000}
+        discount={discount}
+        codeText={codeText}
+      />
     </>
   );
 }

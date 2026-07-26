@@ -13,6 +13,7 @@ interface RegisterInviteProps {
   setDiscount: DispatchNumber;
 }
 
+const CLUB_UID_ARR = ["5006986335", "5006950630"];
 function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: RegisterInviteProps) {
   const toast = useToast();
   const [trigger, setTrigger] = useState(false);
@@ -21,7 +22,11 @@ function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: Regist
     enabled: !!trigger,
     onSuccess(result) {
       const temperature = result.temperature.temperature;
-      if (result.role === "manager" || result.role === "previliged") {
+      if (
+        result.role === "manager" ||
+        result.role === "previliged" ||
+        CLUB_UID_ARR.includes(result.uid)
+      ) {
         setDiscount(20000);
       } else if (temperature >= 42) {
         setDiscount(15000);

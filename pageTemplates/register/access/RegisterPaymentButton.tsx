@@ -41,9 +41,15 @@ interface RegisterPaymentButtonProps {
   type: "register" | "point";
   value: number;
   discount?: number;
+  codeText?: string;
 }
 
-function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentButtonProps) {
+function RegisterPaymentButton({
+  type,
+  value,
+  discount = 0,
+  codeText = "",
+}: RegisterPaymentButtonProps) {
   const { data: session, status } = useSession();
   const toast = useToast();
   const router = useRouter();
@@ -137,13 +143,13 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     sendRequest({
       title: "친구 초대 가입",
       category: "건의",
-      content: `가입자: ${session.user.uid} `,
+      content: `추천인: ${codeText}`,
     });
 
     if (discount === 20000) {
-      approve(session.user.uid);
+      approve({ uid: session.user.uid, referrerUid: codeText });
     }
-  }, [discount, session]);
+  }, [discount, session, codeText]);
 
   // 기존 view 계산은 유지 (UI/기능 영향 없고, 디버깅에도 유용)
   useMemo(() => {
@@ -239,10 +245,10 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
         creditPoint({ orderNo });
       } else {
         if (!session?.user?.uid) return;
-        approve(session.user.uid);
+        approve({ uid: session.user.uid, referrerUid: codeText });
       }
     },
-    [type, creditPoint, approve, session],
+    [type, creditPoint, approve, session, codeText],
   );
 
   useEffect(() => {
@@ -367,7 +373,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
       }
       creditPoint({ orderNo });
     } else {
-      approve(session.user.uid);
+      approve({ uid: session.user.uid, referrerUid: codeText });
     }
   }, [
     router.isReady,
@@ -378,6 +384,7 @@ function RegisterPaymentButton({ type, value, discount = 0 }: RegisterPaymentBut
     creditPoint,
     toast,
     router,
+    codeText,
   ]);
 
   const makeOrderNo = () => `ORD-${Date.now()}-${Math.random().toString(16).slice(2)}`;
