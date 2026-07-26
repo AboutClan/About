@@ -52,7 +52,9 @@ function SupportDetailPage() {
     }
     if (support?.benefitMethod === "coupon-multi") {
       issueCouponByPartner({ partnerId: id });
+      return;
     }
+    toast("info", "8월 1일(토)부터 이용 가능");
   };
 
   return (

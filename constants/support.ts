@@ -1,6 +1,12 @@
 export type SupportCategory = "study" | "hobby" | "life";
 
-export type BenefitMethod = "channel" | "coupon-single" | "coupon-multi" | "link" | "offline";
+export type BenefitMethod =
+  | "channel"
+  | "coupon-single"
+  | "coupon-multi"
+  | "link"
+  | "offline"
+  | "not-yet";
 
 export const SUPPORT_CATEGORY_ORDER: SupportCategory[] = ["hobby", "life", "study"];
 
@@ -35,7 +41,7 @@ export const SUPPORT_LIST: SupportItem[] = [
     name: "에듀윌",
     summary: "종합 온라인 교육",
     category: "study",
-    benefitMethod: "coupon-multi",
+    benefitMethod: "not-yet",
     imageUrl:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4+%EC%97%85%EC%B2%B4+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%97%90%EB%93%80%EC%9C%8C.png",
     description:
@@ -52,7 +58,7 @@ export const SUPPORT_LIST: SupportItem[] = [
     name: "카공족",
     summary: "카공 스터디 라운지",
     category: "study",
-    benefitMethod: "channel",
+    benefitMethod: "not-yet",
     imageUrl:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4+%EC%97%85%EC%B2%B4+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%B9%B4%EA%B3%B5%EC%A1%B1.png",
     description:
@@ -93,7 +99,7 @@ export const SUPPORT_LIST: SupportItem[] = [
     name: "유동균 컴활",
     summary: "컴활 온라인 교육",
     category: "study",
-    benefitMethod: "channel",
+    benefitMethod: "link",
     imageUrl:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4%20%EC%97%85%EC%B2%B4%20%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%9C%A0%EB%8F%99%EA%B7%A0%EC%BB%B4%ED%99%9C.png",
     description:
@@ -109,7 +115,7 @@ export const SUPPORT_LIST: SupportItem[] = [
     name: "아이티고",
     summary: "IT 온라인 교육",
     category: "study",
-    benefitMethod: "channel",
+    benefitMethod: "coupon-single",
     imageUrl:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4%20%EC%97%85%EC%B2%B4%20%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%95%84%EC%9D%B4%ED%8B%B0%EA%B3%A0.png",
     description:
@@ -132,7 +138,7 @@ export const SUPPORT_LIST: SupportItem[] = [
     name: "에이아이티고",
     summary: "AI 온라인 교육",
     category: "study",
-    benefitMethod: "channel",
+    benefitMethod: "coupon-single",
     imageUrl:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4%20%EC%97%85%EC%B2%B4%20%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%95%84%EC%9D%B4%ED%8B%B0%EA%B3%A0.png",
     description:
@@ -218,7 +224,7 @@ export const SUPPORT_LIST: SupportItem[] = [
     name: "구미호 식당",
     summary: "대학로 연극",
     category: "hobby",
-    benefitMethod: "offline",
+    benefitMethod: "coupon-single",
     imageUrl:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4+%EC%97%85%EC%B2%B4+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B5%AC%EB%AF%B8%ED%98%B8%EC%8B%9D%EB%8B%B9.jpeg",
     description:
@@ -248,6 +254,7 @@ export const SUPPORT_LIST: SupportItem[] = [
       "롯데월드타워 7층에 위치한 컨템퍼러리 미술 전문 미술관으로, 시즌마다 새로운 주제와 작가의 전시를 선보입니다.",
     benefits: ["입장권 20,000원 → 10,000원", "입장권 50% 할인"],
     link: "https://www.lottemuseum.com/",
+    useLink: "https://www.lottemuseum.com/",
     texts: [
       "어바웃 멤버 및 지인 적용 가능",
       "하단의 [제휴 혜택 받기] 버튼을 눌러 쿠폰을 받을 수 있습니다",
@@ -304,7 +311,7 @@ export const SUPPORT_LIST: SupportItem[] = [
     name: "메타코미디클럽 홍대",
     summary: "스탠드업 코미디",
     category: "hobby",
-    benefitMethod: "offline",
+    benefitMethod: "channel",
     imageUrl:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4+%EC%97%85%EC%B2%B4+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%A9%94%ED%83%80%EC%BD%94%EB%AF%B8%EB%94%94.webp",
     description: "코미디 레이블 메타코미디가 운영하는 홍대 스탠드업 코미디 공연장입니다.",
@@ -337,7 +344,7 @@ export const SUPPORT_LIST: SupportItem[] = [
     name: "홈즈앤루팡 강남",
     summary: "보드게임 카페",
     category: "hobby",
-    benefitMethod: "channel",
+    benefitMethod: "offline",
     imageUrl:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4%20%EC%97%85%EC%B2%B4%20%EC%9D%B4%EB%AF%B8%EC%A7%80/%ED%99%88%EC%A6%88%EC%95%A4%EB%A3%A8%ED%8C%A1.png",
     description:
