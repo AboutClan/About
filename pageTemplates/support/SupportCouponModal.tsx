@@ -44,8 +44,8 @@ function SupportCouponModal({ name, coupon, onClose }: SupportCouponModalProps) 
           bg="var(--mint-50, #F0FBF8)"
         >
           <Box
-            fontSize="16px"
-            fontWeight={800}
+            fontSize={coupon.code.length > 8 ? "12px" : "14px"}
+            fontWeight={600}
             color="gray.800"
             letterSpacing="0.5px"
             whiteSpace="nowrap"
@@ -65,7 +65,7 @@ function SupportCouponModal({ name, coupon, onClose }: SupportCouponModalProps) 
             variant="solid"
             onClick={handleCopy}
           >
-            복사하기
+            {coupon.code.length > 8 ? "복사" : "복사하기"}
           </Button>
         </Flex>
 

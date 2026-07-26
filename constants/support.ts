@@ -23,9 +23,8 @@ export type SupportItem = {
   texts: string[];
   useLink?: string;
   coupon?: {
-    link: string;
-    code: string;
-
+    link?: string;
+    code?: string;
     text: string;
   };
 };
@@ -266,7 +265,10 @@ export const SUPPORT_LIST: SupportItem[] = [
       "공방과 원데이클래스, 온라인 클래스 등 다양한 취미·여가 활동을 쉽게 찾고 참여할 수 있는 온·오프라인 취미 플랫폼입니다.",
     benefits: ["10% 할인 쿠폰 제공"],
     link: "https://www.sssd.co.kr/m",
-
+    coupon: {
+      link: "https://www.sssd.co.kr/m",
+      text: "솜씨당 APP → 내정보 → 쿠폰 → 쿠폰등록",
+    },
     texts: [
       "어바웃 멤버 본인만 적용 가능",
       "하단의 [제휴 혜택 받기] 버튼을 눌러 쿠폰을 받을 수 있습니다",
@@ -287,10 +289,14 @@ export const SUPPORT_LIST: SupportItem[] = [
       "신규 가입자 주중 24시간 무료 제공",
       "신규 가입자 주중·주말 3시간 무료 제공",
     ],
-    link: "https://turucar.com/?abx_tid=1784601023964%3Abbdbe116-5620-48f8-a6bc-34c55ec676a7",
+    link: "https://turucar.ap2.dfn.link/api/v1/click/xlTY72Uv0EWw0XNJqxy4xA?abx_tracker_id=xlTY72Uv0EWw0XNJqxy4xA",
+    coupon: {
+      link: "https://turucar.ap2.dfn.link/api/v1/click/xlTY72Uv0EWw0XNJqxy4xA?abx_tracker_id=xlTY72Uv0EWw0XNJqxy4xA",
+      text: "투루카 APP > 내정보 > 내쿠폰함 > 쿠폰 등록",
+    },
     texts: [
+      "어바웃 멤버 본인만 적용 가능",
       "하단의 [제휴 혜택 받기] 버튼을 눌러 쿠폰을 받을 수 있습니다",
-      "투루카 APP > 내정보 > 내쿠폰함 > + 쿠폰코드 등록",
     ],
   },
   {

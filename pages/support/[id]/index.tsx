@@ -9,6 +9,7 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { SUPPORT_CATEGORY_LABEL, SUPPORT_LIST } from "../../../constants/support";
+import { useCouponIssueByPartnerMutation } from "../../../hooks/coupon/mutations";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useCheckGuest, useDenyGuest } from "../../../hooks/custom/UserHooks";
 import SupportCouponModal from "../../../pageTemplates/support/SupportCouponModal";
@@ -25,14 +26,23 @@ function SupportDetailPage() {
   const support = SUPPORT_LIST.find((item) => item.id === id);
   const [isMemberCardModal, setIsMemberCardModal] = useState(false);
   const [isCouponModal, setIsCouponModal] = useState(false);
+  const [issuedCouponCode, setIssuedCouponCode] = useState("");
+
   const denyGuest = useDenyGuest();
+
+  const { mutate: issueCouponByPartner } = useCouponIssueByPartnerMutation({
+    onSuccess: (data) => {
+      setIssuedCouponCode(data.code ?? "");
+      setIsCouponModal(true);
+    },
+  });
 
   const handleClickBenefit = () => {
     if (isGuest) {
       typeToast("guest");
       return;
     }
-    if (support?.coupon) {
+    if (support?.benefitMethod === "coupon-single" && support.coupon) {
       setIsCouponModal(true);
       return;
     }
@@ -40,7 +50,9 @@ function SupportDetailPage() {
       navigateExternalLink(support.useLink);
       return;
     }
-    toast("info", "7월 28일부터 사용 가능");
+    if (support?.benefitMethod === "coupon-multi") {
+      issueCouponByPartner({ partnerId: id });
+    }
   };
 
   return (
@@ -190,10 +202,14 @@ function SupportDetailPage() {
       <BottomNav text="제휴 혜택 받기" onClick={handleClickBenefit} />
 
       {isMemberCardModal && <MemberCardModal onClose={() => setIsMemberCardModal(false)} />}
-      {isCouponModal && support?.coupon && (
+      {isCouponModal && (support?.coupon || issuedCouponCode) && (
         <SupportCouponModal
-          name={support.name}
-          coupon={support.coupon}
+          name={support?.name ?? ""}
+          coupon={{
+            link: support?.coupon?.link ?? support?.link ?? "",
+            code: support?.coupon?.code ?? issuedCouponCode,
+            text: support?.coupon?.text ?? "",
+          }}
           onClose={() => setIsCouponModal(false)}
         />
       )}
