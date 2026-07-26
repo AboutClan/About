@@ -35,6 +35,7 @@ const baseNextConfig = {
       {
         source: "/partner",
         destination: "https://study-about.club/user?activityDrawer=benefit",
+        permanent: false,
       },
     ];
   },
