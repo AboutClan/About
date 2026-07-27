@@ -96,7 +96,8 @@
       "Bash(curl -s -X POST http://localhost:3099/cookiepay/finalize -H 'content-type: application/json' -H 'x-internal-key: __TRACKED_VAR__' -d '{\"orderNo\":\"TEST-ORD-001\"}')",
       "Bash(pkill -f \"PORT=3099\")",
       "Bash(pkill -f \"node dist/main.js\")",
-      "Bash(taskkill //PID 35408 //F)"
+      "Bash(taskkill //PID 35408 //F)",
+      "Bash(curl *)"
     ]
   }
 }

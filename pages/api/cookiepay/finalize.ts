@@ -7,16 +7,14 @@
 // 브라우저가 그 시점에 도달했다는 것 자체가 하나의 추가 트리거이자 안전망이 된다.
 // 실제 승인/지급은 nest-back이 orderNo에 이미 SUCCESS로 기록된 결제에 대해서만,
 // 그리고 정확히 한 번만 실행하므로 여기서 임의의 값으로 승인/지급을 조작할 수 없다.
+// (호출자의 로그인 세션 여부는 보안에 영향이 없으므로 요구하지 않는다 — 결제 복귀 직후
+// axios 기본 Authorization 헤더가 아직 세팅되지 않은 타이밍에도 항상 동작해야 한다.)
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { finalizeCookiepayOrder } from "../../../libs/cookiepayOrderClient";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).json({ message: "POST only" });
-
-  if (!req.headers.authorization) {
-    return res.status(401).json({ error: "UNAUTHORIZED" });
-  }
 
   const orderNo = String(req.body?.orderNo ?? "");
   if (!orderNo) return res.status(400).json({ error: "MISSING_ORDER_NO" });
