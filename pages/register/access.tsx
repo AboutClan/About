@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Box } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import Script from "next/script";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
 import HomeActivityDrawer from "../../components/overlay/HomeActivityDrawer";
@@ -22,23 +20,9 @@ import RegisterSlideImage2 from "../../pageTemplates/register/access/RegisterSli
 
 const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
 
-// 아직 가입 절차가 끝나지 않은 유저만 이 페이지에 머무를 수 있음
-const NOT_YET_REGISTERED_ROLES = ["guest", "waiting", "newUser", "noMember"];
-
 function Access() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
   const [codeText, setCodeText] = useState("");
   const [discount, setDiscount] = useState(0);
-
-  useEffect(() => {
-    if (status === "loading") return;
-    const role = session?.user?.role;
-    if (role && !NOT_YET_REGISTERED_ROLES.includes(role)) {
-      // 이미 가입이 완료된 유저는 결제/가입 화면을 다시 볼 필요가 없음
-      router.replace("/home");
-    }
-  }, [session, status, router]);
 
   return (
     <>

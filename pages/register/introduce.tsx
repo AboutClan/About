@@ -2,11 +2,13 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useRef, useState } from "react";
+import { useQueryClient } from "react-query";
 
 import Textarea from "../../components/atoms/Textarea";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
+import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
@@ -27,6 +29,7 @@ function Comment() {
   const errorToast = useErrorToast();
   const info = getLocalStorageObj(REGISTER_INFO) as IUserRegisterFormWriting;
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const queryClient = useQueryClient();
 
   const { mutate: changeRole } = useUserInfoFieldMutation("role");
   const { data: userInfo } = useUserInfoQuery();
@@ -34,6 +37,7 @@ function Comment() {
 
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {
+      queryClient.invalidateQueries([USER_INFO]);
       const moving = localStorage.getItem("moving");
       const trafficSourceCode = getTrafficSourceCode();
       if (moving)
