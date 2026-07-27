@@ -86,10 +86,10 @@ export default function HomeAppReviewRewardDrawer({ onClose }: Props) {
             </Box>
 
             <Text fontSize="20px" fontWeight={800} color="gray.800" mb={1} textAlign="center">
-              앱 별점과 리뷰를 남겨주세요!
+              앱 별점을 남겨주세요!
             </Text>
             <Text fontSize="14px" color="gray.400" textAlign="center" mb={1} lineHeight={1.5}>
-              멤버분들의 짧은 별점과 리뷰가
+              멤버분들의 별점과 짧은 리뷰가
               <br />더 좋은 어바웃을 만드는 데 큰 힘이 됩니다!
             </Text>
 
