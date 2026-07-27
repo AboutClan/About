@@ -16,14 +16,19 @@ import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
   FRIEND_INVITE_AT,
   GATHER_REVIEW_MODAL_ID,
-  MEMBERSHIP_AT
+  HOME_APP_REVIEW_POPUP_AT,
+  MEMBERSHIP_AT,
 } from "../../../constants/keys/localStorage";
 import { STUDY_ATTEND_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
-import { useUserMembershipLogQuery } from "../../../hooks/user/queries";
+import { usePointSubLogQuery, useUserMembershipLogQuery } from "../../../hooks/user/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
+import { isApp } from "../../../utils/validationUtils";
+import HomeAppReviewRewardDrawer, {
+  HOME_APP_REVIEW_REWARD_SUB,
+} from "../../home/HomeAppReviewRewardDrawer";
 
 export type PopUpType =
   | "studyRecord"
@@ -36,7 +41,8 @@ export type PopUpType =
   | "kakaoFriend"
   | "membership"
   | "friend"
-  | "limit";
+  | "limit"
+  | "appReview";
 
 interface PopUpProps extends CloseProps {}
 
@@ -52,6 +58,7 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
   membership: NewbieBenefitModal,
   friend: FriendInviteModal,
   limit: LimitModal,
+  appReview: HomeAppReviewRewardDrawer,
 };
 
 export default function UserSettingPopUp({ user }: { user: IUser }) {
@@ -65,6 +72,10 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
   const studyRecord = JSON.parse(studyRecordStr);
 
   const { data: membershipLog, isLoading: isLoading2 } = useUserMembershipLogQuery();
+
+  const { data: appReviewRewardLog } = usePointSubLogQuery(HOME_APP_REVIEW_REWARD_SUB, {
+    enabled: isApp(),
+  });
 
   useEffect(() => {
     if (data === undefined || !session) return;
@@ -108,6 +119,15 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
       dayjs(studyRecord)?.add(1, "week").isAfter(dayjs())
     ) {
       setPopUpType((old) => [...old, "studyRecord"]);
+      return;
+    }
+
+    if (
+      isApp() &&
+      appReviewRewardLog === false &&
+      !checkAndSetLocalStorage(HOME_APP_REVIEW_POPUP_AT, 14)
+    ) {
+      setPopUpType((old) => [...old, "appReview"]);
       return;
     }
 

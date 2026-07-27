@@ -29,12 +29,12 @@ function NoticeItem() {
     const temp = [];
     const REGISTER_NOTICE = {
       id: "10000",
-      title: "신규 인원 가이드",
+      title: "신규 인원 가이드 (필수 확인)",
       category: "공지",
       content:
-        "About 멤버가 되신 것을 환영합니다! 활동을 시작하시기 전에 [신규 인원 가이드]를 꼭 확인해 주세요!",
+        "어바웃 멤버가 되신 것을 환영합니다. 어바웃이 처음이라면 아래 [신규 인원 가이드]를 꼭 확인해 주세요!",
       date: dayjsToStr(dayjs(userInfo?.registerDate)),
-      link: "https://pf.kakao.com/_SaWXn/109551233",
+      link: "https://about20s.club/newbie-guide",
       linkTitle: "신규 인원 가이드",
     };
     let addNewNotice = false;
