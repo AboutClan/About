@@ -9,7 +9,7 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import { USER_INFO, USER_POINT_SYSTEM } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import {
-  useCreditPointByOrderMutation,
+  useCookiepayFinalizeMutation,
   useUserRegisterControlMutation,
 } from "../../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
@@ -89,22 +89,41 @@ function RegisterPaymentButton({
 
   const { mutate: sendRequest } = useUserRequestMutation();
 
-  const { mutate: creditPoint } = useCreditPointByOrderMutation({
+  // 결제(register/point 공통) 결과 페이지에서의 최종 처리 트리거.
+  // 실제 승인/지급은 nest-back이 orderNo 기준으로 정확히 한 번만 실행하므로,
+  // return.ts/noti.ts와 중복으로 호출돼도 안전하다.
+  const { mutate: finalizeOrder } = useCookiepayFinalizeMutation({
     onSuccess() {
-      queryClient.invalidateQueries([USER_INFO]);
-      queryClient.invalidateQueries({ queryKey: [USER_POINT_SYSTEM, "point"], exact: false });
-      toast("success", "충전이 완료되었습니다!");
-      setTimeout(() => {
-        router.push("/user");
-      }, 500);
+      if (type === "point") {
+        queryClient.invalidateQueries([USER_INFO]);
+        queryClient.invalidateQueries({ queryKey: [USER_POINT_SYSTEM, "point"], exact: false });
+        toast("success", "충전이 완료되었습니다!");
+        setTimeout(() => {
+          router.push("/user");
+        }, 500);
+      } else {
+        gaEvent("sign_up_complete", { traffic_source_code: getTrafficSourceCode() });
+        router.replace("/register/access", undefined, { shallow: true });
+        toast("success", "가입이 완료되었습니다!");
+        queryClient.resetQueries([USER_INFO]);
+        setTimeout(() => {
+          // replace: 가입 완료 후 뒤로가기로 결제/가입 페이지에 돌아가지 않도록 함
+          router.replace("/newbie-guide");
+        }, 500);
+      }
       setIsLoading2(false);
       approveOnceRef.current = false;
       handledReturnRef.current = false;
     },
     onError() {
       // 서버가 orderNo 기준으로 멱등 처리하므로, 여기서 재시도 가능하게 풀어줘도
-      // 실제 포인트 지급이 두 번 일어나지 않는다.
-      toast("error", "충전 확인에 실패했어요. 잠시 후 다시 시도해 주세요.");
+      // 중복으로 승인/지급되지 않는다.
+      toast(
+        "error",
+        type === "point"
+          ? "충전 확인에 실패했어요. 잠시 후 다시 시도해 주세요."
+          : "가입 처리에 실패했어요. 잠시 후 다시 시도해 주세요.",
+      );
       setIsLoading2(false);
       approveOnceRef.current = false;
       handledReturnRef.current = false;
@@ -238,15 +257,10 @@ function RegisterPaymentButton({
       if (approveOnceRef.current) return;
       approveOnceRef.current = true;
       handledReturnRef.current = true;
-      if (type === "point") {
-        if (!orderNo) return;
-        creditPoint({ orderNo });
-      } else {
-        if (!session?.user?.uid) return;
-        approve({ uid: session.user.uid, referrerUid: codeText });
-      }
+      if (!orderNo) return;
+      finalizeOrder({ orderNo });
     },
-    [type, creditPoint, approve, session, codeText],
+    [finalizeOrder],
   );
 
   useEffect(() => {
@@ -361,28 +375,22 @@ function RegisterPaymentButton({
     handledReturnRef.current = true;
     setIsLoading2(false);
 
-    if (type === "point") {
-      const orderNo = first(router.query.orderNo);
-      if (!orderNo) {
-        toast("error", "주문 정보를 확인할 수 없어요. 관리자에게 문의해 주세요.");
-        approveOnceRef.current = false;
-        handledReturnRef.current = false;
-        return;
-      }
-      creditPoint({ orderNo });
-    } else {
-      approve({ uid: session.user.uid, referrerUid: codeText });
+    const orderNo = first(router.query.orderNo);
+    if (!orderNo) {
+      toast("error", "주문 정보를 확인할 수 없어요. 관리자에게 문의해 주세요.");
+      approveOnceRef.current = false;
+      handledReturnRef.current = false;
+      return;
     }
+    finalizeOrder({ orderNo });
   }, [
     router.isReady,
     session,
     router.query,
     session?.user?.uid,
-    approve,
-    creditPoint,
+    finalizeOrder,
     toast,
     router,
-    codeText,
   ]);
 
   const makeOrderNo = () => `ORD-${Date.now()}-${Math.random().toString(16).slice(2)}`;
@@ -424,22 +432,37 @@ function RegisterPaymentButton({
     }
     setIsLoading2(true);
     const orderNo = makeOrderNo(); // ✅ 매번 새로 생성
+    const amount = type === "point" ? value : 20000 - discount;
 
+    // 주문 사전 저장에 실패하면 결제 자체를 시작하지 않는다.
     try {
-      await fetch("/api/cookiepay/init-order", {
+      const res = await fetch("/api/cookiepay/init-order", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ orderNo, uid: session.user.uid, type }),
+        body: JSON.stringify({
+          orderNo,
+          uid: session.user.uid,
+          type,
+          amount,
+          ...(type === "register" ? { discount, referrerUid: codeText || undefined } : {}),
+        }),
       });
+      if (!res.ok) {
+        toast("error", "결제 준비에 실패했어요. 잠시 후 다시 시도해 주세요.");
+        setIsLoading2(false);
+        return;
+      }
     } catch {
-      // 사전 기록 실패해도 결제 자체는 진행 (return 콜백/클라이언트 승인 경로는 그대로 동작)
+      toast("error", "결제 준비에 실패했어요. 잠시 후 다시 시도해 주세요.");
+      setIsLoading2(false);
+      return;
     }
 
     if (type === "point") {
       cookiepayments.payrequest({
         ORDERNO: orderNo,
         PRODUCTNAME: "포인트 충전",
-        AMOUNT: value + "",
+        AMOUNT: amount + "",
         BUYERNAME: session.user.name,
         PAYMETHOD: "CARD",
         RETURNURL: "https://study-about.club/api/cookiepay/return2",
@@ -450,7 +473,7 @@ function RegisterPaymentButton({
       cookiepayments.payrequest({
         ORDERNO: orderNo,
         PRODUCTNAME: "회원가입",
-        AMOUNT: 20000 - discount + "",
+        AMOUNT: amount + "",
         BUYERNAME: session.user.name,
         PAYMETHOD: "CARD",
         RETURNURL: "https://study-about.club/api/cookiepay/return",

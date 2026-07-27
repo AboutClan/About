@@ -4,8 +4,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { parse as parseQs } from "querystring";
 
-import { upsertPayment } from "../../../libs/paymentStore";
-import { approveRegisterWithRetry } from "../../../libs/registerApproval";
+import { markCookiepayResultWithRetry } from "../../../libs/cookiepayOrderClient";
 import { cookiepayDecrypt, cookiepayPaycert } from "../../../utils/cookiepay";
 
 export const config = {
@@ -65,13 +64,11 @@ function encodeMsg(msg: string) {
 const RESULT_PATH = "/register/access";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-
   try {
     const query = normalizePayload((req.query ?? {}) as Record<string, any>);
 
     let bodyObj: Record<string, any> = {};
     const ct = String(req.headers["content-type"] ?? "").toLowerCase();
-
 
     if (req.method === "POST") {
       const raw = await readRawBody(req);
@@ -91,7 +88,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const RESULTMSG = String(payload.RESULTMSG ?? "");
     const ENC_DATA = payload.ENC_DATA ? String(payload.ENC_DATA) : "";
 
-
     // 1) 리턴 단계 실패
     if (RESULTCODE && RESULTCODE !== "0000") {
       redirect(
@@ -108,10 +104,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const orderNo = String(payload.ORDERNO ?? "");
       const tid = String(payload.TID ?? "");
       const amount = String(payload.AMOUNT ?? "");
-      const paymethod = String(payload.PAY_METHOD ?? payload.PAYMETHOD ?? "");
-      const acceptDate = String(payload.ACCEPTDATE ?? "");
-
-      const uid = String(payload.BUYERID ?? "");
 
       if (!orderNo || !tid) {
         redirect(
@@ -125,16 +117,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // 2) paycert 실패(최종 실패)
       if (cert?.RESULTCODE !== "0000") {
-        upsertPayment({
+        await markCookiepayResultWithRetry({
           orderNo,
-          tid,
-          amount,
-          paymethod,
-          acceptDate,
-          status: "VERIFY_PENDING",
-          uid,
-          type: "register",
-          raw: { payload, cert },
+          verifiedAmount: Number(amount) || 0,
+          verifiedStatus: "FAIL",
         });
 
         redirect(
@@ -146,23 +132,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return;
       }
 
-      // ✅ 성공
-      upsertPayment({
+      // ✅ 성공: 여기서 바로 최종 처리(가입 승인/포인트 지급)까지 시도한다.
+      // 클라이언트가 이 페이지에서 이탈해도 noti webhook이 대신 처리하며,
+      // nest-back이 orderNo 기준으로 원자적으로 한 번만 처리하므로 중복 실행돼도 안전하다.
+      await markCookiepayResultWithRetry({
         orderNo,
-        tid,
-        amount: String(cert.AMOUNT ?? amount),
-        paymethod: String(cert.PAYMETHOD ?? paymethod),
-        acceptDate: String(cert.ACCEPTDATE ?? acceptDate),
-        status: "SUCCESS",
-        uid,
-        type: "register",
-        raw: { payload, cert },
+        verifiedAmount: Number(cert.AMOUNT ?? amount) || 0,
+        verifiedStatus: "SUCCESS",
       });
-
-      // ✅ 클라이언트가 이 페이지에서 이탈해도(뒤로가기 등) noti webhook이 대신
-      // 승인을 트리거하지만, 여기서도 먼저 시도해두면 더 빠르게 승인된다.
-      // register/approval은 멱등이라 중복 호출돼도 안전하다.
-      if (uid) await approveRegisterWithRetry(uid);
 
       redirect(res, `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}`);
       return;
@@ -185,10 +162,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const orderNo = String(d.ORDERNO ?? "");
     const tid = String(d.TID ?? "");
     const amount = String(d.AMOUNT ?? "");
-    const paymethod = String(d.PAY_METHOD ?? d.PAYMETHOD ?? "");
-    const acceptDate = String(d.ACCEPTDATE ?? "");
-
-    const uid = String(d.BUYERID ?? "");
 
     if (!orderNo || !tid) {
       redirect(
@@ -201,16 +174,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const cert = await paycertWithRetry(tid);
 
     if (cert?.RESULTCODE !== "0000") {
-      upsertPayment({
+      await markCookiepayResultWithRetry({
         orderNo,
-        tid,
-        amount,
-        paymethod,
-        acceptDate,
-        status: "VERIFY_PENDING",
-        uid,
-        type: "register",
-        raw: { payload, dec, cert },
+        verifiedAmount: Number(amount) || 0,
+        verifiedStatus: "FAIL",
       });
 
       redirect(
@@ -222,19 +189,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
-    upsertPayment({
+    await markCookiepayResultWithRetry({
       orderNo,
-      tid,
-      amount: String(cert.AMOUNT ?? amount),
-      paymethod: String(cert.PAYMETHOD ?? paymethod),
-      acceptDate: String(cert.ACCEPTDATE ?? acceptDate),
-      status: "SUCCESS",
-      uid,
-      type: "register",
-      raw: { payload, dec, cert },
+      verifiedAmount: Number(cert.AMOUNT ?? amount) || 0,
+      verifiedStatus: "SUCCESS",
     });
-
-    if (uid) await approveRegisterWithRetry(uid);
 
     redirect(res, `${RESULT_PATH}?status=success&orderNo=${encodeURIComponent(orderNo)}`);
   } catch (e: any) {

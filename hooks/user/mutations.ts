@@ -217,15 +217,22 @@ export const usePointSystemMutation = (field: "point", options?: MutationOptions
 // 결제 성공이 서버에서 이미 검증된 orderNo에 대해서만 포인트를 지급하는 API를 호출한다.
 // 지급 금액은 서버가 PG 검증 결과(paymentStore)에서 가져오므로 클라이언트는 orderNo만 전달한다.
 // 같은 orderNo로 중복 호출돼도(새로고침, 재시도 등) 서버가 멱등하게 처리해 실제 지급은 한 번만 일어난다.
-export const useCreditPointByOrderMutation = (
-  options?: MutationOptions<{ orderNo: string }, { ok: boolean; alreadyCredited?: boolean }>,
+interface CookiepayFinalizeResult {
+  ok: boolean;
+  processed?: boolean;
+  alreadyProcessed?: boolean;
+}
+
+// 결제(register/point 공통) 결과 페이지에서, 서버가 이미 처리했을 orderNo의 최종 처리를
+// 한 번 더 트리거한다. nest-back이 orderNo당 정확히 한 번만 실행하도록 보장한다.
+export const useCookiepayFinalizeMutation = (
+  options?: MutationOptions<{ orderNo: string }, CookiepayFinalizeResult>,
 ) =>
-  useMutation<{ ok: boolean; alreadyCredited?: boolean }, AxiosError, { orderNo: string }>(
+  useMutation<CookiepayFinalizeResult, AxiosError, { orderNo: string }>(
     async ({ orderNo }) => {
-      const res = await axios.post<{ ok: boolean; alreadyCredited?: boolean }>(
-        "/api/user/point/credit",
-        { orderNo },
-      );
+      const res = await axios.post<CookiepayFinalizeResult>("/api/cookiepay/finalize", {
+        orderNo,
+      });
       return res.data;
     },
     options,

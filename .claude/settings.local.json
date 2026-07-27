@@ -78,7 +78,25 @@
       "Bash(npx playwright *)",
       "Bash(pkill -f \"next dev\")",
       "Bash(rm -f .next/trace)",
-      "Bash(NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production npx next build)"
+      "Bash(NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production npx next build)",
+      "Bash(netstat -ano)",
+      "Bash(PORT=3099 timeout 25 node dist/main.js)",
+      "Bash(curl -s -X POST http://localhost:3099/cookiepay/order -H \"content-type: application/json\" -H \"x-internal-key: e7996cfca3b07958cf2233af8152d2344da052d15ae0523d1ced5649af928388\" -d '{\"orderNo\":\"TEST-ORD-001\",\"uid\":\"TEST_UID_SMOKE\",\"type\":\"point\",\"amount\":1000}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" -X POST http://localhost:3099/cookiepay/order -H \"content-type: application/json\" -H \"x-internal-key: wrong-key\" -d '{\"orderNo\":\"TEST-ORD-001\",\"uid\":\"TEST_UID_SMOKE\",\"type\":\"point\",\"amount\":1000}')",
+      "Bash(curl -s http://localhost:3099/cookiepay/order/TEST-ORD-001 -H \"x-internal-key: e7996cfca3b07958cf2233af8152d2344da052d15ae0523d1ced5649af928388\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" -X POST http://localhost:3099/cookiepay/mark-result -H \"content-type: application/json\" -H \"x-internal-key: e7996cfca3b07958cf2233af8152d2344da052d15ae0523d1ced5649af928388\" -d '{\"orderNo\":\"TEST-ORD-001\",\"verifiedAmount\":9999,\"verifiedStatus\":\"SUCCESS\"}')",
+      "Bash(curl -s -X POST http://localhost:3099/cookiepay/mark-result -H \"content-type: application/json\" -H \"x-internal-key: e7996cfca3b07958cf2233af8152d2344da052d15ae0523d1ced5649af928388\" -d '{\"orderNo\":\"TEST-ORD-001\",\"verifiedAmount\":1000,\"verifiedStatus\":\"SUCCESS\"}')",
+      "Bash(curl -s -X POST http://localhost:3099/cookiepay/order -H \"content-type: application/json\" -H \"x-internal-key: e7996cfca3b07958cf2233af8152d2344da052d15ae0523d1ced5649af928388\" -d '{\"orderNo\":\"TEST-ORD-002\",\"uid\":\"TEST_UID_SMOKE_2\",\"type\":\"register\",\"amount\":15000}')",
+      "Bash(curl -s -X POST http://localhost:3099/cookiepay/finalize -H \"content-type: application/json\" -H \"x-internal-key: e7996cfca3b07958cf2233af8152d2344da052d15ae0523d1ced5649af928388\" -d '{\"orderNo\":\"TEST-ORD-002\"}')",
+      "Bash(curl -sv http://localhost:3099/cookiepay/order/TEST-ORD-001 -H \"x-internal-key: e7996cfca3b07958cf2233af8152d2344da052d15ae0523d1ced5649af928388\")",
+      "Bash(PORT=3099 timeout 40 node dist/main.js)",
+      "Bash(curl -s -X POST http://localhost:3099/cookiepay/order -H 'content-type: application/json' -H 'x-internal-key: __TRACKED_VAR__' -d '{\"orderNo\":\"TEST-ORD-001\",\"uid\":\"TEST_UID_SMOKE\",\"type\":\"point\",\"amount\":1000}')",
+      "Bash(curl -s -X POST http://localhost:3099/cookiepay/mark-result -H 'content-type: application/json' -H 'x-internal-key: __TRACKED_VAR__' -d '{\"orderNo\":\"TEST-ORD-001\",\"verifiedAmount\":1000,\"verifiedStatus\":\"SUCCESS\"}')",
+      "Bash(curl -s http://localhost:3099/cookiepay/order/TEST-ORD-001 -H 'x-internal-key: __TRACKED_VAR__')",
+      "Bash(curl -s -X POST http://localhost:3099/cookiepay/finalize -H 'content-type: application/json' -H 'x-internal-key: __TRACKED_VAR__' -d '{\"orderNo\":\"TEST-ORD-001\"}')",
+      "Bash(pkill -f \"PORT=3099\")",
+      "Bash(pkill -f \"node dist/main.js\")",
+      "Bash(taskkill //PID 35408 //F)"
     ]
   }
 }
