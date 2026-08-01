@@ -32,6 +32,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const { data: userInfo } = useUserInfoQuery();
   const isGuest = userInfo?.role === "guest";
+  const hasNoPoint = (userInfo?.point ?? 0) <= 0;
   const errorToast = useErrorToast();
   const { data: session } = useSession();
 
@@ -94,7 +95,13 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   const onClick = (type: ButtonType) => {
     if (type === "cancel") cancel();
     if (type === "participate") router.push(`${url}/participate`);
-    if (type === "register") participate();
+    if (type === "register") {
+      if (hasNoPoint) {
+        toast("warning", "보유 포인트가 없어 가입할 수 없습니다. 포인트를 충전해주세요.");
+        return;
+      }
+      participate();
+    }
   };
 
   const getButtonSettings = (): {
@@ -132,6 +139,10 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
             });
             return;
           }
+          if (hasNoPoint) {
+            toast("warning", "보유 포인트가 없어 가입 신청을 할 수 없습니다. 포인트를 충전해주세요.");
+            return;
+          }
           sendRegisterForm({ answer: ["참여 대기 신청"], pointType: "point" });
         },
         isReverse: true,
@@ -140,43 +151,47 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     if (data?.participants.length <= 1) {
       return {
         text: "참여 대기 신청",
-        handleFunction: isGuest
-          ? () => {
-              if (isGuest) {
-                router.replace({
-                  pathname: router.pathname,
-                  query: {
-                    ...router.query,
-                    guest: "on",
-                  },
-                });
-                return;
-              }
-            }
-          : data?.isFree
-          ? () => sendRegisterForm({ answer: ["참여 대기 신청"], pointType: "point" })
-          : () => onClick("participate"),
+        handleFunction: () => {
+          if (isGuest) {
+            router.replace({
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                guest: "on",
+              },
+            });
+            return;
+          }
+          if (hasNoPoint) {
+            toast("warning", "보유 포인트가 없어 가입 신청을 할 수 없습니다. 포인트를 충전해주세요.");
+            return;
+          }
+          if (data?.isFree) sendRegisterForm({ answer: ["참여 대기 신청"], pointType: "point" });
+          else onClick("participate");
+        },
       };
     }
 
     return {
       text: "가입 신청",
-      handleFunction: isGuest
-        ? () => {
-            if (isGuest) {
-              router.replace({
-                pathname: router.pathname,
-                query: {
-                  ...router.query,
-                  guest: "on",
-                },
-              });
-              return;
-            }
-          }
-        : !data?.isFree
-        ? () => onClick("participate")
-        : () => setIsModal(true),
+      handleFunction: () => {
+        if (isGuest) {
+          router.replace({
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              guest: "on",
+            },
+          });
+          return;
+        }
+        if (hasNoPoint) {
+          toast("warning", "보유 포인트가 없어 가입 신청을 할 수 없습니다. 포인트를 충전해주세요.");
+          return;
+        }
+        if (!data?.isFree) onClick("participate");
+        else setIsModal(true);
+      },
       type: "mint",
     };
   };

@@ -13,6 +13,7 @@ import {
   useGroupWaitingMutation,
 } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import ParticipateModal from "../../../pageTemplates/group/ParticipateModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -27,6 +28,7 @@ function Participate() {
   const { id } = useParams<{ id: string }>() || {};
 
   const { data: group } = useGroupIdQuery(id, { enabled: !!id });
+  const { data: userInfo } = useUserInfoQuery();
 
   const queryClient = useQueryClient();
 
@@ -49,6 +51,10 @@ function Participate() {
   });
 
   const onClick = () => {
+    if ((userInfo?.point ?? 0) <= 0) {
+      toast("warning", "보유 포인트가 없어 가입 신청을 할 수 없습니다. 포인트를 충전해주세요.");
+      return;
+    }
     if (group?.questionText) sendRegisterForm({ answer: textArr, pointType: "point" });
     else mutate();
   };

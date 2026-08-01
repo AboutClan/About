@@ -10,6 +10,7 @@ import PointGuideModalButton from "../../../components/modalButtons/PointGuideMo
 import IconRowBlock2 from "../../../components/molecules/IconRowBlock2";
 import { usePointSystemLogQuery, useUserInfoQuery } from "../../../hooks/user/queries";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
+import { navigateExternalLink } from "../../../utils/navigateUtils";
 
 function UserLogSection() {
   const { data: userInfo } = useUserInfoQuery();
@@ -45,6 +46,17 @@ function UserLogSection() {
               </Button>
             </Link>
           </Flex>
+          <Button
+            w="100%"
+            size="sm"
+            variant="outline"
+            colorScheme="gray"
+            mt={2}
+            mb={2}
+            onClick={() => navigateExternalLink("https://pf.kakao.com/_SaWXn/chat")}
+          >
+            포인트 오류 복구 요청하기
+          </Button>
         </Box>
         <Box mb={10}>
           {logsData?.map((log, idx) => {

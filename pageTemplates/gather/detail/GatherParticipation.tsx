@@ -26,7 +26,10 @@ interface IGatherParticipation {
 function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   const userInfo = useUserInfo();
   const status = data.status;
-  const participantsCnt = data.participants.length;
+  const participantsCnt = data.participants.reduce(
+    (acc, par) => acc + 1 + (par.withCompanion ? 1 : 0),
+    0,
+  );
   console.log(5, data);
   const isMyGather = data.participants?.some((p) => p.user._id === userInfo?._id);
 

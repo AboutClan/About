@@ -9,7 +9,7 @@ function LimitModal() {
   return (
     <>
       <ModalLayout
-        isCloseButton={false}
+        // isCloseButton={false}
         title="포인트가 부족해요"
         footerOptions={{
           main: {

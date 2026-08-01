@@ -126,6 +126,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
     }
   };
   const isGuest = userInfo?.role === "guest";
+  const hasNoPoint = (userInfo?.point ?? 0) <= 0;
   const diffDate = dayjs(data.date).startOf("d").diff(dayjs().startOf("d"), "d");
 
   const getButtonSettings = (): {
@@ -207,6 +208,10 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
                 toast("warning", "소셜링 온도가 낮아서 참여가 불가능합니다.");
                 return;
               }
+              if (hasNoPoint) {
+                toast("warning", "보유 포인트가 없어 참여할 수 없습니다. 포인트를 충전해주세요.");
+                return;
+              }
               sendRegisterForm({ phase: "first" });
             },
             isReverse: true,
@@ -227,6 +232,10 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
               }
               if (userInfo?.temperature?.cnt > 3 && userInfo?.temperature?.temperature < 36) {
                 toast("warning", "소셜링 온도가 낮아서 참여가 불가능합니다.");
+                return;
+              }
+              if (hasNoPoint) {
+                toast("warning", "보유 포인트가 없어 참여할 수 없습니다. 포인트를 충전해주세요.");
                 return;
               }
               sendRegisterForm({ phase: "first" });
@@ -312,6 +321,10 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
           toast("warning", "소셜링 온도가 낮아서 참여가 불가능합니다.");
           return;
         }
+        if (hasNoPoint) {
+          toast("warning", "보유 포인트가 없어 참여할 수 없습니다. 포인트를 충전해주세요.");
+          return;
+        }
 
         const myOld = birthToAge(userInfo.birth);
 
@@ -364,6 +377,10 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
     // }
     if (isOpenGather && !selectedDates.length) {
       toast("warning", "참여 가능한 날짜를 선택해주세요.");
+      return;
+    }
+    if (hasNoPoint) {
+      toast("warning", "보유 포인트가 없어 참여할 수 없습니다. 포인트를 충전해주세요.");
       return;
     }
     if (type === "participate") participate({ phase: "first", selectedDates, withCompanion });

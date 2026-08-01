@@ -88,6 +88,11 @@ export function GatherThumbnailCard({
       ? participants.filter((par) => par.user?._id !== "65df1ddcd73ecfd250b42c89")
       : participants;
 
+  const participantsCnt = participantsMember.reduce(
+    (acc, par) => acc + 1 + (par.withCompanion ? 1 : 0),
+    0,
+  );
+
   const has = !!(gatherReview || memberReview);
 
   const statusProps =
@@ -183,12 +188,12 @@ export function GatherThumbnailCard({
                   fontWeight={600}
                   as="span"
                   color={
-                    maxCnt !== 0 && participantsMember.length >= maxCnt
+                    maxCnt !== 0 && participantsCnt >= maxCnt
                       ? "var(--color-red)"
                       : "var(--color-gray)"
                   }
                 >
-                  {participantsMember.length}
+                  {participantsCnt}
                 </Box>
                 <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
                   /
