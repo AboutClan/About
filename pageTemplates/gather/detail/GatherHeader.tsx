@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -194,7 +194,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
               func: () => {
                 shareToKakao({
                   title: `${gatherData.title}`,
-                  date: gatherData.date,
+                  // date: gatherData.date,
                   subtitle: gatherData?.content,
                   img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
                   url: "https://about20s.club" + `/gather/${gatherData.id}`,
