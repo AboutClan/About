@@ -8,7 +8,7 @@ import { GatherRequestWritingProps, IGather } from "../../types/models/gatherTyp
 type GatherWritingParam<T> = T extends "post"
   ? FormData
   : T extends "patch"
-  ? { gather: IGather }
+  ? FormData | { gather: IGather }
   : { gatherId: number };
 
 /** gather info */
@@ -40,13 +40,21 @@ export const useOpenGatherMemberMutation = (
     options,
   );
 type GatherParticipationParam<T> = T extends "post"
-  ? { phase: "first" | "second"; isFree?: boolean; userId?: string }
+  ? {
+      phase: "first" | "second";
+      isFree?: boolean;
+      userId?: string;
+      selectedDates?: string[];
+      withCompanion?: boolean;
+    }
   : { userId?: string } | void;
 
 interface IGatherParticipationRequest {
   gatherId: number;
   phase?: "first" | "second";
   userId?: string;
+  selectedDates?: string[];
+  withCompanion?: boolean;
 }
 
 export const useGatherParticipationMutation = <T extends "post" | "delete">(

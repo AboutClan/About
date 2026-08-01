@@ -18,6 +18,11 @@ export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
   }[];
 }
 
+export interface IGatherDateOption {
+  date: string;
+  voters: UserSimpleInfoProps[] | string[];
+}
+
 export interface IGatherWriting {
   type: IGatherType;
   place: Location | "전체";
@@ -40,6 +45,7 @@ export interface IGatherWriting {
   category?: GatherCategory;
   groupId?: string;
   postImage?: string;
+  dateOptions?: IGatherDateOption[];
 }
 
 export type GatherCategory =
@@ -77,6 +83,7 @@ export interface IGatherParticipants {
   phase?: "first" | "second";
   reviewed?: boolean;
   absence?: boolean;
+  withCompanion?: boolean;
 }
 
 // export interface IGatherHeader {

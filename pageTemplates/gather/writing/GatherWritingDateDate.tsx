@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex, IconButton } from "@chakra-ui/react";
 import { ko } from "date-fns/locale";
 import dayjs from "dayjs";
 import { forwardRef, useEffect } from "react";
@@ -25,9 +25,19 @@ interface IGatherWritingDateDate {
   date: Date;
   setDate: DispatchType<Date>;
   gatherWriting: Partial<IGatherWriting>;
+  isOpenGather?: boolean;
+  extraDates?: Date[];
+  setExtraDates?: DispatchType<Date[]>;
 }
 
-function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingDateDate) {
+function GatherWritingDateDate({
+  date,
+  setDate,
+  gatherWriting,
+  isOpenGather,
+  extraDates,
+  setExtraDates,
+}: IGatherWritingDateDate) {
   /* eslint-disable react/display-name */
   //props를 직접 전달하지 않아서 그런지 optional로 안하면 타입 오류가 남
   type CustomInputProps = {
@@ -87,6 +97,56 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
           />
         </Box>
       </Container>
+      {isOpenGather && (
+        <Box mt={4}>
+          <Box fontSize="13px" fontWeight="semibold" mb={2}>
+            추가 날짜 후보 (복수 선택 가능)
+          </Box>
+          {extraDates?.map((extraDate, idx) => (
+            <Flex key={idx} align="center" justify="center" mb={2}>
+              <StyledDatePicker
+                {...PICKER_DATE_AND_TIME}
+                customInput={<CustomInput />}
+                locale={ko}
+                onChange={(changed) => {
+                  const convertedDate = dayjs(changed).toDate();
+                  setExtraDates(extraDates.map((d, i) => (i === idx ? convertedDate : d)));
+                }}
+                selected={extraDate}
+                minTime={TIME_RANGE_MIN}
+                maxTime={TIME_RAGNE_MAX}
+                renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
+                  <PickerDateAndTimeHeader
+                    date={date}
+                    decreaseMonth={decreaseMonth}
+                    increaseMonth={increaseMonth}
+                  />
+                )}
+              />
+              <IconButton
+                aria-label="후보 날짜 삭제"
+                icon={<Box>✕</Box>}
+                ml={2}
+                size="sm"
+                variant="ghost"
+                onClick={() => setExtraDates(extraDates.filter((_, i) => i !== idx))}
+              />
+            </Flex>
+          ))}
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => {
+              const base = extraDates?.length
+                ? extraDates[extraDates.length - 1]
+                : date || new Date();
+              setExtraDates([...(extraDates || []), dayjs(base).add(1, "day").toDate()]);
+            }}
+          >
+            + 후보 날짜 추가
+          </Button>
+        </Box>
+      )}
     </Layout>
   );
 }

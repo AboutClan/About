@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Stack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
@@ -46,12 +46,14 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
 
   const { data: userInfo } = useUserInfoQuery();
   const myGather =
-    (data.user as UserSimpleInfoProps)?.uid === userInfo?.uid || userInfo?.name === "어바웃";
+    (data.user as UserSimpleInfoProps)?.uid !== userInfo?.uid || userInfo?.name !== "어바웃";
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
   const [isExpirationModal, setIsExpirationModal] = useState(false);
 
   const [isModal, setIsModal] = useState(false);
   const [isCancelModal, setIsCancelModal] = useState(false);
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  const [withCompanion, setWithCompanion] = useState(false);
 
   const { mutate: participate, isLoading: isLoading1 } = useGatherParticipationMutation(
     "post",
@@ -360,7 +362,11 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
     //   toast("error", "보유한 번개 참여권이 없습니다.");
     //   return;
     // }
-    if (type === "participate") participate({ phase: "first" });
+    if (isOpenGather && !selectedDates.length) {
+      toast("warning", "참여 가능한 날짜를 선택해주세요.");
+      return;
+    }
+    if (type === "participate") participate({ phase: "first", selectedDates, withCompanion });
     else if (type === "apply") sendRegisterForm({ phase: "first" });
   };
 
@@ -390,7 +396,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
         <BottomFlexDrawer
           isDrawerUp
           isOverlay
-          height={432}
+          height={isOpenGather ? 360 + (data?.dateOptions?.length || 0) * 56 : 432}
           isHideBottom
           setIsModal={() => setIsModal(false)}
         >
@@ -403,25 +409,113 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
             fontSize="20px"
             textAlign="start"
           >
-            {data?.isApprovalRequired
-              ? `${
-                  (data.user as UserSimpleInfoProps)?.name === "어바웃" ? "운영진" : "참여"
-                } 승인이 필요한 모임이에요.`
-              : "즉시 참여가 가능한 모임이에요."}
-            <br /> {data?.isApprovalRequired ? "모임 참여를 요청할까요?" : "모임에 참여할까요?"}
+            {isOpenGather ? (
+              <>
+                날짜, 성별, 나이를 고려해 조가 편성돼요!
+                <br />
+                모임에 참여할까요?
+              </>
+            ) : (
+              <>
+                {data?.isApprovalRequired
+                  ? `${
+                      (data.user as UserSimpleInfoProps)?.name === "어바웃" ? "운영진" : "참여"
+                    } 승인이 필요한 모임이에요.`
+                  : "즉시 참여가 가능한 모임이에요."}
+                <br /> {data?.isApprovalRequired ? "모임 참여를 요청할까요?" : "모임에 참여할까요?"}
+              </>
+            )}
           </Box>
-          <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
-            {data?.isApprovalRequired ? "승인되면" : null} <b>번개 참여권 1장</b>이 소모됩니다.
-            (참여권은 매월 리필돼요!)
-          </Box>
-          <Box pt={3}>
-            <Image
-              src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/freepik__background__12597-removebg-preview.png"
-              width={168}
-              height={168}
-              alt="studyResult"
-            />
-          </Box>
+          {isOpenGather ? (
+            <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
+              조 편성 후에 참여를 취소하면 <b>2,000P</b>가 차감됩니다.
+            </Box>
+          ) : (
+            <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
+              {data?.isApprovalRequired ? "승인되면" : null} <b>번개 참여권 1장</b>이 소모됩니다.
+              (참여권은 매월 리필돼요!)
+            </Box>
+          )}
+          {isOpenGather ? (
+            <Box w="100%" pt={4}>
+              <Box fontSize="13px" fontWeight="600" color="gray.800" mt={3} mb={3}>
+                참여 가능 날짜 선택
+              </Box>
+              <Stack spacing={2} align="stretch">
+                {data?.dateOptions?.map((option) => {
+                  const isChecked = selectedDates.includes(option.date);
+                  return (
+                    <Flex
+                      key={option.date}
+                      as="button"
+                      type="button"
+                      align="center"
+                      justify="space-between"
+                      w="100%"
+                      px={4}
+                      py={3}
+                      borderRadius="12px"
+                      border="1.5px solid"
+                      borderColor={isChecked ? "mint.500" : "gray.200"}
+                      bg={isChecked ? "gray.800" : "white"}
+                      transition="all 0.15s"
+                      onClick={() =>
+                        setSelectedDates((prev) =>
+                          prev.includes(option.date)
+                            ? prev.filter((d) => d !== option.date)
+                            : [...prev, option.date],
+                        )
+                      }
+                    >
+                      <Box
+                        fontSize="13px"
+                        fontWeight="600"
+                        color={isChecked ? "white" : "gray.800"}
+                      >
+                        {dayjs(option.date).format("M월 D일(ddd) HH:mm")}
+                      </Box>
+                      <Flex
+                        w="22px"
+                        h="22px"
+                        flexShrink={0}
+                        borderRadius="full"
+                        border="1.5px solid"
+                        borderColor={isChecked ? "mint.500" : "gray.300"}
+                        bg={isChecked ? "mint.500" : "white"}
+                        align="center"
+                        justify="center"
+                      >
+                        {isChecked && (
+                          <Box color="white" fontSize="12px" fontWeight="bold" lineHeight="1">
+                            ✓
+                          </Box>
+                        )}
+                      </Flex>
+                    </Flex>
+                  );
+                })}
+              </Stack>
+              <Box mt={2} pt={3} borderTop="1px solid" borderColor="gray.100">
+                <Checkbox
+                  isChecked={withCompanion}
+                  onChange={(e) => setWithCompanion(e.target.checked)}
+                >
+                  <Box fontSize="14px" fontWeight={400} color="gray.600">
+                    함께 오고 싶은 친구가 있어요
+                  </Box>
+                </Checkbox>
+              </Box>
+            </Box>
+          ) : (
+            <Box pt={3}>
+              <Image
+                src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/freepik__background__12597-removebg-preview.png"
+                width={168}
+                height={168}
+                alt="studyResult"
+              />
+            </Box>
+          )}
           <Flex direction="column" mt="auto" w="100%">
             <Button
               w="full"
@@ -429,6 +523,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
               colorScheme="black"
               onClick={() => handleParticipate(data?.isApprovalRequired ? "apply" : "participate")}
               isLoading={isLoading1 || isLoading2}
+              isDisabled={isOpenGather && !selectedDates.length}
             >
               {data?.isApprovalRequired ? "참여 신청" : "참여하기"}
             </Button>

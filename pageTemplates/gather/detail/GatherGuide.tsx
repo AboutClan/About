@@ -31,25 +31,7 @@ function GatherGuide({ isAdmin, isOpenGather }: GatherGuideProps) {
           />
         </Box>
       )}
-      {isOpenGather ? (
-        <Box mt={10} mx={5}>
-          <Box mb={3} fontSize="16px" fontWeight="semibold">
-            오픈 번개 안내
-          </Box>
-          <InfoList
-            items={[
-              "최초 매칭 신청 시 1,000 Point가 소모됩니다.",
-              "인원이 부족해 취소된 경우 포인트는 반환됩니다.",
-              "멤버 선택은 100% 반영되어 최종 인원이 편성됩니다.",
-              "2단계에서 선택한 멤버는 공개되지 않습니다.",
-              "모임 확정 시 1,000 Point가 추가 소모됩니다.",
-              "최종 단계에서 참여 여부를 한번 더 결정합니다.",
-              "모임 종료 후, 멤버 후기 평가를 할 수 있습니다.",
-            ]}
-            isLight
-          />
-        </Box>
-      ) : (
+      {isOpenGather ? null : (
         <Box mt={10} mx={5}>
           <Box mb={3} fontSize="16px" fontWeight="semibold">
             번개 모임 안내

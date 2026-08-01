@@ -2,7 +2,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import dayjs from "dayjs";
 import { useRouter } from "next/dist/client/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -23,8 +23,21 @@ function WritingDate() {
 
   const [gatherWriting, setGatherWriting] = useRecoilState(sharedGatherWritingState);
 
+  const isOpenGather = gatherWriting?.category === "openGather";
+
   const [date, setDate] = useState<Date>();
+  const [extraDates, setExtraDates] = useState<Date[]>([]);
   const [gatherList, setGatherList] = useState<IGatherListItem[]>();
+
+  //기존 후보 날짜(수정 진입 시) 초기화 - 첫 후보는 date로 사용하고 나머지만 추가 후보로 관리
+  useEffect(() => {
+    if (!isOpenGather) return;
+    const existing = gatherWriting?.dateOptions;
+    if (existing?.length > 1) {
+      setExtraDates(existing.slice(1).map((option) => dayjs(option.date).toDate()));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpenGather]);
 
   const onClickNext = () => {
     if (gatherList && !gatherList[0].text) {
@@ -36,11 +49,34 @@ function WritingDate() {
       failToast("free", "날짜/시간 선택을 확인해주세요!");
       return;
     }
-    setGatherWriting((old) => ({
-      ...old,
-      date: dayjs(date).toISOString(),
-      gatherList,
-    }));
+
+    if (isOpenGather) {
+      const existingVotersByDate = new Map(
+        (gatherWriting?.dateOptions || []).map((option) => [
+          dayjs(option.date).toISOString(),
+          option.voters,
+        ]),
+      );
+      const candidateIsoDates = Array.from(
+        new Set([date, ...extraDates].map((d) => dayjs(d).toISOString())),
+      );
+
+      setGatherWriting((old) => ({
+        ...old,
+        date: candidateIsoDates[0],
+        dateOptions: candidateIsoDates.map((iso) => ({
+          date: iso,
+          voters: existingVotersByDate.get(iso) || [],
+        })),
+        gatherList,
+      }));
+    } else {
+      setGatherWriting((old) => ({
+        ...old,
+        date: dayjs(date).toISOString(),
+        gatherList,
+      }));
+    }
     router.push({ pathname: `/gather/writing/location`, query: router.query });
   };
 
@@ -55,7 +91,14 @@ function WritingDate() {
           <span>언제 모임을 진행하나요?</span>
           <span>날짜와 시간을 선택해 주세요</span>
         </RegisterOverview>
-        <GatherWritingDateDate date={date} setDate={setDate} gatherWriting={gatherWriting} />
+        <GatherWritingDateDate
+          date={date}
+          setDate={setDate}
+          gatherWriting={gatherWriting}
+          isOpenGather={isOpenGather}
+          extraDates={extraDates}
+          setExtraDates={setExtraDates}
+        />
         <GatherWritingDateSubject
           gatherWriting={gatherWriting}
           setGatherList={setGatherList}

@@ -25,10 +25,12 @@ export interface UserStudyDataProps extends UserSimpleInfoProps {
   rank: "bronze" | "silver" | "gold";
 }
 
-type AllUserDataParam<T> = T extends "study" ? UserStudyDataProps[] : IUser[];
+type AllUserDataParam<T> = (T extends "study" ? UserStudyDataProps : IUser)[];
 
-export const useAllUserDataQuery = <T extends "study" | "null">(
-  type: "study" | "temperature" | "monthScore" | "studyGroup",
+export const useAllUserDataQuery = <
+  T extends "study" | "temperature" | "monthScore" | "studyGroup",
+>(
+  type: T,
   options?: QueryOptions<AllUserDataParam<T>>,
 ) =>
   useQuery<AllUserDataParam<T>, AxiosError, AllUserDataParam<T>>(
@@ -38,11 +40,10 @@ export const useAllUserDataQuery = <T extends "study" | "null">(
         params: { type },
       });
 
-      return res.data;
+      return res.data.filter((user) => user.name.length < 5);
     },
     options,
   );
-
 export const useUserRequestQuery = (
   category: UserRequestCategory,
   options?: QueryOptions<IUserRequest[]>,

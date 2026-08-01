@@ -1,6 +1,8 @@
 import { Button, Flex, Input } from "@chakra-ui/react";
+import axios from "axios";
 import { useState } from "react";
 
+import { SERVER_URI } from "../constants/system";
 import {
   useCouponBulkRegisterMutation,
   useCouponIssueByPartnerMutation,
@@ -426,8 +428,9 @@ export default function ExamplePage() {
   const [couponId, setCouponId] = useState("");
 
   const getSchedule = async () => {
-    //   const res = await axios.get(`${SERVER_URI}/admin/user/test/schedule/62a44519f4a6968c58fedb88`);
-    //   console.log(res.data);
+    console.log(3);
+    const res = await axios.post(`${SERVER_URI}/admin/user/reconcile/points`);
+    console.log(52, res.data);
   };
 
   const recoverGroupstudyTicketPoints = async () => {

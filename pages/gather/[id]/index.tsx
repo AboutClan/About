@@ -128,13 +128,18 @@ function GatherDetail() {
         <>
           <GatherHeader gatherData={gather} />
           <Slide isNoPadding>
-            <Box aspectRatio={2 / 1} position="relative">
+            <Box position="relative" width="100%">
               <Image
                 src={gather?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"])}
-                fill={true}
-                sizes="400px"
+                width={0}
+                height={0}
+                sizes="100vw"
                 alt="study"
-                priority={true}
+                priority
+                style={{
+                  width: "100%",
+                  height: "auto",
+                }}
               />
             </Box>
             <Box paddingBottom="100px">
@@ -153,7 +158,7 @@ function GatherDetail() {
                 postImage={postImage}
                 location={gather.location}
                 isOpenGather={isOpenGather}
-                id={gather.id}
+                date={gather.date}
               />
               <Divider />
               <GatherParticipation data={gather} gatherType={gather.category} />

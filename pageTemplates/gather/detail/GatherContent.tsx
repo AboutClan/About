@@ -12,10 +12,10 @@ interface IGather {
   postImage: string;
   location: IGatherLocation;
   isOpenGather: boolean;
-  id: number;
+  date: string;
 }
 
-function GatherContent({ content, postImage, location, isOpenGather, id }: IGather) {
+function GatherContent({ content, postImage, location, isOpenGather, date }: IGather) {
   return (
     <Flex pt={4} pb={4} flexDir="column">
       <Content>{content}</Content>
@@ -32,9 +32,7 @@ function GatherContent({ content, postImage, location, isOpenGather, id }: IGath
           />
         </Box>
       ) : isOpenGather ? (
-        <ProcessGuide
-          type={id > 5050 ? 6 : id > 5000 ? 5 : id > 4900 ? 4 : id > 4870 ? 3 : id === 4853 ? 2 : 1}
-        />
+        <ProcessGuide date={date} />
       ) : null}
       <Box px={5} mt={5}>
         {location?.latitude && (

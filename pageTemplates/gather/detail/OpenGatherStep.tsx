@@ -1,4 +1,7 @@
 import { Badge, Box, Flex, Text, VStack } from "@chakra-ui/react";
+import dayjs from "dayjs";
+
+import { dayjsToKr } from "../../../utils/dateTimeUtils";
 
 type StepItem = {
   step: number;
@@ -72,50 +75,33 @@ function StepRow({ item, isLast }: { item: StepItem; isLast: boolean }) {
   );
 }
 
-export default function ProcessGuide({ type }: { type: number }) {
+export default function ProcessGuide({ date }: { date: string }) {
+  const gatherDate = dayjs(date);
+  const mondayOfWeek = gatherDate.subtract((gatherDate.day() + 6) % 7, "day");
+  const prevFriday = mondayOfWeek.subtract(3, "day");
+  const prevSunday = mondayOfWeek.subtract(1, "day");
+
   const steps: StepItem[] = [
     {
       step: 1,
       title: "모임에 관심 있는 멤버들의 신청을 먼저 받아요",
-      description: "이 단계에서는 신청자 정보가 공개되지 않아요",
+      description: "신청자들의 선택 날짜, 나이, 성별만 공개돼요",
     },
     {
       step: 2,
-      title: "함께하고 싶은 멤버를 직접 선택해요",
-      description: "신청한 멤버들의 프로필을 확인할 수 있어요",
-      date:
-        type === 6
-          ? "6월 29일(월)"
-          : type === 5
-          ? "6월 21일(일)"
-          : type === 4
-          ? "5월 13일(수)"
-          : type === 3
-          ? `4월 21일(화)`
-          : type === 1
-          ? `3월 31일(화)`
-          : "4월 6일(월)",
+      title: "날짜·나이·성별을 고려해 조가 추천돼요",
+      description: "추천된 조원들의 프로필이 공개돼요",
+      date: dayjsToKr(prevFriday),
     },
     {
       step: 3,
-      title: "선택을 고려해 최종 멤버가 확정돼요",
-      description: "선택 멤버, 나이, 성별, 인원 등을 고려해요",
-      date:
-        type === 6
-          ? "6월 30일(화)"
-          : type === 5
-          ? "6월 22일(월)"
-          : type === 4
-          ? "5월 15일(금)"
-          : type === 3
-          ? "4월 22일(수)"
-          : type === 1
-          ? "4월 1일(수)"
-          : "4월 7일(화)",
+      title: "최종 참여를 확정하면, 톡방이 개설돼요",
+      description: "조 편성 후 불참은 2,000P가 차감될 수 있어요",
+      date: dayjsToKr(prevSunday),
     },
     {
       step: 4,
-      title: "톡방이 개설되고, 함께 모임을 진행해요!",
+      title: "멤버들과 함께 모임을 진행해요!",
       description: "시간, 장소, 콘텐츠는 운영진이 함께 조율해요",
     },
   ];

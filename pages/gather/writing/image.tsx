@@ -49,7 +49,9 @@ function GatherWritingImagePage() {
     cover: [],
   });
   const [image, setImage] = useState<Blob>();
+  const [coverImage, setCoverImage] = useState<Blob>();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const coverFileInputRef = useRef<HTMLInputElement>(null);
 
   const groupId = searchParams.get("groupId");
   const category: GatherCategoryMain = gatherContent?.type.title || "힐링";
@@ -84,6 +86,10 @@ function GatherWritingImagePage() {
   ].map((item) => ({
     imageUrl: item,
     func: () => {
+      if (coverFileInputRef.current || coverImage) {
+        coverFileInputRef.current.value = null;
+        setCoverImage(null);
+      }
       setImageProps((old) => ({ ...old, coverImage: item }));
     },
   }));
@@ -117,7 +123,10 @@ function GatherWritingImagePage() {
   }, []);
 
   const onClickNext = async () => {
-    if ((!imageProps?.mainImage && !image) || !imageProps?.coverImage) {
+    if (
+      (!imageProps?.mainImage && !image) ||
+      (!imageProps?.coverImage && !coverImage)
+    ) {
       toast("error", "이미지를 선택해 주세요.");
       return;
     }
@@ -168,10 +177,27 @@ function GatherWritingImagePage() {
     }
   };
 
+  const handleCoverImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const coverImage = await processFile(file);
+      setCoverImage(coverImage.blob);
+    } catch (error) {
+      console.error("이미지 처리 실패", error);
+    }
+  };
+
+  const handleCoverCameraBtn = () => {
+    coverFileInputRef.current?.click();
+  };
+
   const handleSubmit = (data: { gather: IGatherWriting }) => {
     const formData = new FormData();
     formData.append("gather", JSON.stringify(data.gather));
-    formData.append("image", image);
+    if (image) formData.append("image", image);
+    if (coverImage) formData.append("coverImage", coverImage);
     createGather(formData);
   };
 
@@ -225,6 +251,25 @@ function GatherWritingImagePage() {
               aspect={2}
               hasTextSkeleton={false}
             />
+            <Input
+              ref={coverFileInputRef}
+              type="file"
+              accept="image/*"
+              display="none"
+              onChange={handleCoverImageChange}
+            />
+            <Button
+              mt={5}
+              mr={5}
+              border="var(--border-main)"
+              colorScheme={coverFileInputRef?.current?.value ? "black" : "gray"}
+              leftIcon={
+                <CameraIcon color={coverFileInputRef?.current?.value ? "white" : "black"} />
+              }
+              onClick={handleCoverCameraBtn}
+            >
+              {coverFileInputRef?.current?.value ? "이미지 등록 완료" : "이미지 직접 등록"}
+            </Button>
           </Box>
         </Slide>
       </RegisterLayout>
@@ -242,12 +287,20 @@ function GatherWritingImagePage() {
           }}
           updateGather={(data) => {
             const { user, ...gatherData } = data.gather;
-            updateGather({
-              gather: {
-                ...gatherData,
-                user: user === "62a44519f4a6968c58fedb88" ? "65df1ddcd73ecfd250b42c89" : user,
-              },
-            });
+            const finalGather = {
+              ...gatherData,
+              user: user === "62a44519f4a6968c58fedb88" ? "65df1ddcd73ecfd250b42c89" : user,
+            };
+
+            if (image || coverImage) {
+              const formData = new FormData();
+              formData.append("gather", JSON.stringify(finalGather));
+              if (image) formData.append("image", image);
+              if (coverImage) formData.append("coverImage", coverImage);
+              updateGather(formData);
+            } else {
+              updateGather({ gather: finalGather });
+            }
           }}
           setIsModal={setIsConfirmModal}
           gatherData={{
