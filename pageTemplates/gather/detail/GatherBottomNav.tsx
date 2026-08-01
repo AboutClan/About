@@ -1,9 +1,9 @@
 import { Box, Button, Checkbox, Flex, Stack } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -46,7 +46,7 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
 
   const { data: userInfo } = useUserInfoQuery();
   const myGather =
-    (data.user as UserSimpleInfoProps)?.uid !== userInfo?.uid || userInfo?.name !== "어바웃";
+    (data.user as UserSimpleInfoProps)?.uid === userInfo?.uid || userInfo?.name === "어바웃";
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
   const [isExpirationModal, setIsExpirationModal] = useState(false);
 
