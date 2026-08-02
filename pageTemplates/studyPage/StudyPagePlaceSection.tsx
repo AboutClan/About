@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Skeleton } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -181,7 +181,22 @@ function StudyPagePlaceSection({
                     </Box>
                   );
                 })
-              : [1, 2, 3, 4, 5, 6, 7].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+              : (
+                  <>
+                    <SectionDateDividerSkeleton />
+                    {[1, 2].map((idx) => (
+                      <Box key={`lounge-${idx}`} mb={3}>
+                        <StudyThumbnailCardSkeleton />
+                      </Box>
+                    ))}
+                    <SectionDateDividerSkeleton />
+                    {[1, 2, 3, 4, 5].map((idx) => (
+                      <Box key={`date-${idx}`} mb={3}>
+                        <StudyThumbnailCardSkeleton />
+                      </Box>
+                    ))}
+                  </>
+                )}
 
             {thumbnailCardInfoArr?.length && (
               <Button
@@ -208,6 +223,16 @@ function SectionDateDivider({ text }: { text: string }) {
       <Box mx={3} fontSize="12px" fontWeight="bold" color="gray.500" whiteSpace="nowrap">
         {text}
       </Box>
+      <Box flex={1} h="1px" bg="gray.200" />
+    </Flex>
+  );
+}
+
+function SectionDateDividerSkeleton() {
+  return (
+    <Flex align="center" my={4}>
+      <Box flex={1} h="1px" bg="gray.200" />
+      <Skeleton isLoaded={false} mx={3} w="64px" h="14px" borderRadius="4px" />
       <Box flex={1} h="1px" bg="gray.200" />
     </Flex>
   );

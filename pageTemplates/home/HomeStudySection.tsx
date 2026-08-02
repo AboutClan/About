@@ -84,7 +84,11 @@ function HomeStudySection() {
                 <StudyThumbnailCard {...thumbnailCardInfo} hasBorder={idx !== cardArr.length - 1} />
               </Box>
             ))
-          : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+          : [0, 1, 2].map((idx) => (
+              <Box key={idx} mb={3}>
+                <StudyThumbnailCardSkeleton hasBorder={idx !== 2} />
+              </Box>
+            ))}
         <SectionFooterButton url={`/studyPage?date=${dayjsToStr(dayjs())}`} />
       </Flex>
     </>
