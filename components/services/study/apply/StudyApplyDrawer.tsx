@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
@@ -17,11 +17,9 @@ import BottomNav from "../../../layouts/BottomNav";
 import { BottomFlexDrawerOptions } from "../../../organisms/drawer/BottomFlexDrawer";
 import RightDrawer from "../../../organisms/drawer/RightDrawer";
 import StudyVoteTimeRulletDrawer from "../../studyVote/StudyVoteTimeRulletDrawer";
-import FirstPageSection from "./ui/FirstPageSection";
 import { StudyCancelModal } from "./ui/overlay/CancelModal";
 import { PlaceDrawer } from "./ui/overlay/PlaceDrawer";
-import LocationSearch from "./ui/parts/LocationSearch";
-import SecondPageSection from "./ui/SecondPageSection";
+import StudyApplySection from "./ui/StudyApplySection";
 
 interface StudyDateDrawerProps {
   onClose: () => void;
@@ -57,10 +55,8 @@ function StudyApplyDrawer({
   const [isStudyPlaceModal, setIsStudyPlaceModal] = useState(false);
   const [voteLocation, setVoteLocation] = useState<LocationProps>(location);
   const [rangeNum, setRangeNum] = useState<number>(2);
-  const [isFirstPage, setIsFirstPage] = useState(true);
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
-  const [date, setDate] = useState<Dayjs>(dayjs());
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
@@ -128,12 +124,7 @@ function StudyApplyDrawer({
       return;
     }
 
-    if (isLocation || !isFirstPage) {
-      setIsTimeDrawer(true);
-      return;
-    }
-
-    setIsFirstPage(false);
+    setIsTimeDrawer(true);
   };
 
   const beforeMyDates = useMemo(
@@ -146,11 +137,8 @@ function StudyApplyDrawer({
     [studySet?.participations, userInfo?._id],
   );
 
-  const participants = useMemo(
-    () =>
-      studySet?.participations.flatMap((participation) =>
-        participation.study.map((s) => s.user?.belong),
-      ) ?? [],
+  const nearbyParticipations = useMemo(
+    () => studySet?.participations?.flatMap((participation) => participation.study) ?? [],
     [studySet?.participations],
   );
 
@@ -190,42 +178,26 @@ function StudyApplyDrawer({
 
   return (
     <>
-      <RightDrawer
-        title=""
-        onClose={() => (isFirstPage ? onClose() : setIsFirstPage(true))}
-        headerBtn={
-          <LocationSearch
-            defaultLocation={location}
-            changeVoteLocation={setVoteLocation}
-            text={voteLocation?.name?.split(" ")?.[0]}
-            handleClick={() => setIsStudyPlaceModal(true)}
-          />
-        }
-      >
+      <RightDrawer title="스터디 신청" onClose={onClose}>
         <Flex direction="column" h="calc(100dvh - var(--header-h))" overflow="hidden">
-          <Flex flex={1} overflowY="auto" direction="column" pb={isFirstPage ? 0 : 5}>
-            {isFirstPage ? (
-              <FirstPageSection
-                date={date}
-                changeDate={setDate}
-                canChange={canChange}
-                selectDates={(d: string[]) => setSelectedDates(d)}
-                defaultDate={defaultDate}
-                selectedDates={selectedDates}
-                beforeMyDates={beforeMyDates}
-              />
-            ) : (
-              <SecondPageSection
-                rangeNum={rangeNum}
-                changeRangeNum={setRangeNum}
-                voteLocation={voteLocation}
-                participants={participants}
-                pickLocation={setVoteLocation}
-                defaultLocation={location}
-              />
-            )}
+          <Flex flex={1} overflowY="auto" direction="column" pb={5}>
+            <StudyApplySection
+              canChange={canChange}
+              selectDates={(d: string[]) => setSelectedDates(d)}
+              defaultDate={defaultDate}
+              selectedDates={selectedDates}
+              beforeMyDates={beforeMyDates}
+              rangeNum={rangeNum}
+              changeRangeNum={setRangeNum}
+              voteLocation={voteLocation}
+              nearbyParticipations={nearbyParticipations}
+              pickLocation={setVoteLocation}
+              defaultLocation={location}
+              isLocation={isLocation}
+              onClickChangeLocation={() => setIsStudyPlaceModal(true)}
+            />
           </Flex>
-          <BottomNav isSlide={false} text="다 음" onClick={handleBottomNav} />
+          <BottomNav isSlide={false} text="시간 선택하기" onClick={handleBottomNav} />
         </Flex>
       </RightDrawer>
       {isTimeDrawer && (

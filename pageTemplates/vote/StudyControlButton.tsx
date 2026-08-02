@@ -80,7 +80,7 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
     <>
       <ControlButton
         colorScheme="black"
-        text="스터디"
+        text="스터디 참여"
         // isDisabled={myVoteStatus === "arrived" || myVoteStatus === "absenced"}
         rightIcon={<CheckIcon />}
         handleClick={onClickButton}

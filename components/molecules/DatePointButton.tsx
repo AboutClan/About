@@ -1,7 +1,5 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-
-import { getTodayStr } from "../../utils/dateTimeUtils";
 
 export interface DatePointButtonProps {
   date: string;
@@ -73,9 +71,6 @@ function DatePointButton({
         zIndex={4}
       >
         {!date ? null : !isSelected ? dateNum : <TodayCircle date={dateNum} />}
-        {date === getTodayStr() && (
-          <Box bottom="4px" pos="absolute" w="3px" h="3px" borderRadius="full" bg="gray.800"></Box>
-        )}
       </Flex>
     </Button>
   );

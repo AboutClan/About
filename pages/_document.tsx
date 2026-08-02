@@ -151,14 +151,7 @@ export default class MyDocument extends Document<MyDocumentProps> {
         <Head>
           <link
             rel="preload"
-            href="/fonts/Pretendard-Regular.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-          <link
-            rel="preload"
-            href="/fonts/Pretendard-Bold.woff2"
+            href="/fonts/PretendardVariable.woff2"
             as="font"
             type="font/woff2"
             crossOrigin="anonymous"

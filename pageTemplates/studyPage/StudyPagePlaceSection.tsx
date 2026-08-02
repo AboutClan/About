@@ -14,6 +14,7 @@ import {
 } from "../../libs/study/thumbnailCardLibs";
 import { DispatchString } from "../../types/hooks/reactTypes";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface StudyPagePlaceSectionProps {
   studySet: StudySetProps;
@@ -25,7 +26,12 @@ interface StudyPagePlaceSectionProps {
 export type FilterType = "예정 스터디" | "지난 스터디";
 export type StudySortedOption = "날짜순" | "인원순" | "거리순";
 
-function StudyPagePlaceSection({ studySet, date, setDate, hideLounge }: StudyPagePlaceSectionProps) {
+function StudyPagePlaceSection({
+  studySet,
+  date,
+  setDate,
+  hideLounge,
+}: StudyPagePlaceSectionProps) {
   const { data: session } = useSession();
 
   const [lastIdx, setLastIdx] = useState(0);
@@ -58,7 +64,15 @@ function StudyPagePlaceSection({ studySet, date, setDate, hideLounge }: StudyPag
       setThumbnailCardinfoArr(null);
       return;
     }
-    let getThumbnailCardInfoArr = setStudyThumbnailCard(date, studySet, session?.user.id, undefined, undefined, undefined, hideLounge);
+    let getThumbnailCardInfoArr = setStudyThumbnailCard(
+      date,
+      studySet,
+      session?.user.id,
+      undefined,
+      undefined,
+      undefined,
+      hideLounge,
+    );
     if (hideLounge) {
       getThumbnailCardInfoArr = getThumbnailCardInfoArr.filter(
         (card) => card.place.name !== "카공 스터디 라운지",
@@ -133,15 +147,40 @@ function StudyPagePlaceSection({ studySet, date, setDate, hideLounge }: StudyPag
         />
       </Flex> */}
 
-      <Flex flexDir="column" mb={20} mt={3}>
+      <Flex flexDir="column" mb={20} mt={2}>
         <Box>
           <Box>
             {thumbnailCardInfoArr?.length && !isLoading
-              ? thumbnailCardInfoArr.map((thumbnailCardInfo, idx) => (
-                  <Box key={idx} mb={3}>
-                    <StudyThumbnailCard {...thumbnailCardInfo} />
-                  </Box>
-                ))
+              ? thumbnailCardInfoArr.map((thumbnailCardInfo, idx) => {
+                  const cardDate = thumbnailCardInfo.place.date;
+                  const groupKey = cardDate ? dayjsToFormat(cardDate, "YYYY-MM-DD") : "lounge";
+                  const prevCardDate =
+                    idx > 0 ? thumbnailCardInfoArr[idx - 1].place.date : undefined;
+                  const prevGroupKey =
+                    idx > 0
+                      ? prevCardDate
+                        ? dayjsToFormat(prevCardDate, "YYYY-MM-DD")
+                        : "lounge"
+                      : undefined;
+                  const showDivider = groupKey !== prevGroupKey;
+
+                  return (
+                    <Box key={idx}>
+                      {showDivider && (
+                        <SectionDateDivider
+                          text={
+                            groupKey === "lounge"
+                              ? "스터디 라운지"
+                              : dayjsToFormat(cardDate, "M월 D일")
+                          }
+                        />
+                      )}
+                      <Box mb={3}>
+                        <StudyThumbnailCard {...thumbnailCardInfo} />
+                      </Box>
+                    </Box>
+                  );
+                })
               : [1, 2, 3, 4, 5, 6, 7].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
 
             {thumbnailCardInfoArr?.length && (
@@ -159,6 +198,18 @@ function StudyPagePlaceSection({ studySet, date, setDate, hideLounge }: StudyPag
         </Box>
       </Flex>
     </>
+  );
+}
+
+function SectionDateDivider({ text }: { text: string }) {
+  return (
+    <Flex align="center" my={4}>
+      <Box flex={1} h="1px" bg="gray.200" />
+      <Box mx={3} fontSize="12px" fontWeight="bold" color="gray.500" whiteSpace="nowrap">
+        {text}
+      </Box>
+      <Box flex={1} h="1px" bg="gray.200" />
+    </Flex>
   );
 }
 

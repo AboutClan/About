@@ -1,3 +1,5 @@
+import { Box, Button } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -42,6 +44,13 @@ function Admin() {
           isFullSize
           isBlack
         />
+        <Box px={5} pt={3}>
+          <Link href={`/group/${id}/profile`}>
+            <Button w="100%" size="sm" variant="outline" colorScheme="gray">
+              멤버 프로필 모아보기
+            </Button>
+          </Link>
+        </Box>
         {tab === "참여 인원 관리" ? (
           <AdminSection
             groupId={id}

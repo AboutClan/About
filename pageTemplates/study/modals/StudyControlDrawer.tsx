@@ -44,7 +44,7 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
     isDisabled?: boolean;
   }[] = [
     {
-      text: "스터디 신청",
+      text: "스터디 매칭 신청",
       icon: <StudyApplyIcon />,
       func: () => {
         if (isGuest) {
@@ -62,7 +62,7 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
       },
     },
     {
-      text: "스터디 개설",
+      text: "직접 스터디 개설",
       icon: <StudyOpenIcon />,
       func: () => {
         router.push(
@@ -77,7 +77,7 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
     },
 
     {
-      text: "실시간 공부 인증",
+      text: "개인 공부 인증",
       icon: <StudyUserCheckIcon color="gray" />,
       func: () => {
         router.push(`/vote/attend/configuration?date=${dayjsToStr(dayjs())}&type=soloRealTimes`);
