@@ -84,7 +84,10 @@ export function GatherThumbnailCard({
   const isAdmin = userInfo?.role === "previliged";
 
   const participantsMember =
-    maxCnt !== 1 && gatherType !== "openGather" && gatherType !== "secretGather"
+    maxCnt !== 1 &&
+    gatherType !== "openGather" &&
+    gatherType !== "secretGather" &&
+    gatherType !== "officialGather"
       ? participants.filter((par) => par.user?._id !== "65df1ddcd73ecfd250b42c89")
       : participants;
 
@@ -175,7 +178,9 @@ export function GatherThumbnailCard({
           <Flex mt={1} alignItems="center" justify="space-between">
             <AvatarGroupsOverwrap
               users={participantsMember?.map((par) =>
-                gatherType === "openGather" || gatherType === "secretGather"
+                gatherType === "openGather" ||
+                gatherType === "secretGather" ||
+                gatherType === "officialGather"
                   ? SECRET_USER_SUMMARY
                   : par.user,
               )}

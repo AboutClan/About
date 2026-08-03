@@ -130,6 +130,7 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
   const hasNoPoint = (userInfo?.point ?? 0) <= 0;
   const diffDate = dayjs(data.date).startOf("d").diff(dayjs().startOf("d"), "d");
 
+  console.log(14, isOpenGather, isParticipant, myGather);
   const getButtonSettings = (): {
     text: string;
     handleFunction?: () => void;
@@ -392,6 +393,7 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
 
   const handleOfficialApply = () => {
     setIsModal(false);
+    sendRegisterForm({ phase: "first" });
     if (data?.googleFormUrl) {
       window.open(data.googleFormUrl, "_blank");
     } else {
@@ -444,7 +446,11 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
           isDrawerUp
           isOverlay
           height={
-            isOpenGather ? 360 + (data?.dateOptions?.length || 0) * 56 : isOfficialGather ? 380 : 432
+            isOpenGather
+              ? 360 + (data?.dateOptions?.length || 0) * 56
+              : isOfficialGather
+              ? 380
+              : 432
           }
           isHideBottom
           setIsModal={() => setIsModal(false)}
@@ -487,7 +493,7 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
             </Box>
           ) : isOfficialGather ? (
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
-              참여 신청하면 <b>구글폼 작성 페이지</b>로 이동해요.
+              참여 신청하면 운영진이 별도로 연락을 드려요
             </Box>
           ) : (
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
@@ -581,7 +587,7 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
                   📝
                 </Box>
                 <Box fontSize="13px" fontWeight="600" color="gray.800" mb={1}>
-                  참여 신청 시 구글폼 작성 페이지로 이동해요
+                  참여 신청 시 구글폼 작성 페이지로 이동!
                 </Box>
                 <Box fontSize="12px" color="gray.500">
                   나이, 성별, 후기 등을 고려해 운영진이 별도로 승인 연락을 드려요
