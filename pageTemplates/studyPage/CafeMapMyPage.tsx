@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -177,7 +177,7 @@ function CafeMapMyPage() {
                 toast("info", "등록한 장소가 없어요");
                 return;
               }
-              toast("info", "8월 1일 오픈 예정이에요!");
+              toast("info", "8월 10일 오픈 예정이에요!");
             }}
           />
           {favorites?.likes?.length ? (
@@ -204,7 +204,7 @@ function CafeMapMyPage() {
                 toast("info", "등록한 장소가 없어요");
                 return;
               }
-              toast("info", "8월 1일 오픈 예정이에요!");
+              toast("info", "8월 10일 오픈 예정이에요!");
             }}
           />
           {favorites?.picks?.length ? (
