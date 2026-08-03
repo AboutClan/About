@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import SlideSectionCol from "../../components/molecules/SlideSectionCol";
@@ -7,16 +8,24 @@ import HomeGatherCol from "./HomeGatherCol";
 
 function HomeGatherSection() {
   const { data: gathers } = useGatherQuery(-1);
-  console.log(2, gathers);
   const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
   const width = windowWidth - 70;
 
-  const firstData = gathers?.slice(0, 6);
-  const secondData = gathers?.slice(6, 12);
-  const thirdData = gathers?.slice(12, 18);
+  // 백엔드에서 [featured 3] + [upcoming 6] + [recentlyOpened 6] 순서의 고정 길이 배열로 내려온다.
+  const featuredData = gathers?.slice(0, 3);
+  const upcomingData = gathers?.slice(3, 9);
+  const recentData = gathers?.slice(9, 15);
 
   return (
     <>
+      <Box px={5}>
+        <SlideSectionCol
+          title="🔥 놓치면 후회하는 About 공식 행사"
+          subTitle="오픈 번개 & 정규모임, 지금 바로 신청하세요!"
+        >
+          <HomeGatherCol gathers={featuredData?.filter((data) => !!data)} isPriority />
+        </SlideSectionCol>
+      </Box>
       <AnimatePresence initial={false}>
         <motion.div
           drag="x"
@@ -33,73 +42,23 @@ function HomeGatherSection() {
             title="오늘 뭐하지? About 번개"
             subTitle="내가 원하는 때, 내 취향대로, 골라서 참여!"
           >
-            <HomeGatherCol gathers={firstData?.slice(0, 3)?.filter((data) => !!data)} isPriority />
+            <HomeGatherCol
+              gathers={upcomingData?.slice(0, 3)?.filter((data) => !!data)}
+              isPriority={false}
+            />
           </SlideSectionCol>
           <SlideSectionCol
             title="오늘 뭐하지? About 번개"
             subTitle="내가 원하는 때, 내 취향대로, 골라서 참여!"
           >
             <HomeGatherCol
-              gathers={firstData?.slice(3, 6)?.filter((data) => !!data)}
+              gathers={upcomingData?.slice(3, 6)?.filter((data) => !!data)}
               isPriority={false}
             />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
-      {/* <AnimatePresence initial={false}>
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: -width, right: 0 }}
-          dragElastic={0.3}
-          style={{
-            marginLeft: "20px",
-            display: "flex",
-            width: "100%",
-            gap: "12px",
-          }}
-        >
-          <SlideSectionCol
-            title="최근 제일 핫했던 About 모임"
-            subTitle="최근 가장 인기가 많았던 모임"
-          >
-            <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
-          </SlideSectionCol>
-          <SlideSectionCol
-            title="요즘 제일 핫했던 About 모임"
-            subTitle="최근 가장 인기가 많았던 모임"
-          >
-            <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
-          </SlideSectionCol>
-        </motion.div>
-      </AnimatePresence> */}
-      {secondData?.filter((data) => !!data)?.length > 4 && (
-        <AnimatePresence initial={false}>
-          <motion.div
-            drag="x"
-            dragConstraints={{ left: -width, right: 0 }}
-            dragElastic={0.3}
-            style={{
-              marginLeft: "20px",
-              display: "flex",
-              width: "100%",
-              gap: "12px",
-            }}
-          >
-            <SlideSectionCol
-              title="마감 임박! 막차 탑승하기"
-              subTitle="곧 마감되는 인기 모임 리스트"
-            >
-              <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
-            </SlideSectionCol>
-            <SlideSectionCol
-              title="마감 임박! 막차 탑승하기"
-              subTitle="곧 마감되는 인기 모임 리스트"
-            >
-              <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
-            </SlideSectionCol>
-          </motion.div>
-        </AnimatePresence>
-      )}
+
       <AnimatePresence initial={false}>
         <motion.div
           drag="x"
@@ -113,13 +72,22 @@ function HomeGatherSection() {
           }}
         >
           <SlideSectionCol
-            title="시선 집중! 최근 HOT했던 인기 모임"
-            subTitle="실제 후기가 증명하는 베스트 인기 모임"
+            title="따끈따끈 방금 개설된 모임"
+            subTitle="가장 최근에 새로 열린 모임이에요"
           >
-            <HomeGatherCol gathers={thirdData?.slice(0, 3)} isPriority={false} />
+            <HomeGatherCol
+              gathers={recentData?.slice(0, 3)?.filter((data) => !!data)}
+              isPriority={false}
+            />
           </SlideSectionCol>
-          <SlideSectionCol title="About 인기 최고 모임" subTitle="요즘 제일 주목받는 모임이에요!">
-            <HomeGatherCol gathers={thirdData?.slice(3, 6)} isPriority={false} />
+          <SlideSectionCol
+            title="따끈따끈 방금 개설된 모임"
+            subTitle="가장 최근에 새로 열린 모임이에요"
+          >
+            <HomeGatherCol
+              gathers={recentData?.slice(3, 6)?.filter((data) => !!data)}
+              isPriority={false}
+            />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
