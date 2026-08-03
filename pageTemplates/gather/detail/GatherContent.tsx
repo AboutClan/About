@@ -12,10 +12,18 @@ interface IGather {
   postImage: string;
   location: IGatherLocation;
   isOpenGather: boolean;
+  isOfficialGather?: boolean;
   date: string;
 }
 
-function GatherContent({ content, postImage, location, isOpenGather, date }: IGather) {
+function GatherContent({
+  content,
+  postImage,
+  location,
+  isOpenGather,
+  isOfficialGather,
+  date,
+}: IGather) {
   return (
     <Flex pt={4} pb={4} flexDir="column">
       <Content>{content}</Content>
@@ -31,8 +39,8 @@ function GatherContent({ content, postImage, location, isOpenGather, date }: IGa
             unoptimized
           />
         </Box>
-      ) : isOpenGather ? (
-        <ProcessGuide date={date} />
+      ) : isOpenGather || isOfficialGather ? (
+        <ProcessGuide date={date} isOfficialGather={isOfficialGather} />
       ) : null}
       <Box px={5} mt={5}>
         {location?.latitude && (

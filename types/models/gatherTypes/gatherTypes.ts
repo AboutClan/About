@@ -41,6 +41,7 @@ export interface IGatherWriting {
   image?: string;
   coverImage?: string;
   kakaoUrl?: string;
+  googleFormUrl?: string;
   isApprovalRequired?: boolean;
   category?: GatherCategory;
   groupId?: string;
@@ -54,7 +55,8 @@ export type GatherCategory =
   | "group"
   | "official"
   | "openGather"
-  | "secretGather";
+  | "secretGather"
+  | "officialGather";
 export type IGatherType = { title: GatherCategoryMain; subtitle?: string };
 
 export type GatherStatus = "open" | "close" | "end" | "pending" | "planned" | "expired"|"today";

@@ -30,11 +30,12 @@ import { birthToAge } from "../../../utils/convertUtils/convertTypes";
 interface IGatherBootmNav {
   data: IGather;
   isOpenGather: boolean;
+  isOfficialGather?: boolean;
 }
 
 type ButtonType = "cancel" | "expire" | "review";
 
-function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
+function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNav) {
   const { id } = useParams<{ id: string }>() || {};
   const router = useRouter();
   const toast = useToast();
@@ -171,6 +172,26 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
           isEnd: true,
         };
       }
+    }
+
+    if (isOfficialGather && !isParticipant && !myGather) {
+      return {
+        text: "참여 신청",
+        handleFunction: () => {
+          if (isGuest) {
+            router.replace({
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                guest: "on",
+              },
+            });
+            return;
+          }
+          setIsModal(true);
+        },
+        isReverse: true,
+      };
     }
 
     switch (data?.status) {
@@ -369,6 +390,15 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
 
   const { text = "", handleFunction, type, isEnd = false, isReverse = false } = getButtonSettings();
 
+  const handleOfficialApply = () => {
+    setIsModal(false);
+    if (data?.googleFormUrl) {
+      window.open(data.googleFormUrl, "_blank");
+    } else {
+      toast("warning", "아직 신청 폼이 준비되지 않았어요. 잠시 후 다시 시도해주세요.");
+    }
+  };
+
   const handleParticipate = (type: "participate" | "apply") => {
     if (isLoading1 || isLoading2) return;
     // if (userInfo?.ticket?.gatherTicket <= 0) {
@@ -413,7 +443,9 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
         <BottomFlexDrawer
           isDrawerUp
           isOverlay
-          height={isOpenGather ? 360 + (data?.dateOptions?.length || 0) * 56 : 432}
+          height={
+            isOpenGather ? 360 + (data?.dateOptions?.length || 0) * 56 : isOfficialGather ? 380 : 432
+          }
           isHideBottom
           setIsModal={() => setIsModal(false)}
         >
@@ -432,6 +464,12 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
                 <br />
                 모임에 참여할까요?
               </>
+            ) : isOfficialGather ? (
+              <>
+                정규모임은 구글폼 작성 후 승인을 통해
+                <br />
+                참여가 확정돼요.
+              </>
             ) : (
               <>
                 {data?.isApprovalRequired
@@ -446,6 +484,10 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
           {isOpenGather ? (
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
               조 편성 후에 참여를 취소하면 <b>2,000P</b>가 차감됩니다.
+            </Box>
+          ) : isOfficialGather ? (
+            <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
+              참여 신청하면 <b>구글폼 작성 페이지</b>로 이동해요.
             </Box>
           ) : (
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
@@ -523,6 +565,29 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
                 </Checkbox>
               </Box>
             </Box>
+          ) : isOfficialGather ? (
+            <Box w="100%" pt={4}>
+              <Flex
+                direction="column"
+                align="center"
+                justify="center"
+                py={8}
+                px={4}
+                bg="gray.50"
+                borderRadius="12px"
+                textAlign="center"
+              >
+                <Box fontSize="28px" mb={2}>
+                  📝
+                </Box>
+                <Box fontSize="13px" fontWeight="600" color="gray.800" mb={1}>
+                  참여 신청 시 구글폼 작성 페이지로 이동해요
+                </Box>
+                <Box fontSize="12px" color="gray.500">
+                  나이, 성별, 후기 등을 고려해 운영진이 별도로 승인 연락을 드려요
+                </Box>
+              </Flex>
+            </Box>
           ) : (
             <Box pt={3}>
               <Image
@@ -538,11 +603,19 @@ function GatherBootmNav({ data, isOpenGather }: IGatherBootmNav) {
               w="full"
               size="lg"
               colorScheme="black"
-              onClick={() => handleParticipate(data?.isApprovalRequired ? "apply" : "participate")}
+              onClick={() =>
+                isOfficialGather
+                  ? handleOfficialApply()
+                  : handleParticipate(data?.isApprovalRequired ? "apply" : "participate")
+              }
               isLoading={isLoading1 || isLoading2}
               isDisabled={isOpenGather && !selectedDates.length}
             >
-              {data?.isApprovalRequired ? "참여 신청" : "참여하기"}
+              {isOfficialGather
+                ? "구글폼 작성하러 가기"
+                : data?.isApprovalRequired
+                ? "참여 신청"
+                : "참여하기"}
             </Button>
             <Button
               my={2}

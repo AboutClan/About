@@ -17,6 +17,7 @@ import { birthToAge } from "../../../utils/convertUtils/convertTypes";
 import GatherDateParticipationChart, {
   IGatherDateParticipationStat,
 } from "./GatherDateParticipationChart";
+import GatherOfficialParticipationChart from "./GatherOfficialParticipationChart";
 
 interface IGatherParticipation {
   data: IGather;
@@ -33,7 +34,10 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   console.log(5, data);
   const isMyGather = data.participants?.some((p) => p.user._id === userInfo?._id);
 
-  const isSecret = gatherType === "openGather" || (gatherType === "secretGather" && !isMyGather);
+  const isSecret =
+    gatherType === "openGather" ||
+    gatherType === "officialGather" ||
+    (gatherType === "secretGather" && !isMyGather);
 
   const findVoterUser = (voter: UserSimpleInfoProps | string) => {
     if (typeof voter !== "string" && (voter as IUser)?.gender) return voter as IUser;
@@ -78,6 +82,12 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
       .join(" · ");
   };
 
+  const getGenderAgeMemo = (par: IGatherParticipants) => {
+    const user = par.user as IUser;
+    const age = birthToAge(user?.birth);
+    return [user?.gender, age ? `${age}세` : null].filter(Boolean).join(" · ");
+  };
+
   const organizerCard = {
     user: isSecret ? SECRET_USER_SUMMARY : (data?.user as IUser),
     memo: isSecret ? "익명 참여자" : (data?.user as IUser).comment,
@@ -92,6 +102,8 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
         memo:
           gatherType === "openGather"
             ? getOpenGatherMemo(par)
+            : gatherType === "officialGather"
+            ? getGenderAgeMemo(par)
             : gatherType === "secretGather" && !isMyGather
             ? `익명 참여자 ${idx + 1}`
             : par.user.comment,
@@ -122,6 +134,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
       {gatherType === "openGather" && !!dateParticipationStats.length && (
         <GatherDateParticipationChart stats={dateParticipationStats} minRequired={5} />
       )}
+      {gatherType === "officialGather" && <GatherOfficialParticipationChart data={data} />}
     </>
   );
 }

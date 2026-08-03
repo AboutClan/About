@@ -14,10 +14,10 @@ import { useChatMutation } from "../../hooks/chat/mutations";
 import { useChatQuery } from "../../hooks/chat/queries";
 import { useKeypadHeight } from "../../hooks/custom/useKeypadHeight";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { BanIcon, DeclareDrawer2 } from "../../pageTemplates/profile/ProfileDetailPage";
 import { transferUserName } from "../../recoils/transferRecoils";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
-import { BanIcon, DeclareDrawer2 } from "../profile/[userId]";
 interface Chat {
   message: string;
   isMine: boolean;

@@ -229,6 +229,15 @@ export const useUserIdToUserInfoQuery = (userId: string, options?: QueryOptions<
     },
     options,
   );
+export const useUserPhoneToUserInfoQuery = (phone: string, options?: QueryOptions<IUser>) =>
+  useQuery<IUser, AxiosError, IUser>(
+    [UID_TO_USER, "phone", phone],
+    async () => {
+      const res = await axios.get<IUser>(`${SERVER_URI}/user/profile/phone/${phone}`);
+      return res.data;
+    },
+    options,
+  );
 export const useUidsToUsersInfoQuery = (uids: string[], options?: QueryOptions<IUser[]>) =>
   useQuery<IUser[], AxiosError, IUser[]>(
     [UID_TO_USER, uids],

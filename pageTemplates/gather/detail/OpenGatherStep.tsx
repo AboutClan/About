@@ -75,41 +75,64 @@ function StepRow({ item, isLast }: { item: StepItem; isLast: boolean }) {
   );
 }
 
-export default function ProcessGuide({ date }: { date: string }) {
+interface ProcessGuideProps {
+  date: string;
+  isOfficialGather?: boolean;
+}
+
+export default function ProcessGuide({ date, isOfficialGather }: ProcessGuideProps) {
   const gatherDate = dayjs(date);
   const mondayOfWeek = gatherDate.subtract((gatherDate.day() + 6) % 7, "day");
   const prevFriday = mondayOfWeek.subtract(3, "day");
   const prevSunday = mondayOfWeek.subtract(1, "day");
 
-  const steps: StepItem[] = [
-    {
-      step: 1,
-      title: "모임에 관심 있는 멤버들의 신청을 먼저 받아요",
-      description: "신청자들의 선택 날짜, 나이, 성별만 공개돼요",
-    },
-    {
-      step: 2,
-      title: "날짜·나이·성별을 고려해 조가 추천돼요",
-      description: "추천된 조원들의 프로필이 공개돼요",
-      date: dayjsToKr(prevFriday),
-    },
-    {
-      step: 3,
-      title: "최종 참여를 확정하면, 톡방이 개설돼요",
-      description: "조 편성 후 불참은 2,000P가 차감될 수 있어요",
-      date: dayjsToKr(prevSunday),
-    },
-    {
-      step: 4,
-      title: "멤버들과 함께 모임을 진행해요!",
-      description: "시간, 장소, 콘텐츠는 운영진이 함께 조율해요",
-    },
-  ];
+  const steps: StepItem[] = isOfficialGather
+    ? [
+        {
+          step: 1,
+          title: "구글폼으로 먼저 신청을 받아요",
+          description: "하단의 신청하기 버튼을 누르면 구글폼으로 연결돼요",
+        },
+        {
+          step: 2,
+          title: "나이·성별·후기 등을 고려해 별도 승인 연락을 드려요",
+          description: "3일 이내에 연락을 받지 못하면 보류 상태예요!",
+        },
+        {
+          step: 3,
+          title: "참여비 입금 후 톡방에 입장해요",
+          description: "상세 내용은 승인자에 한해 별도 안내드려요!",
+        },
+      ]
+    : [
+        {
+          step: 1,
+          title: "모임에 관심 있는 멤버들의 신청을 먼저 받아요",
+          description: "신청자들의 선택 날짜, 나이, 성별만 공개돼요",
+        },
+        {
+          step: 2,
+          title: "날짜·나이·성별을 고려해 조가 추천돼요",
+          description: "추천된 조원들의 프로필이 공개돼요",
+          date: dayjsToKr(prevFriday),
+        },
+        {
+          step: 3,
+          title: "최종 참여를 확정하면, 톡방이 개설돼요",
+          description: "조 편성 후 불참은 2,000P가 차감될 수 있어요",
+          date: dayjsToKr(prevSunday),
+        },
+        {
+          step: 4,
+          title: "멤버들과 함께 모임을 진행해요!",
+          description: "시간, 장소, 콘텐츠는 운영진이 함께 조율해요",
+        },
+      ];
 
   return (
     <Box bg="gray.100" border="var(--border-main)" borderRadius="8px" p={5} py={4} mx={5} mt={5}>
       <Text color="gray.800" fontSize="16px" fontWeight="600" mb={4}>
-        오픈 번개는 이렇게 진행돼요!
+        {isOfficialGather ? "정기모임은 이렇게 진행돼요!" : "오픈 번개는 이렇게 진행돼요!"}
       </Text>
       <VStack spacing={0} align="stretch">
         {steps.map((item, index) => (

@@ -57,6 +57,7 @@ function GatherDetail() {
   });
 
   const isOpenGather = gather?.category === "openGather";
+  const isOfficialGather = gather?.category === "officialGather";
   const isAdmin = (gather?.user as UserSimpleInfoProps)?._id === userInfo?._id;
 
   const groupId = gather?.groupId;
@@ -158,6 +159,7 @@ function GatherDetail() {
                 postImage={postImage}
                 location={gather.location}
                 isOpenGather={isOpenGather}
+                isOfficialGather={isOfficialGather}
                 date={gather.date}
               />
               <Divider />
@@ -179,7 +181,13 @@ function GatherDetail() {
               <GatherComments comments={gather.comments} />
             </Box>
           </Slide>
-          {kakao !== "share" && <GatherBottomNav data={gather} isOpenGather={isOpenGather} />}
+          {kakao !== "share" && (
+            <GatherBottomNav
+              data={gather}
+              isOpenGather={isOpenGather}
+              isOfficialGather={isOfficialGather}
+            />
+          )}
         </>
       ) : (
         <MainLoading />
