@@ -23,7 +23,7 @@ function HomeGatherSection() {
           title="🔥 놓치면 후회하는 About 공식 행사"
           subTitle="오픈 번개 & 정규모임, 지금 바로 신청하세요!"
         >
-          <HomeGatherCol gathers={featuredData?.filter((data) => !!data)} isPriority />
+          <HomeGatherCol gathers={featuredData?.filter((data) => !!data).reverse()} isPriority />
         </SlideSectionCol>
       </Box>
       <AnimatePresence initial={false}>
