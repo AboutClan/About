@@ -13,7 +13,7 @@ interface RegisterInviteProps {
   setDiscount: DispatchNumber;
 }
 
-const CLUB_UID_ARR = ["5006986335", "5006950630"];
+const CLUB_UID_ARR = ["5006986335", "5006950630","20260804"];
 function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: RegisterInviteProps) {
   const toast = useToast();
   const [trigger, setTrigger] = useState(false);
