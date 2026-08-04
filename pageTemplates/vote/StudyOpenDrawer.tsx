@@ -163,7 +163,8 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
                   <Grid templateColumns="repeat(7, 1fr)" rowGap="10px">
                     {weekDates.map((d) => {
                       const dateStr = dayjsToStr(d);
-                      const isOutOfRange = d.isAfter(activeUntil, "day");
+                      const isOutOfRange =
+                        d.isAfter(activeUntil, "day") || d.isBefore(today, "day");
                       return (
                         <Flex key={dateStr} justify="center">
                           <DatePointButton

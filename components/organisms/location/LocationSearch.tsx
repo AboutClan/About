@@ -1,5 +1,5 @@
-import { Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, Portal } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { NaverLocationProps, useNaverLocalQuery } from "../../../hooks/external/queries";
@@ -42,6 +42,34 @@ function LocationSearch({
 
   const [value, setValue] = useState(defaultName || "");
   const [results, setResults] = useState<NaverLocationProps[]>([]);
+  const layoutRef = useRef<HTMLDivElement>(null);
+  const [dropdownRect, setDropdownRect] = useState<{
+    top: number;
+    left: number;
+    width: number;
+  } | null>(null);
+
+  const isOpen = results.length !== 0;
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const updateRect = () => {
+      const el = layoutRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      setDropdownRect({ top: rect.bottom, left: rect.left, width: rect.width });
+    };
+
+    updateRect();
+    window.addEventListener("scroll", updateRect, true);
+    window.addEventListener("resize", updateRect);
+
+    return () => {
+      window.removeEventListener("scroll", updateRect, true);
+      window.removeEventListener("resize", updateRect);
+    };
+  }, [isOpen]);
 
   const { data } = useNaverLocalQuery(value, {
     enabled: isActive && (value !== "" || !hasInitialValue),
@@ -80,7 +108,7 @@ function LocationSearch({
   };
 
   return (
-    <Layout>
+    <Layout ref={layoutRef}>
       <Wrapper>
         <InputGroup
           placeholder={placeHolder || "장소를 검색해 보세요"}
@@ -95,9 +123,18 @@ function LocationSearch({
         />
       </Wrapper>
 
-      <SearchContent isContent={results.length !== 0} isSmall={isSmall} onMouseDown={(e) => e.preventDefault()}>
-        {results.length > 0 && (
-          <>
+      {isOpen && dropdownRect && (
+        <Portal>
+          <SearchContent
+            isSmall={isSmall}
+            onMouseDown={(e) => e.preventDefault()}
+            style={{
+              position: "fixed",
+              top: dropdownRect.top + 8,
+              left: dropdownRect.left,
+              width: dropdownRect.width,
+            }}
+          >
             {results.map((result, idx) => (
               <Item key={idx} onClick={() => onClickItem(result)}>
                 <Box fontSize="13px">{result.title}</Box>
@@ -107,9 +144,9 @@ function LocationSearch({
                 </Box>
               </Item>
             ))}
-          </>
-        )}
-      </SearchContent>
+          </SearchContent>
+        </Portal>
+      )}
     </Layout>
   );
 }
@@ -129,20 +166,15 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const SearchContent = styled.div<{ isContent: boolean; isSmall: boolean }>`
-  display: ${(props) => (props.isContent ? "block" : "none")};
-  position: absolute;
-  top: calc(100% + var(--gap-2));
-  left: 0;
-  right: 0;
-  height: ${(props) => props.isContent && (props.isSmall ? "120px" : "240px")};
+const SearchContent = styled.div<{ isSmall: boolean }>`
+  height: ${(props) => (props.isSmall ? "120px" : "240px")};
   padding: 12px 16px;
   overflow: auto;
-  border: ${(props) => (props.isContent ? "1px solid var(--gray-200)" : null)};
+  border: 1px solid var(--gray-200);
   border-radius: 12px;
   background-color: white;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  z-index: 150;
+  z-index: 4000;
 `;
 
 const Item = styled.div`

@@ -172,7 +172,8 @@ function StudyApplySection({
               {weekDates.map((d) => {
                 const dateStr = dayjsToStr(d);
                 const isMint = !canChange && beforeMyDates?.includes(dateStr);
-                const isOutOfRange = d.isAfter(activeUntil, "day");
+                const isOutOfRange =
+                  d.isAfter(activeUntil, "day") || d.isBefore(today, "day");
                 return (
                   <Flex key={dateStr} justify="center">
                     <DatePointButton

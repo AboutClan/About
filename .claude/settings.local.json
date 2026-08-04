@@ -97,7 +97,8 @@
       "Bash(pkill -f \"PORT=3099\")",
       "Bash(pkill -f \"node dist/main.js\")",
       "Bash(taskkill //PID 35408 //F)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(grep -n \"CFBundleURLSchemes\\\\|about://\\\\|studyabout\\\\|scheme\" -ri . --include=*.json --include=*.plist --include=*.xml --include=*.gradle -r)"
     ]
   }
 }

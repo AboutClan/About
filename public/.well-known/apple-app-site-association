@@ -26,6 +26,10 @@
             "exclude": true
           },
           {
+            "/": "/nice-auth/*",
+            "exclude": true
+          },
+          {
             "/": "*"
           }
         ]
