@@ -21,6 +21,7 @@ import { useStudyMutations } from "../../hooks/custom/StudyHooks";
 import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import { useStudyAttendChangeMutation, useStudyVoteArrMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import CafeMapGuestModal from "../../modals/cafeMap/CafeMapGuestModal";
 import { ModalLayout } from "../../modals/Modals";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
 import { LocationProps } from "../../types/common";
@@ -339,9 +340,15 @@ function StudyNavigation({
   };
 
   const isGuest = useCheckGuest();
+  const [isCafeMapGuestModal, setIsCafeMapGuestModal] = useState(false);
 
   const handleDirectAction = (drawerType: DirectAction) => {
     if (isGuest) {
+      if (isCafeMap) {
+        setIsCafeMapGuestModal(true);
+        return;
+      }
+
       router.replace({
         pathname: router.pathname,
         query: {
@@ -413,6 +420,9 @@ function StudyNavigation({
 
   const navigationProps = getNavigationProps(studyType, myStudyStatus);
 
+  // cafe_user는 "실시간 공부 인증"만 예외적으로 허용하고, 스터디 참여/개설은 계속 막는다.
+  const isNavHidden = isCafeMap && studyType !== "soloRealTimes";
+
   const [isPlaceDrawer, setIsPlaceDrawer] = useState(false);
 
   const myMessage = (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.memo;
@@ -439,7 +449,7 @@ function StudyNavigation({
   return (
     <>
       <Slide isFixed={true} posZero="top" zIndex={200}>
-        {navigationProps && !isCafeMap && (
+        {navigationProps && !isNavHidden && (
           <Flex
             borderTop="var(--border)"
             align="center"
@@ -500,6 +510,11 @@ function StudyNavigation({
               onClick={
                 isGuest
                   ? () => {
+                      if (isCafeMap) {
+                        setIsCafeMapGuestModal(true);
+                        return;
+                      }
+
                       router.replace({
                         pathname: router.pathname,
                         query: {
@@ -629,6 +644,9 @@ function StudyNavigation({
             });
           }}
         />
+      )}
+      {isCafeMapGuestModal && (
+        <CafeMapGuestModal setIsModal={setIsCafeMapGuestModal} />
       )}
     </>
   );

@@ -54,9 +54,9 @@ export default function CafeMapBottomNav() {
     if (activeTab === tab.id) return;
 
     if (tab.id === "map") {
-      router.push("/cafe-map");
+      router.replace("/cafe-map");
     } else {
-      router.push({ pathname: "/cafe-map", query: { tab: tab.id } });
+      router.replace({ pathname: "/cafe-map", query: { tab: tab.id } });
     }
   };
 

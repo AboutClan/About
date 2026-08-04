@@ -33,6 +33,8 @@ export interface IProfileCommentCard {
   isNoBorder?: boolean;
   crownType?: "main" | "sub";
   isStudy?: boolean;
+  isSoloStudy?: boolean;
+  isCafeMap?: boolean;
   pendingType?: "pendingOwner" | "pending" | null;
 }
 
@@ -60,6 +62,8 @@ export default function ProfileCommentCard({
   isNoBorder,
   crownType,
   isStudy,
+  isSoloStudy,
+  isCafeMap,
   pendingType,
 }: IProfileCommentCard) {
   const [isCommentModal, setIsCommentModal] = useState(false);
@@ -80,20 +84,22 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
-
+  console.log(13, isCafeMap, studyUser);
   return (
     <>
       <BlurredPart isBlur={pendingType === "pending"} text="참여 승인 대기중...">
-        <Flex py={3} align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>
+        <Flex py={2.5} align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>
           {leftComponent && <Box mr={4}>{leftComponent}</Box>}
 
           <Flex flex={1} opacity={pendingType === "pendingOwner" ? 0.5 : 1}>
-            <Avatar user={user} size="md1" isLink={isGuest ? false : true} />
+            <Avatar user={user} size="md1" isLink={isCafeMap ? false : !isGuest} />
 
             <Flex direction="column" flex={1} justify="center" ml={3} my={1} minW={0}>
               <Flex align="center" mb={memo || comment ? 1 : 0} overflow="hidden" flexWrap="nowrap">
                 <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
-                  {isGuest
+                  {isCafeMap
+                    ? studyUser?.nickname || user?.name || "익명"
+                    : isGuest
                     ? user?.name.slice(0, 1) + `*` + user?.name.slice(2)
                     : user?.name || "익명"}
                 </Box>
@@ -119,23 +125,24 @@ export default function ProfileCommentCard({
                             {studyUser?.studyIntroduce?.subject}
                           </Box>
                         </StudyPopoverIcon>
-
-                        <StudyPopoverIcon
-                          size="md2"
-                          content={
-                            STUDY_STYLE?.[
-                              studyUser?.studyIntroduce?.studyStyle
+                        {!isSoloStudy && (
+                          <StudyPopoverIcon
+                            size="md2"
+                            content={
+                              STUDY_STYLE?.[
+                                studyUser?.studyIntroduce?.studyStyle
+                                  ?.split(" ")?.[0]
+                                  ?.replace(/^\[|\]$/g, "")
+                              ]
+                            }
+                          >
+                            <Box fontSize="9px" px={1.5} fontWeight={500}>
+                              {studyUser?.studyIntroduce?.studyStyle
                                 ?.split(" ")?.[0]
-                                ?.replace(/^\[|\]$/g, "")
-                            ]
-                          }
-                        >
-                          <Box fontSize="9px" px={1.5} fontWeight={500}>
-                            {studyUser?.studyIntroduce?.studyStyle
-                              ?.split(" ")?.[0]
-                              ?.replace(/^\[|\]$/g, "")}
-                          </Box>
-                        </StudyPopoverIcon>
+                                ?.replace(/^\[|\]$/g, "")}
+                            </Box>
+                          </StudyPopoverIcon>
+                        )}
                       </>
                     )}
                   </>
@@ -155,7 +162,7 @@ export default function ProfileCommentCard({
               </Flex>
 
               <Flex lineHeight="16px" alignItems="center" color="gray.500" fontSize="12px">
-                <Text as="span" noOfLines={1} color="gray.500" fontSize="12px" lineHeight="16px">
+                <Text as="span" noOfLines={2} color="gray.500" fontSize="12px" lineHeight="16px">
                   {text || memo || "코멘트 없음"}
                 </Text>
 

@@ -133,7 +133,7 @@ const MyTextArea = styled.textarea<{ replyName: string }>`
   padding-right: 10px;
   margin-right: 4px;
   overflow-y: auto;
-  font-weight: light;
+  font-weight: 300;
   font-size: 12px;
   color: var(--gray-800); /* 기본 텍스트는 검정색 */
   line-height: 18px;

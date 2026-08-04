@@ -322,6 +322,7 @@ export default function Page() {
                         lat: placeInfo?.location.latitude,
                         lon: placeInfo?.location?.longitude,
                       }}
+                      isCafeMap={isCafeMap}
                     />
                   )}
                 </Box>

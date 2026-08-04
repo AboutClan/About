@@ -188,11 +188,9 @@ export default function StudyPage() {
 
       {modal === "cafe" && <LocationAddDrawer onClose={closeDrawer} />}
 
-      {!isGuest && (
-        <Box mb={20} mt={5}>
-          <StudyControlButton date={date} />
-        </Box>
-      )}
+      <Box mb={20} mt={5}>
+        <StudyControlButton date={date} />
+      </Box>
 
       {modal === "introduce" && <StudyIntroduceDrawer onClose={closeDrawer} />}
     </>

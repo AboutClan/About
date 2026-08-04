@@ -884,6 +884,11 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["안드로이드 앱 출시"],
   },
   {
+    date: "2026-08-04",
+    isCompleted: true,
+    textArr: ["스터디 페이지에 [개인 공부 인증 → 리워드] 기능 추가"],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
     textArr: ["스터디 기능 오픈 (8월 10일)"],

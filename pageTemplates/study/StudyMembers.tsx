@@ -35,6 +35,7 @@ interface IStudyMembers {
   isAttend?: boolean;
   isCrew: boolean;
   coordinates: CoordinatesProps;
+  isCafeMap?: boolean;
 }
 
 export default function StudyMembers({
@@ -42,7 +43,7 @@ export default function StudyMembers({
   date,
   members: prevMembers,
   isAttend,
-
+  isCafeMap,
   coordinates,
 }: IStudyMembers) {
   const userInfo = useUserInfo();
@@ -315,6 +316,8 @@ export default function StudyMembers({
             }
             hasCommentButton={studyType !== "participations" && isAttend}
             isStudy={true}
+            isSoloStudy={studyType === "soloRealTimes"}
+            isCafeMap={isCafeMap}
           />
           {!isOpen && userCardArr.length > 10 && (
             <Button

@@ -103,7 +103,7 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
 
 const ParticipateTime = styled.div<{ isFirst: boolean }>`
   font-size: 11px;
-  font-weight: medium;
+  font-weight: 500;
   line-height: 12px;
 
   margin-left: auto;

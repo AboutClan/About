@@ -25,7 +25,7 @@ const Layout = styled.div<{ isshort: boolean; isNoTop: boolean }>`
   margin-top: ${(props) => (props?.isNoTop ? "8px" : "20px")};
   margin-bottom: ${(props) => (props.isshort || props?.isNoTop ? "20px" : "40px")};
   > span:last-child {
-    font-weight: light;
+    font-weight: 300;
     font-size: 13px;
     line-height: 20px;
     color: var(--gray-600);

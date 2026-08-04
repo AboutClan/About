@@ -7,6 +7,7 @@ import Header from "../../components/layouts/Header";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../../hooks/study/queries";
 import { getSafeAreaBottom } from "../../utils/validationUtils";
+import StudyControlButton from "../vote/StudyControlButton";
 import StudyPageCalendar from "./StudyPageCalendar";
 import StudyPagePlaceSection from "./StudyPagePlaceSection";
 
@@ -56,23 +57,23 @@ export default function CafeMapStudyPage() {
             hideLounge
           />
         </Box>
+        <Box>
+          <StudyControlButton date={date} />
+        </Box>
       </Flex>
 
       {isPopupOpen && (
         <BottomFlexDrawer
           isHideBottom
-          height={512}
+          height={476}
           isDrawerUp
           setIsModal={() => setIsPopupOpen(false)}
           isOverlay
           zIndex={701}
         >
           <Flex flexDir="column" w="full">
-            <Box fontSize="20px" fontWeight={800} mb={1}>
+            <Box fontSize="20px" fontWeight={800} mb={5}>
               🚀 우리 동네 카공 스터디
-            </Box>
-            <Box fontSize="13px" fontWeight={700} color="var(--color-mint)" mb={4}>
-              8월 10일 출시 예정
             </Box>
 
             <Box fontSize="13px" color="gray.700" lineHeight="22px" mb={4}>
@@ -86,7 +87,7 @@ export default function CafeMapStudyPage() {
             <Box
               fontSize="13px"
               color="gray.500"
-              lineHeight="20px"
+              lineHeight="24px"
               bg="gray.50"
               fontWeight={500}
               borderRadius="10px"
@@ -94,9 +95,12 @@ export default function CafeMapStudyPage() {
               py={3}
               mb={4}
             >
-              현재는 프리뷰 서비스로 미리보기만 가능합니다.
-              <br />
-              오픈 후 누구나 이용할 수 있어요!
+              <li>
+                현재는 <b style={{ fontWeight: 500 }}>[실시간 공부 인증]</b>만 이용 가능합니다.
+              </li>
+              <li>
+                <b style={{ fontWeight: 500 }}>[동네 카공 스터디]</b>는 8월 10일 출시 예정
+              </li>
             </Box>
 
             <Box fontSize="14px" fontWeight={700} mb={2}>
@@ -105,7 +109,6 @@ export default function CafeMapStudyPage() {
             <Flex flexDir="column" gap={1.5} mb={5}>
               {[
                 "실명 인증 기반 · 가입비 없음",
-                "스터디 개설 및 참여 신청",
                 "스터디장 & 승인제 시스템",
                 "출석 체크 및 스터디 편의 기능",
                 "노쇼 패널티 시스템 & 모임 후 멤버 평가",

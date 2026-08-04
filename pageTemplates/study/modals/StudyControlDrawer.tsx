@@ -4,11 +4,10 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { StudyUserCheckIcon } from "../../../components/Icons/ControlButtonIcon";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import StudyApplyDrawer from "../../../components/services/study/apply/StudyApplyDrawer";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useCheckGuest } from "../../../hooks/custom/UserHooks";
+import CafeMapGuestModal from "../../../modals/cafeMap/CafeMapGuestModal";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyOpenDrawer from "../../vote/StudyOpenDrawer";
 
@@ -21,7 +20,6 @@ interface StudyControlDrawerProps {
 
 function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
   const isGuest = useCheckGuest();
-  const typeToast = useTypeToast();
   const router = useRouter();
   const pathname = usePathname();
   const isCafeMap = pathname === "/cafe-map";
@@ -29,6 +27,7 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
   const modalParam = searchParams.get("modal") as DrawerType;
 
   const [drawerType, setDrawerType] = useState<DrawerType>(null);
+  const [isCafeMapGuestModal, setIsCafeMapGuestModal] = useState(false);
 
   useEffect(() => {
     if (modalParam) setDrawerType(modalParam);
@@ -36,6 +35,22 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
       setDrawerType(null);
     }
   }, [modalParam]);
+
+  const handleGuest = () => {
+    if (isCafeMap) {
+      setIsCafeMapGuestModal(true);
+      return;
+    }
+
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, guest: "on" },
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
 
   const buttonProps: {
     text: string;
@@ -45,10 +60,10 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
   }[] = [
     {
       text: "스터디 매칭 신청",
-      icon: <StudyApplyIcon />,
+      icon: <StudyApplyIcon isActive={!isCafeMap} />,
       func: () => {
         if (isGuest) {
-          typeToast("guest");
+          handleGuest();
           return;
         }
         router.push(
@@ -63,8 +78,12 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
     },
     {
       text: "직접 스터디 개설",
-      icon: <StudyOpenIcon />,
+      icon: <StudyOpenIcon isActive={!isCafeMap} />,
       func: () => {
+        if (isGuest) {
+          handleGuest();
+          return;
+        }
         router.push(
           { pathname: router.pathname, query: { ...router.query, modal: "open" } },
           undefined,
@@ -78,8 +97,12 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
 
     {
       text: "개인 공부 인증",
-      icon: <StudyUserCheckIcon color="gray" />,
+      icon: <StudyCheckIcon />,
       func: () => {
+        if (isGuest) {
+          handleGuest();
+          return;
+        }
         router.push(`/vote/attend/configuration?date=${dayjsToStr(dayjs())}&type=soloRealTimes`);
       },
     },
@@ -109,10 +132,16 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
             onClick={props.func}
             isDisabled={props?.isDisabled}
           >
-            <Box w="20px" h="20px" mr={4} opacity={0.28}>
+            <Box w="20px" h="20px" mr={4} opacity={0.5}>
               {props.icon}
             </Box>
-            <Box fontSize="13px" color="var(--gray-600)" fontWeight="500">
+            <Box
+              fontSize="13px"
+              color={
+                isCafeMap && props.text !== "개인 공부 인증" ? "var(--gray-400)" : "var(--gray-600)"
+              }
+              fontWeight="regular"
+            >
               {props.text}
             </Box>
           </Button>
@@ -136,34 +165,48 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
           }}
         />
       )}
+      {isCafeMapGuestModal && <CafeMapGuestModal setIsModal={setIsCafeMapGuestModal} />}
     </>
   );
 }
 
-export function StudyApplyIcon() {
+export function StudyApplyIcon({ isActive = true }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      width="20px"
       height="20px"
       viewBox="0 -960 960 960"
-      width="20px"
-      fill="#424242"
+      fill={isActive ? "#424242" : "var(--gray-500)"}
     >
-      <path d="M480-160q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q74 0 126 17t112 52q11 6 16.5 14t5.5 21v418q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-481q15 5 29.5 11t28.5 14q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59Zm140-240v-440l120-40v440l-120 40Z" />
+      <path d="M287-687q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47Zm353 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T584-952q14-5 28-6.5t28-1.5q66 0 113 47t47 113q0 66-47 113t-113 47Zm120 480q-83 0-141.5-58.5T560-360q0-84 58.5-142T760-560q84 0 142 58t58 142q0 83-58 141.5T760-160Zm-28-110 141-142-28-28-113 113-57-57-28 29 85 85ZM80-320v-112q0-34 17.5-62.5T144-538q62-31 126-46.5T400-600q45 0 89 7t88 22q-54 47-78 113.5T483-320H80Z" />
     </svg>
   );
 }
 
-export function StudyOpenIcon() {
+export function StudyOpenIcon({ isActive = true }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      width="20px"
       height="20px"
       viewBox="0 -960 960 960"
+      fill={isActive ? "#424242" : "var(--gray-500)"}
+    >
+      <path d="M720-160h-80q-17 0-28.5-11.5T600-200q0-17 11.5-28.5T640-240h80v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80h80q17 0 28.5 11.5T920-200q0 17-11.5 28.5T880-160h-80v80q0 17-11.5 28.5T760-40q-17 0-28.5-11.5T720-80v-80Zm-600 0q-17 0-28.5-11.5T80-200v-200h-7q-19 0-31-14.5T34-448l40-200q3-14 14-23t25-9h534q14 0 25 9t14 23l40 200q4 19-8 33.5T687-400h-7v80q0 17-11.5 28.5T640-280q-17 0-28.5-11.5T600-320v-80H440v200q0 17-11.5 28.5T400-160H120Zm40-80h200v-160H160v160Zm-40-480q-17 0-28.5-11.5T80-760q0-17 11.5-28.5T120-800h520q17 0 28.5 11.5T680-760q0 17-11.5 28.5T640-720H120Z" />
+    </svg>
+  );
+}
+export function StudyCheckIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
       width="20px"
+      height="20px"
+      viewBox="0 -960 960 960"
       fill="#424242"
     >
-      <path d="M238-200q-100-5-149-42T40-349q0-65 53.5-105.5T242-503q39-3 58.5-12.5T320-542q0-26-29.5-39T193-600l7-80q103 8 151.5 41.5T400-542q0 53-38.5 83T248-423q-64 5-96 23.5T120-349q0 35 28 50.5t94 18.5l-4 80Zm317-30L390-395l345-345q20-20 47.5-20t47.5 20l70 70q20 20 20 47.5T900-575L555-230Zm-196 70q-17 4-30-9t-9-30l31-151 158 158-150 32Z" />
+      <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q48 0 93.5 11t87.5 32q15 8 19.5 24t-5.5 30q-10 14-26.5 18t-32.5-4q-32-15-66.5-23t-69.5-8q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-8-.5-15.5T798-511q-2-17 6.5-32.5T830-564q16-5 30 3t16 24q2 14 3 28t1 29q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-56-328 372-373q11-11 27.5-11.5T852-781q11 11 11 28t-11 28L452-324q-12 12-28 12t-28-12L282-438q-11-11-11-28t11-28q11-11 28-11t28 11l86 86Z" />
     </svg>
   );
 }

@@ -257,6 +257,14 @@ const theme = extendTheme({
   fonts: {
     body: `"Pretendard", sans-serif`,
   },
+  fontWeights: {
+    light: 300,
+    regular: 400,
+    normal: 400,
+    medium: 500,
+    semibold: 600,
+    bold: 700,
+  },
   components: {
     Badge: {
       baseStyle: {

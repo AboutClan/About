@@ -191,7 +191,7 @@ const Title = styled(SingleLineText)<{ isBig: boolean }>`
 const Subtitle = styled(SingleLineText)`
   color: var(--gray-500);
   font-size: 12px;
-  font-weight: regular;
+  font-weight: 400;
   line-height: 18px;
   margin-bottom: 12px;
 `;

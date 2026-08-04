@@ -6,11 +6,15 @@ interface IProfileCardColumn {
   changeComment?: (comment: string) => void;
   hasCommentButton: boolean;
   isStudy?: boolean;
+  isSoloStudy?: boolean;
+  isCafeMap?: boolean;
 }
 export default function ProfileCardColumn({
   userCardArr,
   hasCommentButton,
   isStudy,
+  isSoloStudy,
+  isCafeMap,
 }: IProfileCardColumn) {
   return (
     <Layout>
@@ -27,6 +31,8 @@ export default function ProfileCardColumn({
           crownType={userCard?.crownType}
           isNoBorder={idx === userCardArr.length - 1}
           isStudy={isStudy}
+          isSoloStudy={isSoloStudy}
+          isCafeMap={isCafeMap}
           pendingType={userCard?.pendingType}
         />
       ))}

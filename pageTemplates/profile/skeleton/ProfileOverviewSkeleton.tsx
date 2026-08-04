@@ -99,7 +99,7 @@ const RelationItem = styled.div`
   > span:first-child {
     font-size: 10px;
     color: var(--gray-600);
-    font-weight: light;
+    font-weight: 300;
     margin-bottom: 8px;
   }
   > span:last-child {
