@@ -36,7 +36,13 @@ function HomeInitialSetting() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const allowedHosts = ["xn--ob0b42knwutje.com", "www.xn--ob0b42knwutje.com", "카공지도.com"];
+    const allowedHosts = [
+      "xn--ob0b42knwutje.com",
+      "www.xn--ob0b42knwutje.com",
+      "카공지도.com",
+      "study-about.club",
+      "www.study-about.club",
+    ];
 
     const isValidHost = allowedHosts.includes(window.location.hostname);
 
@@ -50,7 +56,7 @@ function HomeInitialSetting() {
 
       if (!isKakaoInApp) return;
 
-      // Android
+      // Android: 크롬으로 강제 이동 (카카오톡 인앱 브라우저 자체 툴바를 벗어남)
       if (/android/i.test(userAgent)) {
         window.location.href =
           "intent://" +
@@ -60,7 +66,8 @@ function HomeInitialSetting() {
       }
 
       // iOS
-      window.location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(currentUrl);
+      window.location.href =
+        "kakaotalk://web/openExternal?url=" + encodeURIComponent(currentUrl);
     };
 
     openExternalBrowser();
@@ -189,9 +196,10 @@ function HomeInitialSetting() {
     const dismissed = sessionStorage.getItem("dismiss_app_download_modal") === "1";
 
     if (dismissed) return;
+    if (isGuest !== false) return;
 
     setIsWeb(isMobileWeb());
-  }, []);
+  }, [isGuest]);
 
   const closeModal = () => {
     sessionStorage.setItem("dismiss_app_download_modal", "1");
@@ -203,7 +211,7 @@ function HomeInitialSetting() {
       {userInfo && !isGuest && !isLegacyApp && <UserSettingPopUp user={userInfo} />}
       {/* <GlobalStyle /> */}
       {isLegacyApp && isApp() && <ForceUpdateModal onClose={() => setIsLegacyApp(false)} />}
-      {isWeb && <AppDownloadModal onClose={closeModal} />}
+      {isWeb && isGuest === false && <AppDownloadModal onClose={closeModal} />}
     </>
   );
 }

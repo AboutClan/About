@@ -7,10 +7,14 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { useHandleMove } from "../@natives/useHandleBottomNav";
+import { useEverytimeAndroidInAppBrowser } from "../hooks/custom/useEverytimeAndroidInAppBrowser";
 import { useCheckGuest } from "../hooks/custom/UserHooks";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { dayjsToStr } from "../utils/dateTimeUtils";
-import { getSafeAreaBottom } from "../utils/validationUtils";
+import {
+  BOTTOM_NAV_HEIGHT_PX,
+  getBottomNavSafeAreaBottom,
+} from "../utils/validationUtils";
 import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon } from "./Icons/BottomNavIcons";
 import { UserIcon } from "./Icons/UserIcons";
 
@@ -32,16 +36,18 @@ export default function BottomNav({ hasBottomNav }: { hasBottomNav: boolean }) {
   const router = useRouter();
   const pathname = router.pathname;
   const asPath = router.asPath;
+  const isEverytimeAndroidInApp = useEverytimeAndroidInAppBrowser();
 
   return (
     <Flex
       w="full"
       pos="fixed"
       bottom="0"
-      h={getSafeAreaBottom(52)}
+      h={`${BOTTOM_NAV_HEIGHT_PX}px`}
       bg="white"
       zIndex={600}
-      pb={getSafeAreaBottom(0)}
+      pb={getBottomNavSafeAreaBottom(isEverytimeAndroidInApp)}
+      boxSizing="content-box"
       borderTop={hasBottomNav ? "var(--border-main)" : "var(--border)"}
       maxW="var(--max-width)"
       m="0 auto"

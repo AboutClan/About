@@ -9,14 +9,21 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
 import BottomNav from "../../components/BottomNav";
+// TODO(remove-before-prod): TEMP DIAGNOSTIC — 확인 후 이 import와 아래 <SafeAreaDebugOverlay /> 렌더 라인만 삭제하면 제거됨.
+import SafeAreaDebugOverlay from "../../components/dev/SafeAreaDebugOverlay";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
+import {
+  EverytimeAndroidInAppBrowserContext,
+  useDetectEverytimeAndroidInAppBrowser,
+} from "../../hooks/custom/useEverytimeAndroidInAppBrowser";
 import { clearAuthIntent, isAuthIntentActive } from "../../utils/authIntentUtils";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
+import { getBottomNavTotalHeight } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 
@@ -47,6 +54,9 @@ function Layout({ children }: ILayout) {
 
   const { data: session, status } = useSession();
   const token = useToken();
+  // 이 값을 계산하는 유일한 지점. BottomNav/CafeMapBottomNav는 이 값을 다시 계산하지 않고
+  // 아래 EverytimeAndroidInAppBrowserContext.Provider를 통해 그대로 전달받는다.
+  const isEverytimeAndroidInApp = useDetectEverytimeAndroidInAppBrowser();
 
   useDeepLink({ token });
 
@@ -194,7 +204,9 @@ function Layout({ children }: ILayout) {
 
   console.log(42, token, isPublicPage);
   return (
-    <>
+    // BottomNav/CafeMapBottomNav가 이 값을 다시 계산하지 않고 여기서 계산한 값을
+    // 그대로 전달받도록, children까지 포함해 트리 전체를 감싼다.
+    <EverytimeAndroidInAppBrowserContext.Provider value={isEverytimeAndroidInApp}>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
 
       {(token || isPublicPage) && (
@@ -215,7 +227,11 @@ function Layout({ children }: ILayout) {
                   !(currentSegment?.[0] === "user" && currentSegment?.[1])
                 ? {
                     paddingTop: `56px`,
-                    paddingBottom: `var(--bottom-nav-height)`,
+                    // BottomNav의 실제 점유 높이(52px + 필요한 경우의 safe-area)와
+                    // 동일한 계산값을 사용해, 마지막 콘텐츠가 BottomNav에 가려지지 않게 한다.
+                    // isEverytimeAndroidInApp은 이 컴포넌트에서 한 번만 계산되고
+                    // Context로 BottomNav/CafeMapBottomNav에도 그대로 전달되므로 어긋나지 않는다.
+                    paddingBottom: getBottomNavTotalHeight(isEverytimeAndroidInApp),
                   }
                 : {}),
               boxShadow: "0 1px 0 rgba(0,0,0,0.05)",
@@ -230,11 +246,14 @@ function Layout({ children }: ILayout) {
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
 
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
+
+          {/* TEMP DIAGNOSTIC — 확인 후 이 라인과 위 import만 삭제하면 제거됨 */}
+          <SafeAreaDebugOverlay />
         </>
       )}
 
       <BaseScript />
-    </>
+    </EverytimeAndroidInAppBrowserContext.Provider>
   );
 }
 

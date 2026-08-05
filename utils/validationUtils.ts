@@ -107,8 +107,32 @@ export const getSafeAreaBottom = (basePx = 0) => {
   // 모바일 웹(iOS·Android 공통): env(safe-area-inset-bottom) 적용
   // iOS: 홈 인디케이터 영역
   // Android: 시스템 내비게이션 바 (엣지-투-엣지 모드에서 non-zero)
+  //
+  // 주의: 에브리타임 Android 인앱 브라우저는 실제로 필요하지 않은데도
+  // env(safe-area-inset-bottom)에 값을 잘못 채워보내는 문제가 실기기에서 확인되었다.
+  // 그 환경에서만 safe-area를 건너뛰어야 한다면, 이 함수 전역을 바꾸지 말고
+  // `isEverytimeAndroidInAppBrowser()`(utils/appEnvUtils.ts)로 해당 컴포넌트에서만 분기할 것.
   return `calc(${basePx}px + env(safe-area-inset-bottom, 0px))`;
 };
+
+// BottomNav(및 CafeMapBottomNav)의 실제 점유 높이(52px + 필요한 경우의 safe-area)를
+// 계산하는 단일 소스. 두 값(52, safe-area 분기 로직)이 흩어져 있으면 BottomNav를
+// 렌더링하는 컴포넌트와 그 아래 콘텐츠 wrapper의 하단 padding이 서로 어긋나기 쉽다.
+export const BOTTOM_NAV_HEIGHT_PX = 52;
+
+// isEverytimeAndroidInAppBrowser()를 함수 내부에서 직접 호출하지 않고 인자로 받는다.
+// (서버/최초 클라이언트 렌더에서는 navigator를 알 수 없으므로 항상 기본값(false)을 써야
+// 서버-클라이언트 렌더 결과가 일치한다. 호출부는 useIsEverytimeAndroidInAppBrowser() 훅으로
+// 마운트 이후에만 실제 값을 얻어 넘겨야 하며, BottomNav와 Layout 모두 같은 훅 결과를 써서
+// 두 값이 서로 다른 시점에 바뀌지 않도록 한다.)
+export const getBottomNavSafeAreaBottom = (isEverytimeAndroidInApp = false) => {
+  if (isEverytimeAndroidInApp) return "0px";
+  return getSafeAreaBottom(0);
+};
+
+export const getBottomNavTotalHeight = (isEverytimeAndroidInApp = false) =>
+  `calc(${BOTTOM_NAV_HEIGHT_PX}px + ${getBottomNavSafeAreaBottom(isEverytimeAndroidInApp)})`;
+
 export const isMobileWeb = (): boolean => {
   if (typeof window === "undefined") return false;
 
