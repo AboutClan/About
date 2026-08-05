@@ -9,8 +9,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "../../@natives/useDeepLink";
 import BottomNav from "../../components/BottomNav";
-// TODO(remove-before-prod): TEMP DIAGNOSTIC — 확인 후 이 import와 아래 <SafeAreaDebugOverlay /> 렌더 라인만 삭제하면 제거됨.
-import SafeAreaDebugOverlay from "../../components/dev/SafeAreaDebugOverlay";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
@@ -246,9 +244,6 @@ function Layout({ children }: ILayout) {
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
 
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
-
-          {/* TEMP DIAGNOSTIC — 확인 후 이 라인과 위 import만 삭제하면 제거됨 */}
-          <SafeAreaDebugOverlay />
         </>
       )}
 

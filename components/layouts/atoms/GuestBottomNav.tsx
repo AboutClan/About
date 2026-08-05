@@ -3,15 +3,17 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useEverytimeAndroidInAppBrowser } from "../../../hooks/custom/useEverytimeAndroidInAppBrowser";
 import { ModalLayout } from "../../../modals/Modals";
 import { isWebView } from "../../../utils/appEnvUtils";
 import { setAuthIntent } from "../../../utils/authIntentUtils";
 import { navigateExternalLink } from "../../../utils/navigateUtils";
-import { getSafeAreaBottom } from "../../../utils/validationUtils";
+import { getBottomNavSafeAreaBottom } from "../../../utils/validationUtils";
 function GuestBottomNav() {
   const { data: session } = useSession();
   const toast = useToast();
   const [isModal, setIsModal] = useState(false);
+  const isEverytimeAndroidInApp = useEverytimeAndroidInAppBrowser();
   const customSignin = async () => {
     if (isWebView() && (!session || session?.user?.role === "guest")) {
       setIsModal(true);
@@ -27,8 +29,10 @@ function GuestBottomNav() {
       <Flex
         position="fixed"
         bottom="0"
-        transform={`translateY(calc(-1 * var(--bottom-nav-height) + 1px - ${getSafeAreaBottom(
-          0,
+        // BottomNav가 실제로 차지하는 safe-area 여백(getBottomNavSafeAreaBottom)과
+        // 반드시 같은 값을 써야 둘 사이에 틈이 생기지 않는다.
+        transform={`translateY(calc(-1 * var(--bottom-nav-height) + 1px - ${getBottomNavSafeAreaBottom(
+          isEverytimeAndroidInApp,
         )}))`}
         w="100%"
         maxW="var(--max-width)"
