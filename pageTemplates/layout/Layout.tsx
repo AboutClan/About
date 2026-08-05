@@ -13,10 +13,7 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import {
-  EverytimeAndroidInAppBrowserContext,
-  useDetectEverytimeAndroidInAppBrowser,
-} from "../../hooks/custom/useEverytimeAndroidInAppBrowser";
+import { useAppSafeAreaBottomCssVar } from "../../hooks/custom/useAppSafeAreaBottomCssVar";
 import { clearAuthIntent, isAuthIntentActive } from "../../utils/authIntentUtils";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
@@ -52,9 +49,22 @@ function Layout({ children }: ILayout) {
 
   const { data: session, status } = useSession();
   const token = useToken();
-  // 이 값을 계산하는 유일한 지점. BottomNav/CafeMapBottomNav는 이 값을 다시 계산하지 않고
-  // 아래 EverytimeAndroidInAppBrowserContext.Provider를 통해 그대로 전달받는다.
-  const isEverytimeAndroidInApp = useDetectEverytimeAndroidInAppBrowser();
+  // document.documentElement에 --app-safe-area-bottom CSS 변수를 설정한다.
+  // getSafeAreaBottom()을 쓰는 모든 컴포넌트가 이 변수를 상속받아 쓰므로,
+  // 컴포넌트마다 에브리타임 분기를 따로 둘 필요가 없다.
+  const isEverytimeAndroidInApp = useAppSafeAreaBottomCssVar();
+
+  useEffect(() => {
+    if (!isEverytimeAndroidInApp) return;
+    if (sessionStorage.getItem("dismiss_everytime_browser_guide") === "1") return;
+
+    sessionStorage.setItem("dismiss_everytime_browser_guide", "1");
+    toast(
+      "info",
+      "더 안정적으로 이용하기 위해서는 우측 상단의 점 2개 → 브라우저에서 열기를 눌러주세요.",
+      6000,
+    );
+  }, [isEverytimeAndroidInApp, toast]);
 
   useDeepLink({ token });
 
@@ -202,9 +212,7 @@ function Layout({ children }: ILayout) {
 
   console.log(42, token, isPublicPage);
   return (
-    // BottomNav/CafeMapBottomNav가 이 값을 다시 계산하지 않고 여기서 계산한 값을
-    // 그대로 전달받도록, children까지 포함해 트리 전체를 감싼다.
-    <EverytimeAndroidInAppBrowserContext.Provider value={isEverytimeAndroidInApp}>
+    <>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
 
       {(token || isPublicPage) && (
@@ -225,11 +233,10 @@ function Layout({ children }: ILayout) {
                   !(currentSegment?.[0] === "user" && currentSegment?.[1])
                 ? {
                     paddingTop: `56px`,
-                    // BottomNav의 실제 점유 높이(52px + 필요한 경우의 safe-area)와
-                    // 동일한 계산값을 사용해, 마지막 콘텐츠가 BottomNav에 가려지지 않게 한다.
-                    // isEverytimeAndroidInApp은 이 컴포넌트에서 한 번만 계산되고
-                    // Context로 BottomNav/CafeMapBottomNav에도 그대로 전달되므로 어긋나지 않는다.
-                    paddingBottom: getBottomNavTotalHeight(isEverytimeAndroidInApp),
+                    // BottomNav의 실제 점유 높이(52px + safe-area)와 동일한 계산값을 사용해
+                    // 마지막 콘텐츠가 BottomNav에 가려지지 않게 한다. safe-area 자체는
+                    // --app-safe-area-bottom CSS 변수를 통해 전달되므로 여기서 별도 분기가 필요 없다.
+                    paddingBottom: getBottomNavTotalHeight(),
                   }
                 : {}),
               boxShadow: "0 1px 0 rgba(0,0,0,0.05)",
@@ -248,7 +255,7 @@ function Layout({ children }: ILayout) {
       )}
 
       <BaseScript />
-    </EverytimeAndroidInAppBrowserContext.Provider>
+    </>
   );
 }
 

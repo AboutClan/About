@@ -2,11 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-import { useEverytimeAndroidInAppBrowser } from "../hooks/custom/useEverytimeAndroidInAppBrowser";
-import {
-  BOTTOM_NAV_HEIGHT_PX,
-  getBottomNavSafeAreaBottom,
-} from "../utils/validationUtils";
+import { BOTTOM_NAV_HEIGHT_PX, getSafeAreaBottom } from "../utils/validationUtils";
 
 type TabId = "map" | "feed" | "study" | "bookmark" | "profile";
 
@@ -52,7 +48,6 @@ export default function CafeMapBottomNav() {
     !!session && session.user?.role !== "guest" && session.user?.role !== "newUser";
   console.log(session, isLoggedIn);
   const activeTab: TabId = (router.query.tab as TabId) || "map";
-  const isEverytimeAndroidInApp = useEverytimeAndroidInAppBrowser();
 
   const handleTabClick = (tab: TabItem) => {
     if (tab.isComingSoon) return;
@@ -73,7 +68,7 @@ export default function CafeMapBottomNav() {
       h={`${BOTTOM_NAV_HEIGHT_PX}px`}
       bg="white"
       zIndex={10}
-      pb={getBottomNavSafeAreaBottom(isEverytimeAndroidInApp)}
+      pb={getSafeAreaBottom(0)}
       boxSizing="content-box"
       borderTop="var(--border-main)"
       maxW="var(--max-width)"

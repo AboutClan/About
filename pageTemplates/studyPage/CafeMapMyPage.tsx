@@ -10,14 +10,13 @@ import Header from "../../components/layouts/Header";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useKakaoShare } from "../../hooks/custom/KakaoShareHook2";
-import { useEverytimeAndroidInAppBrowser } from "../../hooks/custom/useEverytimeAndroidInAppBrowser";
 import { useMyPlaceFavoritesQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import CafeMapSecedeModal from "../../modals/cafeMap/CafeMapSecedeModal";
 import RequestSuggestModal from "../../modals/userRequest/RequestSuggestModal";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getBottomNavSafeAreaBottom } from "../../utils/validationUtils";
+import { getSafeAreaBottom } from "../../utils/validationUtils";
 import UserGatherSectionReview from "../user/UserGatherSectionReview";
 import UserProfileBar from "../user/UserProfileBar";
 import UserReviewBar from "../user/UserReviewBar";
@@ -30,7 +29,6 @@ function CafeMapMyPage() {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
   const isGuest = userInfo?.role === "guest";
-  const isEverytimeAndroidInApp = useEverytimeAndroidInAppBrowser();
   const { data: favorites } = useMyPlaceFavoritesQuery();
   const { shareToKakao } = useKakaoShare();
   const [showTempDrawer, setShowTempDrawer] = useState(false);
@@ -63,7 +61,7 @@ function CafeMapMyPage() {
         top={0}
         left={0}
         right={0}
-        bottom={`calc(52px + ${getBottomNavSafeAreaBottom(isEverytimeAndroidInApp)})`}
+        bottom={`calc(52px + ${getSafeAreaBottom(0)})`}
         overflowY="auto"
         bg="white"
         maxW="var(--max-width)"
@@ -422,7 +420,6 @@ function ChevronRightIcon() {
 
 function CafeMapGuestBottomNav() {
   const router = useRouter();
-  const isEverytimeAndroidInApp = useEverytimeAndroidInAppBrowser();
 
   return (
     <Flex
@@ -430,9 +427,7 @@ function CafeMapGuestBottomNav() {
       bottom="0"
       // CafeMapBottomNav가 실제로 차지하는 safe-area 여백과 같은 값을 써야
       // 둘 사이에 틈이 생기지 않는다.
-      transform={`translateY(calc(-1 * var(--bottom-nav-height) + 1px - ${getBottomNavSafeAreaBottom(
-        isEverytimeAndroidInApp,
-      )}))`}
+      transform={`translateY(calc(-1 * var(--bottom-nav-height) + 1px - ${getSafeAreaBottom(0)}))`}
       w="100%"
       maxW="var(--max-width)"
       bg="gray.50"

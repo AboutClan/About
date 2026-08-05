@@ -887,7 +887,9 @@ function StudyPageMap({
         <>
           <ScreenOverlay zIndex={2000} />
           <MainLoading
-            top={isCafeMap ? "calc(50dvh + 30px - env(safe-area-inset-bottom, 0px) / 2)" : "50%"}
+            top={
+              isCafeMap ? `calc(50dvh + 30px - (${getSafeAreaBottom(0)}) / 2)` : "50%"
+            }
           />
         </>
       )}

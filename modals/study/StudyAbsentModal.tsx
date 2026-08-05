@@ -58,7 +58,7 @@ function StudyAbsentModal({ type, setIsModal }: StudyAbsentModalProps) {
       text: "불참",
       func: () => {
         if (type === "study") absentStudy({ message: value });
-        else absentRealTimes();
+        else absentRealTimes({ message: value });
       },
       isLoading: isLoading1 || isLoading2,
     },

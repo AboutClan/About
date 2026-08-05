@@ -100,38 +100,30 @@ export const isApp = (): boolean => {
   return !!(window as any).ReactNativeWebView;
 };
 
-export const getSafeAreaBottom = (basePx = 0) => {
-  // 앱(WebView)은 네이티브 컨테이너가 safe area를 처리하므로 base만 반환
-  if (isApp()) return `${basePx}px`;
+// 서비스 전체가 공유하는 하단 safe-area 값. 실제 값은 컴포넌트별로 계산하지 않고
+// document.documentElement의 CSS 커스텀 프로퍼티 하나로만 관리한다
+// (설정: hooks/custom/useAppSafeAreaBottomCssVar.ts, 호출: Layout 최상단 1곳).
+//
+// - 기본(iOS 웹/PWA, Android Chrome·Samsung Internet·PWA 등): env(safe-area-inset-bottom, 0px)
+// - 에브리타임 Android 인앱 브라우저: 0px
+//   (실기기 진단 결과 env(safe-area-inset-bottom)이 48px으로 잘못 잡히는데, 실제로는
+//   WebView viewport가 이미 시스템 내비게이션 영역 위에서 끝나 이 48px이 중복 적용됨)
+// - 어바웃 RN WebView: 0px (네이티브 컨테이너가 이미 처리)
+//
+// 두 번째 인자(env(safe-area-inset-bottom, 0px))는 CSS 변수가 아직 설정되지 않은 시점
+// (SSR, 최초 페인트 이전)의 fallback이며, 이 값은 "기본" 케이스와 동일하므로 안전하다.
+export const APP_SAFE_AREA_BOTTOM_CSS_VAR = "--app-safe-area-bottom";
 
-  // 모바일 웹(iOS·Android 공통): env(safe-area-inset-bottom) 적용
-  // iOS: 홈 인디케이터 영역
-  // Android: 시스템 내비게이션 바 (엣지-투-엣지 모드에서 non-zero)
-  //
-  // 주의: 에브리타임 Android 인앱 브라우저는 실제로 필요하지 않은데도
-  // env(safe-area-inset-bottom)에 값을 잘못 채워보내는 문제가 실기기에서 확인되었다.
-  // 그 환경에서만 safe-area를 건너뛰어야 한다면, 이 함수 전역을 바꾸지 말고
-  // `isEverytimeAndroidInAppBrowser()`(utils/appEnvUtils.ts)로 해당 컴포넌트에서만 분기할 것.
-  return `calc(${basePx}px + env(safe-area-inset-bottom, 0px))`;
-};
+export const getSafeAreaBottom = (basePx = 0) =>
+  `calc(${basePx}px + var(${APP_SAFE_AREA_BOTTOM_CSS_VAR}, env(safe-area-inset-bottom, 0px)))`;
 
-// BottomNav(및 CafeMapBottomNav)의 실제 점유 높이(52px + 필요한 경우의 safe-area)를
-// 계산하는 단일 소스. 두 값(52, safe-area 분기 로직)이 흩어져 있으면 BottomNav를
-// 렌더링하는 컴포넌트와 그 아래 콘텐츠 wrapper의 하단 padding이 서로 어긋나기 쉽다.
+// BottomNav(및 CafeMapBottomNav)의 실제 점유 높이(52px + safe-area)를 계산하는 단일 소스.
+// 두 값(52, safe-area)이 흩어져 있으면 BottomNav를 렌더링하는 컴포넌트와 그 아래
+// 콘텐츠 wrapper의 하단 padding이 서로 어긋나기 쉽다.
 export const BOTTOM_NAV_HEIGHT_PX = 52;
 
-// isEverytimeAndroidInAppBrowser()를 함수 내부에서 직접 호출하지 않고 인자로 받는다.
-// (서버/최초 클라이언트 렌더에서는 navigator를 알 수 없으므로 항상 기본값(false)을 써야
-// 서버-클라이언트 렌더 결과가 일치한다. 호출부는 useIsEverytimeAndroidInAppBrowser() 훅으로
-// 마운트 이후에만 실제 값을 얻어 넘겨야 하며, BottomNav와 Layout 모두 같은 훅 결과를 써서
-// 두 값이 서로 다른 시점에 바뀌지 않도록 한다.)
-export const getBottomNavSafeAreaBottom = (isEverytimeAndroidInApp = false) => {
-  if (isEverytimeAndroidInApp) return "0px";
-  return getSafeAreaBottom(0);
-};
-
-export const getBottomNavTotalHeight = (isEverytimeAndroidInApp = false) =>
-  `calc(${BOTTOM_NAV_HEIGHT_PX}px + ${getBottomNavSafeAreaBottom(isEverytimeAndroidInApp)})`;
+export const getBottomNavTotalHeight = () =>
+  `calc(${BOTTOM_NAV_HEIGHT_PX}px + ${getSafeAreaBottom(0)})`;
 
 export const isMobileWeb = (): boolean => {
   if (typeof window === "undefined") return false;

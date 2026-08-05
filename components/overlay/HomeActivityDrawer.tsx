@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Grid } from "@chakra-ui/react";
+import { Box, Flex, Grid } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +13,7 @@ import {
   HOME_ACTIVITY_ITEMS,
 } from "../../constants/contents/groupInfo";
 import { HOME_ACTIVITY_INTRO_POPUP_AT } from "../../constants/keys/localStorage";
+import { MODAL_QUEUE_PRIORITY } from "../../constants/modalQueuePriority";
 import {
   SUPPORT_CATEGORY_LABEL,
   SUPPORT_CATEGORY_ORDER,
@@ -20,6 +21,7 @@ import {
   SupportCategory,
   SupportItem,
 } from "../../constants/support";
+import { useSingleModalSlot } from "../../hooks/custom/useSingleModalSlot";
 import { getGroupKeyByValue } from "../../pageTemplates/gather/GatherMain";
 import {
   HOME_ACTIVITY_DRAWER_QUERY_KEY,
@@ -119,7 +121,16 @@ function HomeActivityDrawer({ isNavigationDisabled = false }: HomeActivityDrawer
     sectionRefs.current[category]?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  if (!isOpen) return null;
+  // HomeInitialSetting이 관리하는 홈 화면 팝업들(강제 업데이트, 유저 설정 팝업들, 앱 설치 유도)이
+  // 아직 결정 중이거나 이미 하나를 띄우고 있는 동안에는 이 Drawer가 그 위를 덮어버리지 않도록
+  // 같은 전역 대기열에 후보로 등록한다.
+  const isActive = useSingleModalSlot(
+    "homeActivityDrawer",
+    MODAL_QUEUE_PRIORITY.homeActivityDrawer,
+    isOpen,
+  );
+
+  if (!isActive) return null;
 
   return (
     <RightDrawer
@@ -204,36 +215,6 @@ function ActivityTab({
           공부 · 취미 · 친목 소모임을 한눈에 둘러보세요
         </Box>
       </Box>
-
-      <Flex
-        position="sticky"
-        top={isNavigationDisabled ? "var(--header-h)" : "calc(var(--header-h) + 44px)"}
-        bg="white"
-        zIndex={1}
-        gap={2}
-        py={2}
-        mb={2}
-      >
-        {categorizedItems.map(({ category }) => (
-          <Button
-            key={category}
-            size="sm"
-            h="32px"
-            px={4}
-            borderRadius="full"
-            variant="outline"
-            borderColor="var(--gray-800)"
-            color="var(--gray-800)"
-            fontSize="13px"
-            fontWeight={600}
-            _hover={{ bg: "var(--gray-100)" }}
-            _active={{ bg: "var(--gray-800)", color: "white" }}
-            onClick={() => onClickFilter(category)}
-          >
-            {CATEGORY_LABEL[category]}
-          </Button>
-        ))}
-      </Flex>
 
       {categorizedItems.map(({ category, items }) => (
         <Box
@@ -363,7 +344,11 @@ function BenefitTab({ isNavigationDisabled }: { isNavigationDisabled?: boolean }
                 </Box>
               </Flex>
               {items.map((item) => (
-                <SupportCard key={item.id} item={item} isNavigationDisabled={isNavigationDisabled} />
+                <SupportCard
+                  key={item.id}
+                  item={item}
+                  isNavigationDisabled={isNavigationDisabled}
+                />
               ))}
             </Flex>
             {idx < categorizedItems.length - 1 && (

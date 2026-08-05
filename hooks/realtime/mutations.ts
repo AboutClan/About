@@ -121,12 +121,16 @@ export const useRealTimeCancelMutation = (date: string, options?: MutationOption
       }),
     options,
   );
-export const useRealTimeAbsenceMutation = (date: string, options?: MutationOptions<void>) =>
-  useMutation<void, AxiosError, void>(
-    () =>
-      requestServer<void>({
+export const useRealTimeAbsenceMutation = (
+  date: string,
+  options?: MutationOptions<{ message?: string }, PointInfoProps>,
+) =>
+  useMutation<PointInfoProps, AxiosError, { message?: string }>(
+    ({ message }) =>
+      requestServer<{ absence: boolean; message?: string }, PointInfoProps>({
         method: "patch",
         url: `realtime/${date}/absence`,
+        body: { absence: true, message },
       }),
     options,
   );

@@ -481,7 +481,7 @@ function StudyNavigation({
                     }}
                   />
                 </>
-              ) : (
+              ) : navigationProps.text === "출석 메세지 변경" ? null : (
                 <>
                   <IconTextColButton
                     icon={<XCircleIcon size="md" />}

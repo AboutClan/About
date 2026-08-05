@@ -86,8 +86,8 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
       {isLogoutModal && <AlertModal options={LOGOUT_ALERT_OPTIONS} setIsModal={cancelLogout} />}
 
       {isError && <ErrorUserInfoPopUp setIsModal={setIsError} />}
-
-      {isWriteModal && <WriteDrawer />}
+{/* 
+      {isWriteModal && <WriteDrawer />} */}
 
       {isGuestModal && (
         <ModalLayout
