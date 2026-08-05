@@ -32,25 +32,35 @@ function Participate() {
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useGroupParticipationMutation("post", +id, {
-    onSuccess() {
-      toast("success", "가입이 완료되었습니다.");
+  const { mutate, isLoading: isParticipateLoading } = useGroupParticipationMutation(
+    "post",
+    +id,
+    {
+      onSuccess() {
+        toast("success", "가입이 완료되었습니다.");
 
-      queryClient.invalidateQueries([GROUP_STUDY, id]);
-      router.push(`/group/${id}`);
+        queryClient.invalidateQueries([GROUP_STUDY, id]);
+        router.push(`/group/${id}`);
+      },
     },
-  });
+  );
 
-  const { mutate: sendRegisterForm, isLoading } = useGroupWaitingMutation(+id, {
-    onSuccess() {
-      toast("success", "가입 신청이 완료되었습니다.");
+  const { mutate: sendRegisterForm, isLoading: isRegisterLoading } = useGroupWaitingMutation(
+    +id,
+    {
+      onSuccess() {
+        toast("success", "가입 신청이 완료되었습니다.");
 
-      queryClient.invalidateQueries([GROUP_STUDY, id]);
-      router.push(`/group/${id}`);
+        queryClient.invalidateQueries([GROUP_STUDY, id]);
+        router.push(`/group/${id}`);
+      },
     },
-  });
+  );
+
+  const isLoading = isParticipateLoading || isRegisterLoading;
 
   const onClick = () => {
+    if (isLoading) return;
     if ((userInfo?.point ?? 0) <= 0) {
       toast("warning", "보유 포인트가 없어 가입 신청을 할 수 없습니다. 포인트를 충전해주세요.");
       return;

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 import { ModalLayout } from "../../modals/Modals";
 
-function LimitModal() {
+function LimitModal({ onClose }) {
   const router = useRouter();
 
   return (
@@ -25,7 +25,7 @@ function LimitModal() {
             },
           },
         }}
-        setIsModal={() => {}}
+        setIsModal={() => onClose()}
       >
         <Box as="p">
           어바웃에서는 원활한 모임 운영과 노쇼 방지 등을 위해 서비스 재화로 <b>포인트</b>를 사용하고

@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { LocationProps } from "../../types/common";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -22,16 +22,17 @@ function SearchLocation({
   hasDetail = true,
 }: SearchLocationProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const retryTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   const scrollToInput = () => {
     if (!containerRef.current) return;
-    const OFFSET = 108; // 👈 원하는 만큼 조절 (px)
-    const elementTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({
-      top: elementTop - OFFSET,
-      behavior: "smooth",
-    });
+    containerRef.current.scrollIntoView({ block: "start", behavior: "smooth" });
   };
+
+  useEffect(() => {
+    return () => clearTimeout(retryTimeoutRef.current);
+  }, []);
+
   return (
     <Box ref={containerRef}>
       <LocationSearch
@@ -40,7 +41,21 @@ function SearchLocation({
         isSmall={isSmall}
         placeHolder={placeHolder}
         setIsFocus={(isFocus) => {
-          if (isFocus) scrollToInput(); // ✅ 포커스 true일 때만 올림
+          if (!isFocus) return;
+
+          clearTimeout(retryTimeoutRef.current);
+          scrollToInput();
+
+          // 모바일 키보드가 올라오며 뷰포트가 줄어든 뒤 다시 스크롤해 리스트가 가려지지 않도록 함
+          const visualViewport = window.visualViewport;
+          if (visualViewport) {
+            const handleViewportResize = () => {
+              scrollToInput();
+              visualViewport.removeEventListener("resize", handleViewportResize);
+            };
+            visualViewport.addEventListener("resize", handleViewportResize);
+          }
+          retryTimeoutRef.current = setTimeout(scrollToInput, 300);
         }}
       />
       {hasDetail && placeInfo?.address && (

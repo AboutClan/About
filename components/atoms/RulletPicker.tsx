@@ -1,5 +1,5 @@
 import { motion, useMotionValue } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const ITEM_HEIGHT = 38;
@@ -18,6 +18,7 @@ export default function RulletPicker({
   setRulletIndex,
 }: IRulletPicker) {
   const [index, setIndex] = useState<number>(rulletIndex);
+  const isDraggingRef = useRef(false);
 
   useEffect(() => {
     setIndex(rulletIndex);
@@ -59,6 +60,7 @@ export default function RulletPicker({
   };
 
   const onClick = (idx: number) => {
+    if (isDraggingRef.current) return;
     const targetY = -ITEM_HEIGHT * (idx - 2);
     y.set(targetY);
   };
@@ -73,6 +75,14 @@ export default function RulletPicker({
         }}
         dragElastic={0.2}
         onUpdate={handleUpdate}
+        onDragStart={() => {
+          isDraggingRef.current = true;
+        }}
+        onDragEnd={() => {
+          setTimeout(() => {
+            isDraggingRef.current = false;
+          }, 100);
+        }}
         style={{ y }}
       >
         {rulletItemArr.map((item, idx) => (
