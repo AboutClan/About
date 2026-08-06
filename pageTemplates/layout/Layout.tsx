@@ -13,6 +13,7 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { useAppSafeAreaBottomCssVar } from "../../hooks/custom/useAppSafeAreaBottomCssVar";
 import { clearAuthIntent, isAuthIntentActive } from "../../utils/authIntentUtils";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
@@ -51,6 +52,7 @@ function Layout({ children }: ILayout) {
   // document.documentElement에 --app-safe-area-bottom CSS 변수를 설정한다.
   // getSafeAreaBottom()을 쓰는 모든 컴포넌트가 이 변수를 상속받아 쓰므로,
   // 컴포넌트마다 에브리타임 분기를 따로 둘 필요가 없다.
+  useAppSafeAreaBottomCssVar();
 
   useDeepLink({ token });
 
