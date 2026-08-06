@@ -18,12 +18,14 @@ import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import Spinner from "../../../components/atoms/Spinner";
 import StarRatingReviewBlock2 from "../../../components/molecules/StarRatingReviewBlock2";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
 } from "../../../hooks/study/queries";
 import { ModalLayout } from "../../../modals/Modals";
+import { CoordinatesProps } from "../../../types/common";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
 import { PlaceInfoBox } from "../PlaceInfoDrawer";
 
@@ -115,16 +117,26 @@ interface GuideButtonProps {
   pickReviewPlace?: (place: StudyPlaceProps) => void;
   openReviewForm?: (place: StudyPlaceProps) => void;
   addCafe?: () => void;
+  findNearestPlace?: (coords: CoordinatesProps) => StudyPlaceProps | null;
+  getCurrentLocation?: () => Promise<CoordinatesProps | null>;
 }
 
-function GuideButton({ pickReviewPlace, addCafe }: GuideButtonProps) {
+function GuideButton({
+  pickReviewPlace,
+  addCafe,
+  openReviewForm,
+  findNearestPlace,
+  getCurrentLocation,
+}: GuideButtonProps) {
   const router = useRouter();
+  const toast = useToast();
 
   const [isOpen, setIsOpen] = useState(false);
   const [menu, setMenu] = useState<MenuType | null>(null);
   const [feedTab, setFeedTab] = useState<FeedTab>("최근 후기");
   const [isLocationLoading, setIsLocationLoading] = useState(false);
   const [isLocationConfirmOpen, setIsLocationConfirmOpen] = useState(false);
+  const [nearestPlace, setNearestPlace] = useState<StudyPlaceProps | null>(null);
 
   const reviews = useCursorData<StudyReviewProps>(useStudyReviewsQuery);
   const newPlaces = useCursorData<StudyPlaceProps>(useStudyPlacesCursorQuery);
@@ -158,14 +170,29 @@ function GuideButton({ pickReviewPlace, addCafe }: GuideButtonProps) {
     addCafe?.();
   };
 
-  // "카공 후기 작성 (현재 위치)": 1.5초 로딩 후 현재 위치가 맞는지 확인하는 모달을 띄운다.
-  const handleCurrentLocationReview = () => {
+  // "카공 후기 작성 (현재 위치)": 실제 GPS 위치를 확인해 가장 가까운 등록 카페를 찾고,
+  // 그 카페가 맞는지 확인하는 모달을 띄운다. 위치를 확인할 수 없거나 근처에 등록된 카페가
+  // 없으면 절대 임의의(디폴트) 카페로 진행하지 않고 에러를 안내한다.
+  const handleCurrentLocationReview = async () => {
     setIsOpen(false);
     setIsLocationLoading(true);
-    setTimeout(() => {
-      setIsLocationLoading(false);
-      setIsLocationConfirmOpen(true);
-    }, 1500);
+    const coords = await getCurrentLocation?.();
+    setIsLocationLoading(false);
+
+    if (!coords) {
+      toast("error", "현재 위치를 확인할 수 없습니다.");
+      return;
+    }
+
+    const nearest = findNearestPlace?.(coords) ?? null;
+    if (!nearest) {
+      toast("error", "현재 위치 근처에 등록된 카페가 없습니다. 직접 검색해주세요.");
+      openAddCafe();
+      return;
+    }
+
+    setNearestPlace(nearest);
+    setIsLocationConfirmOpen(true);
   };
 
   return (
@@ -234,17 +261,23 @@ function GuideButton({ pickReviewPlace, addCafe }: GuideButtonProps) {
       {isLocationLoading && <Spinner text="위치를 확인중입니다..." />}
 
       {/* 현재 위치 확인 모달 */}
-      {isLocationConfirmOpen && (
+      {isLocationConfirmOpen && nearestPlace && (
         <ModalLayout
           title="이 카페가 맞나요?"
           setIsModal={() => setIsLocationConfirmOpen(false)}
           footerOptions={{
-            main: { text: "네, 맞아요", func: () => setIsLocationConfirmOpen(false) },
+            main: {
+              text: "네, 맞아요",
+              func: () => {
+                setIsLocationConfirmOpen(false);
+                openReviewForm?.(nearestPlace);
+              },
+            },
             sub: { text: "직접 검색", func: openAddCafe },
           }}
         >
           <p>
-            <b>[카페 타셴]</b> 기준으로
+            <b>[{nearestPlace.location.name}]</b> 기준으로
             <br />
             카공 후기를 작성할게요!
           </p>

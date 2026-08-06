@@ -1,4 +1,5 @@
-import { Input } from "@chakra-ui/react";
+import { CheckIcon } from "@chakra-ui/icons";
+import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -72,14 +73,16 @@ function Comment() {
           <span>한 줄 코멘트를 입력해 주세요</span>
           <span>프로필에 노출되는 내용으로, 한 마디를 남겨주세요!</span>
         </RegisterOverview>
-        <div ref={containerRef} onClick={() => setIndex(0)}>
+        <InputGroup ref={containerRef} mb={3}>
           <Input
             bgColor="white"
             placeholder="직접 입력"
             ref={inputRef}
-            onChange={(e) => setValue(e.target?.value)}
+            onChange={(e) => {
+              setIndex(0);
+              setValue(e.target?.value);
+            }}
             value={value}
-            mb={3}
             h="48px"
             textAlign="center"
             fontSize="14px"
@@ -89,9 +92,22 @@ function Comment() {
             _placeholder={{
               color: "var(--gray-500)",
             }}
-            onFocus={scrollToInput}
+            onFocus={() => {
+              setIndex(0);
+              scrollToInput();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") inputRef.current?.blur();
+            }}
           />
-        </div>
+          {/* 값을 입력하는 순간 이 입력칸이 선택된 것 — 별도의 [확인] 버튼 대신
+              테두리 강조(border-mint) + 체크 아이콘으로만 선택 여부를 보여준다. */}
+          {index === 0 && value.trim() !== "" && (
+            <InputRightElement h="48px" pointerEvents="none">
+              <CheckIcon color="#00c2b3" boxSize={4} />
+            </InputRightElement>
+          )}
+        </InputGroup>
         <Container>
           {MESSAGE_DATA?.map((item, idx) => (
             <Item key={idx} onClick={() => setIndex(idx + 1)} $isSelected={idx + 1 === index}>

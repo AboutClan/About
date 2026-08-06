@@ -83,7 +83,7 @@ function Comment() {
   }, [session]);
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (text.length < 30) {
+    if (text.length < 20) {
       setErrorMessage("조금만 더 적어주세요!");
       e.preventDefault();
       return;
@@ -118,19 +118,19 @@ function Comment() {
         <Box ref={containerRef}>
           <Textarea
             h="96px"
-            placeholder="나는 어떤 사람인가요? 사람들과 어울릴 때의 성격이나 대화 스타일을 적어주세요!"
+            placeholder="ex) 낯을 잘 안 가리는 편이라 새로운 사람들과도 금방 편해져요!"
             value={text}
             onChange={(e) => setText(e.target.value)}
             onFocus={scrollToInput}
           />
           <Flex ml="auto" mt={1} w="max-content" fontSize="12px" color="gray.500">
             <Box
-              color={text.length >= 90 ? "red" : text.length < 30 ? "gray.500" : "gray.800"}
+              color={text.length >= 90 ? "red" : text.length < 20 ? "gray.500" : "gray.800"}
               mr={1}
             >
               {text.length}
             </Box>{" "}
-            / {text.length >= 90 ? "최대 90자" : "최소 30자"}
+            / {text.length >= 90 ? "최대 90자" : "최소 20자"}
           </Flex>
           <Box
             fontSize="13px"
@@ -142,8 +142,22 @@ function Comment() {
             py={3}
             borderRadius="12px"
           >
-            ex. 같이 있으면 편하다는 말 많이 듣고, 처음 본 사람이랑도 금방 어울리는 편입니다🙂
-            리액션도 많이 하고, 어색하면 먼저 나서기도 해요!
+            <Box fontWeight="bold" mb={2}>
+              이런 내용을 담아보면 쉬워요
+            </Box>
+            <Box mb={1} as="li">
+              성격이나 대화 스타일
+            </Box>
+            <Box mb={1} as="li">
+              요즘 관심사나 취미{" "}
+            </Box>
+            <Box mb={3} as="li">
+              모임에서 기대하는 점{" "}
+            </Box>
+            <Box color="gray.500">
+              ex. 같이 있으면 편하다는 말 많이 듣고, 처음 본 사람이랑도 금방 어울리는 편입니다🙂
+              요즘은 러닝에 관심이 생겨서, 같이 뛸 사람도 찾고 있어요!
+            </Box>
           </Box>
         </Box>
       </RegisterLayout>

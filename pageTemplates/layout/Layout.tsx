@@ -13,7 +13,6 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { useAppSafeAreaBottomCssVar } from "../../hooks/custom/useAppSafeAreaBottomCssVar";
 import { clearAuthIntent, isAuthIntentActive } from "../../utils/authIntentUtils";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
@@ -52,19 +51,6 @@ function Layout({ children }: ILayout) {
   // document.documentElement에 --app-safe-area-bottom CSS 변수를 설정한다.
   // getSafeAreaBottom()을 쓰는 모든 컴포넌트가 이 변수를 상속받아 쓰므로,
   // 컴포넌트마다 에브리타임 분기를 따로 둘 필요가 없다.
-  const isEverytimeAndroidInApp = useAppSafeAreaBottomCssVar();
-
-  useEffect(() => {
-    if (!isEverytimeAndroidInApp) return;
-    if (sessionStorage.getItem("dismiss_everytime_browser_guide") === "1") return;
-
-    sessionStorage.setItem("dismiss_everytime_browser_guide", "1");
-    toast(
-      "info",
-      "더 안정적으로 이용하기 위해서는 우측 상단의 점 2개 → 브라우저에서 열기를 눌러주세요.",
-      6000,
-    );
-  }, [isEverytimeAndroidInApp, toast]);
 
   useDeepLink({ token });
 

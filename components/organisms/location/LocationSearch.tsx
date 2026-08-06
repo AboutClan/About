@@ -40,6 +40,7 @@ function LocationSearch({
 }: ISearchLocation) {
   const defaultName = info?.name;
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState(defaultName || "");
   const [results, setResults] = useState<NaverLocationProps[]>([]);
   const layoutRef = useRef<HTMLDivElement>(null);
@@ -98,7 +99,8 @@ function LocationSearch({
       category: searchInfo?.category,
     });
     setResults([]);
-    setIsFocus?.(true);
+    setIsFocus?.(false);
+    inputRef.current?.blur();
     onSelect?.({ ...searchInfo, latitude, longitude });
   };
 
@@ -111,6 +113,7 @@ function LocationSearch({
     <Layout ref={layoutRef}>
       <Wrapper>
         <InputGroup
+          ref={inputRef}
           placeholder={placeHolder || "장소를 검색해 보세요"}
           onChange={onChange}
           value={value}

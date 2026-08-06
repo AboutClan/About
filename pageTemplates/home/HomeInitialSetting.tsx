@@ -87,7 +87,9 @@ const increaseTodayHomePopupCount = () => {
 };
 
 function HomeInitialSetting() {
-  const { data: session, status: sessionStatus } = useSession();
+  // 쿠키 기반 next-auth 세션. push 초기화(uid)에만 쓰고, 팝업 판단은 토큰 기반
+  // userInfo를 기준으로 한다(에브리타임 등 인앱 브라우저에서 세션이 불안정할 수 있음).
+  const { data: session } = useSession();
   const toast = useToast();
 
   const [isLegacyApp, setIsLegacyApp] = useState(false);
@@ -194,10 +196,6 @@ function HomeInitialSetting() {
   }, []);
   const router = useRouter();
 
-  const isGuest = session
-    ? session.user.name === "guest" || session.user.name === "게스트"
-    : undefined;
-
   const { data: userInfo, isLoading: isLoadingUserInfo } = useUserInfoQuery({
     onSuccess(data) {
       if (data.isActive === false) {
@@ -229,6 +227,11 @@ function HomeInitialSetting() {
       toast("success", "동아리원이 되었습니다.");
     },
   });
+
+  // next-auth 세션(쿠키 기반)은 에브리타임 등 일부 인앱 브라우저에서 쿠키 제약으로
+  // 제대로 조회되지 않을 수 있어(session이 계속 undefined/null), 게스트 여부는
+  // 토큰 기반 REST 호출로 받아오는 userInfo.role을 기준으로 판단한다.
+  const isGuest = userInfo ? userInfo.role === "guest" : undefined;
 
   useEffect(() => {
     if (!userInfo?.role) return;
@@ -308,11 +311,9 @@ function HomeInitialSetting() {
   }, []);
 
   // 2~8순위 판단에 쓰이는 데이터가 전부 도착했는지 여부.
+  // (세션은 쿠키 기반이라 일부 인앱 브라우저에서 신뢰할 수 없으므로 게이트에서 제외한다.)
   const isCorePopupDataReady =
-    sessionStatus !== "loading" &&
-    !isLoadingUserInfo &&
-    gatherReviewData !== undefined &&
-    !isLoadingMembership;
+    !isLoadingUserInfo && gatherReviewData !== undefined && !isLoadingMembership;
 
   // 2~7순위: 기존 UserSettingPopUp이 담당하던 팝업들. 위에서부터 순서대로 검사해 가장 먼저
   // 만족하는 조건 하나만 고른다. isCorePopupDataReady가 true일 때만 호출되므로 여기서 다시
@@ -321,8 +322,8 @@ function HomeInitialSetting() {
     // 이 체인(강제 업데이트 제외)은 하루에 최대 HOME_POPUP_DAILY_LIMIT개까지만 보여준다.
     if (getTodayHomePopupCount() >= HOME_POPUP_DAILY_LIMIT) return null;
 
-    // (원래 게이트: userInfo가 있고 게스트가 아닐 것 / 후기 데이터와 세션이 로딩 완료됐을 것)
-    if (userInfo && !isGuest && session) {
+    // (원래 게이트: userInfo가 있고 게스트가 아닐 것 / 후기 데이터가 로딩 완료됐을 것)
+    if (userInfo && !isGuest) {
       if (userInfo.point <= 0) return "limit";
 
       if (!membershipLog?.length && !checkAndSetLocalStorage(MEMBERSHIP_AT, 5)) {

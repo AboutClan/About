@@ -26,7 +26,10 @@ function SearchLocation({
 
   const scrollToInput = () => {
     if (!containerRef.current) return;
-    containerRef.current.scrollIntoView({ block: "start", behavior: "smooth" });
+    // input이 뷰포트 맨 위에 딱 붙어버리지 않도록 위쪽에 여백을 남겨둔다.
+    const OFFSET = 24;
+    const top = containerRef.current.getBoundingClientRect().top + window.scrollY - OFFSET;
+    window.scrollTo({ top, behavior: "smooth" });
   };
 
   useEffect(() => {

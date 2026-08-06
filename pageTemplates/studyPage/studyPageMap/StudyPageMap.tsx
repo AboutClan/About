@@ -660,6 +660,7 @@ function StudyPageMap({
                 updateQuery({ modal: "reviewPlace" });
               }}
               openReviewForm={openReviewForm}
+              getCurrentLocation={refetchCurrentLocation}
               onCafeSearch={(result) => {
                 const existingPlace = placeData?.find((p) => {
                   if (p.location.name === result.title) return true;

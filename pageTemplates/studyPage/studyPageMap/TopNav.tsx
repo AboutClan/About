@@ -160,6 +160,7 @@ interface StudyMapNavProps {
   openAboutDrawer: () => void;
   pickReviewPlace: (place: StudyPlaceProps) => void;
   openReviewForm?: (place: StudyPlaceProps) => void;
+  getCurrentLocation: () => Promise<CoordinatesProps | null>;
 }
 
 function StudyMapNav({
@@ -183,6 +184,7 @@ function StudyMapNav({
   onCafeSearch,
   pickReviewPlace,
   openReviewForm,
+  getCurrentLocation,
 }: StudyMapNavProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -729,6 +731,8 @@ function StudyMapNav({
                   pickReviewPlace={pickReviewPlace}
                   openReviewForm={openReviewForm}
                   addCafe={addCafe}
+                  findNearestPlace={findNearestPlace}
+                  getCurrentLocation={getCurrentLocation}
                 />
                 {/* <Button
                   rounded="full"
