@@ -6,9 +6,10 @@ import { useToast } from "../../hooks/custom/CustomToast";
 interface ICopyBtn {
   size?: string;
   text: string;
+  label?: string;
 }
 
-export function CopyBtn({ size, text }: ICopyBtn) {
+export function CopyBtn({ size, text, label }: ICopyBtn) {
   const toast = useToast();
   if (!size) size = "sm";
 
@@ -36,7 +37,7 @@ export function CopyBtn({ size, text }: ICopyBtn) {
         colorScheme="twitter"
         onClick={handleCopy}
       >
-        <span>복사하기</span>
+        <span>{label ?? "복사하기"}</span>
       </Button>
     );
 

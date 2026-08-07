@@ -13,7 +13,12 @@ interface RegisterInviteProps {
   setDiscount: DispatchNumber;
 }
 
-const CLUB_UID_ARR = ["5006986335", "5006950630","20260804"];
+const CLUB_UID_ARR = ["5006986335", "5006950630", "20260804"];
+
+// 실제 회원 코드가 아닌, 고정 할인 금액을 주는 프로모션 코드
+const PROMOTION_CODE_DISCOUNTS: Record<string, number> = {
+  "20260807": 3000,
+};
 function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: RegisterInviteProps) {
   const toast = useToast();
   const [trigger, setTrigger] = useState(false);
@@ -72,16 +77,30 @@ function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: Regist
                 toast("info", "초대코드를 입력해 주세요!");
                 return;
               }
+              if (PROMOTION_CODE_DISCOUNTS[codeText]) {
+                setDiscount(PROMOTION_CODE_DISCOUNTS[codeText]);
+                return;
+              }
               setTrigger(true);
             }}
           >
             확인
           </Button>
         </Flex>
-        {discount > 0 && data && (
+        {discount > 0 && (data || PROMOTION_CODE_DISCOUNTS[codeText]) && (
           <Box mt={8} fontSize="15px" color="gray.700">
-            추천인 <b>{data?.name}님</b> 확인 완료!
-            <br /> 결제 시 <b>가입비 {discount.toLocaleString()}원</b>이 할인됩니다.
+            {data ? (
+              <>
+                추천인 <b>{data?.name}님</b> 확인 완료!
+                <br />
+              </>
+            ) : (
+              <>
+                쿠폰 코드가 확인되었어요!
+                <br />
+              </>
+            )}
+            결제 시 <b>가입비 {discount.toLocaleString()}원</b>이 할인됩니다.
           </Box>
         )}
       </Flex>

@@ -14,6 +14,7 @@ import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useAppSafeAreaBottomCssVar } from "../../hooks/custom/useAppSafeAreaBottomCssVar";
+import { HOME_ACTIVITY_DRAWER_QUERY_KEY } from "../../recoils/transferRecoils";
 import { clearAuthIntent, isAuthIntentActive } from "../../utils/authIntentUtils";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
@@ -137,7 +138,10 @@ function Layout({ children }: ILayout) {
     };
 
     const handleBackAction = () => {
-      if (!router?.query?.modal) {
+      const isOverlayOpen =
+        !!router?.query?.modal || !!router?.query?.[HOME_ACTIVITY_DRAWER_QUERY_KEY];
+
+      if (!isOverlayOpen) {
         const pathArr = pathname?.split("/");
         const firstPath = pathArr?.[1];
         const secondPath = pathArr?.[2];
@@ -173,7 +177,7 @@ function Layout({ children }: ILayout) {
 
       if (
         BASE_BOTTOM_NAV_SEGMENT.map((item) => "/" + item).includes(pathname) &&
-        !router.query?.modal
+        !isOverlayOpen
       ) {
         if (exitAppRef.current) {
           nativeMethodUtils.exitApp();
