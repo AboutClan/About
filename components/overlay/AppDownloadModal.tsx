@@ -78,7 +78,7 @@ function AppDownloadModal({ onClose }: CloseProps) {
         <Box fontWeight={600} fontSize="18px" mb="2px">
           어바웃
         </Box>
-        <Box fontSize="13px">20대를 위한 모임 플랫폼</Box>
+        <Box fontSize="13px">20대를 위한 커뮤니티형 동아리</Box>
       </Flex>
 
       <Button

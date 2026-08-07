@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"
         />
         {/* 브라우저 탭 title 기본값. 페이지별로 덮어쓰고 싶으면 해당 페이지에서 next/head 의 <title> 로 override. */}
-        <title>어바웃: 20대를 위한 모임 플랫폼</title>
+        <title>어바웃: 20대를 위한 커뮤니티형 동아리</title>
       </Head>
 
       <QueryClientProvider client={queryClient}>

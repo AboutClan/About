@@ -23,7 +23,7 @@ export default function ShareParticipationsGroup({ id, og }) {
         <meta property="og:title" content={og?.title ?? "About"} key="og:title" />
         <meta
           property="og:description"
-          content={og?.description ?? "20대를 위한 모임 플랫폼"}
+          content={og?.description ?? "20대를 위한 커뮤니티형 동아리"}
           key="og:description"
         />
         <meta
