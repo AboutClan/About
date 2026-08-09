@@ -1,5 +1,6 @@
-import { Flex } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useState } from "react";
 
 import ParticipationBar from "../../../components/atoms/bars/ParticipationBar";
 import { IProfileCommentCard } from "../../../components/molecules/cards/ProfileCommentCard";
@@ -34,10 +35,15 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   console.log(5, data);
   const isMyGather = data.participants?.some((p) => p.user._id === userInfo?._id);
 
-  const isSecret =
+  const isPrivileged = userInfo?.role === "previliged";
+  const isAnonymizedGather =
     gatherType === "openGather" ||
     gatherType === "officialGather" ||
     (gatherType === "secretGather" && !isMyGather);
+
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  const isSecret = isAnonymizedGather && !(isPrivileged && isRevealed);
 
   const findVoterUser = (voter: UserSimpleInfoProps | string) => {
     if (typeof voter !== "string" && (voter as IUser)?.gender) return voter as IUser;
@@ -126,6 +132,18 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
           participantsCnt={participantsCnt + (isAdminOpen ? 0 : 1)}
           maxCnt={data?.memberCnt.max}
         />
+        {isPrivileged && isAnonymizedGather && (
+          <Flex justify="flex-end" mb={2}>
+            <Button
+              variant="outline"
+              size="xs"
+              colorScheme="gray"
+              onClick={() => setIsRevealed((prev) => !prev)}
+            >
+              {isRevealed ? "익명으로 보기" : "실명으로 보기"}
+            </Button>
+          </Flex>
+        )}
         <ProfileCardColumn
           hasCommentButton={false}
           userCardArr={[...(!isAdminOpen ? [organizerCard] : []), ...userCardArr]}

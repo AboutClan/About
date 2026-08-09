@@ -10,6 +10,7 @@ import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import GroupAdminInvitation from "../../../pageTemplates/group/admin/GroupAdminInvitation";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
+import { safeDecodeTel } from "../../../utils/utils";
 
 interface InviteSecionProps {
   group: IGroup;
@@ -79,6 +80,9 @@ export function InviteSection({ group }: InviteSecionProps) {
                     거절
                   </Button>
                 </UserItem>
+                <Text mt={1} mb={1} color="gray.600" fontSize="12px">
+                  연락처&#41; {safeDecodeTel(who.user?.telephone) || who.user?.telephone || "없음"}
+                </Text>
                 <Text mt={3} mb={1} color="gray.600" fontSize="12px">
                   [신청자 답변]
                 </Text>
