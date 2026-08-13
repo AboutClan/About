@@ -102,39 +102,40 @@ function HomeGatherSection() {
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
-
-      <AnimatePresence initial={false}>
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: -width, right: 0 }}
-          dragElastic={0.3}
-          style={{
-            marginLeft: "20px",
-            display: "flex",
-            width: "100%",
-            gap: "12px",
-          }}
-        >
-          <SlideSectionCol
-            title="따끈따끈 방금 개설된 모임"
-            subTitle="가장 최근에 새로 열린 모임이에요"
+      {recentData?.length >= 6 && (
+        <AnimatePresence initial={false}>
+          <motion.div
+            drag="x"
+            dragConstraints={{ left: -width, right: 0 }}
+            dragElastic={0.3}
+            style={{
+              marginLeft: "20px",
+              display: "flex",
+              width: "100%",
+              gap: "12px",
+            }}
           >
-            <HomeGatherCol
-              gathers={recentData?.slice(0, 3)?.filter((data) => !!data)}
-              isPriority={false}
-            />
-          </SlideSectionCol>
-          <SlideSectionCol
-            title="따끈따끈 방금 개설된 모임"
-            subTitle="가장 최근에 새로 열린 모임이에요"
-          >
-            <HomeGatherCol
-              gathers={recentData?.slice(3, 6)?.filter((data) => !!data)}
-              isPriority={false}
-            />
-          </SlideSectionCol>
-        </motion.div>
-      </AnimatePresence>
+            <SlideSectionCol
+              title="따끈따끈 방금 개설된 모임"
+              subTitle="가장 최근에 새로 열린 모임이에요"
+            >
+              <HomeGatherCol
+                gathers={recentData?.slice(0, 3)?.filter((data) => !!data)}
+                isPriority={false}
+              />
+            </SlideSectionCol>
+            <SlideSectionCol
+              title="따끈따끈 방금 개설된 모임"
+              subTitle="가장 최근에 새로 열린 모임이에요"
+            >
+              <HomeGatherCol
+                gathers={recentData?.slice(3, 6)?.filter((data) => !!data)}
+                isPriority={false}
+              />
+            </SlideSectionCol>
+          </motion.div>
+        </AnimatePresence>
+      )}
     </>
   );
 }
