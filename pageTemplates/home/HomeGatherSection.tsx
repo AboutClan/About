@@ -7,7 +7,7 @@ import HomeGatherCol from "./HomeGatherCol";
 
 // 공식 행사로 노출할 모임 id를 원하는 순서대로 나열하면 그 순서대로 2x3 배치됩니다.
 // 비워두면 첫번째 섹션 후보(officialGather/openGather/secretGather) 중 기본 순서로 6개를 사용합니다.
-const FEATURED_GATHER_ID_ORDER: number[] = [5120, 5141, 5118, 5132, 5142, 5135];
+const FEATURED_GATHER_ID_ORDER: number[] = [];
 
 const FEATURED_CATEGORIES = ["officialGather", "openGather", "secretGather", "gather2"];
 
@@ -31,10 +31,10 @@ function HomeGatherSection() {
   // 이후 섹션에서는 앞선 섹션에 이미 노출된 모임을 제외하고 채운다.
   const usedIds = new Set(featuredData?.map((gather) => gather?.id));
 
-  const upcomingData = gathers?.slice(3, 9)?.filter((gather) => gather && !usedIds.has(gather.id));
+  const upcomingData = gathers?.slice(6, 12)?.filter((gather) => gather && !usedIds.has(gather.id));
   upcomingData?.forEach((gather) => usedIds.add(gather.id));
 
-  const recentData = gathers?.slice(9, 15)?.filter((gather) => gather && !usedIds.has(gather.id));
+  const recentData = gathers?.slice(12, 18)?.filter((gather) => gather && !usedIds.has(gather.id));
 
   return (
     <>

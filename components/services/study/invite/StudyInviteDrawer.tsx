@@ -58,12 +58,14 @@ export function StudyInviteDrawer({ onClose }: CloseProps) {
 
   const handleInviteBtn = (who: UserSimpleInfoProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { standard, rating, address, ...placeProps } = locationInfo.sub;
+    // const { standard, rating, address, ...placeProps } = locationInfo.sub;
     const startHour = dayjs(date).day() >= 100 ? 18 : 14;
 
     const voteInfo: StudyVoteProps = {
-      ...placeProps,
-      locationDetail: address,
+      latitude: 37.546964,
+      longitude: 127.073081,
+
+      locationDetail: "서울특별시 광진구",
       userId: who._id,
       start: dayjs(date).hour(startHour).minute(0),
       end: dayjs(date)
