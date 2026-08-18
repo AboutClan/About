@@ -471,11 +471,7 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
                 모임에 참여할까요?
               </>
             ) : isOfficialGather ? (
-              <>
-                정규모임은 구글폼 작성 후 승인을 통해
-                <br />
-                참여가 확정돼요.
-              </>
+              <>운영진 승인을 통해 참여가 확정돼요.</>
             ) : (
               <>
                 {data?.isApprovalRequired
@@ -493,7 +489,7 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
             </Box>
           ) : isOfficialGather ? (
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
-              참여 신청하면 운영진이 별도로 연락을 드려요
+              구글폼을 작성해 주시면 개별적으로 연락드려요!
             </Box>
           ) : (
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>

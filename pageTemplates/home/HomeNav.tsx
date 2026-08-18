@@ -59,7 +59,7 @@ function HomeNav() {
     <>
       <Flex align="center" mb={4}>
         <Box mr="auto" color="var(--gray-800)" fontSize="18px" fontWeight={600}>
-          내 취향 소모임 찾기
+          동아리 카테고리
         </Box>
         <Flex
           as="button"

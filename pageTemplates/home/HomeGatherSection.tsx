@@ -52,7 +52,7 @@ function HomeGatherSection() {
         >
           <SlideSectionCol
             title="🔥 놓치면 후회하는 About 공식 행사"
-            subTitle="오픈 번개 & 정규모임, 지금 바로 신청하세요!"
+            subTitle="어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
           >
             <HomeGatherCol
               gathers={featuredData?.slice(0, 3)?.filter((data) => !!data)}
@@ -61,7 +61,7 @@ function HomeGatherSection() {
           </SlideSectionCol>
           <SlideSectionCol
             title="🔥 놓치면 후회하는 About 공식 행사"
-            subTitle="오픈 번개 & 정규모임, 지금 바로 신청하세요!"
+            subTitle="어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
           >
             <HomeGatherCol
               gathers={featuredData?.slice(3, 6)?.filter((data) => !!data)}

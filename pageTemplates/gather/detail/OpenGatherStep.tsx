@@ -95,7 +95,7 @@ export default function ProcessGuide({ date, isOfficialGather }: ProcessGuidePro
         },
         {
           step: 2,
-          title: "나이·성별·후기 등을 고려해 별도 승인 연락을 드려요",
+          title: "나이·성별·후기 등을 고려해 승인 연락을 드려요",
           description: "3일 이내에 연락을 받지 못하면 보류 상태예요!",
         },
         {
