@@ -32,9 +32,9 @@ function Home() {
       <Box>
         <Divider />
       </Box>
-      <Slide isNoPadding>
+      {/* <Slide isNoPadding>
         <HomeStudySection />
-      </Slide>
+      </Slide> */}
       <Box h={2} />
       <Slide isNoPadding>
         <HomeGatherSection />
