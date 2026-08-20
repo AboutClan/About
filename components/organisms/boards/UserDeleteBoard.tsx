@@ -6,7 +6,7 @@ import AlertModal from "../../AlertModal";
 import ProfileCommentCard from "../../molecules/cards/ProfileCommentCard";
 
 interface UserDeleteBoardProps {
-  users: { user: UserSimpleInfoProps; text: string }[];
+  users: { user: UserSimpleInfoProps; text: string; deleteId?: string }[];
 
   handleDelete: (userId: string) => void;
 }
@@ -24,7 +24,11 @@ function UserDeleteBoard({ users, handleDelete }: UserDeleteBoardProps) {
             comment={{ comment: user.text }}
             rightComponent={
               <Flex>
-                <Button size="sm" colorScheme="red" onClick={() => setDeleteUserId(user.user._id)}>
+                <Button
+                  size="sm"
+                  colorScheme="red"
+                  onClick={() => setDeleteUserId(user.deleteId ?? user.user._id)}
+                >
                   내보내기
                 </Button>
               </Flex>

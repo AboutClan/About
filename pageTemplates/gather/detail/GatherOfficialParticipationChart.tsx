@@ -26,12 +26,13 @@ function computeAgeStats(data: IGather): IAgeStat[] {
   for (let age = minAge; age <= maxAge; age++) buckets[age] = { male: 0, female: 0 };
 
   (data?.participants || []).forEach((par) => {
-    const user = par.user as IUser;
-    const age = birthToAge(user?.birth);
+    const gender = par.isDummy ? par.dummyGender : (par.user as IUser)?.gender;
+    const birth = par.isDummy ? par.dummyBirth : (par.user as IUser)?.birth;
+    const age = birthToAge(birth);
     if (age == null) return;
     if (!buckets[age]) buckets[age] = { male: 0, female: 0 };
-    if (user.gender === "남성") buckets[age].male += 1;
-    else if (user.gender === "여성") buckets[age].female += 1;
+    if (gender === "남성") buckets[age].male += 1;
+    else if (gender === "여성") buckets[age].female += 1;
   });
 
   return Object.entries(buckets)
@@ -43,9 +44,9 @@ function computeGenderTotals(data: IGather) {
   let male = 0;
   let female = 0;
   (data?.participants || []).forEach((par) => {
-    const user = par.user as IUser;
-    if (user?.gender === "남성") male++;
-    else if (user?.gender === "여성") female++;
+    const gender = par.isDummy ? par.dummyGender : (par.user as IUser)?.gender;
+    if (gender === "남성") male++;
+    else if (gender === "여성") female++;
   });
   return { male, female };
 }

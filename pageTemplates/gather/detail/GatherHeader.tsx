@@ -157,11 +157,13 @@ function GatherHeader({ gatherData }: IGatherHeader) {
         <RightDrawer title="불참 체크" onClose={() => setModalType(null)}>
           <UserAbsenceBoard
             gatherData={gatherData}
-            users={gatherData.participants.map((who) => ({
-              user: who.user,
-              text: who.user.comment,
-              isAbsence: who?.absence,
-            }))}
+            users={gatherData.participants
+              .filter((who) => !who.isDummy)
+              .map((who) => ({
+                user: who.user,
+                text: who.user.comment,
+                isAbsence: who?.absence,
+              }))}
             handleDelete={(userId) => absenceCheck({ userId })}
           />
         </RightDrawer>

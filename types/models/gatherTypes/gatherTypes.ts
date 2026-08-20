@@ -81,11 +81,15 @@ export interface IGatherListItem {
   };
 }
 export interface IGatherParticipants {
-  user: UserSimpleInfoProps;
+  user?: UserSimpleInfoProps;
   phase?: "first" | "second";
   reviewed?: boolean;
   absence?: boolean;
   withCompanion?: boolean;
+  isDummy?: boolean;
+  dummyId?: string;
+  dummyGender?: string;
+  dummyBirth?: string;
 }
 
 // export interface IGatherHeader {

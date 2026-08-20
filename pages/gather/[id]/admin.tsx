@@ -8,6 +8,7 @@ import TabNav from "../../../components/molecules/navs/TabNav";
 import UserApprovalBoard from "../../../components/organisms/boards/UserApprovalBoard";
 import UserDeleteBoard from "../../../components/organisms/boards/UserDeleteBoard";
 import UserInviteBoard from "../../../components/organisms/boards/UserInviteBoard";
+import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { useResetGatherQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import {
@@ -16,6 +17,7 @@ import {
 } from "../../../hooks/gather/mutations";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
+import { birthToAge } from "../../../utils/convertUtils/convertTypes";
 import { safeDecodeTel } from "../../../utils/utils";
 
 const TAB_ARR = ["신청 인원", "참여 인원", "인원 초대"] as const;
@@ -102,12 +104,26 @@ function Admin() {
           ) : tab === "참여 인원" ? (
             <Box px={5}>
               <UserDeleteBoard
-                users={gatherData.participants.map((who) => ({
-                  user: who.user,
-                  text:
-                    safeDecodeTel((who?.user as IUser)?.telephone) ||
-                    ((who?.user as IUser)?.telephone?.toString() ?? "없음"),
-                }))}
+                users={gatherData.participants.map((who) =>
+                  who.isDummy
+                    ? {
+                        user: {
+                          ...SECRET_USER_SUMMARY,
+                          name: `더미 (${who.dummyGender ?? ""} ${
+                            birthToAge(who.dummyBirth) ? `${birthToAge(who.dummyBirth)}세` : ""
+                          })`,
+                        } as IUser,
+                        text: "더미 멤버",
+                        deleteId: who.dummyId,
+                      }
+                    : {
+                        user: who.user,
+                        text:
+                          safeDecodeTel((who?.user as IUser)?.telephone) ||
+                          ((who?.user as IUser)?.telephone?.toString() ?? "없음"),
+                        deleteId: (who.user as IUser)?._id,
+                      },
+                )}
                 handleDelete={(userId) => deleteUser({ userId })}
               />
             </Box>
@@ -115,7 +131,9 @@ function Admin() {
             <UserInviteBoard
               gatherId={gatherData.id + ""}
               groupId={gatherData?.groupId}
-              members={gatherData.participants.map((who) => who.user._id)}
+              members={gatherData.participants
+                .filter((who) => !who.isDummy)
+                .map((who) => who.user._id)}
             />
           ))}
       </Slide>

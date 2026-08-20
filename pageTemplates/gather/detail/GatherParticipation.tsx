@@ -33,7 +33,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
     0,
   );
   console.log(5, data);
-  const isMyGather = data.participants?.some((p) => p.user._id === userInfo?._id);
+  const isMyGather = data.participants?.some((p) => p.user?._id === userInfo?._id);
 
   const isPrivileged = userInfo?.role === "previliged";
   const isAnonymizedGather =
@@ -80,18 +80,24 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
         })
       : [];
 
-  const getOpenGatherMemo = (par: IGatherParticipants) => {
+  const getParticipantGenderBirth = (par: IGatherParticipants) => {
+    if (par.isDummy) return { gender: par.dummyGender, birth: par.dummyBirth };
     const user = par.user as IUser;
-    const age = birthToAge(user?.birth);
-    return [user?.gender, age ? `${age}세` : null, getSelectedDatesText(par) || "날짜 미정"]
+    return { gender: user?.gender, birth: user?.birth };
+  };
+
+  const getOpenGatherMemo = (par: IGatherParticipants) => {
+    const { gender, birth } = getParticipantGenderBirth(par);
+    const age = birthToAge(birth);
+    return [gender, age ? `${age}세` : null, getSelectedDatesText(par) || "날짜 미정"]
       .filter(Boolean)
       .join(" · ");
   };
 
   const getGenderAgeMemo = (par: IGatherParticipants) => {
-    const user = par.user as IUser;
-    const age = birthToAge(user?.birth);
-    return [user?.gender, age ? `${age}세` : null].filter(Boolean).join(" · ");
+    const { gender, birth } = getParticipantGenderBirth(par);
+    const age = birthToAge(birth);
+    return [gender, age ? `${age}세` : null].filter(Boolean).join(" · ");
   };
 
   const organizerCard = {
@@ -104,7 +110,8 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   const userCardArr: IProfileCommentCard[] = (data?.participants ? [...data.participants] : []).flatMap(
     (par, idx) => {
       const card: IProfileCommentCard = {
-        user: isSecret ? (SECRET_USER_SUMMARY as UserSimpleInfoProps) : par.user,
+        user:
+          isSecret || par.isDummy ? (SECRET_USER_SUMMARY as UserSimpleInfoProps) : par.user,
         memo:
           gatherType === "openGather"
             ? getOpenGatherMemo(par)
@@ -112,8 +119,10 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
             ? getGenderAgeMemo(par)
             : gatherType === "secretGather" && !isMyGather
             ? `익명 참여자 ${idx + 1}`
+            : par.isDummy
+            ? getGenderAgeMemo(par)
             : par.user.comment,
-        rightComponent: isSecret ? null : (
+        rightComponent: isSecret || par.isDummy ? null : (
           <SocialingScoreBadge user={par?.user as UserSimpleInfoProps} size="sm" />
         ),
       };

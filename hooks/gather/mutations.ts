@@ -100,6 +100,20 @@ export const useGatherInviteMutation = (
     options,
   );
 
+export const useGatherInviteDummyMutation = (
+  gatherId: number,
+  options?: MutationOptions<{ phase?: "first" | "second"; gender: string; birth: string }>,
+) =>
+  useMutation<void, AxiosError, { phase?: "first" | "second"; gender: string; birth: string }>(
+    (param) =>
+      requestServer<{ gatherId: number; phase?: string; gender: string; birth: string }>({
+        method: "post",
+        url: "gather/invite/dummy",
+        body: { gatherId, ...param },
+      }),
+    options,
+  );
+
 interface IGatherWaitingRequest {
   id: number;
   phase?: "first" | "second";

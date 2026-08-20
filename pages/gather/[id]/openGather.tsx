@@ -107,7 +107,7 @@ function GatherReview() {
     if (gather) {
       setUserReviewArr(
         gather.participants
-          .filter((p) => p.user._id !== userInfo?._id)
+          .filter((p) => !p.isDummy && p.user?._id !== userInfo?._id)
           ?.map((p) => ({ user: p.user as Partial<IUser>, type: null })),
       );
     }
@@ -174,7 +174,7 @@ function GatherReview() {
               func: () => {
                 setUserReviewArr(
                   gather.participants
-                    .filter((p) => p.user._id !== userInfo?._id)
+                    .filter((p) => !p.isDummy && p.user?._id !== userInfo?._id)
                     .map((p) => ({
                       user: p.user as Partial<IUser>,
                       type: null,
