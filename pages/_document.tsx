@@ -109,7 +109,7 @@ const resolveOg = (host: string | undefined, asPath: string): OG => {
   }
   return {
     title: "어바웃",
-    description: "20대를 위한 커뮤니티형 동아리",
+    description: "20대들의 커뮤니티형 동아리",
     url: "https://about20s.club",
     image: DEFAULT_IMAGE,
   };

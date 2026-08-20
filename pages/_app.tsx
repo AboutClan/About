@@ -4,9 +4,9 @@ import "../styles/variable.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"
         />
         {/* 브라우저 탭 title 기본값. 페이지별로 덮어쓰고 싶으면 해당 페이지에서 next/head 의 <title> 로 override. */}
-        <title>어바웃: 20대를 위한 커뮤니티형 동아리</title>
+        <title>어바웃: 20대들의 커뮤니티형 동아리</title>
       </Head>
 
       <QueryClientProvider client={queryClient}>
