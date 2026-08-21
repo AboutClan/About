@@ -4,9 +4,9 @@ import "../styles/variable.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";

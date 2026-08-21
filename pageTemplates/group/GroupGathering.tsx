@@ -8,9 +8,10 @@ import {
 
 interface GroupGatheringProps {
   gatherData: GatherThumbnailCardProps[];
+  disableLink?: boolean;
 }
 
-function GroupGathering({ gatherData }: GroupGatheringProps) {
+function GroupGathering({ gatherData, disableLink }: GroupGatheringProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -23,7 +24,7 @@ function GroupGathering({ gatherData }: GroupGatheringProps) {
       {gatherData?.length ? (
         (isOpen ? gatherData : gatherData?.slice(0, 3))?.map((cardData, idx) => (
           <Box mb="12px" key={idx}>
-            <GatherThumbnailCard {...cardData} />
+            <GatherThumbnailCard {...cardData} disableLink={disableLink} />
           </Box>
         ))
       ) : (

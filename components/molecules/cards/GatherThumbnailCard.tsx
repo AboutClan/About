@@ -49,6 +49,7 @@ export interface GatherThumbnailCardProps {
     handleBtn: () => void;
   };
   homePath?: boolean;
+  disableLink?: boolean;
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -78,6 +79,7 @@ export function GatherThumbnailCard({
   gatherReview,
   memberReview,
   homePath,
+  disableLink,
 }: GatherThumbnailCardProps) {
   const userInfo = useUserInfo();
 
@@ -113,7 +115,16 @@ export function GatherThumbnailCard({
     <CardLink
       href={`/${"gather"}/${id}` + (homePath ? "?path=home" : "")}
       has={has ? "true" : "false"}
-      onClick={func}
+      onClick={(e) => {
+        // disableLink 인 경우 preventDefault 로 next/link 의 실제 네비게이션을 막는다
+        // (Link 는 전달된 onClick 이 e.defaultPrevented 를 만들면 push 하지 않는다).
+        if (disableLink) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        func?.();
+      }}
     >
       <Flex justify="space-between">
         <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />

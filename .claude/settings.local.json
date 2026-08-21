@@ -104,7 +104,8 @@
       "Bash(wslpath -w /tmp/docx_text.txt)",
       "Bash(python3 -c ' *)",
       "Bash(cp /tmp/docx_text2.txt \"/c/Users/user/Desktop/당근/개발/About/date-cafe/plan_text2.txt\")",
-      "Bash(xargs -I{} sh -c 'echo --- {} ---; cat {}')"
+      "Bash(xargs -I{} sh -c 'echo --- {} ---; cat {}')",
+      "Bash(awk '/mapToDomain\\\\\\(doc:/,/^  }/' src/MSA/GroupStudy/infra/MongoGroupStudyRepository.ts)"
     ]
   }
 }

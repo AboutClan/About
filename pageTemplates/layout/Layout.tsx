@@ -219,6 +219,13 @@ function Layout({ children }: ILayout) {
                 ? {
                     paddingTop: `56px`,
                   }
+                : currentSegment?.[0] === "group" && currentSegment?.[2] === "p"
+                ? {
+                    // /group/[id]/p 는 헤더 없는 단독 공개 미리보기 페이지라 상단 여백은
+                    // 필요 없지만, 하단에 참여 신청 BottomButtonNav가 고정으로 떠 있어
+                    // 마지막 콘텐츠가 가려지지 않도록 하단 여백은 유지한다.
+                    paddingBottom: getBottomNavTotalHeight(),
+                  }
                 : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
                   !(currentSegment?.[0] === "cafe-map" && currentSegment?.[1] === "login") &&
                   !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&

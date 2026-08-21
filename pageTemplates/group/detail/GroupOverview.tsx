@@ -13,9 +13,16 @@ interface GroupOverviewProps {
   isMyGroup: boolean;
   gatherCnt: number;
   reviewCnt: number;
+  hideMemberOnlyInfo?: boolean;
 }
 
-function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverviewProps) {
+function GroupOverview({
+  group,
+  isMyGroup,
+  gatherCnt,
+  reviewCnt,
+  hideMemberOnlyInfo,
+}: GroupOverviewProps) {
   const isGuest = useCheckGuest();
 
   return (
@@ -45,21 +52,25 @@ function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverview
                 ? "진행중"
                 : `${gatherCnt}회 개설`,
           },
-          {
-            category: group.meetingType === "online" || isGuest ? "최근 활동 날짜" : "티 켓",
-            text:
-              group.meetingType === "online" || isGuest
-                ? `${dayjs().subtract(1, "day").format("YY년 M월 D일")}`
-                : `월 ${group.requiredTicket}장 소모`,
-          },
-          {
-            category: "단톡방",
-            rightChildren: group?.link ? (
-              <BlurredLink isBlur={!isMyGroup} url={group?.link} />
-            ) : (
-              <Box color="gray.600">개설 예정</Box>
-            ),
-          },
+          ...(hideMemberOnlyInfo
+            ? []
+            : [
+                {
+                  category: group.meetingType === "online" || isGuest ? "최근 활동 날짜" : "티 켓",
+                  text:
+                    group.meetingType === "online" || isGuest
+                      ? `${dayjs().subtract(1, "day").format("YY년 M월 D일")}`
+                      : `월 ${group.requiredTicket}장 소모`,
+                },
+                {
+                  category: "단톡방",
+                  rightChildren: group?.link ? (
+                    <BlurredLink isBlur={!isMyGroup} url={group?.link} />
+                  ) : (
+                    <Box color="gray.600">개설 예정</Box>
+                  ),
+                },
+              ]),
         ]}
         size="md"
         highlightSide="left"
