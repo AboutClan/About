@@ -7,10 +7,10 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import {
-  GATHER_TYPES,
-  GatherCategoryIcons,
-  GatherCategoryMain,
-} from "../../../constants/contentsText/GatherContents";
+  GROUP_TYPES,
+  GroupCategoryIcons,
+  GroupCategoryMain,
+} from "../../../constants/contentsText/GroupContents";
 import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
@@ -23,11 +23,11 @@ function WritingStudyCategoryMain() {
   const refs = useRef<(HTMLDivElement | null)[]>([]);
   const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
 
-  const [category, setCategory] = useState<GatherCategoryMain>(groupWriting?.category?.main);
+  const [category, setCategory] = useState<GroupCategoryMain>(groupWriting?.category?.main);
 
   useEffect(() => {
     if (category) {
-      const idx = GATHER_TYPES.findIndex((type) => type.title === category);
+      const idx = GROUP_TYPES.findIndex((type) => type.title === category);
       const target = refs.current[idx];
       const timeout = setTimeout(() => {
         if (target) {
@@ -63,7 +63,7 @@ function WritingStudyCategoryMain() {
           <span>주제를 선택해 주세요.</span>
         </RegisterOverview>
         <Flex flexDir="column">
-          {GATHER_TYPES.map((type, idx) => (
+          {GROUP_TYPES.map((type, idx) => (
             <Flex
               key={idx}
               align="center"
@@ -76,7 +76,7 @@ function WritingStudyCategoryMain() {
               mb={2}
             >
               <Flex justify="center" align="center" w="20px" mr={5} fontSize="15px" color="red.400">
-                {GatherCategoryIcons[idx]}
+                {GroupCategoryIcons[idx]}
               </Flex>
               <Flex flexDir="column">
                 <Box fontSize="14px" color="gray.800" fontWeight="semibold">

@@ -11,7 +11,7 @@ import Slide from "../../components/layouts/PageSlide";
 import InfoModalButton from "../../components/modalButtons/InfoModalButton";
 import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
-import { GatherCategoryMain } from "../../constants/contentsText/GatherContents";
+import { GroupCategoryMain } from "../../constants/contentsText/GroupContents";
 import { GROUP_CURSOR_NUM } from "../../constants/keys/localStorage";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
@@ -39,18 +39,11 @@ const enToStatus: Record<string, Status> = Object.entries(statusToEn).reduce(
 
 const categoryArr = [
   { title: "전체" },
-  { title: "스터디" },
-  { title: "자기계발" },
+  { title: "공부·자기계발" },
   { title: "취미" },
-  { title: "액티비티" },
-  { title: "문화·감상" },
-  // { title: "취미 · 창작" },
-  // { title: "말하기" },
-  // { title: "푸드" },
-  // { title: "힐링" },
+  { title: "문화·놀거리" },
   { title: "친목" },
-  // { title: "크루" },
-  // { title: "파티" },
+  { title: "스터디 크루" },
 ];
 
 const getInitialCursor = () => {
@@ -77,7 +70,7 @@ function GroupPage() {
   const [status, setStatus] = useState<Status>(statusFromParam);
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
   const [cursor, setCursor] = useState(status === "모집중" ? localStorageCursorNum : 0);
-  const [category, setCategory] = useState<GatherCategoryMain | "전체">("전체");
+  const [category, setCategory] = useState<GroupCategoryMain | "전체">("전체");
 
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
@@ -95,7 +88,7 @@ function GroupPage() {
     if (!router.isReady) return;
     const idx = Number(categoryIdx);
     const resolved = !Number.isNaN(idx) && categoryArr[idx] ? categoryArr[idx].title : "전체";
-    setCategory(resolved as GatherCategoryMain | "전체");
+    setCategory(resolved as GroupCategoryMain | "전체");
   }, [router.isReady, categoryIdx]);
 
   useEffect(() => {
@@ -261,7 +254,7 @@ function GroupPage() {
         undefined,
         { shallow: true },
       );
-      setCategory(categoryArr[idx].title as GatherCategoryMain);
+      setCategory(categoryArr[idx].title as GroupCategoryMain);
     },
   }));
 

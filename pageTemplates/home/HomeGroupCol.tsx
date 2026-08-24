@@ -13,7 +13,7 @@ dayjs().locale("ko");
 interface HomeGroupColProps {
   threeGroups: IGroup[];
   isStudy?: boolean;
-  type: "hobby" | "study1" | "study2" | "expected" | "self";
+  type: "develop" | "hobby" | "culture" | "social" | "crew" | "expected";
 }
 
 export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupColProps) {
@@ -24,14 +24,16 @@ export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupCo
   };
 
   const urlParam =
-    type === "hobby"
+    type === "develop"
       ? "category=1"
-      : type === "study1"
-      ? "category=3"
-      : type === "study2"
+      : type === "hobby"
       ? "category=2"
-      : type === "self"
+      : type === "culture"
+      ? "category=3"
+      : type === "social"
       ? "category=4"
+      : type === "crew"
+      ? "category=5"
       : "filter=expected";
 
   return (

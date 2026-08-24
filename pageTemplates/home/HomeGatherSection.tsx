@@ -51,38 +51,6 @@ function HomeGatherSection() {
           }}
         >
           <SlideSectionCol
-            title="🔥 놓치면 후회하는 About 공식 행사"
-            subTitle="어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
-          >
-            <HomeGatherCol
-              gathers={featuredData?.slice(0, 3)?.filter((data) => !!data)}
-              isPriority
-            />
-          </SlideSectionCol>
-          <SlideSectionCol
-            title="🔥 놓치면 후회하는 About 공식 행사"
-            subTitle="어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
-          >
-            <HomeGatherCol
-              gathers={featuredData?.slice(3, 6)?.filter((data) => !!data)}
-              isPriority
-            />
-          </SlideSectionCol>
-        </motion.div>
-      </AnimatePresence>
-      <AnimatePresence initial={false}>
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: -width, right: 0 }}
-          dragElastic={0.3}
-          style={{
-            marginLeft: "20px",
-            display: "flex",
-            width: "100%",
-            gap: "12px",
-          }}
-        >
-          <SlideSectionCol
             title="오늘 뭐하지? About 번개"
             subTitle="내가 원하는 때, 내 취향대로, 골라서 참여!"
           >
@@ -136,6 +104,38 @@ function HomeGatherSection() {
           </motion.div>
         </AnimatePresence>
       )}
+      <AnimatePresence initial={false}>
+        <motion.div
+          drag="x"
+          dragConstraints={{ left: -width, right: 0 }}
+          dragElastic={0.3}
+          style={{
+            marginLeft: "20px",
+            display: "flex",
+            width: "100%",
+            gap: "12px",
+          }}
+        >
+          <SlideSectionCol
+            title="🔥 놓치면 후회하는 About 공식 행사"
+            subTitle="어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
+          >
+            <HomeGatherCol
+              gathers={featuredData?.slice(0, 3)?.filter((data) => !!data)}
+              isPriority
+            />
+          </SlideSectionCol>
+          <SlideSectionCol
+            title="🔥 놓치면 후회하는 About 공식 행사"
+            subTitle="어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
+          >
+            <HomeGatherCol
+              gathers={featuredData?.slice(3, 6)?.filter((data) => !!data)}
+              isPriority
+            />
+          </SlideSectionCol>
+        </motion.div>
+      </AnimatePresence>
     </>
   );
 }

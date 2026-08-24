@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { GatherCategoryMain } from "../../constants/contentsText/GatherContents";
+import { GroupCategoryMain } from "../../constants/contentsText/GroupContents";
 import { GATHER_CONTENT, GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { IGatherSummary } from "../../pages/review";
@@ -10,6 +10,7 @@ import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { GroupStatus, IGroup, IGroupAttendance } from "../../types/models/groupTypes/group";
 
 export interface GroupShapShotProps {
+  hotClub: IGroup[];
   hobby: IGroup[];
   hobby2: IGroup[];
   develop: IGroup[];
@@ -55,7 +56,7 @@ export const useGroupMyStatusQuery = (
 
 export const useGroupQuery = (
   filter: GroupStatus,
-  category: GatherCategoryMain | "전체" | "크루",
+  category: GroupCategoryMain | "전체",
   cursor: number,
   options?: QueryOptions<IGroup[]>,
 ) =>

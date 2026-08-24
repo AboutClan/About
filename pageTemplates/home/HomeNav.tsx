@@ -108,29 +108,28 @@ export const RankingIconImage =
 const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
     iconImage: "/group/스터디.png",
-    title: "스터디",
+    title: "공부·자기계발",
     url: `/group?category=1`,
   },
   {
     iconImage: "/group/취미.png",
     title: "취미",
-    url: `/group?category=3`,
+    url: `/group?category=2`,
   },
   {
     iconImage: "/group/액티비티.png",
-    title: "액티비티",
-    url: `/group?category=4`,
+    title: "문화·놀거리",
+    url: `/group?category=3`,
   },
-  {
-    title: "문화·감상",
-    iconImage: "/group/티켓.png",
-    url: `/group?category=5`,
-  },
-
   {
     iconImage: "/group/칵테일.png",
     title: "친목",
-    url: `/group?category=6`,
+    url: `/group?category=4`,
+  },
+  {
+    iconImage: "/group/티켓.png",
+    title: "스터디 크루",
+    url: `/group?category=5`,
   },
 ];
 

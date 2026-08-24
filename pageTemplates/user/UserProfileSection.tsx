@@ -9,6 +9,7 @@ import { useQueryClient } from "react-query";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import RequestChagneProfileImageModalBadge from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
 import RequestChangeProfileImageModalAvatar from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
@@ -33,6 +34,7 @@ type ModalType = "score" | "temperature";
 
 function UserProfileSection({ user }: UserProfileSectionProps) {
   const router = useRouter();
+  const isGuest = useCheckGuest();
   const searchParams = useSearchParams();
   const modalParam = searchParams.get("modal") as ModalType;
   const [modalType, setModalType] = useState<ModalType>();
@@ -75,7 +77,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
           }}
         /> */}
       </Box>
-      <UserTicketDeductionNotice />
+      {!isGuest && <UserTicketDeductionNotice />}
       <UserBenefitBanner />
       <Box borderY="var(--border)" py={2}>
         <UserReviewBar hasTop={false} user={user} />

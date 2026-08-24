@@ -1,4 +1,4 @@
-import { GatherCategoryMain } from "../../../constants/contentsText/GatherContents";
+import { GroupCategoryMain } from "../../../constants/contentsText/GroupContents";
 import { UserCommentProps } from "../../components/propTypes";
 import { LocationFilterType } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
@@ -66,7 +66,7 @@ export interface IGroupWriting extends TimeStampProps {
 }
 
 export interface IGroupWritingCategory {
-  main: GatherCategoryMain;
+  main: GroupCategoryMain;
   sub: string;
 }
 export interface IWeekRecord {

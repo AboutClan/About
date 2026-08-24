@@ -46,7 +46,7 @@ export const useGatherGroupQuery = (id: string, options?: QueryOptions<IGather[]
     [GATHER_CONTENT, "group", id],
     async () => {
       const res = await axios.get<IGather[]>(`${SERVER_URI}/gather/group`, {
-        params: { type: "group", groupId: id },
+        params: { groupId: id },
       });
       return res.data;
     },

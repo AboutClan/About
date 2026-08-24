@@ -22,7 +22,6 @@ import {
   SupportItem,
 } from "../../constants/support";
 import { useSingleModalSlot } from "../../hooks/custom/useSingleModalSlot";
-import { getGroupKeyByValue } from "../../pageTemplates/gather/GatherMain";
 import {
   HOME_ACTIVITY_DRAWER_QUERY_KEY,
   HomeActivityDrawerTab,
@@ -39,23 +38,28 @@ const CATEGORY_LABEL: Record<ActivityCategory, string> = {
   social: "친목",
 };
 
-// 실제 소모임 대분류(GatherMain.tsx의 GROUP_MAPPING)를 홈 팝업용 3분류로 축약한다.
-// 스터디/자기계발 → study, 취미/문화·감상 → hobby, 액티비티/친목 → social
-const GROUP_KEY_TO_ACTIVITY_CATEGORY: Record<string, ActivityCategory> = {
+// HOME_ACTIVITY_ITEMS는 실제 group.category 값과 무관한 큐레이션 콘텐츠라 자체 세부 카테고리
+// 값(mainCategory)을 그대로 유지한다. 이를 홈 팝업용 3분류로 축약한다.
+const FINE_CATEGORY_TO_ACTIVITY_CATEGORY: Record<string, ActivityCategory> = {
   스터디: "study",
+  말하기: "study",
+  크루: "study",
   자기계발: "study",
-  취미: "hobby",
-  "문화·감상": "hobby",
-  액티비티: "social",
+  힐링: "hobby",
+  "소셜 게임": "hobby",
+  요리: "hobby",
+  감상: "hobby",
+  운동: "social",
   친목: "social",
+  파티: "social",
+  푸드: "social",
 };
 
-// GROUP_MAPPING에 없는 mainCategory(예: "기타")가 들어오면 이 값으로 분류한다.
+// 위 매핑에 없는 mainCategory가 들어오면 이 값으로 분류한다.
 const FALLBACK_ACTIVITY_CATEGORY: ActivityCategory = "hobby";
 
 function resolveActivityCategory(item: ActivityItem): ActivityCategory {
-  const groupKey = getGroupKeyByValue(item.mainCategory);
-  return GROUP_KEY_TO_ACTIVITY_CATEGORY[groupKey] ?? FALLBACK_ACTIVITY_CATEGORY;
+  return FINE_CATEGORY_TO_ACTIVITY_CATEGORY[item.mainCategory] ?? FALLBACK_ACTIVITY_CATEGORY;
 }
 
 type PopupTab = HomeActivityDrawerTab;

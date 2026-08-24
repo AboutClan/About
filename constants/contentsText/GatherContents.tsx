@@ -55,7 +55,7 @@ function MusicIcon() {
   );
 }
 
-function DiceIcon() {
+export function DiceIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +69,7 @@ function DiceIcon() {
   );
 }
 
-function BookIcon() {
+export function BookIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +83,7 @@ function BookIcon() {
   );
 }
 
-function SocialIcon() {
+export function SocialIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ function SocialIcon() {
   );
 }
 
-function ExerciseIcon() {
+export function ExerciseIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +139,7 @@ function PartyIcon() {
   );
 }
 
-function SeedIcon() {
+export function SeedIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -6,7 +6,6 @@ import BlurredLink from "../../../components/molecules/BlurredLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import { useCheckGuest } from "../../../hooks/custom/UserHooks";
 import { IGroup } from "../../../types/models/groupTypes/group";
-import { getGroupKeyByValue } from "../../gather/GatherMain";
 
 interface GroupOverviewProps {
   group: IGroup;
@@ -29,7 +28,7 @@ function GroupOverview({
     <Flex direction="column" px={5} pt={4} pb={2}>
       <Flex mb={2}>
         <Box mr={1}>
-          <MainBadge text={getGroupKeyByValue(group?.category?.main)} />
+          <MainBadge text={group?.category?.main} />
         </Box>
         <MainBadge text={group?.isFree ? "자유 가입" : "승인제"} type="sub" />
       </Flex>

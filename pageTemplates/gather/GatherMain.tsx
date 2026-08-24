@@ -14,19 +14,6 @@ import GatherSkeletonMain from "./GatherSkeletonMain";
 
 type SortedType = "최신 개설 순" | "일정 빠른 순" | "기본순";
 
-export const GROUP_MAPPING = {
-  스터디: ["스터디", "말하기", "크루"],
-  자기계발: ["자기계발"],
-  취미: ["힐링", "소셜 게임", "요리"],
-  "문화·감상": ["감상"],
-  액티비티: ["운동"],
-  친목: ["친목", "파티", "푸드"],
-};
-
-export const getGroupKeyByValue = (value: string) => {
-  return Object.entries(GROUP_MAPPING).find(([_, values]) => values.includes(value as never))?.[0];
-};
-
 type PaginationState = { cursor: number; futureDone: boolean };
 type PaginationAction = { type: "NEXT_PAGE" } | { type: "FUTURE_EXHAUSTED" } | { type: "RESET" };
 

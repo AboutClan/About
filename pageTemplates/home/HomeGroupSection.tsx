@@ -57,13 +57,13 @@ function HomeGroupSection() {
             title="2026년을 바꾸는 About 스터디!"
             subTitle="공부·자기계발·루틴까지 함께 쌓아가는 모임"
           >
-            <HomeGroupCol threeGroups={groups?.develop.slice(0, 3)} type="study1" />
+            <HomeGroupCol threeGroups={groups?.develop.slice(0, 3)} type="develop" />
           </SlideSectionCol>
           <SlideSectionCol
             title="2026년을 바꾸는 About 스터디!"
             subTitle="공부·자기계발·루틴까지 함께 쌓아가는 모임"
           >
-            <HomeGroupCol threeGroups={groups?.develop.slice(3)} type="self" />
+            <HomeGroupCol threeGroups={groups?.develop.slice(3)} type="develop" />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
@@ -84,13 +84,13 @@ function HomeGroupSection() {
             title="우리 동네 스터디 크루"
             subTitle="동네에서 편하게 모여 같이 카공하는 모임"
           >
-            <HomeGroupCol threeGroups={groups?.crew.slice(0, 3)} type="study1" />
+            <HomeGroupCol threeGroups={groups?.crew.slice(0, 3)} type="crew" />
           </SlideSectionCol>
           <SlideSectionCol
             title="우리 동네 스터디 크루"
             subTitle="동네에서 편하게 모여 같이 카공하는 모임"
           >
-            <HomeGroupCol threeGroups={groups?.crew.slice(3)} type="self" />
+            <HomeGroupCol threeGroups={groups?.crew.slice(3)} type="crew" />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
@@ -105,13 +105,13 @@ function HomeGroupSection() {
             title="오픈 임박! 신규 개설 소모임"
             subTitle="새로운 만남을 기다리는 신규 소모임"
           >
-            <HomeGroupCol threeGroups={groups?.waiting.slice(0, 3)} type="study1" />
+            <HomeGroupCol threeGroups={groups?.waiting.slice(0, 3)} type="expected" />
           </SlideSectionCol>
           <SlideSectionCol
             title="About 오픈 예정 소모임"
             subTitle="새로운 만남을 기다리는 신규 소모임"
           >
-            <HomeGroupCol threeGroups={groups?.waiting.slice(3, 6)} type="self" />
+            <HomeGroupCol threeGroups={groups?.waiting.slice(3, 6)} type="expected" />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>

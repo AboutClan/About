@@ -10,6 +10,7 @@ import HomeFooter from "../../pageTemplates/home/HomeFooter";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeGroupSection from "../../pageTemplates/home/HomeGroupSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
+import HomeHotClubSection from "../../pageTemplates/home/HomeHotClubSection";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
 import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
@@ -35,6 +36,10 @@ function Home() {
       {/* <Slide isNoPadding>
         <HomeStudySection />
       </Slide> */}
+      <Box h={2} />
+      <Slide isNoPadding>
+        <HomeHotClubSection />
+      </Slide>
       <Box h={2} />
       <Slide isNoPadding>
         <HomeGatherSection />
