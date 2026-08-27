@@ -200,6 +200,20 @@ export const useGroupInviteMutation = (
     options,
   );
 
+export const useGroupInviteDummyMutation = (
+  id: string,
+  options?: MutationOptions<{ name: string; gender: string; birth: string }>,
+) =>
+  useMutation<void, AxiosError, { name: string; gender: string; birth: string }>(
+    (param) =>
+      requestServer<{ id: string; name: string; gender: string; birth: string }>({
+        method: "post",
+        url: "groupStudy/invite/dummy",
+        body: { id, ...param },
+      }),
+    options,
+  );
+
 export const useGroupDepositMutation = (
   id: string,
   options?: MutationOptions<{ deposit: number }>,

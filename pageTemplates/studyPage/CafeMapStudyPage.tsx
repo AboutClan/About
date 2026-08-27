@@ -99,7 +99,7 @@ export default function CafeMapStudyPage() {
                 현재는 <b style={{ fontWeight: 500 }}>[실시간 공부 인증]</b>만 이용 가능합니다.
               </li>
               <li>
-                <b style={{ fontWeight: 500 }}>[동네 카공 스터디]</b>는 8월 10일 출시 예정
+                <b style={{ fontWeight: 500 }}>[동네 카공 스터디]</b>는 9월 10일 출시 예정
               </li>
             </Box>
 

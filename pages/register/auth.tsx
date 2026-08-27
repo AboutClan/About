@@ -19,6 +19,7 @@ import RegisterReview from "../../pageTemplates/register/access/RegisterReview";
 import { isWebView } from "../../utils/appEnvUtils";
 import { setAuthIntent } from "../../utils/authIntentUtils";
 import { getTrafficSourceCode, setLocalStorageObj } from "../../utils/storageUtils";
+import { isMobileWeb } from "../../utils/validationUtils";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URI ?? "http://localhost:3001";
 const NICE_REQUEST_NO_KEY = "nice_request_no";
@@ -264,6 +265,14 @@ export default function Auth() {
       sessionStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no);
       localStorage.setItem(NICE_REQUEST_NO_KEY, data.request_no); // ✅ 추가
       currentRequestNoRef.current = data.request_no;
+
+      if (isApp || isMobileWeb()) {
+        // 모바일/인앱 브라우저: window.open이 새 탭으로 "성공"해버리면
+        // 콜백의 window.close()가 막혀 그 새 탭에서 fallback 리다이렉트가 발생,
+        // request_no를 저장한 원래 탭과 컨텍스트가 분리되는 문제 방지
+        window.location.href = data.auth_url;
+        return;
+      }
 
       const popup = window.open(data.auth_url, "niceAuthPopup", "width=500,height=700");
       if (!popup || popup.closed) {

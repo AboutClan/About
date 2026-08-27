@@ -54,7 +54,7 @@ function SupportDetailPage() {
       issueCouponByPartner({ partnerId: id });
       return;
     }
-    toast("info", "8월 10일(토)부터 이용 가능");
+    toast("info", "9월 10일(토)부터 이용 가능");
   };
 
   return (

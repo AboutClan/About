@@ -80,6 +80,7 @@ export interface UserSimpleInfoProps {
   uid: string;
   score: number;
   comment: string;
+  role?: UserRole;
   badge: {
     badgeIdx: number;
     badgeList?: string[];

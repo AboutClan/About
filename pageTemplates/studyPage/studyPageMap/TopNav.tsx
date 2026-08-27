@@ -895,7 +895,7 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
   {
     date: "2026-05-18",
     isCompleted: false,
-    textArr: ["스터디 기능 오픈 (8월 10일)"],
+    textArr: ["스터디 기능 오픈 (9월 10일)"],
   },
 ];
 

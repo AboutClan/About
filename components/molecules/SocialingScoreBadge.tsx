@@ -65,7 +65,7 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
             lineHeight="1"
           >
             <Text lineHeight="1" textAlign="center" fontWeight={400}>
-              {Math.round(Math.round(user?.temperature?.cnt) ?? 0)}명
+              {Math.round(user?.temperature?.cnt) || 0}명
             </Text>
           </Flex>
         )}

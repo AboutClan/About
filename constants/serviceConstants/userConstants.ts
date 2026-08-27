@@ -14,6 +14,7 @@ export const USER_ROLE = [
   "block",
   "secede",
   "cafe_user",
+  "dummy",
 ] as const;
 
 export const ABOUT_USER_SUMMARY: Partial<IUser> = {

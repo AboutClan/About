@@ -1,7 +1,5 @@
-import { AnimatePresence, motion } from "framer-motion";
-
 import SlideSectionCol from "../../components/molecules/SlideSectionCol";
-import { useWindowWidth } from "../../hooks/custom/CustomHooks";
+import SlideSectionRow from "../../components/molecules/SlideSectionRow";
 import { useGatherQuery } from "../../hooks/gather/queries";
 import HomeGatherCol from "./HomeGatherCol";
 
@@ -13,8 +11,6 @@ const FEATURED_CATEGORIES = ["officialGather", "openGather", "secretGather", "ga
 
 function HomeGatherSection() {
   const { data: gathers } = useGatherQuery(-1);
-  const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
-  const width = windowWidth - 70;
   console.log(4, gathers);
   // 첫번째 섹션(공식 행사)에는 officialGather/openGather/secretGather만 노출된다.
   const featuredPool = gathers?.filter(
@@ -38,104 +34,68 @@ function HomeGatherSection() {
 
   return (
     <>
-      <AnimatePresence initial={false}>
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: -width, right: 0 }}
-          dragElastic={0.3}
-          style={{
-            marginLeft: "20px",
-            display: "flex",
-            width: "100%",
-            gap: "12px",
-          }}
+      <SlideSectionRow gap="12px">
+        <SlideSectionCol
+          title="오늘 뭐하지? About 번개"
+          subTitle="내가 원하는 때, 내 취향대로, 골라서 참여!"
         >
-          <SlideSectionCol
-            title="오늘 뭐하지? About 번개"
-            subTitle="내가 원하는 때, 내 취향대로, 골라서 참여!"
-          >
-            <HomeGatherCol
-              gathers={upcomingData?.slice(0, 3)?.filter((data) => !!data)}
-              isPriority={false}
-            />
-          </SlideSectionCol>
-          <SlideSectionCol
-            title="오늘 뭐하지? About 번개"
-            subTitle="내가 원하는 때, 내 취향대로, 골라서 참여!"
-          >
-            <HomeGatherCol
-              gathers={upcomingData?.slice(3, 6)?.filter((data) => !!data)}
-              isPriority={false}
-            />
-          </SlideSectionCol>
-        </motion.div>
-      </AnimatePresence>
+          <HomeGatherCol
+            gathers={upcomingData?.slice(0, 3)?.filter((data) => !!data)}
+            isPriority={false}
+          />
+        </SlideSectionCol>
+        <SlideSectionCol
+          title="오늘 뭐하지? About 번개"
+          subTitle="내가 원하는 때, 내 취향대로, 골라서 참여!"
+        >
+          <HomeGatherCol
+            gathers={upcomingData?.slice(3, 6)?.filter((data) => !!data)}
+            isPriority={false}
+          />
+        </SlideSectionCol>
+      </SlideSectionRow>
       {recentData?.length >= 6 && (
-        <AnimatePresence initial={false}>
-          <motion.div
-            drag="x"
-            dragConstraints={{ left: -width, right: 0 }}
-            dragElastic={0.3}
-            style={{
-              marginLeft: "20px",
-              display: "flex",
-              width: "100%",
-              gap: "12px",
-            }}
+        <SlideSectionRow gap="12px">
+          <SlideSectionCol
+            title="따끈따끈 방금 개설된 모임"
+            subTitle="가장 최근에 새로 열린 모임이에요"
           >
-            <SlideSectionCol
-              title="따끈따끈 방금 개설된 모임"
-              subTitle="가장 최근에 새로 열린 모임이에요"
-            >
-              <HomeGatherCol
-                gathers={recentData?.slice(0, 3)?.filter((data) => !!data)}
-                isPriority={false}
-              />
-            </SlideSectionCol>
-            <SlideSectionCol
-              title="따끈따끈 방금 개설된 모임"
-              subTitle="가장 최근에 새로 열린 모임이에요"
-            >
-              <HomeGatherCol
-                gathers={recentData?.slice(3, 6)?.filter((data) => !!data)}
-                isPriority={false}
-              />
-            </SlideSectionCol>
-          </motion.div>
-        </AnimatePresence>
+            <HomeGatherCol
+              gathers={recentData?.slice(0, 3)?.filter((data) => !!data)}
+              isPriority={false}
+            />
+          </SlideSectionCol>
+          <SlideSectionCol
+            title="따끈따끈 방금 개설된 모임"
+            subTitle="가장 최근에 새로 열린 모임이에요"
+          >
+            <HomeGatherCol
+              gathers={recentData?.slice(3, 6)?.filter((data) => !!data)}
+              isPriority={false}
+            />
+          </SlideSectionCol>
+        </SlideSectionRow>
       )}
-      <AnimatePresence initial={false}>
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: -width, right: 0 }}
-          dragElastic={0.3}
-          style={{
-            marginLeft: "20px",
-            display: "flex",
-            width: "100%",
-            gap: "12px",
-          }}
+      <SlideSectionRow gap="12px">
+        <SlideSectionCol
+          title="🔥 놓치면 후회하는 About 공식 행사"
+          subTitle="어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
         >
-          <SlideSectionCol
-            title="🔥 놓치면 후회하는 About 공식 행사"
-            subTitle="어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
-          >
-            <HomeGatherCol
-              gathers={featuredData?.slice(0, 3)?.filter((data) => !!data)}
-              isPriority
-            />
-          </SlideSectionCol>
-          <SlideSectionCol
-            title="🔥 놓치면 후회하는 About 공식 행사"
-            subTitle="어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
-          >
-            <HomeGatherCol
-              gathers={featuredData?.slice(3, 6)?.filter((data) => !!data)}
-              isPriority
-            />
-          </SlideSectionCol>
-        </motion.div>
-      </AnimatePresence>
+          <HomeGatherCol
+            gathers={featuredData?.slice(0, 3)?.filter((data) => !!data)}
+            isPriority
+          />
+        </SlideSectionCol>
+        <SlideSectionCol
+          title="🔥 놓치면 후회하는 About 공식 행사"
+          subTitle="어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
+        >
+          <HomeGatherCol
+            gathers={featuredData?.slice(3, 6)?.filter((data) => !!data)}
+            isPriority
+          />
+        </SlideSectionCol>
+      </SlideSectionRow>
     </>
   );
 }

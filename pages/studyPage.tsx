@@ -9,6 +9,7 @@ import Slide from "../components/layouts/PageSlide";
 import { useToast } from "../hooks/custom/CustomToast";
 import { useUserInfo } from "../hooks/custom/UserHooks";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../hooks/study/queries";
+import { ModalLayout } from "../modals/Modals";
 import StudyIntroduceDrawer from "../pageTemplates/study/StudyIntroduceDrawer";
 import { LocationAddDrawer } from "../pageTemplates/studyPage/LocationAddDrawer";
 import StudyCrewRow from "../pageTemplates/studyPage/StudyCrewRow";
@@ -31,6 +32,7 @@ export default function StudyPage() {
   const [date, setDate] = useState<string | null>(null);
   const [modal, setModal] = useState<ModalType>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMaintenanceOpen, setIsMaintenanceOpen] = useState(true);
 
   const isGuest = session?.user.role === "guest";
 
@@ -193,6 +195,25 @@ export default function StudyPage() {
       </Box>
 
       {modal === "introduce" && <StudyIntroduceDrawer onClose={closeDrawer} />}
+
+      {isMaintenanceOpen && (
+        <ModalLayout
+          title="2학기 스터디가 곧 시작돼요!"
+          setIsModal={() => {
+            setIsMaintenanceOpen(false);
+          }}
+          footerOptions={{}}
+        >
+          <p>
+            학교나 집 근처에서 편하게 만나 <br />
+            같이 공부할 수 있는 <b>어바웃 카공스터디</b> <br />
+            <br />
+            8월 26일(수)부터 31일(월)까지
+            <br /> 새 학기 활동 준비를 위해 잠시 쉬어갑니다.
+            <br /> <b>9월 1일(화)</b>, 2학기 스터디가 시작됩니다.
+          </p>
+        </ModalLayout>
+      )}
     </>
   );
 }

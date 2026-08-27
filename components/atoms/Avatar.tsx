@@ -9,6 +9,7 @@ import { AVATAR_BG_IMAGES } from "../../assets/images/avatarBgImages";
 import { AVATAR_IMAGES } from "../../assets/images/avatarImages";
 import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useCheckGuest } from "../../hooks/custom/UserHooks";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 
@@ -61,8 +62,10 @@ function AvatarComponent({
   isWhite,
 }: IAvatar) {
   const router = useRouter();
+  const toast = useToast();
   const isPublic = router.query.isPublic === "true";
   const isGuest = useCheckGuest();
+  const isDummy = user?.role === "dummy";
   const avatar = user?.avatar;
   const userId = user?._id;
   const profileImage = user?.profileImage;
@@ -172,6 +175,16 @@ function AvatarComponent({
     <>
       {!isLink || size === "xxs1" || !userId ? (
         <Box>
+          <AvatarComponent />
+        </Box>
+      ) : isDummy ? (
+        <Box
+          style={{ outline: "none", cursor: "pointer" }}
+          onClick={(e) => {
+            e.stopPropagation();
+            toast("error", "프로필 열람이 불가능한 인원입니다.");
+          }}
+        >
           <AvatarComponent />
         </Box>
       ) : (
