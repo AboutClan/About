@@ -55,7 +55,7 @@ function Home() {
         <HomeGroupSection2 />
       </Slide> */}
       {/* <HomeGroupStudySection groups={data} /> */}
-      <HomeFooter />
+      {/* <HomeFooter /> */}
       {/* <Slide isNoPadding>
         <HomeStudySection />
       </Slide> */}

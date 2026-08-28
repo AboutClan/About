@@ -77,6 +77,4 @@ export const STUDY_ATTEND_INFO = "studyAttendInfo";
 
 export const STUDY_RECORD = "studyRecord";
 
-export const GROUP_CURSOR_NUM = "groupCursorNum";
-
 export const BLOCKED_CAFE_REVIEWERS = "blockedCafeReviewers";

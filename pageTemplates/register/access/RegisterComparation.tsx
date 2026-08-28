@@ -57,7 +57,7 @@ function UnderlinedLines({ lines, size }: { lines: string[]; size: "md" | "lg" }
 
 export default function RegisterComparation() {
   return (
-    <Box textAlign="center" mt={5}>
+    <Box textAlign="center" mt={6}>
       {/* 상단 영역 */}
       <Stack spacing={2} mb={5}>
         <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
@@ -88,13 +88,11 @@ export default function RegisterComparation() {
 
           <UnderlinedLines
             lines={[
-              "평균 회비 30,000원+",
-              "한 학기 단위 활동",
-              "하나의 관심사만 경험",
-              "번거로운 가입 과정",
-              "동아리 일정에 종속",
-              "비효율적인 참여 구조",
-              "다양한 참여 기회가 제한되고, 여러 동아리를 중복 가입해야 해요 🥲",
+              "학기 당 회비 2만원+",
+              "활동 기간 정해져 있음",
+              "하나의 관심사·주제",
+              "동아리 일정에 종속됨",
+              "다양한 활동을 하기엔<br/>참여 기회와 선택지가 <br/>제한적이에요 🥲",
             ]}
             size="md"
           />
@@ -119,13 +117,12 @@ export default function RegisterComparation() {
 
           <UnderlinedLines
             lines={[
-              "단 1회, 20,000원",
+              "최초 1회만, 2만원",
               "20대 모든 기간 활동",
-              "100개 이상의 취미 모임",
-              "원터치 소모임 가입",
+              "50개 이상의 관심사·주제",
               "내 일정에 맞춰 모임 참여",
               "앱을 통해 간편한 참여",
-              "한 번의 가입으로 20대 전 기간,<br/> 내가 원하는 모임을 원하는 때,<br/> 쉽게 참여할 수 있어요!",
+              "한 번의 가입으로 20대 동안,<br/> 내가 원하는 모임을 원하는 때,<br/> 쉽게 참여할 수 있어요!",
             ]}
             size="lg"
           />

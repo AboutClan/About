@@ -30,37 +30,15 @@ import {
 } from "../../recoils/transferRecoils";
 import RightDrawer from "../organisms/drawer/RightDrawer";
 
-const CATEGORY_ORDER: ActivityCategory[] = ["hobby", "study", "social"];
-
-const CATEGORY_LABEL: Record<ActivityCategory, string> = {
-  study: "공부",
-  hobby: "취미",
-  social: "친목",
-};
-
-// HOME_ACTIVITY_ITEMS는 실제 group.category 값과 무관한 큐레이션 콘텐츠라 자체 세부 카테고리
-// 값(mainCategory)을 그대로 유지한다. 이를 홈 팝업용 3분류로 축약한다.
-const FINE_CATEGORY_TO_ACTIVITY_CATEGORY: Record<string, ActivityCategory> = {
-  스터디: "study",
-  말하기: "study",
-  크루: "study",
-  자기계발: "study",
-  힐링: "hobby",
-  "소셜 게임": "hobby",
-  요리: "hobby",
-  감상: "hobby",
-  운동: "social",
-  친목: "social",
-  파티: "social",
-  푸드: "social",
-};
-
-// 위 매핑에 없는 mainCategory가 들어오면 이 값으로 분류한다.
-const FALLBACK_ACTIVITY_CATEGORY: ActivityCategory = "hobby";
-
-function resolveActivityCategory(item: ActivityItem): ActivityCategory {
-  return FINE_CATEGORY_TO_ACTIVITY_CATEGORY[item.mainCategory] ?? FALLBACK_ACTIVITY_CATEGORY;
-}
+// HOME_ACTIVITY_ITEMS의 mainCategory 값 자체가 group.category.main과 동일한 5분류라서
+// 별도 라벨/변환 매핑 없이 그대로 분류 기준으로 쓴다.
+const CATEGORY_ORDER: ActivityCategory[] = [
+  "공부·자기계발",
+  "취미",
+  "문화·놀거리",
+  "친목",
+  "스터디 크루",
+];
 
 type PopupTab = HomeActivityDrawerTab;
 
@@ -105,7 +83,7 @@ function HomeActivityDrawer({ isNavigationDisabled = false }: HomeActivityDrawer
     );
 
     HOME_ACTIVITY_ITEMS.forEach((item) => {
-      itemsByCategory[resolveActivityCategory(item)].push(item);
+      itemsByCategory[item.mainCategory].push(item);
     });
 
     return CATEGORY_ORDER.map((category) => ({
@@ -213,10 +191,11 @@ function ActivityTab({
     <Box px={5} pb={10}>
       <Box pt={4} pb={3}>
         <Box fontSize="18px" fontWeight={700} color="var(--gray-800)">
-          참여 가능한 소모임: <b>{totalCnt}개</b>
+          신규 멤버가 참여 가능한 소모임: <b>{totalCnt}개</b>
         </Box>
         <Box mt={1} fontSize="13px" color="var(--gray-500)">
-          공부 · 취미 · 친목 소모임을 한눈에 둘러보세요
+          공부 · 자기계발 · 취미 · 문화·놀거리 · 친목 · 스터디 크루
+          <br /> 여러 소모임을 한눈에 둘러보세요!
         </Box>
       </Box>
 
@@ -231,7 +210,7 @@ function ActivityTab({
         >
           <Flex align="baseline" mb={2} gap={1}>
             <Box fontSize="15px" fontWeight={700} color="var(--gray-800)">
-              {CATEGORY_LABEL[category]} 소모임
+              {category} 소모임
             </Box>
             <Box fontSize="13px" color="var(--gray-500)">
               {items.length}

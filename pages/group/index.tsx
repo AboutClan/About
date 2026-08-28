@@ -12,7 +12,6 @@ import InfoModalButton from "../../components/modalButtons/InfoModalButton";
 import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { GroupCategoryMain } from "../../constants/contentsText/GroupContents";
-import { GROUP_CURSOR_NUM } from "../../constants/keys/localStorage";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
@@ -20,7 +19,6 @@ import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import { GroupStatus, IGroup } from "../../types/models/groupTypes/group";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 
 type Status = "모집중" | "종료" | "오픈 예정";
 
@@ -46,14 +44,11 @@ const categoryArr = [
   { title: "스터디 크루" },
 ];
 
-const getInitialCursor = () => {
-  if (typeof window === "undefined") return 0;
-  const saved = window.localStorage.getItem(GROUP_CURSOR_NUM);
-  const num = Number(saved);
-  if (!Number.isFinite(num) || num < 0) return 0;
-  // 0~3로만 제한
-  return num % 4;
-};
+const PAGE_SIZE = 8;
+
+// 탭에 진입할 때마다 새로 뽑는 랜덤 시드. 같은 시드로 cursor만 늘려가며 요청하면
+// 서버가 시드 기준의 안정적인 랜덤 순서로 중복/스킵 없이 끝까지 페이지를 내려준다.
+const generateSeed = () => Math.random().toString(36).slice(2);
 
 function GroupPage() {
   const router = useRouter();
@@ -61,7 +56,6 @@ function GroupPage() {
   const statusFromParam =
     statusParam && enToStatus[statusParam] ? enToStatus[statusParam] : "모집중";
   const categoryIdx = (router.query.category as string | undefined) || "0";
-  const localStorageCursorNum = getInitialCursor();
   const userInfo = useUserInfo();
   const isGuest = userInfo?.role === "guest";
 
@@ -69,16 +63,19 @@ function GroupPage() {
 
   const [status, setStatus] = useState<Status>(statusFromParam);
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
-  const [cursor, setCursor] = useState(status === "모집중" ? localStorageCursorNum : 0);
+  const [cursor, setCursor] = useState(0);
+  const [seed, setSeed] = useState(generateSeed);
   const [category, setCategory] = useState<GroupCategoryMain | "전체">("전체");
 
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
+  const hasMoreRef = useRef(true);
 
   const { data: groups, isLoading, isFetching } = useGroupQuery(
     status === "모집중" ? "pending" : status === "오픈 예정" ? "planned" : "end",
     category,
     cursor,
+    seed,
     {
       enabled: !!status,
     },
@@ -92,24 +89,13 @@ function GroupPage() {
   }, [router.isReady, categoryIdx]);
 
   useEffect(() => {
-    return () => {
-      if (typeof window === "undefined") return;
-      if (status === "모집중" && category === "전체") {
-        // 0~3 사이에서만 다음 시작점을 돌리기
-        const next = ((cursor % 5) + 1) % 5;
-        // cursor: 0 → 1, 1 → 2, 2 → 3, 3 → 0, 4 → 1
-        window.localStorage.setItem(GROUP_CURSOR_NUM, String(next));
-      }
-    };
-  }, [cursor, status, category]);
-
-  useEffect(() => {
     // if (status) {
     //   setBackUrl(`/group?filter=${statusToEn[status]}`);
     // }
-    const baseCursor = status === "모집중" && category === "전체" ? getInitialCursor() : 0;
-    setCursor(baseCursor);
+    setCursor(0);
+    setSeed(generateSeed());
     setGroupStudies([]);
+    hasMoreRef.current = true;
     // return () => {
     //   setBackUrl(null);
     // };
@@ -173,15 +159,11 @@ function GroupPage() {
         if (!entry.isIntersecting) return;
         if (firstLoad.current) return;
         if (isFetchingRef.current) return;
-
-        if (groups?.length < 8 && categoryIdx !== "0") return;
+        if (!hasMoreRef.current) return;
 
         isFetchingRef.current = true;
 
-        setCursor((prevCursor) => {
-          if (prevCursor >= 5) return 0;
-          return prevCursor + 1;
-        });
+        setCursor((prevCursor) => prevCursor + 1);
       },
       { threshold: 0.5 },
     );
@@ -191,52 +173,17 @@ function GroupPage() {
     return () => {
       observer.disconnect();
     };
-  }, [router.isReady, groups, categoryIdx]);
-
-  // useEffect(() => {
-  //   if (!router.isReady) return;
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       if (entries[0].isIntersecting && !firstLoad.current) {
-  //         if (groups?.length < 8 && categoryIdx !== "0") return;
-  //         setCursor((prevCursor) => {
-  //           const nextCursor =
-  //             prevCursor === 0
-  //               ? 1
-  //               : prevCursor === 1
-  //               ? 2
-  //               : prevCursor === 2
-  //               ? 3
-  //               : prevCursor === 3
-  //               ? 4
-  //               : prevCursor === 4
-  //               ? 5
-  //               : 0;
-
-  //           return nextCursor;
-  //         });
-  //       }
-  //     },
-  //     { threshold: 0.5 },
-  //   );
-  //   if (loader.current) {
-  //     observer.observe(loader.current);
-  //   }
-  //   return () => {
-  //     if (loader.current) {
-  //       observer.unobserve(loader.current);
-  //     }
-  //   };
-  // }, [groups, categoryIdx, status, localStorageCursorNum, router.isReady]);
+  }, [router.isReady, groups]);
 
   useEffect(() => {
     if (!groups) return;
     firstLoad.current = false;
+    isFetchingRef.current = false;
+    hasMoreRef.current = groups.length >= PAGE_SIZE;
 
-    const newArray = shuffleArray(groups);
     setGroupStudies((old) => [
       ...old,
-      ...newArray.filter((item) => !old.some((existingItem) => existingItem.id === item.id)),
+      ...groups.filter((item) => !old.some((existingItem) => existingItem.id === item.id)),
     ]);
   }, [groups]);
 

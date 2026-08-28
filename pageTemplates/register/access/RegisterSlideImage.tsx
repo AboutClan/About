@@ -17,23 +17,23 @@ function RegisterSlideImage() {
   const [zoomImage, setZoomImage] = useState<string>(null);
 
   const imageArr = [
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%86%8C%EB%AA%A8%EC%9E%84.png",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%8A%A4%ED%84%B0%EB%94%94.png",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B2%88%EA%B0%9C.png",
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%86%8C%EB%AA%A8%EC%9E%84.png",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%ED%94%84%EB%A1%9C%ED%95%84.png",
   ];
 
   return (
     <>
       <Flex flexDir="column" alignItems="center" mt={10} textAlign="center">
-        <Stack spacing={2} mb={5}>
+        <Stack spacing={2} mb={6}>
           <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
             02
           </Badge>
 
           <Heading fontSize="2xl">활동 방식</Heading>
           <Text color="gray.500">
-            <b>어바웃 앱</b>에서 원하는 활동을 쉽게 찾고 참여할 수 있어요.
+            자체적으로 개발한 <b>동아리 앱</b>으로 간편하게 활동해요.
           </Text>
         </Stack>
         <StyledSwiper

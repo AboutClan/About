@@ -162,10 +162,10 @@ function RegisterPaymentButton({
       content: `추천인: ${codeText}`,
     });
 
-    if (discount === 20000) {
+    if (discount >= value) {
       approve({ uid: session.user.uid, referrerUid: codeText });
     }
-  }, [discount, session, codeText]);
+  }, [discount, session, codeText, value]);
 
   // 기존 view 계산은 유지 (UI/기능 영향 없고, 디버깅에도 유용)
   useMemo(() => {
@@ -431,7 +431,7 @@ function RegisterPaymentButton({
     }
     setIsLoading2(true);
     const orderNo = makeOrderNo(); // ✅ 매번 새로 생성
-    const amount = type === "point" ? value : 20000 - discount;
+    const amount = type === "point" ? value : value - discount;
 
     // 주문 사전 저장에 실패하면 결제 자체를 시작하지 않는다.
     try {

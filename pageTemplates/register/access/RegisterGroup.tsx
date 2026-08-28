@@ -7,30 +7,28 @@ import { useOpenHomeActivityDrawer } from "../../../hooks/custom/useHomeActivity
 
 const TOP_ACTIVITY_ITEM_CNT = 9;
 
+const HOT_CLUB_GROUP_ID_LIST: number[] = [245, 176, 104, 135, 102, 106, 277, 310, 320];
+
 function RegisterGroup() {
   const openHomeActivityDrawer = useOpenHomeActivityDrawer();
 
   const topActivityItems = useMemo(
-    () =>
-      [...HOME_ACTIVITY_ITEMS]
-        .sort((a, b) => (b.activeMemberCnt ?? 0) - (a.activeMemberCnt ?? 0))
-        .filter((f) => f.id !== "17" && f.id !== "275")
-        .slice(0, TOP_ACTIVITY_ITEM_CNT),
+    () => HOME_ACTIVITY_ITEMS.filter((f) => HOT_CLUB_GROUP_ID_LIST.includes(Number(f.id))),
     [],
   );
 
   return (
     <Box mt={10}>
-      <Stack spacing={2} mb={5} textAlign="center" alignItems="center">
+      <Stack spacing={2} mb={6} textAlign="center" alignItems="center">
         <Badge px={3} py={1} borderRadius="md" bg="mint" color="white">
           03
         </Badge>
 
         <Heading fontSize="2xl">소모임 소개</Heading>
-        <Text color="gray.500">50여 개의 소모임 중 내 취향대로 선택해 활동해요!</Text>
+        <Text color="gray.500">50여 개의 소모임 중 취향대로 선택해 활동해요!</Text>
       </Stack>
 
-      <Grid mx={5} templateColumns="repeat(3, 1fr)" gap={2}>
+      <Grid mx={3} templateColumns="repeat(3, 1fr)" gap={2}>
         {topActivityItems.map((item) => (
           <ActivityCard key={item.id} item={item} isNavigationDisabled />
         ))}

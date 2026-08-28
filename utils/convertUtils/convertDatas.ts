@@ -66,6 +66,6 @@ export const getRestInfo = (restData: string) => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const shuffleArray = (array: any[]) => {
-  if (!array) return;
-  return array.sort(() => Math.random() - 0.5);
+  if (!array) return array;
+  return [...array].sort(() => Math.random() - 0.5);
 };

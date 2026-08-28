@@ -58,13 +58,14 @@ export const useGroupQuery = (
   filter: GroupStatus,
   category: GroupCategoryMain | "전체",
   cursor: number,
+  seed: string,
   options?: QueryOptions<IGroup[]>,
 ) =>
   useQuery<IGroup[], AxiosError, IGroup[]>(
-    [GROUP_STUDY, filter, category, cursor],
+    [GROUP_STUDY, filter, category, cursor, seed],
     async () => {
       const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy`, {
-        params: { filter, category, cursor },
+        params: { filter, category, cursor, seed },
       });
 
       return res.data;

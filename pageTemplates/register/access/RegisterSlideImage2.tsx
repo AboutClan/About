@@ -25,14 +25,14 @@ function RegisterSlideImage2() {
   return (
     <>
       <Flex flexDir="column" alignItems="center" mt={10} textAlign="center">
-        <Stack spacing={2} mb={5}>
+        <Stack spacing={2} mb={6}>
           <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
             04
           </Badge>
 
           <Heading fontSize="2xl">제휴처 소개</Heading>
           <Text color="gray.500">
-            어바웃 멤버가 되면 아래 <b>제휴처 혜택</b>을 받을 수 있어요!
+            어바웃 멤버는 언제든 <b>제휴처 혜택</b>을 받을 수 있어요!
           </Text>
         </Stack>
         <StyledSwiper

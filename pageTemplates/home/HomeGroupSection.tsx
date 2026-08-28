@@ -10,7 +10,7 @@ function HomeGroupSection() {
 
   return (
     <Box>
-      <SlideSectionRow gap="16px">
+      {/* <SlideSectionRow gap="16px">
         <SlideSectionCol
           title="관심사로 통하는 About 취미 소모임"
           subTitle="같은 관심사 친구들과 지속적인 모임"
@@ -37,7 +37,7 @@ function HomeGroupSection() {
         >
           <HomeGroupCol threeGroups={groups?.develop.slice(3)} type="develop" />
         </SlideSectionCol>
-      </SlideSectionRow>
+      </SlideSectionRow> */}
       <SlideSectionRow gap="16px">
         <SlideSectionCol
           title="우리 동네 스터디 크루"
