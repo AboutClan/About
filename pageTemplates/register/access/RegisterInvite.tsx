@@ -52,7 +52,7 @@ function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: Regist
   return (
     <>
       <Flex flexDir="column" alignItems="center" mt={10} textAlign="center" w="full" mb={20}>
-        <Stack spacing={2} mb={5}>
+        <Stack spacing={2} mb={6}>
           <Badge alignSelf="center" px={3} py={1} borderRadius="md" bg="mint" color="white">
             08
           </Badge>

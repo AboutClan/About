@@ -44,7 +44,14 @@ export function HomeIcon({ title, image, bgColor }: HomeIconProps) {
         />
       </Flex>
       {title && (
-        <Box fontSize="11px" color="black.500" mt={2} lineHeight="16px" letterSpacing={0.08}>
+        <Box
+          whiteSpace="nowrap"
+          fontSize="11px"
+          color="black.500"
+          mt={2}
+          lineHeight="16px"
+          letterSpacing={0.08}
+        >
           {title}
         </Box>
       )}
