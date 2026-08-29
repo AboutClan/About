@@ -6,7 +6,10 @@ import { PlusIcon } from "../../components/Icons/MathIcons";
 import { StudyInviteDrawer } from "../../components/services/study/invite/StudyInviteDrawer";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
+import {
+  StudyConfirmedMemberProps,
+  StudyParticipationProps,
+} from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
@@ -14,10 +17,15 @@ interface IStudyDateBar {
   date: string;
   members: StudyConfirmedMemberProps[];
   studyType: StudyType;
+  isCrew?: boolean;
 }
 
-function StudyDateBar({ date, members, studyType }: IStudyDateBar) {
-  const memberIdArr = members?.map(
+function StudyDateBar({ date, members, studyType, isCrew }: IStudyDateBar) {
+  const countedMembers = isCrew
+    ? (members as unknown as StudyParticipationProps[])?.filter((member) => member?.dates?.length)
+    : members;
+
+  const memberIdArr = countedMembers?.map(
     (member) => (member as StudyConfirmedMemberProps)?.user._id || "",
   );
 

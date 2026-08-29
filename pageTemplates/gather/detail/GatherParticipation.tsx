@@ -110,8 +110,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   const userCardArr: IProfileCommentCard[] = (data?.participants ? [...data.participants] : []).flatMap(
     (par, idx) => {
       const card: IProfileCommentCard = {
-        user:
-          isSecret || par.isDummy ? (SECRET_USER_SUMMARY as UserSimpleInfoProps) : par.user,
+        user: isSecret ? (SECRET_USER_SUMMARY as UserSimpleInfoProps) : par.user,
         memo:
           gatherType === "openGather"
             ? getOpenGatherMemo(par)
@@ -119,10 +118,8 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
             ? getGenderAgeMemo(par)
             : gatherType === "secretGather" && !isMyGather
             ? `익명 참여자 ${idx + 1}`
-            : par.isDummy
-            ? getGenderAgeMemo(par)
             : par.user.comment,
-        rightComponent: isSecret || par.isDummy ? null : (
+        rightComponent: isSecret ? null : (
           <SocialingScoreBadge user={par?.user as UserSimpleInfoProps} size="sm" />
         ),
       };

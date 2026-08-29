@@ -43,6 +43,7 @@ export default function StudyMembers({
   date,
   members: prevMembers,
   isAttend,
+  isCrew,
   isCafeMap,
   coordinates,
 }: IStudyMembers) {
@@ -129,7 +130,7 @@ export default function StudyMembers({
   const filterMembers = members;
 
   const tempArr =
-    studyType === "participations"
+    studyType === "participations" && !isCrew
       ? getNearLocationCluster(filterMembers as StudyParticipationProps[])
       : filterMembers;
 
@@ -138,13 +139,14 @@ export default function StudyMembers({
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
     if (studyType === "participations") {
       const participant = member as StudyParticipationProps;
-      let month = dayjs(participant.dates[0]).month();
-      const addressArr = participant.location.address.split(" ");
+      const hasVote = !!participant.dates?.length;
+      let month = hasVote ? dayjs(participant.dates[0]).month() : null;
+      const addressArr = participant.location?.address?.split(" ");
       return {
         user: user,
-        memo: addressArr?.[0] + " " + addressArr?.[1],
+        memo: addressArr ? addressArr?.[0] + " " + addressArr?.[1] : user?.comment,
 
-        rightComponent: (
+        rightComponent: hasVote ? (
           <Badge variant="subtle" colorScheme="blue" size="md" maxW="70px" isTruncated>
             {participant.dates.map((date, idx) => {
               const newMonth = dayjs(date).month();
@@ -155,6 +157,10 @@ export default function StudyMembers({
               if (idx === 0) return dayjsToFormat(dayjs(date), "M월 D일");
               else return dayjsToFormat(dayjs(date), ", D일");
             })}
+          </Badge>
+        ) : (
+          <Badge variant="subtle" colorScheme="gray" size="md">
+            투표 정보 없음
           </Badge>
         ),
       };
@@ -312,14 +318,16 @@ export default function StudyMembers({
         <>
           <ProfileCardColumn
             userCardArr={
-              isOpen || studyType !== "participations" ? userCardArr : userCardArr?.slice(0, 10)
+              isOpen || isCrew || studyType !== "participations"
+                ? userCardArr
+                : userCardArr?.slice(0, 10)
             }
             hasCommentButton={studyType !== "participations" && isAttend}
             isStudy={true}
             isSoloStudy={studyType === "soloRealTimes"}
             isCafeMap={isCafeMap}
           />
-          {!isOpen && userCardArr.length > 10 && (
+          {!isCrew && !isOpen && userCardArr.length > 10 && (
             <Button
               mt={2}
               w="100%"

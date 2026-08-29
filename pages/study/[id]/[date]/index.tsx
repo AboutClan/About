@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -6,16 +6,20 @@ import { useEffect, useState } from "react";
 import Divider from "../../../../components/atoms/Divider";
 import InfoList from "../../../../components/atoms/lists/InfoList";
 import { MainLoading, MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
+import Select from "../../../../components/atoms/Select";
 import Slide from "../../../../components/layouts/PageSlide";
 import { GroupThumbnailCard } from "../../../../components/molecules/cards/GroupThumbnailCard";
 import TabNav from "../../../../components/molecules/navs/TabNav";
 import {
   STUDY_CREW_ID_MAPPING,
   STUDY_CREW_PLACE_MAPPING,
+  STUDY_CREW_REGION,
+  STUDY_CREW_REGION_ID_MAPPING,
+  StudyCrewRegion,
 } from "../../../../constants/service/study/place";
 import { useToast } from "../../../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
-import { useGroupIdQuery } from "../../../../hooks/groupStudy/queries";
+import { useGroupIdQuery, useMyCrewGroupStudyQuery } from "../../../../hooks/groupStudy/queries";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/study/queries";
 import { shortenParticipations } from "../../../../libs/study/studyConverters";
 import { getMyStudyDateArr } from "../../../../libs/study/studyHelpers";
@@ -207,6 +211,8 @@ export default function Page() {
         }))
       : findStudy?.members;
 
+  const isParticipations = studyType === "participations";
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const entry = Object.entries(STUDY_CREW_PLACE_MAPPING).find(([_, places]) =>
     places.some((s) => s.name === findStudy?.place?.location?.name),
@@ -214,12 +220,65 @@ export default function Page() {
 
   const crewKey = entry?.[0] as StudyCrew;
 
-  const members =
+  const legacyCrewMembers =
     tab === "스터디 크루"
       ? (members2 as StudyParticipationProps[])?.filter((member) =>
           crewKey ? !!member?.user?.belong : !!member?.user?.belong,
         )
       : members2;
+
+  const legacyGroupId = !crewKey ? null : STUDY_CREW_ID_MAPPING?.[crewKey];
+
+  const { data: legacyGroup } = useGroupIdQuery(legacyGroupId, {
+    enabled: !isParticipations && !!legacyGroupId,
+  });
+
+  const isCrewTab = isParticipations && tab === "스터디 크루";
+
+  const { data: myCrewData, isLoading: isMyCrewLoading } = useMyCrewGroupStudyQuery({
+    enabled: isCrewTab,
+  });
+
+  const [crewRegion, setCrewRegion] = useState<StudyCrewRegion | null>(null);
+
+  useEffect(() => {
+    if (!isCrewTab || crewRegion || isMyCrewLoading || !myCrewData) return;
+    const matchedRegion = myCrewData.groupStudyId
+      ? (Object.keys(STUDY_CREW_REGION_ID_MAPPING) as StudyCrewRegion[]).find(
+          (region) => STUDY_CREW_REGION_ID_MAPPING[region] === myCrewData.groupStudyId,
+        )
+      : null;
+    setCrewRegion(matchedRegion || "강남·서초");
+  }, [isCrewTab, myCrewData, isMyCrewLoading, crewRegion]);
+
+  const crewGroupStudyId = crewRegion ? STUDY_CREW_REGION_ID_MAPPING[crewRegion] : null;
+
+  const { data: crewGroup } = useGroupIdQuery(crewGroupStudyId, {
+    enabled: isCrewTab && !!crewGroupStudyId,
+  });
+
+  const crewMembers = crewGroup?.participants
+    ?.map((participant) => {
+      const matched = (members2 as StudyParticipationProps[])?.find(
+        (m) => m?.user?._id === participant.user._id,
+      );
+      return {
+        ...matched,
+        user: participant.user,
+        dates: matched?.dates || [],
+      };
+    })
+    .sort(
+      (a, b) => (b.dates?.length ? 1 : 0) - (a.dates?.length ? 1 : 0),
+    ) as StudyParticipationProps[];
+
+  const members = isParticipations
+    ? tab === "스터디 크루"
+      ? crewMembers
+      : members2
+    : legacyCrewMembers;
+
+  const group = isParticipations ? crewGroup : legacyGroup;
 
   const placeInfo = findStudy?.place;
 
@@ -237,11 +296,9 @@ export default function Page() {
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
 
-  const groupId = !crewKey ? null : STUDY_CREW_ID_MAPPING?.[crewKey];
-
-  const { data: group } = useGroupIdQuery(groupId, { enabled: !!groupId });
-
   if (!router.isReady) return null;
+
+  const hasPendingStudy = studyType === "participations" && studySet?.results?.length;
 
   return (
     <>
@@ -260,11 +317,18 @@ export default function Page() {
               )}
             </Slide>
             <Slide isNoPadding>
-              {isOpenStudy && (
-                <Box mt={5}>
-                  <Divider />
-                </Box>
-              )}
+              {hasPendingStudy && (
+                <>
+                  <Box mx={5}>
+                    <StudyPendingSection studySet={studySet} />
+                  </Box>
+                  <Box>
+                    <Divider />
+                  </Box>
+                </>
+              )}{" "}
+            </Slide>
+            <Slide isNoPadding>
               <Box borderBottom="var(--border)" px={5}>
                 <TabNav
                   selected={tab}
@@ -278,12 +342,14 @@ export default function Page() {
                     {
                       text: "스터디 크루",
                       func: () => {
-                        if (!userInfo?.belong) {
-                          toast("info", "가입중인 스터디 크루가 없습니다. ");
+                        if (!isParticipations) {
+                          if (!userInfo?.belong) {
+                            toast("info", "가입중인 스터디 크루가 없습니다. ");
+                            return;
+                          }
+                          toast("info", "기능 점검 중");
                           return;
                         }
-                        toast("info", "기능 점검 중");
-                        return;
                         setTab("스터디 크루");
                       },
                     },
@@ -291,8 +357,41 @@ export default function Page() {
                 />
               </Box>
             </Slide>
+            {isCrewTab && (
+              <Slide isNoPadding>
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  mx={5}
+                  mt={4}
+                  p={3}
+                  bg="mint.50"
+                  borderRadius="12px"
+                >
+                  <Box fontSize="14px" fontWeight="semibold" color="gray.800">
+                    지역별 스터디 크루
+                  </Box>
+                  {crewRegion ? (
+                    <Select
+                      defaultValue={crewRegion}
+                      options={[...STUDY_CREW_REGION]}
+                      setValue={(value) => setCrewRegion(value as StudyCrewRegion)}
+                      size="sm"
+                      isThick
+                    />
+                  ) : (
+                    <Box pos="relative" minH="28px" w="90px" />
+                  )}
+                </Flex>
+              </Slide>
+            )}
             <Slide>
-              <StudyDateBar date={date} members={members} studyType={studyType} />
+              <StudyDateBar
+                date={date}
+                members={members}
+                studyType={studyType}
+                isCrew={tab === "스터디 크루"}
+              />
               {isOpenStudy && members?.length && (
                 <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
               )}
@@ -308,7 +407,7 @@ export default function Page() {
                   )} */}
 
                 <Box minH="240px">
-                  {isPassedSolo && !studyPassedData ? (
+                  {(isPassedSolo && !studyPassedData) || (isCrewTab && !crewRegion) ? (
                     <Box pos="relative" minH="140px">
                       <MainLoadingAbsolute size="sm" />
                     </Box>
@@ -337,14 +436,6 @@ export default function Page() {
                   </>
                 )} */}
             </Slide>
-            {studyType === "participations" && studySet?.results?.length ? (
-              <>
-                <Box h={2} bg="gray.100" my={4} />
-                <Slide>
-                  <StudyPendingSection studySet={studySet} />
-                </Slide>
-              </>
-            ) : null}
             {!isCafeMap && (
               <>
                 <Box h={2} bg="gray.100" my={4} />
@@ -455,8 +546,10 @@ export default function Page() {
             findStudy={findStudy}
             myStudyDateArr={myStudyArr?.map((s) => s?.date)}
             tempCheck={
-              !members?.some((member) => member.user._id === userInfo?._id) &&
-              studyType === "participations"
+              isParticipations &&
+              !(members2 as StudyParticipationProps[])?.some(
+                (member) => member.user._id === userInfo?._id,
+              )
             }
             isCafeMap={isCafeMap}
           />

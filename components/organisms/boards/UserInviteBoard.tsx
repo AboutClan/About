@@ -42,6 +42,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
   const [filter, setFilter] = useState<"소모임 멤버" | "친구인 멤버">(
     groupId ? "소모임 멤버" : null,
   );
+  const [dummyName, setDummyName] = useState("");
   const [dummyGender, setDummyGender] = useState<"남성" | "여성">(null);
   const [dummyAge, setDummyAge] = useState<number>(null);
 
@@ -62,6 +63,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
       onSuccess() {
         queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });
         typeToast("invite");
+        setDummyName("");
         setDummyGender(null);
         setDummyAge(null);
       },
@@ -109,6 +111,15 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
           <Text fontSize="sm" fontWeight="bold" mb={2}>
             더미 멤버 추가
           </Text>
+          <Box mb={2}>
+            <Input
+              placeholder="이름 입력"
+              isLine
+              size="sm"
+              value={dummyName}
+              onChange={(e) => setDummyName(e.target.value)}
+            />
+          </Box>
           <Flex mb={2}>
             {(["남성", "여성"] as const).map((gender) => (
               <Button
@@ -139,10 +150,15 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
           <Button
             size="sm"
             colorScheme="mint"
-            isDisabled={!dummyGender || !dummyAge}
+            isDisabled={!dummyName.trim() || !dummyGender || !dummyAge}
             isLoading={isLoadingDummy}
             onClick={() =>
-              mutateDummy({ phase: "first", gender: dummyGender, birth: ageToBirth(dummyAge) })
+              mutateDummy({
+                phase: "first",
+                name: dummyName.trim(),
+                gender: dummyGender,
+                birth: ageToBirth(dummyAge),
+              })
             }
           >
             더미 멤버로 추가

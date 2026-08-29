@@ -1,6 +1,5 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useState } from "react";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import {
@@ -19,8 +18,6 @@ interface StudyPendingSectionProps {
 
 function StudyPendingSection({ studySet }: StudyPendingSectionProps) {
   const userInfo = useUserInfo();
-
-  const [isOpen, setIsOpen] = useState(false);
 
   const thumbnailCardInfoArr: StudyThumbnailCardProps[] = studySet?.results
     ?.filter((result) => result?.study.status === "expected")
@@ -56,44 +53,42 @@ function StudyPendingSection({ studySet }: StudyPendingSectionProps) {
     });
 
   return (
-    <Box mt={5}>
-      <Box fontSize="18px" mb={4} fontWeight="bold">
-        매칭 예정 스터디
+    <Box mt={4} mb={2}>
+      <Box mb={2} fontSize="16px" fontWeight="semibold">
+        오픈 예정 스터디
       </Box>
       {thumbnailCardInfoArr?.length ? (
-        (isOpen ? thumbnailCardInfoArr : thumbnailCardInfoArr.slice(0, 3)).map(
-          (thumbnailCardInfo, idx) => (
-            <Box key={idx} mb={3}>
-              <StudyThumbnailCard {...thumbnailCardInfo} />
-            </Box>
-          ),
-        )
-      ) : !studySet ? (
-        [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
-      ) : (
         <Flex
-          align="center"
-          justify="center"
-          h="200px"
-          color="var(--gray-600)"
-          fontSize="16px"
-          textAlign="center"
+          overflowX="auto"
+          gap={3}
+          pb={1}
+          sx={{
+            "::-webkit-scrollbar": { display: "none" },
+            scrollbarWidth: "none",
+          }}
         >
-          <Box as="p">매칭 예정 스터디가 없습니다.</Box>
+          {thumbnailCardInfoArr.map((thumbnailCardInfo, idx) => (
+            <Box
+              key={idx}
+              flex="0 0 auto"
+              w="76.9%"
+              p={3}
+              border="var(--border)"
+              borderRadius="12px"
+            >
+              <StudyThumbnailCard {...thumbnailCardInfo} hasBorder={false} isCompact />
+            </Box>
+          ))}
         </Flex>
-      )}
-
-      {!isOpen && thumbnailCardInfoArr?.length > 3 && (
-        <Button
-          w="100%"
-          h="40px"
-          bgColor="white"
-          border="0.5px solid #E8E8E8"
-          onClick={() => setIsOpen(true)}
-        >
-          더보기
-        </Button>
-      )}
+      ) : !studySet ? (
+        <Flex overflowX="hidden" gap={3}>
+          {[1, 2].map((idx) => (
+            <Box key={idx} flex="0 0 auto" w="76.9%">
+              <StudyThumbnailCardSkeleton />
+            </Box>
+          ))}
+        </Flex>
+      ) : null}
     </Box>
   );
 }

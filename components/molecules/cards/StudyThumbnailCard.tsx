@@ -42,6 +42,7 @@ export interface StudyThumbnailCardProps {
   hasAttend?: boolean;
   isConfirmed?: boolean;
   hasBorder?: boolean;
+  isCompact?: boolean;
 }
 
 export function StudyThumbnailCard({
@@ -56,6 +57,7 @@ export function StudyThumbnailCard({
   hasReview,
   hasAttend,
   hasBorder = true,
+  isCompact = false,
 }: StudyThumbnailCardProps) {
   const router = useRouter();
 
@@ -85,13 +87,15 @@ export function StudyThumbnailCard({
                   <CheckCircleIcon color="mint" size="sm" isFill />
                 </Box>
               )}
-              <Badge
-                mr="auto"
-                colorScheme={getStudyBadge(studyType, dateStatus).colorScheme}
-                size="md"
-              >
-                {getStudyBadge(studyType, dateStatus).text}
-              </Badge>
+              {!isCompact && (
+                <Badge
+                  mr="auto"
+                  colorScheme={getStudyBadge(studyType, dateStatus).colorScheme}
+                  size="md"
+                >
+                  {getStudyBadge(studyType, dateStatus).text}
+                </Badge>
+              )}
             </Flex>
           </Flex>
           <Subtitle>
@@ -141,22 +145,22 @@ export function StudyThumbnailCard({
               />
             </Box>
             {studyType !== "participations" && studyType !== "soloRealTimes" ? (
-              <Flex align="center" color="var(--gray-500)" fontSize="11px" lineHeight="16px">
-                {dateStatus === "future"
-                  ? participants.length < 4
-                    ? "확정까지 "
-                    : participants.length < 8
-                    ? "마감까지 "
-                    : "인원 마감"
-                  : dateStatus === "current"
-                  ? `${participants.length}명의 멤버가 참여하고 있어요!`
-                  : ""}
-                {dateStatus === "future" && participants.length < 8
-                  ? `${temp - participants.length}명 남았어요!`
-                  : ""}
-                {/* {dateStatus === "future" && participants.length < 4 ? "확정까지 " : "마감까지 "}
-                {temp - participants.length}명 남았어요! */}
-              </Flex>
+              isCompact ? null : (
+                <Flex align="center" color="var(--gray-500)" fontSize="11px" lineHeight="16px">
+                  {dateStatus === "future"
+                    ? participants.length < 4
+                      ? "확정까지 "
+                      : participants.length < 8
+                      ? "마감까지 "
+                      : "인원 마감"
+                    : dateStatus === "current"
+                    ? `${participants.length}명의 멤버가 참여하고 있어요!`
+                    : ""}
+                  {dateStatus === "future" && participants.length < 8
+                    ? `${temp - participants.length}명 남았어요!`
+                    : ""}
+                </Flex>
+              )
             ) : (
               <Flex>
                 <UserIcon size="sm" />

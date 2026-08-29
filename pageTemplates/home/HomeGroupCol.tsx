@@ -7,6 +7,7 @@ import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbn
 import { createGroupThumbnailProps } from "../../pages/group";
 import { backUrlState } from "../../recoils/navigationRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
+import { getGroupParticipantCount } from "../../utils/groupUtils";
 import GroupSkeletonMain from "../group/GroupSkeletonMain";
 dayjs().locale("ko");
 
@@ -44,6 +45,7 @@ export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupCo
             .slice()
             .reverse()
             .map((group, idx) => {
+              const participantCnt = getGroupParticipantCount(group.participants);
               const status =
                 group.id === 138
                   ? "end"
@@ -53,11 +55,11 @@ export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupCo
                   ? "planned"
                   : group.memberCnt.max === 0
                   ? "pending"
-                  : group.memberCnt.max <= group.participants.length
+                  : group.memberCnt.max <= participantCnt
                   ? "full"
-                  : group.memberCnt.max - 2 <= group.participants.length
+                  : group.memberCnt.max - 2 <= participantCnt
                   ? "imminent"
-                  : group.memberCnt.min > group.participants.length
+                  : group.memberCnt.min > participantCnt
                   ? "planned"
                   : group.status;
 

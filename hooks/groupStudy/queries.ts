@@ -137,6 +137,22 @@ export const useGroupsTitleQuery = (
     options,
   );
 
+export const useMyCrewGroupStudyQuery = (
+  options?: QueryOptions<{ groupStudyId: string | null }>,
+) =>
+  useQuery<{ groupStudyId: string | null }, AxiosError, { groupStudyId: string | null }>(
+    [GROUP_STUDY, "crew", "mine"],
+    async () => {
+      const res = await axios.get<{ groupStudyId: string | null }>(
+        `${SERVER_URI}/groupStudy/crew/mine`,
+        {},
+      );
+
+      return res.data;
+    },
+    options,
+  );
+
 export const useGroupIdQuery = (groupStudyId?: string, options?: QueryOptions<IGroup>) =>
   useQuery<IGroup, AxiosError, IGroup>(
     [GROUP_STUDY, groupStudyId],

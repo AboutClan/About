@@ -19,6 +19,7 @@ import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import { GroupStatus, IGroup } from "../../types/models/groupTypes/group";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+import { getGroupParticipantCount } from "../../utils/groupUtils";
 
 type Status = "모집중" | "종료" | "오픈 예정";
 
@@ -241,7 +242,8 @@ function GroupPage() {
               <Flex direction="column">
                 {groupStudies?.slice()?.map((group, idx) => {
                   const status =
-                    group.memberCnt.max !== 0 && group.memberCnt.max <= group.participants.length
+                    group.memberCnt.max !== 0 &&
+                    group.memberCnt.max <= getGroupParticipantCount(group.participants)
                       ? "full"
                       : group.status;
 
@@ -277,10 +279,10 @@ export const createGroupThumbnailProps = (
 ) => ({
   title: group.title,
   text: group.guide,
-  status: group.participants.length <= 2 ? "planned" : status,
+  status: getGroupParticipantCount(group.participants) <= 2 ? "planned" : status,
   category: group.category,
   participants: group.participants
-    .filter((par) => par?.user?._id !== "65df1ddcd73ecfd250b42c89")
+    .filter((par) => par?.user?._id !== ABOUT_USER_SUMMARY._id)
     .map((user) => (group.isSecret ? { user: ABOUT_USER_SUMMARY as UserSimpleInfoProps } : user)),
   imageProps: {
     image: group?.squareImage || GATHER_MAIN_IMAGE_ARR["공통"][0],
@@ -289,7 +291,7 @@ export const createGroupThumbnailProps = (
   maxCnt: group.memberCnt.max,
   id: group.id,
   func,
-  waitingCnt: group.participants.length <= 1 ? group.waiting.length : null,
+  waitingCnt: getGroupParticipantCount(group.participants) <= 1 ? group.waiting.length : null,
   isFree: group.isFree,
 });
 

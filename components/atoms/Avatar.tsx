@@ -182,7 +182,7 @@ function AvatarComponent({
           style={{ outline: "none", cursor: "pointer" }}
           onClick={(e) => {
             e.stopPropagation();
-            toast("error", "프로필 열람이 불가능한 인원입니다.");
+            toast("info", "프로필 열람이 불가능한 인원입니다.");
           }}
         >
           <AvatarComponent />

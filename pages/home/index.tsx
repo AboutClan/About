@@ -20,7 +20,7 @@ function Home() {
   return (
     <>
       <HomeInitialSetting />
-      <HomeActivityIntroPopup />
+      {/* <HomeActivityIntroPopup /> */}
       <HomeActivityDrawer />
       <HomeHeader />
       <Slide isNoPadding>

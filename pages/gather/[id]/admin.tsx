@@ -8,7 +8,6 @@ import TabNav from "../../../components/molecules/navs/TabNav";
 import UserApprovalBoard from "../../../components/organisms/boards/UserApprovalBoard";
 import UserDeleteBoard from "../../../components/organisms/boards/UserDeleteBoard";
 import UserInviteBoard from "../../../components/organisms/boards/UserInviteBoard";
-import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { useResetGatherQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import {
@@ -17,7 +16,6 @@ import {
 } from "../../../hooks/gather/mutations";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
-import { birthToAge } from "../../../utils/convertUtils/convertTypes";
 import { safeDecodeTel } from "../../../utils/utils";
 
 const TAB_ARR = ["신청 인원", "참여 인원", "인원 초대"] as const;
@@ -107,12 +105,7 @@ function Admin() {
                 users={gatherData.participants.map((who) =>
                   who.isDummy
                     ? {
-                        user: {
-                          ...SECRET_USER_SUMMARY,
-                          name: `더미 (${who.dummyGender ?? ""} ${
-                            birthToAge(who.dummyBirth) ? `${birthToAge(who.dummyBirth)}세` : ""
-                          })`,
-                        } as IUser,
+                        user: who.user as IUser,
                         text: "더미 멤버",
                         deleteId: who.dummyId,
                       }

@@ -102,11 +102,26 @@ export const useGatherInviteMutation = (
 
 export const useGatherInviteDummyMutation = (
   gatherId: number,
-  options?: MutationOptions<{ phase?: "first" | "second"; gender: string; birth: string }>,
+  options?: MutationOptions<{
+    phase?: "first" | "second";
+    name: string;
+    gender: string;
+    birth: string;
+  }>,
 ) =>
-  useMutation<void, AxiosError, { phase?: "first" | "second"; gender: string; birth: string }>(
+  useMutation<
+    void,
+    AxiosError,
+    { phase?: "first" | "second"; name: string; gender: string; birth: string }
+  >(
     (param) =>
-      requestServer<{ gatherId: number; phase?: string; gender: string; birth: string }>({
+      requestServer<{
+        gatherId: number;
+        phase?: string;
+        name: string;
+        gender: string;
+        birth: string;
+      }>({
         method: "post",
         url: "gather/invite/dummy",
         body: { gatherId, ...param },

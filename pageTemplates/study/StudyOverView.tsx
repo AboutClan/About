@@ -67,11 +67,11 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
           : "설정한 매칭 범위 내 · 3명 이상의 멤버",
     },
 
-    {
-      category: "스터디 혜택",
-      text:
-        studyType === "participations" ? "출석 시 최대 1,000 Point 획득" : "최대 500 Point 획득",
-    },
+    // {
+    //   category: "스터디 혜택",
+    //   text:
+    //     studyType === "participations" ? "출석 시 최대 1,000 Point 획득" : "최대 500 Point 획득",
+    // },
   ];
 
   return (

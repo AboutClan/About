@@ -88,6 +88,7 @@ export interface IGatherParticipants {
   withCompanion?: boolean;
   isDummy?: boolean;
   dummyId?: string;
+  dummyName?: string;
   dummyGender?: string;
   dummyBirth?: string;
 }

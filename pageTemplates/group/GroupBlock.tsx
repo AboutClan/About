@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { useFailToast } from "../../hooks/custom/CustomToast";
 import { IGroup } from "../../types/models/groupTypes/group";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { getGroupParticipantCount } from "../../utils/groupUtils";
 
 interface IGroupBlock {
   group: IGroup;
@@ -28,7 +29,7 @@ function GroupBlock({ group }: IGroupBlock) {
         ? "이승주"
         : "어바웃"
       : group.organizer.name,
-    인원: `${group.participants.length}/${
+    인원: `${getGroupParticipantCount(group.participants)}/${
       group.memberCnt.max === 0 ? "자유" : group.memberCnt.max + "명"
     }`,
     조건: `${
@@ -53,7 +54,7 @@ function GroupBlock({ group }: IGroupBlock) {
     const status = group.status;
     const min = group.memberCnt.min;
     const max = group.memberCnt.max;
-    const participantCnt = group.participants.length + (group.id === 33 ? 3 : 0);
+    const participantCnt = getGroupParticipantCount(group.participants) + (group.id === 33 ? 3 : 0);
 
     if (status === "pending") {
       if (participantCnt < min) {

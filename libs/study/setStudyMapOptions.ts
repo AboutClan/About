@@ -17,7 +17,12 @@ import { getPlaceScore } from "./studyUtils";
 export const getNearLocationCluster = (
   members: StudyParticipationProps[],
 ): StudyParticipationProps[] => {
-  const data2 = members.map((p) => [p.location.latitude, p.location.longitude]);
+  const locatedMembers = members?.filter((p) => p?.location) || [];
+  const unlocatedMembers = members?.filter((p) => !p?.location) || [];
+
+  if (!locatedMembers.length) return unlocatedMembers;
+
+  const data2 = locatedMembers.map((p) => [p.location.latitude, p.location.longitude]);
 
   const DBSCAN = new clustering.DBSCAN();
 
@@ -27,12 +32,12 @@ export const getNearLocationCluster = (
 
   // 4️⃣ 클러스터 중심 계산
   const clusterInfo = clusters.map((cluster) => {
-    const points = cluster.map((idx) => members[idx]);
+    const points = cluster.map((idx) => locatedMembers[idx]);
     return points;
   });
 
   // 2) noise도 동일하게 2차원 배열 형태로 처리
-  const noiseInfo = DBSCAN.noise.map((idx) => [members[idx]]);
+  const noiseInfo = DBSCAN.noise.map((idx) => [locatedMembers[idx]]);
 
   // 3) 클러스터 크기 기준 정렬 (큰 그룹 먼저)
   const sortedGroups = [...clusterInfo, ...noiseInfo].sort((a, b) => b.length - a.length);
@@ -40,7 +45,7 @@ export const getNearLocationCluster = (
   // 4) 🔥 최종적으로 1차원 배열로 flatten
   const flattened = sortedGroups.flat();
 
-  return flattened;
+  return [...flattened, ...unlocatedMembers];
 };
 
 export const getStudyPlaceMarkersOptions = (

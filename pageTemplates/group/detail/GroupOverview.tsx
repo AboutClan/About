@@ -6,6 +6,7 @@ import BlurredLink from "../../../components/molecules/BlurredLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import { useCheckGuest } from "../../../hooks/custom/UserHooks";
 import { IGroup } from "../../../types/models/groupTypes/group";
+import { getGroupParticipantCount } from "../../../utils/groupUtils";
 
 interface GroupOverviewProps {
   group: IGroup;
@@ -40,7 +41,9 @@ function GroupOverview({
           {
             category: "인 원",
             text:
-              group?.participants?.length >= 3 ? `총 ${group?.participants?.length}명` : `모집중`,
+              getGroupParticipantCount(group?.participants ?? []) >= 3
+                ? `총 ${getGroupParticipantCount(group?.participants ?? [])}명`
+                : `모집중`,
           },
           {
             category: group.meetingType === "online" ? "방 식" : "모 임",

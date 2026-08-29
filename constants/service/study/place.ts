@@ -36,6 +36,30 @@ export const STUDY_CREW_ID_MAPPING: Record<StudyCrew, string> = {
   "[강남/서초]": "272",
 };
 
+export const STUDY_CREW_REGION = [
+  "수원·용인",
+  "강남·서초",
+  "건대·왕십리",
+  "마포·영등포",
+  "노원구",
+  "성북구",
+  "인천",
+  "사당·관악구",
+] as const;
+
+export type StudyCrewRegion = (typeof STUDY_CREW_REGION)[number];
+
+export const STUDY_CREW_REGION_ID_MAPPING: Record<StudyCrewRegion, string> = {
+  "수원·용인": "270",
+  "강남·서초": "272",
+  "건대·왕십리": "273",
+  "마포·영등포": "274",
+  "노원구": "321",
+  "성북구": "275",
+  "인천": "283",
+  "사당·관악구": "284",
+};
+
 export const STUDY_CREW_PLACE_MAPPING: Record<StudyCrew, CrewLocationProps[]> = {
   "[성북/동대문/노원]": [
     {

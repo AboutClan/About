@@ -17,6 +17,7 @@ import {
 } from "../../../hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { IGroup } from "../../../types/models/groupTypes/group";
+import { getGroupParticipantCount } from "../../../utils/groupUtils";
 
 interface IGroupBottomNav {
   data: IGroup;
@@ -75,7 +76,9 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const groupId = router.query.id;
 
-  const isFull = data?.memberCnt.max !== 0 && data?.participants.length >= data?.memberCnt.max;
+  const isFull =
+    data?.memberCnt.max !== 0 &&
+    getGroupParticipantCount(data?.participants ?? []) >= data?.memberCnt.max;
 
   const queryClient = useQueryClient();
   const { mutate: cancel, isLoading: isLoading3 } = useGroupParticipationMutation(

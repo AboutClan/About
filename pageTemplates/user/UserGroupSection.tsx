@@ -8,6 +8,7 @@ import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 import { useGroupMyStatusQuery } from "../../hooks/groupStudy/queries";
 import { createGroupThumbnailProps } from "../../pages/group";
 import { IGroup } from "../../types/models/groupTypes/group";
+import { getGroupParticipantCount } from "../../utils/groupUtils";
 import GroupSkeletonMain from "../group/GroupSkeletonMain";
 
 type GroupType = "참여중인 모임" | "내가 개설한 모임";
@@ -144,14 +145,15 @@ function UserGroupSection() {
               ?.slice()
               ?.reverse()
               ?.map((group, idx) => {
+                const participantCnt = getGroupParticipantCount(group.participants);
                 const status =
                   group.status === "end"
                     ? "end"
                     : group.memberCnt.max === 0
                     ? "pending"
-                    : group.memberCnt.max <= group.participants.length
+                    : group.memberCnt.max <= participantCnt
                     ? "full"
-                    : group.memberCnt.max - 2 <= group.participants.length
+                    : group.memberCnt.max - 2 <= participantCnt
                     ? "imminent"
                     : group.status;
 
