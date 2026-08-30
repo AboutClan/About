@@ -10,6 +10,7 @@ function SlideSectionRow({ gap = "12px", children }: SlideSectionRowProps) {
       display="flex"
       overflowX="auto"
       ml="20px"
+      pr={3}
       gap={gap}
       sx={{
         scrollSnapType: "x mandatory",
