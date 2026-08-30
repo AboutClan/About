@@ -127,7 +127,11 @@ export default function StudyMembers({
       setRealTimeComment(comment);
   };
 
-  const filterMembers = members;
+  const filterMembers = (
+    members as (StudyConfirmedMemberProps | StudyParticipationProps)[]
+  )?.filter((member) => member?.user?._id !== "65df1ddcd73ecfd250b42c89") as
+    | StudyConfirmedMemberProps[]
+    | StudyParticipationProps[];
 
   const tempArr =
     studyType === "participations" && !isCrew
