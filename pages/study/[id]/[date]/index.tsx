@@ -67,9 +67,10 @@ export default function Page() {
   const date = date2 as string;
   const studyType = type as StudyType;
 
-  const crewSlug = typeof crew === "string" && crew in STUDY_CREW_REGION_SLUG_MAPPING
-    ? (crew as StudyCrewSlug)
-    : null;
+  const crewSlug =
+    typeof crew === "string" && crew in STUDY_CREW_REGION_SLUG_MAPPING
+      ? (crew as StudyCrewSlug)
+      : null;
   const crewFixedLocation = crewSlug
     ? STUDY_CREW_REGION_LOCATION_MAPPING[STUDY_CREW_REGION_SLUG_MAPPING[crewSlug]]
     : null;
@@ -340,18 +341,6 @@ export default function Page() {
               )}
             </Slide>
             <Slide isNoPadding>
-              {hasPendingStudy && (
-                <>
-                  <Box mx={5}>
-                    <StudyPendingSection studySet={studySet} />
-                  </Box>
-                  <Box>
-                    <Divider />
-                  </Box>
-                </>
-              )}{" "}
-            </Slide>
-            <Slide isNoPadding>
               <Box borderBottom="var(--border)" px={5}>
                 <TabNav
                   selected={tab}
@@ -371,6 +360,23 @@ export default function Page() {
                   ]}
                 />
               </Box>
+            </Slide>
+            <Slide isNoPadding>
+              {hasPendingStudy && !(isCrewTab && isTabContentLoading) && (
+                <>
+                  <Box mx={5}>
+                    <StudyPendingSection
+                      studySet={studySet}
+                      crewMemberIds={
+                        isCrewTab ? crewGroup?.participants?.map((par) => par.user._id) ?? [] : null
+                      }
+                    />
+                  </Box>
+                  <Box>
+                    <Divider />
+                  </Box>
+                </>
+              )}{" "}
             </Slide>
             {isCrewTab && (
               <Slide isNoPadding>

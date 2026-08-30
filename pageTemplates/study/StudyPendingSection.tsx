@@ -14,13 +14,21 @@ import { getRandomImage } from "../../utils/imageUtils";
 
 interface StudyPendingSectionProps {
   studySet: StudySetProps;
+  crewMemberIds?: string[] | null;
 }
 
-function StudyPendingSection({ studySet }: StudyPendingSectionProps) {
+function StudyPendingSection({ studySet, crewMemberIds }: StudyPendingSectionProps) {
   const userInfo = useUserInfo();
 
   const thumbnailCardInfoArr: StudyThumbnailCardProps[] = studySet?.results
     ?.filter((result) => result?.study.status === "expected")
+    ?.filter((result) => {
+      if (!crewMemberIds) return true;
+      const crewMemberCnt = result.study.members.filter((member) =>
+        crewMemberIds.includes(member.user._id),
+      ).length;
+      return crewMemberCnt >= 3;
+    })
     ?.map((data, idx) => {
       const study = data.study;
       const placeInfo = study.place;
@@ -51,6 +59,8 @@ function StudyPendingSection({ studySet }: StudyPendingSectionProps) {
         : "prev",
       };
     });
+
+  if (crewMemberIds && studySet && !thumbnailCardInfoArr?.length) return null;
 
   return (
     <Box mt={4} mb={2}>
