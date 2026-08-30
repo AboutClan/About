@@ -1,6 +1,7 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
+import { signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import Divider from "../../../../components/atoms/Divider";
@@ -15,7 +16,10 @@ import {
   STUDY_CREW_PLACE_MAPPING,
   STUDY_CREW_REGION,
   STUDY_CREW_REGION_ID_MAPPING,
+  STUDY_CREW_REGION_LOCATION_MAPPING,
+  STUDY_CREW_REGION_SLUG_MAPPING,
   StudyCrewRegion,
+  StudyCrewSlug,
 } from "../../../../constants/service/study/place";
 import { useToast } from "../../../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
@@ -49,6 +53,7 @@ import {
   StudyParticipationsSetProps,
   StudyType,
 } from "../../../../types/models/studyTypes/study-set.types";
+import { setAuthIntent } from "../../../../utils/authIntentUtils";
 import { dayjsToStr, getTodayStr } from "../../../../utils/dateTimeUtils";
 import { createGroupThumbnailProps } from "../../../group";
 
@@ -56,11 +61,18 @@ export default function Page() {
   const router = useRouter();
 
   const toast = useToast();
-  const { id, date: date2, type, studyLocation, from } = router.query;
+  const { id, date: date2, type, studyLocation, from, crew } = router.query;
   const userInfo = useUserInfo();
   const isCafeMap = from === "cafe-map" || userInfo?.role === "guest";
   const date = date2 as string;
   const studyType = type as StudyType;
+
+  const crewSlug = typeof crew === "string" && crew in STUDY_CREW_REGION_SLUG_MAPPING
+    ? (crew as StudyCrewSlug)
+    : null;
+  const crewFixedLocation = crewSlug
+    ? STUDY_CREW_REGION_LOCATION_MAPPING[STUDY_CREW_REGION_SLUG_MAPPING[crewSlug]]
+    : null;
 
   // const [dateDayjs, setDateDayjs] = useState(
   //   studyType === "soloRealTimes"
@@ -280,6 +292,13 @@ export default function Page() {
 
   const group = isParticipations ? crewGroup : legacyGroup;
 
+  // react-query가 아직 fetch를 시작하지 않은 "idle" 상태에서는 isLoading이 false로 보고돼
+  // 탭을 누른 첫 렌더에 로딩으로 잡히지 않는 경우가 있어, isLoading 플래그 대신
+  // 실제 데이터 존재 여부로 로딩 상태를 판단한다.
+  const isTabContentLoading = isParticipations
+    ? isCrewTab && (!crewRegion || (!!crewGroupStudyId && !crewGroup))
+    : tab === "스터디 크루" && !!legacyGroupId && !legacyGroup;
+
   const placeInfo = findStudy?.place;
 
   const studyLinkCondition =
@@ -297,6 +316,10 @@ export default function Page() {
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
 
   if (!router.isReady) return null;
+
+  if (crewFixedLocation && userInfo && userInfo.role === "guest") {
+    return <StudyCrewLoginRequired />;
+  }
 
   const hasPendingStudy = studyType === "participations" && studySet?.results?.length;
 
@@ -342,14 +365,6 @@ export default function Page() {
                     {
                       text: "스터디 크루",
                       func: () => {
-                        if (!isParticipations) {
-                          if (!userInfo?.belong) {
-                            toast("info", "가입중인 스터디 크루가 없습니다. ");
-                            return;
-                          }
-                          toast("info", "기능 점검 중");
-                          return;
-                        }
                         setTab("스터디 크루");
                       },
                     },
@@ -386,55 +401,63 @@ export default function Page() {
               </Slide>
             )}
             <Slide>
-              <StudyDateBar
-                date={date}
-                members={members}
-                studyType={studyType}
-                isCrew={tab === "스터디 크루"}
-              />
-              {isOpenStudy && members?.length && (
-                <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
-              )}
-              <Box h="1px" bg="gray.100" my={4} />
-              <Box pb={2} pos="relative">
-                {/* {(studyType === "soloRealTimes" || studyType === "participations") &&
-                  tab === "일반 스터디" && (
-                    <StudyDateControl
-                      date={dateDayjs}
-                      setDate={setDateDayjs}
-                      isStudy={studyType === "soloRealTimes"}
-                    />
-                  )} */}
-
-                <Box minH="240px">
-                  {(isPassedSolo && !studyPassedData) || (isCrewTab && !crewRegion) ? (
-                    <Box pos="relative" minH="140px">
-                      <MainLoadingAbsolute size="sm" />
-                    </Box>
-                  ) : (
-                    <StudyMembers
-                      date={date}
-                      members={members || []}
-                      studyType={studyType}
-                      isCrew={tab === "스터디 크루"}
-                      coordinates={{
-                        lat: placeInfo?.location.latitude,
-                        lon: placeInfo?.location?.longitude,
-                      }}
-                      isCafeMap={isCafeMap}
-                    />
-                  )}
+              {isTabContentLoading ? (
+                <Box pos="relative" minH="280px">
+                  <MainLoadingAbsolute size="sm" />
                 </Box>
-              </Box>
-              {/* {studyType === "participations" && members?.length && (
-                  <>
-                    <Box h={2} bg="gray.100" my={4} />
-                    <StudyNearMemberSection
-                      myStudyInfo={myStudyInfo as StudyParticipationProps}
-                      members={members as StudyParticipationProps[]}
-                    />
-                  </>
-                )} */}
+              ) : (
+                <>
+                  <StudyDateBar
+                    date={date}
+                    members={members}
+                    studyType={studyType}
+                    isCrew={tab === "스터디 크루"}
+                  />
+                  {isOpenStudy && members?.length && (
+                    <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
+                  )}
+                  <Box h="1px" bg="gray.100" my={4} />
+                  <Box pb={2} pos="relative">
+                    {/* {(studyType === "soloRealTimes" || studyType === "participations") &&
+                      tab === "일반 스터디" && (
+                        <StudyDateControl
+                          date={dateDayjs}
+                          setDate={setDateDayjs}
+                          isStudy={studyType === "soloRealTimes"}
+                        />
+                      )} */}
+
+                    <Box minH="240px">
+                      {isPassedSolo && !studyPassedData ? (
+                        <Box pos="relative" minH="140px">
+                          <MainLoadingAbsolute size="sm" />
+                        </Box>
+                      ) : (
+                        <StudyMembers
+                          date={date}
+                          members={members || []}
+                          studyType={studyType}
+                          isCrew={tab === "스터디 크루"}
+                          coordinates={{
+                            lat: placeInfo?.location.latitude,
+                            lon: placeInfo?.location?.longitude,
+                          }}
+                          isCafeMap={isCafeMap}
+                        />
+                      )}
+                    </Box>
+                  </Box>
+                  {/* {studyType === "participations" && members?.length && (
+                      <>
+                        <Box h={2} bg="gray.100" my={4} />
+                        <StudyNearMemberSection
+                          myStudyInfo={myStudyInfo as StudyParticipationProps}
+                          members={members as StudyParticipationProps[]}
+                        />
+                      </>
+                    )} */}
+                </>
+              )}
             </Slide>
             {!isCafeMap && (
               <>
@@ -542,7 +565,7 @@ export default function Page() {
             id={id as string}
             myStudyStatus={myStudyStatus}
             studyType={studyType}
-            location={placeInfo?.location}
+            location={crewFixedLocation || placeInfo?.location}
             findStudy={findStudy}
             myStudyDateArr={myStudyArr?.map((s) => s?.date)}
             tempCheck={
@@ -582,5 +605,27 @@ export default function Page() {
       )}
       {studyType === "participations" && <Box h={5} />}
     </>
+  );
+}
+
+function StudyCrewLoginRequired() {
+  const handleLogin = async () => {
+    setAuthIntent();
+    await signOut({ redirect: false });
+    await signIn("kakao", { callbackUrl: window.location.href });
+  };
+
+  return (
+    <Flex direction="column" align="center" justify="center" h="100dvh" px={5} textAlign="center">
+      <Box fontSize="18px" fontWeight="bold" mb={2}>
+        로그인이 필요해요
+      </Box>
+      <Box color="gray.600" mb={6} fontSize="14px">
+        스터디 크루 신청을 위해 로그인이 필요합니다.
+      </Box>
+      <Button colorScheme="mint" size="lg" w="full" maxW="320px" onClick={handleLogin}>
+        카카오로 로그인하기
+      </Button>
+    </Flex>
   );
 }

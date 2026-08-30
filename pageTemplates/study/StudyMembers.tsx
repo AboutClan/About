@@ -144,7 +144,7 @@ export default function StudyMembers({
       const addressArr = participant.location?.address?.split(" ");
       return {
         user: user,
-        memo: addressArr ? addressArr?.[0] + " " + addressArr?.[1] : user?.comment,
+        memo: !isCrew && addressArr ? addressArr?.[0] + " " + addressArr?.[1] : user?.comment,
 
         rightComponent: hasVote ? (
           <Badge variant="subtle" colorScheme="blue" size="md" maxW="70px" isTruncated>

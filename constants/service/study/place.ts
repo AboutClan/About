@@ -54,10 +54,76 @@ export const STUDY_CREW_REGION_ID_MAPPING: Record<StudyCrewRegion, string> = {
   "강남·서초": "272",
   "건대·왕십리": "273",
   "마포·영등포": "274",
-  "노원구": "321",
-  "성북구": "275",
-  "인천": "283",
+  노원구: "321",
+  성북구: "275",
+  인천: "283",
   "사당·관악구": "284",
+};
+
+// 딥링크(crew 파라미터)에 쓰는 3글자 슬러그. 한글 지역명 대신 짧고 URL-safe한 값으로 사용.
+export const STUDY_CREW_REGION_SLUG_MAPPING = {
+  swy: "수원·용인",
+  gns: "강남·서초",
+  gdw: "건대·왕십리",
+  mpy: "마포·영등포",
+  now: "노원구",
+  sbk: "성북구",
+  ich: "인천",
+  sdk: "사당·관악구",
+} as const satisfies Record<string, StudyCrewRegion>;
+
+export type StudyCrewSlug = keyof typeof STUDY_CREW_REGION_SLUG_MAPPING;
+
+// 스터디 크루 딥링크(crew 파라미터)로 신청할 때 고정으로 사용하는 지역별 대표 위치.
+export const STUDY_CREW_REGION_LOCATION_MAPPING: Record<StudyCrewRegion, LocationProps> = {
+  "수원·용인": {
+    name: "수원·용인 스터디 크루",
+    address: "경기도 수원시 팔달구 인계동 1043-13 2,3층",
+    latitude: 37.26424,
+    longitude: 127.030092,
+  },
+  "강남·서초": {
+    name: "강남·서초 스터디 크루",
+    address: "서울특별시 강남구",
+    latitude: 37.496193,
+    longitude: 127.030907,
+  },
+  "건대·왕십리": {
+    name: "건대·왕십리 스터디 크루",
+    address: "서울특별시 성동구",
+    latitude: 37.54024,
+    longitude: 127.070525,
+  },
+  "마포·영등포": {
+    name: "마포·영등포 스터디 크루",
+    address: "서울특별시 마포구",
+    latitude: 37.557795,
+    longitude: 126.923103,
+  },
+  노원구: {
+    name: "노원구 스터디 크루",
+    address: "서울특별시 노원구 상계동 705-1 1, 2층",
+    latitude: 37.65399,
+    longitude: 127.058,
+  },
+  성북구: {
+    name: "성북구 스터디 크루",
+    address: "서울특별시 성북구",
+    latitude: 37.590298,
+    longitude: 127.018552,
+  },
+  인천: {
+    name: "인천 스터디 크루",
+    address: "인천광역시",
+    latitude: 37.4563,
+    longitude: 126.7052,
+  },
+  "사당·관악구": {
+    name: "사당·관악구 스터디 크루",
+    address: "서울특별시 관악구",
+    latitude: 37.478163,
+    longitude: 126.959432,
+  },
 };
 
 export const STUDY_CREW_PLACE_MAPPING: Record<StudyCrew, CrewLocationProps[]> = {
