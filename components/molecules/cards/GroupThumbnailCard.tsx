@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ComponentProps } from "react";
 import styled from "styled-components";
 
+import { useUserInfo } from "../../../hooks/custom/UserHooks";
+import { useGatherGroupQuery } from "../../../hooks/gather/queries";
 import { SingleLineText } from "../../../styles/layout/components";
 import {
   GroupParicipantProps,
@@ -50,6 +52,18 @@ export function GroupThumbnailCard({
   isFree,
   homePath,
 }: GroupThumbnailCardProps) {
+  const userInfo = useUserInfo();
+  const isPrivileged = userInfo?.role === "previliged";
+
+  const { data: gathers } = useGatherGroupQuery(String(id), { enabled: isPrivileged });
+
+  const latestGather = gathers?.length
+    ? [...gathers].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      )[0]
+    : null;
+  const isLatestGatherPending = latestGather?.status === "pending";
+
   const statusToBadgeProps: Record<GroupStatus, { text: string; colorScheme: string }> = {
     imminent: { text: `마감까지 ${maxCnt - participants.length}명`, colorScheme: "red" },
     full: { text: "인원마감", colorScheme: "orange" },
@@ -61,6 +75,19 @@ export function GroupThumbnailCard({
 
   return (
     <CardLink href={`/group/${id}` + (homePath ? "?path=home" : "")} onClick={func}>
+      {isPrivileged && isLatestGatherPending && (
+        <Badge
+          position="absolute"
+          top="-6px"
+          right="-6px"
+          size="sm"
+          variant="solid"
+          colorScheme="mint"
+          zIndex={1}
+        >
+          모집중
+        </Badge>
+      )}
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
         <Flex mb={1} justify="space-between" align="center">
@@ -161,6 +188,7 @@ function PlaceImage(props: PlaceImageProps) {
 }
 
 const CardLink = styled(Link)`
+  position: relative;
   height: fit-content;
   display: flex;
 
