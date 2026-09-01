@@ -59,7 +59,7 @@ function FeedWritingPage() {
   const { mutate, isLoading } = useFeedMutation({
     onSuccess() {
       const defaultValue = !isAnonymous ? 1000 : 300;
-      const addValue = gather.type.title === "스터디" || !isOrganazier ? 0 : 1000;
+      const addValue = gather.type.title === "공부·자기계발" || !isOrganazier ? 0 : 1000;
       const value = hasMembership ? (defaultValue + addValue) * 2.5 : defaultValue + addValue;
       updatePoint({ value, message: `모임 후기 지원금 ${hasMembership ? `(멤버십 +150%)` : ""}` });
       toast("success", `${value.toLocaleString()} Point가 지급되었습니다.`);

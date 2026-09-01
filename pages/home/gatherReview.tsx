@@ -226,7 +226,7 @@ function GatherReview() {
 
     mutate({ gatherId: String(gather.id), infos });
   };
-
+  console.log(35, gather);
   return (
     <>
       <Header title={gather ? dayjsToFormat(dayjs(gather.date).locale("ko"), "익명 리뷰") : ""} />
@@ -283,7 +283,7 @@ function GatherReview() {
           </Box>
 
           <Box mb={10} mx={5}>
-            {[gather.user, ...gather.participants.map((par) => par.user)]
+            {[gather.user, ...gather.participants.filter((p) => !p.isDummy).map((par) => par.user)]
               .filter(
                 (who) =>
                   (who as UserSimpleInfoProps)._id !== userInfo?._id &&

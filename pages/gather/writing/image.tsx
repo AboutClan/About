@@ -54,7 +54,7 @@ function GatherWritingImagePage() {
   const coverFileInputRef = useRef<HTMLInputElement>(null);
 
   const groupId = searchParams.get("groupId");
-  const category: GatherCategoryMain = gatherContent?.type.title || "힐링";
+  const category: GatherCategoryMain = gatherContent?.type.title || "취미";
 
   const isEdit = searchParams.get("edit");
 

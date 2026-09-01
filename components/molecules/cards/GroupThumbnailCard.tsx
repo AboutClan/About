@@ -13,6 +13,7 @@ import {
   IGroupWritingCategory,
 } from "../../../types/models/groupTypes/group";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import { CheckCircleIcon20 } from "../../Icons/CircleIcons";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import { InfinityIcon } from "./StudyThumbnailCard";
@@ -75,19 +76,6 @@ export function GroupThumbnailCard({
 
   return (
     <CardLink href={`/group/${id}` + (homePath ? "?path=home" : "")} onClick={func}>
-      {isPrivileged && isLatestGatherPending && (
-        <Badge
-          position="absolute"
-          top="-6px"
-          right="-6px"
-          size="sm"
-          variant="solid"
-          colorScheme="mint"
-          zIndex={1}
-        >
-          모집중
-        </Badge>
-      )}
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
         <Flex mb={1} justify="space-between" align="center">
@@ -121,6 +109,7 @@ export function GroupThumbnailCard({
           >
             {status === "pending" ? "활동중" : statusToBadgeProps[status].text}
           </Badge>
+          {isPrivileged && isLatestGatherPending && <CheckCircleIcon20 color="gray" />}
         </Flex>
         <Title isBig={isBig}>{title}</Title>
         <Subtitle lineNum={2}>{text}</Subtitle>
