@@ -33,12 +33,12 @@ function Home() {
       <Box>
         <Divider />
       </Box>
-      {/* <Slide isNoPadding>
-        <HomeStudySection />
-      </Slide> */}
       <Box h={2} />
       <Slide isNoPadding>
         <HomeHotClubSection />
+      </Slide>
+      <Slide isNoPadding>
+        <HomeStudySection />
       </Slide>
       <Box h={2} />
       <Slide isNoPadding>

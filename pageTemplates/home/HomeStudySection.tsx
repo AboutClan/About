@@ -48,7 +48,7 @@ function HomeStudySection() {
 
   useEffect(() => {
     if (!thumbnailCardInfoArr) return;
-    setCardArr(thumbnailCardInfoArr.slice(0, 3));
+    setCardArr(thumbnailCardInfoArr.filter((t) => t.participants.length > 1)?.slice(0, 3));
   }, [thumbnailCardInfoArr]);
 
   // useEffect(() => {

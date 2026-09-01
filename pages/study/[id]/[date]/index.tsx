@@ -31,14 +31,12 @@ import StudyStep from "../../../../pageTemplates/gather/detail/StudyStep";
 import StudyLinkModal from "../../../../pageTemplates/study/modals/StudyLinkModal";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
-import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyExtraButton from "../../../../pageTemplates/study/StudyExtraButton";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyNearMap from "../../../../pageTemplates/study/StudyNearMap";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
-import StudyPendingSection from "../../../../pageTemplates/study/StudyPendingSection";
 import StudyPlaceMap from "../../../../pageTemplates/study/StudyPlaceMap";
 import StudyReviewSection from "../../../../pageTemplates/study/StudyReview";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
@@ -281,9 +279,14 @@ export default function Page() {
         dates: matched?.dates || [],
       };
     })
-    .sort(
-      (a, b) => (b.dates?.length ? 1 : 0) - (a.dates?.length ? 1 : 0),
-    ) as StudyParticipationProps[];
+    .sort((a, b) => {
+      const aNearest = a.dates?.length ? Math.min(...a.dates.map((d) => dayjs(d).valueOf())) : null;
+      const bNearest = b.dates?.length ? Math.min(...b.dates.map((d) => dayjs(d).valueOf())) : null;
+      if (aNearest === null && bNearest === null) return 0;
+      if (aNearest === null) return 1;
+      if (bNearest === null) return -1;
+      return aNearest - bNearest;
+    }) as StudyParticipationProps[];
 
   const members = isParticipations
     ? tab === "스터디 크루"
@@ -322,7 +325,9 @@ export default function Page() {
     return <StudyCrewLoginRequired />;
   }
 
-  const hasPendingStudy = studyType === "participations" && studySet?.results?.length;
+  const pendingStudyCrewMemberIds = isCrewTab
+    ? crewGroup?.participants?.map((par) => par.user._id) ?? []
+    : null;
 
   return (
     <>
@@ -361,23 +366,6 @@ export default function Page() {
                 />
               </Box>
             </Slide>
-            <Slide isNoPadding>
-              {hasPendingStudy && !(isCrewTab && isTabContentLoading) && (
-                <>
-                  <Box mx={5}>
-                    <StudyPendingSection
-                      studySet={studySet}
-                      crewMemberIds={
-                        isCrewTab ? crewGroup?.participants?.map((par) => par.user._id) ?? [] : null
-                      }
-                    />
-                  </Box>
-                  <Box>
-                    <Divider />
-                  </Box>
-                </>
-              )}{" "}
-            </Slide>
             {isCrewTab && (
               <Slide isNoPadding>
                 <Flex
@@ -413,12 +401,12 @@ export default function Page() {
                 </Box>
               ) : (
                 <>
-                  <StudyDateBar
+                  {/* <StudyDateBar
                     date={date}
                     members={members}
                     studyType={studyType}
                     isCrew={tab === "스터디 크루"}
-                  />
+                  /> */}
                   {isOpenStudy && members?.length && (
                     <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
                   )}
@@ -449,6 +437,10 @@ export default function Page() {
                             lon: placeInfo?.location?.longitude,
                           }}
                           isCafeMap={isCafeMap}
+                          pendingResultsSet={
+                            studyType === "participations" ? studySet?.results : null
+                          }
+                          crewMemberIds={pendingStudyCrewMemberIds}
                         />
                       )}
                     </Box>

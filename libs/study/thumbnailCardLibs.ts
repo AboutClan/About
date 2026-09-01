@@ -36,39 +36,39 @@ export const setStudyThumbnailCard = (
   const { participations, openRealTimes, soloRealTimes, results } = studySet;
 
   const isPassedDate = dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
-  const isFutureDate = dayjs(date).startOf("day").isAfter(dayjs().startOf("day"));
+  // const isFutureDate = dayjs(date).startOf("day").isAfter(dayjs().startOf("day"));
 
   const basicThumbnailCard: StudyThumbnailCardProps[] = [];
-  if (soloRealTimes && !isFutureDate && !isTemp) {
-    basicThumbnailCard.push({
-      place: {
-        name: "실시간 공부 인증",
-        branch: "자유 장소",
-        address: "공부 인증하면, 돈이 쌓인다!",
-        date: null,
-        imageProps: {
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84+%EA%B3%B5%EB%B6%80+%EC%9D%B8%EC%A6%9D.png",
-          isPriority: true,
-        },
-        _id: "",
-      },
-      participants: soloRealTimes?.flatMap((par) => par.study.members.map((member) => member.user)),
-      url:
-        `/study/realTime/${date}?type=soloRealTimes` +
-        (pathHome ? "&path=home" : "") +
-        (fromCafeMap ? "&from=cafe-map" : ""),
-      studyType: "soloRealTimes",
-      isMyStudy: false,
-      func,
-    });
-  }
+  // if (soloRealTimes && !isFutureDate && !isTemp) {
+  //   basicThumbnailCard.push({
+  //     place: {
+  //       name: "실시간 공부 인증",
+  //       branch: "자유 장소",
+  //       address: "공부 인증하면, 돈이 쌓인다!",
+  //       date: null,
+  //       imageProps: {
+  //         image:
+  //           "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84+%EA%B3%B5%EB%B6%80+%EC%9D%B8%EC%A6%9D.png",
+  //         isPriority: true,
+  //       },
+  //       _id: "",
+  //     },
+  //     participants: soloRealTimes?.flatMap((par) => par.study.members.map((member) => member.user)),
+  //     url:
+  //       `/study/realTime/${date}?type=soloRealTimes` +
+  //       (pathHome ? "&path=home" : "") +
+  //       (fromCafeMap ? "&from=cafe-map" : ""),
+  //     studyType: "soloRealTimes",
+  //     isMyStudy: false,
+  //     func,
+  //   });
+  // }
   if (!isPassedDate && !temp) {
     basicThumbnailCard.push({
       place: {
         name: "카공 스터디 라운지",
         branch: "위치 선정 중...",
-        address: "가까운 인원들과 카공 스터디를 매칭하고 있어요",
+        address: "가까운 멤버들과 스터디를 매칭하고 있어요",
         date: null,
         imageProps: {
           image:
@@ -225,7 +225,7 @@ export const setStudyThumbnailCard = (
 
         date: dayjs(data.date),
         imageProps: {
-          image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
+          image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["공부·자기계발"]),
 
           isPriority: idx < 4,
         },

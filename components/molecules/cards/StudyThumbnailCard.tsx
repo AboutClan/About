@@ -62,9 +62,15 @@ export function StudyThumbnailCard({
   const router = useRouter();
 
   const temp = dateStatus === "future" && participants.length < 4 ? 4 : 8;
+  const isFeatured = place.name === "카공 스터디 라운지";
 
   return (
-    <CardLink href={url} onClick={func} isbordermain={hasBorder ? "true" : "false"}>
+    <CardLink
+      href={url}
+      onClick={func}
+      isbordermain={hasBorder ? "true" : "false"}
+      isfeatured={isFeatured ? "true" : "false"}
+    >
       <>
         <PlaceImage size="md" imageProps={place.imageProps} />
 
@@ -141,7 +147,7 @@ export function StudyThumbnailCard({
                     ? [...participants, ...Array(4 - participants.length).fill(null)]
                     : participants
                 }
-                maxCnt={VOTER_SHOW_MAX}
+                maxCnt={place.name === "카공 스터디 라운지" ? 8 : VOTER_SHOW_MAX}
               />
             </Box>
             {studyType !== "participations" && studyType !== "soloRealTimes" ? (
@@ -231,12 +237,17 @@ export function InfinityIcon() {
   );
 }
 
-const CardLink = styled(Link)<{ isbordermain: "true" | "false" }>`
+const CardLink = styled(Link)<{
+  isbordermain: "true" | "false";
+  isfeatured: "true" | "false";
+}>`
   height: fit-content;
   display: flex;
+  padding-left: ${(props) => (props.isfeatured === "true" ? "8px" : "0")};
   padding-bottom: ${(props) => (props.isbordermain === "true" ? "12px" : "8px")};
 
   border-bottom: ${(props) => (props.isbordermain === "true" ? "var(--border)" : "none")};
+  border-left: ${(props) => (props.isfeatured === "true" ? "2px solid var(--color-mint)" : "none")};
   background-color: white;
   justify-content: space-between;
 
