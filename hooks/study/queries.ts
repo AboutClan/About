@@ -195,6 +195,30 @@ export const useStudyMineQuery = (options?: QueryOptions<StudyMineProps[]>) =>
     options,
   );
 
+export interface StudyCrewMemberStatsProps {
+  userId: string;
+  lastVoteDate: string | null;
+  lastParticipationDate: string | null;
+  voteCount: number;
+  participationCount: number;
+}
+
+export const useStudyCrewStatsQuery = (
+  userIds: string[],
+  options?: QueryOptions<StudyCrewMemberStatsProps[]>,
+) =>
+  useQuery<StudyCrewMemberStatsProps[], AxiosError>(
+    [STUDY_VOTE, "crewStats", userIds],
+    async () => {
+      const { data } = await axios.post<StudyCrewMemberStatsProps[]>(
+        `${SERVER_URI}/vote2/crew-stats`,
+        { userIds, days: 30 },
+      );
+      return data;
+    },
+    options,
+  );
+
 export const useStudyNearPlaceQuery = (
   placeId: string,
   options?: QueryOptions<StudyPlaceProps[]>,
@@ -369,11 +393,15 @@ export const useMyPlaceQuery = (options?: QueryOptions<MyCafePlaceProps>) =>
     },
     options,
   );
-export const usePlaceRankingQuery = (options?: QueryOptions<{ place: PlaceProps; totalScore: number }[]>) =>
+export const usePlaceRankingQuery = (
+  options?: QueryOptions<{ place: PlaceProps; totalScore: number }[]>,
+) =>
   useQuery(
     ["place", "ranking"],
     async () => {
-      const res = await axios.get<{ place: PlaceProps; totalScore: number }[]>(`${SERVER_URI}/place/ranking`);
+      const res = await axios.get<{ place: PlaceProps; totalScore: number }[]>(
+        `${SERVER_URI}/place/ranking`,
+      );
       return res.data;
     },
     options,

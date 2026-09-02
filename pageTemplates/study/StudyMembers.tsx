@@ -1,7 +1,8 @@
 import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { toPng } from "html-to-image";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { HeartIcon } from "../../components/Icons/HeartIcons";
@@ -34,9 +35,13 @@ import { StudyConfirmedSetProps, StudyType } from "../../types/models/studyTypes
 import { dayjsToFormat, dayjsToKr, getTodayStr } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
+import StudyCrewStatsDrawer from "./modals/StudyCrewStatsDrawer";
 
 const PARTICIPATIONS_MAX_VISIBLE = 10;
 const NO_VOTE_KEY = "no-vote";
+// 1x1 투명 픽셀. CORS로 인해 원본 이미지를 데이터URL로 embed하지 못했을 때
+// html-to-image가 이걸 대신 써서 캡처 자체가 실패(reject)하지 않도록 한다.
+const TRANSPARENT_PIXEL = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
 
 interface IStudyMembers {
   date: string;
@@ -50,17 +55,24 @@ interface IStudyMembers {
   crewMemberIds?: string[] | null;
 }
 
-export default function StudyMembers({
-  studyType,
-  date,
-  members: prevMembers,
-  isAttend,
-  isCrew,
-  isCafeMap,
-  coordinates,
-  pendingResultsSet,
-  crewMemberIds,
-}: IStudyMembers) {
+export interface StudyMembersHandle {
+  saveImage: () => Promise<void>;
+}
+
+const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function StudyMembers(
+  {
+    studyType,
+    date,
+    members: prevMembers,
+    isAttend,
+    isCrew,
+    isCafeMap,
+    coordinates,
+    pendingResultsSet,
+    crewMemberIds,
+  },
+  ref,
+) {
   const userInfo = useUserInfo();
   const isGuest = userInfo?.role === "guest";
   const toast = useToast();
@@ -77,10 +89,39 @@ export default function StudyMembers({
   );
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
+  const captureRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setSelectedDate(null);
   }, [studyType, isCrew]);
+
+  const handleSaveImage = async () => {
+    if (!captureRef.current || isCapturing) return;
+    setIsCapturing(true);
+    try {
+      const dataUrl = await toPng(captureRef.current, {
+        backgroundColor: "#ffffff",
+        pixelRatio: 2,
+        cacheBust: true,
+        // 프로필/장소 이미지가 S3 등 CORS 미허용 origin에서 오면 embed용 fetch가 실패하는데,
+        // fallback이 없으면 해당 <img>가 onerror로 캡처 전체를 reject시킨다.
+        imagePlaceholder: TRANSPARENT_PIXEL,
+      });
+      const link = document.createElement("a");
+      link.download = `study-members-${date}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (error) {
+      console.error("StudyMembers image capture failed", error);
+      toast("error", "이미지 저장에 실패했어요. 다시 시도해 주세요!");
+    } finally {
+      setIsCapturing(false);
+    }
+  };
+
+  useImperativeHandle(ref, () => ({ saveImage: handleSaveImage }));
 
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
@@ -149,8 +190,7 @@ export default function StudyMembers({
   const filterMembers = (
     members as (StudyConfirmedMemberProps | StudyParticipationProps)[]
   )?.filter((member) => member?.user?._id !== "65df1ddcd73ecfd250b42c89") as
-    | StudyConfirmedMemberProps[]
-    | StudyParticipationProps[];
+    StudyConfirmedMemberProps[] | StudyParticipationProps[];
 
   const tempArr =
     studyType === "participations" && !isCrew
@@ -214,8 +254,8 @@ export default function StudyMembers({
         dateStatus: dayjs(result.date).hour(9).isAfter(dayjs())
           ? "future"
           : result.date === getTodayStr()
-          ? "current"
-          : "prev",
+            ? "current"
+            : "prev",
       };
 
       acc[result.date] = [...(acc[result.date] || []), card];
@@ -431,129 +471,158 @@ export default function StudyMembers({
 
   return (
     <>
-      {studyType === "participations" ? (
-        totalParticipationMemberCnt ? (
-          <>
-            {dateOnlySections.length > 1 && (
-              <Box mb={5} border="var(--border)" borderRadius="12px" overflow="hidden">
-                <Flex
-                  as="button"
-                  type="button"
-                  w="100%"
-                  justify="space-between"
-                  align="center"
-                  px={4}
-                  py={3}
-                  bg={selectedDate === null ? "gray.800" : "white"}
-                  onClick={() => setSelectedDate(null)}
-                >
-                  <Box
-                    fontSize="13px"
-                    fontWeight="bold"
-                    color={selectedDate === null ? "white" : "gray.800"}
+      <Box ref={captureRef} bg="white">
+        {studyType === "participations" ? (
+          totalParticipationMemberCnt ? (
+            <>
+              {dateOnlySections.length > 1 && (
+                <Box mb={5} border="var(--border)" borderRadius="12px" overflow="hidden">
+                  <Flex
+                    as="button"
+                    type="button"
+                    w="100%"
+                    justify="space-between"
+                    align="center"
+                    px={4}
+                    py={3}
+                    bg={selectedDate === null ? "gray.800" : "white"}
+                    onClick={() => setSelectedDate(null)}
                   >
-                    투표 날짜 전체 보기
-                  </Box>
-                  <Box fontSize="12px" color={selectedDate === null ? "white" : "gray.500"}>
-                    {totalParticipationMemberCnt}명 참여 중
-                  </Box>
-                </Flex>
-                <Box
-                  display="grid"
-                  gridTemplateColumns="repeat(2, 1fr)"
-                  gap={2}
-                  p={2}
-                  borderTop="var(--border)"
-                >
-                  {dateOnlySections.map((section) => (
-                    <Flex
-                      key={section.key}
-                      as="button"
-                      type="button"
-                      direction="column"
-                      align="center"
-                      justify="center"
-                      py={2}
-                      borderRadius="8px"
-                      border="1px solid"
-                      borderColor={selectedDate === section.date ? "mint" : "var(--gray-200)"}
-                      bg={selectedDate === section.date ? "mint.50" : "white"}
-                      onClick={() => setSelectedDate(section.date)}
+                    <Box
+                      fontSize="13px"
+                      fontWeight="bold"
+                      color={selectedDate === null ? "white" : "gray.800"}
                     >
-                      <Box
-                        fontSize="13px"
-                        fontWeight={selectedDate === section.date ? "bold" : "medium"}
-                        color={selectedDate === section.date ? "mint" : "gray.800"}
-                      >
-                        {dayjsToFormat(dayjs(section.date).locale("ko"), "D일(ddd)")}
-                      </Box>
-                      <Box
-                        fontSize="11px"
-                        color={selectedDate === section.date ? "mint" : "gray.500"}
-                      >
-                        {section.members.length}명
-                      </Box>
-                    </Flex>
-                  ))}
-                </Box>
-              </Box>
-            )}
-            {displayedDateSections.map((section) => (
-              <Box key={section.key} mb={5}>
-                {section.date ? (
-                  <Flex align="center" justify="center" mb={2}>
-                    <Box h="1px" flex={1} bg="gray.200" />
-                    <Flex mx={3} align="baseline" flexShrink={0}>
-                      <Box fontSize="13px" fontWeight="bold" color="gray.800">
-                        {dayjsToKr(dayjs(section.date))}
-                      </Box>
-                      <Box ml={1} fontSize="12px" color="gray.500">
-                        · {section.members.length}명 투표중
-                      </Box>
-                    </Flex>
-                    <Box h="1px" flex={1} bg="gray.200" />
-                  </Flex>
-                ) : (
-                  <Box mb={2} fontSize="13px" fontWeight="bold" color="gray.500" textAlign="center">
-                    투표 정보 없음 · {section.members.length}명
-                  </Box>
-                )}
-                <ProfileCardColumn
-                  userCardArr={section.members.map(buildParticipationCard)}
-                  hasCommentButton={false}
-                  isStudy={true}
-                  isCafeMap={isCafeMap}
-                />
-                {section.date && pendingStudyByDate[section.date]?.length ? (
-                  <Box mt={3} pt={3} borderTop="1px dashed var(--gray-300)">
-                    <Box mb={1} fontSize="11px" fontWeight="medium" color="gray.500">
-                      진행 예정 스터디
+                      투표 날짜 전체 보기
                     </Box>
-                    <Flex direction="column">
-                      {pendingStudyByDate[section.date].map((thumbnailCardInfo, idx, arr) => (
-                        <StudyThumbnailCard
-                          key={idx}
-                          {...thumbnailCardInfo}
-                          hasBorder={idx !== arr.length - 1}
-                        />
-                      ))}
-                    </Flex>
+                    <Box fontSize="12px" color={selectedDate === null ? "white" : "gray.500"}>
+                      {totalParticipationMemberCnt}명 참여 중
+                    </Box>
+                  </Flex>
+                  <Box
+                    display="grid"
+                    gridTemplateColumns="repeat(2, 1fr)"
+                    gap={2}
+                    p={2}
+                    borderTop="var(--border)"
+                  >
+                    {dateOnlySections.map((section) => (
+                      <Flex
+                        key={section.key}
+                        as="button"
+                        type="button"
+                        direction="column"
+                        align="center"
+                        justify="center"
+                        py={2}
+                        borderRadius="8px"
+                        border="1px solid"
+                        borderColor={selectedDate === section.date ? "mint" : "var(--gray-200)"}
+                        bg={selectedDate === section.date ? "mint.50" : "white"}
+                        onClick={() => setSelectedDate(section.date)}
+                      >
+                        <Box
+                          fontSize="13px"
+                          fontWeight={selectedDate === section.date ? "bold" : "medium"}
+                          color={selectedDate === section.date ? "mint" : "gray.800"}
+                        >
+                          {dayjsToFormat(dayjs(section.date).locale("ko"), "D일(ddd)")}
+                        </Box>
+                        <Box
+                          fontSize="11px"
+                          color={selectedDate === section.date ? "mint" : "gray.500"}
+                        >
+                          {section.members.length}명
+                        </Box>
+                      </Flex>
+                    ))}
                   </Box>
-                ) : null}
-              </Box>
-            ))}
-            {showParticipationMoreButton && (
-              <Button
-                mt={2}
-                w="100%"
-                h="40px"
-                bgColor="white"
-                border="0.5px solid #E8E8E8"
-                onClick={() => setIsOpen(true)}
-              >
-                더보기
-              </Button>
-            )}
+                </Box>
+              )}
+              {displayedDateSections.map((section) => (
+                <Box key={section.key} mb={5}>
+                  {section.date ? (
+                    <Flex align="center" justify="center" mb={2}>
+                      <Box h="1px" flex={1} bg="gray.200" />
+                      <Flex mx={3} align="baseline" flexShrink={0}>
+                        <Box fontSize="13px" fontWeight="bold" color="gray.800">
+                          {dayjsToKr(dayjs(section.date))}
+                        </Box>
+                        <Box ml={1} fontSize="12px" color="gray.500">
+                          · {section.members.length}명 투표중
+                        </Box>
+                      </Flex>
+                      <Box h="1px" flex={1} bg="gray.200" />
+                    </Flex>
+                  ) : (
+                    <Box
+                      mb={2}
+                      fontSize="13px"
+                      fontWeight="bold"
+                      color="gray.500"
+                      textAlign="center"
+                    >
+                      투표 정보 없음 · {section.members.length}명
+                    </Box>
+                  )}
+                  <ProfileCardColumn
+                    userCardArr={section.members.map(buildParticipationCard)}
+                    hasCommentButton={false}
+                    isStudy={true}
+                    isCafeMap={isCafeMap}
+                  />
+                  {section.date && pendingStudyByDate[section.date]?.length ? (
+                    <Box mt={3} pt={3} borderTop="1px dashed var(--gray-300)">
+                      <Box mb={1} fontSize="11px" fontWeight="medium" color="gray.500">
+                        진행 예정 스터디
+                      </Box>
+                      <Flex direction="column">
+                        {pendingStudyByDate[section.date].map((thumbnailCardInfo, idx, arr) => (
+                          <StudyThumbnailCard
+                            key={idx}
+                            {...thumbnailCardInfo}
+                            hasBorder={idx !== arr.length - 1}
+                          />
+                        ))}
+                      </Flex>
+                    </Box>
+                  ) : null}
+                </Box>
+              ))}
+              {showParticipationMoreButton && (
+                <Button
+                  mt={2}
+                  w="100%"
+                  h="40px"
+                  bgColor="white"
+                  border="0.5px solid #E8E8E8"
+                  onClick={() => setIsOpen(true)}
+                >
+                  더보기
+                </Button>
+              )}
+            </>
+          ) : (
+            <Flex
+              align="center"
+              justify="center"
+              h="200px"
+              color="var(--gray-600)"
+              fontSize="16px"
+              textAlign="center"
+            >
+              <Box as="p">현재 참여중인 멤버가 없습니다.</Box>
+            </Flex>
+          )
+        ) : userCardArr?.length ? (
+          <>
+            <ProfileCardColumn
+              userCardArr={userCardArr}
+              hasCommentButton={isAttend}
+              isStudy={true}
+              isSoloStudy={studyType === "soloRealTimes"}
+              isCafeMap={isCafeMap}
+            />
           </>
         ) : (
           <Flex
@@ -564,35 +633,14 @@ export default function StudyMembers({
             fontSize="16px"
             textAlign="center"
           >
-            <Box as="p">현재 참여중인 멤버가 없습니다.</Box>
+            <Box as="p">
+              {studyType === "soloRealTimes"
+                ? "첫 번째로 공부 인증하면 당첨 확률 UP!"
+                : "현재 참여중인 멤버가 없습니다."}
+            </Box>
           </Flex>
-        )
-      ) : userCardArr?.length ? (
-        <>
-          <ProfileCardColumn
-            userCardArr={userCardArr}
-            hasCommentButton={isAttend}
-            isStudy={true}
-            isSoloStudy={studyType === "soloRealTimes"}
-            isCafeMap={isCafeMap}
-          />
-        </>
-      ) : (
-        <Flex
-          align="center"
-          justify="center"
-          h="200px"
-          color="var(--gray-600)"
-          fontSize="16px"
-          textAlign="center"
-        >
-          <Box as="p">
-            {studyType === "soloRealTimes"
-              ? "첫 번째로 공부 인증하면 당첨 확률 UP!"
-              : "현재 참여중인 멤버가 없습니다."}
-          </Box>
-        </Flex>
-      )}
+        )}
+      </Box>
       {studyType !== "soloRealTimes" && !isGuest && (
         <Button
           mt={4}
@@ -613,6 +661,25 @@ export default function StudyMembers({
           스터디 단톡방 입장하기
         </Button>
       )}
+      {isCrew && studyType === "participations" && !!participationMembers.length && (
+        <Button
+          mt={2}
+          borderRadius={8}
+          color="gray.700"
+          border="1px solid var(--gray-300)"
+          bg="white"
+          w="full"
+          onClick={() => setIsStatsOpen(true)}
+        >
+          스터디 크루 상세 통계
+        </Button>
+      )}
+      {isStatsOpen && (
+        <StudyCrewStatsDrawer
+          crewMembers={participationMembers}
+          onClose={() => setIsStatsOpen(false)}
+        />
+      )}
       {hasImageProps?.image && hasImageProps?.toUid && (
         <ImageZoomModal imageUrl={hasImageProps.image} setIsModal={() => setHasImageProps(null)} />
       )}
@@ -624,7 +691,9 @@ export default function StudyMembers({
       )} */}
     </>
   );
-}
+});
+
+export default StudyMembers;
 
 interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
   rightComponentProps?: {

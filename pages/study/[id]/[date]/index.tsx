@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Divider from "../../../../components/atoms/Divider";
 import InfoList from "../../../../components/atoms/lists/InfoList";
@@ -33,7 +33,7 @@ import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyExtraButton from "../../../../pageTemplates/study/StudyExtraButton";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
-import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
+import StudyMembers, { StudyMembersHandle } from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyNearMap from "../../../../pageTemplates/study/StudyNearMap";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
@@ -81,6 +81,7 @@ export default function Page() {
   //     : dayjs(date),
   // );
   const [tab, setTab] = useState<"일반 스터디" | "스터디 크루">("일반 스터디");
+  const studyMembersRef = useRef<StudyMembersHandle>(null);
   // const [isTicketModal, setIsTicketModal] = useState(false);
 
   // useEffect(() => {
@@ -217,10 +218,10 @@ export default function Page() {
     studyType === "participations"
       ? shortenParticipations(participationsSet, studySet?.["openRealTimes"])
       : studyType === "soloRealTimes"
-      ? (studyData as StudyConfirmedSetProps[])?.map((study) => ({
-          ...study.study.members[0],
-        }))
-      : findStudy?.members;
+        ? (studyData as StudyConfirmedSetProps[])?.map((study) => ({
+            ...study.study.members[0],
+          }))
+        : findStudy?.members;
 
   const isParticipations = studyType === "participations";
 
@@ -326,14 +327,18 @@ export default function Page() {
   }
 
   const pendingStudyCrewMemberIds = isCrewTab
-    ? crewGroup?.participants?.map((par) => par.user._id) ?? []
+    ? (crewGroup?.participants?.map((par) => par.user._id) ?? [])
     : null;
 
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
         <>
-          <StudyHeader date={date} placeInfo={placeInfo} />
+          <StudyHeader
+            date={date}
+            placeInfo={placeInfo}
+            onSaveImage={() => studyMembersRef.current?.saveImage()}
+          />
           <Box mb="92px">
             <Slide isNoPadding>
               <StudyCover studyType={studyType} coverImage={placeInfo?.coverImage} />
@@ -428,6 +433,7 @@ export default function Page() {
                         </Box>
                       ) : (
                         <StudyMembers
+                          ref={studyMembersRef}
                           date={date}
                           members={members || []}
                           studyType={studyType}
