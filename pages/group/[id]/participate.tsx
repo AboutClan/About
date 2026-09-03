@@ -3,6 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
+import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
@@ -69,13 +70,15 @@ function Participate() {
     else mutate();
   };
 
+  if (!group) return <MainLoading />;
+
   return (
     <>
       <>
         <Header title="" />
         <RegisterLayout>
           <RegisterOverview>
-            {group?.questionText ? (
+            {group.questionText ? (
               <>
                 <span>모임장 승인이 필요한 모임입니다.</span>
                 <span>아래 질문에 답변해 주세요!</span>
@@ -87,7 +90,7 @@ function Participate() {
               </>
             )}
           </RegisterOverview>
-          {group.questionText.map((text, idx) => (
+          {group.questionText?.map((text, idx) => (
             <Flex flexDir="column" mb={5} key={idx}>
               <Box mb={3} fontSize="14px">
                 Q&#41; {text}

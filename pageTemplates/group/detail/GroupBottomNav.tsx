@@ -231,7 +231,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
             {!data.isFree
               ? "모임장의 승인이 필요한 소모임이에요."
               : "즉시 가입이 가능한 소모임이에요."}
-            <br /> {data.questionText.length ? "참여를 희망하시나요?" : "활동을 시작해볼까요?"}
+            <br /> {data.questionText?.length ? "참여를 희망하시나요?" : "활동을 시작해볼까요?"}
           </Box>
           <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
             가입이 완료되면 단톡방에도 입장해 주세요!
