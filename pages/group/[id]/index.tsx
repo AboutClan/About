@@ -159,7 +159,7 @@ function GroupDetail() {
                     isPlanned={false}
                   />
                 )}
-                {gatherData?.length > 1 && <GroupGathering gatherData={gatherData} />}
+                {gatherData?.length >= 1 && <GroupGathering gatherData={gatherData} />}
                 {gatherFeeds?.length > 1 && <GroupReview feeds={gatherFeeds} />}
               </>
             ) : null}

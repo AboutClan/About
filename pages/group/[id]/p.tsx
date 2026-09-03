@@ -101,7 +101,7 @@ function GroupDetailPublicPreview() {
                   isPlanned={false}
                 />
               )}
-              {gatherData?.length > 1 && <GroupGathering gatherData={gatherData} disableLink />}
+              {gatherData?.length >= 1 && <GroupGathering gatherData={gatherData} disableLink />}
               {gatherFeeds?.length > 1 && <GroupReview feeds={gatherFeeds} />}
             </>
           ) : null}

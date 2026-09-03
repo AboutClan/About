@@ -71,6 +71,8 @@ export function AdminSection({ groupId, users, randomTicket }: AdminSectionProps
     enabled: !!groupId,
   });
 
+  console.log(3, data);
+
   const { mutate: changeRole, isLoading: isLoading1 } = useGroupMemberRoleMutation(+groupId, {
     onSuccess() {
       queryClient.invalidateQueries([GROUP_STUDY]);
