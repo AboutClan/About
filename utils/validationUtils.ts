@@ -105,7 +105,7 @@ export const isApp = (): boolean => {
 // (설정: hooks/custom/useAppSafeAreaBottomCssVar.ts, 호출: Layout 최상단 1곳).
 //
 // - 기본(iOS 웹/PWA, Android Chrome·Samsung Internet·PWA 등): env(safe-area-inset-bottom, 0px)
-// - 에브리타임 Android 인앱 브라우저: 0px
+// - 에브리타임/캠퍼스픽 Android 인앱 브라우저: 0px
 //   (실기기 진단 결과 env(safe-area-inset-bottom)이 48px으로 잘못 잡히는데, 실제로는
 //   WebView viewport가 이미 시스템 내비게이션 영역 위에서 끝나 이 48px이 중복 적용됨)
 // - 어바웃 RN WebView: 0px (네이티브 컨테이너가 이미 처리)
