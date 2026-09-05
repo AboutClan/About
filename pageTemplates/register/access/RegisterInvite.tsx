@@ -5,21 +5,30 @@ import { Input } from "../../../components/atoms/Input";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoByUidQuery } from "../../../hooks/user/queries";
 import { DispatchNumber, DispatchString } from "../../../types/hooks/reactTypes";
+import { POINT_CHARGE } from "./RegisterFee";
 
 interface RegisterInviteProps {
   codeText: string;
   setCodeText: DispatchString;
   discount: number;
   setDiscount: DispatchNumber;
+  fee: number;
 }
 
-const CLUB_UID_ARR = ["5006986335", "5006950630", "20260804"];
+const CLUB_UID_ARR = ["5006986335", "5006950630"];
 
 // 실제 회원 코드가 아닌, 고정 할인 금액을 주는 프로모션 코드
 const PROMOTION_CODE_DISCOUNTS: Record<string, number> = {
+  "20260804": 3000,
   "20260807": 3000,
 };
-function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: RegisterInviteProps) {
+function RegisterInvite({
+  codeText,
+  setCodeText,
+  discount,
+  setDiscount,
+  fee,
+}: RegisterInviteProps) {
   const toast = useToast();
   const [trigger, setTrigger] = useState(false);
 
@@ -32,7 +41,8 @@ function RegisterInvite({ codeText, setCodeText, discount, setDiscount }: Regist
         result.role === "previliged" ||
         CLUB_UID_ARR.includes(result.uid)
       ) {
-        setDiscount(20000);
+        // 동아리 관계자 추천: 가입비(fee - 포인트충전분) 전액 면제, 포인트 충전분은 결제
+        setDiscount(fee - POINT_CHARGE);
       } else if (temperature >= 42) {
         setDiscount(15000);
       } else if (temperature >= 40) {

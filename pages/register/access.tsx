@@ -70,6 +70,7 @@ function Access() {
           setCodeText={setCodeText}
           discount={discount}
           setDiscount={setDiscount}
+          fee={fee}
         />
         <Box h={20} />
       </Slide>

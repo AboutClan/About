@@ -5,7 +5,7 @@ import ValueBoxCol2, { ValueBoxCol2ItemProps } from "../../../components/molecul
 
 // 노쇼 방지·활동 보증 목적의 포인트 충전분은 성별과 무관하게 고정.
 // 가입비 = fee - POINT_CHARGE, 최종 결제 금액 = fee
-const POINT_CHARGE = 5000;
+export const POINT_CHARGE = 5000;
 
 interface RegisterFeeProps {
   fee: number;
