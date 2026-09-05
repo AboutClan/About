@@ -127,13 +127,17 @@ export function RegisterLocationLayout({
   // isSlide=false 일 때는 RightDrawer 등 임베드 컨테이너 안에서 쓰이는데,
   // BottomNav(isSlide=false)는 fixed 포지션이 아니라 부모 flex 흐름에 맡겨 하단에 붙기 때문에
   // 여기서 직접 높이를 채우는 flex 컬럼으로 감싸주지 않으면 버튼이 콘텐츠 바로 아래에 끼어버린다.
+  // RightDrawer가 px={false}로 쓰이는 경우(예: 장소 변경) content는 여백이 없어야 하지만,
+  // 버튼까지 여백 없이 꽉 차면 안 되므로 별도로 좌우 padding을 줘서 가로가 넓은 기기에서도 여백을 보장한다.
   if (!isSlide) {
     return (
       <Flex direction="column" h="calc(100dvh - var(--header-h))" overflow="hidden">
         <Box flex={1} overflowY="auto">
           {content}
         </Box>
-        <BottomNav isLoading={isLoading} onClick={handleButton} url={url} text={text} isSlide={false} />
+        <Box px={4}>
+          <BottomNav isLoading={isLoading} onClick={handleButton} url={url} text={text} isSlide={false} />
+        </Box>
       </Flex>
     );
   }
