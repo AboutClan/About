@@ -5,11 +5,10 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 export default function ApplyStudy() {
   useEffect(() => {
+    const path = `study/participations/${dayjsToStr(dayjs())}`;
     const openUrl =
-      "https://about20s.club/_open" +
-      `?dl=study/participations/${dayjsToStr(
-        dayjs(),
-      )}?type=participations&modal=applyChange&location=true`;
+      `https://about20s.club/_open?dl=${encodeURIComponent(path)}` +
+      `&type=participations&modal=applyChange&location=true`;
 
     window.location.replace(openUrl);
   }, []);
