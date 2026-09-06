@@ -19,10 +19,10 @@ import {
 } from "@/features/gather/hooks/mutations";
 import GatherExpireModal from "@/features/gather/modals/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "@/features/gather/modals/gatherExpireModal/GatherReviewDrawer";
+import { transferGatherDataState } from "@/features/gather/state";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useFeedsQuery } from "@/hooks/feed/queries";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import { transferGatherDataState } from "@/recoils/transferRecoils";
 import { FeedProps } from "@/types/models/feed";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";

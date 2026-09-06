@@ -11,10 +11,10 @@ import Slide from "@/components/layouts/PageSlide";
 import ProgressStatus from "@/components/molecules/ProgressStatus";
 import GatherWritingDateDate from "@/features/gather/screens/writing/GatherWritingDateDate";
 import GatherWritingDateSubject from "@/features/gather/screens/writing/GatherWritingDateSubject";
+import { sharedGatherWritingState } from "@/features/gather/state";
 import { useFailToast } from "@/hooks/custom/CustomToast";
 import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
 import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
-import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
 import { IGatherListItem } from "@/types/models/gatherTypes/gatherTypes";
 
 function WritingDate() {

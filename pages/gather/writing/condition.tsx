@@ -11,10 +11,10 @@ import WritingConditionLayout, {
   WritingConditionProps,
 } from "@/components/organisms/WritingConditionLayout";
 import { GATHER_WRITING_INFO } from "@/constants/keys/localStorage";
+import { sharedGatherWritingState } from "@/features/gather/state";
 import { useToast } from "@/hooks/custom/CustomToast";
 import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
 import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
-import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
 import { IGatherWriting } from "@/types/models/gatherTypes/gatherTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 import { randomPassword } from "@/utils/validationUtils";

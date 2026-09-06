@@ -13,7 +13,7 @@ import {
   useGatherWaitingStatusMutation,
 } from "@/features/gather/hooks/mutations";
 import { useGatherIDQuery } from "@/features/gather/hooks/queries";
-import { useResetGatherQuery } from "@/hooks/custom/CustomHooks";
+import { useResetGatherQuery } from "@/features/gather/hooks/useResetGatherQuery";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 import { safeDecodeTel } from "@/utils/utils";

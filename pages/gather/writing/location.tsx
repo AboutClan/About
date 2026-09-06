@@ -9,10 +9,10 @@ import Slide from "@/components/layouts/PageSlide";
 import { ModalLayout } from "@/components/modals/Modals";
 import ProgressStatus from "@/components/molecules/ProgressStatus";
 import SearchLocation from "@/components/organisms/SearchLocation";
+import { sharedGatherWritingState } from "@/features/gather/state";
 import { useToast } from "@/hooks/custom/CustomToast";
 import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
 import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
-import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
 import { LocationProps } from "@/types/common";
 
 function WritingGahterLocation() {

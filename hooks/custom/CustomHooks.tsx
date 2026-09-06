@@ -2,10 +2,8 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
-import { useSetRecoilState } from "recoil";
 
-import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE } from "@/constants/keys/queryKeys";
-import { transferGatherDataState } from "@/recoils/transferRecoils";
+import { GROUP_STUDY, STUDY_VOTE } from "@/constants/keys/queryKeys";
 
 export const useToken = () => {
   const { data: session, status } = useSession();
@@ -74,22 +72,6 @@ export const useResetGroupQuery = () => {
 
   return refetchWithDelay;
 };
-export const useResetGatherQuery = () => {
-  const queryClient = useQueryClient();
-  const setTransferGatherData = useSetRecoilState(transferGatherDataState);
-
-  const refetchWithDelay = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    () => {
-      queryClient.resetQueries({ queryKey: [GATHER_CONTENT], exact: false });
-      setTransferGatherData(null);
-    },
-    [queryClient],
-  );
-
-  return refetchWithDelay;
-};
-
 export const useWindowWidth = () => {
   const [width, setWidth] = useState<number>(() => {
     // SSR 안전: 서버에서는 window 없음

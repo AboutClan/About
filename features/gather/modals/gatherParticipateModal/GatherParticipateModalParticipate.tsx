@@ -8,8 +8,8 @@ import {
   useGatherParticipationMutation,
   useGatherWaitingMutation,
 } from "@/features/gather/hooks/mutations";
+import { transferGatherDataState } from "@/features/gather/state";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
-import { transferGatherDataState } from "@/recoils/transferRecoils";
 import { IModal } from "@/types/components/modalTypes";
 
 function GatherParticipateModalParticipate({ setIsModal }: IModal) {

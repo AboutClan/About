@@ -8,10 +8,10 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import ProgressStatus from "@/components/molecules/ProgressStatus";
 import { GATHER_TYPES,GatherCategoryIcons } from "@/constants/contentsText/GatherContents";
+import { sharedGatherWritingState } from "@/features/gather/state";
 import { useFailToast } from "@/hooks/custom/CustomToast";
 import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
 import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
-import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
 import { IGatherType } from "@/types/models/gatherTypes/gatherTypes";
 
 function WritingGatherCategory() {

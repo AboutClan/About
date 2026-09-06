@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 
 import ImageUploadInput from "@/components/molecules/ImageUploadInput";
 
-import { isGatherEditState } from "@/recoils/checkAtoms";
+import { isGatherEditState } from "@/features/gather/state";
 import { IModal } from "@/types/components/modalTypes";
 import { IGather, IGatherWriting } from "@/types/models/gatherTypes/gatherTypes";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";

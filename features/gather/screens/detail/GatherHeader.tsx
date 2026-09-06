@@ -16,11 +16,10 @@ import {
   useGatherAbsenceCheckMutation,
   useGatherStatusMutation,
 } from "@/features/gather/hooks/mutations";
-import { useResetGatherQuery } from "@/hooks/custom/CustomHooks";
+import { useResetGatherQuery } from "@/features/gather/hooks/useResetGatherQuery";
+import { isGatherEditState , sharedGatherWritingState } from "@/features/gather/state";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useKakaoShare } from "@/hooks/custom/KakaoShareHook2";
-import { isGatherEditState } from "@/recoils/checkAtoms";
-import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "@/utils/imageUtils";

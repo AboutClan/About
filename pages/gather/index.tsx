@@ -16,10 +16,9 @@ import { useGatherRequestMutation } from "@/features/gather/hooks/mutations";
 import GatherHeader from "@/features/gather/screens/GatherHeader";
 import GatherMain from "@/features/gather/screens/GatherMain";
 import GatherPick from "@/features/gather/screens/GatherPick";
+import { sharedGatherWritingState , transferGatherDataState } from "@/features/gather/state";
 import { useToast } from "@/hooks/custom/CustomToast";
 import SquareLoungeSection from "@/pageTemplates/square/SquareLoungeSection";
-import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
-import { transferGatherDataState } from "@/recoils/transferRecoils";
 import { IModal } from "@/types/components/modalTypes";
 
 function Gather() {

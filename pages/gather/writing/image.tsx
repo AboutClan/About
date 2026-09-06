@@ -15,11 +15,11 @@ import { GatherCategoryMain } from "@/constants/contentsText/GatherContents";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
 import { useGatherWritingMutation } from "@/features/gather/hooks/mutations";
 import GatherWritingConfirmModal from "@/features/gather/modals/GatherWritingConfirmModal";
+import { sharedGatherWritingState } from "@/features/gather/state";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
 import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { CameraIcon } from "@/pageTemplates/user/UserProfileSection";
-import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
 import {
   GatherCategory,
   IGather,
