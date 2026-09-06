@@ -14,7 +14,7 @@ export function Temp() {
 // import PickerRowButton from "@/components/molecules/PickerRowButton";
 // import BottomFlexDrawer, {
 //   BottomFlexDrawerOptions,
-// } from "@/components/organisms/drawer/BottomFlexDrawer";
+// } from "@/components/modals/drawer/BottomFlexDrawer";
 // import StudyVoteTimeRulletDrawer from "@/components/services/studyVote/StudyVoteTimeRulletDrawer";
 // import { LOCATION_OPEN } from "@/constants/location";
 // import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";

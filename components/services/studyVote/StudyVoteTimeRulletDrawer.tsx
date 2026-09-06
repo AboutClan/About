@@ -3,8 +3,8 @@ import dayjs, { Dayjs } from "dayjs";
 import Image from "next/image";
 import { Dispatch, useEffect, useState } from "react";
 
+import BottomFlexDrawer, { BottomFlexDrawerOptions } from "@/components/modals/drawer/BottomFlexDrawer";
 import RulletPickerTwo from "@/components/molecules/picker/RulletPickerTwo";
-import BottomFlexDrawer, { BottomFlexDrawerOptions } from "@/components/organisms/drawer/BottomFlexDrawer";
 import { STUDY_VOTE_HOUR_ARR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
 import { TimeOptionCard } from "@/pageTemplates/community/TestClock";
 import { IModal } from "@/types/components/modalTypes";

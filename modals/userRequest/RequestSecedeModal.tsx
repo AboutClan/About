@@ -5,7 +5,7 @@ import { useState } from "react";
 import InfoList from "@/components/atoms/lists/InfoList";
 import Textarea from "@/components/atoms/Textarea";
 import BottomNav from "@/components/layouts/BottomNav";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";

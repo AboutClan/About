@@ -8,8 +8,8 @@ import CurrentLocationBtn from "@/components/atoms/CurrentLocationBtn";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import { StarIcon } from "@/components/Icons/StarIcon";
 import Header from "@/components/layouts/Header";
-import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import LocationSearch, {
   mapxyToLatLng,
 } from "@/components/organisms/location/LocationSearch";

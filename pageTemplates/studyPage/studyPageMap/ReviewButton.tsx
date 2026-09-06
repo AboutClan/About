@@ -3,8 +3,8 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,

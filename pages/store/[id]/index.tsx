@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 import MenuButton from "@/components/atoms/buttons/MenuButton";
 import Header from "@/components/layouts/Header";
-import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useHasMemership } from "@/hooks/custom/UserHooks";
 import { useStoreGiftQuery } from "@/hooks/sub/store/queries";

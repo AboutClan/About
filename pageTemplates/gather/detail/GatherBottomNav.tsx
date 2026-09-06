@@ -8,9 +8,9 @@ import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
+import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
 import BottomButtonNav from "@/components/molecules/BottomButtonNav";
-import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useFeedsQuery } from "@/hooks/feed/queries";

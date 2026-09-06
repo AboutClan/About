@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
 import BottomNav from "@/components/layouts/BottomNav";
-import { BottomFlexDrawerOptions } from "@/components/organisms/drawer/BottomFlexDrawer";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { BottomFlexDrawerOptions } from "@/components/modals/drawer/BottomFlexDrawer";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { StudyCancelModal } from "@/components/services/study/apply/ui/overlay/CancelModal";
 import { PlaceDrawer } from "@/components/services/study/apply/ui/overlay/PlaceDrawer";
 import StudyApplySection from "@/components/services/study/apply/ui/StudyApplySection";

@@ -6,8 +6,8 @@ import Textarea from "@/components/atoms/Textarea";
 import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import ProgressStatus from "@/components/molecules/ProgressStatus";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import WritingConditionLayout, {
   WritingConditionProps,
 } from "@/components/organisms/WritingConditionLayout";

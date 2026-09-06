@@ -6,7 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import BottomDrawerLg from "@/components/organisms/drawer/BottomDrawerLg";
+import BottomDrawerLg from "@/components/modals/drawer/BottomDrawerLg";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";

@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 import Avatar from "@/components/atoms/Avatar";
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { useStudyCrewStatsQuery } from "@/hooks/study/queries";
 import { StudyParticipationProps } from "@/types/models/studyTypes/study-entity.types";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";

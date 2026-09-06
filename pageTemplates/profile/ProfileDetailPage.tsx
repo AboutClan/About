@@ -14,12 +14,12 @@ import Textarea from "@/components/atoms/Textarea";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
+import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
 } from "@/components/molecules/cards/GatherThumbnailCard";
 import TabNav from "@/components/molecules/navs/TabNav";
-import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useGatherCountQuery, useGatherMyStatusQuery } from "@/hooks/gather/queries";
 import { useGroupsTitleQuery } from "@/hooks/groupStudy/queries";

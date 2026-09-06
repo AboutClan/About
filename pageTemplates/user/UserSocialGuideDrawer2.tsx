@@ -3,9 +3,9 @@ import { useState } from "react";
 
 import Avatar from "@/components/atoms/Avatar";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import InfoBoxCol from "@/components/molecules/InfoBoxCol";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 
 interface UserSocialGuideDrawerProps {

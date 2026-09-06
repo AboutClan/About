@@ -14,7 +14,7 @@ export function Temp() {
 // import PickerRowButton from "@/components/molecules/PickerRowButton";
 // import BottomFlexDrawer, {
 //   BottomFlexDrawerOptions,
-// } from "@/components/organisms/drawer/BottomFlexDrawer";
+// } from "@/components/modals/drawer/BottomFlexDrawer";
 // import { USER_LOCATION } from "@/constants/keys/localStorage";
 // import { USER_INFO } from "@/constants/keys/queryKeys";
 // import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";

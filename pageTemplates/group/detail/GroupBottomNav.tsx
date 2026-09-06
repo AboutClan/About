@@ -6,8 +6,8 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
+import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import BottomButtonNav from "@/components/molecules/BottomButtonNav";
-import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
 import { GROUP_STUDY, USER_INFO } from "@/constants/keys/queryKeys";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import {

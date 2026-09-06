@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
 import Divider from "@/components/atoms/Divider";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import { CAFE_REVIEW_ARR } from "@/constants/keys/queryKeys";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { PlaceInfoBox } from "@/pageTemplates/studyPage/PlaceInfoDrawer";

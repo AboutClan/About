@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 
 import Avatar from "@/components/atoms/Avatar";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
 import InfoBoxCol from "@/components/molecules/InfoBoxCol";
 import ProgressMark from "@/components/molecules/ProgressMark";
 import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import { useMonthScoreLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
 
 interface UserScoreGuideDrawerProps {

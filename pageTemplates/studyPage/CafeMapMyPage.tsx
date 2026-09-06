@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 import Divider from "@/components/atoms/Divider";
 import Header from "@/components/layouts/Header";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useKakaoShare } from "@/hooks/custom/KakaoShareHook2";
 import { useMyPlaceFavoritesQuery } from "@/hooks/study/queries";

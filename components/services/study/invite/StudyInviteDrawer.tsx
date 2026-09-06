@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 import { Input } from "@/components/atoms/Input";
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import InviteUserGroups from "@/components/molecules/groups/InviteUserGroups";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import {
   CrewLocationProps,
   STUDY_CREW,

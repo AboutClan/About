@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 
 import InfoList from "@/components/atoms/lists/InfoList";
 import BottomNav from "@/components/layouts/BottomNav";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import LabeledInput from "@/components/molecules/LabeledInput";
 import TabNav from "@/components/molecules/navs/TabNav";
 import TextCheckButton from "@/components/molecules/TextCheckButton";
 import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
 import RegisterOverview from "@/pageTemplates/register/RegisterOverview";

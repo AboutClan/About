@@ -11,7 +11,7 @@
 // import NewTwoButtonRow from "@/components/molecules/NewTwoButtonRow";
 // import BottomFlexDrawer, {
 //   BottomFlexDrawerOptions,
-// } from "@/components/organisms/drawer/BottomFlexDrawer";
+// } from "@/components/modals/drawer/BottomFlexDrawer";
 // import StudyVoteTimeRulletDrawer from "@/components/services/studyVote/StudyVoteTimeRulletDrawer";
 // import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 // import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";

@@ -3,8 +3,8 @@ import { useState } from "react";
 
 import SectionHeader from "@/components/atoms/SectionHeader";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import ReviewForm from "@/components/organisms/StarRatingForm";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";

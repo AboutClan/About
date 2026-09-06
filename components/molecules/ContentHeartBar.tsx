@@ -4,11 +4,11 @@ import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Fragment, useEffect, useState } from "react";
 
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
 import UserCommentBlock from "@/components/molecules/UserCommentBlock";
 import UserCommentInput from "@/components/molecules/UserCommentInput";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import { useCommentMutation, useSubCommentMutation } from "@/hooks/common/mutations";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useFeedLikeMutation } from "@/hooks/feed/mutations";

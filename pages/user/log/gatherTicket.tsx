@@ -5,7 +5,7 @@ import { Fragment, useState } from "react";
 
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
-import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { usePointSystemMutation, useUserTicketMutation } from "@/hooks/user/mutations";
 import { useTicketSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";

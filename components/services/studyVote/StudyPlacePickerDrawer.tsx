@@ -9,7 +9,7 @@
 // import { IModal } from "@/types/components/modalTypes";
 
 // import PickerRowButton from "@/components/molecules/PickerRowButton";
-// import BottomFlexDrawer, { BottomFlexDrawerOptions } from "@/components/organisms/drawer/BottomFlexDrawer";
+// import BottomFlexDrawer, { BottomFlexDrawerOptions } from "@/components/modals/drawer/BottomFlexDrawer";
 
 // interface StudyPlacePickerDrawerProps extends IModal {
 //   studyResults: StudyMergeResultProps[];

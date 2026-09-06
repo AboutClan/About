@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 
 export type MenuDrawerItem = {
   label: string;

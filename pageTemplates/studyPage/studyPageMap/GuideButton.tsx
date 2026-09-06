@@ -16,9 +16,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import ScreenOverlay from "@/components/atoms/ScreenOverlay";
 import Spinner from "@/components/atoms/Spinner";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
 import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import { useToast } from "@/hooks/custom/CustomToast";
 import {
   StudyReviewProps,

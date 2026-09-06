@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 import Avatar from "@/components/atoms/Avatar";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import InfoBoxCol from "@/components/molecules/InfoBoxCol";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import { usePointPlusLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
 
 type BenefitName = "study" | "event" | "host" | "etc";

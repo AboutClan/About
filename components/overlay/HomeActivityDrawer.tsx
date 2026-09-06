@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import {
   ActivityCategory,
   ActivityItem,

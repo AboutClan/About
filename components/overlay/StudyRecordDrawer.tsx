@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 
-import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { STUDY_ATTEND_AT, STUDY_RECORD_MODAL_AT } from "@/constants/keys/queryKeys";
 import { CloseProps } from "@/types/components/modalTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";

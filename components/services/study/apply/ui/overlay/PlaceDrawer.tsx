@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import { RegisterLocationLayout } from "@/pages/register/location";
 import { LocationProps } from "@/types/common";

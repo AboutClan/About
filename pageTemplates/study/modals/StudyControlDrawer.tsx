@@ -4,7 +4,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import StudyApplyDrawer from "@/components/services/study/apply/StudyApplyDrawer";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import CafeMapGuestModal from "@/modals/cafeMap/CafeMapGuestModal";

@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
 import BottomNav from "@/components/layouts/BottomNav";
-import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import RegisterOverview from "@/pageTemplates/register/RegisterOverview";

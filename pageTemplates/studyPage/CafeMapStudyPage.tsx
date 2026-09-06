@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
-import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries";
 import StudyPageCalendar from "@/pageTemplates/studyPage/StudyPageCalendar";
 import StudyPagePlaceSection from "@/pageTemplates/studyPage/StudyPagePlaceSection";
