@@ -196,7 +196,7 @@ export const useGroupIdMannerQuery = (
 
 export const useGroupAttendanceQuery = (id: number, options?: QueryOptions<IGroupAttendance>) =>
   useQuery<IGroupAttendance, AxiosError, IGroupAttendance>(
-    [GROUP_STUDY, "attendance"],
+    [GROUP_STUDY, "attendance", id],
     async () => {
       const res = await axios.get<IGroupAttendance>(`${SERVER_URI}/group/attendance/${id}`);
       return res.data;
@@ -205,7 +205,7 @@ export const useGroupAttendanceQuery = (id: number, options?: QueryOptions<IGrou
   );
 export const useGroupWaitingQuery = (id: number, options?: QueryOptions<IGroupAttendance>) =>
   useQuery<IGroupAttendance, AxiosError, IGroupAttendance>(
-    [GROUP_STUDY, "waiting"],
+    [GROUP_STUDY, "waiting", id],
     async () => {
       const res = await axios.get<IGroupAttendance>(`${SERVER_URI}/group/waiting/${id}`);
       return res.data;
