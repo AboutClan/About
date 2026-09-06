@@ -9,7 +9,9 @@
     "start": "next start",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=chpt_1eb5fea11274ebd"
+    "chromatic": "npx chromatic --project-token=chpt_1eb5fea11274ebd",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
   },
   "engines": {
     "node": "20.11.0",
