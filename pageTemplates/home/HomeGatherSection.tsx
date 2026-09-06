@@ -1,6 +1,6 @@
 import SlideSectionCol from "@/components/molecules/SlideSectionCol";
 import SlideSectionRow from "@/components/molecules/SlideSectionRow";
-import { useGatherQuery } from "@/hooks/gather/queries";
+import { useGatherQuery } from "@/features/gather/hooks/queries";
 import HomeGatherCol from "@/pageTemplates/home/HomeGatherCol";
 
 // 공식 행사로 노출할 모임 id를 원하는 순서대로 나열하면 그 순서대로 2x3 배치됩니다.

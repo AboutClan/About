@@ -20,8 +20,8 @@ import {
   GatherThumbnailCardProps,
 } from "@/components/molecules/cards/GatherThumbnailCard";
 import TabNav from "@/components/molecules/navs/TabNav";
+import { useGatherCountQuery, useGatherMyStatusQuery } from "@/features/gather/hooks/queries";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { useGatherCountQuery, useGatherMyStatusQuery } from "@/hooks/gather/queries";
 import { useGroupsTitleQuery } from "@/hooks/groupStudy/queries";
 import { useUserFriendMutation } from "@/hooks/user/mutations";
 import { useUserReviewQuery } from "@/hooks/user/queries";

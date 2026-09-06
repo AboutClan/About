@@ -22,10 +22,10 @@ import {
 } from "@/constants/keys/localStorage";
 import { STUDY_ATTEND_AT } from "@/constants/keys/queryKeys";
 import { MODAL_QUEUE_PRIORITY } from "@/constants/modalQueuePriority";
+import { useGatherReviewOneQuery } from "@/features/gather/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useSingleModalSlot } from "@/hooks/custom/useSingleModalSlot";
 import { usePushServiceInitialize } from "@/hooks/FcmManger/mutaion";
-import { useGatherReviewOneQuery } from "@/hooks/gather/queries";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import {
   usePointSubLogQuery,

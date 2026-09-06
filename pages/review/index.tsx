@@ -14,7 +14,7 @@ import ButtonGroups, { ButtonOptionsProps } from "@/components/molecules/groups/
 import { LOCATION_OPEN } from "@/constants/location";
 import { WEB_URL } from "@/constants/system";
 import { useErrorToast } from "@/hooks/custom/CustomToast";
-import { useGatherAllSummaryQuery } from "@/hooks/gather/queries";
+import { useGatherAllSummaryQuery } from "@/features/gather/hooks/queries";
 import { IReviewData, REVIEW_DATA } from "@/content/Review";
 import { IGatherLocation, IGatherType } from "@/types/models/gatherTypes/gatherTypes";
 import {

@@ -3,8 +3,8 @@ import { useQueryClient } from "react-query";
 
 import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useGatherStatusMutation, useGatherWritingMutation } from "@/features/gather/hooks/mutations";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
-import { useGatherStatusMutation, useGatherWritingMutation } from "@/hooks/gather/mutations";
 import { IModal } from "@/types/components/modalTypes";
 
 interface IGatherExpireModalCancelDialog extends IModal {

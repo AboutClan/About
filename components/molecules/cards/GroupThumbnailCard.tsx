@@ -8,8 +8,8 @@ import { CheckCircleIcon20 } from "@/components/Icons/CircleIcons";
 import { UserIcon } from "@/components/Icons/UserIcons";
 import { InfinityIcon } from "@/components/molecules/cards/StudyThumbnailCard";
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
+import { useGatherGroupQuery } from "@/features/gather/hooks/queries";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { useGatherGroupQuery } from "@/hooks/gather/queries";
 import { SingleLineText } from "@/styles/layout/components";
 import {
   GroupParicipantProps,

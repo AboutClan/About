@@ -12,13 +12,13 @@ import Header from "@/components/layouts/Header";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
 import UserAbsenceBoard from "@/components/organisms/boards/UserAbsenceBoard";
-import { useResetGatherQuery } from "@/hooks/custom/CustomHooks";
-import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { useKakaoShare } from "@/hooks/custom/KakaoShareHook2";
 import {
   useGatherAbsenceCheckMutation,
   useGatherStatusMutation,
-} from "@/hooks/gather/mutations";
+} from "@/features/gather/hooks/mutations";
+import { useResetGatherQuery } from "@/hooks/custom/CustomHooks";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useKakaoShare } from "@/hooks/custom/KakaoShareHook2";
 import { isGatherEditState } from "@/recoils/checkAtoms";
 import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";

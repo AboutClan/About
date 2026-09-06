@@ -12,13 +12,13 @@ import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
 import BottomButtonNav from "@/components/molecules/BottomButtonNav";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
-import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { useFeedsQuery } from "@/hooks/feed/queries";
 import {
   useGatherParticipationMutation,
   useGatherWaitingMutation,
   useGatherWaitingStatusMutation,
-} from "@/hooks/gather/mutations";
+} from "@/features/gather/hooks/mutations";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useFeedsQuery } from "@/hooks/feed/queries";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import GatherExpireModal from "@/modals/gather/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "@/modals/gather/gatherExpireModal/GatherReviewDrawer";

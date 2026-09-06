@@ -9,7 +9,7 @@ import Divider from "@/components/atoms/Divider";
 import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import Slide from "@/components/layouts/PageSlide";
 import BottomButtonNav from "@/components/molecules/BottomButtonNav";
-import { useGatherGroupQuery, useGroupFeedsQuery } from "@/hooks/gather/queries";
+import { useGatherGroupQuery, useGroupFeedsQuery } from "@/features/gather/hooks/queries";
 import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
 import GroupContent from "@/pageTemplates/group/detail/GroupContent";
 import GroupCover from "@/pageTemplates/group/detail/GroupCover";

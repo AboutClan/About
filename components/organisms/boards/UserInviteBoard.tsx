@@ -6,13 +6,13 @@ import { Input } from "@/components/atoms/Input";
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import InviteUserGroups from "@/components/molecules/groups/InviteUserGroups";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
-import { useAllUserDataQuery } from "@/hooks/admin/quries";
-import { useTypeToast } from "@/hooks/custom/CustomToast";
-import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   useGatherInviteDummyMutation,
   useGatherInviteMutation,
-} from "@/hooks/gather/mutations";
+} from "@/features/gather/hooks/mutations";
+import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { searchName } from "@/utils/stringUtils";

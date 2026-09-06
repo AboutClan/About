@@ -12,7 +12,7 @@ import {
   getTemperature,
   getTemperatureColor,
 } from "@/components/molecules/SocialingScoreBadge";
-import { useGatherGroupQuery } from "@/hooks/gather/queries";
+import { useGatherGroupQuery } from "@/features/gather/hooks/queries";
 import { useGroupIdQuery, useGroupsMemberActivityQuery } from "@/hooks/groupStudy/queries";
 import { GroupParicipantProps } from "@/types/models/groupTypes/group";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";

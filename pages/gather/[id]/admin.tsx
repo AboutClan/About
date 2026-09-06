@@ -8,13 +8,13 @@ import TabNav from "@/components/molecules/navs/TabNav";
 import UserApprovalBoard from "@/components/organisms/boards/UserApprovalBoard";
 import UserDeleteBoard from "@/components/organisms/boards/UserDeleteBoard";
 import UserInviteBoard from "@/components/organisms/boards/UserInviteBoard";
-import { useResetGatherQuery } from "@/hooks/custom/CustomHooks";
-import { useToast } from "@/hooks/custom/CustomToast";
 import {
   useGatherParticipationMutation,
   useGatherWaitingStatusMutation,
-} from "@/hooks/gather/mutations";
-import { useGatherIDQuery } from "@/hooks/gather/queries";
+} from "@/features/gather/hooks/mutations";
+import { useGatherIDQuery } from "@/features/gather/hooks/queries";
+import { useResetGatherQuery } from "@/hooks/custom/CustomHooks";
+import { useToast } from "@/hooks/custom/CustomToast";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 import { safeDecodeTel } from "@/utils/utils";
 

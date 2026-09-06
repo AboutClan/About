@@ -8,9 +8,9 @@ import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
 } from "@/components/molecules/cards/GatherThumbnailCard";
+import { useGatherMyStatusQuery } from "@/features/gather/hooks/queries";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { useFeedsQuery } from "@/hooks/feed/queries";
-import { useGatherMyStatusQuery } from "@/hooks/gather/queries";
 import GatherReviewDrawer from "@/modals/gather/gatherExpireModal/GatherReviewDrawer";
 import GatherSkeletonMain from "@/pageTemplates/gather/GatherSkeletonMain";
 import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";

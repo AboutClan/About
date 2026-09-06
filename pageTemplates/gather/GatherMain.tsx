@@ -7,7 +7,7 @@ import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
 } from "@/components/molecules/cards/GatherThumbnailCard";
-import { GatherFilterType, useGatherQuery } from "@/hooks/gather/queries";
+import { GatherFilterType, useGatherQuery } from "@/features/gather/hooks/queries";
 import GatherSkeletonMain from "@/pageTemplates/gather/GatherSkeletonMain";
 import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";

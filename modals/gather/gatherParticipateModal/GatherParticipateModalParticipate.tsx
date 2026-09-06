@@ -4,11 +4,11 @@ import { useRecoilState } from "recoil";
 
 import { ModalBodyNavTwo } from "@/components/modals/Modals";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
-import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import {
   useGatherParticipationMutation,
   useGatherWaitingMutation,
-} from "@/hooks/gather/mutations";
+} from "@/features/gather/hooks/mutations";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { transferGatherDataState } from "@/recoils/transferRecoils";
 import { IModal } from "@/types/components/modalTypes";
 

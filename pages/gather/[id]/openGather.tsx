@@ -10,9 +10,9 @@ import Slide from "@/components/layouts/PageSlide";
 import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useOpenGatherMemberMutation } from "@/features/gather/hooks/mutations";
+import { useGatherIDQuery } from "@/features/gather/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useOpenGatherMemberMutation } from "@/hooks/gather/mutations";
-import { useGatherIDQuery } from "@/hooks/gather/queries";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
