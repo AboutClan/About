@@ -30,6 +30,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import InfoModalButton from "@/components/modalButtons/InfoModalButton";
+import { ModalLayout } from "@/components/modals/Modals";
 import WinnerTextSlider from "@/components/molecules/WinnerTextSlider";
 import { COLOR_TABLE } from "@/constants/colorConstants";
 import { usePrizeQuery } from "@/constants/prize/queries";
@@ -37,7 +38,6 @@ import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { usePrizeMutation } from "@/hooks/sub/store/mutation";
 import { usePointSystemMutation, useUserRandomTicketMutation } from "@/hooks/user/mutations";
-import { ModalLayout } from "@/modals/Modals";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
 const MotionDiv = chakra(motion.div, {

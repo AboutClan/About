@@ -10,7 +10,7 @@ import ImageUploadInput from "@/components/molecules/ImageUploadInput";
 import { isGatherEditState } from "@/recoils/checkAtoms";
 import { IModal } from "@/types/components/modalTypes";
 import { IGather, IGatherWriting } from "@/types/models/gatherTypes/gatherTypes";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 
 interface IGatherWritingConfirmModal extends IModal {
   gatherData: Partial<IGatherWriting> | Partial<IGather>;

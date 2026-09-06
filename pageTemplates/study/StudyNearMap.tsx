@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import SectionHeader from "@/components/atoms/SectionHeader";
+import { ModalLayout } from "@/components/modals/Modals";
 import VoteMap from "@/components/organisms/VoteMap";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
@@ -10,7 +11,6 @@ import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { useStudyPlaceChangeMutation } from "@/hooks/study/mutations";
 import { useStudyNearPlaceQuery } from "@/hooks/study/queries";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "@/libs/study/setStudyMapOptions";
-import { ModalLayout } from "@/modals/Modals";
 import PlaceInfoDrawer from "@/pageTemplates/studyPage/PlaceInfoDrawer";
 import StudyPageMap from "@/pageTemplates/studyPage/studyPageMap/StudyPageMap";
 import { ExpansionIcon, XIcon } from "@/pageTemplates/studyPage/studyPageMap/TopNav";

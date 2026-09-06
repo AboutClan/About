@@ -9,6 +9,7 @@ import { GATHER_COVER_IMAGE_ARR } from "@/assets/gather";
 import MenuButton, { MenuProps } from "@/components/atoms/buttons/MenuButton";
 import KakaoShareBtn from "@/components/Icons/KakaoShareBtn";
 import Header from "@/components/layouts/Header";
+import { ModalLayout } from "@/components/modals/Modals";
 import UserAbsenceBoard from "@/components/organisms/boards/UserAbsenceBoard";
 import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import { useResetGatherQuery } from "@/hooks/custom/CustomHooks";
@@ -18,7 +19,6 @@ import {
   useGatherAbsenceCheckMutation,
   useGatherStatusMutation,
 } from "@/hooks/gather/mutations";
-import { ModalLayout } from "@/modals/Modals";
 import { isGatherEditState } from "@/recoils/checkAtoms";
 import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";

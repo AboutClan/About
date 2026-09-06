@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { IFooterOptions, IHeaderOptions, ModalLayout } from "@/modals/Modals";
+import { IFooterOptions, IHeaderOptions, ModalLayout } from "@/components/modals/Modals";
 import BadgeInfoModalFirstInfo from "@/modals/store/badgeInfoModal/BadgeInfoModalFirstInfo";
 import BadgeInfoModalSecondInfo from "@/modals/store/badgeInfoModal/BadgeInfoModalSecondInfo";
 import { IModal } from "@/types/components/modalTypes";

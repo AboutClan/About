@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { CopyBtn } from "@/components/Icons/CopyIcon";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { ACCOUNT_SHORT } from "@/constants/contentsText/Private";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import { useResetQueryData } from "@/hooks/custom/CustomHooks";
@@ -10,7 +11,6 @@ import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { usePointSystemMutation } from "@/hooks/user/mutations";
 import { usePointSystemQuery } from "@/hooks/user/queries";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 

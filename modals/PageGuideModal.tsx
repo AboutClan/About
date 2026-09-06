@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 
 interface PageGuideModalProps extends IModal {

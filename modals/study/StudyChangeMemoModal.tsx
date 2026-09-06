@@ -13,7 +13,7 @@ export function Temp() {
 // import { findMyStudyInfo } from "@/libs/study/studySelectors";
 // import { myStudyParticipationState } from "@/recoils/studyRecoils";
 // import { IModal } from "@/types/components/modalTypes";
-// import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+// import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 
 // interface IStudyChangeMemoModal extends IModal {
 //   hasModalMemo;

@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 
 interface RequestBirthModalProps extends IModal {

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 import InfoList from "@/components/atoms/lists/InfoList";
 import BottomNav from "@/components/layouts/BottomNav";
+import { ModalLayout } from "@/components/modals/Modals";
 import Accordion from "@/components/molecules/Accordion";
 import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
 import TabNav from "@/components/molecules/navs/TabNav";
@@ -17,7 +18,6 @@ import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation, useUserRegisterMutation } from "@/hooks/user/mutations";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import { gaEvent } from "@/libs/gtag";
-import { ModalLayout } from "@/modals/Modals";
 import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
 import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";

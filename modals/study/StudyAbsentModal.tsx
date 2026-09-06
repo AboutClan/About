@@ -3,13 +3,13 @@ import dayjs from "dayjs";
 import { useState } from "react";
 
 import Textarea from "@/components/atoms/Textarea";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useRealTimeAbsenceMutation } from "@/hooks/realtime/mutations";
 import { useStudyAbsenceMutation } from "@/hooks/study/mutations";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { getTodayStr } from "@/utils/dateTimeUtils";
 

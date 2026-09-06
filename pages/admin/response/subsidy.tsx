@@ -10,7 +10,7 @@ import Header from "@/components/layouts/Header";
 import { useAdminPointMutation } from "@/hooks/admin/mutation";
 import { useUserRequestQuery } from "@/hooks/admin/quries";
 import { useChatMutation } from "@/hooks/chat/mutations";
-import { ModalLayout } from "@/modals/Modals";
+import { ModalLayout } from "@/components/modals/Modals";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 function AdminRegister() {

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 import Header from "@/components/layouts/Header";
-import { ModalLayout } from "@/modals/Modals";
+import { ModalLayout } from "@/components/modals/Modals";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 
 function RegisterAccessHeader() {

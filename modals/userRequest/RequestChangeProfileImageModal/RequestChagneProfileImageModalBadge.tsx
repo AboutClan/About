@@ -2,6 +2,7 @@ import { Badge, Box, Button, Grid } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import {
   BADGE_COLOR_MAPPINGS,
   USER_BADGE_ARR,
@@ -9,7 +10,6 @@ import {
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 
 function RequestChagneProfileImageModalBadge({ setIsModal }) {
   const typeToast = useTypeToast();

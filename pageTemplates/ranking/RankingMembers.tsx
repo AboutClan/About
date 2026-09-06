@@ -4,10 +4,10 @@ import { useState } from "react";
 
 import Avatar from "@/components/atoms/Avatar";
 import { RankingNumIcon } from "@/components/Icons/RankingIcons";
+import { ModalLayout } from "@/components/modals/Modals";
 import { StudyBadge } from "@/components/molecules/cards/ProfileCommentCard";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
 import { RANKING_ANONYMOUS_USERS } from "@/constants/storage/anonymous";
-import { ModalLayout } from "@/modals/Modals";
 import { RANK_MAP, UserRankingProps } from "@/pages/ranking";
 
 interface IRankingMembers {

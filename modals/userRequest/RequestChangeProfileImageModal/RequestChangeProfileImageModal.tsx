@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
+import { ModalLayout } from "@/components/modals/Modals";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import { useErrorToast, useFailToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
-import { ModalLayout } from "@/modals/Modals";
 import RequestChagneProfileImageModalBadge from "@/modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
 import SpecialAvatarModal from "@/modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
 import { IModal } from "@/types/components/modalTypes";

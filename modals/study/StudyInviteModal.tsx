@@ -13,7 +13,7 @@
 // import { isWebView } from "@/utils/appEnvUtils";
 // import { getRandomIdx } from "@/utils/mathUtils";
 // import { nativeMethodUtils } from "@/utils/nativeMethodUtils";
-// import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+// import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 
 // const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 

@@ -5,11 +5,11 @@ import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import { PopOverIcon } from "@/components/Icons/PopOverIcon";
+import { IFooterOptions, ModalFooterTwo, ModalLayout } from "@/components/modals/Modals";
 import { GROUP_STUDY } from "@/constants/keys/queryKeys";
 import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
 import { useGroupWaitingMutation } from "@/hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import { IFooterOptions, ModalFooterTwo, ModalLayout } from "@/modals/Modals";
 import { ModalSubtitle } from "@/styles/layout/modal";
 import { IModal } from "@/types/components/modalTypes";
 

@@ -3,9 +3,9 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import CheckList from "@/components/atoms/CheckList";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
 import PointSystemsModalPoint from "@/modals/aboutHeader/pointSystemsModal/PointSystemsModalPoint";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 
 function PointSystemsModal({ setIsModal }: IModal) {

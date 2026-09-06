@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import IconButton from "@/components/atoms/buttons/IconButton";
 import InfoCol, { InfoColOptions } from "@/components/atoms/InfoCol";
-import { ModalLayout } from "@/modals/Modals";
+import { ModalLayout } from "@/components/modals/Modals";
 
 type PointGuideType = "study" | "store";
 

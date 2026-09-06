@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import ScreenOverlay from "@/components/atoms/ScreenOverlay";
+import { ModalLayout } from "@/components/modals/Modals";
 import VoteMap from "@/components/organisms/VoteMap";
 import { useUserCurrentLocation } from "@/hooks/custom/CurrentLocationHook";
 import { NaverLocationProps } from "@/hooks/external/queries";
@@ -13,7 +14,6 @@ import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "@/libs/study/setStudyMapOptions";
 import { getPlaceScore } from "@/libs/study/studyUtils";
-import { ModalLayout } from "@/modals/Modals";
 import { RightReviewDrawer } from "@/pageTemplates/study/StudyReview";
 import { CafeListDrawer } from "@/pageTemplates/studyPage/CafeListDrawer";
 import { LocationAddDrawer } from "@/pageTemplates/studyPage/LocationAddDrawer";

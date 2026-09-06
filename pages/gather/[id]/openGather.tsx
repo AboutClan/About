@@ -281,8 +281,8 @@ function GridItem2({ gender, birth, introduceText, mbti }: Partial<IUser>) {
 }
 
 import Divider from "@/components/atoms/Divider";
+import { ModalLayout } from "@/components/modals/Modals";
 import { usePointSystemMutation } from "@/hooks/user/mutations";
-import { ModalLayout } from "@/modals/Modals";
 
 type StepItem = {
   step: number;

@@ -8,7 +8,7 @@ import SwiperCore from "swiper";
 import { Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { ModalLayout } from "@/modals/Modals";
+import { ModalLayout } from "@/components/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 

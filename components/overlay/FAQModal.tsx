@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 
-import { IFooterOptions } from "@/modals/Modals";
+import { IFooterOptions } from "@/components/modals/Modals";
 import PageGuideModal from "@/modals/PageGuideModal";
 import { prevPageUrlState } from "@/recoils/navigationRecoils";
 import { CloseProps } from "@/types/components/modalTypes";

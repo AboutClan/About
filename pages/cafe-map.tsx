@@ -4,10 +4,10 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
 import CafeMapBottomNav from "@/components/CafeMapBottomNav";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
 import { usePointSubLogQuery } from "@/hooks/user/queries";
 import { gaEvent } from "@/libs/gtag";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import CafeMapAppInstallDrawer from "@/pageTemplates/studyPage/CafeMapAppInstallDrawer";
 import CafeMapArchivePage from "@/pageTemplates/studyPage/CafeMapArchivePage";
 import CafeMapFeedPage from "@/pageTemplates/studyPage/CafeMapFeedPage";

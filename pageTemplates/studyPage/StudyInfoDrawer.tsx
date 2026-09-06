@@ -18,7 +18,7 @@
 // import { useRealtimeVoteMutation } from "@/hooks/realtime/mutations";
 // import { useStudyCommentMutation, useStudyVoteMutation } from "@/hooks/study/mutations";
 // import { useUserInfoQuery } from "@/hooks/user/queries";
-// import { ModalLayout } from "@/modals/Modals";
+// import { ModalLayout } from "@/components/modals/Modals";
 // import { DispatchType } from "@/types/hooks/reactTypes";
 // import { StudyType } from "@/types/models/studyTypes/study-entity.types";
 // import {

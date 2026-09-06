@@ -1,9 +1,9 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { ModalLayout } from "@/components/modals/Modals";
 import ValueBoxCol from "@/components/molecules/ValueBoxCol";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { ModalLayout } from "@/modals/Modals";
 import {
   MEMBERSHIP_CONVERTOR,
   UserMemberShip,

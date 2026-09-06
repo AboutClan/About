@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
+import { ModalLayout } from "@/components/modals/Modals";
 import BottomButtonNav from "@/components/molecules/BottomButtonNav";
 import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
@@ -21,7 +22,6 @@ import {
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import GatherExpireModal from "@/modals/gather/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "@/modals/gather/gatherExpireModal/GatherReviewDrawer";
-import { ModalLayout } from "@/modals/Modals";
 import { transferGatherDataState } from "@/recoils/transferRecoils";
 import { FeedProps } from "@/types/models/feed";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";

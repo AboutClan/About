@@ -4,9 +4,9 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { PopOverIcon } from "@/components/Icons/PopOverIcon";
+import { ModalLayout } from "@/components/modals/Modals";
 import { ConditionType } from "@/components/organisms/WritingConditionLayout";
 import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
-import { ModalLayout } from "@/modals/Modals";
 import { GroupConditionType } from "@/pages/group/writing/condition";
 import GatherWritingConditionAgeRange from "@/pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
 import GatherWritingConditionCnt from "@/pageTemplates/gather/writing/condition/GatherWritingConditionCnt";

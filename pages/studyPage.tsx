@@ -6,10 +6,10 @@ import { useEffect, useMemo, useState } from "react";
 
 import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import Slide from "@/components/layouts/PageSlide";
+import { ModalLayout } from "@/components/modals/Modals";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries";
-import { ModalLayout } from "@/modals/Modals";
 import StudyIntroduceDrawer from "@/pageTemplates/study/StudyIntroduceDrawer";
 import { LocationAddDrawer } from "@/pageTemplates/studyPage/LocationAddDrawer";
 import StudyCrewRow from "@/pageTemplates/studyPage/StudyCrewRow";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import RequestSuggestModal from "@/modals/userRequest/RequestSuggestModal";
 import { ModalSubtitle } from "@/styles/layout/modal";
 import { IModal } from "@/types/components/modalTypes";

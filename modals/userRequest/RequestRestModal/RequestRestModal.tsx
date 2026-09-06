@@ -8,10 +8,10 @@ import { Input } from "@/components/atoms/Input";
 import Select from "@/components/atoms/Select";
 import Textarea from "@/components/atoms/Textarea";
 import { PopOverIcon } from "@/components/Icons/PopOverIcon";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 

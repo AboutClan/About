@@ -4,10 +4,10 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
 import { useCounterQuery } from "@/hooks/sub/counter/queries";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { ModalSubtitle } from "@/styles/layout/modal";
 import { IModal } from "@/types/components/modalTypes";
 

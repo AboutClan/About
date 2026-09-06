@@ -8,6 +8,7 @@ import MenuButton, { MenuProps } from "@/components/atoms/buttons/MenuButton";
 import InfoList from "@/components/atoms/lists/InfoList";
 import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import GradeGauge from "@/components/molecules/GradeGauge";
 import TabNav from "@/components/molecules/navs/TabNav";
 import TextCheckButton from "@/components/molecules/TextCheckButton";
@@ -23,7 +24,6 @@ import {
 } from "@/hooks/groupStudy/mutations";
 import { useGroupIdMannerQuery } from "@/hooks/groupStudy/queries";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { calculateGrade } from "@/pages/group/[id]/manner";
 import { AdminManageIcon, EditIcon, MemberHeartIcon } from "@/pageTemplates/gather/detail/GatherHeader";
 import RegisterOverview from "@/pageTemplates/register/RegisterOverview";

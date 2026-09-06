@@ -8,7 +8,7 @@ export default CollectionModal;
 
 // import { AboutIcon } from "@/components/atoms/AboutIcons";
 // import { StarIcon } from "@/components/Icons/StarIcons";
-// import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+// import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 
 // function CollectionModal() {
 //   if (!collection) return;

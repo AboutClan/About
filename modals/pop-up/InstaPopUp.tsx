@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { Input } from "@/components/atoms/Input";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { ModalSubtitle } from "@/styles/layout/modal";
 import { IModal } from "@/types/components/modalTypes";
 

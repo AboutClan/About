@@ -1,9 +1,9 @@
 import { useState } from "react";
 
+import { ModalLayout } from "@/components/modals/Modals";
 import GatherParticipateModalApply from "@/modals/gather/gatherParticipateModal/GatherParticipateModalApply";
 import GatherParticipateModalParticipate from "@/modals/gather/gatherParticipateModal/GatherParticipateModalParticipate";
 import GatherParticipateModalPassword from "@/modals/gather/gatherParticipateModal/GatherParticipateModalPassword";
-import { ModalLayout } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 

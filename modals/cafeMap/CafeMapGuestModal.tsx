@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import { ModalLayout } from "@/modals/Modals";
+import { ModalLayout } from "@/components/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 
 function CafeMapGuestModal({ setIsModal }: IModal) {

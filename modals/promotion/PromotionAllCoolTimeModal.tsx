@@ -2,9 +2,9 @@ import { Button, Flex, ModalHeader } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
+import { IFooterOptions, IHeaderOptions, IPaddingOptions, ModalLayout } from "@/components/modals/Modals";
 import { PROMOTION_WIN_DATE } from "@/constants/settingValue/dateSettingValue";
 import { usePromotionQuery } from "@/hooks/sub/promotion/queries";
-import { IFooterOptions, IHeaderOptions, IPaddingOptions, ModalLayout } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { IPromotionApply } from "@/types/models/promotion";
 

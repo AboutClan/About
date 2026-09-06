@@ -2,10 +2,10 @@ import { useDisclosure } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import { CopyBtn } from "@/components/Icons/CopyIcon";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { useUserRegisterControlMutation } from "@/hooks/user/mutations";
 import AlertDialog from "@/modals/AlertDialog";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { IRefetch } from "@/types/hooks/reactTypes";
 import { IUserRegisterForm } from "@/types/models/userTypes/userInfoTypes";

@@ -2,12 +2,12 @@ import { Badge, Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
+import { ModalLayout } from "@/components/modals/Modals";
 import TextCheckButton from "@/components/molecules/TextCheckButton";
 import ValueBoxCol from "@/components/molecules/ValueBoxCol";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserChangeMembershipMutation } from "@/hooks/user/mutations";
-import { ModalLayout } from "@/modals/Modals";
 import { CloseProps } from "@/types/components/modalTypes";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 

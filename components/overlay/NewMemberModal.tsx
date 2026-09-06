@@ -2,8 +2,8 @@ import { Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 
+import { ModalLayout } from "@/components/modals/Modals";
 import { NEW_MEMBER_MODAL_AT } from "@/constants/keys/localStorage";
-import { ModalLayout } from "@/modals/Modals";
 import { CloseProps } from "@/types/components/modalTypes";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 

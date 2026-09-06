@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { dayjsToFormat, getDateWeek } from "@/utils/dateTimeUtils";
 

@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { StoreGiftProps } from "@/types/models/store";
 interface IStoreGiftWinModal extends IModal {

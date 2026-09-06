@@ -3,12 +3,12 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import SuccessScreen from "@/components/layouts/SuccessScreen";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
 import { GROUP_STUDY } from "@/constants/keys/queryKeys";
 import { useResetQueryData } from "@/hooks/custom/CustomHooks";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { useGroupWritingMutation } from "@/hooks/groupStudy/mutations";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { ModalSubtitle } from "@/styles/layout/modal";
 import { IModal } from "@/types/components/modalTypes";
 import { IGroup, IGroupWriting } from "@/types/models/groupTypes/group";

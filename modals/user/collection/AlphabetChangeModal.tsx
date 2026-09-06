@@ -3,10 +3,10 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { AboutIcon } from "@/components/atoms/AboutIcons";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import { useInteractionMutation } from "@/hooks/user/sub/interaction/mutations";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { Alphabet } from "@/types/models/collections";
 

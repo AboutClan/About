@@ -8,8 +8,8 @@ import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import IconButton from "@/components/atoms/buttons/IconButton";
+import { IFooterOptions, IPaddingOptions, ModalLayout } from "@/components/modals/Modals";
 import Calendar from "@/components/molecules/MonthCalendar";
-import { IFooterOptions, IPaddingOptions, ModalLayout } from "@/modals/Modals";
 import { handleChangeDate } from "@/pageTemplates/home/study/studyController/StudyController";
 import { IModal } from "@/types/components/modalTypes";
 import { DispatchString } from "@/types/hooks/reactTypes";

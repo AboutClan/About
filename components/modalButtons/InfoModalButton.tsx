@@ -3,8 +3,8 @@ import { useState } from "react";
 
 import IconButton from "@/components/atoms/buttons/IconButton";
 import InfoList from "@/components/atoms/lists/InfoList";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 
 type InfoType =
   | "study"

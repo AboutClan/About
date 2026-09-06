@@ -1,9 +1,9 @@
 import { useDisclosure } from "@chakra-ui/react";
 
+import { ModalFooterTwo } from "@/components/modals/Modals";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { useUserRegisterControlMutation } from "@/hooks/user/mutations";
 import AlertDialog from "@/modals/AlertDialog";
-import { ModalFooterTwo } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { IRefetch } from "@/types/hooks/reactTypes";
 

@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 import CountNum from "@/components/atoms/CountNum";
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { STORE_GIFT } from "@/constants/keys/queryKeys";
 import { useErrorToast, useFailToast, useToast } from "@/hooks/custom/CustomToast";
 import { useHasMemership } from "@/hooks/custom/UserHooks";
@@ -13,7 +14,6 @@ import { useStoreMutation } from "@/hooks/sub/store/mutation";
 import { usePointSystemMutation, useUserTicketMutation } from "@/hooks/user/mutations";
 import { usePointSystemQuery, useUserInfoQuery } from "@/hooks/user/queries";
 import { getStoreMaxCnt } from "@/libs/getStoreMaxCnt";
-import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { StoreGiftProps } from "@/types/models/store";
 

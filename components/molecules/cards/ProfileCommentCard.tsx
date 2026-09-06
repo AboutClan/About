@@ -15,9 +15,9 @@ import UserBadge from "@/components/atoms/badges/UserBadge";
 import Textarea from "@/components/atoms/Textarea";
 import { ChatTalkIcon } from "@/components/Icons/chatIcons";
 import { CrownIcon } from "@/components/Icons/icons";
+import { ModalLayout } from "@/components/modals/Modals";
 import BlurredPart from "@/components/molecules/BlurredPart";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import { ModalLayout } from "@/modals/Modals";
 import { CommentProps } from "@/types/models/commonTypes";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
