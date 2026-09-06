@@ -8,7 +8,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import AppDownloadModal from "@/components/overlay/AppDownloadModal";
 import FriendInviteModal from "@/components/overlay/FriendInviteModal";
-import GatherRecordDrawer from "@/components/overlay/GatherRecordDrawer";
 import LimitModal from "@/components/overlay/LimitModal";
 import NewbieBenefitModal from "@/components/overlay/NewbieBenefitModal";
 import StudyRecordDrawer from "@/components/overlay/StudyRecordDrawer";
@@ -23,6 +22,7 @@ import {
 import { STUDY_ATTEND_AT } from "@/constants/keys/queryKeys";
 import { MODAL_QUEUE_PRIORITY } from "@/constants/modalQueuePriority";
 import { useGatherReviewOneQuery } from "@/features/gather/hooks/queries";
+import GatherRecordDrawer from "@/features/gather/modals/GatherRecordDrawer";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useSingleModalSlot } from "@/hooks/custom/useSingleModalSlot";
 import { usePushServiceInitialize } from "@/hooks/FcmManger/mutaion";

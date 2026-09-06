@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
-} from "@/components/molecules/cards/GatherThumbnailCard";
+} from "@/features/gather/components/GatherThumbnailCard";
 
 interface GroupGatheringProps {
   gatherData: GatherThumbnailCardProps[];

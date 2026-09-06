@@ -6,7 +6,7 @@ import Select from "@/components/atoms/Select";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
-} from "@/components/molecules/cards/GatherThumbnailCard";
+} from "@/features/gather/components/GatherThumbnailCard";
 import { GatherFilterType, useGatherQuery } from "@/features/gather/hooks/queries";
 import GatherSkeletonMain from "@/features/gather/screens/GatherSkeletonMain";
 import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";

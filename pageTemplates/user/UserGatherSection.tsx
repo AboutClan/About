@@ -7,7 +7,7 @@ import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
-} from "@/components/molecules/cards/GatherThumbnailCard";
+} from "@/features/gather/components/GatherThumbnailCard";
 import { useGatherMyStatusQuery } from "@/features/gather/hooks/queries";
 import GatherReviewDrawer from "@/features/gather/modals/gatherExpireModal/GatherReviewDrawer";
 import GatherSkeletonMain from "@/features/gather/screens/GatherSkeletonMain";

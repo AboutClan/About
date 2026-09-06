@@ -7,7 +7,7 @@ import Slide from "@/components/layouts/PageSlide";
 import TabNav from "@/components/molecules/navs/TabNav";
 import UserApprovalBoard from "@/components/organisms/boards/UserApprovalBoard";
 import UserDeleteBoard from "@/components/organisms/boards/UserDeleteBoard";
-import UserInviteBoard from "@/components/organisms/boards/UserInviteBoard";
+import UserInviteBoard from "@/features/gather/components/UserInviteBoard";
 import {
   useGatherParticipationMutation,
   useGatherWaitingStatusMutation,

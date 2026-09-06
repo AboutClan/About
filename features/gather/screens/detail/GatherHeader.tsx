@@ -11,7 +11,7 @@ import KakaoShareBtn from "@/components/Icons/KakaoShareBtn";
 import Header from "@/components/layouts/Header";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
-import UserAbsenceBoard from "@/components/organisms/boards/UserAbsenceBoard";
+import UserAbsenceBoard from "@/features/gather/components/UserAbsenceBoard";
 import {
   useGatherAbsenceCheckMutation,
   useGatherStatusMutation,

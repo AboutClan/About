@@ -8,8 +8,8 @@ import SectionFooterButton from "@/components/atoms/SectionFooterButton";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
-} from "@/components/molecules/cards/GatherThumbnailCard";
-import { GatherThumbnailCardSkeleton } from "@/components/skeleton/GatherThumbnailCardSkeleton";
+} from "@/features/gather/components/GatherThumbnailCard";
+import { GatherThumbnailCardSkeleton } from "@/features/gather/components/GatherThumbnailCardSkeleton";
 import { backUrlState } from "@/recoils/navigationRecoils";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";

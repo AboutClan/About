@@ -15,11 +15,11 @@ import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
+import TabNav from "@/components/molecules/navs/TabNav";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
-} from "@/components/molecules/cards/GatherThumbnailCard";
-import TabNav from "@/components/molecules/navs/TabNav";
+} from "@/features/gather/components/GatherThumbnailCard";
 import { useGatherCountQuery, useGatherMyStatusQuery } from "@/features/gather/hooks/queries";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useGroupsTitleQuery } from "@/hooks/groupStudy/queries";
