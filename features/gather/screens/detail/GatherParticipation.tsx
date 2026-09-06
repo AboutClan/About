@@ -7,11 +7,11 @@ import { IProfileCommentCard } from "@/components/molecules/cards/ProfileComment
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
 import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
-import { useUserInfo } from "@/hooks/custom/UserHooks";
 import GatherDateParticipationChart, {
   IGatherDateParticipationStat,
-} from "@/pageTemplates/gather/detail/GatherDateParticipationChart";
-import GatherOfficialParticipationChart from "@/pageTemplates/gather/detail/GatherOfficialParticipationChart";
+} from "@/features/gather/screens/detail/GatherDateParticipationChart";
+import GatherOfficialParticipationChart from "@/features/gather/screens/detail/GatherOfficialParticipationChart";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   GatherCategory,
   IGather,

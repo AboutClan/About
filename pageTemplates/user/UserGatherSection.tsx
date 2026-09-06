@@ -9,10 +9,10 @@ import {
   GatherThumbnailCardProps,
 } from "@/components/molecules/cards/GatherThumbnailCard";
 import { useGatherMyStatusQuery } from "@/features/gather/hooks/queries";
+import GatherSkeletonMain from "@/features/gather/screens/GatherSkeletonMain";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { useFeedsQuery } from "@/hooks/feed/queries";
 import GatherReviewDrawer from "@/modals/gather/gatherExpireModal/GatherReviewDrawer";
-import GatherSkeletonMain from "@/pageTemplates/gather/GatherSkeletonMain";
 import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
 import UserGatherSectionReview from "@/pageTemplates/user/UserGatherSectionReview";
 import { backUrlState } from "@/recoils/navigationRecoils";

@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import styled from "styled-components";
 
-import ProcessGuide from "@/pageTemplates/gather/detail/OpenGatherStep";
+import ProcessGuide from "@/features/gather/screens/detail/OpenGatherStep";
 import StudyAddressMap from "@/pageTemplates/study/StudyAddressMap";
 import { IGatherLocation } from "@/types/models/gatherTypes/gatherTypes";
 

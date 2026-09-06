@@ -4,8 +4,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import CountNum from "@/components/atoms/CountNum";
 import { Input } from "@/components/atoms/Input";
 import { PopOverIcon } from "@/components/Icons/PopOverIcon";
+import GatherWritingConditionAgeRange from "@/features/gather/screens/writing/condition/GatherWritingConditionAgeRange";
 import { useToast } from "@/hooks/custom/CustomToast";
-import GatherWritingConditionAgeRange from "@/pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
 import { DispatchType } from "@/types/hooks/reactTypes";
 
 export interface WritingConditionProps {

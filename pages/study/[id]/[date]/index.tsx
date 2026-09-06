@@ -21,6 +21,7 @@ import {
   StudyCrewRegion,
   StudyCrewSlug,
 } from "@/constants/service/study/place";
+import StudyStep from "@/features/gather/screens/detail/StudyStep";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { useGroupIdQuery, useMyCrewGroupStudyQuery } from "@/hooks/groupStudy/queries";
@@ -28,7 +29,6 @@ import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries"
 import { shortenParticipations } from "@/libs/study/studyConverters";
 import { getMyStudyDateArr } from "@/libs/study/studyHelpers";
 import { createGroupThumbnailProps } from "@/pages/group";
-import StudyStep from "@/pageTemplates/gather/detail/StudyStep";
 import StudyLinkModal from "@/pageTemplates/study/modals/StudyLinkModal";
 import StudyAddressMap from "@/pageTemplates/study/StudyAddressMap";
 import StudyCover from "@/pageTemplates/study/StudyCover";
