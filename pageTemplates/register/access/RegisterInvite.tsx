@@ -5,7 +5,6 @@ import { Input } from "../../../components/atoms/Input";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoByUidQuery } from "../../../hooks/user/queries";
 import { DispatchNumber, DispatchString } from "../../../types/hooks/reactTypes";
-import { POINT_CHARGE } from "./RegisterFee";
 
 interface RegisterInviteProps {
   codeText: string;
@@ -41,8 +40,8 @@ function RegisterInvite({
         result.role === "previliged" ||
         CLUB_UID_ARR.includes(result.uid)
       ) {
-        // 동아리 관계자 추천: 가입비(fee - 포인트충전분) 전액 면제, 포인트 충전분은 결제
-        setDiscount(fee - POINT_CHARGE);
+        // 동아리 관계자 추천: 포인트 충전분까지 포함해 가입비 전액 면제
+        setDiscount(fee);
       } else if (temperature >= 42) {
         setDiscount(15000);
       } else if (temperature >= 40) {

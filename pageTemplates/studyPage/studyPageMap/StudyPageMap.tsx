@@ -7,7 +7,6 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
 import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
-import { useToast } from "../../../hooks/custom/CustomToast";
 import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
@@ -56,7 +55,6 @@ function StudyPageMap({
   noModalUpdate = false,
 }: StudyPageMapProps) {
   const router = useRouter();
-  const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
 
@@ -617,9 +615,9 @@ function StudyPageMap({
               }}
               handleLocationRefetch={async () => {
                 setTempToggle(true);
+                // 실패 시 원인별 토스트는 useUserCurrentLocation 내부에서 처리한다.
                 const newPos = await refetchCurrentLocation();
                 if (!newPos) {
-                  toast("error", "위치 정보를 확인할 수 없습니다.");
                   return null;
                 }
                 if (typeof window !== "undefined" && "naver" in window) {
