@@ -112,3 +112,25 @@ export function Writing2Icon() {
     </svg>
   );
 }
+
+export function ThunderIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 -960 960 960"
+      fill="none"
+    >
+      <g opacity="0.8">
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="m440-380-237-30q-25-3-32.5-27t10.5-41l409-392q5-5 12-7.5t19-2.5q20 0 30.5 17t.5 35L520-580l237 30q25 3 32.5 27T779-482L370-90q-5 5-12 7.5T339-80q-20 0-30.5-17t-.5-35l132-248Z"
+          fill="white"
+          fillOpacity="0.72"
+        />
+      </g>
+    </svg>
+  );
+}
