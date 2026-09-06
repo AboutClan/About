@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { ModalLayout } from "@/components/modals/Modals";
-import GatherExpireModalCancelDialog from "@/modals/gather/gatherExpireModal/GatherExpireModalCancelDialog";
-import GatherExpireModalExpireDialog from "@/modals/gather/gatherExpireModal/GatherExpireModalExpireDialogs";
+import GatherExpireModalCancelDialog from "@/features/gather/modals/gatherExpireModal/GatherExpireModalCancelDialog";
+import GatherExpireModalExpireDialog from "@/features/gather/modals/gatherExpireModal/GatherExpireModalExpireDialogs";
 import { IModal } from "@/types/components/modalTypes";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 

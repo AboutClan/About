@@ -17,11 +17,11 @@ import {
   useGatherWaitingMutation,
   useGatherWaitingStatusMutation,
 } from "@/features/gather/hooks/mutations";
+import GatherExpireModal from "@/features/gather/modals/gatherExpireModal/GatherExpireModal";
+import GatherReviewDrawer from "@/features/gather/modals/gatherExpireModal/GatherReviewDrawer";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useFeedsQuery } from "@/hooks/feed/queries";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import GatherExpireModal from "@/modals/gather/gatherExpireModal/GatherExpireModal";
-import GatherReviewDrawer from "@/modals/gather/gatherExpireModal/GatherReviewDrawer";
 import { transferGatherDataState } from "@/recoils/transferRecoils";
 import { FeedProps } from "@/types/models/feed";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";

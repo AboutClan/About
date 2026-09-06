@@ -14,8 +14,8 @@ import ImageBasicSlider2 from "@/components/organisms/sliders/ImageBasicSlider2"
 import { GatherCategoryMain } from "@/constants/contentsText/GatherContents";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
 import { useGatherWritingMutation } from "@/features/gather/hooks/mutations";
+import GatherWritingConfirmModal from "@/features/gather/modals/GatherWritingConfirmModal";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
-import GatherWritingConfirmModal from "@/modals/gather/GatherWritingConfirmModal";
 import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
 import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { CameraIcon } from "@/pageTemplates/user/UserProfileSection";
