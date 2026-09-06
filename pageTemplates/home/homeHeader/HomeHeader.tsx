@@ -15,12 +15,12 @@ import {
   NOTICE_MESSAGE_ALERT,
   RECENT_CHAT,
 } from "@/constants/keys/localStorage";
+import { NOTICE_ARR } from "@/content/notice";
 import { useRecentChatQuery } from "@/hooks/chat/queries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { useNoticeActiveLogQuery } from "@/hooks/user/sub/interaction/queries";
 import DailyCheckModal from "@/modals/aboutHeader/dailyCheckModal/DailyCheckModal";
-import { NOTICE_ARR } from "@/content/notice";
 
 function HomeHeader() {
   const router = useRouter();

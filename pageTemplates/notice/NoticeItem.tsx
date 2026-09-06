@@ -14,8 +14,8 @@ import { useEffect, useState } from "react";
 import { NoticeIcon } from "@/components/Icons/NoticeIcons";
 import ExternalLink from "@/components/molecules/ExternalLink";
 import { NOTICE_ALERT } from "@/constants/keys/localStorage";
-import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { NOTICE_ARR } from "@/content/notice";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 function NoticeItem() {

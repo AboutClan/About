@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 
 import AlertDot from "@/components/atoms/AlertDot";
 import { NOTICE_ALERT, NOTICE_MESSAGE_ALERT } from "@/constants/keys/localStorage";
-import { NoticeType } from "@/pages/notice";
 import { NOTICE_ARR } from "@/content/notice";
+import { NoticeType } from "@/pages/notice";
 import { INoticeActiveLog } from "@/types/globals/interaction";
 import { DispatchType } from "@/types/hooks/reactTypes";
 
