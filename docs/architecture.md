@@ -23,7 +23,7 @@
 ```
 pages/                  Next.js Pages Router. 라우팅 진입점
 features/<domain>/      도메인별 코드 (화면/컴포넌트/모달/훅/로직/상태/타입/상수)
-components/             도메인 지식이 없는 공유 UI
+components/             도메인 지식이 없는 공유 UI (layouts/, modals/, Icons/)
 hooks/                  여러 도메인이 공유하는 훅
 libs/backend/           서버 전용 코드
 utils/                  도메인과 무관한 범용 헬퍼
@@ -70,11 +70,16 @@ features/<domain>/
 
 | 폴더 | 담는 것 | 편입 조건 |
 |---|---|---|
-| `ui/` | 단일 책임 프리미티브 (Button, Input, Badge, Text) | 표시값·콜백만 받고, 도메인 엔티티를 import하지 않으며, 디자인 변경 시에만 수정됨 |
-| `layout/` | 앱 셸 (Header, PageSlide, BottomNav, Layout) | 앱 전체에 1벌만 존재하는 구조적 컴포넌트 |
-| `modal/` | 모달/드로어 공통 기반과 범용 다이얼로그 | 열림/닫힘 메커니즘만 다루고, 내용은 children으로 주입받음 |
-| `patterns/` | 프리미티브보다 복합적인 범용 UI 패턴 (Carousel, Accordion, Pagination) | 도메인 이름을 붙일 수 없고, 다른 프로젝트에 복사해도 의미가 통함 |
+| `layouts/` | 앱 셸 (Header, PageSlide, Layout) | 앱 전체에 1벌만 존재하는 구조적 컴포넌트 |
+| `modals/` | 모달/드로어 공통 기반(`Modals.tsx`, `drawer/`)과 범용 다이얼로그 | 열림/닫힘 메커니즘만 다루고, 내용은 children으로 주입받음 |
 | `Icons/` | 아이콘 컴포넌트 | — |
+| `ui/` *(예정)* | 단일 책임 프리미티브 (Button, Badge, Skeleton) | 표시값·콜백만 받고, 도메인 엔티티를 import하지 않으며, 디자인 변경 시에만 수정됨 |
+| `patterns/` *(예정)* | 프리미티브보다 복합적인 범용 UI 패턴 (Carousel, Accordion, Pagination) | 도메인 이름을 붙일 수 없고, 다른 프로젝트에 복사해도 의미가 통함 |
+
+> `ui/`와 `patterns/`는 아직 만들지 않았다. 현재 `components/atoms|molecules|organisms/`에는
+> 공유 프리미티브와 도메인 소유 컴포넌트(`Avatar`, `MenuButton` 등)가 섞여 있어, 무엇이 공유인지
+> 확정하려면 먼저 도메인 이관으로 도메인 소유분을 걷어내야 한다. 도메인 이관이 끝난 뒤
+> 남는 것을 `ui/`·`patterns/`로 정리한다. 그때까지 새 프리미티브는 기존 `atoms/`에 둔다.
 
 ---
 

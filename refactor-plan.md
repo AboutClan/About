@@ -14,7 +14,18 @@
 호출부의 경로 문자열 치환이 되어 git이 rename(R100)으로 인식한다.
 저장소 전체 802개 파일 / 4139개 import를 일괄 전환했고, diff가 import 문에만 국한됨을 확인했다.
 
-**2. Storybook/Chromatic은 이번 마이그레이션의 검증 수단이 아니다 (§6·§12 정정)**
+**2. 공유 계층(`ui`/`patterns`) 확립을 도메인 이관 *이후*로 옮김 (사용자 승인, §11 Phase 1 축소)**
+Phase 1 후보 12개를 실제로 읽어보니 6개만 공유 자격이 있었다. `Avatar`(user 도메인 규칙 내장),
+`MenuButton`(`pageTemplates/user`에서 아이콘 import + 대기인원 배지), `BottomNav`(라우트/IA 맵 하드코딩),
+`PageTracker`(5개 도메인 글쓰기 단계 맵), `AlertDialog`("가입 거절" 문구 고정)는 도메인 소유였다.
+즉 **무엇이 공유인지는 도메인을 걷어내야 확정된다.** 또한 별칭 도입으로 "공유 계층이 도메인 이동의
+전제조건"이라는 §11의 가정도 사라졌다(도메인 파일은 공유 컴포넌트 위치와 무관하게 import한다).
+따라서 Phase 1은 **도메인 지식이 전혀 없고 즉시 가치가 있는 모달 통합**으로 한정하고,
+`components/ui`·`patterns`는 도메인 이관이 끝나 `atoms|molecules|organisms`에 공유분만 남았을 때 정리한다.
+폴더 이름도 새로 만들지 않고 기존 `components/layouts/`·`components/modals/`를 그대로 목표로 삼는다
+(`layout/`·`modal/` 단수형을 새로 만들면 유사한 두 폴더가 공존해 오히려 혼란스럽다).
+
+**3. Storybook/Chromatic은 이번 마이그레이션의 검증 수단이 아니다 (§6·§12 정정)**
 스토리가 9개뿐이고 전부 `components/atoms/` 프리미티브다. gather 도메인 스토리는 0개이므로
 Phase 2에서 Chromatic은 아무 신호도 주지 못한다. 계획에서 이를 검증 수단으로 적은 것은 과대평가였다.
 **실질 안전망은 typecheck + lint + build + 사용자 수동 확인뿐이다.**
