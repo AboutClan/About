@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { IModal } from "../../../types/components/modalTypes";
-import { IFooterOptions, IHeaderOptions, ModalLayout } from "../../Modals";
-import PromotionModalOverview from "./PromotionModalOverview";
+import PromotionModalOverview from "@/modals/aboutHeader/promotionModal/PromotionModalOverview";
+import { IFooterOptions, IHeaderOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 function PromotionModal({ setIsModal }: IModal) {
   const router = useRouter();

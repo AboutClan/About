@@ -2,11 +2,11 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
-import Header from "../../../components/layouts/Header";
-import AdminLocationSelector from "../../../components/molecules/picker/AdminLocationSelector";
-import { useUserRequestQuery } from "../../../hooks/admin/quries";
-import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import AdminLocationSelector from "@/components/molecules/picker/AdminLocationSelector";
+import { useUserRequestQuery } from "@/hooks/admin/quries";
+import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 
 function AdminSuggest() {
   const [initialData, setInitialData] = useState<IUserRequest[]>();
@@ -113,7 +113,7 @@ export default AdminSuggest;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

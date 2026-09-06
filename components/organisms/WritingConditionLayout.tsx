@@ -1,12 +1,12 @@
 import { Box, Flex, Stack, Switch } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
 
-import { useToast } from "../../hooks/custom/CustomToast";
-import GatherWritingConditionAgeRange from "../../pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import CountNum from "../atoms/CountNum";
-import { Input } from "../atoms/Input";
-import { PopOverIcon } from "../Icons/PopOverIcon";
+import CountNum from "@/components/atoms/CountNum";
+import { Input } from "@/components/atoms/Input";
+import { PopOverIcon } from "@/components/Icons/PopOverIcon";
+import { useToast } from "@/hooks/custom/CustomToast";
+import GatherWritingConditionAgeRange from "@/pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
+import { DispatchType } from "@/types/hooks/reactTypes";
 
 export interface WritingConditionProps {
   age: number[];

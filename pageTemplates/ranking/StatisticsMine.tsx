@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import RecordAnalysisGraph from "../record/analysis/RecordAnalysisGraph";
-import RecordAnalysisSummary from "../record/analysis/RecordAnalysisSummary";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import RecordAnalysisGraph from "@/pageTemplates/record/analysis/RecordAnalysisGraph";
+import RecordAnalysisSummary from "@/pageTemplates/record/analysis/RecordAnalysisSummary";
 
 export default function StatisticsMine() {
   const [isLoading, setIsLoading] = useState(true);

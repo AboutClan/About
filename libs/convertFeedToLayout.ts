@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 
-import { FeedLayoutProps } from "../components/organisms/FeedLayout";
-import { ABOUT_USER_SUMMARY } from "../constants/serviceConstants/userConstants";
-import { FeedProps } from "../types/models/feed";
-import { UserSimpleInfoProps } from "../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../utils/dateTimeUtils";
+import { FeedLayoutProps } from "@/components/organisms/FeedLayout";
+import { ABOUT_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { FeedProps } from "@/types/models/feed";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 export const convertFeedToLayout = (feed: FeedProps): FeedLayoutProps => {
   return {

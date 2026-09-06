@@ -1,9 +1,9 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { Input } from "../../../components/atoms/Input";
-import Header from "../../../components/layouts/Header";
-import { useUserRandomTicketMutation } from "../../../hooks/user/mutations";
+import { Input } from "@/components/atoms/Input";
+import Header from "@/components/layouts/Header";
+import { useUserRandomTicketMutation } from "@/hooks/user/mutations";
 
 function Badge() {
   const [userId, setUserId] = useState("");
@@ -29,7 +29,7 @@ export default Badge;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

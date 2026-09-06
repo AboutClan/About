@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
-import { CheckCircleIcon20 } from "../Icons/CircleIcons";
+import { CheckCircleIcon20 } from "@/components/Icons/CircleIcons";
 
 interface TextCheckButtonProps {
   text: string;

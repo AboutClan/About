@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import ShadowCircleButton from "../../../components/atoms/buttons/ShadowCircleButton";
+import ShadowCircleButton from "@/components/atoms/buttons/ShadowCircleButton";
 
 const meta = {
   title: "ATOMS/Button/ShadowCircleButton",

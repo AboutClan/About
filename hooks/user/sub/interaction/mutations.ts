@@ -1,10 +1,10 @@
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
-import { requestServer } from "../../../../libs/methodHelpers";
-import { IInteractionSendLike } from "../../../../types/globals/interaction";
-import { MutationOptions } from "../../../../types/hooks/reactTypes";
-import { useErrorToast } from "../../../custom/CustomToast";
+import { useErrorToast } from "@/hooks/custom/CustomToast";
+import { requestServer } from "@/libs/methodHelpers";
+import { IInteractionSendLike } from "@/types/globals/interaction";
+import { MutationOptions } from "@/types/hooks/reactTypes";
 
 interface IPostUserFriendRequest {
   toUid: string;

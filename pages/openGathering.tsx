@@ -1,8 +1,8 @@
-import Header from "../components/layouts/Header";
-import Slide from "../components/layouts/PageSlide";
-import SocialingScoreBadge from "../components/molecules/SocialingScoreBadge";
-import ProfileCardColumn from "../components/organisms/ProfileCardColumn";
-import { useAllUserDataQuery } from "../hooks/admin/quries";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
+import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
+import { useAllUserDataQuery } from "@/hooks/admin/quries";
 
 function OpenGathering() {
   const { data: allUserData } = useAllUserDataQuery(null, {

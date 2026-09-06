@@ -12,12 +12,12 @@ import {
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { DECLARE_LIST } from "../../constants/contentsText/requestContents";
-import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
-import { IUser, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { DeclareRequest, IUserRequest } from "../../types/models/userTypes/userRequestTypes";
+import { DECLARE_LIST } from "@/constants/contentsText/requestContents";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import { DispatchString, DispatchType } from "@/types/hooks/reactTypes";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { DeclareRequest, IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 
 interface IDeclareDrawer {
   userData: IUser | UserSimpleInfoProps;

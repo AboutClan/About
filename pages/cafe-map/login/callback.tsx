@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 
 export default function CafeMapLoginCallback() {
   const { data: session, status } = useSession();

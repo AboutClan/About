@@ -1,9 +1,9 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import AlertModal from "../../AlertModal";
-import ProfileCommentCard from "../../molecules/cards/ProfileCommentCard";
+import AlertModal from "@/components/AlertModal";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface UserDeleteBoardProps {
   users: { user: UserSimpleInfoProps; text: string; deleteId?: string }[];

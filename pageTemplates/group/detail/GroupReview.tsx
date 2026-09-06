@@ -1,9 +1,9 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import FeedLayout from "../../../components/organisms/FeedLayout";
-import { convertFeedToLayout } from "../../../libs/convertFeedToLayout";
-import { FeedProps } from "../../../types/models/feed";
+import FeedLayout from "@/components/organisms/FeedLayout";
+import { convertFeedToLayout } from "@/libs/convertFeedToLayout";
+import { FeedProps } from "@/types/models/feed";
 
 interface GroupReviewProps {
   feeds: FeedProps[];

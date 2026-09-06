@@ -2,7 +2,7 @@
 
 import mongoose, { Model, Schema } from "mongoose";
 
-import { IStoreApplicant } from "../types/models/store";
+import { IStoreApplicant } from "@/types/models/store";
 
 const giftSchema: Schema = new Schema(
   {

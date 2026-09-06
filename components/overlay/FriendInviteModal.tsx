@@ -2,7 +2,7 @@ import { Box, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import ScreenOverlay from "../atoms/ScreenOverlay";
+import ScreenOverlay from "@/components/atoms/ScreenOverlay";
 
 function FriendInviteModal({ onClose }: { onClose: () => void }) {
   const router = useRouter();

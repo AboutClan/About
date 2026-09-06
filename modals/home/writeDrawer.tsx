@@ -14,7 +14,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 
 export default function WriteDrawer() {
   const router = useRouter();

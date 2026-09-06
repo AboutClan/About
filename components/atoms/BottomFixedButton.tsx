@@ -1,7 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 
-import { getSafeAreaBottom } from "../../utils/validationUtils";
-import Slide from "../layouts/PageSlide";
+import Slide from "@/components/layouts/PageSlide";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface BottomFixedButton {
   text: string;

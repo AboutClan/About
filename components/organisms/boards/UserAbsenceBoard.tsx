@@ -1,12 +1,12 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { useAdminPoint2Mutation } from "../../../hooks/admin/mutation";
-import { usePointSystemMutation } from "../../../hooks/user/mutations";
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import AlertModal from "../../AlertModal";
-import ProfileCommentCard from "../../molecules/cards/ProfileCommentCard";
+import AlertModal from "@/components/AlertModal";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import { useAdminPoint2Mutation } from "@/hooks/admin/mutation";
+import { usePointSystemMutation } from "@/hooks/user/mutations";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface UserAbsenceBoardProps {
   gatherData: IGather;

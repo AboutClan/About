@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 
-import { IModal } from "../types/components/modalTypes";
-import { ModalLayout } from "./Modals";
+import { ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 export interface IContentBasic {
   title: string;

@@ -4,13 +4,13 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { MONTH_LIST } from "../../../constants/util/util";
-import { useErrorToast } from "../../../hooks/custom/CustomToast";
-import { useUserAttendRateQueries } from "../../../hooks/user/sub/studyRecord/queries";
-import { IVoteRate } from "../../../types/models/studyTypes/studyRecords";
-import { IUser } from "../../../types/models/userTypes/userInfoTypes";
-import { getMonth } from "../../../utils/dateTimeUtils";
-import { ChartStudyOptions } from "./ChartOptions";
+import { ChartStudyOptions } from "@/components/organisms/chart/ChartOptions";
+import { MONTH_LIST } from "@/constants/util/util";
+import { useErrorToast } from "@/hooks/custom/CustomToast";
+import { useUserAttendRateQueries } from "@/hooks/user/sub/studyRecord/queries";
+import { IVoteRate } from "@/types/models/studyTypes/studyRecords";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { getMonth } from "@/utils/dateTimeUtils";
 
 interface IChart {
   type: "study";

@@ -4,12 +4,12 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
-import Header from "../../../components/layouts/Header";
-import AdminLocationSelector from "../../../components/molecules/picker/AdminLocationSelector";
-import { useUserRequestQuery } from "../../../hooks/admin/quries";
-import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
-import { getRestInfo } from "../../../utils/convertUtils/convertDatas";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import AdminLocationSelector from "@/components/molecules/picker/AdminLocationSelector";
+import { useUserRequestQuery } from "@/hooks/admin/quries";
+import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
+import { getRestInfo } from "@/utils/convertUtils/convertDatas";
 
 function AdminRest() {
   const [initialData, setInitialData] = useState<IUserRequest[]>();
@@ -109,7 +109,7 @@ const Title = styled.div`
 export default AdminRest;
 
 import { GetServerSideProps } from "next";
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

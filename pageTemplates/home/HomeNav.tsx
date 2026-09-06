@@ -2,10 +2,10 @@ import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import ExternalLink from "../../components/molecules/ExternalLink";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useOpenHomeActivityDrawer } from "../../hooks/custom/useHomeActivityDrawer";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import ExternalLink from "@/components/molecules/ExternalLink";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useOpenHomeActivityDrawer } from "@/hooks/custom/useHomeActivityDrawer";
 
 interface HomeIconProps {
   title: string;

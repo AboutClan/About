@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { ITimeBoardParticipant } from "../UserTimeBoard";
+import { ITimeBoardParticipant } from "@/components/molecules/boards/userTimeBoard/UserTimeBoard";
 
 export const transformToUserBlocks = (participants: ITimeBoardParticipant[]) => {
   return participants.map((par) => {

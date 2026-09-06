@@ -1,13 +1,13 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
-import Divider from "../../components/atoms/Divider";
-import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewBlock2";
-import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import { CAFE_REVIEW_ARR } from "../../constants/keys/queryKeys";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { getSafeAreaBottom } from "../../utils/validationUtils";
-import { PlaceInfoBox } from "./PlaceInfoDrawer";
+import Divider from "@/components/atoms/Divider";
+import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { CAFE_REVIEW_ARR } from "@/constants/keys/queryKeys";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { PlaceInfoBox } from "@/pageTemplates/studyPage/PlaceInfoDrawer";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface RightReviewDrawer2Props {
   placeInfo: StudyPlaceProps;

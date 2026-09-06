@@ -2,16 +2,16 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import SearchLocation from "../../../components/organisms/SearchLocation";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudyAdditionMutation } from "../../../hooks/study/mutations";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { LocationProps } from "../../../types/common";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import SearchLocation from "@/components/organisms/SearchLocation";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useStudyAdditionMutation } from "@/hooks/study/mutations";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { LocationProps } from "@/types/common";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 function WritingStudyPlace() {
   const router = useRouter();

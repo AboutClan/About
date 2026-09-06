@@ -5,26 +5,26 @@ import { MouseEvent, useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import BottomNav from "../../../components/layouts/BottomNav";
-import ProgressHeader from "../../../components/molecules/headers/ProgressHeader";
-import { MESSAGE_DATA2 } from "../../../constants/contentsText/ProfileData";
-import { REGISTER_INFO } from "../../../constants/keys/localStorage";
-import { USER_INFO } from "../../../constants/keys/queryKeys";
-import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
+import BottomNav from "@/components/layouts/BottomNav";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import { MESSAGE_DATA2 } from "@/constants/contentsText/ProfileData";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import {
   useUserCafeRegisterMutation,
   useUserInfoFieldMutation,
-} from "../../../hooks/user/mutations";
-import { gaEvent } from "../../../libs/gtag";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { IUserRegisterFormWriting } from "../../../types/models/userTypes/userInfoTypes";
-import { setAuthIntent } from "../../../utils/authIntentUtils";
+} from "@/hooks/user/mutations";
+import { gaEvent } from "@/libs/gtag";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
+import { setAuthIntent } from "@/utils/authIntentUtils";
 import {
   getLocalStorageObj,
   getTrafficSourceCode,
   setLocalStorageObj,
-} from "../../../utils/storageUtils";
+} from "@/utils/storageUtils";
 
 function Comment() {
   const router = useRouter();

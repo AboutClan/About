@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { ModalLayout } from "../../modals/Modals";
-import IconButton from "../atoms/buttons/IconButton";
-import InfoCol, { InfoColOptions } from "../atoms/InfoCol";
+import IconButton from "@/components/atoms/buttons/IconButton";
+import InfoCol, { InfoColOptions } from "@/components/atoms/InfoCol";
+import { ModalLayout } from "@/modals/Modals";
 
 type PointGuideType = "study" | "store";
 

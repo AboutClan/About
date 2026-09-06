@@ -4,12 +4,12 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { prevPageUrlState } from "../../../../recoils/previousAtoms";
-import { IUser, UserSimpleInfoProps } from "../../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
-import Avatar from "../../../atoms/Avatar";
-import HeartCircleIcon from "../../../Icons/HeartCircleIcon";
-import { ImageContainer } from "../ImageSlider";
+import Avatar from "@/components/atoms/Avatar";
+import HeartCircleIcon from "@/components/Icons/HeartCircleIcon";
+import { ImageContainer } from "@/components/organisms/imageSlider/ImageSlider";
+import { prevPageUrlState } from "@/recoils/previousAtoms";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface IImageSliderMember {
   imageContainer: ImageContainer;

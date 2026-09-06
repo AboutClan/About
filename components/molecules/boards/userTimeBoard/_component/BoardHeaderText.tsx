@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import HighlightedText, { IHighlightedText } from "../../../../atoms/HighlightedText";
+import HighlightedText, { IHighlightedText } from "@/components/atoms/HighlightedText";
 
 interface IBoardHeaderText {
   headerText: IHighlightedText;

@@ -2,20 +2,20 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useAllUserDataQuery } from "../../../hooks/admin/quries";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
+import { Input } from "@/components/atoms/Input";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import InviteUserGroups from "@/components/molecules/groups/InviteUserGroups";
+import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   useGatherInviteDummyMutation,
   useGatherInviteMutation,
-} from "../../../hooks/gather/mutations";
-import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { searchName } from "../../../utils/stringUtils";
-import { Input } from "../../atoms/Input";
-import { MainLoadingAbsolute } from "../../atoms/loaders/MainLoading";
-import InviteUserGroups from "../../molecules/groups/InviteUserGroups";
+} from "@/hooks/gather/mutations";
+import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { searchName } from "@/utils/stringUtils";
 
 interface UserInviteBoardProps {
   members: string[];

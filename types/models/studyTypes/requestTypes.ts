@@ -1,6 +1,6 @@
-import { LocationProps } from "../../common";
-import { DayjsTimeProps, StringTimeProps } from "../../utils/timeAndDate";
-import { RealTimesStudyStatus } from "./study-entity.types";
+import { LocationProps } from "@/types/common";
+import { RealTimesStudyStatus } from "@/types/models/studyTypes/study-entity.types";
+import { DayjsTimeProps, StringTimeProps } from "@/types/utils/timeAndDate";
 
 export interface StudyAttendanceProps {
   time: string;

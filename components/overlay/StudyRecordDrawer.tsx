@@ -4,10 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 
-import { STUDY_ATTEND_AT, STUDY_RECORD_MODAL_AT } from "../../constants/keys/queryKeys";
-import { CloseProps } from "../../types/components/modalTypes";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import BottomFlexDrawer from "../organisms/drawer/BottomFlexDrawer";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { STUDY_ATTEND_AT, STUDY_RECORD_MODAL_AT } from "@/constants/keys/queryKeys";
+import { CloseProps } from "@/types/components/modalTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 export interface StudyRecordDrawerProps extends CloseProps {
   date: string;

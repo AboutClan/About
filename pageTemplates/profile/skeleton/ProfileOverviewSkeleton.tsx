@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import Skeleton from "../../../components/atoms/skeleton/Skeleton";
+import Skeleton from "@/components/atoms/skeleton/Skeleton";
 
 function ProfileOverviewSkeleton() {
   return (

@@ -1,10 +1,10 @@
-import { useFailToast, useTypeErrorToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { DispatchNumber } from "../../../types/hooks/reactTypes";
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { IUser } from "../../../types/models/userTypes/userInfoTypes";
-import { birthToAge } from "../../../utils/convertUtils/convertTypes";
-import { ModalBodyNavTwo } from "../../Modals";
+import { useFailToast, useTypeErrorToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { ModalBodyNavTwo } from "@/modals/Modals";
+import { DispatchNumber } from "@/types/hooks/reactTypes";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { birthToAge } from "@/utils/convertUtils/convertTypes";
 
 interface IGatherParticipateModalApply {
   setPageNum: DispatchNumber;

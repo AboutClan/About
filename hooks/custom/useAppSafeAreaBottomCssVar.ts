@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 
-import { isBrokenSafeAreaAndroidInAppBrowser } from "../../utils/appEnvUtils";
-import { APP_SAFE_AREA_BOTTOM_CSS_VAR, isApp } from "../../utils/validationUtils";
+import { isBrokenSafeAreaAndroidInAppBrowser } from "@/utils/appEnvUtils";
+import { APP_SAFE_AREA_BOTTOM_CSS_VAR, isApp } from "@/utils/validationUtils";
 
 // SSR에서 useLayoutEffect를 쓰면 "useLayoutEffect does nothing on the server" 경고가 뜬다.
 // 서버에서는 어차피 effect가 실행되지 않으므로 useEffect(사실상 no-op)를 쓰고,

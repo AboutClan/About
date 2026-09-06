@@ -3,9 +3,9 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import NotCompletedModal from "../../modals/system/NotCompletedModal";
-import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import NotCompletedModal from "@/modals/system/NotCompletedModal";
+import { IArrivedData } from "@/types/models/studyTypes/studyRecords";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 interface IRecordOverview {
   arrivedCalendar: IArrivedData[];
 }

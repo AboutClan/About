@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import MenuDrawer from "../../components/organisms/RightMenuDrawer";
-import { useToast } from "../../hooks/custom/CustomToast";
-import RequestStudyModal from "../../modals/userRequest/RequestStudyModal";
+import MenuDrawer from "@/components/organisms/RightMenuDrawer";
+import { useToast } from "@/hooks/custom/CustomToast";
+import RequestStudyModal from "@/modals/userRequest/RequestStudyModal";
 
 interface StudyMapMenuDrawerProps {
   onClose: () => void;

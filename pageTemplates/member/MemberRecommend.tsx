@@ -3,11 +3,11 @@ import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import SectionBar from "../../components/molecules/bars/SectionBar";
-import { FRIEND_RECOMMEND_CATEGORY } from "../../constants/contentsText/friend";
-import { useFailToast } from "../../hooks/custom/CustomToast";
-import { transferMemberDataState } from "../../recoils/transferRecoils";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import SectionBar from "@/components/molecules/bars/SectionBar";
+import { FRIEND_RECOMMEND_CATEGORY } from "@/constants/contentsText/friend";
+import { useFailToast } from "@/hooks/custom/CustomToast";
+import { transferMemberDataState } from "@/recoils/transferRecoils";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
 interface IMemberRecommend {
   members: IUser[];

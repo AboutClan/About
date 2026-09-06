@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import ImageSlider from "../../components/organisms/imageSlider/ImageSlider";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import ImageSlider from "@/components/organisms/imageSlider/ImageSlider";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
 interface IMemberMember {
   members: IUser[];

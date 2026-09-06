@@ -3,10 +3,10 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import BottomNav from "../components/layouts/BottomNav";
-import Header from "../components/layouts/Header";
-import Slide from "../components/layouts/PageSlide";
-import { navigateExternalLink } from "../utils/navigateUtils";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 const APP_INSTALL_LINK = "https://about20s.club/download/app";
 const KAKAO_CHANNEL_LINK = "https://pf.kakao.com/_SaWXn";

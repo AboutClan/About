@@ -4,17 +4,17 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import BottomNav from "../../components/layouts/BottomNav";
-import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import { MESSAGE_DATA } from "../../constants/contentsText/ProfileData";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import { setAuthIntent } from "../../utils/authIntentUtils";
-import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
+import BottomNav from "@/components/layouts/BottomNav";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import { MESSAGE_DATA } from "@/constants/contentsText/ProfileData";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoFieldMutation, useUserRegisterMutation } from "@/hooks/user/mutations";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
+import { setAuthIntent } from "@/utils/authIntentUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 const DEFAULT_LOCATION_DETAIL = {
   name: "서울",

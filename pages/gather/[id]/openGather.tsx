@@ -3,18 +3,18 @@ import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import BottomNavButton from "../../../components/atoms/BottomNavButton";
-import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
-import SocialingScoreBadge from "../../../components/molecules/SocialingScoreBadge";
-import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useOpenGatherMemberMutation } from "../../../hooks/gather/mutations";
-import { useGatherIDQuery } from "../../../hooks/gather/queries";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import BottomNavButton from "@/components/atoms/BottomNavButton";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
+import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useOpenGatherMemberMutation } from "@/hooks/gather/mutations";
+import { useGatherIDQuery } from "@/hooks/gather/queries";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 export interface OpenGatherVoteProps {
   user: Partial<IUser>;
@@ -280,9 +280,9 @@ function GridItem2({ gender, birth, introduceText, mbti }: Partial<IUser>) {
   );
 }
 
-import Divider from "../../../components/atoms/Divider";
-import { usePointSystemMutation } from "../../../hooks/user/mutations";
-import { ModalLayout } from "../../../modals/Modals";
+import Divider from "@/components/atoms/Divider";
+import { usePointSystemMutation } from "@/hooks/user/mutations";
+import { ModalLayout } from "@/modals/Modals";
 
 type StepItem = {
   step: number;

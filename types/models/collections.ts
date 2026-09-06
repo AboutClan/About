@@ -1,5 +1,5 @@
-import { TimeStampProps } from "../utils/timeAndDate";
-import { UserSimpleInfoProps } from "./userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export type Alphabet = "A" | "B" | "O" | "U" | "T";
 

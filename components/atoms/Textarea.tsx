@@ -4,7 +4,7 @@ import {
 } from "@chakra-ui/react";
 import { ForwardedRef, forwardRef } from "react";
 
-import { DispatchBoolean } from "../../types/hooks/reactTypes";
+import { DispatchBoolean } from "@/types/hooks/reactTypes";
 
 type TextareaProps = ChakraTextareaProps & {
   minHeight?: number;

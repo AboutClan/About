@@ -9,7 +9,7 @@
 // 실행하므로, 이 키가 있다고 해서 임의의 uid를 승인/지급할 수는 없다.
 import axios from "axios";
 
-import { SERVER_URI } from "../constants/system";
+import { SERVER_URI } from "@/constants/system";
 
 // nest-back과 반드시 동일한 값이어야 한다 (nest-back: src/utils/internalAuth.ts).
 const INTERNAL_KEY = "e7996cfca3b07958cf2233af8152d2344da052d15ae0523d1ced5649af928388";

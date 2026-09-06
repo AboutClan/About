@@ -1,16 +1,16 @@
 import { Box, Flex, Text, useCheckbox } from "@chakra-ui/react";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import Select from "../../components/atoms/Select";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Select from "@/components/atoms/Select";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
-} from "../../components/molecules/cards/GatherThumbnailCard";
-import { GatherFilterType, useGatherQuery } from "../../hooks/gather/queries";
-import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { setGatherDataToCardCol } from "../home/HomeGatherCol";
-import GatherSkeletonMain from "./GatherSkeletonMain";
+} from "@/components/molecules/cards/GatherThumbnailCard";
+import { GatherFilterType, useGatherQuery } from "@/hooks/gather/queries";
+import GatherSkeletonMain from "@/pageTemplates/gather/GatherSkeletonMain";
+import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 
 type SortedType = "최신 개설 순" | "일정 빠른 순" | "기본순";
 

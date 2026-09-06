@@ -11,8 +11,8 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import { IModal } from "../types/components/modalTypes";
-import KakaoShareBtn from "./Icons/KakaoShareBtn";
+import KakaoShareBtn from "@/components/Icons/KakaoShareBtn";
+import { IModal } from "@/types/components/modalTypes";
 export interface IAlertSimpleModalOptions {
   title: string;
   subTitle?: string;

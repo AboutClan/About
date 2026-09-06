@@ -1,11 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
-import Header from "../../../../components/layouts/Header";
-import Slide from "../../../../components/layouts/PageSlide";
-import FeedLayout, { FeedLayoutProps } from "../../../../components/organisms/FeedLayout";
-import { useFeedTypeQuery } from "../../../../hooks/feed/queries";
-import { convertFeedToLayout } from "../../../../libs/convertFeedToLayout";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import FeedLayout, { FeedLayoutProps } from "@/components/organisms/FeedLayout";
+import { useFeedTypeQuery } from "@/hooks/feed/queries";
+import { convertFeedToLayout } from "@/libs/convertFeedToLayout";
 
 function Review() {
   const { data } = useFeedTypeQuery("mine");

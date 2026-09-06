@@ -1,4 +1,4 @@
-import { UserRole } from "../../types/models/userTypes/userInfoTypes";
+import { UserRole } from "@/types/models/userTypes/userInfoTypes";
 
 export const USER_ROLE: Record<UserRole, string> = {
   human: "수습 멤버",

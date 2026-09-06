@@ -1,9 +1,9 @@
 /* eslint-disable */
 import styled from "styled-components";
 
-import { useAdminDepositMutation } from "../../hooks/admin/mutation";
-import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import { IModal } from "../../types/components/modalTypes";
+import { useAdminDepositMutation } from "@/hooks/admin/mutation";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
+import { IModal } from "@/types/components/modalTypes";
 
 interface ICheckAbsentModal extends IModal {
   uid: string;

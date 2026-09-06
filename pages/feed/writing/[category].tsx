@@ -4,26 +4,26 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
-import InfoList from "../../../components/atoms/lists/InfoList";
-import Textarea from "../../../components/atoms/Textarea";
-import WritingNavigation from "../../../components/atoms/WritingNavigation";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ImageUploadButton from "../../../components/molecules/ImageUploadButton";
-import SummaryBlock from "../../../components/molecules/SummaryBlock";
-import UserSecretButton from "../../../components/molecules/UserSecretButton";
+import InfoList from "@/components/atoms/lists/InfoList";
+import Textarea from "@/components/atoms/Textarea";
+import WritingNavigation from "@/components/atoms/WritingNavigation";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ImageUploadButton from "@/components/molecules/ImageUploadButton";
+import SummaryBlock from "@/components/molecules/SummaryBlock";
+import UserSecretButton from "@/components/molecules/UserSecretButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
-} from "../../../components/organisms/sliders/ImageUploadSlider";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useHasMemership, useUserInfo } from "../../../hooks/custom/UserHooks";
-import { useFeedMutation } from "../../../hooks/feed/mutations";
-import { useGatherIDQuery } from "../../../hooks/gather/queries";
-import { usePointSystemMutation } from "../../../hooks/user/mutations";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
-import { appendFormData } from "../../../utils/formDataUtils";
+} from "@/components/organisms/sliders/ImageUploadSlider";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useHasMemership, useUserInfo } from "@/hooks/custom/UserHooks";
+import { useFeedMutation } from "@/hooks/feed/mutations";
+import { useGatherIDQuery } from "@/hooks/gather/queries";
+import { usePointSystemMutation } from "@/hooks/user/mutations";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
+import { appendFormData } from "@/utils/formDataUtils";
 
 function FeedWritingPage() {
   const router = useRouter();

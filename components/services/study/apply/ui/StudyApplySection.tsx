@@ -2,17 +2,17 @@ import { Box, Button, Collapse, Flex, Grid } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 
-import { STUDY_RESULT_HOUR } from "../../../../../constants/serviceConstants/studyConstants/studyTimeConstant";
-import { useUserInfo } from "../../../../../hooks/custom/UserHooks";
-import StudyExpectedMap from "../../../../../pageTemplates/study/StudyExpectedMap";
-import { LocationProps } from "../../../../../types/common";
-import { StudyParticipationProps } from "../../../../../types/models/studyTypes/study-entity.types";
-import { dayjsToFormat, dayjsToStr, getHour } from "../../../../../utils/dateTimeUtils";
-import { getDistanceFromLatLonInKm } from "../../../../../utils/mathUtils";
-import PageIntro from "../../../../atoms/PageIntro";
-import { ShortArrowIcon } from "../../../../Icons/ArrowIcons";
-import DatePointButton from "../../../../molecules/DatePointButton";
-import RangeSlider from "../../../../molecules/RangeSlider";
+import PageIntro from "@/components/atoms/PageIntro";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import DatePointButton from "@/components/molecules/DatePointButton";
+import RangeSlider from "@/components/molecules/RangeSlider";
+import { STUDY_RESULT_HOUR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import StudyExpectedMap from "@/pageTemplates/study/StudyExpectedMap";
+import { LocationProps } from "@/types/common";
+import { StudyParticipationProps } from "@/types/models/studyTypes/study-entity.types";
+import { dayjsToFormat, dayjsToStr, getHour } from "@/utils/dateTimeUtils";
+import { getDistanceFromLatLonInKm } from "@/utils/mathUtils";
 
 interface StudyApplySectionProps {
   canChange: boolean;

@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import { IModal } from "../../../types/components/modalTypes";
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { ModalLayout } from "../../Modals";
-import GatherParticipateModalApply from "./GatherParticipateModalApply";
-import GatherParticipateModalParticipate from "./GatherParticipateModalParticipate";
-import GatherParticipateModalPassword from "./GatherParticipateModalPassword";
+import GatherParticipateModalApply from "@/modals/gather/gatherParticipateModal/GatherParticipateModalApply";
+import GatherParticipateModalParticipate from "@/modals/gather/gatherParticipateModal/GatherParticipateModalParticipate";
+import GatherParticipateModalPassword from "@/modals/gather/gatherParticipateModal/GatherParticipateModalPassword";
+import { ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 
 interface GatherParticipateModalProps extends IModal {
   gather: IGather;

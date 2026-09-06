@@ -12,11 +12,11 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styled from "styled-components";
 
-import { useFailToast } from "../../hooks/custom/CustomToast";
-import { DispatchNumber, DispatchType } from "../../types/hooks/reactTypes";
-import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
-import { LocationEn } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
+import { useFailToast } from "@/hooks/custom/CustomToast";
+import { DispatchNumber, DispatchType } from "@/types/hooks/reactTypes";
+import { IStudyVote } from "@/types/models/studyTypes/studyInterActions";
+import { LocationEn } from "@/types/services/locationTypes";
+import { convertLocationLangTo } from "@/utils/convertUtils/convertDatas";
 
 type ReturnDot = "중앙" | "동쪽" | "서쪽" | "남쪽" | "북쪽";
 

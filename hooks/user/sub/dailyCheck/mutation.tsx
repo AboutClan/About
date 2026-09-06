@@ -1,9 +1,9 @@
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
-import { requestServer } from "../../../../libs/methodHelpers";
-import { MutationOptions } from "../../../../types/hooks/reactTypes";
-import { Alphabet } from "../../../../types/models/collections";
+import { requestServer } from "@/libs/methodHelpers";
+import { MutationOptions } from "@/types/hooks/reactTypes";
+import { Alphabet } from "@/types/models/collections";
 
 interface ReturnProps {
   alphabet: Alphabet;

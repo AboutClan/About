@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
+import { IMapOptions, IMarkerOptions } from "@/types/externals/naverMapTypes";
+import { getDistanceFromLatLonInKm } from "@/utils/mathUtils";
 
 const MIN_RADIUS_KM = 3;
 const MIN_VIEWPORT_RADIUS_KM = 0.1; // 100m — 화면이 아무리 좁아도 0 으로 떨어지지 않게.

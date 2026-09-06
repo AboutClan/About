@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import RangeSlider from "../../../../components/molecules/RangeSlider";
+import RangeSlider from "@/components/molecules/RangeSlider";
 
 interface IGatherWritingConditionAgeRange {
   age: number[];

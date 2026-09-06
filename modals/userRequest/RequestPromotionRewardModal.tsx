@@ -3,12 +3,12 @@ import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { CopyBtn } from "../../components/Icons/CopyIcon";
-import { PROMOTION_TEXT,PromotionComponent } from "../../constants/contentsText/Private";
-import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { CopyBtn } from "@/components/Icons/CopyIcon";
+import { PROMOTION_TEXT,PromotionComponent } from "@/constants/contentsText/Private";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 function RequestPromotionRewardModal({ setIsModal }: IModal) {
   const toast = useToast();

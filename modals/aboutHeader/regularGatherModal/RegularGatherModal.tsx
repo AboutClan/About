@@ -4,14 +4,14 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
-import { RABBIT_RUN } from "../../../constants/keys/localStorage";
-import { useUserRequestQuery } from "../../../hooks/admin/quries";
-import { useErrorToast, useFailToast, useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
-import { IModal } from "../../../types/components/modalTypes";
-import { DispatchBoolean } from "../../../types/hooks/reactTypes";
-import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
+import { RABBIT_RUN } from "@/constants/keys/localStorage";
+import { useUserRequestQuery } from "@/hooks/admin/quries";
+import { useErrorToast, useFailToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import { IModal } from "@/types/components/modalTypes";
+import { DispatchBoolean } from "@/types/hooks/reactTypes";
+import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 
 interface IRegularGatherModal extends IModal {
   setIsRabbitRun: DispatchBoolean;

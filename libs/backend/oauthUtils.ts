@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { JWT } from "next-auth/jwt";
 
-import { Account } from "../../models/account";
-import { User } from "../../models/user";
-import { generateClientSecret } from "../../pages/api/auth/[...nextauth]";
+import { Account } from "@/models/account";
+import { User } from "@/models/user";
+import { generateClientSecret } from "@/pages/api/auth/[...nextauth]";
 
 export const refreshAccessToken = async (token: JWT, provider: string) => {
   try {

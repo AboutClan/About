@@ -1,8 +1,8 @@
 import { Dayjs } from "dayjs";
 
-import { TimeStampProps } from "../../utils/timeAndDate";
-import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
-import { StudyPlaceProps } from "./study-entity.types";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export interface StudyVoteProps {
   userId?: string;

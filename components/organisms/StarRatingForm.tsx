@@ -4,16 +4,16 @@ import { Box, Button, Flex, FormControl } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import { CAFE_REVIEW_ARR, STUDY_PLACE, STUDY_VOTE } from "../../constants/keys/queryKeys";
-import { usePointToast, useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
+import { CAFE_REVIEW_ARR, STUDY_PLACE, STUDY_VOTE } from "@/constants/keys/queryKeys";
+import { usePointToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 
-import { useStudyPlaceReviewMutation } from "../../hooks/study/mutations";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { ModalLayout } from "../../modals/Modals";
-import { getSafeAreaBottom } from "../../utils/validationUtils";
-import Textarea from "../atoms/Textarea";
-import { StarIcon } from "../Icons/StarIcon";
+import { useStudyPlaceReviewMutation } from "@/hooks/study/mutations";
+import { usePointSystemMutation } from "@/hooks/user/mutations";
+import { ModalLayout } from "@/modals/Modals";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
+import Textarea from "@/components/atoms/Textarea";
+import { StarIcon } from "@/components/Icons/StarIcon";
 
 export interface PlaceReviewProps2 {
   mood: number;

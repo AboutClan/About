@@ -2,7 +2,7 @@
 
 import mongoose, { Model, model, Schema } from "mongoose";
 
-import { IUser } from "../types/models/userTypes/userInfoTypes";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
 interface IAccount extends Document {
   provider: string;

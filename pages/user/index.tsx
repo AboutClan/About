@@ -2,20 +2,20 @@ import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import Slide from "../../components/layouts/PageSlide";
-import TabNav from "../../components/molecules/navs/TabNav";
-import HomeActivityDrawer from "../../components/overlay/HomeActivityDrawer";
-import { GATHER_REVIEW_RECEIVE, GATHER_REVIEW_WRITE } from "../../constants/keys/localStorage";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useCheckGuest } from "../../hooks/custom/UserHooks";
-import { useFeedCntQuery } from "../../hooks/feed/queries";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import UserGatherSection from "../../pageTemplates/user/UserGatherSection";
-import UserGroupSection from "../../pageTemplates/user/UserGroupSection";
-import UserHeader from "../../pageTemplates/user/UserHeader2";
-import UserLogSection from "../../pageTemplates/user/UserLogSection";
-import UserProfileSection from "../../pageTemplates/user/UserProfileSection";
-import UserStudySection from "../../pageTemplates/user/UserStudySection";
+import Slide from "@/components/layouts/PageSlide";
+import TabNav from "@/components/molecules/navs/TabNav";
+import HomeActivityDrawer from "@/components/overlay/HomeActivityDrawer";
+import { GATHER_REVIEW_RECEIVE, GATHER_REVIEW_WRITE } from "@/constants/keys/localStorage";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { useFeedCntQuery } from "@/hooks/feed/queries";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import UserGatherSection from "@/pageTemplates/user/UserGatherSection";
+import UserGroupSection from "@/pageTemplates/user/UserGroupSection";
+import UserHeader from "@/pageTemplates/user/UserHeader2";
+import UserLogSection from "@/pageTemplates/user/UserLogSection";
+import UserProfileSection from "@/pageTemplates/user/UserProfileSection";
+import UserStudySection from "@/pageTemplates/user/UserStudySection";
 
 type Tab = "profile" | "gather" | "group" | "study";
 

@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import Avatar from "../../components/atoms/Avatar";
-import { getTemperatureColor } from "../../components/molecules/SocialingScoreBadge";
-import { useUserReviewQuery } from "../../hooks/user/queries";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import Avatar from "@/components/atoms/Avatar";
+import { getTemperatureColor } from "@/components/molecules/SocialingScoreBadge";
+import { useUserReviewQuery } from "@/hooks/user/queries";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
 interface UserReviewBarProps {
   user: IUser;

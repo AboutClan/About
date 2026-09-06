@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import HighlightedTextButton from "../../../components/atoms/buttons/HighlightedTextButton";
+import HighlightedTextButton from "@/components/atoms/buttons/HighlightedTextButton";
 
 const meta = {
   title: "ATOMS/Button/HighlightedTextButton",

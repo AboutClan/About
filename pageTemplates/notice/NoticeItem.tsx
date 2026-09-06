@@ -11,12 +11,12 @@ import {
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
-import { NoticeIcon } from "../../components/Icons/NoticeIcons";
-import ExternalLink from "../../components/molecules/ExternalLink";
-import { NOTICE_ALERT } from "../../constants/keys/localStorage";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { NOTICE_ARR } from "../../storage/notice";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { NoticeIcon } from "@/components/Icons/NoticeIcons";
+import ExternalLink from "@/components/molecules/ExternalLink";
+import { NOTICE_ALERT } from "@/constants/keys/localStorage";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { NOTICE_ARR } from "@/storage/notice";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 function NoticeItem() {
   const userInfo = useUserInfo();

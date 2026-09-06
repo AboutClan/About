@@ -2,17 +2,17 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import InfoList from "../../../components/atoms/lists/InfoList";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import LabeledInput from "../../../components/molecules/LabeledInput";
-import TabNav from "../../../components/molecules/navs/TabNav";
-import TextCheckButton from "../../../components/molecules/TextCheckButton";
-import ValueBoxCol, { ValueBoxColItemProps } from "../../../components/molecules/ValueBoxCol";
-import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
+import InfoList from "@/components/atoms/lists/InfoList";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import LabeledInput from "@/components/molecules/LabeledInput";
+import TabNav from "@/components/molecules/navs/TabNav";
+import TextCheckButton from "@/components/molecules/TextCheckButton";
+import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 
 function Settlement() {
   const router = useRouter();

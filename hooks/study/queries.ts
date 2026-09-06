@@ -10,23 +10,23 @@ import {
   STUDY_START_TIME,
   STUDY_VOTE,
   STUDY_VOTE_CNT,
-} from "../../constants/keys/queryKeys";
-import { SERVER_URI } from "../../constants/system";
-import { setStudyOneDayData, setStudyWeekData } from "../../libs/study/studyConverters";
-import { CoordinatesProps, TimeRangeProps } from "../../types/common";
-import { QueryOptions } from "../../types/hooks/reactTypes";
-import { PlaceProps } from "../../types/models/studyTypes/entityTypes";
+} from "@/constants/keys/queryKeys";
+import { SERVER_URI } from "@/constants/system";
+import { setStudyOneDayData, setStudyWeekData } from "@/libs/study/studyConverters";
+import { CoordinatesProps, TimeRangeProps } from "@/types/common";
+import { QueryOptions } from "@/types/hooks/reactTypes";
+import { PlaceProps } from "@/types/models/studyTypes/entityTypes";
 import {
   RealTimesStudyStatus,
   StudyPlaceFilter,
   StudyPlaceProps,
   StudyRatingProps,
-} from "../../types/models/studyTypes/study-entity.types";
-import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
-import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
-import { IArrivedData, VoteCntProps } from "../../types/models/studyTypes/studyRecords";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+} from "@/types/models/studyTypes/study-entity.types";
+import { StudySetProps } from "@/types/models/studyTypes/study-set.types";
+import { IStudyVotePlaces } from "@/types/models/studyTypes/studyInterActions";
+import { IArrivedData, VoteCntProps } from "@/types/models/studyTypes/studyRecords";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 export interface StudySetInitialDataProps {
   date: string;

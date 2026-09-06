@@ -1,6 +1,6 @@
 import "dayjs/locale/ko";
-import "../styles/globals.css";
-import "../styles/variable.css";
+import "@/styles/globals.css";
+import "@/styles/variable.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import dayjs from "dayjs";
@@ -11,8 +11,8 @@ import { useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
 
-import Layout from "../pageTemplates/layout/Layout";
-import theme from "../theme";
+import Layout from "@/pageTemplates/layout/Layout";
+import theme from "@/theme";
 
 dayjs.locale("ko");
 

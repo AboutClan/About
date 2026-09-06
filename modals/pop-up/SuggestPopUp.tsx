@@ -1,10 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { ModalSubtitle } from "../../styles/layout/modal";
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
-import RequestSuggestModal from "../userRequest/RequestSuggestModal";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import RequestSuggestModal from "@/modals/userRequest/RequestSuggestModal";
+import { ModalSubtitle } from "@/styles/layout/modal";
+import { IModal } from "@/types/components/modalTypes";
 
 function SuggestPopUp({ setIsModal }: IModal) {
   const [isSuggestModal, setIsSuggestModal] = useState(false);

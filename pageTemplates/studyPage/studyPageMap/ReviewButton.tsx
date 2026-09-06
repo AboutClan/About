@@ -3,16 +3,16 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import StarRatingReviewBlock2 from "../../../components/molecules/StarRatingReviewBlock2";
-import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
+import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
-} from "../../../hooks/study/queries";
-import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
-import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
-import { PlaceInfoBox } from "../PlaceInfoDrawer";
+} from "@/hooks/study/queries";
+import { useOverlayRouter } from "@/hooks/useOverlayRouter";
+import { PlaceInfoBox } from "@/pageTemplates/studyPage/PlaceInfoDrawer";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 
 const tabs = ["최근 후기", "신규 장소"] as const;
 type TabType = (typeof tabs)[number];

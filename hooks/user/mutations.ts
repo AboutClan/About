@@ -1,19 +1,19 @@
 import axios, { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
-import { USER_INFO } from "../../constants/keys/queryKeys";
-import { SERVER_URI } from "../../constants/system";
-import { requestServer } from "../../libs/methodHelpers";
-import { IApplyRest } from "../../modals/userRequest/RequestRestModal/RequestRestModal";
-import { MutationOptions } from "../../types/hooks/reactTypes";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { SERVER_URI } from "@/constants/system";
+import { requestServer } from "@/libs/methodHelpers";
+import { IApplyRest } from "@/modals/userRequest/RequestRestModal/RequestRestModal";
+import { MutationOptions } from "@/types/hooks/reactTypes";
 import {
   AvatarProps,
   IUser,
   IUserRegisterFormWriting,
   LocationDetailProps,
   UserRole,
-} from "../../types/models/userTypes/userInfoTypes";
-import { IPointSystem } from "../../types/services/pointSystem";
+} from "@/types/models/userTypes/userInfoTypes";
+import { IPointSystem } from "@/types/services/pointSystem";
 
 export const useUserChangeMembershipMutation = (
   options?: MutationOptions<{ type: "create" | "decay" }>,

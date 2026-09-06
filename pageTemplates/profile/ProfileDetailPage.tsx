@@ -5,36 +5,36 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
-import Avatar from "../../components/atoms/Avatar";
-import ButtonWrapper from "../../components/atoms/ButtonWrapper";
-import Divider from "../../components/atoms/Divider";
-import SectionHeader from "../../components/atoms/SectionHeader";
-import Textarea from "../../components/atoms/Textarea";
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
+import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+import Avatar from "@/components/atoms/Avatar";
+import ButtonWrapper from "@/components/atoms/ButtonWrapper";
+import Divider from "@/components/atoms/Divider";
+import SectionHeader from "@/components/atoms/SectionHeader";
+import Textarea from "@/components/atoms/Textarea";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
-} from "../../components/molecules/cards/GatherThumbnailCard";
-import TabNav from "../../components/molecules/navs/TabNav";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useGatherCountQuery, useGatherMyStatusQuery } from "../../hooks/gather/queries";
-import { useGroupsTitleQuery } from "../../hooks/groupStudy/queries";
-import { useUserFriendMutation } from "../../hooks/user/mutations";
-import { useUserReviewQuery } from "../../hooks/user/queries";
-import { useInteractionMutation } from "../../hooks/user/sub/interaction/mutations";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import { transferUserName } from "../../recoils/transferRecoils";
-import { IUser, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { IUserRequest } from "../../types/models/userTypes/userRequestTypes";
-import { getDateDiff } from "../../utils/dateTimeUtils";
-import { setGatherDataToCardCol } from "../home/HomeGatherCol";
-import UserReviewBar from "../user/UserReviewBar";
-import DetailInfo from "./DetailInfo";
-import ProfileOverview from "./ProfileOverview";
+} from "@/components/molecules/cards/GatherThumbnailCard";
+import TabNav from "@/components/molecules/navs/TabNav";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useGatherCountQuery, useGatherMyStatusQuery } from "@/hooks/gather/queries";
+import { useGroupsTitleQuery } from "@/hooks/groupStudy/queries";
+import { useUserFriendMutation } from "@/hooks/user/mutations";
+import { useUserReviewQuery } from "@/hooks/user/queries";
+import { useInteractionMutation } from "@/hooks/user/sub/interaction/mutations";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
+import DetailInfo from "@/pageTemplates/profile/DetailInfo";
+import ProfileOverview from "@/pageTemplates/profile/ProfileOverview";
+import UserReviewBar from "@/pageTemplates/user/UserReviewBar";
+import { transferUserName } from "@/recoils/transferRecoils";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
+import { getDateDiff } from "@/utils/dateTimeUtils";
 
 interface ProfileDetailPageProps {
   user?: IUser;

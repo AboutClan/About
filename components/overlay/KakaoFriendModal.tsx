@@ -1,9 +1,9 @@
 import { Flex } from "@chakra-ui/react";
 
-import { ModalLayout } from "../../modals/Modals";
-import { CloseProps } from "../../types/components/modalTypes";
-import { navigateExternalLink } from "../../utils/navigateUtils";
-import Avatar from "../atoms/Avatar";
+import Avatar from "@/components/atoms/Avatar";
+import { ModalLayout } from "@/modals/Modals";
+import { CloseProps } from "@/types/components/modalTypes";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 function KakaoFriendModal({ onClose }: CloseProps) {
   return (

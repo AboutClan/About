@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import Image from "next/image";
 
-import { CrewLocationProps } from "../../../../../../constants/service/study/place";
-import { LocationProps } from "../../../../../../types/common";
-import { StudyCrew } from "../../../../../../types/models/studyTypes/study-entity.types";
+import { CrewLocationProps } from "@/constants/service/study/place";
+import { LocationProps } from "@/types/common";
+import { StudyCrew } from "@/types/models/studyTypes/study-entity.types";
 
 interface MainCardProps {
   isSelected: boolean;

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
-import { modalQueueState } from "../../recoils/modalQueueRecoils";
+import { modalQueueState } from "@/recoils/modalQueueRecoils";
 
 // 화면 진입 시 자동으로 뜨는 팝업/모달들이 한 번에 하나만 보이도록 조정하는 훅.
 //

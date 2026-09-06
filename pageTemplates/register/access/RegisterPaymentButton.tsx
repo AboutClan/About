@@ -5,19 +5,19 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import BottomNav from "../../../components/layouts/BottomNav";
-import { USER_INFO, USER_POINT_SYSTEM } from "../../../constants/keys/queryKeys";
-import { useToast } from "../../../hooks/custom/CustomToast";
+import BottomNav from "@/components/layouts/BottomNav";
+import { USER_INFO, USER_POINT_SYSTEM } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
 import {
   useCookiepayFinalizeMutation,
   useUserRegisterControlMutation,
-} from "../../../hooks/user/mutations";
-import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
-import { gaEvent } from "../../../libs/gtag";
-import { isWebView } from "../../../utils/appEnvUtils";
-import { setAuthIntent } from "../../../utils/authIntentUtils";
-import { navigateExternalLink } from "../../../utils/navigateUtils";
-import { getTrafficSourceCode } from "../../../utils/storageUtils";
+} from "@/hooks/user/mutations";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import { gaEvent } from "@/libs/gtag";
+import { isWebView } from "@/utils/appEnvUtils";
+import { setAuthIntent } from "@/utils/authIntentUtils";
+import { navigateExternalLink } from "@/utils/navigateUtils";
+import { getTrafficSourceCode } from "@/utils/storageUtils";
 
 function first(v: string | string[] | undefined) {
   return Array.isArray(v) ? v[0] : v;

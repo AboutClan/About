@@ -2,9 +2,9 @@ import { Box, Collapse, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import { HOME_ACTIVITY_ITEMS } from "../../constants/contents/groupInfo";
-import { useToast } from "../../hooks/custom/CustomToast";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import { HOME_ACTIVITY_ITEMS } from "@/constants/contents/groupInfo";
+import { useToast } from "@/hooks/custom/CustomToast";
 
 const STUDY_CREW_KEYWORD = "카공 스터디 크루";
 

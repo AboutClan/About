@@ -1,12 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
-import FeedLayout, { FeedLayoutProps } from "../../../../components/organisms/FeedLayout";
-import { useFeedsQuery } from "../../../../hooks/feed/queries";
-import { FeedProps } from "../../../../types/models/feed";
-import { IGroup } from "../../../../types/models/groupTypes/group";
-import { getDateDiff } from "../../../../utils/dateTimeUtils";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import FeedLayout, { FeedLayoutProps } from "@/components/organisms/FeedLayout";
+import { useFeedsQuery } from "@/hooks/feed/queries";
+import { FeedProps } from "@/types/models/feed";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { getDateDiff } from "@/utils/dateTimeUtils";
 
 interface ContentFeedProps {
   group: IGroup;

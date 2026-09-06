@@ -11,7 +11,7 @@ import SwiperCore from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { SingleLineText } from "../../../styles/layout/components";
+import { SingleLineText } from "@/styles/layout/components";
 
 SwiperCore.use([Navigation, Pagination]);
 

@@ -1,14 +1,14 @@
 import { Box, Flex, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-import Textarea from "../../components/atoms/Textarea";
-import BottomNav from "../../components/layouts/BottomNav";
-import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
+import Textarea from "@/components/atoms/Textarea";
+import BottomNav from "@/components/layouts/BottomNav";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 const ROUTES = ["에브리타임", "캠퍼스픽", "지인 추천", "인스타그램", "기타"];
 

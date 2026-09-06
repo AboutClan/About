@@ -1,4 +1,4 @@
-import { IAccordionContent } from "../../components/molecules/Accordion";
+import { IAccordionContent } from "@/components/molecules/Accordion";
 
 export const ACCORDION_CONTENT_FAQ: IAccordionContent[] = [
   {

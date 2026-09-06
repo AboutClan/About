@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { useGroupsMineQuery } from "../../hooks/groupStudy/queries";
-import { useUserInfoQuery } from "../../hooks/user/queries";
+import { useGroupsMineQuery } from "@/hooks/groupStudy/queries";
+import { useUserInfoQuery } from "@/hooks/user/queries";
 
 const POINT_PER_DEFICIT_TICKET = 1000;
 

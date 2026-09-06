@@ -2,21 +2,21 @@ import { Box, Button, Flex, FormControl } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import { Input } from "../../components/atoms/Input";
-import Textarea from "../../components/atoms/Textarea";
-import { StarIcon } from "../../components/Icons/StarIcon";
-import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import SearchLocation from "../../components/organisms/SearchLocation";
-import { usePointToast, useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { useStudyAdditionMutation } from "../../hooks/study/mutations";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { ModalLayout } from "../../modals/Modals";
-import { LocationProps } from "../../types/common";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
-import { getSafeAreaBottom } from "../../utils/validationUtils";
-import RegisterOverview from "../register/RegisterOverview";
+import { Input } from "@/components/atoms/Input";
+import Textarea from "@/components/atoms/Textarea";
+import { StarIcon } from "@/components/Icons/StarIcon";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import SearchLocation from "@/components/organisms/SearchLocation";
+import { usePointToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { useStudyAdditionMutation } from "@/hooks/study/mutations";
+import { usePointSystemMutation } from "@/hooks/user/mutations";
+import { ModalLayout } from "@/modals/Modals";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { LocationProps } from "@/types/common";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { getDistanceFromLatLonInKm } from "@/utils/mathUtils";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface LocationAddDrawerProps {
   placeArr?: StudyPlaceProps[];

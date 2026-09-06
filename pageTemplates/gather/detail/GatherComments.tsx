@@ -7,17 +7,17 @@ import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
-import UserCommentInput from "../../../components/molecules/UserCommentInput";
-import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { getCommentArr } from "../../../libs/comment/commentLib";
-import { transferGatherDataState } from "../../../recoils/transferRecoils";
-import { UserCommentProps } from "../../../types/components/propTypes";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import { ReplyProps } from "../../community/SecretSquareComments";
+import UserCommentBlock from "@/components/molecules/UserCommentBlock";
+import UserCommentInput from "@/components/molecules/UserCommentInput";
+import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useCommentMutation, useSubCommentMutation } from "@/hooks/common/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { getCommentArr } from "@/libs/comment/commentLib";
+import { ReplyProps } from "@/pageTemplates/community/SecretSquareComments";
+import { transferGatherDataState } from "@/recoils/transferRecoils";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 interface IGatherComments {
   comments: UserCommentProps[];

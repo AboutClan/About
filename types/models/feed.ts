@@ -1,6 +1,6 @@
-import { WritingFormProps } from "../services/writingTypes";
-import { TimeStampProps } from "../utils/timeAndDate";
-import { UserSimpleInfoProps } from "./userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { WritingFormProps } from "@/types/services/writingTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export interface FeedProps
   extends Omit<WritingFormProps, "images" | "isAnonymous">,

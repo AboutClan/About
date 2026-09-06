@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Skeleton from "./Skeleton";
+import Skeleton from "@/components/atoms/skeleton/Skeleton";
 
 interface ISkeletonItem {
   w?: number;

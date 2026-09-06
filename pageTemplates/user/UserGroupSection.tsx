@@ -1,15 +1,15 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
-import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
-import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
-import { useGroupMyStatusQuery } from "../../hooks/groupStudy/queries";
-import { createGroupThumbnailProps } from "../../pages/group";
-import { IGroup } from "../../types/models/groupTypes/group";
-import { getGroupParticipantCount } from "../../utils/groupUtils";
-import GroupSkeletonMain from "../group/GroupSkeletonMain";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
+import { GroupThumbnailCard } from "@/components/molecules/cards/GroupThumbnailCard";
+import ButtonGroups from "@/components/molecules/groups/ButtonGroups";
+import { useGroupMyStatusQuery } from "@/hooks/groupStudy/queries";
+import { createGroupThumbnailProps } from "@/pages/group";
+import GroupSkeletonMain from "@/pageTemplates/group/GroupSkeletonMain";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { getGroupParticipantCount } from "@/utils/groupUtils";
 
 type GroupType = "참여중인 모임" | "내가 개설한 모임";
 

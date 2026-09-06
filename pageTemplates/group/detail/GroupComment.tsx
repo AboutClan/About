@@ -3,16 +3,16 @@ import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import BottomCommentInput from "../../../components/atoms/BottomCommentInput";
-import CommentSection from "../../../components/molecules/CommentSection";
-import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { getCommentArr } from "../../../libs/comment/commentLib";
-import { UserCommentProps } from "../../../types/components/propTypes";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import { ReplyProps } from "../../community/SecretSquareComments";
+import BottomCommentInput from "@/components/atoms/BottomCommentInput";
+import CommentSection from "@/components/molecules/CommentSection";
+import { useCommentMutation, useSubCommentMutation } from "@/hooks/common/mutations";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { getCommentArr } from "@/libs/comment/commentLib";
+import { ReplyProps } from "@/pageTemplates/community/SecretSquareComments";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 interface IGroupComments {
   comments: UserCommentProps[];
   hasAutority: boolean;

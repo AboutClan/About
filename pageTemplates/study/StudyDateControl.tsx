@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { dayjsToFormat, getHour } from "../../utils/dateTimeUtils";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { dayjsToFormat, getHour } from "@/utils/dateTimeUtils";
 
 function StudyDateControl({
   date,

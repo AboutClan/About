@@ -4,12 +4,12 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
-import Header from "../../../components/layouts/Header";
-import AdminLocationSelector from "../../../components/molecules/picker/AdminLocationSelector";
-import { useUserRequestQuery } from "../../../hooks/admin/quries";
-import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
-import { birthToAge } from "../../../utils/convertUtils/convertTypes";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import AdminLocationSelector from "@/components/molecules/picker/AdminLocationSelector";
+import { useUserRequestQuery } from "@/hooks/admin/quries";
+import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
+import { birthToAge } from "@/utils/convertUtils/convertTypes";
 
 function AdminGroupGather() {
   const [initialData, setInitialData] = useState<IUserRequest[]>();
@@ -111,7 +111,7 @@ const Content = styled.div`
 export default AdminGroupGather;
 
 import { GetServerSideProps } from "next";
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

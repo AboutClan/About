@@ -3,10 +3,10 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { useUserAttendRateQueries } from "../../../hooks/user/sub/studyRecord/queries";
-import { DispatchBoolean } from "../../../types/hooks/reactTypes";
-import { IDayjsStartToEnd } from "../../../types/utils/timeAndDate";
-import { getWeekNumber } from "../../../utils/dateTimeUtils";
+import { useUserAttendRateQueries } from "@/hooks/user/sub/studyRecord/queries";
+import { DispatchBoolean } from "@/types/hooks/reactTypes";
+import { IDayjsStartToEnd } from "@/types/utils/timeAndDate";
+import { getWeekNumber } from "@/utils/dateTimeUtils";
 
 const WEEKS_CNT = 4;
 

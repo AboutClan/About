@@ -1,5 +1,5 @@
 /* eslint-disable */
-// import './button.css';
+// import '@/components/atoms/buttons/button.css';
 
 import { Button as ChakraButton } from "@chakra-ui/react";
 export interface BasicButtonProps {

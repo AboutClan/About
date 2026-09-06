@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
-import { ModalSubtitle } from "../../styles/layout/modal";
-import { IModal } from "../../types/components/modalTypes";
-import { Alphabet } from "../../types/models/collections";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { AlphabetIcon } from "@/components/Icons/AlphabetIcon";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { ModalSubtitle } from "@/styles/layout/modal";
+import { IModal } from "@/types/components/modalTypes";
+import { Alphabet } from "@/types/models/collections";
 
 function AlphabetPopUp({ setIsModal }: IModal) {
   const router = useRouter();

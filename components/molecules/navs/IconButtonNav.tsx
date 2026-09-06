@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import Link from "next/link";
 
-import IconButton from "../../atoms/buttons/IconButton";
+import IconButton from "@/components/atoms/buttons/IconButton";
 
 export interface IIconButtonNavBtn {
   icon: React.ReactNode;

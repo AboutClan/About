@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions } from "../Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { IFooterOptions } from "@/modals/Modals";
 
 interface IConfirmModal extends IModal {
   content: IConfirmContent;

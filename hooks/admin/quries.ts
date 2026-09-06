@@ -6,18 +6,18 @@ import {
   ADMIN_STUDY_RECORD,
   USER_REGISTER_FORM,
   USER_REQUEST,
-} from "../../constants/keys/queryKeys";
-import { SERVER_URI } from "../../constants/system";
-import { QueryOptions } from "../../types/hooks/reactTypes";
+} from "@/constants/keys/queryKeys";
+import { SERVER_URI } from "@/constants/system";
+import { QueryOptions } from "@/types/hooks/reactTypes";
 import {
   IUser,
   IUserRegisterForm,
   UserSimpleInfoProps,
   UserStudyRecordProps,
-} from "../../types/models/userTypes/userInfoTypes";
-import { IUserRequest, UserRequestCategory } from "../../types/models/userTypes/userRequestTypes";
-import { Location } from "../../types/services/locationTypes";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+} from "@/types/models/userTypes/userInfoTypes";
+import { IUserRequest, UserRequestCategory } from "@/types/models/userTypes/userRequestTypes";
+import { Location } from "@/types/services/locationTypes";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 export interface UserStudyDataProps extends UserSimpleInfoProps {
   monthScore: number;

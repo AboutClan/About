@@ -3,32 +3,32 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
-import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuButton";
-import InfoList from "../../../components/atoms/lists/InfoList";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import GradeGauge from "../../../components/molecules/GradeGauge";
-import TabNav from "../../../components/molecules/navs/TabNav";
-import TextCheckButton from "../../../components/molecules/TextCheckButton";
-import ValueBoxCol, { ValueBoxColItemProps } from "../../../components/molecules/ValueBoxCol";
-import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
-import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
-import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
+import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+import MenuButton, { MenuProps } from "@/components/atoms/buttons/MenuButton";
+import InfoList from "@/components/atoms/lists/InfoList";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import GradeGauge from "@/components/molecules/GradeGauge";
+import TabNav from "@/components/molecules/navs/TabNav";
+import TextCheckButton from "@/components/molecules/TextCheckButton";
+import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
+import { useResetGroupQuery } from "@/hooks/custom/CustomHooks";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   useGroupDepositMutation,
   useGroupParticipationMutation,
-} from "../../../hooks/groupStudy/mutations";
-import { useGroupIdMannerQuery } from "../../../hooks/groupStudy/queries";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { IFooterOptions, ModalLayout } from "../../../modals/Modals";
-import { calculateGrade } from "../../../pages/group/[id]/manner";
-import { IGroup } from "../../../types/models/groupTypes/group";
-import { setLocalStorageObj } from "../../../utils/storageUtils";
-import { AdminManageIcon, EditIcon, MemberHeartIcon } from "../../gather/detail/GatherHeader";
-import RegisterOverview from "../../register/RegisterOverview";
+} from "@/hooks/groupStudy/mutations";
+import { useGroupIdMannerQuery } from "@/hooks/groupStudy/queries";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { calculateGrade } from "@/pages/group/[id]/manner";
+import { AdminManageIcon, EditIcon, MemberHeartIcon } from "@/pageTemplates/gather/detail/GatherHeader";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { setLocalStorageObj } from "@/utils/storageUtils";
 interface IGroupHeader {
   group: IGroup;
 }

@@ -4,22 +4,22 @@ import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
-import DailyCheckWinModal from "../../modals/aboutHeader/dailyCheckModal/DailyCheckWinModal";
-import WriteDrawer from "../../modals/home/writeDrawer";
-import { ModalLayout } from "../../modals/Modals";
-import ErrorUserInfoPopUp from "../../modals/pop-up/ErrorUserInfoPopUp";
+import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import DailyCheckWinModal from "@/modals/aboutHeader/dailyCheckModal/DailyCheckWinModal";
+import WriteDrawer from "@/modals/home/writeDrawer";
+import { ModalLayout } from "@/modals/Modals";
+import ErrorUserInfoPopUp from "@/modals/pop-up/ErrorUserInfoPopUp";
 import {
   transferDailyCheckWinState,
   transferStudyRewardState,
-} from "../../recoils/transferRecoils";
-import { DispatchBoolean } from "../../types/hooks/reactTypes";
-import { isWebView } from "../../utils/appEnvUtils";
-import { setAuthIntent } from "../../utils/authIntentUtils";
-import { navigateExternalLink } from "../../utils/navigateUtils";
+} from "@/recoils/transferRecoils";
+import { DispatchBoolean } from "@/types/hooks/reactTypes";
+import { isWebView } from "@/utils/appEnvUtils";
+import { setAuthIntent } from "@/utils/authIntentUtils";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 interface IBaseModal {
   isGuest: boolean;

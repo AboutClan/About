@@ -1,4 +1,4 @@
-import { NATIVE_CUSTOM_EVENTS } from "../constants/nativeCustomEvent";
+import { NATIVE_CUSTOM_EVENTS } from "@/constants/nativeCustomEvent";
 
 export const nativeMethodUtils = {
   haptic: () => {

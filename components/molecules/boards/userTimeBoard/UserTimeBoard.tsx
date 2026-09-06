@@ -1,11 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 
-import { COLOR_400_ARR } from "../../../../constants/colorConstants";
-import { STUDY_VOTE_HOUR_ARR } from "../../../../constants/serviceConstants/studyConstants/studyTimeConstant";
-import { useCheckGuest } from "../../../../hooks/custom/UserHooks";
-import { TimeRangeProps } from "../../../../types/models/utilTypes";
-import { transformToUserBlocks } from "./_lib/transformToUserBlocks";
+import { transformToUserBlocks } from "@/components/molecules/boards/userTimeBoard/_lib/transformToUserBlocks";
+import { COLOR_400_ARR } from "@/constants/colorConstants";
+import { STUDY_VOTE_HOUR_ARR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { TimeRangeProps } from "@/types/models/utilTypes";
 
 export interface ITimeBoardParticipant {
   name: string;

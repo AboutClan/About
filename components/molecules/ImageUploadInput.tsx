@@ -2,9 +2,9 @@ import { Box, Flex, Input } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { processFile } from "../../utils/imageUtils";
-import ImageUploadIcon from "../Icons/ImageUploadIcon";
+import ImageUploadIcon from "@/components/Icons/ImageUploadIcon";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { processFile } from "@/utils/imageUtils";
 
 interface IImageUploadInput {
   setImageUrl: DispatchType<Blob>;

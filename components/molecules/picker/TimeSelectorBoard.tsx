@@ -2,9 +2,9 @@ import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { STUDY_TIME_TABLE } from "../../../constants/settingValue/study/study";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
-import { ITimeSelector } from "../../../types/utils/timeAndDate";
+import { STUDY_TIME_TABLE } from "@/constants/settingValue/study/study";
+import { useFailToast } from "@/hooks/custom/CustomToast";
+import { ITimeSelector } from "@/types/utils/timeAndDate";
 
 function TimeSelectorBoard({ times, setTimes }: ITimeSelector) {
   const failToast = useFailToast();

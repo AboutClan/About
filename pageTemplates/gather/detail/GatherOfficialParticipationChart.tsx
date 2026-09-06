@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { IUser } from "../../../types/models/userTypes/userInfoTypes";
-import { birthToAge } from "../../../utils/convertUtils/convertTypes";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { birthToAge } from "@/utils/convertUtils/convertTypes";
 
 interface IGatherOfficialParticipationChart {
   data: IGather;

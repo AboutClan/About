@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
-import Header from "../../../components/layouts/Header";
-import { useUserRequestQuery } from "../../../hooks/admin/quries";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import { useUserRequestQuery } from "@/hooks/admin/quries";
 
 function AdminBadge() {
   const { data, isLoading } = useUserRequestQuery("배지");
@@ -63,7 +63,7 @@ export default AdminBadge;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

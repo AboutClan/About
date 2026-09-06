@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { useToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "@/hooks/custom/CustomToast";
 
 interface ICountNum {
   value: number;

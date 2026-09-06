@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 
-import Slide from "../../components/layouts/PageSlide";
+import Slide from "@/components/layouts/PageSlide";
 
 interface IRecordNavigation {
   isCalendar: boolean;

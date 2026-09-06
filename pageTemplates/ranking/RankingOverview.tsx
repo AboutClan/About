@@ -2,9 +2,9 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import Avatar from "../../components/atoms/Avatar";
-import { RankingNumIcon } from "../../components/Icons/RankingIcons";
-import { useUserInfoQuery } from "../../hooks/user/queries";
+import Avatar from "@/components/atoms/Avatar";
+import { RankingNumIcon } from "@/components/Icons/RankingIcons";
+import { useUserInfoQuery } from "@/hooks/user/queries";
 
 interface IRankingOverview {
   rank: number;

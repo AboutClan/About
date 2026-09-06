@@ -1,12 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import ColorLabelRow from "../../components/molecules/rows/ColorLabelRow";
-import VoteMap from "../../components/organisms/VoteMap";
-import { getPlaceBasicIcon } from "../../libs/study/getStudyVoteIcon";
-import { getMapOptions } from "../../libs/study/setStudyMapOptions";
-import { LocationProps } from "../../types/common";
-import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
+import ColorLabelRow from "@/components/molecules/rows/ColorLabelRow";
+import VoteMap from "@/components/organisms/VoteMap";
+import { getPlaceBasicIcon } from "@/libs/study/getStudyVoteIcon";
+import { getMapOptions } from "@/libs/study/setStudyMapOptions";
+import { LocationProps } from "@/types/common";
+import { IMapOptions, IMarkerOptions } from "@/types/externals/naverMapTypes";
 
 interface StudyExpectedMapProps {
   centerLocation: LocationProps;

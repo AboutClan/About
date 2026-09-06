@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 interface StudyOpenCheckModalProps extends IModal {
   handleButton: () => void;

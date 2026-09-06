@@ -4,25 +4,25 @@ import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import InfoList from "../../components/atoms/lists/InfoList";
-import BottomNav from "../../components/layouts/BottomNav";
-import Accordion from "../../components/molecules/Accordion";
-import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import TabNav from "../../components/molecules/navs/TabNav";
-import TextCheckButton from "../../components/molecules/TextCheckButton";
-import ValueBoxCol2, { ValueBoxCol2ItemProps } from "../../components/molecules/ValueBoxCol2";
-import { ACCORDION_CONTENT_FAQ } from "../../constants/contentsText/accordionContents";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { gaEvent } from "../../libs/gtag";
-import { ModalLayout } from "../../modals/Modals";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import { setAuthIntent } from "../../utils/authIntentUtils";
-import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
+import InfoList from "@/components/atoms/lists/InfoList";
+import BottomNav from "@/components/layouts/BottomNav";
+import Accordion from "@/components/molecules/Accordion";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import TabNav from "@/components/molecules/navs/TabNav";
+import TextCheckButton from "@/components/molecules/TextCheckButton";
+import ValueBoxCol2, { ValueBoxCol2ItemProps } from "@/components/molecules/ValueBoxCol2";
+import { ACCORDION_CONTENT_FAQ } from "@/constants/contentsText/accordionContents";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoFieldMutation, useUserRegisterMutation } from "@/hooks/user/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { gaEvent } from "@/libs/gtag";
+import { ModalLayout } from "@/modals/Modals";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
+import { setAuthIntent } from "@/utils/authIntentUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 export const VALUE_BOX_COL_ITEMS: ValueBoxCol2ItemProps[] = [
   {

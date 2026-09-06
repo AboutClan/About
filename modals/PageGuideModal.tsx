@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { IModal } from "../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "./Modals";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 interface PageGuideModalProps extends IModal {
   title: string;

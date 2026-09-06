@@ -2,13 +2,13 @@ import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
-import TextCheckButton from "../../components/molecules/TextCheckButton";
-import { USER_INFO } from "../../constants/keys/queryKeys";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserPointMutation } from "../../hooks/user/mutations";
-import { ModalLayout } from "../../modals/Modals";
-import { CloseProps } from "../../types/components/modalTypes";
-import { navigateExternalLink } from "../../utils/navigateUtils";
+import TextCheckButton from "@/components/molecules/TextCheckButton";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserPointMutation } from "@/hooks/user/mutations";
+import { ModalLayout } from "@/modals/Modals";
+import { CloseProps } from "@/types/components/modalTypes";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 export const CAFE_MAP_INSTAGRAM_REWARD_POINT = 500;
 export const CAFE_MAP_INSTAGRAM_REWARD_SUB = "cafemap_instagram";

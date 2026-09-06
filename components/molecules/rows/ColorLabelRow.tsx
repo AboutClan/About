@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import ColorLabel, { ColorLabelProps } from "../../atoms/ColorLabel";
+import ColorLabel, { ColorLabelProps } from "@/components/atoms/ColorLabel";
 
 interface ColorLabelRowProps {
   props: ColorLabelProps[];

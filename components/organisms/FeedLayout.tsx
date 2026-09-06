@@ -1,13 +1,13 @@
 import { AspectRatio, Box, Flex } from "@chakra-ui/react";
 
-import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
-import { FeedComment } from "../../types/models/feed";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import ContentSummary from "../atoms/ContentSummary";
-import ContentHeartBar from "../molecules/ContentHeartBar";
-import FeedHeader from "../molecules/headers/FeedHeader";
-import SummaryBlock, { SummaryBlockProps } from "../molecules/SummaryBlock";
-import ImageSlider from "./imageSlider/ImageSlider";
+import ContentSummary from "@/components/atoms/ContentSummary";
+import ContentHeartBar from "@/components/molecules/ContentHeartBar";
+import FeedHeader from "@/components/molecules/headers/FeedHeader";
+import SummaryBlock, { SummaryBlockProps } from "@/components/molecules/SummaryBlock";
+import ImageSlider from "@/components/organisms/imageSlider/ImageSlider";
+import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { FeedComment } from "@/types/models/feed";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 export interface FeedLayoutProps {
   user: UserSimpleInfoProps;

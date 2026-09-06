@@ -4,13 +4,13 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
-import RowTextBlockButton from "../../../components/atoms/buttons/RowTextBlockButton";
-import TextDevider from "../../../components/atoms/devider/TextDevider";
-import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { DispatchString } from "../../../types/hooks/reactTypes";
-import { navigateExternalLink } from "../../../utils/navigateUtils";
-import { UserOverviewModal } from "./UserNavigation";
+import RowTextBlockButton from "@/components/atoms/buttons/RowTextBlockButton";
+import TextDevider from "@/components/atoms/devider/TextDevider";
+import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { UserOverviewModal } from "@/pageTemplates/user/userNavigation/UserNavigation";
+import { DispatchString } from "@/types/hooks/reactTypes";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 interface IUserNavigationBlock {
   setModalOpen: DispatchString;

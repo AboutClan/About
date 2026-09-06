@@ -3,8 +3,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-import { gaEvent } from "../libs/gtag";
-import { setTrafficSourceCode } from "../utils/storageUtils";
+import { gaEvent } from "@/libs/gtag";
+import { setTrafficSourceCode } from "@/utils/storageUtils";
 
 // 짧은 트래킹 링크 진입점 (예: about20s.club/e1, /c, /g).
 // URL의 code를 저장해 이후 가입 퍼널 이벤트(register_apply, register_complete, sign_up_complete)에도

@@ -1,5 +1,5 @@
-import { UserCommentProps } from "../../types/components/propTypes";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 export const getCommentArr = (
   text: string,

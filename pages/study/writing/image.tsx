@@ -4,19 +4,19 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
-import { STUDY_COVER_IMAGES } from "../../../assets/images/studyCover";
-import { STUDY_MAIN_IMAGES } from "../../../assets/images/studyMain";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import ImageBasicSlider2 from "../../../components/organisms/sliders/ImageBasicSlider2";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudyAdditionMutation } from "../../../hooks/study/mutations";
-import { getStudyViewDate } from "../../../libs/study/date/getStudyDateStatus";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedStudyWritingState } from "../../../recoils/sharedDataAtoms";
+import { STUDY_COVER_IMAGES } from "@/assets/images/studyCover";
+import { STUDY_MAIN_IMAGES } from "@/assets/images/studyMain";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProgressStatus from "@/components/molecules/ProgressStatus";
+import ImageBasicSlider2 from "@/components/organisms/sliders/ImageBasicSlider2";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useStudyAdditionMutation } from "@/hooks/study/mutations";
+import { getStudyViewDate } from "@/libs/study/date/getStudyDateStatus";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { sharedStudyWritingState } from "@/recoils/sharedDataAtoms";
 
 function WritingStudyImage() {
   const router = useRouter();

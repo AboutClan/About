@@ -4,16 +4,16 @@ import {
   InitialStudyPassedDayProps,
   InitialStudyPassedDayUserProps,
   StudySetInitialDataProps,
-} from "../../hooks/study/queries";
+} from "@/hooks/study/queries";
 import {
   StudyConfirmedProps,
   StudyParticipationProps,
-} from "../../types/models/studyTypes/study-entity.types";
+} from "@/types/models/studyTypes/study-entity.types";
 import {
   StudyConfirmedSetProps,
   StudyParticipationsSetProps,
   StudySetProps,
-} from "../../types/models/studyTypes/study-set.types";
+} from "@/types/models/studyTypes/study-set.types";
 
 // export const convertStudyToMergeStudy = (
 //   studyVoteData: StudyOneDayProps,

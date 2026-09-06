@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-import { SERVER_URI } from "../constants/system";
+import { SERVER_URI } from "@/constants/system";
 
 interface IRequestParams<T, M> {
   method: "post" | "patch" | "delete" | "put";

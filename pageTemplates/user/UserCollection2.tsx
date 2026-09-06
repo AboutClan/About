@@ -5,14 +5,14 @@ import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import { AboutIcon } from "../../components/atoms/AboutIcons";
-import { COLLECTION_ALPHABET } from "../../constants/keys/queryKeys";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useAlphabetMutation } from "../../hooks/user/sub/collection/mutations";
-import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
-import { getRandomAlphabet } from "../../libs/userEventLibs/collection";
-import { Alphabet } from "../../types/models/collections";
-import { ArrowIcon } from "./UserProfile2";
+import { AboutIcon } from "@/components/atoms/AboutIcons";
+import { COLLECTION_ALPHABET } from "@/constants/keys/queryKeys";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useAlphabetMutation } from "@/hooks/user/sub/collection/mutations";
+import { useCollectionAlphabetQuery } from "@/hooks/user/sub/collection/queries";
+import { getRandomAlphabet } from "@/libs/userEventLibs/collection";
+import { ArrowIcon } from "@/pageTemplates/user/UserProfile2";
+import { Alphabet } from "@/types/models/collections";
 
 export const changeAlphabet = (alphabet: Alphabet) => {
   switch (alphabet) {

@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-import SlideSectionCol from "../../components/molecules/SlideSectionCol";
-import SlideSectionRow from "../../components/molecules/SlideSectionRow";
-import { useGroupSnapshotQuery } from "../../hooks/groupStudy/queries";
-import HomeGroupCol from "./HomeGroupCol";
+import SlideSectionCol from "@/components/molecules/SlideSectionCol";
+import SlideSectionRow from "@/components/molecules/SlideSectionRow";
+import { useGroupSnapshotQuery } from "@/hooks/groupStudy/queries";
+import HomeGroupCol from "@/pageTemplates/home/HomeGroupCol";
 
 function HomeHotClubSection() {
   const { data: groups } = useGroupSnapshotQuery();

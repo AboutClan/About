@@ -1,9 +1,9 @@
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
-import { requestServer } from "../../libs/methodHelpers";
-import { MutationOptions } from "../../types/hooks/reactTypes";
-import { GroupMemberRole, IGroup, IGroupWriting } from "../../types/models/groupTypes/group";
+import { requestServer } from "@/libs/methodHelpers";
+import { MutationOptions } from "@/types/hooks/reactTypes";
+import { GroupMemberRole, IGroup, IGroupWriting } from "@/types/models/groupTypes/group";
 
 type GroupWritingParam<T> = T extends "post"
   ? { groupStudy: IGroupWriting }

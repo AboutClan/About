@@ -6,9 +6,9 @@ export default CollectionModal;
 
 // import { Box, Flex } from "@chakra-ui/react";
 
-// import { AboutIcon } from "../../components/atoms/AboutIcons";
-// import { StarIcon } from "../../components/Icons/StarIcons";
-// import { IFooterOptions, ModalLayout } from "../Modals";
+// import { AboutIcon } from "@/components/atoms/AboutIcons";
+// import { StarIcon } from "@/components/Icons/StarIcons";
+// import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 
 // function CollectionModal() {
 //   if (!collection) return;

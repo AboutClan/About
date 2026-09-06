@@ -7,13 +7,13 @@ export function Temp() {
 // import { useState } from "react";
 // import { useRecoilValue } from "recoil";
 
-// import Textarea from "../../components/atoms/Textarea";
-// import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-// import { useStudyAttendCheckMutation } from "../../hooks/study/mutations";
-// import { findMyStudyInfo } from "../../libs/study/studySelectors";
-// import { myStudyParticipationState } from "../../recoils/studyRecoils";
-// import { IModal } from "../../types/components/modalTypes";
-// import { IFooterOptions, ModalLayout } from "../Modals";
+// import Textarea from "@/components/atoms/Textarea";
+// import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+// import { useStudyAttendCheckMutation } from "@/hooks/study/mutations";
+// import { findMyStudyInfo } from "@/libs/study/studySelectors";
+// import { myStudyParticipationState } from "@/recoils/studyRecoils";
+// import { IModal } from "@/types/components/modalTypes";
+// import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 
 // interface IStudyChangeMemoModal extends IModal {
 //   hasModalMemo;

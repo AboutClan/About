@@ -2,9 +2,9 @@ import { Box, Flex, Grid } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
 import styled from "styled-components";
 
-import { COLOR_TABLE } from "../../constants/colorConstants";
-import { CalendarContentProps } from "../../constants/contents/calendarSchedule";
-import { DAYS_OF_WEEK } from "../../constants/util/util";
+import { COLOR_TABLE } from "@/constants/colorConstants";
+import { CalendarContentProps } from "@/constants/contents/calendarSchedule";
+import { DAYS_OF_WEEK } from "@/constants/util/util";
 
 interface CalendarProps {
   monthFirstDate: Dayjs;

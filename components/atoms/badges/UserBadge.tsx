@@ -3,7 +3,7 @@ import { Badge } from "@chakra-ui/react";
 import {
   BADGE_COLOR_MAPPINGS,
   USER_BADGE_ARR,
-} from "../../../constants/serviceConstants/badgeConstants";
+} from "@/constants/serviceConstants/badgeConstants";
 interface IUserBadge {
   badgeIdx: number;
 }

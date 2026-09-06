@@ -1,10 +1,10 @@
 import { SetStateAction, useEffect, useState } from "react";
 
-import { LOCATION_ALL, RegisterLocation } from "../../../constants/location";
-import { IUserRegisterForm } from "../../../types/models/userTypes/userInfoTypes";
-// import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
-import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
-import ButtonCheckNav from "../ButtonCheckNav";
+import ButtonCheckNav from "@/components/molecules/ButtonCheckNav";
+import { LOCATION_ALL, RegisterLocation } from "@/constants/location";
+import { IUserRegisterForm } from "@/types/models/userTypes/userInfoTypes";
+// import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
+import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 
 interface IAdminLocationSelector {
   initialData: IUserRegisterForm[] | IUserRequest[];

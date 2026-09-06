@@ -3,14 +3,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import TabNav from "../../../components/molecules/navs/TabNav";
-import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { AdminSection } from "../../../pageTemplates/group/admin/AdminSection";
-import DeleteSection from "../../../pageTemplates/group/admin/DeleteSection";
-import { InviteSection } from "../../../pageTemplates/group/admin/InviteSection";
-import { GroupParicipantProps } from "../../../types/models/groupTypes/group";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import TabNav from "@/components/molecules/navs/TabNav";
+import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
+import { AdminSection } from "@/pageTemplates/group/admin/AdminSection";
+import DeleteSection from "@/pageTemplates/group/admin/DeleteSection";
+import { InviteSection } from "@/pageTemplates/group/admin/InviteSection";
+import { GroupParicipantProps } from "@/types/models/groupTypes/group";
 
 const TAB_ARR = ["참여 인원 관리", "신청 인원 확인", "내보내기/보증금"] as const;
 
@@ -75,7 +75,7 @@ export default Admin;
 import { GetServerSideProps } from "next";
 import { getServerSession } from "next-auth/next";
 
-import { authOptions } from "../../../pages/api/auth/[...nextauth]";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 const GROUP_SUPER_ADMIN_UIDS = ["2259633694"];
 const GROUP_ADMIN_ROLES = ["admin", "manager"];

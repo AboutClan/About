@@ -8,26 +8,26 @@ export function Temp() {
 // import { useEffect, useState } from "react";
 // import { useQueryClient } from "react-query";
 
-// import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
-// import AlertSimpleModal, { IAlertSimpleModalOptions } from "../../components/AlertSimpleModal";
-// import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
-// import PickerRowButton from "../../components/molecules/PickerRowButton";
+// import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+// import AlertSimpleModal, { IAlertSimpleModalOptions } from "@/components/AlertSimpleModal";
+// import { StudyThumbnailCardProps } from "@/components/molecules/cards/StudyThumbnailCard";
+// import PickerRowButton from "@/components/molecules/PickerRowButton";
 // import BottomFlexDrawer, {
 //   BottomFlexDrawerOptions,
-// } from "../../components/organisms/drawer/BottomFlexDrawer";
-// import { USER_LOCATION } from "../../constants/keys/localStorage";
-// import { USER_INFO } from "../../constants/keys/queryKeys";
-// import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-// import { useToast } from "../../hooks/custom/CustomToast";
-// import { useStudyPreferenceMutation } from "../../hooks/study/mutations";
-// import { useStudyPassedDayQuery } from "../../hooks/study/queries";
-// import { useUserInfoQuery } from "../../hooks/user/queries";
-// import { getStudyViewDayjs } from "../../libs/study/date/getStudyDateStatus";
-// import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
-// import { setStudyThumbnailCard } from "../../libs/study/setStudyThumbnailCard";
-// import { IModal } from "../../types/components/modalTypes";
-// import { Location } from "../../types/services/locationTypes";
-// import { dayjsToStr } from "../../utils/dateTimeUtils";
+// } from "@/components/organisms/drawer/BottomFlexDrawer";
+// import { USER_LOCATION } from "@/constants/keys/localStorage";
+// import { USER_INFO } from "@/constants/keys/queryKeys";
+// import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+// import { useToast } from "@/hooks/custom/CustomToast";
+// import { useStudyPreferenceMutation } from "@/hooks/study/mutations";
+// import { useStudyPassedDayQuery } from "@/hooks/study/queries";
+// import { useUserInfoQuery } from "@/hooks/user/queries";
+// import { getStudyViewDayjs } from "@/libs/study/date/getStudyDateStatus";
+// import { getLocationByCoordinates } from "@/libs/study/getLocationByCoordinates";
+// import { setStudyThumbnailCard } from "@/libs/study/setStudyThumbnailCard";
+// import { IModal } from "@/types/components/modalTypes";
+// import { Location } from "@/types/services/locationTypes";
+// import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 // interface StudyPreferenceDrawerProps extends IModal {
 //   handleClick: () => void;

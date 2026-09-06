@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
-import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entity.types";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 export const getStudyTime = (
   users: StudyConfirmedMemberProps[],

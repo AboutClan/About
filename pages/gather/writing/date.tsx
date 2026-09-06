@@ -5,17 +5,17 @@ import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
-import GatherWritingDateDate from "../../../pageTemplates/gather/writing/GatherWritingDateDate";
-import GatherWritingDateSubject from "../../../pageTemplates/gather/writing/GatherWritingDateSubject";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { IGatherListItem } from "../../../types/models/gatherTypes/gatherTypes";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProgressStatus from "@/components/molecules/ProgressStatus";
+import { useFailToast } from "@/hooks/custom/CustomToast";
+import GatherWritingDateDate from "@/pageTemplates/gather/writing/GatherWritingDateDate";
+import GatherWritingDateSubject from "@/pageTemplates/gather/writing/GatherWritingDateSubject";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
+import { IGatherListItem } from "@/types/models/gatherTypes/gatherTypes";
 
 function WritingDate() {
   const failToast = useFailToast();

@@ -1,10 +1,10 @@
-import { STUDY_CREW } from "../../../constants/service/study/place";
-import { LocationProps, TimeRangeProps } from "../../common";
-import { StringTimeProps, TimeStampProps } from "../../utils/timeAndDate";
-import { CommentProps } from "../commonTypes";
-import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
-import { PlaceRegisterProps, PlaceReviewProps } from "./entityTypes";
-import { StudyAttendanceProps } from "./requestTypes";
+import { STUDY_CREW } from "@/constants/service/study/place";
+import { LocationProps, TimeRangeProps } from "@/types/common";
+import { CommentProps } from "@/types/models/commonTypes";
+import { PlaceRegisterProps, PlaceReviewProps } from "@/types/models/studyTypes/entityTypes";
+import { StudyAttendanceProps } from "@/types/models/studyTypes/requestTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { StringTimeProps, TimeStampProps } from "@/types/utils/timeAndDate";
 
 /**
  * study entry detail types

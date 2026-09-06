@@ -2,12 +2,12 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 
-import Divider from "../../../components/atoms/Divider";
-import BlurredLink from "../../../components/molecules/BlurredLink";
-import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import Divider from "@/components/atoms/Divider";
+import BlurredLink from "@/components/molecules/BlurredLink";
+import InfoBoxCol from "@/components/molecules/InfoBoxCol";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 dayjs.locale("ko");
 
 interface IGatherDetailInfo {

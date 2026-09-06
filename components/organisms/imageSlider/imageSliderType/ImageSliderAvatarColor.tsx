@@ -3,7 +3,7 @@ import "swiper/css/scrollbar";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { ImageContainer } from "../ImageSlider";
+import { ImageContainer } from "@/components/organisms/imageSlider/ImageSlider";
 
 interface IImageSliderAvatarColor {
   imageContainer: ImageContainer;

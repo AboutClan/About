@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
 
-import Skeleton from "../../../components/atoms/skeleton/Skeleton";
+import Skeleton from "@/components/atoms/skeleton/Skeleton";
 
 function StudyDateBarSkeleton() {
   const router = useRouter();

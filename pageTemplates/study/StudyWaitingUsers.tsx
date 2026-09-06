@@ -9,11 +9,11 @@ export default StudyWaitingUsers;
 // import { useParams } from "next/navigation";
 // import { useRecoilValue } from "recoil";
 
-// import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
-// import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
-// import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
-// import { studyDateStatusState } from "../../recoils/studyRecoils";
-// import { StudyWaitingUser } from "../../types/models/studyTypes/studyInterActions";
+// import { IProfileCommentCard } from "@/components/molecules/cards/ProfileCommentCard";
+// import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
+// import { POINT_SYSTEM_PLUS } from "@/constants/serviceConstants/pointSystemConstants";
+// import { studyDateStatusState } from "@/recoils/studyRecoils";
+// import { StudyWaitingUser } from "@/types/models/studyTypes/studyInterActions";
 // interface StudyWaitingUsersProps {
 //   studyWaitingUsers: StudyWaitingUser[];
 // }

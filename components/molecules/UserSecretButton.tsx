@@ -1,10 +1,10 @@
 import { Box, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { useToast } from "../../hooks/custom/CustomToast";
-import { IFooterOptions, ModalLayout } from "../../modals/Modals";
-import { DispatchBoolean } from "../../types/hooks/reactTypes";
-import FlexSwitchBlock from "../atoms/FlexSwitchBlock";
+import FlexSwitchBlock from "@/components/atoms/FlexSwitchBlock";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { DispatchBoolean } from "@/types/hooks/reactTypes";
 interface UserSecretButtonProps {
   isAnonymous: boolean;
   setIsAnonymous: DispatchBoolean;

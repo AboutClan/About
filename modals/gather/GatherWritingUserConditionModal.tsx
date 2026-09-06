@@ -3,18 +3,18 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../components/Icons/PopOverIcon";
-import { ConditionType } from "../../components/organisms/WritingConditionLayout";
-import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
-import { GroupConditionType } from "../../pages/group/writing/condition";
-import GatherWritingConditionAgeRange from "../../pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
-import GatherWritingConditionCnt from "../../pageTemplates/gather/writing/condition/GatherWritingConditionCnt";
-import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
-import { IModal } from "../../types/components/modalTypes";
-import { IGatherMemberCnt, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
-import { IGroupWriting } from "../../types/models/groupTypes/group";
-import { setLocalStorageObj } from "../../utils/storageUtils";
-import { ModalLayout } from "../Modals";
+import { PopOverIcon } from "@/components/Icons/PopOverIcon";
+import { ConditionType } from "@/components/organisms/WritingConditionLayout";
+import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
+import { ModalLayout } from "@/modals/Modals";
+import { GroupConditionType } from "@/pages/group/writing/condition";
+import GatherWritingConditionAgeRange from "@/pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
+import GatherWritingConditionCnt from "@/pageTemplates/gather/writing/condition/GatherWritingConditionCnt";
+import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
+import { IModal } from "@/types/components/modalTypes";
+import { IGatherMemberCnt, IGatherWriting } from "@/types/models/gatherTypes/gatherTypes";
+import { IGroupWriting } from "@/types/models/groupTypes/group";
+import { setLocalStorageObj } from "@/utils/storageUtils";
 
 interface GatherWritingUserConditionModalProps extends IModal {
   gatherContent: IGatherWriting | IGroupWriting;

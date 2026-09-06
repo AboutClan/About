@@ -4,8 +4,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { parse as parseQs } from "querystring";
 
-import { markCookiepayResultWithRetry } from "../../../libs/cookiepayOrderClient";
-import { cookiepayDecrypt, cookiepayPaycert } from "../../../utils/cookiepay";
+import { markCookiepayResultWithRetry } from "@/libs/cookiepayOrderClient";
+import { cookiepayDecrypt, cookiepayPaycert } from "@/utils/cookiepay";
 
 export const config = {
   api: { bodyParser: false },

@@ -2,10 +2,10 @@ import { Button, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import Avatar from "../atoms/Avatar";
+import Avatar from "@/components/atoms/Avatar";
+import { ReplyProps } from "@/pageTemplates/community/SecretSquareComments";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface UserCommentInputProps {
   type?: "comment" | "message" | "review";

@@ -3,18 +3,18 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { AboutIcon } from "../../components/atoms/AboutIcons";
-import Avatar from "../../components/atoms/Avatar";
-import { NOTICE_ACTIVE_LOG } from "../../constants/keys/queryKeys";
-import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import { useUserFriendMutation } from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { useAlphabetMutation } from "../../hooks/user/sub/collection/mutations";
-import { useInteractionMutation } from "../../hooks/user/sub/interaction/mutations";
-import { INoticeActiveLog } from "../../types/globals/interaction";
-import { Alphabet } from "../../types/models/collections";
-import { dayjsToFormat, getDateDiff } from "../../utils/dateTimeUtils";
+import { AboutIcon } from "@/components/atoms/AboutIcons";
+import Avatar from "@/components/atoms/Avatar";
+import { NOTICE_ACTIVE_LOG } from "@/constants/keys/queryKeys";
+import { useResetQueryData } from "@/hooks/custom/CustomHooks";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserFriendMutation } from "@/hooks/user/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useAlphabetMutation } from "@/hooks/user/sub/collection/mutations";
+import { useInteractionMutation } from "@/hooks/user/sub/interaction/mutations";
+import { INoticeActiveLog } from "@/types/globals/interaction";
+import { Alphabet } from "@/types/models/collections";
+import { dayjsToFormat, getDateDiff } from "@/utils/dateTimeUtils";
 
 interface INoticeActive {
   activeLogs: INoticeActiveLog[];

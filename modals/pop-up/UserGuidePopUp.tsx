@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-import { USER_GUIDE_POP_UP } from "../../constants/keys/localStorage";
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions, IHeaderOptions, ModalLayout } from "../Modals";
+import { USER_GUIDE_POP_UP } from "@/constants/keys/localStorage";
+import { IFooterOptions, IHeaderOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 function UserGuidePopUp({ setIsModal }: IModal) {
   const onClick = () => {

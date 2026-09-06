@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { ImageContainer } from "../ImageSlider";
+import { ImageContainer } from "@/components/organisms/imageSlider/ImageSlider";
 
 interface IImageSliderPoint {
   imageContainer: ImageContainer;

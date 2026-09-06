@@ -1,10 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
-import HighlightedTextButton from "../../components/atoms/buttons/HighlightedTextButton";
-import SectionBar from "../../components/molecules/bars/SectionBar";
-import ImageTileSlider, { IImageTile } from "../../components/organisms/sliders/ImageTileSlider";
-import { STORE_GIFT } from "../../storage/Store";
+import HighlightedTextButton from "@/components/atoms/buttons/HighlightedTextButton";
+import SectionBar from "@/components/molecules/bars/SectionBar";
+import ImageTileSlider, { IImageTile } from "@/components/organisms/sliders/ImageTileSlider";
+import { STORE_GIFT } from "@/storage/Store";
 
 export default function EventStore() {
   const router = useRouter();

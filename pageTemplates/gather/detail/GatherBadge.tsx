@@ -1,7 +1,7 @@
 import { Badge } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { GATHER_TYPES, GatherCategoryIcons } from "../../../constants/contentsText/GatherContents";
+import { GATHER_TYPES, GatherCategoryIcons } from "@/constants/contentsText/GatherContents";
 
 interface IGatherBadge {
   typeTitle: string;

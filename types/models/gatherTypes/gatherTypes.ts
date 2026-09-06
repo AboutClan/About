@@ -1,8 +1,8 @@
-import { GatherCategoryMain } from "../../../constants/contentsText/GatherContents";
-import { UserCommentProps } from "../../components/propTypes";
-import { Location } from "../../services/locationTypes";
-import { TimeStampProps } from "../../utils/timeAndDate";
-import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
+import { GatherCategoryMain } from "@/constants/contentsText/GatherContents";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { Location } from "@/types/services/locationTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
   date: string;

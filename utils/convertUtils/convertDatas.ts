@@ -1,9 +1,9 @@
 import * as CryptoJS from "crypto-js";
 
-import { enToKrMapping, krToEnMapping } from "../../constants/location";
-import { USER_BADGE_ARR } from "../../constants/serviceConstants/badgeConstants";
-import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
-import { ActiveLocation, Location, LocationEn } from "../../types/services/locationTypes";
+import { enToKrMapping, krToEnMapping } from "@/constants/location";
+import { USER_BADGE_ARR } from "@/constants/serviceConstants/badgeConstants";
+import { UserBadge, UserRole } from "@/types/models/userTypes/userInfoTypes";
+import { ActiveLocation, Location, LocationEn } from "@/types/services/locationTypes";
 
 export const decodeByAES256 = (encodedTel: string) => {
   const key = process.env.NEXT_PUBLIC_CRYPTO_KEY;

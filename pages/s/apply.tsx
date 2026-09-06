@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { useEffect } from "react";
 
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 export default function ApplyStudy() {
   useEffect(() => {

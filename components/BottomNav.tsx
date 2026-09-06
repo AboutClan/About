@@ -6,13 +6,13 @@ import { MouseEvent } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { useHandleMove } from "../@natives/useHandleBottomNav";
-import { useCheckGuest } from "../hooks/custom/UserHooks";
-import { slideDirectionState } from "../recoils/navigationRecoils";
-import { dayjsToStr } from "../utils/dateTimeUtils";
-import { BOTTOM_NAV_HEIGHT_PX, getSafeAreaBottom } from "../utils/validationUtils";
-import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon } from "./Icons/BottomNavIcons";
-import { UserIcon } from "./Icons/UserIcons";
+import { useHandleMove } from "@/@natives/useHandleBottomNav";
+import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon } from "@/components/Icons/BottomNavIcons";
+import { UserIcon } from "@/components/Icons/UserIcons";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { slideDirectionState } from "@/recoils/navigationRecoils";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
+import { BOTTOM_NAV_HEIGHT_PX, getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface INavButtonProps {
   url: string;

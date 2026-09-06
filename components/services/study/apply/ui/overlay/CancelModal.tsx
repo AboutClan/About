@@ -1,4 +1,4 @@
-import { ModalLayout } from "../../../../../../modals/Modals";
+import { ModalLayout } from "@/modals/Modals";
 
 interface StudyCancelModalProps {
   onClose: () => void;

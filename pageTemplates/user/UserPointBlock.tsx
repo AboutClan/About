@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import InstagramCheckModal from "../../modals/InstagramCheckModal";
-import { BarRightIcon } from "./UserScoreBar";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import InstagramCheckModal from "@/modals/InstagramCheckModal";
+import { BarRightIcon } from "@/pageTemplates/user/UserScoreBar";
 
 function UserPointBlock({ handleButton }: { handleButton: () => void }) {
   const { data: session } = useSession();

@@ -2,14 +2,14 @@ import { Box, Flex, Grid } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
 
-import { BLOCKED_CAFE_REVIEWERS } from "../../constants/keys/localStorage";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import { StudyRatingProps } from "../../types/models/studyTypes/study-entity.types";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import Avatar from "../atoms/Avatar";
-import StarRating from "../atoms/StarRating";
-import { StarIcon } from "../Icons/StarIcon";
+import Avatar from "@/components/atoms/Avatar";
+import StarRating from "@/components/atoms/StarRating";
+import { StarIcon } from "@/components/Icons/StarIcon";
+import { BLOCKED_CAFE_REVIEWERS } from "@/constants/keys/localStorage";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import { StudyRatingProps } from "@/types/models/studyTypes/study-entity.types";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface StarRatingReviewBlockProps {
   review: StudyRatingProps;

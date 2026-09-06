@@ -9,11 +9,11 @@ export default PostThumbnailCard;
 // import Link from "next/link";
 // import styled from "styled-components";
 
-// import { SingleLineText } from "../../../styles/layout/components";
-// import { dayjsToFormat } from "../../../utils/dateTimeUtils";
-// import OutlineBadge from "../../atoms/badges/OutlineBadge";
-// import Skeleton from "../../atoms/skeleton/Skeleton";
-// import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
+// import { SingleLineText } from "@/styles/layout/components";
+// import { dayjsToFormat } from "@/utils/dateTimeUtils";
+// import OutlineBadge from "@/components/atoms/badges/OutlineBadge";
+// import Skeleton from "@/components/atoms/skeleton/Skeleton";
+// import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
 
 // const VOTER_SHOW_MAX = 6;
 

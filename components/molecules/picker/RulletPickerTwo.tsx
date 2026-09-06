@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 
-import RulletPicker from "../../atoms/RulletPicker";
+import RulletPicker from "@/components/atoms/RulletPicker";
 interface IRulletPickerTwo {
   leftRulletArr: string[];
   rightRulletArr: string[];

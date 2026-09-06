@@ -3,10 +3,10 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useState } from "react";
 
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { usePlaceLikeMutation } from "../../hooks/study/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { HeartIcon } from "../Icons/HeartIcons";
+import { HeartIcon } from "@/components/Icons/HeartIcons";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { usePlaceLikeMutation } from "@/hooks/study/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
 
 interface PlaceHeartImageProps {
   imageProps: {

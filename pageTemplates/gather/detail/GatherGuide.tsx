@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 
-import InfoList from "../../../components/atoms/lists/InfoList";
-import { useCheckGuest } from "../../../hooks/custom/UserHooks";
+import InfoList from "@/components/atoms/lists/InfoList";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
 
 interface GatherGuideProps {
   isAdmin: boolean;

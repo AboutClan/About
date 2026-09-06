@@ -1,4 +1,4 @@
-import { ActiveLocation, Location } from "../../../types/services/locationTypes";
+import { ActiveLocation, Location } from "@/types/services/locationTypes";
 
 export const ACTIVE_LOCATION_CENTER_DOT: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

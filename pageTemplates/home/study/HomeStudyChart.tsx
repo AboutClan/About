@@ -2,10 +2,10 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
 
-import HighlightedTextButton from "../../../components/atoms/buttons/HighlightedTextButton";
-import SectionBar from "../../../components/molecules/bars/SectionBar";
-import { ChartStudyOptions } from "../../../components/organisms/chart/ChartOptions";
-import { VoteCntProps } from "../../../types/models/studyTypes/studyRecords";
+import HighlightedTextButton from "@/components/atoms/buttons/HighlightedTextButton";
+import SectionBar from "@/components/molecules/bars/SectionBar";
+import { ChartStudyOptions } from "@/components/organisms/chart/ChartOptions";
+import { VoteCntProps } from "@/types/models/studyTypes/studyRecords";
 
 interface HomeStudyChartProps {
   voteCntArr: VoteCntProps[];

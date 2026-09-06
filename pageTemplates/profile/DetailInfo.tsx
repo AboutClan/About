@@ -2,10 +2,10 @@ import { Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-import BlurredPart from "../../components/molecules/BlurredPart";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
-import { birthToAge } from "../../utils/convertUtils/convertTypes";
-import { decodeByAES256 } from "../../utils/utils";
+import BlurredPart from "@/components/molecules/BlurredPart";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { birthToAge } from "@/utils/convertUtils/convertTypes";
+import { decodeByAES256 } from "@/utils/utils";
 
 function DetailInfo({
   user,

@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 
-import { LIKE_HEART, TRAFFIC_SOURCE_CODE } from "../constants/keys/localStorage";
-import { LIKE_HEART_PERIOD } from "../constants/settingValue/localStorage";
-import { IInteractionLikeStorage } from "../types/globals/interaction";
-import { dayjsToStr } from "./dateTimeUtils";
+import { LIKE_HEART, TRAFFIC_SOURCE_CODE } from "@/constants/keys/localStorage";
+import { LIKE_HEART_PERIOD } from "@/constants/settingValue/localStorage";
+import { IInteractionLikeStorage } from "@/types/globals/interaction";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 export const checkAndSetLocalStorage = (key: string, gap: number) => {
   let temp = true;

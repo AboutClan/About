@@ -1,11 +1,11 @@
 import { useDisclosure } from "@chakra-ui/react";
 
-import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
-import { useUserRegisterControlMutation } from "../../../hooks/user/mutations";
-import { IModal } from "../../../types/components/modalTypes";
-import { IRefetch } from "../../../types/hooks/reactTypes";
-import AlertDialog from "../../AlertDialog";
-import { ModalFooterTwo } from "../../Modals";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserRegisterControlMutation } from "@/hooks/user/mutations";
+import AlertDialog from "@/modals/AlertDialog";
+import { ModalFooterTwo } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { IRefetch } from "@/types/hooks/reactTypes";
 
 interface ICheckRegisterModalFooter extends IModal, IRefetch {
   uid: string;

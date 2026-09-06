@@ -1,5 +1,5 @@
-import { isWebView } from "./appEnvUtils";
-import { nativeMethodUtils } from "./nativeMethodUtils";
+import { isWebView } from "@/utils/appEnvUtils";
+import { nativeMethodUtils } from "@/utils/nativeMethodUtils";
 
 export const navigateExternalLink = (url: string) => {
   if (isWebView()) {

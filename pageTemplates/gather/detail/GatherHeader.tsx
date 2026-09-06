@@ -5,27 +5,27 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
-import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuButton";
-import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
-import Header from "../../../components/layouts/Header";
-import UserAbsenceBoard from "../../../components/organisms/boards/UserAbsenceBoard";
-import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
-import { useResetGatherQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useKakaoShare } from "../../../hooks/custom/KakaoShareHook2";
+import { GATHER_COVER_IMAGE_ARR } from "@/assets/gather";
+import MenuButton, { MenuProps } from "@/components/atoms/buttons/MenuButton";
+import KakaoShareBtn from "@/components/Icons/KakaoShareBtn";
+import Header from "@/components/layouts/Header";
+import UserAbsenceBoard from "@/components/organisms/boards/UserAbsenceBoard";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { useResetGatherQuery } from "@/hooks/custom/CustomHooks";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useKakaoShare } from "@/hooks/custom/KakaoShareHook2";
 import {
   useGatherAbsenceCheckMutation,
   useGatherStatusMutation,
-} from "../../../hooks/gather/mutations";
-import { ModalLayout } from "../../../modals/Modals";
-import { isGatherEditState } from "../../../recoils/checkAtoms";
-import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { getRandomImage } from "../../../utils/imageUtils";
-import { navigateExternalLink } from "../../../utils/navigateUtils";
-import { isApp } from "../../../utils/validationUtils";
+} from "@/hooks/gather/mutations";
+import { ModalLayout } from "@/modals/Modals";
+import { isGatherEditState } from "@/recoils/checkAtoms";
+import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { getRandomImage } from "@/utils/imageUtils";
+import { navigateExternalLink } from "@/utils/navigateUtils";
+import { isApp } from "@/utils/validationUtils";
 
 interface IGatherHeader {
   gatherData: IGather;

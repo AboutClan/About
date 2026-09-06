@@ -4,11 +4,11 @@ import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Header from "../../../components/layouts/Header";
-import { useUserRegisterFormsQuery } from "../../../hooks/admin/quries";
-import CheckRegisterModal from "../../../modals/admin/checkRegisterModal/CheckRegisterModal";
-import { IUserRegisterForm } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import Header from "@/components/layouts/Header";
+import { useUserRegisterFormsQuery } from "@/hooks/admin/quries";
+import CheckRegisterModal from "@/modals/admin/checkRegisterModal/CheckRegisterModal";
+import { IUserRegisterForm } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 function AdminRegister() {
   const [isModal, setIsModal] = useState(false);
@@ -132,7 +132,7 @@ const Profile = styled.div`
 export default AdminRegister;
 
 import { GetServerSideProps } from "next";
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

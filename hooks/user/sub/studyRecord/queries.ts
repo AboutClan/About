@@ -2,13 +2,13 @@ import axios, { AxiosError } from "axios";
 import { Dayjs } from "dayjs";
 import { useQuery } from "react-query";
 
-import { USER_ATTEND_RATE, USER_FINDPARTICIPATION } from "../../../../constants/keys/queryKeys";
-import { SERVER_URI } from "../../../../constants/system";
-import { QueryOptions } from "../../../../types/hooks/reactTypes";
-import { IVoteRate } from "../../../../types/models/studyTypes/studyRecords";
-import { Location } from "../../../../types/services/locationTypes";
-import { IDayjsStartToEnd } from "../../../../types/utils/timeAndDate";
-import { dayjsToStr } from "../../../../utils/dateTimeUtils";
+import { USER_ATTEND_RATE, USER_FINDPARTICIPATION } from "@/constants/keys/queryKeys";
+import { SERVER_URI } from "@/constants/system";
+import { QueryOptions } from "@/types/hooks/reactTypes";
+import { IVoteRate } from "@/types/models/studyTypes/studyRecords";
+import { Location } from "@/types/services/locationTypes";
+import { IDayjsStartToEnd } from "@/types/utils/timeAndDate";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 type UserAttendRateReturn<T> = T extends true ? IVoteRate : IVoteRate[];
 

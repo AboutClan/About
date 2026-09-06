@@ -4,14 +4,14 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Avatar from "../../../components/atoms/Avatar";
-import { Input } from "../../../components/atoms/Input";
-import Header from "../../../components/layouts/Header";
-import { useAdminPointMutation } from "../../../hooks/admin/mutation";
-import { useUserRequestQuery } from "../../../hooks/admin/quries";
-import { useChatMutation } from "../../../hooks/chat/mutations";
-import { ModalLayout } from "../../../modals/Modals";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import Avatar from "@/components/atoms/Avatar";
+import { Input } from "@/components/atoms/Input";
+import Header from "@/components/layouts/Header";
+import { useAdminPointMutation } from "@/hooks/admin/mutation";
+import { useUserRequestQuery } from "@/hooks/admin/quries";
+import { useChatMutation } from "@/hooks/chat/mutations";
+import { ModalLayout } from "@/modals/Modals";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 function AdminRegister() {
   const [isRefetch, setIsRefetch] = useState(false);
@@ -141,7 +141,7 @@ const Main = styled.main`
 export default AdminRegister;
 
 import { GetServerSideProps } from "next";
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

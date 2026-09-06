@@ -2,11 +2,11 @@ import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
-import { LOCATION_TO_FULLNAME } from "../../constants/location";
-import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { createUrlWithLocation } from "../../utils/convertUtils/convertTypes";
+import ButtonGroups, { ButtonOptionsProps } from "@/components/molecules/groups/ButtonGroups";
+import { LOCATION_TO_FULLNAME } from "@/constants/location";
+import { ActiveLocation, LocationEn } from "@/types/services/locationTypes";
+import { convertLocationLangTo } from "@/utils/convertUtils/convertDatas";
+import { createUrlWithLocation } from "@/utils/convertUtils/convertTypes";
 
 export default function GatherLocationFilter() {
   const router = useRouter();

@@ -2,14 +2,14 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
-import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
-import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
-import { useGroupExileUserMutation } from "../../../hooks/groupStudy/mutations";
-import { IFooterOptions, ModalLayout } from "../../../modals/Modals";
-import { DispatchType } from "../../../types/hooks/reactTypes";
-import { GroupParicipantProps, IGroup } from "../../../types/models/groupTypes/group";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import { GROUP_STUDY } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { useGroupExileUserMutation } from "@/hooks/groupStudy/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { GroupParicipantProps, IGroup } from "@/types/models/groupTypes/group";
 
 interface SelectMemberProps {
   type: "exile" | "deposit" | null;

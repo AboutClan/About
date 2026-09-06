@@ -1,12 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import BottomNav from "../../components/layouts/BottomNav";
-import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
+import BottomNav from "@/components/layouts/BottomNav";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 function Gender2() {
   const info = getLocalStorageObj(REGISTER_INFO);

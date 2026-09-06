@@ -3,11 +3,11 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import { MainLoading } from "../../components/atoms/loaders/MainLoading";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import SummaryTable from "../../components/organisms/tables/SummaryTable";
-import { usePointSystemLogQuery, usePointSystemQuery } from "../../hooks/user/queries";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import SummaryTable from "@/components/organisms/tables/SummaryTable";
+import { usePointSystemLogQuery, usePointSystemQuery } from "@/hooks/user/queries";
 
 function ScoreLog() {
   const { data: session } = useSession();

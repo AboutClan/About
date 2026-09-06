@@ -4,15 +4,15 @@ import Image from "next/image";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
-import { Input } from "../components/atoms/Input";
-import { COLLECTION_ALPHABET } from "../constants/keys/queryKeys";
-import { useToast } from "../hooks/custom/CustomToast";
-import { useAlphabetMutation } from "../hooks/user/sub/collection/mutations";
-import { useUserRequestMutation } from "../hooks/user/sub/request/mutations";
-import { getRandomAlphabet } from "../libs/userEventLibs/collection";
-import { IModal } from "../types/components/modalTypes";
-import { dayjsToStr } from "../utils/dateTimeUtils";
-import { IFooterOptions, ModalLayout } from "./Modals";
+import { Input } from "@/components/atoms/Input";
+import { COLLECTION_ALPHABET } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useAlphabetMutation } from "@/hooks/user/sub/collection/mutations";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import { getRandomAlphabet } from "@/libs/userEventLibs/collection";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 const INSTAGRAM_AT = "instagramAt";
 

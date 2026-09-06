@@ -1,7 +1,7 @@
 import { Badge, Box, Flex, Text, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { dayjsToKr } from "../../../utils/dateTimeUtils";
+import { dayjsToKr } from "@/utils/dateTimeUtils";
 
 type StepItem = {
   step: number;

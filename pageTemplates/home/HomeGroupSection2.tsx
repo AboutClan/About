@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import SectionHeader from "../../components/atoms/SectionHeader";
-import { useGroupSnapshotQuery } from "../../hooks/groupStudy/queries";
-import { shuffleArray } from "../../utils/convertUtils/convertDatas";
-import HomeGroupCol from "./HomeGroupCol";
+import SectionHeader from "@/components/atoms/SectionHeader";
+import { useGroupSnapshotQuery } from "@/hooks/groupStudy/queries";
+import HomeGroupCol from "@/pageTemplates/home/HomeGroupCol";
+import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
 function HomeGroupSection2() {
   const { data: groups } = useGroupSnapshotQuery();

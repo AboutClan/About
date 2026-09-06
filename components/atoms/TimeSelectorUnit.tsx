@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { ITime } from "../../types/utils/timeAndDate";
-import Select from "./Select";
+import Select from "@/components/atoms/Select";
+import { ITime } from "@/types/utils/timeAndDate";
 
 interface ITimeSelectorUnit {
   time: ITime;

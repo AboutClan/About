@@ -2,8 +2,8 @@ export function Temp() {
   return null
 }
 
-// import { StudyParticipationProps } from "../../types/models/studyTypes/baseTypes";
-// import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
+// import { StudyParticipationProps } from "@/types/models/studyTypes/baseTypes";
+// import { getDistanceFromLatLonInKm } from "@/utils/mathUtils";
 
 // export const recommendTodayStudyPlace = (
 //   studyVoteData: StudyParticipationProps[],

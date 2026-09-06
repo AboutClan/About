@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import { IModal } from "../../../types/components/modalTypes";
-import { IFooterOptions, IHeaderOptions, ModalLayout } from "../../Modals";
-import BadgeInfoModalFirstInfo from "./BadgeInfoModalFirstInfo";
-import BadgeInfoModalSecondInfo from "./BadgeInfoModalSecondInfo";
+import { IFooterOptions, IHeaderOptions, ModalLayout } from "@/modals/Modals";
+import BadgeInfoModalFirstInfo from "@/modals/store/badgeInfoModal/BadgeInfoModalFirstInfo";
+import BadgeInfoModalSecondInfo from "@/modals/store/badgeInfoModal/BadgeInfoModalSecondInfo";
+import { IModal } from "@/types/components/modalTypes";
 
 function BadgeInfoModal2({ setIsModal }: IModal) {
   const [page, setPage] = useState(0);

@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "react-query";
 
-import { requestServer } from "../../libs/methodHelpers";
+import { requestServer } from "@/libs/methodHelpers";
 
 export const usePatchPollMutation = ({ squareId }: { squareId: string }) => {
   const queryClient = useQueryClient();

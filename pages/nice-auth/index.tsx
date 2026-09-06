@@ -9,7 +9,7 @@ import {
 import Head from "next/head";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { useToken } from "../../hooks/custom/CustomHooks";
+import { useToken } from "@/hooks/custom/CustomHooks";
 
 const BACKEND_URL =
   process.env.NEXT_PUBLIC_NICE_BACKEND_URL ?? "http://localhost:3001";

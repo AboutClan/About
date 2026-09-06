@@ -3,21 +3,21 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
-import Textarea from "../../../components/atoms/Textarea";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
-import { useToast } from "../../../hooks/custom/CustomToast";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import Textarea from "@/components/atoms/Textarea";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import { GROUP_STUDY } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
 import {
   useGroupParticipationMutation,
   useGroupWaitingMutation,
-} from "../../../hooks/groupStudy/mutations";
-import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import ParticipateModal from "../../../pageTemplates/group/ParticipateModal";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
+} from "@/hooks/groupStudy/mutations";
+import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import ParticipateModal from "@/pageTemplates/group/ParticipateModal";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 
 function Participate() {
   const router = useRouter();

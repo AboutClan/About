@@ -2,8 +2,8 @@ import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-import { getSafeAreaBottom } from "../../utils/validationUtils";
-import Slide from "./PageSlide";
+import Slide from "@/components/layouts/PageSlide";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface IBottomNav {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

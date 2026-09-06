@@ -2,11 +2,11 @@ import { Button } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
-import AlertModal, { IAlertModalOptions } from "../../AlertModal";
-import { CheckCircleIcon } from "../../Icons/CircleIcons";
-import { UserPlusIcon } from "../../Icons/UserIcons";
+import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
+import { UserPlusIcon } from "@/components/Icons/UserIcons";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useInteractionMutation } from "@/hooks/user/sub/interaction/mutations";
 interface UserPlusButtonProps {
   toUid: string;
   isMyFriend;

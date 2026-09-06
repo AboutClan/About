@@ -4,14 +4,14 @@ import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
-import { ModalLayout } from "../../modals/Modals";
-import { isWebView } from "../../utils/appEnvUtils";
-import { setAuthIntent } from "../../utils/authIntentUtils";
-import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getSafeAreaBottom, isApp, isIOS } from "../../utils/validationUtils";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import ForceLogoutDialog from "@/modals/login/ForceLogoutDialog";
+import { ModalLayout } from "@/modals/Modals";
+import { isWebView } from "@/utils/appEnvUtils";
+import { setAuthIntent } from "@/utils/authIntentUtils";
+import { navigateExternalLink } from "@/utils/navigateUtils";
+import { getSafeAreaBottom, isApp, isIOS } from "@/utils/validationUtils";
 
 function LoginPage() {
   const router = useRouter();

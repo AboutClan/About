@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { FullScreen } from "../styles/layout/modal";
-import { DispatchBoolean } from "../types/hooks/reactTypes";
+import { FullScreen } from "@/styles/layout/modal";
+import { DispatchBoolean } from "@/types/hooks/reactTypes";
 
 interface IModalPortal {
   children?: React.ReactNode;

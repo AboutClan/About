@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 
-import { IUser, UserMemberShip } from "../../types/models/userTypes/userInfoTypes";
-import { useUserInfoQuery } from "../user/queries";
-import { useTypeToast } from "./CustomToast";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { IUser, UserMemberShip } from "@/types/models/userTypes/userInfoTypes";
 
 export const useUserInfo = (): IUser => {
   const { data } = useUserInfoQuery();

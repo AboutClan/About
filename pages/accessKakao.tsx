@@ -2,8 +2,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
-import { useToast } from "../hooks/custom/CustomToast";
-import { navigateExternalLink } from "../utils/navigateUtils";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 function AccessKakao() {
   const { data: session } = useSession();

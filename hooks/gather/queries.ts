@@ -1,12 +1,12 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { GATHER_CONTENT } from "../../constants/keys/queryKeys";
-import { SERVER_URI } from "../../constants/system";
-import { IGatherSummary } from "../../pages/review";
-import { QueryOptions } from "../../types/hooks/reactTypes";
-import { FeedProps } from "../../types/models/feed";
-import { GatherRequestProps, IGather } from "../../types/models/gatherTypes/gatherTypes";
+import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { SERVER_URI } from "@/constants/system";
+import { IGatherSummary } from "@/pages/review";
+import { QueryOptions } from "@/types/hooks/reactTypes";
+import { FeedProps } from "@/types/models/feed";
+import { GatherRequestProps, IGather } from "@/types/models/gatherTypes/gatherTypes";
 
 export type GatherFilterType = "모집중" | "마감 임박" | "인기 모임" | null;
 

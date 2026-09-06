@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { PanInfo } from "framer-motion";
 
-import { dayjsToStr } from "./dateTimeUtils";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 export const getNewDateBySwipe = (panInfo: PanInfo, date: string) => {
   const { offset, velocity } = panInfo;

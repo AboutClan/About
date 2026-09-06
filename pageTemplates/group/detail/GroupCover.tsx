@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 
-import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
-import { getRandomImage } from "../../../utils/imageUtils";
+import { GATHER_COVER_IMAGE_ARR } from "@/assets/gather";
+import { getRandomImage } from "@/utils/imageUtils";
 
 interface IGroupCover {
   image: string;

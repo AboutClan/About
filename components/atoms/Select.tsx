@@ -1,11 +1,11 @@
 import { Box, Flex, Select as ChakraSelect } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
-import { LOCATION_TO_FULLNAME } from "../../constants/location";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { ActiveLocation, Location } from "../../types/services/locationTypes";
-import { isLocationType } from "../../utils/validationUtils";
-import { ShortArrowIcon } from "../Icons/ArrowIcons";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import { LOCATION_TO_FULLNAME } from "@/constants/location";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { ActiveLocation, Location } from "@/types/services/locationTypes";
+import { isLocationType } from "@/utils/validationUtils";
 
 interface ISelect {
   defaultValue: string;

@@ -1,15 +1,15 @@
 import { useRecoilState } from "recoil";
 
-import TextBlock from "../../../components/atoms/TextBlock";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import { usePointToast } from "../../../hooks/custom/CustomToast";
-import { useStudyAdditionMutation } from "../../../hooks/study/mutations";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedStudyWritingState } from "../../../recoils/sharedDataAtoms";
+import TextBlock from "@/components/atoms/TextBlock";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProgressStatus from "@/components/molecules/ProgressStatus";
+import { usePointToast } from "@/hooks/custom/CustomToast";
+import { useStudyAdditionMutation } from "@/hooks/study/mutations";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { sharedStudyWritingState } from "@/recoils/sharedDataAtoms";
 
 function WritingStudyComplete() {
   const pointToast = usePointToast();

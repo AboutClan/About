@@ -1,14 +1,14 @@
 import { Box, Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { MouseEvent, useState } from "react";
 
-import BottomNav from "../../components/layouts/BottomNav";
-import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import { MAJORS_DATA } from "../../constants/contentsText/ProfileData";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
+import BottomNav from "@/components/layouts/BottomNav";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import { MAJORS_DATA } from "@/constants/contentsText/ProfileData";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 type MajorItem = {
   department: string;

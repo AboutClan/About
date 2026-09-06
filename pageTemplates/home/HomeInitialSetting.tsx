@@ -6,38 +6,38 @@ import { useSession } from "next-auth/react";
 import { ComponentType, useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
-import AppDownloadModal from "../../components/overlay/AppDownloadModal";
-import FriendInviteModal from "../../components/overlay/FriendInviteModal";
-import GatherRecordDrawer from "../../components/overlay/GatherRecordDrawer";
-import LimitModal from "../../components/overlay/LimitModal";
-import NewbieBenefitModal from "../../components/overlay/NewbieBenefitModal";
-import StudyRecordDrawer from "../../components/overlay/StudyRecordDrawer";
-import ForceUpdateModal from "../../components/overlay/UpdateModal";
+import AppDownloadModal from "@/components/overlay/AppDownloadModal";
+import FriendInviteModal from "@/components/overlay/FriendInviteModal";
+import GatherRecordDrawer from "@/components/overlay/GatherRecordDrawer";
+import LimitModal from "@/components/overlay/LimitModal";
+import NewbieBenefitModal from "@/components/overlay/NewbieBenefitModal";
+import StudyRecordDrawer from "@/components/overlay/StudyRecordDrawer";
+import ForceUpdateModal from "@/components/overlay/UpdateModal";
 import {
   FRIEND_INVITE_AT,
   GATHER_REVIEW_MODAL_ID,
   HOME_APP_REVIEW_POPUP_AT,
   HOME_POPUP_DAILY_COUNT,
   MEMBERSHIP_AT,
-} from "../../constants/keys/localStorage";
-import { STUDY_ATTEND_AT } from "../../constants/keys/queryKeys";
-import { MODAL_QUEUE_PRIORITY } from "../../constants/modalQueuePriority";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useSingleModalSlot } from "../../hooks/custom/useSingleModalSlot";
-import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
-import { useGatherReviewOneQuery } from "../../hooks/gather/queries";
-import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
+} from "@/constants/keys/localStorage";
+import { STUDY_ATTEND_AT } from "@/constants/keys/queryKeys";
+import { MODAL_QUEUE_PRIORITY } from "@/constants/modalQueuePriority";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useSingleModalSlot } from "@/hooks/custom/useSingleModalSlot";
+import { usePushServiceInitialize } from "@/hooks/FcmManger/mutaion";
+import { useGatherReviewOneQuery } from "@/hooks/gather/queries";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import {
   usePointSubLogQuery,
   useUserInfoQuery,
   useUserMembershipLogQuery,
-} from "../../hooks/user/queries";
-import { hasShownHomeAutoPopupState } from "../../recoils/modalQueueRecoils";
-import { CloseProps } from "../../types/components/modalTypes";
-import { isPWA } from "../../utils/appEnvUtils";
-import { checkAndSetLocalStorage } from "../../utils/storageUtils";
-import { isApp, isMobileWeb } from "../../utils/validationUtils";
-import HomeAppReviewRewardDrawer, { HOME_APP_REVIEW_REWARD_SUB } from "./HomeAppReviewRewardDrawer";
+} from "@/hooks/user/queries";
+import HomeAppReviewRewardDrawer, { HOME_APP_REVIEW_REWARD_SUB } from "@/pageTemplates/home/HomeAppReviewRewardDrawer";
+import { hasShownHomeAutoPopupState } from "@/recoils/modalQueueRecoils";
+import { CloseProps } from "@/types/components/modalTypes";
+import { isPWA } from "@/utils/appEnvUtils";
+import { checkAndSetLocalStorage } from "@/utils/storageUtils";
+import { isApp, isMobileWeb } from "@/utils/validationUtils";
 
 // 홈 화면 진입 시 자동으로 뜰 수 있는 팝업을 모두 여기 한곳에서 관리한다.
 // 배열이 아니라 값 하나만 유지해, 여러 조건이 동시에 만족되어도 아래 useEffect의

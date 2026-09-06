@@ -2,16 +2,16 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import Header from "../../components/layouts/Header";
-import { useStudyPlacesQuery } from "../../hooks/study/queries";
-import { useOverlayRouter } from "../../hooks/useOverlayRouter";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { getSafeAreaBottom } from "../../utils/validationUtils";
-import { RightReviewDrawer } from "../study/StudyReview";
-import { CafeListDrawer } from "./CafeListDrawer";
-import { ARCHIVE_OPTIONS } from "./studyPageMap/TopNav";
-import { StudyReviewDrawer } from "./StudyReviewDrawer";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import Header from "@/components/layouts/Header";
+import { useStudyPlacesQuery } from "@/hooks/study/queries";
+import { useOverlayRouter } from "@/hooks/useOverlayRouter";
+import { RightReviewDrawer } from "@/pageTemplates/study/StudyReview";
+import { CafeListDrawer } from "@/pageTemplates/studyPage/CafeListDrawer";
+import { ARCHIVE_OPTIONS } from "@/pageTemplates/studyPage/studyPageMap/TopNav";
+import { StudyReviewDrawer } from "@/pageTemplates/studyPage/StudyReviewDrawer";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 export default function CafeMapArchivePage() {
   const router = useRouter();

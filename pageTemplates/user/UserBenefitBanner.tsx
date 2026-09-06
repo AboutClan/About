@@ -1,10 +1,10 @@
 import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { SUPPORT_LIST } from "../../constants/support";
-import { useOpenHomeActivityDrawer } from "../../hooks/custom/useHomeActivityDrawer";
-import { useDenyGuest } from "../../hooks/custom/UserHooks";
-import MemberCardModal from "./MemberCardModal";
+import { SUPPORT_LIST } from "@/constants/support";
+import { useOpenHomeActivityDrawer } from "@/hooks/custom/useHomeActivityDrawer";
+import { useDenyGuest } from "@/hooks/custom/UserHooks";
+import MemberCardModal from "@/pageTemplates/user/MemberCardModal";
 
 function UserBenefitBanner() {
   const [isMemberCardModal, setIsMemberCardModal] = useState(false);

@@ -1,10 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import Avatar from "../atoms/Avatar";
-import StarRating from "../atoms/StarRating";
+import Avatar from "@/components/atoms/Avatar";
+import StarRating from "@/components/atoms/StarRating";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface StarRatingReviewBlockProps {
   rating: number;

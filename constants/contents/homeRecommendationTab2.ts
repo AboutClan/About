@@ -1,4 +1,4 @@
-import { RecommendationBannerCardProps } from "../../components/organisms/cards/RecommendationBannerCard";
+import { RecommendationBannerCardProps } from "@/components/organisms/cards/RecommendationBannerCard";
 
 export const HOME_RECOMMENDATION_TAB_CONTENTS: RecommendationBannerCardProps[] = [
   {

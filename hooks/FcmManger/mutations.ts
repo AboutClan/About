@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { useMutation, useQuery } from "react-query";
 
-import { SERVER_URI } from "../../constants/system";
-import { requestServer } from "../../libs/methodHelpers";
-import { MutationOptions, QueryOptions } from "../../types/hooks/reactTypes";
+import { SERVER_URI } from "@/constants/system";
+import { requestServer } from "@/libs/methodHelpers";
+import { MutationOptions, QueryOptions } from "@/types/hooks/reactTypes";
 
 interface NotificationMessageProps {
   title: string;

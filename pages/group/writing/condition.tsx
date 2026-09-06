@@ -2,23 +2,23 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import Textarea from "../../../components/atoms/Textarea";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
+import Textarea from "@/components/atoms/Textarea";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProgressStatus from "@/components/molecules/ProgressStatus";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import WritingConditionLayout, {
   WritingConditionProps,
-} from "../../../components/organisms/WritingConditionLayout";
-import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import GroupConfirmModal from "../../../modals/groupStudy/WritingConfirmModal";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { IGroupWriting } from "../../../types/models/groupTypes/group";
-import { setLocalStorageObj } from "../../../utils/storageUtils";
+} from "@/components/organisms/WritingConditionLayout";
+import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import GroupConfirmModal from "@/modals/groupStudy/WritingConfirmModal";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { IGroupWriting } from "@/types/models/groupTypes/group";
+import { setLocalStorageObj } from "@/utils/storageUtils";
 
 export type GroupConditionType =
   | "gender"

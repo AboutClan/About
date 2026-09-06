@@ -2,25 +2,25 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import AlertCirclePoint from "../../../components/atoms/AlertCirclePoint";
+import AlertCirclePoint from "@/components/atoms/AlertCirclePoint";
 import {
   BellModalButton,
   CalendarCheckModalButton,
   ChatModalButton,
-} from "../../../components/atoms/buttons/ModalButtons";
-import Slide from "../../../components/layouts/PageSlide";
-import { AboutLogo } from "../../../components/services/AboutLogo";
+} from "@/components/atoms/buttons/ModalButtons";
+import Slide from "@/components/layouts/PageSlide";
+import { AboutLogo } from "@/components/services/AboutLogo";
 import {
   NOTICE_ALERT,
   NOTICE_MESSAGE_ALERT,
   RECENT_CHAT,
-} from "../../../constants/keys/localStorage";
-import { useRecentChatQuery } from "../../../hooks/chat/queries";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useCheckGuest } from "../../../hooks/custom/UserHooks";
-import { useNoticeActiveLogQuery } from "../../../hooks/user/sub/interaction/queries";
-import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
-import { NOTICE_ARR } from "../../../storage/notice";
+} from "@/constants/keys/localStorage";
+import { useRecentChatQuery } from "@/hooks/chat/queries";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { useNoticeActiveLogQuery } from "@/hooks/user/sub/interaction/queries";
+import DailyCheckModal from "@/modals/aboutHeader/dailyCheckModal/DailyCheckModal";
+import { NOTICE_ARR } from "@/storage/notice";
 
 function HomeHeader() {
   const router = useRouter();

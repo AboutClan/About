@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 
 const meta = {
   title: "Atoms/Loaders/MainLoading",

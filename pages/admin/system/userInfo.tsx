@@ -2,9 +2,9 @@ import { useToast } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import Header from "../../../components/layouts/Header";
-import { useUpdateProfileMutation } from "../../../hooks/admin/mutation";
-import { IUser, UserRole } from "../../../types/models/userTypes/userInfoTypes";
+import Header from "@/components/layouts/Header";
+import { useUpdateProfileMutation } from "@/hooks/admin/mutation";
+import { IUser, UserRole } from "@/types/models/userTypes/userInfoTypes";
 
 function AdminUserInfo() {
 
@@ -224,7 +224,7 @@ export default AdminUserInfo;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

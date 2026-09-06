@@ -1,12 +1,12 @@
 /* eslint-disable */
-import Header from "../components/layouts/Header";
-import Slide from "../components/layouts/PageSlide";
-import SocialingScoreBadge from "../components/molecules/SocialingScoreBadge";
-import ProfileCardColumn from "../components/organisms/ProfileCardColumn";
-import { useAllUserDataQuery } from "../hooks/admin/quries";
-import { useToast } from "../hooks/custom/CustomToast";
-import { useUserInfo } from "../hooks/custom/UserHooks";
-import { birthToAge } from "../utils/convertUtils/convertTypes";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
+import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
+import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { birthToAge } from "@/utils/convertUtils/convertTypes";
 
 function OpenGathering() {
   const toast = useToast();

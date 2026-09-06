@@ -1,7 +1,7 @@
-import { CommunityCategory } from "../../pages/community";
-import { UserCommentProps } from "../components/propTypes";
-import { TimeStampProps } from "../utils/timeAndDate";
-import { AvatarProps, UserSimpleInfoProps } from "./userTypes/userInfoTypes";
+import { CommunityCategory } from "@/pages/community";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { AvatarProps, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 interface BaseSecretSquareItem extends TimeStampProps {
   _id: string;

@@ -4,19 +4,19 @@ import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
-} from "../../components/molecules/cards/StudyThumbnailCard";
-import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
-import { useStudyPassedDayQuery, useStudySetQuery } from "../../hooks/study/queries";
+} from "@/components/molecules/cards/StudyThumbnailCard";
+import { useUserCurrentLocation } from "@/hooks/custom/CurrentLocationHook";
+import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
-} from "../../libs/study/thumbnailCardLibs";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+} from "@/libs/study/thumbnailCardLibs";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 export default function StudyList() {
   const { data: session } = useSession();

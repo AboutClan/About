@@ -1,8 +1,8 @@
 import axios, { AxiosError, isAxiosError } from "axios";
 
-import { SERVER_URI } from "../../constants/system";
-import { requestServer } from "../../libs/methodHelpers";
-import { DeviceInfo } from "./types";
+import { SERVER_URI } from "@/constants/system";
+import { DeviceInfo } from "@/hooks/FcmManger/types";
+import { requestServer } from "@/libs/methodHelpers";
 
 const handleApiError = (error: unknown, context: string) => {
   if (isAxiosError(error)) {

@@ -2,11 +2,11 @@ import { Box, Button } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import InfoBoxCol from "../../components/molecules/InfoBoxCol";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import StudyChallengeModal from "../../modals/pop-up/StudyChallengeModal";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
-import { formatMinutesToTime } from "../../utils/dateTimeUtils";
+import InfoBoxCol from "@/components/molecules/InfoBoxCol";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import StudyChallengeModal from "@/modals/pop-up/StudyChallengeModal";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { formatMinutesToTime } from "@/utils/dateTimeUtils";
 
 interface StudyPageRecordBlockProps {
   userInfo: IUser;

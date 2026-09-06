@@ -4,13 +4,13 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import Avatar from "../../components/atoms/Avatar";
-import UserBadge from "../../components/atoms/badges/UserBadge";
-import SocialingScoreBadge from "../../components/molecules/SocialingScoreBadge";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import ProfileOverviewSkeleton from "./skeleton/ProfileOverviewSkeleton";
+import Avatar from "@/components/atoms/Avatar";
+import UserBadge from "@/components/atoms/badges/UserBadge";
+import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import ProfileOverviewSkeleton from "@/pageTemplates/profile/skeleton/ProfileOverviewSkeleton";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface IProfileOverview {
   user?: IUser;

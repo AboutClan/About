@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 
-import { IModal } from "../../types/components/modalTypes";
+import { IModal } from "@/types/components/modalTypes";
 
 export interface IContentPopUpContents {
   title: string;

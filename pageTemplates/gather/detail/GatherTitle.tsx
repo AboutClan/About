@@ -1,7 +1,7 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 
-import MainBadge from "../../../components/atoms/MainBadge";
-import { GatherCategory } from "../../../types/models/gatherTypes/gatherTypes";
+import MainBadge from "@/components/atoms/MainBadge";
+import { GatherCategory } from "@/types/models/gatherTypes/gatherTypes";
 
 interface IGatherTitle {
   title: string;

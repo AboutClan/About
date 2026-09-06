@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { BadRequestError } from "../../../libs/backend/custom-error";
-import dbConnect from "../../../libs/backend/dbConnect";
-import { GiftModel } from "../../../models/gift";
+import { BadRequestError } from "@/libs/backend/custom-error";
+import dbConnect from "@/libs/backend/dbConnect";
+import { GiftModel } from "@/models/gift";
 
 export default async function giftController(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();

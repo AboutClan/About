@@ -1,8 +1,8 @@
 import { Box, Flex, Grid } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
-import DatePointButton from "./DatePointButton";
+import DatePointButton from "@/components/molecules/DatePointButton";
+import { dayjsToStr, getCalendarDates } from "@/utils/dateTimeUtils";
 
 interface CalendarProps {
   standardDate: string;

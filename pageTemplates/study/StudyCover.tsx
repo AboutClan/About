@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import { STUDY_COVER_IMAGES } from "../../assets/images/studyCover";
-import RoundedCoverImage from "../../components/atoms/RoundedCoverImage";
-import { StudyType } from "../../types/models/studyTypes/study-set.types";
-import { getRandomImage } from "../../utils/imageUtils";
+import { STUDY_COVER_IMAGES } from "@/assets/images/studyCover";
+import RoundedCoverImage from "@/components/atoms/RoundedCoverImage";
+import { StudyType } from "@/types/models/studyTypes/study-set.types";
+import { getRandomImage } from "@/utils/imageUtils";
 
 interface IStudyCover {
   studyType: StudyType;

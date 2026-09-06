@@ -5,13 +5,13 @@ import { useRouter } from "next/router";
 import { memo, useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { AVATAR_BG_IMAGES } from "../../assets/images/avatarBgImages";
-import { AVATAR_IMAGES } from "../../assets/images/avatarImages";
-import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
-import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useCheckGuest } from "../../hooks/custom/UserHooks";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+import { AVATAR_BG_IMAGES } from "@/assets/images/avatarBgImages";
+import { AVATAR_IMAGES } from "@/assets/images/avatarImages";
+import { COLOR_TABLE_LIGHT } from "@/constants/colorConstants";
+import { ABOUT_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 const hashUserId = (id: string): number => {
   let h = 0;

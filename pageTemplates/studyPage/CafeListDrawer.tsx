@@ -1,12 +1,12 @@
 import { Box, Flex, IconButton } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import { StarIcon } from "../../components/Icons/StarIcon";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-import { getPlaceScore } from "../../libs/study/studyUtils";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { XIcon } from "./studyPageMap/TopNav";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import { StarIcon } from "@/components/Icons/StarIcon";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { getPlaceScore } from "@/libs/study/studyUtils";
+import { XIcon } from "@/pageTemplates/studyPage/studyPageMap/TopNav";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 
 interface CafeListDrawerProps {
   onClose: () => void;

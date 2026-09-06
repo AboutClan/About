@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
-import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
-import Header from "../components/layouts/Header";
-import Slide from "../components/layouts/PageSlide";
-import InfoModalButton from "../components/modalButtons/InfoModalButton";
-import { RECENT_CHAT } from "../constants/keys/localStorage";
-import { useMyChatsQuery, useRecentChatQuery } from "../hooks/chat/queries";
-import NoticeChat from "../pageTemplates/notice/NoticeChat";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import InfoModalButton from "@/components/modalButtons/InfoModalButton";
+import { RECENT_CHAT } from "@/constants/keys/localStorage";
+import { useMyChatsQuery, useRecentChatQuery } from "@/hooks/chat/queries";
+import NoticeChat from "@/pageTemplates/notice/NoticeChat";
 
 export type NoticeType = "notice" | "active";
 

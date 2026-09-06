@@ -3,17 +3,17 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
-import SectionFooterButton from "../../components/atoms/SectionFooterButton";
+import { GATHER_MAIN_IMAGE_ARR } from "@/assets/gather";
+import SectionFooterButton from "@/components/atoms/SectionFooterButton";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
-} from "../../components/molecules/cards/GatherThumbnailCard";
-import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThumbnailCardSkeleton";
-import { backUrlState } from "../../recoils/navigationRecoils";
-import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { getRandomImage } from "../../utils/imageUtils";
+} from "@/components/molecules/cards/GatherThumbnailCard";
+import { GatherThumbnailCardSkeleton } from "@/components/skeleton/GatherThumbnailCardSkeleton";
+import { backUrlState } from "@/recoils/navigationRecoils";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { getRandomImage } from "@/utils/imageUtils";
 dayjs().locale("ko");
 
 interface HomeGatherColProps {

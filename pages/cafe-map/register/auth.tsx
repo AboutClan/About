@@ -8,15 +8,15 @@ import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
 import { useCallback, useEffect, useRef } from "react";
 
-import BottomNav from "../../../components/layouts/BottomNav";
-import Slide from "../../../components/layouts/PageSlide";
-import { REGISTER_INFO } from "../../../constants/keys/localStorage";
-import { useToken } from "../../../hooks/custom/CustomHooks";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { isWebView } from "../../../utils/appEnvUtils";
-import { setAuthIntent } from "../../../utils/authIntentUtils";
-import { setLocalStorageObj } from "../../../utils/storageUtils";
-import { isMobileWeb } from "../../../utils/validationUtils";
+import BottomNav from "@/components/layouts/BottomNav";
+import Slide from "@/components/layouts/PageSlide";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import { useToken } from "@/hooks/custom/CustomHooks";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { isWebView } from "@/utils/appEnvUtils";
+import { setAuthIntent } from "@/utils/authIntentUtils";
+import { setLocalStorageObj } from "@/utils/storageUtils";
+import { isMobileWeb } from "@/utils/validationUtils";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URI ?? "http://localhost:3001";
 const NICE_REQUEST_NO_KEY = "nice_request_no";

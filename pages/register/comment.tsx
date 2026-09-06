@@ -3,13 +3,13 @@ import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import BottomNav from "../../components/layouts/BottomNav";
-import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import { MESSAGE_DATA } from "../../constants/contentsText/ProfileData";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
+import BottomNav from "@/components/layouts/BottomNav";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import { MESSAGE_DATA } from "@/constants/contentsText/ProfileData";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 function Comment() {
   const info = getLocalStorageObj(REGISTER_INFO);

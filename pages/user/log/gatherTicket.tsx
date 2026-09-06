@@ -3,13 +3,13 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { Fragment, useState } from "react";
 
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { usePointSystemMutation, useUserTicketMutation } from "../../../hooks/user/mutations";
-import { useTicketSystemLogQuery, useUserInfoQuery } from "../../../hooks/user/queries";
-import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { usePointSystemMutation, useUserTicketMutation } from "@/hooks/user/mutations";
+import { useTicketSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 
 function GatherTicketLogSection() {
   const toast = useToast();

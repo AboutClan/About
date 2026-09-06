@@ -4,9 +4,9 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
 
-import Header from "../../../components/layouts/Header";
-import { useVoteStatusResetMutation } from "../../../hooks/admin/mutation";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import Header from "@/components/layouts/Header";
+import { useVoteStatusResetMutation } from "@/hooks/admin/mutation";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 function ResetStudyStatus() {
   const onClick = () => {};
@@ -76,7 +76,7 @@ const Container = styled.div`
 export default ResetStudyStatus;
 
 import { GetServerSideProps } from "next";
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

@@ -3,7 +3,7 @@ import {
   StudyParticipationsSetProps,
   StudySetProps,
   StudyType,
-} from "../../types/models/studyTypes/study-set.types";
+} from "@/types/models/studyTypes/study-set.types";
 
 export const getMyStudyDateArr = (
   studySet: StudySetProps,

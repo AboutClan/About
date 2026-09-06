@@ -2,9 +2,9 @@ export function Temp() {
   return null
 }
 
-// import { STUDY_RECOMMENDATION_DISTANCE } from "../../constants/settingValue/study/study";
-// import { StudyParticipationProps, StudyPlaceProps } from "../../types/models/studyTypes/baseTypes";
-// import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
+// import { STUDY_RECOMMENDATION_DISTANCE } from "@/constants/settingValue/study/study";
+// import { StudyParticipationProps, StudyPlaceProps } from "@/types/models/studyTypes/baseTypes";
+// import { getDistanceFromLatLonInKm } from "@/utils/mathUtils";
 
 // export const selectSubPlaceAuto = (
 //   myVotePlace: StudyPlaceProps,

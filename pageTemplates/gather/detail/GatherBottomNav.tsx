@@ -8,25 +8,25 @@ import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
-import BottomButtonNav from "../../../components/molecules/BottomButtonNav";
-import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useFeedsQuery } from "../../../hooks/feed/queries";
+import BottomButtonNav from "@/components/molecules/BottomButtonNav";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useFeedsQuery } from "@/hooks/feed/queries";
 import {
   useGatherParticipationMutation,
   useGatherWaitingMutation,
   useGatherWaitingStatusMutation,
-} from "../../../hooks/gather/mutations";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import GatherExpireModal from "../../../modals/gather/gatherExpireModal/GatherExpireModal";
-import GatherReviewDrawer from "../../../modals/gather/gatherExpireModal/GatherReviewDrawer";
-import { ModalLayout } from "../../../modals/Modals";
-import { transferGatherDataState } from "../../../recoils/transferRecoils";
-import { FeedProps } from "../../../types/models/feed";
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { birthToAge } from "../../../utils/convertUtils/convertTypes";
+} from "@/hooks/gather/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import GatherExpireModal from "@/modals/gather/gatherExpireModal/GatherExpireModal";
+import GatherReviewDrawer from "@/modals/gather/gatherExpireModal/GatherReviewDrawer";
+import { ModalLayout } from "@/modals/Modals";
+import { transferGatherDataState } from "@/recoils/transferRecoils";
+import { FeedProps } from "@/types/models/feed";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { birthToAge } from "@/utils/convertUtils/convertTypes";
 interface IGatherBootmNav {
   data: IGather;
   isOpenGather: boolean;

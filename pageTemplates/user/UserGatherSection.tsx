@@ -3,21 +3,21 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
-} from "../../components/molecules/cards/GatherThumbnailCard";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { useFeedsQuery } from "../../hooks/feed/queries";
-import { useGatherMyStatusQuery } from "../../hooks/gather/queries";
-import GatherReviewDrawer from "../../modals/gather/gatherExpireModal/GatherReviewDrawer";
-import { backUrlState } from "../../recoils/navigationRecoils";
-import { FeedProps } from "../../types/models/feed";
-import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import GatherSkeletonMain from "../gather/GatherSkeletonMain";
-import { setGatherDataToCardCol } from "../home/HomeGatherCol";
-import UserGatherSectionReview from "./UserGatherSectionReview";
+} from "@/components/molecules/cards/GatherThumbnailCard";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { useFeedsQuery } from "@/hooks/feed/queries";
+import { useGatherMyStatusQuery } from "@/hooks/gather/queries";
+import GatherReviewDrawer from "@/modals/gather/gatherExpireModal/GatherReviewDrawer";
+import GatherSkeletonMain from "@/pageTemplates/gather/GatherSkeletonMain";
+import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
+import UserGatherSectionReview from "@/pageTemplates/user/UserGatherSectionReview";
+import { backUrlState } from "@/recoils/navigationRecoils";
+import { FeedProps } from "@/types/models/feed";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 
 function UserGatherSection() {
   const router = useRouter();

@@ -90,7 +90,7 @@ import {
   YANG_홍대입구역점,
   YANG_화곡DT점,
   YANG_화곡역,
-} from "./studyPlaceConstants";
+} from "@/constants/serviceConstants/studyConstants/studyPlaceConstants";
 
 export const PLACE_TO_NAME = {
   //전체

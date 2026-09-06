@@ -1,5 +1,5 @@
-import { UserSimpleInfoProps } from "../models/userTypes/userInfoTypes";
-import { TimeStampProps } from "../utils/timeAndDate";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export type InteractionType = "like" | "friend" | "alphabet" | "randomTicket";
 

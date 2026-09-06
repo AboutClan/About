@@ -1,7 +1,7 @@
 ﻿import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import Header from "../../layouts/Header";
+import Header from "@/components/layouts/Header";
 
 interface RightUserDrawerProps {
   title: string;

@@ -11,7 +11,7 @@
 // axios 기본 Authorization 헤더가 아직 세팅되지 않은 타이밍에도 항상 동작해야 한다.)
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { finalizeCookiepayOrder } from "../../../libs/cookiepayOrderClient";
+import { finalizeCookiepayOrder } from "@/libs/cookiepayOrderClient";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).json({ message: "POST only" });

@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 
-import { getStudyStandardDate } from "../../libs/study/date/getStudyStandardDate";
-import { Location, LocationEn } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "./convertDatas";
+import { getStudyStandardDate } from "@/libs/study/date/getStudyStandardDate";
+import { Location, LocationEn } from "@/types/services/locationTypes";
+import { convertLocationLangTo } from "@/utils/convertUtils/convertDatas";
 
 export const createUrlWithLocation = (url: string, locationParam: LocationEn) =>
   url + `?location=${locationParam}`;

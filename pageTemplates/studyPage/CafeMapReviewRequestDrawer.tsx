@@ -12,10 +12,10 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { CAFE_MAP_REVIEW_POPUP_AT } from "../../constants/keys/localStorage";
-import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getDeviceOS } from "../../utils/validationUtils";
-import { ANDROID_APP_STORE_URL, IOS_APP_STORE_URL } from "./CafeMapAppInstallDrawer";
+import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
+import { ANDROID_APP_STORE_URL, IOS_APP_STORE_URL } from "@/pageTemplates/studyPage/CafeMapAppInstallDrawer";
+import { navigateExternalLink } from "@/utils/navigateUtils";
+import { getDeviceOS } from "@/utils/validationUtils";
 
 interface Props {
   onClose: () => void;

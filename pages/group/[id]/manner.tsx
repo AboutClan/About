@@ -1,11 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
-import GradeGauge from "../../../components/molecules/GradeGauge";
-import { useGroupIdMannerQuery, useGroupIdQuery } from "../../../hooks/groupStudy/queries";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import GradeGauge from "@/components/molecules/GradeGauge";
+import { useGroupIdMannerQuery, useGroupIdQuery } from "@/hooks/groupStudy/queries";
 
 export default function Manner() {
   const { id } = useParams<{ id: string }>() || {};

@@ -1,10 +1,10 @@
 // import { Box, Button, Flex } from "@chakra-ui/react";
 // import styled from "styled-components";
 
-// import { CheckCircleIcon } from "../Icons/CircleIcons";
-// import { UserIcon } from "../Icons/UserIcons";
-// import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
-// import PlaceImage from "./PlaceImage";
+// import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
+// import { UserIcon } from "@/components/Icons/UserIcons";
+// import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "@/components/molecules/cards/StudyThumbnailCard";
+// import PlaceImage from "@/components/molecules/PlaceImage";
 
 // export interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
 //   onClick: () => void;

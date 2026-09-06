@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { StarIcon } from "../Icons/StarIcon";
+import { StarIcon } from "@/components/Icons/StarIcon";
 
 interface StarRatingProps {
   rating: number;

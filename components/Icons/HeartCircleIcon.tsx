@@ -3,10 +3,10 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { LIKE_HEART } from "../../constants/keys/localStorage";
-import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import { useInteractionMutation } from "../../hooks/user/sub/interaction/mutations";
-import { isHeartCheckLocalStorage, pushArrToLocalStorage } from "../../utils/storageUtils";
+import { LIKE_HEART } from "@/constants/keys/localStorage";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
+import { useInteractionMutation } from "@/hooks/user/sub/interaction/mutations";
+import { isHeartCheckLocalStorage, pushArrToLocalStorage } from "@/utils/storageUtils";
 
 interface IHeartCircleIcon {
   toUid: string;

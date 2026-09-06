@@ -1,4 +1,4 @@
-import { IScore } from "../../types/services/pointSystem";
+import { IScore } from "@/types/services/pointSystem";
 
 export const myScoreRank = (scoreArr: IScore[], myScore: number) => {
   let highCnt = 0;

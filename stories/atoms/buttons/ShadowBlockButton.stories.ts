@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import ShadowBlockButton from "../../../components/atoms/buttons/ShadowBlockButton";
+import ShadowBlockButton from "@/components/atoms/buttons/ShadowBlockButton";
 
 const meta = {
   title: "ATOMS/Button/ShadowBlockButton",

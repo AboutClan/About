@@ -3,11 +3,11 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import SectionHeader from "../../components/atoms/SectionHeader";
-import AvatarGroupsOverwrap from "../../components/molecules/groups/AvatarGroupsOverwrap";
-import { useAllUserDataQuery } from "../../hooks/admin/quries";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { usePointPlusLogQuery } from "../../hooks/user/queries";
+import SectionHeader from "@/components/atoms/SectionHeader";
+import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
+import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { usePointPlusLogQuery } from "@/hooks/user/queries";
 
 function StudyPageChallenge() {
   const router = useRouter();

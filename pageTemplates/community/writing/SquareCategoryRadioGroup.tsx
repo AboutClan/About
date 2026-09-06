@@ -2,7 +2,7 @@ import { Box, Flex, Radio, RadioGroup } from "@chakra-ui/react";
 import { Controller, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 
-import { CATEGORY_ARR } from "../../../pages/community";
+import { CATEGORY_ARR } from "@/pages/community";
 
 function SquareCategoryRadioGroup() {
   const { control } = useFormContext();

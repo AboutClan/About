@@ -1,9 +1,9 @@
 import { Badge, Box, Button, Grid, Heading, Stack, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-import { ActivityCard } from "../../../components/overlay/HomeActivityDrawer";
-import { HOME_ACTIVITY_ITEMS } from "../../../constants/contents/groupInfo";
-import { useOpenHomeActivityDrawer } from "../../../hooks/custom/useHomeActivityDrawer";
+import { ActivityCard } from "@/components/overlay/HomeActivityDrawer";
+import { HOME_ACTIVITY_ITEMS } from "@/constants/contents/groupInfo";
+import { useOpenHomeActivityDrawer } from "@/hooks/custom/useHomeActivityDrawer";
 
 const TOP_ACTIVITY_ITEM_CNT = 9;
 

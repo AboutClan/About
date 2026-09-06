@@ -14,20 +14,20 @@ import { AnimatePresence, isValidMotionProp, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
-import Spinner from "../../../components/atoms/Spinner";
-import StarRatingReviewBlock2 from "../../../components/molecules/StarRatingReviewBlock2";
-import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
-import { useToast } from "../../../hooks/custom/CustomToast";
+import ScreenOverlay from "@/components/atoms/ScreenOverlay";
+import Spinner from "@/components/atoms/Spinner";
+import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { useToast } from "@/hooks/custom/CustomToast";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
-} from "../../../hooks/study/queries";
-import { ModalLayout } from "../../../modals/Modals";
-import { CoordinatesProps } from "../../../types/common";
-import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
-import { PlaceInfoBox } from "../PlaceInfoDrawer";
+} from "@/hooks/study/queries";
+import { ModalLayout } from "@/modals/Modals";
+import { PlaceInfoBox } from "@/pageTemplates/studyPage/PlaceInfoDrawer";
+import { CoordinatesProps } from "@/types/common";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 
 const MotionFlex = chakra(motion.div, {
   shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),

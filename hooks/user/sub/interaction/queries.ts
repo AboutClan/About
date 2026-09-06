@@ -1,10 +1,10 @@
 import axios, { AxiosError } from "axios";
 import { useQuery, UseQueryOptions } from "react-query";
 
-import { NOTICE_ACTIVE_LOG, NOTICE_HEART_LOG } from "../../../../constants/keys/queryKeys";
-import { SERVER_URI } from "../../../../constants/system";
-import { INoticeActiveLog } from "../../../../types/globals/interaction";
-import { QueryOptions } from "../../../../types/hooks/reactTypes";
+import { NOTICE_ACTIVE_LOG, NOTICE_HEART_LOG } from "@/constants/keys/queryKeys";
+import { SERVER_URI } from "@/constants/system";
+import { INoticeActiveLog } from "@/types/globals/interaction";
+import { QueryOptions } from "@/types/hooks/reactTypes";
 
 export const useNoticeActiveLogQuery = (
   type?: "like" | "friend" | "alphabet",

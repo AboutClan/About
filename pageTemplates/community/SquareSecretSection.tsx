@@ -3,14 +3,14 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
-import { MainLoading } from "../../components/atoms/loaders/MainLoading";
-import BlurredPart from "../../components/molecules/BlurredPart";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import BlurredPart from "@/components/molecules/BlurredPart";
 import {
   SecretSquareListResponse,
   useSecretSquareListQuery,
-} from "../../hooks/secretSquare/queries";
-import { CommunityCategory } from "../../pages/community";
-import SquareItem from "./SquareItem";
+} from "@/hooks/secretSquare/queries";
+import { CommunityCategory } from "@/pages/community";
+import SquareItem from "@/pageTemplates/community/SquareItem";
 
 interface SquareSecretSectionProps {
   category: CommunityCategory;

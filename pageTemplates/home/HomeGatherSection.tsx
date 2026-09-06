@@ -1,7 +1,7 @@
-import SlideSectionCol from "../../components/molecules/SlideSectionCol";
-import SlideSectionRow from "../../components/molecules/SlideSectionRow";
-import { useGatherQuery } from "../../hooks/gather/queries";
-import HomeGatherCol from "./HomeGatherCol";
+import SlideSectionCol from "@/components/molecules/SlideSectionCol";
+import SlideSectionRow from "@/components/molecules/SlideSectionRow";
+import { useGatherQuery } from "@/hooks/gather/queries";
+import HomeGatherCol from "@/pageTemplates/home/HomeGatherCol";
 
 // 공식 행사로 노출할 모임 id를 원하는 순서대로 나열하면 그 순서대로 2x3 배치됩니다.
 // 비워두면 첫번째 섹션 후보(officialGather/openGather/secretGather) 중 기본 순서로 6개를 사용합니다.

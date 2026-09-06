@@ -2,15 +2,15 @@ import { useRouter } from "next/router";
 import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
 
-import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
+import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import {
   useGatherParticipationMutation,
   useGatherWaitingMutation,
-} from "../../../hooks/gather/mutations";
-import { transferGatherDataState } from "../../../recoils/transferRecoils";
-import { IModal } from "../../../types/components/modalTypes";
-import { ModalBodyNavTwo } from "../../Modals";
+} from "@/hooks/gather/mutations";
+import { ModalBodyNavTwo } from "@/modals/Modals";
+import { transferGatherDataState } from "@/recoils/transferRecoils";
+import { IModal } from "@/types/components/modalTypes";
 
 function GatherParticipateModalParticipate({ setIsModal }: IModal) {
   const queryClient = useQueryClient();

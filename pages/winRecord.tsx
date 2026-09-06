@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
 
-import Header from "../components/layouts/Header";
-import Slide from "../components/layouts/PageSlide";
-import { WIN_RECORD } from "../storage/winRecord";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import { WIN_RECORD } from "@/storage/winRecord";
 
 function WinRecord() {
   return (

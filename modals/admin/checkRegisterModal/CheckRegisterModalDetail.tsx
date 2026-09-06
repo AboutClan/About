@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-import { CopyBtn } from "../../../components/Icons/CopyIcon";
-import { IUserRegisterForm } from "../../../types/models/userTypes/userInfoTypes";
-import { ModalBody } from "../../Modals";
+import { CopyBtn } from "@/components/Icons/CopyIcon";
+import { ModalBody } from "@/modals/Modals";
+import { IUserRegisterForm } from "@/types/models/userTypes/userInfoTypes";
 
 interface ICheckRegisterModalDetail {
   applicant: IUserRegisterForm;

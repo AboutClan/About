@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { TriangleIcon } from "../Icons/DiagramIcon";
-import { LocationDotIcon } from "../Icons/LocationIcons";
+import { TriangleIcon } from "@/components/Icons/DiagramIcon";
+import { LocationDotIcon } from "@/components/Icons/LocationIcons";
 
 interface LocationDotProps {
   name: string;

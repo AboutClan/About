@@ -2,16 +2,16 @@ import { Checkbox, CheckboxGroup, Flex, Stack, Text } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 
-import InfoList from "../../components/atoms/lists/InfoList";
-import Textarea from "../../components/atoms/Textarea";
-import BottomNav from "../../components/layouts/BottomNav";
-import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { IModal } from "../../types/components/modalTypes";
+import InfoList from "@/components/atoms/lists/InfoList";
+import Textarea from "@/components/atoms/Textarea";
+import BottomNav from "@/components/layouts/BottomNav";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { IModal } from "@/types/components/modalTypes";
 
 function RequestSecedeModal({ setIsModal }: IModal) {
   const toast = useToast();

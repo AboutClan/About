@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 
-import { LocationProps } from "../../types/common";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { Input } from "../atoms/Input";
-import LocationSearch from "./location/LocationSearch";
+import { Input } from "@/components/atoms/Input";
+import LocationSearch from "@/components/organisms/location/LocationSearch";
+import { LocationProps } from "@/types/common";
+import { DispatchType } from "@/types/hooks/reactTypes";
 
 interface SearchLocationProps {
   placeInfo: LocationProps;

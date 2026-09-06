@@ -1,8 +1,8 @@
 import { AspectRatio, Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 
-import ArrowTextButton from "../../components/atoms/buttons/ArrowTextButton";
-import SectionBar from "../../components/molecules/bars/SectionBar";
+import ArrowTextButton from "@/components/atoms/buttons/ArrowTextButton";
+import SectionBar from "@/components/molecules/bars/SectionBar";
 
 export default function EventPoint() {
   return (

@@ -1,18 +1,18 @@
 import clustering from "density-clustering";
 
-import { CoordinatesProps } from "../../types/common";
-import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import {
-  StudyParticipationProps,
-  StudyPlaceProps,
-} from "../../types/models/studyTypes/study-entity.types";
 import {
   getCurrentLocationIcon,
   getPlaceBasicIcon,
   getPlaceCountIcon,
   getVoteLocationIcon,
-} from "./getStudyVoteIcon";
-import { getPlaceScore } from "./studyUtils";
+} from "@/libs/study/getStudyVoteIcon";
+import { getPlaceScore } from "@/libs/study/studyUtils";
+import { CoordinatesProps } from "@/types/common";
+import { IMapOptions, IMarkerOptions } from "@/types/externals/naverMapTypes";
+import {
+  StudyParticipationProps,
+  StudyPlaceProps,
+} from "@/types/models/studyTypes/study-entity.types";
 
 export const getNearLocationCluster = (
   members: StudyParticipationProps[],

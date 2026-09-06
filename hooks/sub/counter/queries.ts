@@ -1,8 +1,8 @@
 import axios, { AxiosError } from "axios";
 import { useQuery, UseQueryOptions } from "react-query";
 
-import { SERVER_URI } from "../../../constants/system";
-import { Location } from "../../../types/services/locationTypes";
+import { SERVER_URI } from "@/constants/system";
+import { Location } from "@/types/services/locationTypes";
 
 export const useCounterQuery = (
   key: "enthusiasticMember",

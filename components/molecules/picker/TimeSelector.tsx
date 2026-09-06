@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-import { TIME_SELECTOR_END, TIME_SELECTOR_START } from "../../../constants/util/util";
-import { ITimeSelector } from "../../../types/utils/timeAndDate";
-import TimeSelectorDual from "../../atoms/TimeSelectorDual";
+import TimeSelectorDual from "@/components/atoms/TimeSelectorDual";
+import { TIME_SELECTOR_END, TIME_SELECTOR_START } from "@/constants/util/util";
+import { ITimeSelector } from "@/types/utils/timeAndDate";
 
 function TimeSelector({ times, setTimes }: ITimeSelector) {
   const onChangeTimeStart = (startTime) => {

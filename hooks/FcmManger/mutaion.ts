@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 
-import { isWebView } from "../../utils/appEnvUtils";
-import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
-import { registerPushServiceWithApp } from "./apis";
-import { DeviceInfo } from "./types";
+import { registerPushServiceWithApp } from "@/hooks/FcmManger/apis";
+import { DeviceInfo } from "@/hooks/FcmManger/types";
+import { isWebView } from "@/utils/appEnvUtils";
+import { nativeMethodUtils } from "@/utils/nativeMethodUtils";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {

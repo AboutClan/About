@@ -1,5 +1,5 @@
-import Header from "../../components/layouts/Header";
-import InfoModalButton from "../../components/modalButtons/InfoModalButton";
+import Header from "@/components/layouts/Header";
+import InfoModalButton from "@/components/modalButtons/InfoModalButton";
 
 function StudyPageHeader() {
   return (

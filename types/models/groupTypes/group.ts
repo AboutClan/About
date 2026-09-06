@@ -1,8 +1,8 @@
-import { GroupCategoryMain } from "../../../constants/contentsText/GroupContents";
-import { UserCommentProps } from "../../components/propTypes";
-import { LocationFilterType } from "../../services/locationTypes";
-import { TimeStampProps } from "../../utils/timeAndDate";
-import { IUser, UserSimpleInfoProps } from "../userTypes/userInfoTypes";
+import { GroupCategoryMain } from "@/constants/contentsText/GroupContents";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { LocationFilterType } from "@/types/services/locationTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export type GroupStatus = "pending" | "end" | "imminent" | "full" | "planned" | "resting";
 export interface IGroup extends IGroupWriting {

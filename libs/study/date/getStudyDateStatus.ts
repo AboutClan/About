@@ -3,8 +3,8 @@ import dayjs, { Dayjs } from "dayjs";
 import {
   STUDY_RESULT_HOUR,
   STUDY_VIEW_CHANGE_HOUR,
-} from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
-import { dayjsToStr, getHour, getToday } from "../../../utils/dateTimeUtils";
+} from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
+import { dayjsToStr, getHour, getToday } from "@/utils/dateTimeUtils";
 
 /**
  * today는 결과 발표난 이후부터 시간, 오늘의 스터디

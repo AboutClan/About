@@ -9,7 +9,7 @@ import {
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
-import { DispatchType } from "../../types/hooks/reactTypes";
+import { DispatchType } from "@/types/hooks/reactTypes";
 
 interface RangeSliderProps {
   defaultNums: number[];

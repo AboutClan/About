@@ -1,21 +1,21 @@
 import { Dayjs } from "dayjs";
 
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import {
   useRealTimeAbsenceMutation,
   useRealTimeCancelMutation,
   useRealTimeTimeChangeMutation,
   useRealtimeVoteMutation,
-} from "../realtime/mutations";
+} from "@/hooks/realtime/mutations";
 import {
   useStudyAbsenceMutation,
   useStudyParticipateMutation,
   useStudyParticipationTimeChangeMutation,
   useStudyResultTimeChangeMutation,
   useStudyVoteMutation,
-} from "../study/mutations";
-import { useResetStudyQuery } from "./CustomHooks";
-import { useToast, useTypeToast } from "./CustomToast";
+} from "@/hooks/study/mutations";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 // export const useStudySetQuery = (date: string, isEnabled: boolean): { studySet: StudySetProps } => {
 //   const { data } = useStudyWeekQuery({ enabled: isEnabled });

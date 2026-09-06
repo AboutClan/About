@@ -1,11 +1,11 @@
 import axios, { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
-import { COLLECTION_ALPHABET } from "../../../../constants/keys/queryKeys";
-import { SERVER_URI } from "../../../../constants/system";
-import { requestServer } from "../../../../libs/methodHelpers";
-import { MutationOptions } from "../../../../types/hooks/reactTypes";
-import { Alphabet } from "../../../../types/models/collections";
+import { COLLECTION_ALPHABET } from "@/constants/keys/queryKeys";
+import { SERVER_URI } from "@/constants/system";
+import { requestServer } from "@/libs/methodHelpers";
+import { MutationOptions } from "@/types/hooks/reactTypes";
+import { Alphabet } from "@/types/models/collections";
 
 export const useAlphabetStampMutation = (options?: MutationOptions<void, string>) => {
   const queryClient = useQueryClient();

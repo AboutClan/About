@@ -2,12 +2,12 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { Input } from "../../../components/atoms/Input";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
-import { useUserPhoneToUserInfoQuery } from "../../../hooks/user/queries";
-import ProfileDetailPage from "../../../pageTemplates/profile/ProfileDetailPage";
+import { Input } from "@/components/atoms/Input";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { useUserPhoneToUserInfoQuery } from "@/hooks/user/queries";
+import ProfileDetailPage from "@/pageTemplates/profile/ProfileDetailPage";
 
 const ADMIN_ROLES = ["previliged", "manager"];
 

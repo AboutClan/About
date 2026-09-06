@@ -8,12 +8,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import KakaoProvider, { KakaoProfile } from "next-auth/providers/kakao";
 
 import jwt from "jsonwebtoken";
-import dbConnect from "../../../libs/backend/dbConnect";
-import clientPromise from "../../../libs/backend/mongodb";
-import { refreshAccessToken } from "../../../libs/backend/oauthUtils";
-import { Account } from "../../../models/account";
-import { User } from "../../../models/user";
-import { ActiveLocation } from "../../../types/services/locationTypes";
+import dbConnect from "@/libs/backend/dbConnect";
+import clientPromise from "@/libs/backend/mongodb";
+import { refreshAccessToken } from "@/libs/backend/oauthUtils";
+import { Account } from "@/models/account";
+import { User } from "@/models/user";
+import { ActiveLocation } from "@/types/services/locationTypes";
 
 const secret = process.env.NEXTAUTH_SECRET;
 

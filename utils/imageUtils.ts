@@ -1,4 +1,4 @@
-import { getRandomIdx } from "./mathUtils";
+import { getRandomIdx } from "@/utils/mathUtils";
 
 export const getRandomImage = (imageArr: string[]) =>
   imageArr.length ? imageArr[getRandomIdx(imageArr.length - 1)] : null;

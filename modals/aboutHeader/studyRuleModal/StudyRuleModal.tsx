@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import CheckList from "../../../components/atoms/CheckList";
-import TabNav, { ITabNavOptions } from "../../../components/molecules/navs/TabNav";
-import { IModal } from "../../../types/components/modalTypes";
-import { IFooterOptions, IHeaderOptions, ModalLayout } from "../../Modals";
+import CheckList from "@/components/atoms/CheckList";
+import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
+import { IFooterOptions, IHeaderOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 function StudyRuleModal({ setIsModal }: IModal) {
   const [isTip, setIsTip] = useState(true);

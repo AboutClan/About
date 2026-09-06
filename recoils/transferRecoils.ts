@@ -1,14 +1,14 @@
 import { Dayjs } from "dayjs";
 import { atom } from "recoil";
 
-import { IDailyCheckWinList } from "../constants/serviceConstants/dailyCheckConstatns";
-import { IGiftEntry } from "../pages/store";
-import { PointInfoProps } from "../types/common";
-import { IGather } from "../types/models/gatherTypes/gatherTypes";
-import { IGroup } from "../types/models/groupTypes/group";
-import { MemberGroup } from "../types/models/member";
-import { RealTimesDirectAttendanceProps } from "../types/models/studyTypes/requestTypes";
-import { IUser } from "../types/models/userTypes/userInfoTypes";
+import { IDailyCheckWinList } from "@/constants/serviceConstants/dailyCheckConstatns";
+import { IGiftEntry } from "@/pages/store";
+import { PointInfoProps } from "@/types/common";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { MemberGroup } from "@/types/models/member";
+import { RealTimesDirectAttendanceProps } from "@/types/models/studyTypes/requestTypes";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
 export const transferStudyRewardState = atom<PointInfoProps>({
   key: "StudyReward",

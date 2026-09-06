@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import styled from "styled-components";
 
-import { useFailToast } from "../../hooks/custom/CustomToast";
-import { usePromotionQuery } from "../../hooks/sub/promotion/queries";
-import ModalPortal from "../../modals/ModalPortal";
-import PromotionApplyModal from "../../modals/promotion/PromotionApplyModal";
-import { IPromotionApply } from "../../types/models/promotion";
+import { useFailToast } from "@/hooks/custom/CustomToast";
+import { usePromotionQuery } from "@/hooks/sub/promotion/queries";
+import ModalPortal from "@/modals/ModalPortal";
+import PromotionApplyModal from "@/modals/promotion/PromotionApplyModal";
+import { IPromotionApply } from "@/types/models/promotion";
 
 type FormValues = {
   uniName: string;

@@ -2,11 +2,11 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-import SectionHeader from "../../../components/atoms/SectionHeader";
-import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
-import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
-import { DispatchString } from "../../../types/hooks/reactTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import SectionHeader from "@/components/atoms/SectionHeader";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import DateCalendarModal from "@/modals/aboutHeader/DateCalendarModal";
+import { DispatchString } from "@/types/hooks/reactTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface StudyPagePlaceSectionHeaderProps {
   date: string;

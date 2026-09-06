@@ -2,22 +2,22 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
-import { Input } from "../../../components/atoms/Input";
-import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
-import InviteUserGroups from "../../../components/molecules/groups/InviteUserGroups";
-import { useAllUserDataQuery } from "../../../hooks/admin/quries";
-import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
+import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+import { Input } from "@/components/atoms/Input";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import InviteUserGroups from "@/components/molecules/groups/InviteUserGroups";
+import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useResetGroupQuery } from "@/hooks/custom/CustomHooks";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   useGroupInviteDummyMutation,
   useGroupInviteMutation,
-} from "../../../hooks/groupStudy/mutations";
-import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import { IGroup } from "../../../types/models/groupTypes/group";
-import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { searchName } from "../../../utils/stringUtils";
+} from "@/hooks/groupStudy/mutations";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { searchName } from "@/utils/stringUtils";
 
 const DUMMY_AGE_OPTIONS = Array.from({ length: 11 }, (_, i) => 19 + i); // 19세 ~ 29세 (2007년생 ~ 1997년생)
 

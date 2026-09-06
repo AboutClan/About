@@ -3,7 +3,7 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { cookiepayBaseUrl } from "../../../utils/cookiepay";
+import { cookiepayBaseUrl } from "@/utils/cookiepay";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).json({ message: "POST only" });

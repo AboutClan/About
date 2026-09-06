@@ -2,16 +2,16 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-import { PlusIcon } from "../../components/Icons/MathIcons";
-import { StudyInviteDrawer } from "../../components/services/study/invite/StudyInviteDrawer";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
+import { PlusIcon } from "@/components/Icons/MathIcons";
+import { StudyInviteDrawer } from "@/components/services/study/invite/StudyInviteDrawer";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   StudyConfirmedMemberProps,
   StudyParticipationProps,
-} from "../../types/models/studyTypes/study-entity.types";
-import { StudyType } from "../../types/models/studyTypes/study-set.types";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+} from "@/types/models/studyTypes/study-entity.types";
+import { StudyType } from "@/types/models/studyTypes/study-set.types";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface IStudyDateBar {
   date: string;

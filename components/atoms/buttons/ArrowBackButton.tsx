@@ -1,9 +1,9 @@
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
 
-import { backUrlState } from "../../../recoils/navigationRecoils";
-import { ShortArrowIcon } from "../../Icons/ArrowIcons";
-import ButtonWrapper from "../ButtonWrapper";
+import ButtonWrapper from "@/components/atoms/ButtonWrapper";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import { backUrlState } from "@/recoils/navigationRecoils";
 
 interface IArrowBackButton {
   url?: string;

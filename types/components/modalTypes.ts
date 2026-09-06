@@ -1,4 +1,4 @@
-import { DispatchBoolean } from "../hooks/reactTypes";
+import { DispatchBoolean } from "@/types/hooks/reactTypes";
 
 export interface IModal {
   setIsModal: DispatchBoolean;

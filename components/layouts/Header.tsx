@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import ArrowBackButton from "../../components/atoms/buttons/ArrowBackButton";
-import Slide from "./PageSlide";
+import ArrowBackButton from "@/components/atoms/buttons/ArrowBackButton";
+import Slide from "@/components/layouts/PageSlide";
 interface IHeader {
   title: string;
   isBack?: boolean;

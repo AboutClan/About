@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import UserBadge from "../../../components/atoms/badges/UserBadge";
-import ProgressBar from "../../../components/atoms/ProgressBar";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
+import UserBadge from "@/components/atoms/badges/UserBadge";
+import ProgressBar from "@/components/atoms/ProgressBar";
+import { useUserInfoQuery } from "@/hooks/user/queries";
 
 function PointScoreBar() {
   const { data: userInfo } = useUserInfoQuery();

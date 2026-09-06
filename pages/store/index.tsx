@@ -5,18 +5,18 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import { TrophyIcon } from "../../components/Icons/icons";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import ImageShadowCover from "../../components/molecules/ImageShadowCover";
-import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
-import WinnerTextSlider from "../../components/molecules/WinnerTextSlider";
-import { usePrizeQuery } from "../../constants/prize/queries";
-import { useHasMemership } from "../../hooks/custom/UserHooks";
-import { useStoreQuery } from "../../hooks/sub/store/queries";
-import { IStoreApplicant, IStoreGift, StoreGiftProps } from "../../types/models/store";
-import { shuffleArray } from "../../utils/convertUtils/convertDatas";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import { TrophyIcon } from "@/components/Icons/icons";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ImageShadowCover from "@/components/molecules/ImageShadowCover";
+import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
+import WinnerTextSlider from "@/components/molecules/WinnerTextSlider";
+import { usePrizeQuery } from "@/constants/prize/queries";
+import { useHasMemership } from "@/hooks/custom/UserHooks";
+import { useStoreQuery } from "@/hooks/sub/store/queries";
+import { IStoreApplicant, IStoreGift, StoreGiftProps } from "@/types/models/store";
+import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
 export interface IGiftEntry extends IStoreGift {
   users: IStoreApplicant[];

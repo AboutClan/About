@@ -4,13 +4,13 @@ import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
-import Divider from "../../../../components/atoms/Divider";
-import InfoList from "../../../../components/atoms/lists/InfoList";
-import { MainLoading, MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
-import Select from "../../../../components/atoms/Select";
-import Slide from "../../../../components/layouts/PageSlide";
-import { GroupThumbnailCard } from "../../../../components/molecules/cards/GroupThumbnailCard";
-import TabNav from "../../../../components/molecules/navs/TabNav";
+import Divider from "@/components/atoms/Divider";
+import InfoList from "@/components/atoms/lists/InfoList";
+import { MainLoading, MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Select from "@/components/atoms/Select";
+import Slide from "@/components/layouts/PageSlide";
+import { GroupThumbnailCard } from "@/components/molecules/cards/GroupThumbnailCard";
+import TabNav from "@/components/molecules/navs/TabNav";
 import {
   STUDY_CREW_ID_MAPPING,
   STUDY_CREW_PLACE_MAPPING,
@@ -20,40 +20,40 @@ import {
   STUDY_CREW_REGION_SLUG_MAPPING,
   StudyCrewRegion,
   StudyCrewSlug,
-} from "../../../../constants/service/study/place";
-import { useToast } from "../../../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../../../hooks/custom/UserHooks";
-import { useGroupIdQuery, useMyCrewGroupStudyQuery } from "../../../../hooks/groupStudy/queries";
-import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/study/queries";
-import { shortenParticipations } from "../../../../libs/study/studyConverters";
-import { getMyStudyDateArr } from "../../../../libs/study/studyHelpers";
-import StudyStep from "../../../../pageTemplates/gather/detail/StudyStep";
-import StudyLinkModal from "../../../../pageTemplates/study/modals/StudyLinkModal";
-import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
-import StudyCover from "../../../../pageTemplates/study/StudyCover";
-import StudyExtraButton from "../../../../pageTemplates/study/StudyExtraButton";
-import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
-import StudyMembers, { StudyMembersHandle } from "../../../../pageTemplates/study/StudyMembers";
-import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
-import StudyNearMap from "../../../../pageTemplates/study/StudyNearMap";
-import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
-import StudyPlaceMap from "../../../../pageTemplates/study/StudyPlaceMap";
-import StudyReviewSection from "../../../../pageTemplates/study/StudyReview";
-import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
+} from "@/constants/service/study/place";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { useGroupIdQuery, useMyCrewGroupStudyQuery } from "@/hooks/groupStudy/queries";
+import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries";
+import { shortenParticipations } from "@/libs/study/studyConverters";
+import { getMyStudyDateArr } from "@/libs/study/studyHelpers";
+import { createGroupThumbnailProps } from "@/pages/group";
+import StudyStep from "@/pageTemplates/gather/detail/StudyStep";
+import StudyLinkModal from "@/pageTemplates/study/modals/StudyLinkModal";
+import StudyAddressMap from "@/pageTemplates/study/StudyAddressMap";
+import StudyCover from "@/pageTemplates/study/StudyCover";
+import StudyExtraButton from "@/pageTemplates/study/StudyExtraButton";
+import StudyHeader from "@/pageTemplates/study/StudyHeader";
+import StudyMembers, { StudyMembersHandle } from "@/pageTemplates/study/StudyMembers";
+import StudyNavigation from "@/pageTemplates/study/StudyNavigation";
+import StudyNearMap from "@/pageTemplates/study/StudyNearMap";
+import StudyOverview from "@/pageTemplates/study/StudyOverView";
+import StudyPlaceMap from "@/pageTemplates/study/StudyPlaceMap";
+import StudyReviewSection from "@/pageTemplates/study/StudyReview";
+import StudyTimeBoard from "@/pageTemplates/study/StudyTimeBoard";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
   StudyCrew,
   StudyParticipationProps,
-} from "../../../../types/models/studyTypes/study-entity.types";
+} from "@/types/models/studyTypes/study-entity.types";
 import {
   StudyConfirmedSetProps,
   StudyParticipationsSetProps,
   StudyType,
-} from "../../../../types/models/studyTypes/study-set.types";
-import { setAuthIntent } from "../../../../utils/authIntentUtils";
-import { dayjsToStr, getTodayStr } from "../../../../utils/dateTimeUtils";
-import { createGroupThumbnailProps } from "../../../group";
+} from "@/types/models/studyTypes/study-set.types";
+import { setAuthIntent } from "@/utils/authIntentUtils";
+import { dayjsToStr, getTodayStr } from "@/utils/dateTimeUtils";
 
 export default function Page() {
   const router = useRouter();

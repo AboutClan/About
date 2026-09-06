@@ -2,8 +2,8 @@ import { css, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useRef } from "react";
 
-import { getCalendarDates } from "../../utils/dateTimeUtils";
-import CalendarDayBox from "../atoms/CalendarDayBox";
+import CalendarDayBox from "@/components/atoms/CalendarDayBox";
+import { getCalendarDates } from "@/utils/dateTimeUtils";
 
 interface CalendarProps {
   selectedDate: string;

@@ -2,16 +2,16 @@ import { Badge, Box, Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
-import StarRating from "../../components/atoms/StarRating";
-import { StarIcon } from "../../components/Icons/StarIcon";
-import PlaceImage from "../../components/molecules/PlaceImage";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-import { getPlaceScore } from "../../libs/study/studyUtils";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { getRandomImage } from "../../utils/imageUtils";
-import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getSafeAreaBottom,isApp  } from "../../utils/validationUtils";
+import { STUDY_MAIN_IMAGES } from "@/assets/images/studyMain";
+import StarRating from "@/components/atoms/StarRating";
+import { StarIcon } from "@/components/Icons/StarIcon";
+import PlaceImage from "@/components/molecules/PlaceImage";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { getPlaceScore } from "@/libs/study/studyUtils";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { getRandomImage } from "@/utils/imageUtils";
+import { navigateExternalLink } from "@/utils/navigateUtils";
+import { getSafeAreaBottom,isApp  } from "@/utils/validationUtils";
 
 interface PlaceInfoDrawerProps {
   placeInfo: StudyPlaceProps;

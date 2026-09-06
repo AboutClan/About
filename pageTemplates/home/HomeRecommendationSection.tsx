@@ -4,7 +4,7 @@ import "swiper/css/navigation";
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 function HomeRecommendationSection() {
   return (

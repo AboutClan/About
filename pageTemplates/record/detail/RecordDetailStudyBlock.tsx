@@ -1,11 +1,11 @@
 import { Fragment } from "react";
 import styled from "styled-components";
 
-import { LOCATION_TO_COLOR } from "../../../constants/location";
-import { PLACE_TO_NAME } from "../../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
-import { PLACE_TO_LOCATION } from "../../../constants/serviceConstants/studyConstants/studyLocationConstants";
-import { Location } from "../../../types/services/locationTypes";
-import { ISortedLocationStudies } from "./RecordDetail";
+import { LOCATION_TO_COLOR } from "@/constants/location";
+import { PLACE_TO_NAME } from "@/constants/serviceConstants/studyConstants/studyCafeNameConstants";
+import { PLACE_TO_LOCATION } from "@/constants/serviceConstants/studyConstants/studyLocationConstants";
+import { ISortedLocationStudies } from "@/pageTemplates/record/detail/RecordDetail";
+import { Location } from "@/types/services/locationTypes";
 
 interface IRecordDetailStudyBlock {
   locationStudies: ISortedLocationStudies;

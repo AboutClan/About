@@ -1,10 +1,10 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { Input } from "../../../components/atoms/Input";
-import Header from "../../../components/layouts/Header";
-import ButtonGroups from "../../../components/molecules/groups/ButtonGroups";
-import { useSendNotificationAllMutation } from "../../../hooks/FcmManger/mutations";
+import { Input } from "@/components/atoms/Input";
+import Header from "@/components/layouts/Header";
+import ButtonGroups from "@/components/molecules/groups/ButtonGroups";
+import { useSendNotificationAllMutation } from "@/hooks/FcmManger/mutations";
 
 // const NOTICE_ALERT = [
 //   {
@@ -108,7 +108,7 @@ export default Notice;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

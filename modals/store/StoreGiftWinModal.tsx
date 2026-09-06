@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { IModal } from "../../types/components/modalTypes";
-import { StoreGiftProps } from "../../types/models/store";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { StoreGiftProps } from "@/types/models/store";
 interface IStoreGiftWinModal extends IModal {
   winners: StoreGiftProps["winner"];
 }

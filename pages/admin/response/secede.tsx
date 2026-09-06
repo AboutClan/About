@@ -3,14 +3,14 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
-import { CopyBtn } from "../../../components/Icons/CopyIcon";
-import Header from "../../../components/layouts/Header";
-import AdminLocationSelector from "../../../components/molecules/picker/AdminLocationSelector";
-import { useUserRequestQuery } from "../../../hooks/admin/quries";
-import { usePointCuoponLogQuery } from "../../../hooks/user/queries";
-import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import { CopyBtn } from "@/components/Icons/CopyIcon";
+import Header from "@/components/layouts/Header";
+import AdminLocationSelector from "@/components/molecules/picker/AdminLocationSelector";
+import { useUserRequestQuery } from "@/hooks/admin/quries";
+import { usePointCuoponLogQuery } from "@/hooks/user/queries";
+import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 function AdminSecede() {
   const [initialData, setInitialData] = useState<IUserRequest[]>();
@@ -126,7 +126,7 @@ export default AdminSecede;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

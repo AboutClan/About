@@ -2,12 +2,12 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import AlertDot from "../../components/atoms/AlertDot";
-import { NOTICE_ALERT, NOTICE_MESSAGE_ALERT } from "../../constants/keys/localStorage";
-import { NoticeType } from "../../pages/notice";
-import { NOTICE_ARR } from "../../storage/notice";
-import { INoticeActiveLog } from "../../types/globals/interaction";
-import { DispatchType } from "../../types/hooks/reactTypes";
+import AlertDot from "@/components/atoms/AlertDot";
+import { NOTICE_ALERT, NOTICE_MESSAGE_ALERT } from "@/constants/keys/localStorage";
+import { NoticeType } from "@/pages/notice";
+import { NOTICE_ARR } from "@/storage/notice";
+import { INoticeActiveLog } from "@/types/globals/interaction";
+import { DispatchType } from "@/types/hooks/reactTypes";
 
 interface INoticeNav {
   noticeType: NoticeType;

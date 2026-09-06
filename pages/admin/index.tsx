@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import { SERVER_URI } from "../../constants/system";
-import { useFailToast } from "../../hooks/custom/CustomToast";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import { SERVER_URI } from "@/constants/system";
+import { useFailToast } from "@/hooks/custom/CustomToast";
 
 function Admin() {
   const { data: session } = useSession();
@@ -160,7 +160,7 @@ export default Admin;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

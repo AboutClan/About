@@ -1,7 +1,7 @@
 import { Dayjs } from "dayjs";
 
-import { TimeStampProps } from "../../utils/timeAndDate";
-import { IUser } from "./userInfoTypes";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export type UserRequestCategory =
   | "건의"

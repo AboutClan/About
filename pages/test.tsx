@@ -2,18 +2,18 @@ import { Button, Flex, Input } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 
-import { SERVER_URI } from "../constants/system";
+import { SERVER_URI } from "@/constants/system";
 import {
   useCouponBulkRegisterMutation,
   useCouponIssueByPartnerMutation,
   useCouponRegisterMutation,
-} from "../hooks/coupon/mutations";
+} from "@/hooks/coupon/mutations";
 import {
   useCouponByNameQuery,
   useCouponListQuery,
   useCouponMineQuery,
   useCouponQuery,
-} from "../hooks/coupon/queries";
+} from "@/hooks/coupon/queries";
 
 // 솜씨당 발급 쿠폰 코드 (일괄 등록 대상)
 const SOMSSIDANG_COUPON_CODES = [

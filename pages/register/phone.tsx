@@ -3,19 +3,19 @@ import { KakaoProfile } from "next-auth/providers/kakao";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
-import { Input } from "../../components/atoms/Input";
-import BottomNav from "../../components/layouts/BottomNav";
-import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
-import { useUserInfoQuery , useUserKakaoInfoQuery } from "../../hooks/user/queries";
-import { gaEvent } from "../../libs/gtag";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import { setAuthIntent } from "../../utils/authIntentUtils";
-import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
+import { Input } from "@/components/atoms/Input";
+import BottomNav from "@/components/layouts/BottomNav";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoFieldMutation, useUserRegisterMutation } from "@/hooks/user/mutations";
+import { useUserInfoQuery , useUserKakaoInfoQuery } from "@/hooks/user/queries";
+import { gaEvent } from "@/libs/gtag";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
+import { setAuthIntent } from "@/utils/authIntentUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 function Phone() {
   const toast = useToast();

@@ -3,22 +3,22 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import ButtonWrapper from "../../components/atoms/ButtonWrapper";
-import SectionFooterButton from "../../components/atoms/SectionFooterButton";
-import SectionHeader from "../../components/atoms/SectionHeader";
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
+import ButtonWrapper from "@/components/atoms/ButtonWrapper";
+import SectionFooterButton from "@/components/atoms/SectionFooterButton";
+import SectionHeader from "@/components/atoms/SectionHeader";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
-} from "../../components/molecules/cards/StudyThumbnailCard";
-import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
-import { useStudySetQuery } from "../../hooks/study/queries";
+} from "@/components/molecules/cards/StudyThumbnailCard";
+import { StudyThumbnailCardSkeleton } from "@/components/skeleton/StudyThumbnailCardSkeleton";
+import { useStudySetQuery } from "@/hooks/study/queries";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
-} from "../../libs/study/thumbnailCardLibs";
-import { backUrlState } from "../../recoils/navigationRecoils";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+} from "@/libs/study/thumbnailCardLibs";
+import { backUrlState } from "@/recoils/navigationRecoils";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 function HomeStudySection() {
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));

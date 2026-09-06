@@ -1,4 +1,4 @@
-import Header from "../../components/layouts/Header";
+import Header from "@/components/layouts/Header";
 
 function BannerPage() {
   return (

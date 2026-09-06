@@ -2,8 +2,8 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { STUDY_CREW_REGION_SLUG_MAPPING } from "../../constants/service/study/place";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { STUDY_CREW_REGION_SLUG_MAPPING } from "@/constants/service/study/place";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 export default function StudyCrewApply() {
   const router = useRouter();

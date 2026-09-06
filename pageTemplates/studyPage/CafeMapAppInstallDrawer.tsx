@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { getDeviceOS } from "../../utils/validationUtils";
+import { getDeviceOS } from "@/utils/validationUtils";
 
 export const ANDROID_APP_STORE_URL =
   "https://play.google.com/store/apps/details?id=club.about20s.cafemap";

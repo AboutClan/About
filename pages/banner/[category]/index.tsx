@@ -3,9 +3,9 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import styled from "styled-components";
 
-import { MAIN_BANNER_IMAGE } from "../../../assets/images/BannerImages";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
+import { MAIN_BANNER_IMAGE } from "@/assets/images/BannerImages";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
 
 function BannerDetailPage() {
   const { category } = useParams<{ category }>() || {};

@@ -3,20 +3,20 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import Header from "../../components/layouts/Header";
-import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewBlock2";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
-} from "../../hooks/study/queries";
-import { useOverlayRouter } from "../../hooks/useOverlayRouter";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { getSafeAreaBottom } from "../../utils/validationUtils";
-import { RightReviewDrawer } from "../study/StudyReview";
-import { PlaceInfoBox } from "./PlaceInfoDrawer";
-import { StudyReviewDrawer } from "./StudyReviewDrawer";
+} from "@/hooks/study/queries";
+import { useOverlayRouter } from "@/hooks/useOverlayRouter";
+import { RightReviewDrawer } from "@/pageTemplates/study/StudyReview";
+import { PlaceInfoBox } from "@/pageTemplates/studyPage/PlaceInfoDrawer";
+import { StudyReviewDrawer } from "@/pageTemplates/studyPage/StudyReviewDrawer";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 const FEED_TABS = ["최근 후기", "신규 장소"] as const;
 type FeedTab = (typeof FEED_TABS)[number];

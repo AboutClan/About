@@ -5,22 +5,22 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
-import { Input } from "../../components/atoms/Input";
-import Textarea from "../../components/atoms/Textarea";
-import ControlButton from "../../components/ControlButton";
-import { Writing2Icon } from "../../components/Icons/ControlButtonIcon";
-import Slide from "../../components/layouts/PageSlide";
-import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useGatherRequestMutation } from "../../hooks/gather/mutations";
-import { ModalLayout } from "../../modals/Modals";
-import GatherHeader from "../../pageTemplates/gather/GatherHeader";
-import GatherMain from "../../pageTemplates/gather/GatherMain";
-import GatherPick from "../../pageTemplates/gather/GatherPick";
-import SquareLoungeSection from "../../pageTemplates/square/SquareLoungeSection";
-import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
-import { transferGatherDataState } from "../../recoils/transferRecoils";
-import { IModal } from "../../types/components/modalTypes";
+import { Input } from "@/components/atoms/Input";
+import Textarea from "@/components/atoms/Textarea";
+import ControlButton from "@/components/ControlButton";
+import { Writing2Icon } from "@/components/Icons/ControlButtonIcon";
+import Slide from "@/components/layouts/PageSlide";
+import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useGatherRequestMutation } from "@/hooks/gather/mutations";
+import { ModalLayout } from "@/modals/Modals";
+import GatherHeader from "@/pageTemplates/gather/GatherHeader";
+import GatherMain from "@/pageTemplates/gather/GatherMain";
+import GatherPick from "@/pageTemplates/gather/GatherPick";
+import SquareLoungeSection from "@/pageTemplates/square/SquareLoungeSection";
+import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
+import { transferGatherDataState } from "@/recoils/transferRecoils";
+import { IModal } from "@/types/components/modalTypes";
 
 function Gather() {
   const router = useRouter();

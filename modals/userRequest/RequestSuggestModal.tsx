@@ -14,12 +14,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
-import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import { IModal } from "../../types/components/modalTypes";
-import { IUserRequest } from "../../types/models/userTypes/userRequestTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
+import { usePointSystemMutation } from "@/hooks/user/mutations";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 
 interface IRequestSuggestModal extends IModal {
   type: "suggest" | "declare";

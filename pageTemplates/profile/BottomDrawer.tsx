@@ -1,7 +1,7 @@
 import { Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { DeclareRequest } from "../../types/models/userTypes/userRequestTypes";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { DeclareRequest } from "@/types/models/userTypes/userRequestTypes";
 
 interface IBottomDrawer {
   onClose: () => void;

@@ -2,8 +2,8 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import Header from "../../components/layouts/Header";
-import TossJoinFeeWidget from "../../components/TossJoinFeeWidget";
+import Header from "@/components/layouts/Header";
+import TossJoinFeeWidget from "@/components/TossJoinFeeWidget";
 
 export default function JoinFeePaymentPage() {
   const router = useRouter();

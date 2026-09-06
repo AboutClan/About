@@ -2,15 +2,15 @@ import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import { useMutation } from "react-query";
 
-import { requestServer } from "../../libs/methodHelpers";
-import { LocationProps, PointInfoProps } from "../../types/common";
-import { MutationOptions } from "../../types/hooks/reactTypes";
+import { requestServer } from "@/libs/methodHelpers";
+import { LocationProps, PointInfoProps } from "@/types/common";
+import { MutationOptions } from "@/types/hooks/reactTypes";
 import {
   RealTimeAttendanceProps,
   RealTimeVoteProps,
-} from "../../types/models/studyTypes/requestTypes";
-import { RealTimesStudyStatus } from "../../types/models/studyTypes/study-entity.types";
-import { DayjsTimeProps, StringTimeProps } from "../../types/utils/timeAndDate";
+} from "@/types/models/studyTypes/requestTypes";
+import { RealTimesStudyStatus } from "@/types/models/studyTypes/study-entity.types";
+import { DayjsTimeProps, StringTimeProps } from "@/types/utils/timeAndDate";
 
 interface RealTimeVoteRequestServerProps {
   place: LocationProps;

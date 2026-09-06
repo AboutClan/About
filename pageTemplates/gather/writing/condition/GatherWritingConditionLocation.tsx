@@ -4,8 +4,8 @@ export function Temp() {
 
 // import styled from "styled-components";
 
-// import { DispatchType } from "../../../../types/hooks/reactTypes";
-// import { Location } from "../../../../types/services/locationTypes";
+// import { DispatchType } from "@/types/hooks/reactTypes";
+// import { Location } from "@/types/services/locationTypes";
 
 // interface IGatherWritingConditionLocation {
 //   setLocation: DispatchType<Location>;

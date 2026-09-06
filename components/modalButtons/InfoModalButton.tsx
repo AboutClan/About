@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { useToast } from "../../hooks/custom/CustomToast";
-import { IFooterOptions, ModalLayout } from "../../modals/Modals";
-import IconButton from "../atoms/buttons/IconButton";
-import InfoList from "../atoms/lists/InfoList";
+import IconButton from "@/components/atoms/buttons/IconButton";
+import InfoList from "@/components/atoms/lists/InfoList";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 
 type InfoType =
   | "study"

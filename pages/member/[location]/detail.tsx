@@ -7,15 +7,15 @@ export default function Empty() {
 // import { useRecoilValue, useSetRecoilState } from "recoil";
 // import styled from "styled-components";
 
-// import Avatar from "../../../components/atoms/Avatar";
-// import Header from "../../../components/layouts/Header";
-// import Slide from "../../../components/layouts/PageSlide";
-// import { BADGE_COLOR_MAPPINGS } from "../../../constants/serviceConstants/badgeConstants";
-// import { prevPageUrlState } from "../../../recoils/previousAtoms";
-// import { transferMemberDataState } from "../../../recoils/transferRecoils";
-// import { IUser } from "../../../types/models/userTypes/userInfoTypes";
-// import { getUserBadge } from "../../../utils/convertUtils/convertDatas";
-// import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+// import Avatar from "@/components/atoms/Avatar";
+// import Header from "@/components/layouts/Header";
+// import Slide from "@/components/layouts/PageSlide";
+// import { BADGE_COLOR_MAPPINGS } from "@/constants/serviceConstants/badgeConstants";
+// import { prevPageUrlState } from "@/recoils/previousAtoms";
+// import { transferMemberDataState } from "@/recoils/transferRecoils";
+// import { IUser } from "@/types/models/userTypes/userInfoTypes";
+// import { getUserBadge } from "@/utils/convertUtils/convertDatas";
+// import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 // function MemberDetail() {
 //   const router = useRouter();

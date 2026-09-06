@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
-import ProgressMark from "../../components/molecules/ProgressMark";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
+import ProgressMark from "@/components/molecules/ProgressMark";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 
 interface UserScoreBarProps {
   score: number;

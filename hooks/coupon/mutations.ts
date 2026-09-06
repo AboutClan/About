@@ -1,9 +1,9 @@
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
-import { requestServer } from "../../libs/methodHelpers";
-import { MutationOptions } from "../../types/hooks/reactTypes";
-import { ICouponIssueResponse, ICouponResponse } from "../../types/models/couponTypes";
+import { requestServer } from "@/libs/methodHelpers";
+import { MutationOptions } from "@/types/hooks/reactTypes";
+import { ICouponIssueResponse, ICouponResponse } from "@/types/models/couponTypes";
 
 interface RegisterCouponProps {
   partnerId: string;

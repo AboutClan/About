@@ -2,12 +2,12 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { Input } from "../../components/atoms/Input";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
-import { ModalSubtitle } from "../../styles/layout/modal";
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { Input } from "@/components/atoms/Input";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { ModalSubtitle } from "@/styles/layout/modal";
+import { IModal } from "@/types/components/modalTypes";
 
 function InstaPopUp({ setIsModal }: IModal) {
   const toast = useToast();

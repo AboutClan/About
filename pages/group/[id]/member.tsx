@@ -4,18 +4,18 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
-import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
-import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import { GROUP_STUDY } from "@/constants/keys/queryKeys";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import {
   useGroupExileUserMutation,
   useGroupMemberRoleMutation,
-} from "../../../hooks/groupStudy/mutations";
-import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { GroupMemberRole, GroupParicipantProps } from "../../../types/models/groupTypes/group";
+} from "@/hooks/groupStudy/mutations";
+import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
+import { GroupMemberRole, GroupParicipantProps } from "@/types/models/groupTypes/group";
 
 export default function Member() {
   const { data: session } = useSession();

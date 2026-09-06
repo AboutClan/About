@@ -2,8 +2,8 @@ import { Link, LinkProps } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { forwardRef, useCallback } from "react";
 
-import { isWebView } from "../../utils/appEnvUtils";
-import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
+import { isWebView } from "@/utils/appEnvUtils";
+import { nativeMethodUtils } from "@/utils/nativeMethodUtils";
 
 interface ExternalLinkProps extends Omit<LinkProps, "href"> {
   href: string;

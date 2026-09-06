@@ -2,10 +2,10 @@ import { Box, Button } from "@chakra-ui/react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-import { Input } from "../../../components/atoms/Input";
-import Header from "../../../components/layouts/Header";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
+import { Input } from "@/components/atoms/Input";
+import Header from "@/components/layouts/Header";
+import { useToast } from "@/hooks/custom/CustomToast";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
 
 const publicID = "team.about.20s@gmail.com";
 const publicPW = "abcde12345?!";

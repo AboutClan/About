@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-import { CoordinatesProps } from "../../types/common";
-import { useToast } from "./CustomToast";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { CoordinatesProps } from "@/types/common";
 
 export function useUserCurrentLocation() {
   const toast = useToast();

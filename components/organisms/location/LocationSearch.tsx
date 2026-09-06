@@ -2,10 +2,10 @@ import { Box, Portal } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { NaverLocationProps, useNaverLocalQuery } from "../../../hooks/external/queries";
-import { LocationProps } from "../../../types/common";
-import { DispatchBoolean, DispatchType } from "../../../types/hooks/reactTypes";
-import { InputGroup } from "../../atoms/Input";
+import { InputGroup } from "@/components/atoms/Input";
+import { NaverLocationProps, useNaverLocalQuery } from "@/hooks/external/queries";
+import { LocationProps } from "@/types/common";
+import { DispatchBoolean, DispatchType } from "@/types/hooks/reactTypes";
 
 interface ISearchLocation {
   info: LocationProps;

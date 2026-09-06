@@ -3,15 +3,15 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import { STUDY_COVER_IMAGES } from "../../assets/images/studyCover";
-import MenuButton, { MenuProps } from "../../components/atoms/buttons/MenuButton";
-import Header from "../../components/layouts/Header";
-import Accordion from "../../components/molecules/Accordion";
-import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import { ACCORDION_STUDY_FAQ } from "../../constants/contentsText/accordionContents";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import { getRandomImage } from "../../utils/imageUtils";
+import { STUDY_COVER_IMAGES } from "@/assets/images/studyCover";
+import MenuButton, { MenuProps } from "@/components/atoms/buttons/MenuButton";
+import Header from "@/components/layouts/Header";
+import Accordion from "@/components/molecules/Accordion";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { ACCORDION_STUDY_FAQ } from "@/constants/contentsText/accordionContents";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
+import { getRandomImage } from "@/utils/imageUtils";
 
 interface IStudyHeader {
   date?: string;

@@ -4,38 +4,38 @@ import { toPng } from "html-to-image";
 import Image from "next/image";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 
-import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
-import { HeartIcon } from "../../components/Icons/HeartIcons";
-import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
-import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
+import { GATHER_MAIN_IMAGE_ARR } from "@/assets/gather";
+import { HeartIcon } from "@/components/Icons/HeartIcons";
+import AttendanceBadge from "@/components/molecules/badge/AttendanceBadge";
+import { IProfileCommentCard } from "@/components/molecules/cards/ProfileCommentCard";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
-} from "../../components/molecules/cards/StudyThumbnailCard";
-import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
-import { STUDY_HEART_ARR } from "../../constants/keys/localStorage";
-import { STUDY_LOCATION_CENTER_MAPPING } from "../../constants/service/study/place";
-import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
+} from "@/components/molecules/cards/StudyThumbnailCard";
+import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
+import { STUDY_HEART_ARR } from "@/constants/keys/localStorage";
+import { STUDY_LOCATION_CENTER_MAPPING } from "@/constants/service/study/place";
+import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   useRealTimeCommentMutation,
   useRealTimeHeartMutation,
   useRealTimeStatusMutation,
-} from "../../hooks/realtime/mutations";
-import { useStudyCommentMutation } from "../../hooks/study/mutations";
-import { getNearLocationCluster } from "../../libs/study/setStudyMapOptions";
-import ImageZoomModal from "../../modals/ImageZoomModal";
-import { CoordinatesProps } from "../../types/common";
+} from "@/hooks/realtime/mutations";
+import { useStudyCommentMutation } from "@/hooks/study/mutations";
+import { getNearLocationCluster } from "@/libs/study/setStudyMapOptions";
+import ImageZoomModal from "@/modals/ImageZoomModal";
+import StudyCrewStatsDrawer from "@/pageTemplates/study/modals/StudyCrewStatsDrawer";
+import { CoordinatesProps } from "@/types/common";
 import {
   StudyConfirmedMemberProps,
   StudyParticipationProps,
-} from "../../types/models/studyTypes/study-entity.types";
-import { StudyConfirmedSetProps, StudyType } from "../../types/models/studyTypes/study-set.types";
-import { dayjsToFormat, dayjsToKr, getTodayStr } from "../../utils/dateTimeUtils";
-import { getRandomImage } from "../../utils/imageUtils";
-import { navigateExternalLink } from "../../utils/navigateUtils";
-import StudyCrewStatsDrawer from "./modals/StudyCrewStatsDrawer";
+} from "@/types/models/studyTypes/study-entity.types";
+import { StudyConfirmedSetProps, StudyType } from "@/types/models/studyTypes/study-set.types";
+import { dayjsToFormat, dayjsToKr, getTodayStr } from "@/utils/dateTimeUtils";
+import { getRandomImage } from "@/utils/imageUtils";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 const PARTICIPATIONS_MAX_VISIBLE = 10;
 const NO_VOTE_KEY = "no-vote";

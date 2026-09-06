@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { MemberGroup } from "../../types/models/member";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
-import { Location } from "../../types/services/locationTypes";
-import { birthToAge } from "../../utils/convertUtils/convertTypes";
+import { MemberGroup } from "@/types/models/member";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { Location } from "@/types/services/locationTypes";
+import { birthToAge } from "@/utils/convertUtils/convertTypes";
 interface IMemberOverview {
   onClickSection: (section: MemberGroup) => void;
   groups: IUser[][];

@@ -1,5 +1,5 @@
-import { LocationProps } from "../../../types/common";
-import { StudyCrew } from "../../../types/models/studyTypes/study-entity.types";
+import { LocationProps } from "@/types/common";
+import { StudyCrew } from "@/types/models/studyTypes/study-entity.types";
 
 export interface CrewLocationProps extends LocationProps {
   standard: string;

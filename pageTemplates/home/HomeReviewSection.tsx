@@ -1,13 +1,13 @@
 import { Box, Grid, GridItem, Skeleton } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
-import ButtonWrapper from "../../components/atoms/ButtonWrapper";
-import SectionHeader from "../../components/atoms/SectionHeader";
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import { IImageTileData } from "../../components/molecules/layouts/ImageTileFlexLayout";
-import ImageTileGridLayout from "../../components/molecules/layouts/ImageTitleGridLayout";
-import { useFeedsQuery } from "../../hooks/feed/queries";
-import { FeedProps } from "../../types/models/feed";
+import ButtonWrapper from "@/components/atoms/ButtonWrapper";
+import SectionHeader from "@/components/atoms/SectionHeader";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import { IImageTileData } from "@/components/molecules/layouts/ImageTileFlexLayout";
+import ImageTileGridLayout from "@/components/molecules/layouts/ImageTitleGridLayout";
+import { useFeedsQuery } from "@/hooks/feed/queries";
+import { FeedProps } from "@/types/models/feed";
 
 export default function HomeReviewSection() {
   const router = useRouter();

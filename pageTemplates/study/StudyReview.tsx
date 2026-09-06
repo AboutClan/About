@@ -1,14 +1,14 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import SectionHeader from "../../components/atoms/SectionHeader";
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewBlock2";
-import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import ReviewForm from "../../components/organisms/StarRatingForm";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useCheckGuest } from "../../hooks/custom/UserHooks";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
+import SectionHeader from "@/components/atoms/SectionHeader";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import ReviewForm from "@/components/organisms/StarRatingForm";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 
 interface StudyReviewProps {
   placeInfo: StudyPlaceProps;

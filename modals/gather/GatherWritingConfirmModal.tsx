@@ -5,12 +5,12 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
-import ImageUploadInput from "../../components/molecules/ImageUploadInput";
+import ImageUploadInput from "@/components/molecules/ImageUploadInput";
 
-import { isGatherEditState } from "../../recoils/checkAtoms";
-import { IModal } from "../../types/components/modalTypes";
-import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { isGatherEditState } from "@/recoils/checkAtoms";
+import { IModal } from "@/types/components/modalTypes";
+import { IGather, IGatherWriting } from "@/types/models/gatherTypes/gatherTypes";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 
 interface IGatherWritingConfirmModal extends IModal {
   gatherData: Partial<IGatherWriting> | Partial<IGather>;

@@ -9,7 +9,7 @@ import Document, {
 import { Fragment } from "react";
 import { ServerStyleSheet } from "styled-components";
 
-import { GROUP_OG_MAPPING } from "./s/group/[id]";
+import { GROUP_OG_MAPPING } from "@/pages/s/group/[id]";
 
 const CAFE_MAP_HOSTS = ["xn--ob0b42knwutje.com", "www.xn--ob0b42knwutje.com", "카공지도.com"];
 

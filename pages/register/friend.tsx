@@ -5,18 +5,18 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import { Input } from "../../components/atoms/Input";
-import InfoList from "../../components/atoms/lists/InfoList";
-import BottomNav from "../../components/layouts/BottomNav";
-import Header from "../../components/layouts/Header";
-import TextCheckButton from "../../components/molecules/TextCheckButton";
-import { USER_INFO } from "../../constants/keys/queryKeys";
-import { useAdminPointMutation } from "../../hooks/admin/mutation";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
+import { Input } from "@/components/atoms/Input";
+import InfoList from "@/components/atoms/lists/InfoList";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import TextCheckButton from "@/components/molecules/TextCheckButton";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useAdminPointMutation } from "@/hooks/admin/mutation";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { usePointSystemMutation } from "@/hooks/user/mutations";
+import { usePointSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 
 function Friend() {
   const { data: session } = useSession();

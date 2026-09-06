@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { type SetterOrUpdater } from "recoil";
 
-import { isWebView } from "../utils/appEnvUtils";
-import { nativeMethodUtils } from "../utils/nativeMethodUtils";
+import { isWebView } from "@/utils/appEnvUtils";
+import { nativeMethodUtils } from "@/utils/nativeMethodUtils";
 
 type SlideDirectionType = string | null;
 

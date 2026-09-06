@@ -1,17 +1,17 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { CloseProps } from "../../types/components/modalTypes";
-import InfoList from "../atoms/lists/InfoList";
-import BottomNav from "../layouts/BottomNav";
-import LabeledInput from "../molecules/LabeledInput";
-import TabNav from "../molecules/navs/TabNav";
-import TextCheckButton from "../molecules/TextCheckButton";
-import ValueBoxCol, { ValueBoxColItemProps } from "../molecules/ValueBoxCol";
-import RightDrawer from "../organisms/drawer/RightDrawer";
+import InfoList from "@/components/atoms/lists/InfoList";
+import BottomNav from "@/components/layouts/BottomNav";
+import LabeledInput from "@/components/molecules/LabeledInput";
+import TabNav from "@/components/molecules/navs/TabNav";
+import TextCheckButton from "@/components/molecules/TextCheckButton";
+import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { CloseProps } from "@/types/components/modalTypes";
 
 function PaymentConfirmationDrawer({ onClose }: CloseProps) {
   const toast = useToast();

@@ -1,4 +1,4 @@
-import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 export interface IArrivedInfo {
   uid: string;

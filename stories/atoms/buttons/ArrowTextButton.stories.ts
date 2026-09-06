@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import ArrowTextButton from "../../../components/atoms/buttons/ArrowTextButton";
+import ArrowTextButton from "@/components/atoms/buttons/ArrowTextButton";
 
 const meta = {
   title: "ATOMS/Button/ArrowTextButton",

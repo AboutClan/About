@@ -4,19 +4,19 @@ import Link from "next/link";
 import { ComponentProps } from "react";
 import styled from "styled-components";
 
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
-import { useGatherGroupQuery } from "../../../hooks/gather/queries";
-import { SingleLineText } from "../../../styles/layout/components";
+import { CheckCircleIcon20 } from "@/components/Icons/CircleIcons";
+import { UserIcon } from "@/components/Icons/UserIcons";
+import { InfinityIcon } from "@/components/molecules/cards/StudyThumbnailCard";
+import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { useGatherGroupQuery } from "@/hooks/gather/queries";
+import { SingleLineText } from "@/styles/layout/components";
 import {
   GroupParicipantProps,
   GroupStatus,
   IGroupWritingCategory,
-} from "../../../types/models/groupTypes/group";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { CheckCircleIcon20 } from "../../Icons/CircleIcons";
-import { UserIcon } from "../../Icons/UserIcons";
-import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
-import { InfinityIcon } from "./StudyThumbnailCard";
+} from "@/types/models/groupTypes/group";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 const VOTER_SHOW_MAX = 4;
 export interface GroupThumbnailCardProps {

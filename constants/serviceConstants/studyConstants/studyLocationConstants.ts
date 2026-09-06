@@ -1,4 +1,3 @@
-import { ActiveLocation, Location } from "../../../types/services/locationTypes";
 import {
   ANYANG_금정역,
   ANYANG_범계역,
@@ -91,7 +90,8 @@ import {
   YANG_홍대입구역점,
   YANG_화곡DT점,
   YANG_화곡역,
-} from "./studyPlaceConstants";
+} from "@/constants/serviceConstants/studyConstants/studyPlaceConstants";
+import { ActiveLocation, Location } from "@/types/services/locationTypes";
 
 type LocationToPlace = {
   [key in Location]: string[];

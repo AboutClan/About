@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
-import EveryTimeIcon from "./everyTimeIcon";
+import EveryTimeIcon from "@/components/Icons/everyTimeIcon";
 
 export default function EveryTimeLogo() {
   return (

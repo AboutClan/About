@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 
-import CafeMapPage from "./cafe-map";
+import CafeMapPage from "@/pages/cafe-map";
 
 function Index() {
   return <CafeMapPage />;

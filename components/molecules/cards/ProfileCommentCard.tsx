@@ -10,16 +10,16 @@ import {
 } from "@chakra-ui/react";
 import { ReactNode, useState } from "react";
 
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { ModalLayout } from "../../../modals/Modals";
-import { CommentProps } from "../../../types/models/commonTypes";
-import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import Avatar from "../../atoms/Avatar";
-import UserBadge from "../../atoms/badges/UserBadge";
-import Textarea from "../../atoms/Textarea";
-import { ChatTalkIcon } from "../../Icons/chatIcons";
-import { CrownIcon } from "../../Icons/icons";
-import BlurredPart from "../BlurredPart";
+import Avatar from "@/components/atoms/Avatar";
+import UserBadge from "@/components/atoms/badges/UserBadge";
+import Textarea from "@/components/atoms/Textarea";
+import { ChatTalkIcon } from "@/components/Icons/chatIcons";
+import { CrownIcon } from "@/components/Icons/icons";
+import BlurredPart from "@/components/molecules/BlurredPart";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { ModalLayout } from "@/modals/Modals";
+import { CommentProps } from "@/types/models/commonTypes";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 export interface IProfileCommentCard {
   user: UserSimpleInfoProps;

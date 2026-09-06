@@ -1,7 +1,7 @@
 import { Box, Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import { ReactElement } from "react";
 
-import { getSafeAreaBottom } from "../utils/validationUtils";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface ControlButtonProps {
   colorScheme?: ThemeTypings["colorSchemes"];

@@ -2,8 +2,8 @@ import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import styled from "styled-components";
 
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 interface StudyPreferencePopUpProps extends IModal {
   handleClick: () => void;

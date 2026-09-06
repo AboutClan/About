@@ -1,16 +1,16 @@
 import { Box, Flex, Switch } from "@chakra-ui/react";
 import { MouseEvent, useState } from "react";
 
-import BottomNav from "../../../components/layouts/BottomNav";
-import ProgressHeader from "../../../components/molecules/headers/ProgressHeader";
-import SearchLocation from "../../../components/organisms/SearchLocation";
-import { REGISTER_INFO } from "../../../constants/keys/localStorage";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { LocationProps } from "../../../types/common";
-import { DispatchBoolean, DispatchType } from "../../../types/hooks/reactTypes";
-import { IUserRegisterFormWriting } from "../../../types/models/userTypes/userInfoTypes";
-import { getLocalStorageObj, setLocalStorageObj } from "../../../utils/storageUtils";
+import BottomNav from "@/components/layouts/BottomNav";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import SearchLocation from "@/components/organisms/SearchLocation";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { LocationProps } from "@/types/common";
+import { DispatchBoolean, DispatchType } from "@/types/hooks/reactTypes";
+import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 function RegisterLocation() {
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);

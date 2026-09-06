@@ -1,4 +1,4 @@
-import { IStoreGift } from "../types/models/store";
+import { IStoreGift } from "@/types/models/store";
 
 export const STORE_GIFT_ACTIVE: IStoreGift[] = [
   // {

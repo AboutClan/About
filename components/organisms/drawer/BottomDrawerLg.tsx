@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { IModal } from "../../../types/components/modalTypes";
-import { getSafeAreaBottom } from "../../../utils/validationUtils";
-import ScreenOverlay from "../../atoms/ScreenOverlay";
+import ScreenOverlay from "@/components/atoms/ScreenOverlay";
+import { IModal } from "@/types/components/modalTypes";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 export interface IBottomDrawerLgOptions {
   header?: {

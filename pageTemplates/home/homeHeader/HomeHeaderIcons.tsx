@@ -2,10 +2,10 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
-import { NOTICE_ARR } from "../../../storage/notice";
-import { AlertIcon } from "../../../styles/icons";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "@/constants/keys/localStorage";
+import { NOTICE_ARR } from "@/storage/notice";
+import { AlertIcon } from "@/styles/icons";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 interface IHomeHeaderIcons {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -3,10 +3,10 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useSetRecoilState } from "recoil";
 
-import Avatar from "../../components/atoms/Avatar";
-import { transferUserName } from "../../recoils/transferRecoils";
-import { MyChatsProps } from "../../types/models/chat";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import Avatar from "@/components/atoms/Avatar";
+import { transferUserName } from "@/recoils/transferRecoils";
+import { MyChatsProps } from "@/types/models/chat";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface NoticeChatProps {
   chats: MyChatsProps[];

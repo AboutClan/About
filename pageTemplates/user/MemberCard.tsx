@@ -1,10 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import Avatar from "../../components/atoms/Avatar";
-import { useGroupMyStatusQuery } from "../../hooks/groupStudy/queries";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { birthToAge } from "../../utils/convertUtils/convertTypes";
+import Avatar from "@/components/atoms/Avatar";
+import { useGroupMyStatusQuery } from "@/hooks/groupStudy/queries";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { birthToAge } from "@/utils/convertUtils/convertTypes";
 
 const ROLE_KR: Record<string, string> = {
   member: "정회원",

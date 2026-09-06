@@ -3,35 +3,35 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
-import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
-import VoteMap from "../../../components/organisms/VoteMap";
-import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
-import { NaverLocationProps } from "../../../hooks/external/queries";
-import { useStudyPlacesQuery } from "../../../hooks/study/queries";
-import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
-import { getPlaceScore } from "../../../libs/study/studyUtils";
-import { ModalLayout } from "../../../modals/Modals";
-import { CoordinatesProps } from "../../../types/common";
-import { IMapOptions, IMarkerOptions } from "../../../types/externals/naverMapTypes";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import ScreenOverlay from "@/components/atoms/ScreenOverlay";
+import VoteMap from "@/components/organisms/VoteMap";
+import { useUserCurrentLocation } from "@/hooks/custom/CurrentLocationHook";
+import { NaverLocationProps } from "@/hooks/external/queries";
+import { useStudyPlacesQuery } from "@/hooks/study/queries";
+import { useOverlayRouter } from "@/hooks/useOverlayRouter";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { getMapOptions, getStudyPlaceMarkersOptions } from "@/libs/study/setStudyMapOptions";
+import { getPlaceScore } from "@/libs/study/studyUtils";
+import { ModalLayout } from "@/modals/Modals";
+import { RightReviewDrawer } from "@/pageTemplates/study/StudyReview";
+import { CafeListDrawer } from "@/pageTemplates/studyPage/CafeListDrawer";
+import { LocationAddDrawer } from "@/pageTemplates/studyPage/LocationAddDrawer";
+import PlaceInfoDrawer from "@/pageTemplates/studyPage/PlaceInfoDrawer";
+import StudyMapMenuDrawer from "@/pageTemplates/studyPage/StudyMapMenuDrawer";
+import StudyMapNav, { ARCHIVE_OPTIONS } from "@/pageTemplates/studyPage/studyPageMap/TopNav";
+import { StudyReviewDrawer } from "@/pageTemplates/studyPage/StudyReviewDrawer";
+import { CoordinatesProps } from "@/types/common";
+import { IMapOptions, IMarkerOptions } from "@/types/externals/naverMapTypes";
 import {
   StudyPlaceFilter,
   StudyPlaceProps,
-} from "../../../types/models/studyTypes/study-entity.types";
+} from "@/types/models/studyTypes/study-entity.types";
 import {
   getDistanceFromLatLonInKm,
   getPreciseDistanceFromLatLonInKm,
-} from "../../../utils/mathUtils";
-import { getSafeAreaBottom } from "../../../utils/validationUtils";
-import { RightReviewDrawer } from "../../study/StudyReview";
-import { CafeListDrawer } from "../CafeListDrawer";
-import { LocationAddDrawer } from "../LocationAddDrawer";
-import PlaceInfoDrawer from "../PlaceInfoDrawer";
-import StudyMapMenuDrawer from "../StudyMapMenuDrawer";
-import { StudyReviewDrawer } from "../StudyReviewDrawer";
-import StudyMapNav, { ARCHIVE_OPTIONS } from "./TopNav";
+} from "@/utils/mathUtils";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface StudyPageMapProps {
   isDefaultOpen?: boolean;

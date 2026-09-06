@@ -15,27 +15,27 @@ import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import Avatar from "../../../components/atoms/Avatar";
-import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
-import MiniSemiGaugeNeedle from "../../../components/molecules/GradeGauge";
-import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
-import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
+import Avatar from "@/components/atoms/Avatar";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import MiniSemiGaugeNeedle from "@/components/molecules/GradeGauge";
+import { GROUP_STUDY } from "@/constants/keys/queryKeys";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   useGroupMemberRoleMutation,
   useGroupRandomTicketMutation,
-} from "../../../hooks/groupStudy/mutations";
+} from "@/hooks/groupStudy/mutations";
 import {
   GradeProps,
   useGroupIdMannerQuery,
   useGroupsMemberActivityQuery,
-} from "../../../hooks/groupStudy/queries";
-import { useUserRandomTicketMutation } from "../../../hooks/user/mutations";
-import { IFooterOptions, ModalLayout } from "../../../modals/Modals";
-import { calculateGrade } from "../../../pages/group/[id]/manner";
-import { DispatchType } from "../../../types/hooks/reactTypes";
-import { GroupParicipantProps } from "../../../types/models/groupTypes/group";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+} from "@/hooks/groupStudy/queries";
+import { useUserRandomTicketMutation } from "@/hooks/user/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { calculateGrade } from "@/pages/group/[id]/manner";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { GroupParicipantProps } from "@/types/models/groupTypes/group";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 const pillProps = {
   variant: "outline" as const,

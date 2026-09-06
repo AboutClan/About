@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 
-import { PopOverIcon } from "../../components/Icons/PopOverIcon";
-import InfoBoxCol from "../../components/molecules/InfoBoxCol";
-import { useGroupMyStatusQuery } from "../../hooks/groupStudy/queries";
-import { getUserMonthTicket } from "../../libs/userEventLibs/userHelpers";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import { PopOverIcon } from "@/components/Icons/PopOverIcon";
+import InfoBoxCol from "@/components/molecules/InfoBoxCol";
+import { useGroupMyStatusQuery } from "@/hooks/groupStudy/queries";
+import { getUserMonthTicket } from "@/libs/userEventLibs/userHelpers";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
 interface UserMyGroupSectionProps {
   user: IUser;
 }

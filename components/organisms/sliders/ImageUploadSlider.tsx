@@ -10,7 +10,7 @@ import SwiperCore from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import ImageZoomModal from "../../../modals/ImageZoomModal";
+import ImageZoomModal from "@/modals/ImageZoomModal";
 
 SwiperCore.use([Navigation, Pagination]);
 

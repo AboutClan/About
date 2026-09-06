@@ -1,5 +1,5 @@
-import Header from "../../components/layouts/Header";
-import InfoModalButton from "../../components/modalButtons/InfoModalButton";
+import Header from "@/components/layouts/Header";
+import InfoModalButton from "@/components/modalButtons/InfoModalButton";
 
 function GatherHeader({ tab }: { tab: "번개" | "라운지" | "이런 번개 어때요?" }) {
   return (

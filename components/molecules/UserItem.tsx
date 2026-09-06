@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { IUser, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import Avatar from "../atoms/Avatar";
+import Avatar from "@/components/atoms/Avatar";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface IUserItem {
   user: UserSimpleInfoProps | IUser;

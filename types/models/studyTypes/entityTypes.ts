@@ -1,6 +1,6 @@
-import { LocationProps } from "../../common";
-import { TimeStampProps } from "../../utils/timeAndDate";
-import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
+import { LocationProps } from "@/types/common";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export type PlaceStatus = "main" | "sub" | "inactive";
 export interface PlaceProps extends PlaceRegisterProps {

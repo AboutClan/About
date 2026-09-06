@@ -1,13 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
-import { LOCATION_OPEN, LOCATION_TO_COLOR, LOCATION_TO_FULLNAME } from "../../constants/location";
-import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
-import { ALL_스터디인증 } from "../../constants/serviceConstants/studyConstants/studyPlaceConstants";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
-import { ActiveLocationAll } from "../../types/services/locationTypes";
+import ButtonGroups from "@/components/molecules/groups/ButtonGroups";
+import { LOCATION_OPEN, LOCATION_TO_COLOR, LOCATION_TO_FULLNAME } from "@/constants/location";
+import { PLACE_TO_LOCATION } from "@/constants/serviceConstants/studyConstants/studyLocationConstants";
+import { ALL_스터디인증 } from "@/constants/serviceConstants/studyConstants/studyPlaceConstants";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { IArrivedData } from "@/types/models/studyTypes/studyRecords";
+import { ActiveLocationAll } from "@/types/services/locationTypes";
 
 interface IRecordLocationCategory {
   initialData: IArrivedData[];

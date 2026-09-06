@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import Select from "../../../components/atoms/Select";
-import { DispatchType } from "../../../types/hooks/reactTypes";
-import { StudySortedOption } from "../StudyPagePlaceSection";
+import Select from "@/components/atoms/Select";
+import { StudySortedOption } from "@/pageTemplates/studyPage/StudyPagePlaceSection";
+import { DispatchType } from "@/types/hooks/reactTypes";
 
 interface StudyPagePlaceSectionFilterBarProps {
   placeCnt: number;

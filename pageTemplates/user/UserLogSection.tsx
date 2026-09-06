@@ -3,10 +3,10 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useState } from "react";
 
-import Select from "../../components/atoms/Select";
-import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
-import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+import Select from "@/components/atoms/Select";
+import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
+import { usePointSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 
 function UserLogSection() {
   const [tab, setTab] = useState<"score" | "point" | "deposit">("score");

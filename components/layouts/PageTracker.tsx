@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-import { BASE_BOTTOM_NAV_SEGMENT } from "../../pageTemplates/layout/Layout";
-import { slideDirectionState } from "../../recoils/navigationRecoils";
-import { parseUrlToSegments } from "../../utils/stringUtils";
+import { BASE_BOTTOM_NAV_SEGMENT } from "@/pageTemplates/layout/Layout";
+import { slideDirectionState } from "@/recoils/navigationRecoils";
+import { parseUrlToSegments } from "@/utils/stringUtils";
 
 const REGISTER_WRITING_SEQUENCE = {
   auth: 1,

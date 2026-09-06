@@ -7,13 +7,13 @@ export function Temp() {
 
 // import ImageTileGridLayout, {
 //   IImageTileData,
-// } from "../../../components/molecules/layouts/ImageTitleGridLayout";
-// import { MAX_USER_PER_PLACE } from "../../../constants/settingValue/study/study";
-// import { useToast } from "../../../hooks/custom/CustomToast";
+// } from "@/components/molecules/layouts/ImageTitleGridLayout";
+// import { MAX_USER_PER_PLACE } from "@/constants/settingValue/study/study";
+// import { useToast } from "@/hooks/custom/CustomToast";
 // import {
 //   StudyParticipationProps,
 //   StudyPlaceProps,
-// } from "../../../types/models/studyTypes/baseTypes";
+// } from "@/types/models/studyTypes/baseTypes";
 
 // interface IPlaceSelectorSub {
 //   places: StudyParticipationProps[];

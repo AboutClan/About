@@ -1,6 +1,6 @@
-import Header from "../../layouts/Header";
-import Slide from "../../layouts/PageSlide";
-import ProgressStatus from "../ProgressStatus";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProgressStatus from "@/components/molecules/ProgressStatus";
 interface IProgressHeader {
   value: number;
   title: string;

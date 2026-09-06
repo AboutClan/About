@@ -3,12 +3,12 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useState } from "react";
 
-import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
-import MonthNav from "../components/atoms/MonthNav";
-import Header from "../components/layouts/Header";
-import Slide from "../components/layouts/PageSlide";
-import { CALENDAR_IMAGES } from "../constants/contents/calendarSchedule";
-import { dayjsToStr } from "../utils/dateTimeUtils";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import MonthNav from "@/components/atoms/MonthNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import { CALENDAR_IMAGES } from "@/constants/contents/calendarSchedule";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 function CalendarPage() {
   const [monthFirstDate, setMonthFirstDate] = useState(

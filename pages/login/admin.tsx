@@ -16,12 +16,12 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import ForceLogoutDialog from "../../modals/login/ForceLogoutDialog";
-import { IFooterOptions, ModalLayout } from "../../modals/Modals";
-import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getSafeAreaBottom, isIOS } from "../../utils/validationUtils";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import ForceLogoutDialog from "@/modals/login/ForceLogoutDialog";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { navigateExternalLink } from "@/utils/navigateUtils";
+import { getSafeAreaBottom, isIOS } from "@/utils/validationUtils";
 
 const Login: NextPage<{
   providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>;

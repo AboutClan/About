@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import AlertNotCompletedModal from "../../components/AlertNotCompletedModal";
-import HighlightedTextButton from "../../components/atoms/buttons/HighlightedTextButton";
-import Accordion, { IAccordionContent } from "../../components/molecules/Accordion";
-import SectionBar from "../../components/molecules/bars/SectionBar";
+import AlertNotCompletedModal from "@/components/AlertNotCompletedModal";
+import HighlightedTextButton from "@/components/atoms/buttons/HighlightedTextButton";
+import Accordion, { IAccordionContent } from "@/components/molecules/Accordion";
+import SectionBar from "@/components/molecules/bars/SectionBar";
 
 export default function EventMission() {
   const [isModal, setIsModal] = useState(false);

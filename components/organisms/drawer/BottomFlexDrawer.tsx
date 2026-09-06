@@ -3,9 +3,9 @@ import { animate, motion, useMotionValue } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { IModal } from "../../../types/components/modalTypes";
-import { getSafeAreaBottom } from "../../../utils/validationUtils";
-import ScreenOverlay from "../../atoms/ScreenOverlay";
+import ScreenOverlay from "@/components/atoms/ScreenOverlay";
+import { IModal } from "@/types/components/modalTypes";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 export const DRAWER_MIN_HEIGHT = 103;
 //적당한 값 조율해야 함

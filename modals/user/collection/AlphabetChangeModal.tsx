@@ -2,13 +2,13 @@ import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { AboutIcon } from "../../../components/atoms/AboutIcons";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
-import { IModal } from "../../../types/components/modalTypes";
-import { Alphabet } from "../../../types/models/collections";
-import { IFooterOptions, ModalLayout } from "../../Modals";
+import { AboutIcon } from "@/components/atoms/AboutIcons";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useInteractionMutation } from "@/hooks/user/sub/interaction/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { Alphabet } from "@/types/models/collections";
 
 interface IAlphabetChangeModal extends IModal {
   myAlphabets: Alphabet[];

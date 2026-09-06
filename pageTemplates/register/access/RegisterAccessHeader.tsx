@@ -2,9 +2,9 @@ import { Box, Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import Header from "../../../components/layouts/Header";
-import { ModalLayout } from "../../../modals/Modals";
-import { navigateExternalLink } from "../../../utils/navigateUtils";
+import Header from "@/components/layouts/Header";
+import { ModalLayout } from "@/modals/Modals";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 function RegisterAccessHeader() {
   const router = useRouter();

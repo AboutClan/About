@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
-import TextSlider, { TextProps } from "../organisms/TextSlider";
+import TextSlider, { TextProps } from "@/components/organisms/TextSlider";
 
 interface WinnerTextSliderProps {
   textArr: TextProps[];

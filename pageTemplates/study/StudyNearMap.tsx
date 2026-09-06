@@ -2,22 +2,22 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import SectionHeader from "../../components/atoms/SectionHeader";
-import VoteMap from "../../components/organisms/VoteMap";
-import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useCheckGuest } from "../../hooks/custom/UserHooks";
-import { useStudyPlaceChangeMutation } from "../../hooks/study/mutations";
-import { useStudyNearPlaceQuery } from "../../hooks/study/queries";
-import { getMapOptions, getStudyPlaceMarkersOptions } from "../../libs/study/setStudyMapOptions";
-import { ModalLayout } from "../../modals/Modals";
-import { CoordinatesProps } from "../../types/common";
-import { IMapOptions } from "../../types/externals/naverMapTypes";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { getTodayStr } from "../../utils/dateTimeUtils";
-import PlaceInfoDrawer from "../studyPage/PlaceInfoDrawer";
-import StudyPageMap from "../studyPage/studyPageMap/StudyPageMap";
-import { ExpansionIcon, XIcon } from "../studyPage/studyPageMap/TopNav";
+import SectionHeader from "@/components/atoms/SectionHeader";
+import VoteMap from "@/components/organisms/VoteMap";
+import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { useStudyPlaceChangeMutation } from "@/hooks/study/mutations";
+import { useStudyNearPlaceQuery } from "@/hooks/study/queries";
+import { getMapOptions, getStudyPlaceMarkersOptions } from "@/libs/study/setStudyMapOptions";
+import { ModalLayout } from "@/modals/Modals";
+import PlaceInfoDrawer from "@/pageTemplates/studyPage/PlaceInfoDrawer";
+import StudyPageMap from "@/pageTemplates/studyPage/studyPageMap/StudyPageMap";
+import { ExpansionIcon, XIcon } from "@/pageTemplates/studyPage/studyPageMap/TopNav";
+import { CoordinatesProps } from "@/types/common";
+import { IMapOptions } from "@/types/externals/naverMapTypes";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { getTodayStr } from "@/utils/dateTimeUtils";
 
 interface StudyNearMapProps {
   centerPlace: StudyPlaceProps;

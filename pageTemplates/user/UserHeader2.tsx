@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-import ButtonWrapper from "../../components/atoms/ButtonWrapper";
-import Slide from "../../components/layouts/PageSlide";
-import { AboutLogo } from "../../components/services/AboutLogo";
+import ButtonWrapper from "@/components/atoms/ButtonWrapper";
+import Slide from "@/components/layouts/PageSlide";
+import { AboutLogo } from "@/components/services/AboutLogo";
 
 export default function UserHeader() {
   return (

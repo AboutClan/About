@@ -4,12 +4,12 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import { SingleLineText } from "../../../styles/layout/components";
-import { IImageProps } from "../../../types/components/assetTypes";
-import { ITextAndColorSchemes } from "../../../types/components/propTypes";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
-import Skeleton from "../../atoms/skeleton/Skeleton";
+import Skeleton from "@/components/atoms/skeleton/Skeleton";
+import { SingleLineText } from "@/styles/layout/components";
+import { IImageProps } from "@/types/components/assetTypes";
+import { ITextAndColorSchemes } from "@/types/components/propTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { convertLocationLangTo } from "@/utils/convertUtils/convertDatas";
 export interface IHighlightedThumbnailCard {
   participants?: UserSimpleInfoProps[];
   title: string;

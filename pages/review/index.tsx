@@ -6,25 +6,25 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { MainLoading } from "../../components/atoms/loaders/MainLoading";
-import KakaoShareBtn from "../../components/Icons/KakaoShareBtn";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
-import { LOCATION_OPEN } from "../../constants/location";
-import { WEB_URL } from "../../constants/system";
-import { useErrorToast } from "../../hooks/custom/CustomToast";
-import { useGatherAllSummaryQuery } from "../../hooks/gather/queries";
-import { IReviewData, REVIEW_DATA } from "../../storage/Review";
-import { IGatherLocation, IGatherType } from "../../types/models/gatherTypes/gatherTypes";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import KakaoShareBtn from "@/components/Icons/KakaoShareBtn";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ButtonGroups, { ButtonOptionsProps } from "@/components/molecules/groups/ButtonGroups";
+import { LOCATION_OPEN } from "@/constants/location";
+import { WEB_URL } from "@/constants/system";
+import { useErrorToast } from "@/hooks/custom/CustomToast";
+import { useGatherAllSummaryQuery } from "@/hooks/gather/queries";
+import { IReviewData, REVIEW_DATA } from "@/storage/Review";
+import { IGatherLocation, IGatherType } from "@/types/models/gatherTypes/gatherTypes";
 import {
   ActiveLocation,
   ActiveLocationAll,
   LocationEn,
   LocationFilterType,
-} from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+} from "@/types/services/locationTypes";
+import { convertLocationLangTo } from "@/utils/convertUtils/convertDatas";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 export interface IGatherSummary {
   title: string;

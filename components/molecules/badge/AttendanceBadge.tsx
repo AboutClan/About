@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
 
-import { XCircleIcon } from "../../Icons/CircleIcons";
+import { XCircleIcon } from "@/components/Icons/CircleIcons";
 
 interface IAttendanceBadge {
   type: "attend" | "dismissed";

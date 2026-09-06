@@ -1,8 +1,8 @@
 import { Badge, Box, Button, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { useState } from "react";
 
-import Accordion2 from "../../../components/molecules/Accordion2";
-import { ACCORDION_CONTENT_FAQ } from "../../../constants/contentsText/accordionContents";
+import Accordion2 from "@/components/molecules/Accordion2";
+import { ACCORDION_CONTENT_FAQ } from "@/constants/contentsText/accordionContents";
 
 function RegisterFAQ() {
   const [size, setSize] = useState(3);

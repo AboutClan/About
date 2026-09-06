@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 
-import { useToast } from "../../hooks/custom/CustomToast";
-import { DispatchType } from "../../types/hooks/reactTypes";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { DispatchType } from "@/types/hooks/reactTypes";
 
 interface MonthNavProps {
   monthNum: number;

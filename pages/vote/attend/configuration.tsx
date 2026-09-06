@@ -4,28 +4,28 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import PageIntro from "../../../components/atoms/PageIntro";
-import SectionTitle from "../../../components/atoms/SectionTitle";
-import Select from "../../../components/atoms/Select";
-import Textarea from "../../../components/atoms/Textarea";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
-import { STUDY_ATTEND_AT } from "../../../constants/keys/queryKeys";
-import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
-import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
-import { useStudySetQuery } from "../../../hooks/study/queries";
-import { transferStudyRewardState } from "../../../recoils/transferRecoils";
+import PageIntro from "@/components/atoms/PageIntro";
+import SectionTitle from "@/components/atoms/SectionTitle";
+import Select from "@/components/atoms/Select";
+import Textarea from "@/components/atoms/Textarea";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ImageUploadInput from "@/components/molecules/ImageUploadInput";
+import { STUDY_ATTEND_AT } from "@/constants/keys/queryKeys";
+import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useRealTimeAttendMutation } from "@/hooks/realtime/mutations";
+import { useStudyAttendCheckMutation } from "@/hooks/study/mutations";
+import { useStudySetQuery } from "@/hooks/study/queries";
+import { transferStudyRewardState } from "@/recoils/transferRecoils";
 import {
   StudyConfirmedSetProps,
   StudyType,
-} from "../../../types/models/studyTypes/study-set.types";
-import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
-import { dayjsToFormat, getTodayStr } from "../../../utils/dateTimeUtils";
-import { setLocalStorageObj } from "../../../utils/storageUtils";
+} from "@/types/models/studyTypes/study-set.types";
+import { convertTimeStringToDayjs } from "@/utils/convertUtils/convertTypes";
+import { dayjsToFormat, getTodayStr } from "@/utils/dateTimeUtils";
+import { setLocalStorageObj } from "@/utils/storageUtils";
 
 function Configuration() {
   const searchParams = useSearchParams();

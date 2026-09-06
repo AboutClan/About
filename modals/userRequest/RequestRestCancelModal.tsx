@@ -3,13 +3,13 @@ import dayjs from "dayjs";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import { USER_INFO } from "../../constants/keys/queryKeys";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
-import { IModal } from "../../types/components/modalTypes";
-import { IRest } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { IRest } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface IRequestRestCancelModal extends IModal {
   rest: IRest;

@@ -2,23 +2,23 @@ import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-import ParticipationBar from "../../../components/atoms/bars/ParticipationBar";
-import { IProfileCommentCard } from "../../../components/molecules/cards/ProfileCommentCard";
-import SocialingScoreBadge from "../../../components/molecules/SocialingScoreBadge";
-import ProfileCardColumn from "../../../components/organisms/ProfileCardColumn";
-import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
+import ParticipationBar from "@/components/atoms/bars/ParticipationBar";
+import { IProfileCommentCard } from "@/components/molecules/cards/ProfileCommentCard";
+import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
+import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
+import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import GatherDateParticipationChart, {
+  IGatherDateParticipationStat,
+} from "@/pageTemplates/gather/detail/GatherDateParticipationChart";
+import GatherOfficialParticipationChart from "@/pageTemplates/gather/detail/GatherOfficialParticipationChart";
 import {
   GatherCategory,
   IGather,
   IGatherParticipants,
-} from "../../../types/models/gatherTypes/gatherTypes";
-import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { birthToAge } from "../../../utils/convertUtils/convertTypes";
-import GatherDateParticipationChart, {
-  IGatherDateParticipationStat,
-} from "./GatherDateParticipationChart";
-import GatherOfficialParticipationChart from "./GatherOfficialParticipationChart";
+} from "@/types/models/gatherTypes/gatherTypes";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { birthToAge } from "@/utils/convertUtils/convertTypes";
 
 interface IGatherParticipation {
   data: IGather;

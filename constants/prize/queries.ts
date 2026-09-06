@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { QueryOptions } from "../../types/hooks/reactTypes";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { SERVER_URI } from "../system";
+import { SERVER_URI } from "@/constants/system";
+import { QueryOptions } from "@/types/hooks/reactTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface PrizeDataProps {
   category: "ranking" | "store" | "dailyAttend";

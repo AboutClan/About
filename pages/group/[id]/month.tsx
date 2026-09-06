@@ -5,13 +5,13 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
-import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
-import { useGroupMonthAttendMutation } from "../../../hooks/groupStudy/mutations";
-import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { GroupParicipantProps } from "../../../types/models/groupTypes/group";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import { GROUP_STUDY } from "@/constants/keys/queryKeys";
+import { useGroupMonthAttendMutation } from "@/hooks/groupStudy/mutations";
+import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
+import { GroupParicipantProps } from "@/types/models/groupTypes/group";
 
 export default function Month() {
   const { data: session } = useSession();

@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-import { BOTTOM_NAV_HEIGHT_PX, getSafeAreaBottom } from "../utils/validationUtils";
+import { BOTTOM_NAV_HEIGHT_PX, getSafeAreaBottom } from "@/utils/validationUtils";
 
 type TabId = "map" | "feed" | "study" | "bookmark" | "profile";
 

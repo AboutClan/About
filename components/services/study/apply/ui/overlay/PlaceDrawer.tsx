@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import { useUserInfoFieldMutation } from "../../../../../../hooks/user/mutations";
-import { RegisterLocationLayout } from "../../../../../../pages/register/location";
-import { LocationProps } from "../../../../../../types/common";
-import { DispatchType } from "../../../../../../types/hooks/reactTypes";
-import { LocationDetailProps } from "../../../../../../types/models/userTypes/userInfoTypes";
-import RightDrawer from "../../../../../organisms/drawer/RightDrawer";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import { RegisterLocationLayout } from "@/pages/register/location";
+import { LocationProps } from "@/types/common";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { LocationDetailProps } from "@/types/models/userTypes/userInfoTypes";
 
 export function PlaceDrawer({
   defaultLocation,

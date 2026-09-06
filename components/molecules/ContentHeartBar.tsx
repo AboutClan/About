@@ -4,21 +4,21 @@ import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Fragment, useEffect, useState } from "react";
 
-import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useFeedLikeMutation } from "../../hooks/feed/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { getCommentArr } from "../../libs/comment/commentLib";
-import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
-import { UserCommentProps } from "../../types/components/propTypes";
-import { FeedComment } from "../../types/models/feed";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
-import RightDrawer from "../organisms/drawer/RightDrawer";
-import ProfileCommentCard from "./cards/ProfileCommentCard";
-import AvatarGroupsOverwrap from "./groups/AvatarGroupsOverwrap";
-import UserCommentBlock from "./UserCommentBlock";
-import UserCommentInput from "./UserCommentInput";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
+import UserCommentBlock from "@/components/molecules/UserCommentBlock";
+import UserCommentInput from "@/components/molecules/UserCommentInput";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { useCommentMutation, useSubCommentMutation } from "@/hooks/common/mutations";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useFeedLikeMutation } from "@/hooks/feed/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { getCommentArr } from "@/libs/comment/commentLib";
+import { ReplyProps } from "@/pageTemplates/community/SecretSquareComments";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { FeedComment } from "@/types/models/feed";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 interface ContentHeartBarProps {
   feedId: string;

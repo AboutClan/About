@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import UserNavigationBlock from "./UserNavigationBlock";
-import UserNavigationModals from "./UserNavigationModals";
+import UserNavigationBlock from "@/pageTemplates/user/userNavigation/UserNavigationBlock";
+import UserNavigationModals from "@/pageTemplates/user/userNavigation/UserNavigationModals";
 
 export type UserOverviewModal =
   | "suggest"

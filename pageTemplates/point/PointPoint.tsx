@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import ImageSlider from "../../components/organisms/imageSlider/ImageSlider";
-import { STORE_GIFT } from "../../storage/Store";
+import ImageSlider from "@/components/organisms/imageSlider/ImageSlider";
+import { STORE_GIFT } from "@/storage/Store";
 
 interface IPointPoint {
   mypoint: number;

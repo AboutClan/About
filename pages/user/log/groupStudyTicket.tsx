@@ -3,14 +3,14 @@
 import { Box, Button, Flex, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { useState } from "react";
 
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useGroupsMineQuery } from "../../../hooks/groupStudy/queries";
-import { usePointSystemMutation, useUserTicketMutation } from "../../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { getTemperatureTicket } from "../../../pageTemplates/user/UserSocialGuideDrawer";
-import UserSocialGuideDrawer2 from "../../../pageTemplates/user/UserSocialGuideDrawer2";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useGroupsMineQuery } from "@/hooks/groupStudy/queries";
+import { usePointSystemMutation, useUserTicketMutation } from "@/hooks/user/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { getTemperatureTicket } from "@/pageTemplates/user/UserSocialGuideDrawer";
+import UserSocialGuideDrawer2 from "@/pageTemplates/user/UserSocialGuideDrawer2";
 
 function GroupStudyTicketLogSection() {
   const toast = useToast();

@@ -2,10 +2,10 @@ import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import TwoButtonNav from "../../../components/layouts/TwoButtonNav";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
-import { DispatchNumber } from "../../../types/hooks/reactTypes";
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
+import TwoButtonNav from "@/components/layouts/TwoButtonNav";
+import { useFailToast } from "@/hooks/custom/CustomToast";
+import { DispatchNumber } from "@/types/hooks/reactTypes";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 
 interface IGatherParticipateModalPassword {
   setPageNum: DispatchNumber;

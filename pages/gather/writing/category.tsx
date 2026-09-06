@@ -3,16 +3,16 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import { GATHER_TYPES,GatherCategoryIcons } from "../../../constants/contentsText/GatherContents";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { IGatherType } from "../../../types/models/gatherTypes/gatherTypes";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProgressStatus from "@/components/molecules/ProgressStatus";
+import { GATHER_TYPES,GatherCategoryIcons } from "@/constants/contentsText/GatherContents";
+import { useFailToast } from "@/hooks/custom/CustomToast";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
+import { IGatherType } from "@/types/models/gatherTypes/gatherTypes";
 
 function WritingGatherCategory() {
   const router = useRouter();

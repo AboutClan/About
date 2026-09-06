@@ -8,37 +8,37 @@ export function Temp() {
 // import { useEffect, useState } from "react";
 // import { useRecoilValue } from "recoil";
 
-// import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
-// import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
-// import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
-// import PickerRowButton from "../../components/molecules/PickerRowButton";
+// import { STUDY_MAIN_IMAGES } from "@/assets/images/studyMain";
+// import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+// import { StudyThumbnailCardProps } from "@/components/molecules/cards/StudyThumbnailCard";
+// import PickerRowButton from "@/components/molecules/PickerRowButton";
 // import BottomFlexDrawer, {
 //   BottomFlexDrawerOptions,
-// } from "../../components/organisms/drawer/BottomFlexDrawer";
-// import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
-// import { LOCATION_OPEN } from "../../constants/location";
-// import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-// import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-// import { useStudyVoteMutation } from "../../hooks/study/mutations";
-// import { useUserInfoQuery } from "../../hooks/user/queries";
-// import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
-// import { setStudyThumbnailCard } from "../../libs/study/setStudyThumbnailCard";
-// import { myStudyParticipationState } from "../../recoils/studyRecoils";
-// import { CoordinatesProps } from "../../types/common";
-// import { IModal } from "../../types/components/modalTypes";
-// import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
+// } from "@/components/organisms/drawer/BottomFlexDrawer";
+// import StudyVoteTimeRulletDrawer from "@/components/services/studyVote/StudyVoteTimeRulletDrawer";
+// import { LOCATION_OPEN } from "@/constants/location";
+// import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+// import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+// import { useStudyVoteMutation } from "@/hooks/study/mutations";
+// import { useUserInfoQuery } from "@/hooks/user/queries";
+// import { convertStudyToParticipations } from "@/libs/study/getMyStudyMethods";
+// import { setStudyThumbnailCard } from "@/libs/study/setStudyThumbnailCard";
+// import { myStudyParticipationState } from "@/recoils/studyRecoils";
+// import { CoordinatesProps } from "@/types/common";
+// import { IModal } from "@/types/components/modalTypes";
+// import { DispatchBoolean, DispatchType } from "@/types/hooks/reactTypes";
 // import {
 //   StudyMergeParticipationProps,
 //   StudyParticipationProps,
 //   StudyPlaceProps,
 //   StudyOneDayProps,
-// } from "../../types/models/studyTypes/studyDetails";
-// import { IStudyVoteTime, MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
-// import { Location } from "../../types/services/locationTypes";
-// import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
-// import { getDistanceFromLatLonInKm, getRandomIdx } from "../../utils/mathUtils";
-// import { iPhoneNotchSize } from "../../utils/validationUtils";
-// import VoteDrawerPlaceDrawer from "./voteDrawer/StudyOpenDrawer";
+// } from "@/types/models/studyTypes/studyDetails";
+// import { IStudyVoteTime, MyVoteProps } from "@/types/models/studyTypes/studyInterActions";
+// import { Location } from "@/types/services/locationTypes";
+// import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
+// import { getDistanceFromLatLonInKm, getRandomIdx } from "@/utils/mathUtils";
+// import { iPhoneNotchSize } from "@/utils/validationUtils";
+// import VoteDrawerPlaceDrawer from "@/pageTemplates/vote/voteDrawer/StudyOpenDrawer";
 // export interface VoteDrawerItemProps {
 //   place: StudyPlaceProps;
 //   voteCnt: number;

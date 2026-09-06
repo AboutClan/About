@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import ArrowTextButton from "../../atoms/buttons/ArrowTextButton";
+import ArrowTextButton from "@/components/atoms/buttons/ArrowTextButton";
 interface IBetweenTextSwitcher {
   left: {
     text: string;

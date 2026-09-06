@@ -1,11 +1,11 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import { LocationDotIcon, LocationDotIconHTML } from "../../components/Icons/LocationIcons";
-import VoteMap from "../../components/organisms/VoteMap";
-import { LocationProps } from "../../types/common";
-import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { navigateExternalLink } from "../../utils/navigateUtils";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import { LocationDotIcon, LocationDotIconHTML } from "@/components/Icons/LocationIcons";
+import VoteMap from "@/components/organisms/VoteMap";
+import { LocationProps } from "@/types/common";
+import { IMapOptions, IMarkerOptions } from "@/types/externals/naverMapTypes";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 interface StudyAddressMapProps {
   location: LocationProps;
 }

@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { SERVER_URI } from "../../../../constants/system";
-import { QueryOptions } from "../../../../types/hooks/reactTypes";
-import { TimeStampProps } from "../../../../types/utils/timeAndDate";
+import { SERVER_URI } from "@/constants/system";
+import { QueryOptions } from "@/types/hooks/reactTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export interface IDailyCheck extends TimeStampProps {
   uid: string;

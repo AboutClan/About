@@ -14,10 +14,10 @@ import {
 } from "@chakra-ui/react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
-import { Input } from "../../../components/atoms/Input";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import { SecretSquareFormData } from "../../../types/models/square";
-import { XIcon } from "../../studyPage/studyPageMap/TopNav";
+import { Input } from "@/components/atoms/Input";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { XIcon } from "@/pageTemplates/studyPage/studyPageMap/TopNav";
+import { SecretSquareFormData } from "@/types/models/square";
 
 interface PollCreatorDrawerProps {
   isOpen: boolean;

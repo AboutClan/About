@@ -1,13 +1,13 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { GroupCategoryMain } from "../../constants/contentsText/GroupContents";
-import { GATHER_CONTENT, GROUP_STUDY } from "../../constants/keys/queryKeys";
-import { SERVER_URI } from "../../constants/system";
-import { IGatherSummary } from "../../pages/review";
-import { QueryOptions } from "../../types/hooks/reactTypes";
-import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { GroupStatus, IGroup, IGroupAttendance } from "../../types/models/groupTypes/group";
+import { GroupCategoryMain } from "@/constants/contentsText/GroupContents";
+import { GATHER_CONTENT, GROUP_STUDY } from "@/constants/keys/queryKeys";
+import { SERVER_URI } from "@/constants/system";
+import { IGatherSummary } from "@/pages/review";
+import { QueryOptions } from "@/types/hooks/reactTypes";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
+import { GroupStatus, IGroup, IGroupAttendance } from "@/types/models/groupTypes/group";
 
 export interface GroupShapShotProps {
   hotClub: IGroup[];

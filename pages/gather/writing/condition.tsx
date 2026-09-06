@@ -3,21 +3,21 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProgressStatus from "../../../components/molecules/ProgressStatus";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProgressStatus from "@/components/molecules/ProgressStatus";
 import WritingConditionLayout, {
   WritingConditionProps,
-} from "../../../components/organisms/WritingConditionLayout";
-import { GATHER_WRITING_INFO } from "../../../constants/keys/localStorage";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
-import { getLocalStorageObj, setLocalStorageObj } from "../../../utils/storageUtils";
-import { randomPassword } from "../../../utils/validationUtils";
+} from "@/components/organisms/WritingConditionLayout";
+import { GATHER_WRITING_INFO } from "@/constants/keys/localStorage";
+import { useToast } from "@/hooks/custom/CustomToast";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
+import { IGatherWriting } from "@/types/models/gatherTypes/gatherTypes";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
+import { randomPassword } from "@/utils/validationUtils";
 
 
 function WritingCondition() {

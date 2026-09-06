@@ -5,7 +5,7 @@ export default function Empty() {
 // import { useSession } from "next-auth/react";
 // import styled from "styled-components";
 
-// import { MemberGroup } from "../../types/models/member";
+// import { MemberGroup } from "@/types/models/member";
 
 // interface IMemberSectionTitle {
 //   section: MemberGroup;

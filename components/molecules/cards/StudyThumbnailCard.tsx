@@ -4,16 +4,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { getStudyBadge } from "../../../libs/study/studyHelpers";
-import { SingleLineText } from "../../../styles/layout/components";
-import { StudyType } from "../../../types/models/studyTypes/study-set.types";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
-import { CheckCircleIcon } from "../../Icons/CircleIcons";
-import { LocationDotIcon } from "../../Icons/LocationIcons";
-import { UserIcon } from "../../Icons/UserIcons";
-import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
-import PlaceImage from "../PlaceImage";
+import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
+import { LocationDotIcon } from "@/components/Icons/LocationIcons";
+import { UserIcon } from "@/components/Icons/UserIcons";
+import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
+import PlaceImage from "@/components/molecules/PlaceImage";
+import { getStudyBadge } from "@/libs/study/studyHelpers";
+import { SingleLineText } from "@/styles/layout/components";
+import { StudyType } from "@/types/models/studyTypes/study-set.types";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 
 const VOTER_SHOW_MAX = 4;
 export const STUDY_MAX_CNT = 8;

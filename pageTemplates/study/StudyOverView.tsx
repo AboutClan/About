@@ -1,16 +1,16 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import MainBadge from "../../components/atoms/MainBadge";
-import StarRating from "../../components/atoms/StarRating";
-import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
-import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
-import { getStudyBadge } from "../../libs/study/studyHelpers";
-import { getPlaceScore } from "../../libs/study/studyUtils";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { StudyType } from "../../types/models/studyTypes/study-set.types";
-import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
-import { getPlaceBranch } from "../../utils/stringUtils";
+import MainBadge from "@/components/atoms/MainBadge";
+import StarRating from "@/components/atoms/StarRating";
+import InfoBoxCol, { InfoBoxProps } from "@/components/molecules/InfoBoxCol";
+import { useUserCurrentLocation } from "@/hooks/custom/CurrentLocationHook";
+import { getStudyBadge } from "@/libs/study/studyHelpers";
+import { getPlaceScore } from "@/libs/study/studyUtils";
+import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { StudyType } from "@/types/models/studyTypes/study-set.types";
+import { getDistanceFromLatLonInKm } from "@/utils/mathUtils";
+import { getPlaceBranch } from "@/utils/stringUtils";
 
 interface IStudyOverview {
   placeInfo: StudyPlaceProps;

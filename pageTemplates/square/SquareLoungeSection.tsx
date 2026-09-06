@@ -2,13 +2,13 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import Select from "../../components/atoms/Select";
-import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
-import FeedLayout, { FeedLayoutProps } from "../../components/organisms/FeedLayout";
-import { useFeedsQuery } from "../../hooks/feed/queries";
-import { convertFeedToLayout } from "../../libs/convertFeedToLayout";
-import { FeedProps, FeedType } from "../../types/models/feed";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Select from "@/components/atoms/Select";
+import ButtonGroups, { ButtonOptionsProps } from "@/components/molecules/groups/ButtonGroups";
+import FeedLayout, { FeedLayoutProps } from "@/components/organisms/FeedLayout";
+import { useFeedsQuery } from "@/hooks/feed/queries";
+import { convertFeedToLayout } from "@/libs/convertFeedToLayout";
+import { FeedProps, FeedType } from "@/types/models/feed";
 
 function SquareLoungeSection() {
   const router = useRouter();

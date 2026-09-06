@@ -4,32 +4,32 @@
 // import { useRouter, useSearchParams } from "next/navigation";
 // import { useState } from "react";
 
-// import Avatar from "../../components/atoms/Avatar";
-// import { Input } from "../../components/atoms/Input";
-// import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
-// import StudyChangeAlertModal from "../../components/modals/alertModals/StudyChangeAlertModal";
-// import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
+// import Avatar from "@/components/atoms/Avatar";
+// import { Input } from "@/components/atoms/Input";
+// import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
+// import StudyChangeAlertModal from "@/components/modals/alertModals/StudyChangeAlertModal";
+// import NewTwoButtonRow from "@/components/molecules/NewTwoButtonRow";
 // import BottomFlexDrawer, {
 //   BottomFlexDrawerOptions,
-// } from "../../components/organisms/drawer/BottomFlexDrawer";
-// import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
-// import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-// import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-// import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
-// import { useStudyCommentMutation, useStudyVoteMutation } from "../../hooks/study/mutations";
-// import { useUserInfoQuery } from "../../hooks/user/queries";
-// import { ModalLayout } from "../../modals/Modals";
-// import { DispatchType } from "../../types/hooks/reactTypes";
-// import { StudyType } from "../../types/models/studyTypes/study-entity.types";
+// } from "@/components/organisms/drawer/BottomFlexDrawer";
+// import StudyVoteTimeRulletDrawer from "@/components/services/studyVote/StudyVoteTimeRulletDrawer";
+// import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+// import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+// import { useRealtimeVoteMutation } from "@/hooks/realtime/mutations";
+// import { useStudyCommentMutation, useStudyVoteMutation } from "@/hooks/study/mutations";
+// import { useUserInfoQuery } from "@/hooks/user/queries";
+// import { ModalLayout } from "@/modals/Modals";
+// import { DispatchType } from "@/types/hooks/reactTypes";
+// import { StudyType } from "@/types/models/studyTypes/study-entity.types";
 // import {
 //   MergeStudyPlaceProps,
 //   StudyMergeResultProps,
-// } from "../../types/models/studyTypes/study-set.types";
-// import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
-// import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
-// import { PlaceInfoProps } from "../../types/models/utilTypes";
-// import { StringTimeProps } from "../../types/utils/timeAndDate";
-// import { dayjsToStr } from "../../utils/dateTimeUtils";
+// } from "@/types/models/studyTypes/study-set.types";
+// import { IStudyVoteTime } from "@/types/models/studyTypes/studyInterActions";
+// import { AvatarProps } from "@/types/models/userTypes/userInfoTypes";
+// import { PlaceInfoProps } from "@/types/models/utilTypes";
+// import { StringTimeProps } from "@/types/utils/timeAndDate";
+// import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 // export interface StudyInfoProps {
 //   place: MergeStudyPlaceProps;

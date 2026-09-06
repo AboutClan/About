@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 
-import Header from "../../components/layouts/Header";
-import { useUserInfoQuery } from "../../hooks/user/queries";
+import Header from "@/components/layouts/Header";
+import { useUserInfoQuery } from "@/hooks/user/queries";
 
 export default function EventHeader() {
   const { data: userInfo } = useUserInfoQuery();

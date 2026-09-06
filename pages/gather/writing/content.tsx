@@ -4,16 +4,16 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { Input } from "../../../components/atoms/Input";
-import Textarea from "../../../components/atoms/Textarea";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
+import { Input } from "@/components/atoms/Input";
+import Textarea from "@/components/atoms/Textarea";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProgressStatus from "@/components/molecules/ProgressStatus";
+import { useFailToast } from "@/hooks/custom/CustomToast";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
 
 function WritingGatherContent() {
   const router = useRouter();

@@ -4,29 +4,29 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import AlertModal from "../../components/AlertModal";
-import MenuButton, { MenuProps } from "../../components/atoms/buttons/MenuButton";
-import Divider from "../../components/atoms/Divider";
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import ThumbIcon from "../../components/Icons/ThumbIcon";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import PostAuthorCard from "../../components/molecules/cards/PostAuthorCard";
+import AlertModal from "@/components/AlertModal";
+import MenuButton, { MenuProps } from "@/components/atoms/buttons/MenuButton";
+import Divider from "@/components/atoms/Divider";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import ThumbIcon from "@/components/Icons/ThumbIcon";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import PostAuthorCard from "@/components/molecules/cards/PostAuthorCard";
 import {
   useDeleteLikeSecretSquareMutation,
   useDeleteSecretSquareMutation,
   usePatchPollMutation,
   usePutLikeSecretSquareMutation,
-} from "../../hooks/secretSquare/mutations";
+} from "@/hooks/secretSquare/mutations";
 import {
   useCurrentPollStatusQuery,
   useGetSquareDetailQuery,
   useLikeStatus,
-} from "../../hooks/secretSquare/queries";
-import PollItemButton from "../../pageTemplates/community/PollItemButton";
-import SecretSquareComments from "../../pageTemplates/community/SecretSquareComments";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { VoteIcon } from "./writing";
+} from "@/hooks/secretSquare/queries";
+import { VoteIcon } from "@/pages/community/writing";
+import PollItemButton from "@/pageTemplates/community/PollItemButton";
+import SecretSquareComments from "@/pageTemplates/community/SecretSquareComments";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 function SecretSquareDetailPage() {
   const router = useRouter();

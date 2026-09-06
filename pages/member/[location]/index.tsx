@@ -9,21 +9,21 @@ export default function Empty() {
 // import { useSetRecoilState } from "recoil";
 // import styled from "styled-components";
 
-// import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
-// import Slide from "../../../components/layouts/PageSlide";
-// import SectionBar from "../../../components/molecules/bars/SectionBar";
-// import BlurredPart from "../../../components/molecules/BlurredPart";
-// import { useAllUserDataQuery } from "../../../hooks/admin/quries";
-// import MemberHeader from "../../../pageTemplates/member/MemberHeader";
-// import MemberRecommend from "../../../pageTemplates/member/MemberRecommend";
-// import MemberSectionList from "../../../pageTemplates/member/MemberSectionList";
-// import MemberSectionTitle from "../../../pageTemplates/member/MemberSectionTitle";
-// import { transferMemberDataState } from "../../../recoils/transferRecoils";
-// // import { Location } from "../../../types/serviceTypes/locationTypes";
-// import { IGroupedMembers, MemberGroup } from "../../../types/models/member";
-// import { IUser } from "../../../types/models/userTypes/userInfoTypes";
-// import { Location } from "../../../types/services/locationTypes";
-// import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+// import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+// import Slide from "@/components/layouts/PageSlide";
+// import SectionBar from "@/components/molecules/bars/SectionBar";
+// import BlurredPart from "@/components/molecules/BlurredPart";
+// import { useAllUserDataQuery } from "@/hooks/admin/quries";
+// import MemberHeader from "@/pageTemplates/member/MemberHeader";
+// import MemberRecommend from "@/pageTemplates/member/MemberRecommend";
+// import MemberSectionList from "@/pageTemplates/member/MemberSectionList";
+// import MemberSectionTitle from "@/pageTemplates/member/MemberSectionTitle";
+// import { transferMemberDataState } from "@/recoils/transferRecoils";
+// // import { Location } from "@/types/serviceTypes/locationTypes";
+// import { IGroupedMembers, MemberGroup } from "@/types/models/member";
+// import { IUser } from "@/types/models/userTypes/userInfoTypes";
+// import { Location } from "@/types/services/locationTypes";
+// import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 // const MEMBER_SECTIONS: MemberGroup[] = ["birth", "member", "human", "enthusiastic", "resting"];
 

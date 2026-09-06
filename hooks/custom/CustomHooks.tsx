@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
-import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE } from "../../constants/keys/queryKeys";
-import { transferGatherDataState } from "../../recoils/transferRecoils";
+import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE } from "@/constants/keys/queryKeys";
+import { transferGatherDataState } from "@/recoils/transferRecoils";
 
 export const useToken = () => {
   const { data: session, status } = useSession();

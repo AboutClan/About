@@ -1,6 +1,6 @@
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
-import { IConfirmContent } from "./ConfirmModal";
+import { IConfirmContent } from "@/modals/common/ConfirmModal";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 interface IConfirmModal extends IModal {
   content: IConfirmContent;

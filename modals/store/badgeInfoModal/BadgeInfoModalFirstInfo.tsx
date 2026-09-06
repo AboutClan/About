@@ -1,7 +1,7 @@
 import { Badge } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { BADGE_COLOR_MAPPINGS } from "../../../constants/serviceConstants/badgeConstants";
+import { BADGE_COLOR_MAPPINGS } from "@/constants/serviceConstants/badgeConstants";
 
 function BadgeInfoModalFirstInfo() {
   return (

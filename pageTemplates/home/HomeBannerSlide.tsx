@@ -1,10 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
-import { MAIN_BANNER_IMAGE } from "../../assets/images/BannerImages";
-import ImageSliderBanner from "../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
-import { getTodayStr } from "../../utils/dateTimeUtils";
-import { navigateExternalLink } from "../../utils/navigateUtils";
+import { MAIN_BANNER_IMAGE } from "@/assets/images/BannerImages";
+import ImageSliderBanner from "@/components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
+import { getTodayStr } from "@/utils/dateTimeUtils";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 function HomeBannerSlide() {
   const router = useRouter();

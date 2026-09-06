@@ -4,13 +4,13 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
-import NotCompletedModal from "../../modals/system/NotCompletedModal";
-import { slideDirectionState } from "../../recoils/navigationRecoils";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { LocationEn } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { getUrlWithLocationAndDate } from "../../utils/convertUtils/convertTypes";
+import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
+import NotCompletedModal from "@/modals/system/NotCompletedModal";
+import { slideDirectionState } from "@/recoils/navigationRecoils";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { LocationEn } from "@/types/services/locationTypes";
+import { convertLocationLangTo } from "@/utils/convertUtils/convertDatas";
+import { getUrlWithLocationAndDate } from "@/utils/convertUtils/convertTypes";
 
 export type HomeTab = "추천" | "스터디" | "번개" | "캘린더";
 

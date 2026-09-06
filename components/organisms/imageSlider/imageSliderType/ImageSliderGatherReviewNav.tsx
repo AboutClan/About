@@ -4,8 +4,8 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { reviewContentIdState } from "../../../../recoils/previousAtoms";
-import { IImageSliderItem, ImageContainer } from "../ImageSlider";
+import { IImageSliderItem, ImageContainer } from "@/components/organisms/imageSlider/ImageSlider";
+import { reviewContentIdState } from "@/recoils/previousAtoms";
 
 interface IImageSliderGatherReviewNav {
   imageContainer: ImageContainer;

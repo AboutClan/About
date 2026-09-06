@@ -4,16 +4,16 @@ import { useState } from "react";
 
 // import "react-date-range/dist/styles.css"; // main css file
 // import "react-date-range/dist/theme/default.css"; // theme css file
-import { Input } from "../../../components/atoms/Input";
-import Select from "../../../components/atoms/Select";
-import Textarea from "../../../components/atoms/Textarea";
-import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
-import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
-import { IModal } from "../../../types/components/modalTypes";
-import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
-import { IFooterOptions, ModalLayout } from "../../Modals";
+import { Input } from "@/components/atoms/Input";
+import Select from "@/components/atoms/Select";
+import Textarea from "@/components/atoms/Textarea";
+import { PopOverIcon } from "@/components/Icons/PopOverIcon";
+import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 
 export interface IApplyRest {
   type: "일반" | "특별" | string;

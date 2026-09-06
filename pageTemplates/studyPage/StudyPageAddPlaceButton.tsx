@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
-import IconRowBlock from "../../components/atoms/blocks/IconRowBlock";
-import { DispatchBoolean } from "../../types/hooks/reactTypes";
+import IconRowBlock from "@/components/atoms/blocks/IconRowBlock";
+import { DispatchBoolean } from "@/types/hooks/reactTypes";
 
 interface StudyPageAddPlaceButtonProps {
   setIsPlaceMap: DispatchBoolean;

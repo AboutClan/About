@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { createPortal } from "react-dom";
 
-import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import { useOverlayRouter } from "../../../hooks/useOverlayRouter";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 
 type CafeStatus = "great" | "good" | "bad";
 

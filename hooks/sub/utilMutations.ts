@@ -1,8 +1,8 @@
 import axios, { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
-import { SERVER_URI } from "../../constants/system";
-import { MutationOptions } from "../../types/hooks/reactTypes";
+import { SERVER_URI } from "@/constants/system";
+import { MutationOptions } from "@/types/hooks/reactTypes";
 
 export const useImageUploadMutation = (options?: MutationOptions<FormData>) =>
   useMutation<void, AxiosError, FormData>(async (imageForm: FormData) => {

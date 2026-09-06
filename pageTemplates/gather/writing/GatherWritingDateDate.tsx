@@ -8,10 +8,10 @@ import styled from "styled-components";
 import {
   PICKER_DATE_AND_TIME,
   PickerDateAndTimeHeader,
-} from "../../../components/molecules/picker/DatePickerOptions";
-import { DispatchType } from "../../../types/hooks/reactTypes";
-import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+} from "@/components/molecules/picker/DatePickerOptions";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { IGatherWriting } from "@/types/models/gatherTypes/gatherTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 const TIME_RANGE_MIN = new Date();
 TIME_RANGE_MIN.setHours(9);

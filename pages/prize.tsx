@@ -2,14 +2,14 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { Fragment, useEffect, useRef, useState } from "react";
 
-import Avatar from "../components/atoms/Avatar";
-import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
-import Header from "../components/layouts/Header";
-import Slide from "../components/layouts/PageSlide";
-import IconRowBlock2 from "../components/molecules/IconRowBlock2";
-import { usePrizeQuery } from "../constants/prize/queries";
-import { HomeIcon, RankingIconImage, StoreIconImage } from "../pageTemplates/home/HomeNav";
-import { dayjsToFormat, dayjsToStr } from "../utils/dateTimeUtils";
+import Avatar from "@/components/atoms/Avatar";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import IconRowBlock2 from "@/components/molecules/IconRowBlock2";
+import { usePrizeQuery } from "@/constants/prize/queries";
+import { HomeIcon, RankingIconImage, StoreIconImage } from "@/pageTemplates/home/HomeNav";
+import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 
 function Prize() {
   const [cursor, setCursor] = useState(0);

@@ -4,28 +4,28 @@ import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
 
-import { GATHER_COVER_IMAGE_ARR, GATHER_MAIN_IMAGE_ARR } from "../../../assets/gather";
-import { Input } from "../../../components/atoms/Input";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import ImageBasicSlider2 from "../../../components/organisms/sliders/ImageBasicSlider2";
-import { GatherCategoryMain } from "../../../constants/contentsText/GatherContents";
-import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
-import { useGatherWritingMutation } from "../../../hooks/gather/mutations";
-import GatherWritingConfirmModal from "../../../modals/gather/GatherWritingConfirmModal";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { CameraIcon } from "../../../pageTemplates/user/UserProfileSection";
-import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
+import { GATHER_COVER_IMAGE_ARR, GATHER_MAIN_IMAGE_ARR } from "@/assets/gather";
+import { Input } from "@/components/atoms/Input";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProgressStatus from "@/components/molecules/ProgressStatus";
+import ImageBasicSlider2 from "@/components/organisms/sliders/ImageBasicSlider2";
+import { GatherCategoryMain } from "@/constants/contentsText/GatherContents";
+import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
+import { useGatherWritingMutation } from "@/hooks/gather/mutations";
+import GatherWritingConfirmModal from "@/modals/gather/GatherWritingConfirmModal";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { CameraIcon } from "@/pageTemplates/user/UserProfileSection";
+import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
 import {
   GatherCategory,
   IGather,
   IGatherWriting,
-} from "../../../types/models/gatherTypes/gatherTypes";
-import { processFile } from "../../../utils/imageUtils";
+} from "@/types/models/gatherTypes/gatherTypes";
+import { processFile } from "@/utils/imageUtils";
 
 interface ImageProps {
   imageUrl: string;

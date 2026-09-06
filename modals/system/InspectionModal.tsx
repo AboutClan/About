@@ -1,6 +1,6 @@
-import { ModalSubtitle } from "../../styles/layout/modal";
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { ModalSubtitle } from "@/styles/layout/modal";
+import { IModal } from "@/types/components/modalTypes";
 
 function ServerInspectModal({ setIsModal }: IModal) {
   const footerOptions: IFooterOptions = {

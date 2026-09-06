@@ -4,12 +4,12 @@
 // import {
 //   setStudyThumbnailCard,
 //   sortThumbnailCardInfoArr,
-// } from "../../../libs/study/thumbnailCardLibs";
-// import { CoordinatesProps } from "../../../types/common";
-// import { IModal } from "../../../types/components/modalTypes";
+// } from "@/libs/study/thumbnailCardLibs";
+// import { CoordinatesProps } from "@/types/common";
+// import { IModal } from "@/types/components/modalTypes";
 
-// import PickerRowButton from "../../molecules/PickerRowButton";
-// import BottomFlexDrawer, { BottomFlexDrawerOptions } from "../../organisms/drawer/BottomFlexDrawer";
+// import PickerRowButton from "@/components/molecules/PickerRowButton";
+// import BottomFlexDrawer, { BottomFlexDrawerOptions } from "@/components/organisms/drawer/BottomFlexDrawer";
 
 // interface StudyPlacePickerDrawerProps extends IModal {
 //   studyResults: StudyMergeResultProps[];

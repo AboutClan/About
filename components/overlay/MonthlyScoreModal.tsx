@@ -2,16 +2,16 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-import { USER_ROLE } from "../../constants/settingValue/role";
-import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
-import { IFooterOptions, ModalLayout } from "../../modals/Modals";
-import { CloseProps } from "../../types/components/modalTypes";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
-import Avatar from "../atoms/Avatar";
-import UserBadge from "../atoms/badges/UserBadge";
-import InfoCol, { InfoColOptions } from "../atoms/InfoCol";
-import ProgressMark from "../molecules/ProgressMark";
-import ValueBoxCol, { ValueBoxColItemProps } from "../molecules/ValueBoxCol";
+import Avatar from "@/components/atoms/Avatar";
+import UserBadge from "@/components/atoms/badges/UserBadge";
+import InfoCol, { InfoColOptions } from "@/components/atoms/InfoCol";
+import ProgressMark from "@/components/molecules/ProgressMark";
+import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
+import { USER_ROLE } from "@/constants/settingValue/role";
+import { usePointSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { CloseProps } from "@/types/components/modalTypes";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 function MonthlyScoreModal({ onClose }: CloseProps) {
   const { data: userInfo } = useUserInfoQuery();

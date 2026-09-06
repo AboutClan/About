@@ -2,25 +2,25 @@ import { Box, Button, Flex, Grid, Switch } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
-import RightDrawer from "../../../../components/organisms/drawer/RightDrawer";
+import { Input } from "@/components/atoms/Input";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import InviteUserGroups from "@/components/molecules/groups/InviteUserGroups";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import {
   CrewLocationProps,
   STUDY_CREW,
   STUDY_CREW_ID_MAPPING,
   STUDY_CREW_PLACE_MAPPING,
-} from "../../../../constants/service/study/place";
-import { useAllUserDataQuery } from "../../../../hooks/admin/quries";
-import { useResetStudyQuery } from "../../../../hooks/custom/CustomHooks";
-import { useGroupIdQuery } from "../../../../hooks/groupStudy/queries";
-import { useStudyInviteMutation } from "../../../../hooks/study/mutations";
-import { CloseProps } from "../../../../types/components/modalTypes";
-import { StudyCrew } from "../../../../types/models/studyTypes/study-entity.types";
-import { StudyVoteProps } from "../../../../types/models/studyTypes/studyInterActions";
-import { UserSimpleInfoProps } from "../../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat, dayjsToStr } from "../../../../utils/dateTimeUtils";
-import { Input } from "../../../atoms/Input";
-import { MainLoadingAbsolute } from "../../../atoms/loaders/MainLoading";
-import InviteUserGroups from "../../../molecules/groups/InviteUserGroups";
+} from "@/constants/service/study/place";
+import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
+import { useStudyInviteMutation } from "@/hooks/study/mutations";
+import { CloseProps } from "@/types/components/modalTypes";
+import { StudyCrew } from "@/types/models/studyTypes/study-entity.types";
+import { StudyVoteProps } from "@/types/models/studyTypes/studyInterActions";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 
 export function StudyInviteDrawer({ onClose }: CloseProps) {
   const resetStudy = useResetStudyQuery();

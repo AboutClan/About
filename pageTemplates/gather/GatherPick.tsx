@@ -2,13 +2,13 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
-import BlurredPart from "../../components/molecules/BlurredPart";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useGatherRequestLikeMutation } from "../../hooks/gather/mutations";
-import { useGatherRequestQuery } from "../../hooks/gather/queries";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { getDateDiff } from "../../utils/dateTimeUtils";
+import BlurredPart from "@/components/molecules/BlurredPart";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useGatherRequestLikeMutation } from "@/hooks/gather/mutations";
+import { useGatherRequestQuery } from "@/hooks/gather/queries";
+import { usePointSystemMutation } from "@/hooks/user/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { getDateDiff } from "@/utils/dateTimeUtils";
 
 function GatherPick() {
   const toast = useToast();

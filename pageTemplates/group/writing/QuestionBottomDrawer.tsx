@@ -2,8 +2,8 @@ import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, useDisclosure } from 
 import { useEffect } from "react";
 import styled from "styled-components";
 
-import TwoButtonNav from "../../../components/layouts/TwoButtonNav";
-import { DispatchBoolean, DispatchString } from "../../../types/hooks/reactTypes";
+import TwoButtonNav from "@/components/layouts/TwoButtonNav";
+import { DispatchBoolean, DispatchString } from "@/types/hooks/reactTypes";
 
 interface IQuestionBottomDrawer {
   isModal: boolean;

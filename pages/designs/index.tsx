@@ -1,6 +1,6 @@
-import RowButtonBlock from "../../components/atoms/blocks/RowButtonBlock";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
+import RowButtonBlock from "@/components/atoms/blocks/RowButtonBlock";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
 
 function DesignsPage() {
   return (

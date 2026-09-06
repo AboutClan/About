@@ -1,5 +1,5 @@
-import { IModal } from "../../../types/components/modalTypes";
-import AlertModal from "../../AlertModal";
+import AlertModal from "@/components/AlertModal";
+import { IModal } from "@/types/components/modalTypes";
 
 interface StudyChangeAlertModalProps extends IModal {
   handleFunction: () => void;

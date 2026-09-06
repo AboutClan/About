@@ -1,10 +1,10 @@
 import { KakaoProfile } from "next-auth/providers/kakao";
 
-import { USER_BADGE_ARR } from "../../../constants/serviceConstants/badgeConstants";
-import { USER_ROLE } from "../../../constants/serviceConstants/userConstants";
-import { Location } from "../../services/locationTypes";
-import { TimeStampProps } from "../../utils/timeAndDate";
-import { IStudyVotePlaces } from "../studyTypes/studyInterActions";
+import { USER_BADGE_ARR } from "@/constants/serviceConstants/badgeConstants";
+import { USER_ROLE } from "@/constants/serviceConstants/userConstants";
+import { IStudyVotePlaces } from "@/types/models/studyTypes/studyInterActions";
+import { Location } from "@/types/services/locationTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export const MEMBERSHIP_CONVERTOR: Record<UserMemberShip, UserMemberShipKr> = {
   newbie: "뉴비",

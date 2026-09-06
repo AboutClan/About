@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { PopOverIcon } from "../Icons/PopOverIcon";
+import { PopOverIcon } from "@/components/Icons/PopOverIcon";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface SocialingScoreBadgeProps {
   user: UserSimpleInfoProps;

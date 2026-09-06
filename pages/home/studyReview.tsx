@@ -4,27 +4,27 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { memo, useRef, useState } from "react";
 
-import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
-import Avatar from "../../components/atoms/Avatar";
-import BottomNavButton from "../../components/atoms/BottomNavButton";
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import Textarea from "../../components/atoms/Textarea";
-import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import ProfileCommentCard from "../../components/molecules/cards/ProfileCommentCard";
-import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useStudyPassedDayQuery } from "../../hooks/study/queries";
+import { GATHER_MAIN_IMAGE_ARR } from "@/assets/gather";
+import Avatar from "@/components/atoms/Avatar";
+import BottomNavButton from "@/components/atoms/BottomNavButton";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Textarea from "@/components/atoms/Textarea";
+import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useStudyPassedDayQuery } from "@/hooks/study/queries";
 import {
   UserRating,
   UserReviewProps,
   useUserStudyReviewMutation,
-} from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import { getRandomImage } from "../../utils/imageUtils";
+} from "@/hooks/user/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
+import { getRandomImage } from "@/utils/imageUtils";
 /* ================= 아바타 관련 상수 & 컴포넌트 (컴포넌트 밖) ================= */
 
 type AvatarOption = { type: number; text: string; rating: UserRating; bg: number };

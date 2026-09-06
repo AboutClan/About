@@ -1,9 +1,9 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Container, Heading, List, ListItem, Text } from "@chakra-ui/react";
 
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ExternalLink from "../../../components/molecules/ExternalLink";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ExternalLink from "@/components/molecules/ExternalLink";
 
 function Privacy() {
   return (

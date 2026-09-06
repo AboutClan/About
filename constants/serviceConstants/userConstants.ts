@@ -1,4 +1,4 @@
-import { IUser, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 export const USER_ROLE = [
   "waiting",

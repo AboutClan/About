@@ -1,11 +1,11 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import InfoList from "../../components/atoms/lists/InfoList";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { ModalLayout } from "../../modals/Modals";
-import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
-import { getSafeAreaBottom } from "../../utils/validationUtils";
+import InfoList from "@/components/atoms/lists/InfoList";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { ModalLayout } from "@/modals/Modals";
+import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entity.types";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 interface StudyReviewButtonProps {
   placeId: string;
 

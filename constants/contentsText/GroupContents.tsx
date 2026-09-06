@@ -4,7 +4,7 @@ import {
   ExerciseIcon,
   SeedIcon,
   SocialIcon,
-} from "./GatherContents";
+} from "@/constants/contentsText/GatherContents";
 
 export type GroupCategoryMain = "공부·자기계발" | "취미" | "문화·놀거리" | "친목" | "스터디 크루";
 

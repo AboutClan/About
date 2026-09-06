@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 
-import { STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
+import { STUDY_VOTING_TABLE } from "@/constants/keys/localStorage";
 import {
   STUDY_DATE_END_HOUR,
   STUDY_DATE_START_HOUR,
-} from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
-import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
+} from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
+import { StudyVotingSave } from "@/types/models/studyTypes/studyInterActions";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 export const getStudyStandardDate = () => {
   const currentHour = dayjs().hour();

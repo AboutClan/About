@@ -1,12 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import Textarea from "../../components/atoms/Textarea";
-import { CommentParamProps, SubCommentParamProps } from "../../hooks/common/mutations";
-import { IModal } from "../../types/components/modalTypes";
-import { UserCommentProps } from "../../types/components/propTypes";
-import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import Textarea from "@/components/atoms/Textarea";
+import { CommentParamProps, SubCommentParamProps } from "@/hooks/common/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { DispatchString, DispatchType } from "@/types/hooks/reactTypes";
 
 interface CommentEditModalProps extends IModal {
   text: string;

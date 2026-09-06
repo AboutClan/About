@@ -3,7 +3,7 @@ import "dayjs/locale/ko";
 import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface CalendarDayBoxProps {
   date: string;

@@ -2,8 +2,8 @@ import { Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import styled from "styled-components";
 
-import { SingleLineText } from "../../../styles/layout/components";
-import PlaceImage from "../PlaceImage";
+import PlaceImage from "@/components/molecules/PlaceImage";
+import { SingleLineText } from "@/styles/layout/components";
 
 export interface IImageTileData {
   imageUrl: string;

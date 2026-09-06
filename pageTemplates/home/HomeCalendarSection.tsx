@@ -2,12 +2,12 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-import { ColorLabelProps } from "../../components/atoms/ColorLabel";
-import MonthNav from "../../components/atoms/MonthNav";
-import ColorLabelRow from "../../components/molecules/rows/ColorLabelRow";
-import Calendar from "../../components/organisms/Calendar";
-import { COLOR_TABLE } from "../../constants/colorConstants";
-import { EVENT_CONTENT_2024 } from "../../constants/contents/calendarSchedule";
+import { ColorLabelProps } from "@/components/atoms/ColorLabel";
+import MonthNav from "@/components/atoms/MonthNav";
+import ColorLabelRow from "@/components/molecules/rows/ColorLabelRow";
+import Calendar from "@/components/organisms/Calendar";
+import { COLOR_TABLE } from "@/constants/colorConstants";
+import { EVENT_CONTENT_2024 } from "@/constants/contents/calendarSchedule";
 
 export const SCHEDULE_CATEGORIES: ColorLabelProps[] = [
   {

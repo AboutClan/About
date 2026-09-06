@@ -4,19 +4,19 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 
-import InfoList from "../../components/atoms/lists/InfoList";
-import BottomNav from "../../components/layouts/BottomNav";
-import Header from "../../components/layouts/Header";
-import ValueBoxCol2 from "../../components/molecules/ValueBoxCol2";
-import { USER_INFO } from "../../constants/keys/queryKeys";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserRegisterControlMutation } from "../../hooks/user/mutations";
-import { gaEvent } from "../../libs/gtag";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getTrafficSourceCode } from "../../utils/storageUtils";
-import { VALUE_BOX_COL_ITEMS } from "./fee";
+import InfoList from "@/components/atoms/lists/InfoList";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import ValueBoxCol2 from "@/components/molecules/ValueBoxCol2";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserRegisterControlMutation } from "@/hooks/user/mutations";
+import { gaEvent } from "@/libs/gtag";
+import { VALUE_BOX_COL_ITEMS } from "@/pages/register/fee";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { navigateExternalLink } from "@/utils/navigateUtils";
+import { getTrafficSourceCode } from "@/utils/storageUtils";
 
 function Access() {
   const { data: session } = useSession();

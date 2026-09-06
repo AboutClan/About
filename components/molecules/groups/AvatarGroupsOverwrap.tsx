@@ -1,8 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { AvatarProps } from "../../../types/models/userTypes/userInfoTypes";
-import Avatar from "../../atoms/Avatar";
+import Avatar from "@/components/atoms/Avatar";
+import { AvatarProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface IAvatarGroupsOverwrap {
   users: { avatar: AvatarProps; _id?: string; profileImage?: string }[];

@@ -1,5 +1,5 @@
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 interface IGuestLoginModal extends IModal {
   customSignin: (type: "member" | "guest") => void;

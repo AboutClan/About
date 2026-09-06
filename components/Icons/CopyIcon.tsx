@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { useToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "@/hooks/custom/CustomToast";
 
 interface ICopyBtn {
   size?: string;

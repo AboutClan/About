@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
-import { isScrollAutoState } from "../recoils/navigationRecoils";
+import { isScrollAutoState } from "@/recoils/navigationRecoils";
 
 export default function usePageScrollRestore() {
   const router = useRouter();

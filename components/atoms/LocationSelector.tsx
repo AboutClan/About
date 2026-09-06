@@ -1,10 +1,10 @@
 import { Flex, Select } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
-import { LOCATION_TO_FULLNAME } from "../../constants/location";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { ActiveLocation } from "../../types/services/locationTypes";
-import { isLocationType } from "../../utils/validationUtils";
+import { LOCATION_TO_FULLNAME } from "@/constants/location";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { ActiveLocation } from "@/types/services/locationTypes";
+import { isLocationType } from "@/utils/validationUtils";
 
 interface ILocationSelector {
   defaultValue: string;

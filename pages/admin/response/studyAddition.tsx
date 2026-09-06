@@ -3,9 +3,9 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import Header from "../../../components/layouts/Header";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudyStatusMutation } from "../../../hooks/study/mutations";
+import Header from "@/components/layouts/Header";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useStudyStatusMutation } from "@/hooks/study/mutations";
 
 function StudyAddition() {
   const toast = useToast();
@@ -108,7 +108,7 @@ export default StudyAddition;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

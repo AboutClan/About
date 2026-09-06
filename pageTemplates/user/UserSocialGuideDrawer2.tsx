@@ -1,12 +1,12 @@
 import { Box, Collapse, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import Avatar from "../../components/atoms/Avatar";
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import InfoBoxCol from "../../components/molecules/InfoBoxCol";
-import SocialingScoreBadge from "../../components/molecules/SocialingScoreBadge";
-import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import { useUserInfoQuery } from "../../hooks/user/queries";
+import Avatar from "@/components/atoms/Avatar";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import InfoBoxCol from "@/components/molecules/InfoBoxCol";
+import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { useUserInfoQuery } from "@/hooks/user/queries";
 
 interface UserSocialGuideDrawerProps {
   onClose: () => void;

@@ -4,39 +4,39 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
-import IconTextColButton from "../../components/atoms/buttons/IconTextColButton";
-import Textarea from "../../components/atoms/Textarea";
-import { XCircleIcon } from "../../components/Icons/CircleIcons";
-import { ClockIcon } from "../../components/Icons/ClockIcons";
-import Slide from "../../components/layouts/PageSlide";
-import { BottomFlexDrawerOptions } from "../../components/organisms/drawer/BottomFlexDrawer";
-import StudyApplyDrawer from "../../components/services/study/apply/StudyApplyDrawer";
-import { StudyCancelModal } from "../../components/services/study/apply/ui/overlay/CancelModal";
-import { PlaceDrawer } from "../../components/services/study/apply/ui/overlay/PlaceDrawer";
-import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
-import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useStudyMutations } from "../../hooks/custom/StudyHooks";
-import { useCheckGuest } from "../../hooks/custom/UserHooks";
-import { useStudyAttendChangeMutation, useStudyVoteArrMutation } from "../../hooks/study/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import CafeMapGuestModal from "../../modals/cafeMap/CafeMapGuestModal";
-import { ModalLayout } from "../../modals/Modals";
-import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
-import { LocationProps } from "../../types/common";
-import { CloseProps } from "../../types/components/modalTypes";
+import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+import IconTextColButton from "@/components/atoms/buttons/IconTextColButton";
+import Textarea from "@/components/atoms/Textarea";
+import { XCircleIcon } from "@/components/Icons/CircleIcons";
+import { ClockIcon } from "@/components/Icons/ClockIcons";
+import Slide from "@/components/layouts/PageSlide";
+import { BottomFlexDrawerOptions } from "@/components/organisms/drawer/BottomFlexDrawer";
+import StudyApplyDrawer from "@/components/services/study/apply/StudyApplyDrawer";
+import { StudyCancelModal } from "@/components/services/study/apply/ui/overlay/CancelModal";
+import { PlaceDrawer } from "@/components/services/study/apply/ui/overlay/PlaceDrawer";
+import StudyVoteTimeRulletDrawer from "@/components/services/studyVote/StudyVoteTimeRulletDrawer";
+import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useStudyMutations } from "@/hooks/custom/StudyHooks";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { useStudyAttendChangeMutation, useStudyVoteArrMutation } from "@/hooks/study/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import CafeMapGuestModal from "@/modals/cafeMap/CafeMapGuestModal";
+import { ModalLayout } from "@/modals/Modals";
+import StudyAbsentModal from "@/modals/study/StudyAbsentModal";
+import { LocationProps } from "@/types/common";
+import { CloseProps } from "@/types/components/modalTypes";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
   StudyConfirmedProps,
   StudyParticipationProps,
-} from "../../types/models/studyTypes/study-entity.types";
-import { StudyType } from "../../types/models/studyTypes/study-set.types";
-// import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
-import { DayjsTimeProps } from "../../types/utils/timeAndDate";
-import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
-import { getSafeAreaBottom } from "../../utils/validationUtils";
+} from "@/types/models/studyTypes/study-entity.types";
+import { StudyType } from "@/types/models/studyTypes/study-set.types";
+// import { MyStudyStatus } from "@/types/models/studyTypes/helperTypes";
+import { DayjsTimeProps } from "@/types/utils/timeAndDate";
+import { dayjsToStr, getTodayStr } from "@/utils/dateTimeUtils";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface IStudyNavigation {
   myStudyInfo: StudyConfirmedMemberProps | StudyParticipationProps[];

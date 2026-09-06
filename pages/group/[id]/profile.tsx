@@ -3,20 +3,20 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
-import Avatar from "../../../components/atoms/Avatar";
-import UserBadge from "../../../components/atoms/badges/UserBadge";
-import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
+import Avatar from "@/components/atoms/Avatar";
+import UserBadge from "@/components/atoms/badges/UserBadge";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
 import {
   getTemperature,
   getTemperatureColor,
-} from "../../../components/molecules/SocialingScoreBadge";
-import { useGatherGroupQuery } from "../../../hooks/gather/queries";
-import { useGroupIdQuery, useGroupsMemberActivityQuery } from "../../../hooks/groupStudy/queries";
-import { GroupParicipantProps } from "../../../types/models/groupTypes/group";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+} from "@/components/molecules/SocialingScoreBadge";
+import { useGatherGroupQuery } from "@/hooks/gather/queries";
+import { useGroupIdQuery, useGroupsMemberActivityQuery } from "@/hooks/groupStudy/queries";
+import { GroupParicipantProps } from "@/types/models/groupTypes/group";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 const MEMBER_ROLE_KR: Record<string, string> = {
   admin: "소모임장",
@@ -168,7 +168,7 @@ function GroupMemberProfileRow({
 import { GetServerSideProps } from "next";
 import { getServerSession } from "next-auth/next";
 
-import { authOptions } from "../../../pages/api/auth/[...nextauth]";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 const GROUP_SUPER_ADMIN_UIDS = ["2259633694"];
 const GROUP_ADMIN_ROLES = ["admin", "manager"];

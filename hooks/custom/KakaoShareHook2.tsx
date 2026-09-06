@@ -1,9 +1,9 @@
 // hooks/useKakaoShare.ts
 import dayjs from "dayjs";
 
-import { isWebView } from "../../utils/appEnvUtils";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
+import { isWebView } from "@/utils/appEnvUtils";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
+import { nativeMethodUtils } from "@/utils/nativeMethodUtils";
 
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 

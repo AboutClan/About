@@ -6,12 +6,12 @@ import styled from "styled-components";
 import SwiperCore from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
 
-import ImageSliderAvatarColor from "./imageSliderType/ImageSliderAvatarColor";
-import ImageSliderGatherReviewNav from "./imageSliderType/ImageSliderGatherReviewNav";
-import ImageSliderMember from "./imageSliderType/ImageSliderMember";
-import ImageSliderPoint from "./imageSliderType/ImageSliderPoint";
-import ImageSliderReview from "./imageSliderType/ImageSliderReview";
-import ImageSliderSpecialBg from "./imageSliderType/ImageSliderSpecialBg";
+import ImageSliderAvatarColor from "@/components/organisms/imageSlider/imageSliderType/ImageSliderAvatarColor";
+import ImageSliderGatherReviewNav from "@/components/organisms/imageSlider/imageSliderType/ImageSliderGatherReviewNav";
+import ImageSliderMember from "@/components/organisms/imageSlider/imageSliderType/ImageSliderMember";
+import ImageSliderPoint from "@/components/organisms/imageSlider/imageSliderType/ImageSliderPoint";
+import ImageSliderReview from "@/components/organisms/imageSlider/imageSliderType/ImageSliderReview";
+import ImageSliderSpecialBg from "@/components/organisms/imageSlider/imageSliderType/ImageSliderSpecialBg";
 
 SwiperCore.use([Navigation, Pagination]); // apply the Pagination module
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

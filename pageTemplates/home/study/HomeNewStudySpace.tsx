@@ -7,10 +7,10 @@ export default HomeNewStudySpace;
 // import { Box } from "@chakra-ui/react";
 // import { useSearchParams } from "next/navigation";
 
-// import SectionBar from "../../../components/molecules/bars/SectionBar";
-// import { IPostThumbnailCard } from "../../../components/molecules/cards/PostThumbnailCard";
-// import { CardColumnLayout } from "../../../components/organisms/CardColumnLayout";
-// import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
+// import SectionBar from "@/components/molecules/bars/SectionBar";
+// import { IPostThumbnailCard } from "@/components/molecules/cards/PostThumbnailCard";
+// import { CardColumnLayout } from "@/components/organisms/CardColumnLayout";
+// import { StudyPlaceProps } from "@/types/models/studyTypes/studyDetails";
 
 // interface HomeNewStudySpaceProps {
 //   places: StudyPlaceProps[];

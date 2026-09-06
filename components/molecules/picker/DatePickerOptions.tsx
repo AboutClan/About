@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
 
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 export const PICKER_DATE_AND_TIME = {
   timeFormat: "HH:mm",

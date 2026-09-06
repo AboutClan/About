@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
-} from "../../components/molecules/cards/StudyThumbnailCard";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { useStudyMineQuery } from "../../hooks/study/queries";
-import { StudyType } from "../../types/models/studyTypes/study-set.types";
-import GatherSkeletonMain from "../gather/GatherSkeletonMain";
+} from "@/components/molecules/cards/StudyThumbnailCard";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { useStudyMineQuery } from "@/hooks/study/queries";
+import GatherSkeletonMain from "@/pageTemplates/gather/GatherSkeletonMain";
+import { StudyType } from "@/types/models/studyTypes/study-set.types";
 
 function UserStudySection() {
   const userInfo = useUserInfo();

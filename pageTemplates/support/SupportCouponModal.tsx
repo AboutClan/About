@@ -1,10 +1,10 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Button, Flex } from "@chakra-ui/react";
 
-import { SupportItem } from "../../constants/support";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { ModalLayout } from "../../modals/Modals";
-import { navigateExternalLink } from "../../utils/navigateUtils";
+import { SupportItem } from "@/constants/support";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { ModalLayout } from "@/modals/Modals";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 interface SupportCouponModalProps {
   name: string;

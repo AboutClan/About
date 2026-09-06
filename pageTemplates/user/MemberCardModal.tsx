@@ -6,7 +6,7 @@ import {
   PortalManager,
 } from "@chakra-ui/react";
 
-import MemberCard from "./MemberCard";
+import MemberCard from "@/pageTemplates/user/MemberCard";
 
 interface MemberCardModalProps {
   onClose: () => void;

@@ -13,12 +13,12 @@ import {
 import dayjs from "dayjs";
 import { useQueryClient } from "react-query";
 
-import { HOME_APP_REVIEW_POPUP_AT } from "../../constants/keys/localStorage";
-import { USER_INFO } from "../../constants/keys/queryKeys";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserPointMutation } from "../../hooks/user/mutations";
-import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getDeviceOS } from "../../utils/validationUtils";
+import { HOME_APP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserPointMutation } from "@/hooks/user/mutations";
+import { navigateExternalLink } from "@/utils/navigateUtils";
+import { getDeviceOS } from "@/utils/validationUtils";
 
 export const HOME_APP_REVIEW_REWARD_POINT = 500;
 export const HOME_APP_REVIEW_REWARD_SUB = "home_app_review";

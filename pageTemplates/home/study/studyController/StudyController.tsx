@@ -2,9 +2,9 @@ import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import styled from "styled-components";
 
-import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
-import { StudyParticipationProps } from "../../../../types/models/studyTypes/study-entity.types";
-import { dayjsToStr } from "../../../../utils/dateTimeUtils";
+import WeekSlideCalendar from "@/components/molecules/WeekSlideCalendar";
+import { StudyParticipationProps } from "@/types/models/studyTypes/study-entity.types";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 interface StudyControllerProps {
   studyVoteData: StudyParticipationProps[];

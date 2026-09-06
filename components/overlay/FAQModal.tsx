@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 
-import { IFooterOptions } from "../../modals/Modals";
-import PageGuideModal from "../../modals/PageGuideModal";
-import { prevPageUrlState } from "../../recoils/navigationRecoils";
-import { CloseProps } from "../../types/components/modalTypes";
+import { IFooterOptions } from "@/modals/Modals";
+import PageGuideModal from "@/modals/PageGuideModal";
+import { prevPageUrlState } from "@/recoils/navigationRecoils";
+import { CloseProps } from "@/types/components/modalTypes";
 
 function FAQModal({ onClose }: CloseProps) {
   const router = useRouter();

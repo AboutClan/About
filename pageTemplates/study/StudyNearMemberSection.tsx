@@ -1,11 +1,11 @@
 import { Badge, Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
-import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
-import { useUserInfo } from "../../hooks/custom/UserHooks";
-import { StudyParticipationProps } from "../../types/models/studyTypes/study-entity.types";
-import { getPlaceBranch } from "../../utils/stringUtils";
+import { IProfileCommentCard } from "@/components/molecules/cards/ProfileCommentCard";
+import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { StudyParticipationProps } from "@/types/models/studyTypes/study-entity.types";
+import { getPlaceBranch } from "@/utils/stringUtils";
 
 type Center = { latitude: number; longitude: number };
 

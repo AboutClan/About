@@ -1,10 +1,10 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import Header from "../../../components/layouts/Header";
-import LocationSearch from "../../../components/organisms/location/LocationSearch";
-import { AboutLogo } from "../../../components/services/AboutLogo";
-import { LocationProps } from "../../../types/common";
+import Header from "@/components/layouts/Header";
+import LocationSearch from "@/components/organisms/location/LocationSearch";
+import { AboutLogo } from "@/components/services/AboutLogo";
+import { LocationProps } from "@/types/common";
 
 interface StudyPageTopNavProps {
   handleCenterLocation: (location: { lat: number; lon: number }) => void;

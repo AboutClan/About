@@ -1,11 +1,11 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { Input } from "../../../components/atoms/Input";
-import Header from "../../../components/layouts/Header";
-import { USER_BADGE_ARR } from "../../../constants/serviceConstants/badgeConstants";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useAddBadgeListMutation } from "../../../hooks/user/mutations";
+import { Input } from "@/components/atoms/Input";
+import Header from "@/components/layouts/Header";
+import { USER_BADGE_ARR } from "@/constants/serviceConstants/badgeConstants";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useAddBadgeListMutation } from "@/hooks/user/mutations";
 
 function Badge() {
   const toast = useToast();
@@ -38,7 +38,7 @@ export default Badge;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

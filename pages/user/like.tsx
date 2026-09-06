@@ -2,11 +2,11 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
-import { MainLoading } from "../../components/atoms/loaders/MainLoading";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import { useInteractionLikeQuery } from "../../hooks/user/sub/interaction/queries";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import { useInteractionLikeQuery } from "@/hooks/user/sub/interaction/queries";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 function Like() {
   const { data: activeLogs } = useInteractionLikeQuery();

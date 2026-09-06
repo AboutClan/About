@@ -4,22 +4,22 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import Avatar from "../../components/atoms/Avatar";
-import Textarea from "../../components/atoms/Textarea";
-import BottomNav from "../../components/layouts/BottomNav";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import LabeledInput from "../../components/molecules/LabeledInput";
-import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import SearchLocation from "../../components/organisms/SearchLocation";
-import { USER_INFO } from "../../constants/keys/queryKeys";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { NaverLocationProps } from "../../hooks/external/queries";
-import { useUserInfoMutation } from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { CameraIcon, ProfileCamera } from "../../pageTemplates/user/UserProfileSection";
-import { MajorLayout } from "../register/major";
-import { MBTILayout } from "../register/mbti";
+import Avatar from "@/components/atoms/Avatar";
+import Textarea from "@/components/atoms/Textarea";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import LabeledInput from "@/components/molecules/LabeledInput";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import SearchLocation from "@/components/organisms/SearchLocation";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { NaverLocationProps } from "@/hooks/external/queries";
+import { useUserInfoMutation } from "@/hooks/user/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { MajorLayout } from "@/pages/register/major";
+import { MBTILayout } from "@/pages/register/mbti";
+import { CameraIcon, ProfileCamera } from "@/pageTemplates/user/UserProfileSection";
 
 function Profile() {
   const router = useRouter();

@@ -8,10 +8,10 @@ import {
 import { useState } from "react";
 import styled from "styled-components";
 
-import { OPEN_KAKAO_LINK } from "../../constants/contentsText/Private";
-import { ShortArrowIcon } from "../Icons/ArrowIcons";
-import { IAccordionContent } from "./Accordion";
-import ExternalLink from "./ExternalLink";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import { IAccordionContent } from "@/components/molecules/Accordion";
+import ExternalLink from "@/components/molecules/ExternalLink";
+import { OPEN_KAKAO_LINK } from "@/constants/contentsText/Private";
 
 interface IAccordion {
   contentArr: IAccordionContent[];

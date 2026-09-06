@@ -4,24 +4,24 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { AboutIcon } from "../../components/atoms/AboutIcons";
-import Avatar from "../../components/atoms/Avatar";
-import IconButton from "../../components/atoms/buttons/IconButton";
-import { MainLoading } from "../../components/atoms/loaders/MainLoading";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { useAlphabetCompletedMutation } from "../../hooks/user/sub/collection/mutations";
+import { AboutIcon } from "@/components/atoms/AboutIcons";
+import Avatar from "@/components/atoms/Avatar";
+import IconButton from "@/components/atoms/buttons/IconButton";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
+import { usePointSystemMutation } from "@/hooks/user/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useAlphabetCompletedMutation } from "@/hooks/user/sub/collection/mutations";
 import {
   useCollectionAlphabetAllQuery,
   useCollectionAlphabetQuery,
-} from "../../hooks/user/sub/collection/queries";
-import { AlphabetChangeGuideModal } from "../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
-import AlphabetChangeModal from "../../modals/user/collection/AlphabetChangeModal";
-import { Alphabet, ICollectionAlphabet } from "../../types/models/collections";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+} from "@/hooks/user/sub/collection/queries";
+import { AlphabetChangeGuideModal } from "@/modals/aboutHeader/dailyCheckModal/DailyCheckModal";
+import AlphabetChangeModal from "@/modals/user/collection/AlphabetChangeModal";
+import { Alphabet, ICollectionAlphabet } from "@/types/models/collections";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 const ALPHABET_COLLECTION: Alphabet[] = ["A", "B", "O", "U", "T"];
 

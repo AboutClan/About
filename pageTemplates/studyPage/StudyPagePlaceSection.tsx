@@ -5,16 +5,16 @@ import { useEffect, useState } from "react";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
-} from "../../components/molecules/cards/StudyThumbnailCard";
-import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
-import { useLastStudySetQuery } from "../../hooks/study/queries";
+} from "@/components/molecules/cards/StudyThumbnailCard";
+import { StudyThumbnailCardSkeleton } from "@/components/skeleton/StudyThumbnailCardSkeleton";
+import { useLastStudySetQuery } from "@/hooks/study/queries";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
-} from "../../libs/study/thumbnailCardLibs";
-import { DispatchString } from "../../types/hooks/reactTypes";
-import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+} from "@/libs/study/thumbnailCardLibs";
+import { DispatchString } from "@/types/hooks/reactTypes";
+import { StudySetProps } from "@/types/models/studyTypes/study-set.types";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface StudyPagePlaceSectionProps {
   studySet: StudySetProps;

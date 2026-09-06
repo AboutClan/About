@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import BlurredPart from "./BlurredPart";
-import ExternalLink from "./ExternalLink";
+import BlurredPart from "@/components/molecules/BlurredPart";
+import ExternalLink from "@/components/molecules/ExternalLink";
 
 interface BlurredLinkProps {
   isBlur: boolean;

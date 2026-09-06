@@ -4,13 +4,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
-import { HOME_ACTIVITY_INTRO_POPUP_AT } from "../../constants/keys/localStorage";
-import { MODAL_QUEUE_PRIORITY } from "../../constants/modalQueuePriority";
-import { useOpenHomeActivityDrawer } from "../../hooks/custom/useHomeActivityDrawer";
-import { useSingleModalSlot } from "../../hooks/custom/useSingleModalSlot";
-import { ModalLayout } from "../../modals/Modals";
-import { hasShownHomeAutoPopupState } from "../../recoils/modalQueueRecoils";
-import { transferHomeActivityDrawerOpenState } from "../../recoils/transferRecoils";
+import { HOME_ACTIVITY_INTRO_POPUP_AT } from "@/constants/keys/localStorage";
+import { MODAL_QUEUE_PRIORITY } from "@/constants/modalQueuePriority";
+import { useOpenHomeActivityDrawer } from "@/hooks/custom/useHomeActivityDrawer";
+import { useSingleModalSlot } from "@/hooks/custom/useSingleModalSlot";
+import { ModalLayout } from "@/modals/Modals";
+import { hasShownHomeAutoPopupState } from "@/recoils/modalQueueRecoils";
+import { transferHomeActivityDrawerOpenState } from "@/recoils/transferRecoils";
 
 const POPUP_RE_SHOW_GAP_DAY = 7;
 

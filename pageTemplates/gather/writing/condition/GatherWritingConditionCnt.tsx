@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import CountNum from "../../../../components/atoms/CountNum";
+import CountNum from "@/components/atoms/CountNum";
 
 interface IGatherWritingConditionCnt {
   value: number;

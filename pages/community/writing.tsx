@@ -12,22 +12,22 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
-import { Input } from "../../components/atoms/Input";
-import Textarea from "../../components/atoms/Textarea";
-import WritingNavigation from "../../components/atoms/WritingNavigation";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import ImageUploadButton from "../../components/molecules/ImageUploadButton";
+import { Input } from "@/components/atoms/Input";
+import Textarea from "@/components/atoms/Textarea";
+import WritingNavigation from "@/components/atoms/WritingNavigation";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ImageUploadButton from "@/components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
-} from "../../components/organisms/sliders/ImageUploadSlider";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useCreateSecretSquareMutation } from "../../hooks/secretSquare/mutations";
-import RequestChangeProfileImageModalAvatar from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
-import PollCreatorDrawer from "../../pageTemplates/community/writing/PollCreatorDrawer";
-import SquareCategoryRadioGroup from "../../pageTemplates/community/writing/SquareCategoryRadioGroup";
-import { SecretSquareFormData } from "../../types/models/square";
-import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
+} from "@/components/organisms/sliders/ImageUploadSlider";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useCreateSecretSquareMutation } from "@/hooks/secretSquare/mutations";
+import RequestChangeProfileImageModalAvatar from "@/modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
+import PollCreatorDrawer from "@/pageTemplates/community/writing/PollCreatorDrawer";
+import SquareCategoryRadioGroup from "@/pageTemplates/community/writing/SquareCategoryRadioGroup";
+import { SecretSquareFormData } from "@/types/models/square";
+import { AvatarProps } from "@/types/models/userTypes/userInfoTypes";
 
 const defaultFormData: SecretSquareFormData = {
   category: "일상 · 자유",

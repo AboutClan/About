@@ -4,13 +4,13 @@ import { Box } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
 import styled from "styled-components";
 
-import Calendar from "../../components/organisms/Calendar";
-import { CalendarContentProps } from "../../constants/contents/calendarSchedule";
-import { LOCATION_OPEN_DATE, LOCATION_TO_COLOR } from "../../constants/location";
-import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
-import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
-import { Location } from "../../types/services/locationTypes";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import Calendar from "@/components/organisms/Calendar";
+import { CalendarContentProps } from "@/constants/contents/calendarSchedule";
+import { LOCATION_OPEN_DATE, LOCATION_TO_COLOR } from "@/constants/location";
+import { PLACE_TO_LOCATION } from "@/constants/serviceConstants/studyConstants/studyLocationConstants";
+import { IArrivedData } from "@/types/models/studyTypes/studyRecords";
+import { Location } from "@/types/services/locationTypes";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 interface IRecordCalendar {
   filterData: IArrivedData[];

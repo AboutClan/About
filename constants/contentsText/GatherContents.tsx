@@ -1,4 +1,4 @@
-import { COLOR_400_ARR } from "../colorConstants";
+import { COLOR_400_ARR } from "@/constants/colorConstants";
 
 export type GatherCategoryMain = "공부·자기계발" | "취미" | "문화·놀거리" | "친목" | "스터디 크루";
 

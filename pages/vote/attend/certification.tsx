@@ -9,19 +9,19 @@ export default Certification;
 // import { useEffect, useState } from "react";
 // import { useRecoilState } from "recoil";
 
-// import PageIntro from "../../../components/atoms/PageIntro";
-// import SectionTitle from "../../../components/atoms/SectionTitle";
-// import BottomNav from "../../../components/layouts/BottomNav";
-// import Header from "../../../components/layouts/Header";
-// import Slide from "../../../components/layouts/PageSlide";
-// import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
-// import LocationSearch from "../../../components/organisms/location/LocationSearch";
-// import { useToast } from "../../../hooks/custom/CustomToast";
-// import { useKeypadHeight } from "../../../hooks/custom/useKeypadHeight";
-// import { useStudySetQuery } from "../../../hooks/study/queries";
-// import { useUserInfoQuery } from "../../../hooks/user/queries";
-// import { transferStudyAttendanceState } from "../../../recoils/transferRecoils";
-// import { LocationProps } from "../../../types/common";
+// import PageIntro from "@/components/atoms/PageIntro";
+// import SectionTitle from "@/components/atoms/SectionTitle";
+// import BottomNav from "@/components/layouts/BottomNav";
+// import Header from "@/components/layouts/Header";
+// import Slide from "@/components/layouts/PageSlide";
+// import ImageUploadInput from "@/components/molecules/ImageUploadInput";
+// import LocationSearch from "@/components/organisms/location/LocationSearch";
+// import { useToast } from "@/hooks/custom/CustomToast";
+// import { useKeypadHeight } from "@/hooks/custom/useKeypadHeight";
+// import { useStudySetQuery } from "@/hooks/study/queries";
+// import { useUserInfoQuery } from "@/hooks/user/queries";
+// import { transferStudyAttendanceState } from "@/recoils/transferRecoils";
+// import { LocationProps } from "@/types/common";
 
 // function Certification() {
 

@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { SERVER_URI } from "../../constants/system";
-import { QueryOptions } from "../../types/hooks/reactTypes";
-import { ICouponIssueResponse, ICouponResponse } from "../../types/models/couponTypes";
+import { SERVER_URI } from "@/constants/system";
+import { QueryOptions } from "@/types/hooks/reactTypes";
+import { ICouponIssueResponse, ICouponResponse } from "@/types/models/couponTypes";
 
 const COUPON = "coupon";
 

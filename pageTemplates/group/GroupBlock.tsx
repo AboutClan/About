@@ -5,10 +5,10 @@ import { useSession } from "next-auth/react";
 import { MouseEvent } from "react";
 import styled from "styled-components";
 
-import { useFailToast } from "../../hooks/custom/CustomToast";
-import { IGroup } from "../../types/models/groupTypes/group";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import { getGroupParticipantCount } from "../../utils/groupUtils";
+import { useFailToast } from "@/hooks/custom/CustomToast";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
+import { getGroupParticipantCount } from "@/utils/groupUtils";
 
 interface IGroupBlock {
   group: IGroup;

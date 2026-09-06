@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { prevPageUrlState } from "../../../recoils/previousAtoms";
+import { prevPageUrlState } from "@/recoils/previousAtoms";
 
 interface ISectionHeader {
   title: string;

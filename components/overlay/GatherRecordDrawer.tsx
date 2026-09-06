@@ -3,9 +3,9 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 
-import { CloseProps } from "../../types/components/modalTypes";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
-import BottomFlexDrawer from "../organisms/drawer/BottomFlexDrawer";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { CloseProps } from "@/types/components/modalTypes";
+import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 
 export interface GatherRecordDrawerProps extends CloseProps {
   id: string;

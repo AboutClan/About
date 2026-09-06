@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
-import { slideDirectionState } from "../../recoils/navigationRecoils";
-import { isIOS } from "../../utils/validationUtils";
+import { slideDirectionState } from "@/recoils/navigationRecoils";
+import { isIOS } from "@/utils/validationUtils";
 interface IPageLayout {
   isFixed?: boolean;
   posZero?: "top";

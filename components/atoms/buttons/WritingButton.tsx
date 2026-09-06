@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 
-import { getSafeAreaBottom } from "../../../utils/validationUtils";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface IWritingIcon {
   url?: string;

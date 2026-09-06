@@ -1,8 +1,8 @@
 import { ThemeTypings } from "@chakra-ui/react";
 
-import { UserSimpleInfoProps } from "../models/userTypes/userInfoTypes";
-import { LocationEn } from "../services/locationTypes";
-import { TimeStampProps } from "../utils/timeAndDate";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { LocationEn } from "@/types/services/locationTypes";
+import { TimeStampProps } from "@/types/utils/timeAndDate";
 
 export interface ILocationParam {
   locationParam: LocationEn;

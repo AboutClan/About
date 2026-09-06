@@ -3,22 +3,22 @@ import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
-import CafeMapBottomNav from "../components/CafeMapBottomNav";
-import { CAFE_MAP_REVIEW_POPUP_AT } from "../constants/keys/localStorage";
-import { usePointSubLogQuery } from "../hooks/user/queries";
-import { gaEvent } from "../libs/gtag";
-import { IFooterOptions, ModalLayout } from "../modals/Modals";
-import CafeMapAppInstallDrawer from "../pageTemplates/studyPage/CafeMapAppInstallDrawer";
-import CafeMapArchivePage from "../pageTemplates/studyPage/CafeMapArchivePage";
-import CafeMapFeedPage from "../pageTemplates/studyPage/CafeMapFeedPage";
+import CafeMapBottomNav from "@/components/CafeMapBottomNav";
+import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
+import { usePointSubLogQuery } from "@/hooks/user/queries";
+import { gaEvent } from "@/libs/gtag";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import CafeMapAppInstallDrawer from "@/pageTemplates/studyPage/CafeMapAppInstallDrawer";
+import CafeMapArchivePage from "@/pageTemplates/studyPage/CafeMapArchivePage";
+import CafeMapFeedPage from "@/pageTemplates/studyPage/CafeMapFeedPage";
 import CafeMapInstagramRewardModal, {
   CAFE_MAP_INSTAGRAM_REWARD_SUB,
-} from "../pageTemplates/studyPage/CafeMapInstagramRewardModal";
-import CafeMapMyPage from "../pageTemplates/studyPage/CafeMapMyPage";
-import CafeMapReviewRequestDrawer from "../pageTemplates/studyPage/CafeMapReviewRequestDrawer";
-import CafeMapStudyPage from "../pageTemplates/studyPage/CafeMapStudyPage";
-import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
-import { isApp, isMobileWeb } from "../utils/validationUtils";
+} from "@/pageTemplates/studyPage/CafeMapInstagramRewardModal";
+import CafeMapMyPage from "@/pageTemplates/studyPage/CafeMapMyPage";
+import CafeMapReviewRequestDrawer from "@/pageTemplates/studyPage/CafeMapReviewRequestDrawer";
+import CafeMapStudyPage from "@/pageTemplates/studyPage/CafeMapStudyPage";
+import StudyPageMap from "@/pageTemplates/studyPage/studyPageMap/StudyPageMap";
+import { isApp, isMobileWeb } from "@/utils/validationUtils";
 
 const REVIEW_POPUP_INTERVAL_DAYS = 7;
 

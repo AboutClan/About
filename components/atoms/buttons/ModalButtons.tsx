@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 
-import { ModalProps } from "../../../types/components/modalTypes";
+import { ModalProps } from "@/types/components/modalTypes";
 
 export function CalendarCheckModalButton({ handleClick }: ModalProps) {
   return (

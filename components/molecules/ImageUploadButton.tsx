@@ -1,9 +1,9 @@
 import { Button, Input } from "@chakra-ui/react";
 import { useRef } from "react";
 
-import { useToast } from "../../hooks/custom/CustomToast";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { processFile } from "../../utils/imageUtils";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { processFile } from "@/utils/imageUtils";
 
 interface IImageUploadButton {
   setImageUrls: DispatchType<string[]>;

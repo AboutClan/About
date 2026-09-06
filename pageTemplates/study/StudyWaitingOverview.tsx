@@ -7,8 +7,8 @@ export default StudyWaitingOverview;
 // import { Box, Button } from "@chakra-ui/react";
 // import styled from "styled-components";
 
-// import InfoBox from "../../components/molecules/InfoBoxCol";
-// import { DispatchBoolean } from "../../types/hooks/reactTypes";
+// import InfoBox from "@/components/molecules/InfoBoxCol";
+// import { DispatchBoolean } from "@/types/hooks/reactTypes";
 // interface StudyWaitingOverviewProps {
 //   setIsModal: DispatchBoolean;
 // }

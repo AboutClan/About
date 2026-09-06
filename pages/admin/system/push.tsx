@@ -1,9 +1,9 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { Input } from "../../../components/atoms/Input";
-import Header from "../../../components/layouts/Header";
-import { usePushQuery } from "../../../hooks/admin/quries";
+import { Input } from "@/components/atoms/Input";
+import Header from "@/components/layouts/Header";
+import { usePushQuery } from "@/hooks/admin/quries";
 
 function PushPage() {
   const [value, setValue] = useState("");
@@ -35,7 +35,7 @@ export default PushPage;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

@@ -5,23 +5,23 @@ import { useRouter } from "next/router";
 import { memo, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
-import Avatar from "../../components/atoms/Avatar";
-import BottomNavButton from "../../components/atoms/BottomNavButton";
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import Textarea from "../../components/atoms/Textarea";
-import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import ProfileCommentCard from "../../components/molecules/cards/ProfileCommentCard";
-import { GATHER_CONTENT } from "../../constants/keys/queryKeys";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useGatherIDQuery } from "../../hooks/gather/queries";
-import { UserRating, UserReviewProps, useUserReviewMutation } from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import { getRandomImage } from "../../utils/imageUtils";
+import { GATHER_MAIN_IMAGE_ARR } from "@/assets/gather";
+import Avatar from "@/components/atoms/Avatar";
+import BottomNavButton from "@/components/atoms/BottomNavButton";
+import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import Textarea from "@/components/atoms/Textarea";
+import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useGatherIDQuery } from "@/hooks/gather/queries";
+import { UserRating, UserReviewProps, useUserReviewMutation } from "@/hooks/user/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
+import { getRandomImage } from "@/utils/imageUtils";
 
 /* ================= 아바타 관련 상수 & 컴포넌트 (컴포넌트 밖) ================= */
 

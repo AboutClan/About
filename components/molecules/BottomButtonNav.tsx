@@ -1,8 +1,8 @@
 import { Button, Flex } from "@chakra-ui/react";
 
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useCheckGuest } from "../../hooks/custom/UserHooks";
-import { getSafeAreaBottom } from "../../utils/validationUtils";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface BottomButtonNavProps {
   text: string;

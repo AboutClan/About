@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { CustomColor } from "../../types/globals/interaction";
-import PointCircle from "./PointCircle";
+import PointCircle from "@/components/atoms/PointCircle";
+import { CustomColor } from "@/types/globals/interaction";
 
 export interface ColorLabelProps {
   color?: CustomColor;

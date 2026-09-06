@@ -1,4 +1,4 @@
-import { StudyConfirmedProps, StudyParticipationProps } from "./study-entity.types";
+import { StudyConfirmedProps, StudyParticipationProps } from "@/types/models/studyTypes/study-entity.types";
 
 /**
  * Collection of two types of study sets

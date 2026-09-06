@@ -2,11 +2,11 @@ import axios, { AxiosError } from "axios";
 import { KakaoProfile } from "next-auth/providers/kakao";
 import { useQuery } from "react-query";
 
-import { UID_TO_USER, USER_INFO, USER_POINT_SYSTEM } from "../../constants/keys/queryKeys";
-import { SERVER_URI } from "../../constants/system";
-import { QueryOptions } from "../../types/hooks/reactTypes";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
-import { IPointLog } from "../../types/services/pointSystem";
+import { UID_TO_USER, USER_INFO, USER_POINT_SYSTEM } from "@/constants/keys/queryKeys";
+import { SERVER_URI } from "@/constants/system";
+import { QueryOptions } from "@/types/hooks/reactTypes";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { IPointLog } from "@/types/services/pointSystem";
 
 export const useUserKakaoInfoQuery = (): {
   data: KakaoProfile["kakao_account"] | IUser;

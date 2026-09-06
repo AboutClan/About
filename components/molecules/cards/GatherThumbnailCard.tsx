@@ -5,19 +5,19 @@ import Link from "next/link";
 import { ComponentProps, useState } from "react";
 import styled from "styled-components";
 
-import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
-import { SingleLineText } from "../../../styles/layout/components";
+import { UserIcon } from "@/components/Icons/UserIcons";
+import { InfinityIcon } from "@/components/molecules/cards/StudyThumbnailCard";
+import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
+import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { SingleLineText } from "@/styles/layout/components";
 import {
   GatherCategory,
   GatherStatus,
   IGatherParticipants,
-} from "../../../types/models/gatherTypes/gatherTypes";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
-import { UserIcon } from "../../Icons/UserIcons";
-import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
-import { InfinityIcon } from "./StudyThumbnailCard";
+} from "@/types/models/gatherTypes/gatherTypes";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 const VOTER_SHOW_MAX = 4;
 export interface GatherThumbnailCardProps {

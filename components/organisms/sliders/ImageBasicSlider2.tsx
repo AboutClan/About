@@ -9,7 +9,7 @@ import SwiperCore from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import ImageShadowCover from "../../molecules/ImageShadowCover";
+import ImageShadowCover from "@/components/molecules/ImageShadowCover";
 
 SwiperCore.use([Navigation, Pagination]);
 

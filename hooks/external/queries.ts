@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { KAKAO_SEARCH } from "../../constants/keys/queryKeys";
-import { LocationProps } from "../../types/common";
-import { QueryOptions } from "../../types/hooks/reactTypes";
+import { KAKAO_SEARCH } from "@/constants/keys/queryKeys";
+import { LocationProps } from "@/types/common";
+import { QueryOptions } from "@/types/hooks/reactTypes";
 
 const API_URL = "https://dapi.kakao.com/v2/local/search/keyword.json";
 const API_LOCATION_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json";

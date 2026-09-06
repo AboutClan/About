@@ -1,15 +1,15 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
-import { Input } from "../../components/atoms/Input";
-import BottomNav from "../../components/layouts/BottomNav";
-import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { useUserKakaoInfoQuery } from "../../hooks/user/queries";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
-import { checkIsKorean } from "../../utils/validationUtils";
+import { Input } from "@/components/atoms/Input";
+import BottomNav from "@/components/layouts/BottomNav";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import { useUserKakaoInfoQuery } from "@/hooks/user/queries";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
+import { checkIsKorean } from "@/utils/validationUtils";
 
 function Name() {
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);

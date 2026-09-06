@@ -1,8 +1,8 @@
 import { Box, Button, Collapse, useDisclosure } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { DispatchBoolean } from "../../../types/hooks/reactTypes";
-import { IStoreApplicant } from "../../../types/models/store";
+import { DispatchBoolean } from "@/types/hooks/reactTypes";
+import { IStoreApplicant } from "@/types/models/store";
 
 interface IStoreDetailNav {
   applyUsers: IStoreApplicant[];

@@ -1,4 +1,4 @@
-import { GatherCategoryMain } from "../constants/contentsText/GatherContents";
+import { GatherCategoryMain } from "@/constants/contentsText/GatherContents";
 
 export const GATHER_MAIN_IMAGE_ARR: Record<GatherCategoryMain | "공통", string[]> = {
   "공부·자기계발": [

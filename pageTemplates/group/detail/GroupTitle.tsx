@@ -2,8 +2,8 @@ import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { NewAlertIcon } from "../../../components/Icons/AlertIcon";
-import { GatherStatus } from "../../../types/models/gatherTypes/gatherTypes";
+import { NewAlertIcon } from "@/components/Icons/AlertIcon";
+import { GatherStatus } from "@/types/models/gatherTypes/gatherTypes";
 
 interface IGroupTitle {
   title: string;

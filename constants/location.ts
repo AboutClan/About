@@ -1,5 +1,5 @@
-import { ActiveLocation, Location, LocationEn } from "../types/services/locationTypes";
-import { COLOR_TABLE } from "./colorConstants";
+import { COLOR_TABLE } from "@/constants/colorConstants";
+import { ActiveLocation, Location, LocationEn } from "@/types/services/locationTypes";
 
 export const PREV_LOCATION: ActiveLocation[] = ["수원", "양천", "강남", "동대문", "인천", "안양"];
 

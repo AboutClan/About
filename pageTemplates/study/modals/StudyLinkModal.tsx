@@ -2,11 +2,11 @@ import { Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 
-import { ModalLayout } from "../../../modals/Modals";
-import { CoordinatesProps } from "../../../types/common";
-import { StudyType } from "../../../types/models/studyTypes/study-set.types";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import { navigateLocationToLink } from "../StudyMembers";
+import { ModalLayout } from "@/modals/Modals";
+import { navigateLocationToLink } from "@/pageTemplates/study/StudyMembers";
+import { CoordinatesProps } from "@/types/common";
+import { StudyType } from "@/types/models/studyTypes/study-set.types";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 interface StudyLinkModalProps {
   date: string;

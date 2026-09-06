@@ -6,18 +6,18 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
-import BottomButtonNav from "../../../components/molecules/BottomButtonNav";
-import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import { GROUP_STUDY, USER_INFO } from "../../../constants/keys/queryKeys";
-import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
+import BottomButtonNav from "@/components/molecules/BottomButtonNav";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { GROUP_STUDY, USER_INFO } from "@/constants/keys/queryKeys";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import {
   useGroupParticipationMutation,
   useGroupWaitingMutation,
   useGroupWaitingStatusMutation,
-} from "../../../hooks/groupStudy/mutations";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { IGroup } from "../../../types/models/groupTypes/group";
-import { getGroupParticipantCount } from "../../../utils/groupUtils";
+} from "@/hooks/groupStudy/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { getGroupParticipantCount } from "@/utils/groupUtils";
 
 interface IGroupBottomNav {
   data: IGroup;

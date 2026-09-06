@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import Avatar from "../../atoms/Avatar";
+import Avatar from "@/components/atoms/Avatar";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 interface IFeedHeader {
   writer: UserSimpleInfoProps;
   date: string;

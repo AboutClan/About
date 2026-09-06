@@ -3,9 +3,9 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { IModal } from "../../types/components/modalTypes";
-import { dayjsToFormat, getDateWeek } from "../../utils/dateTimeUtils";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { dayjsToFormat, getDateWeek } from "@/utils/dateTimeUtils";
 
 interface IAttendCheckModal extends IModal {
   id: number;

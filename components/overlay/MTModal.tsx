@@ -2,8 +2,8 @@ import { Box, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { navigateExternalLink } from "../../utils/navigateUtils";
-import ScreenOverlay from "../atoms/ScreenOverlay";
+import ScreenOverlay from "@/components/atoms/ScreenOverlay";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 function MTModal({ onClose }: { onClose: () => void }) {
   const router = useRouter();

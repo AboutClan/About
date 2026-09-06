@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { cookiepayToken } from "../../../utils/cookiepay";
+import { cookiepayToken } from "@/utils/cookiepay";
 
 export default async function handler(_: NextApiRequest, res: NextApiResponse) {
   try {

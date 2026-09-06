@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 interface RequestBirthModalProps extends IModal {
   type: "profile" | "location";

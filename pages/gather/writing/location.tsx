@@ -3,17 +3,17 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import BottomNav from "../../../components/layouts/BottomNav";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import SearchLocation from "../../../components/organisms/SearchLocation";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { ModalLayout } from "../../../modals/Modals";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { LocationProps } from "../../../types/common";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProgressStatus from "@/components/molecules/ProgressStatus";
+import SearchLocation from "@/components/organisms/SearchLocation";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { ModalLayout } from "@/modals/Modals";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { sharedGatherWritingState } from "@/recoils/sharedDataAtoms";
+import { LocationProps } from "@/types/common";
 
 function WritingGahterLocation() {
   const router = useRouter();

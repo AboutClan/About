@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 
-import Header from "../../components/layouts/Header";
-import { navigateExternalLink } from "../../utils/navigateUtils";
+import Header from "@/components/layouts/Header";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 
 function BoardPage() {
   return (

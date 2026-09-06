@@ -1,4 +1,4 @@
-import { ALPHABET_COLLECTION } from "../../constants/settingValue/collection";
+import { ALPHABET_COLLECTION } from "@/constants/settingValue/collection";
 
 export const getRandomAlphabet = (percent: number) => {
   const randomValue = Math.random();

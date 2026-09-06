@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
 
-import { IGroup } from "../../../types/models/groupTypes/group";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 dayjs.locale("ko");
 
 interface IGroupDetailInfo {

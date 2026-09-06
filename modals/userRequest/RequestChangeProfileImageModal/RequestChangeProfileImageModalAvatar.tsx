@@ -3,20 +3,20 @@ import { AnimatePresence, isValidMotionProp, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import { AVATAR_BG_IMAGES } from "../../../assets/images/avatarBgImages";
-import { AVATAR_IMAGES } from "../../../assets/images/avatarImages";
-import Avatar from "../../../components/atoms/Avatar";
-import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
-import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
-import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
-import { USER_INFO } from "../../../constants/keys/queryKeys";
-import { useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
-import { useCheckGuest } from "../../../hooks/custom/UserHooks";
-import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import { IModal } from "../../../types/components/modalTypes";
-import { DispatchType } from "../../../types/hooks/reactTypes";
-import { AvatarProps } from "../../../types/models/userTypes/userInfoTypes";
-import { IFooterOptions, ModalLayout } from "../../Modals";
+import { AVATAR_BG_IMAGES } from "@/assets/images/avatarBgImages";
+import { AVATAR_IMAGES } from "@/assets/images/avatarImages";
+import Avatar from "@/components/atoms/Avatar";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import ImageSlider from "@/components/organisms/imageSlider/ImageSlider";
+import { COLOR_TABLE_LIGHT } from "@/constants/colorConstants";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useErrorToast, useFailToast } from "@/hooks/custom/CustomToast";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { AvatarProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface IRequestChangeProfileImageModalAvatar extends IModal {
   defaultAvatar?: AvatarProps;

@@ -1,5 +1,5 @@
-import { RealTimeAttendanceProps } from "../types/models/studyTypes/requestTypes";
-import { WritingFormProps } from "../types/services/writingTypes";
+import { RealTimeAttendanceProps } from "@/types/models/studyTypes/requestTypes";
+import { WritingFormProps } from "@/types/services/writingTypes";
 
 export const appendFormData = <T extends keyof WritingFormProps>(
   formData: FormData,

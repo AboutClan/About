@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import { IModal } from "../../../types/components/modalTypes";
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { ModalLayout } from "../../Modals";
-import GatherExpireModalCancelDialog from "./GatherExpireModalCancelDialog";
-import GatherExpireModalExpireDialog from "./GatherExpireModalExpireDialogs";
+import GatherExpireModalCancelDialog from "@/modals/gather/gatherExpireModal/GatherExpireModalCancelDialog";
+import GatherExpireModalExpireDialog from "@/modals/gather/gatherExpireModal/GatherExpireModalExpireDialogs";
+import { ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
+import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 
 export type GatherExpireModalDialogType = "expire" | "cancel";
 

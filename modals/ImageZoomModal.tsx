@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 
-import ScreenOverlay from "../components/atoms/ScreenOverlay";
-import { IModal } from "../types/components/modalTypes";
+import ScreenOverlay from "@/components/atoms/ScreenOverlay";
+import { IModal } from "@/types/components/modalTypes";
 
 interface IImageZoommodal extends IModal {
   imageUrl: string;

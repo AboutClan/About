@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import {
   BADGE_COLOR_MAPPINGS,
   USER_BADGE_ARR,
-} from "../../../constants/serviceConstants/badgeConstants";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { IFooterOptions, ModalLayout } from "../../Modals";
+} from "@/constants/serviceConstants/badgeConstants";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 
 function RequestChagneProfileImageModalBadge({ setIsModal }) {
   const typeToast = useTypeToast();

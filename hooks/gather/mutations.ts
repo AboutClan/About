@@ -1,9 +1,9 @@
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
-import { requestServer } from "../../libs/methodHelpers";
-import { MutationOptions } from "../../types/hooks/reactTypes";
-import { GatherRequestWritingProps, IGather } from "../../types/models/gatherTypes/gatherTypes";
+import { requestServer } from "@/libs/methodHelpers";
+import { MutationOptions } from "@/types/hooks/reactTypes";
+import { GatherRequestWritingProps, IGather } from "@/types/models/gatherTypes/gatherTypes";
 
 type GatherWritingParam<T> = T extends "post"
   ? FormData

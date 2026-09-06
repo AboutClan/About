@@ -2,13 +2,13 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import Header from "../components/layouts/Header";
-import Slide from "../components/layouts/PageSlide";
-import { useCheckGuest } from "../hooks/custom/UserHooks";
-import { useNoticeActiveLogQuery } from "../hooks/user/sub/interaction/queries";
-import NoticeActive from "../pageTemplates/notice/NoticeActive";
-import NoticeItem from "../pageTemplates/notice/NoticeItem";
-import NoticeNav from "../pageTemplates/notice/NoticeNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { useNoticeActiveLogQuery } from "@/hooks/user/sub/interaction/queries";
+import NoticeActive from "@/pageTemplates/notice/NoticeActive";
+import NoticeItem from "@/pageTemplates/notice/NoticeItem";
+import NoticeNav from "@/pageTemplates/notice/NoticeNav";
 
 export type NoticeType = "notice" | "active";
 

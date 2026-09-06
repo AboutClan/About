@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
-import { UserCommentProps } from "../../types/components/propTypes";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import UserCommentBlock from "./UserCommentBlock";
+import UserCommentBlock from "@/components/molecules/UserCommentBlock";
+import { ReplyProps } from "@/pageTemplates/community/SecretSquareComments";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { DispatchType } from "@/types/hooks/reactTypes";
 
 interface CommentSectionProps {
   commentArr: UserCommentProps[];

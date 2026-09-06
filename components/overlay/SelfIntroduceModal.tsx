@@ -2,12 +2,12 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
-import { USER_INFO } from "../../constants/keys/queryKeys";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoMutation } from "../../hooks/user/mutations";
-import { IFooterOptions, ModalLayout } from "../../modals/Modals";
-import { CloseProps } from "../../types/components/modalTypes";
-import Textarea from "../atoms/Textarea";
+import Textarea from "@/components/atoms/Textarea";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoMutation } from "@/hooks/user/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { CloseProps } from "@/types/components/modalTypes";
 
 interface SelfIntroduceModal extends CloseProps {}
 

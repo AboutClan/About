@@ -4,13 +4,13 @@ import Script from "next/script";
 import { signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ValueBoxCol, { ValueBoxColItemProps } from "../../../components/molecules/ValueBoxCol";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import RegisterPaymentButton from "../../../pageTemplates/register/access/RegisterPaymentButton";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { setAuthIntent } from "../../../utils/authIntentUtils";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import RegisterPaymentButton from "@/pageTemplates/register/access/RegisterPaymentButton";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { setAuthIntent } from "@/utils/authIntentUtils";
 
 const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
 

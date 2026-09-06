@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 
-import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
-import { UserCommentProps } from "../../types/components/propTypes";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import UserComment from "./UserComment";
+import UserComment from "@/components/molecules/UserComment";
+import { ReplyProps } from "@/pageTemplates/community/SecretSquareComments";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { DispatchType } from "@/types/hooks/reactTypes";
 
 interface UserCommentBlockProps {
   type: "gather" | "group" | "feed" | "square";

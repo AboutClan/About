@@ -2,17 +2,17 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import { Input } from "../../components/atoms/Input";
-import BottomNav from "../../components/layouts/BottomNav";
-import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { USER_INFO } from "../../constants/keys/queryKeys";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoMutation } from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
+import { Input } from "@/components/atoms/Input";
+import BottomNav from "@/components/layouts/BottomNav";
+import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfoMutation } from "@/hooks/user/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 function Instagram() {
   const router = useRouter();

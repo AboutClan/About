@@ -2,21 +2,21 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import TabNav from "../../../components/molecules/navs/TabNav";
-import UserApprovalBoard from "../../../components/organisms/boards/UserApprovalBoard";
-import UserDeleteBoard from "../../../components/organisms/boards/UserDeleteBoard";
-import UserInviteBoard from "../../../components/organisms/boards/UserInviteBoard";
-import { useResetGatherQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast } from "../../../hooks/custom/CustomToast";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import TabNav from "@/components/molecules/navs/TabNav";
+import UserApprovalBoard from "@/components/organisms/boards/UserApprovalBoard";
+import UserDeleteBoard from "@/components/organisms/boards/UserDeleteBoard";
+import UserInviteBoard from "@/components/organisms/boards/UserInviteBoard";
+import { useResetGatherQuery } from "@/hooks/custom/CustomHooks";
+import { useToast } from "@/hooks/custom/CustomToast";
 import {
   useGatherParticipationMutation,
   useGatherWaitingStatusMutation,
-} from "../../../hooks/gather/mutations";
-import { useGatherIDQuery } from "../../../hooks/gather/queries";
-import { IUser } from "../../../types/models/userTypes/userInfoTypes";
-import { safeDecodeTel } from "../../../utils/utils";
+} from "@/hooks/gather/mutations";
+import { useGatherIDQuery } from "@/hooks/gather/queries";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { safeDecodeTel } from "@/utils/utils";
 
 const TAB_ARR = ["신청 인원", "참여 인원", "인원 초대"] as const;
 
@@ -139,7 +139,7 @@ export default Admin;
 import { GetServerSideProps } from "next";
 import { getServerSession } from "next-auth/next";
 
-import { authOptions } from "../../../pages/api/auth/[...nextauth]";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 const GATHER_ADMIN_UIDS = ["2259633694", "3224546232"];
 

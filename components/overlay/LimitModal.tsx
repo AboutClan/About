@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { ModalLayout } from "../../modals/Modals";
+import { ModalLayout } from "@/modals/Modals";
 
 function LimitModal({ onClose }) {
   const router = useRouter();

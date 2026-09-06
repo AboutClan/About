@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 
-import Avatar from "../../components/atoms/Avatar";
-import BottomNav from "../../components/layouts/BottomNav";
-import Header from "../../components/layouts/Header";
-import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
+import Avatar from "@/components/atoms/Avatar";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
+import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 
 type Button = "home" | "cafe-map";
 

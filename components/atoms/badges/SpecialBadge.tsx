@@ -1,13 +1,13 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { useUserInfo } from "../../../hooks/custom/UserHooks";
-import { ModalLayout } from "../../../modals/Modals";
+import ValueBoxCol from "@/components/molecules/ValueBoxCol";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { ModalLayout } from "@/modals/Modals";
 import {
   MEMBERSHIP_CONVERTOR,
   UserMemberShip,
-} from "../../../types/models/userTypes/userInfoTypes";
-import ValueBoxCol from "../../molecules/ValueBoxCol";
+} from "@/types/models/userTypes/userInfoTypes";
 
 interface SpecialBadgeProps {
   hasMembership: boolean;

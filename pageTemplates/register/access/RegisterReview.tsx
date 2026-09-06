@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { Autoplay, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import Avatar from "../../../components/atoms/Avatar";
+import Avatar from "@/components/atoms/Avatar";
 
 function RegisterReview({
   isShort,

@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Grid } from "@chakra-ui/react";
 
-import Avatar from "../../../components/atoms/Avatar";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import Avatar from "@/components/atoms/Avatar";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface IInviteUserGroups {
   users: UserSimpleInfoProps[] | UserSimpleInfoProps[];

@@ -2,11 +2,11 @@
 
 import dayjs from "dayjs";
 import styled from "styled-components";
-import Header from "../../../components/layouts/Header";
-import { CopyBtn } from "../../../components/Icons/CopyIcon";
-import { useUserRegisterFormsQuery } from "../../../hooks/admin/quries";
-import { IUserRegisterForm } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import Header from "@/components/layouts/Header";
+import { CopyBtn } from "@/components/Icons/CopyIcon";
+import { useUserRegisterFormsQuery } from "@/hooks/admin/quries";
+import { IUserRegisterForm } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 const START_DATE = "2026-05-21";
 const MIN_BIRTH_YEAR = 1997;
@@ -142,7 +142,7 @@ const ContactWrapper = styled.div`
 export default AdminRegister2;
 
 import { GetServerSideProps } from "next";
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

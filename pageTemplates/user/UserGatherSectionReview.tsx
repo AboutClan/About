@@ -2,11 +2,11 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-import StarRatingReviewBlock2 from "../../components/molecules/StarRatingReviewBlock2";
-import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useCheckGuest } from "../../hooks/custom/UserHooks";
-import { useMyPlaceQuery } from "../../hooks/study/queries";
+import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { useMyPlaceQuery } from "@/hooks/study/queries";
 
 function UserGatherSectionReview() {
   const toast = useToast();

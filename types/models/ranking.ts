@@ -1,6 +1,6 @@
-import { IScore } from "../services/pointSystem";
-import { IVoteRate } from "./studyTypes/studyRecords";
-import { IUser, UserSimpleInfoProps } from "./userTypes/userInfoTypes";
+import { IVoteRate } from "@/types/models/studyTypes/studyRecords";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { IScore } from "@/types/services/pointSystem";
 
 export interface IRankScore {
   isRank: boolean;

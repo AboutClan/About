@@ -3,18 +3,18 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
+import Avatar from "@/components/atoms/Avatar";
+import { EllipsisIcon } from "@/components/Icons/DotIcons";
 import {
   useCommentLikeMutation,
   useCommentMutation,
   useSubCommentMutation,
-} from "../../hooks/common/mutations";
-import CommentEditModal from "../../modals/common/CommentEditModal";
-import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
-import { UserCommentProps as CommentProps } from "../../types/components/propTypes";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { getDateDiff } from "../../utils/dateTimeUtils";
-import Avatar from "../atoms/Avatar";
-import { EllipsisIcon } from "../Icons/DotIcons";
+} from "@/hooks/common/mutations";
+import CommentEditModal from "@/modals/common/CommentEditModal";
+import { ReplyProps } from "@/pageTemplates/community/SecretSquareComments";
+import { UserCommentProps as CommentProps } from "@/types/components/propTypes";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { getDateDiff } from "@/utils/dateTimeUtils";
 
 interface UserCommentProps extends Omit<CommentProps, "_id"> {
   isSecret?: boolean;

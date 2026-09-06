@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 
-import { IFooterOptions, ModalLayout } from "../../modals/Modals";
-import { CloseProps } from "../../types/components/modalTypes";
-import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
-import { getDeviceOS } from "../../utils/validationUtils";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { CloseProps } from "@/types/components/modalTypes";
+import { nativeMethodUtils } from "@/utils/nativeMethodUtils";
+import { getDeviceOS } from "@/utils/validationUtils";
 
 // const ANDROID_STORE_APP_URL =
 //   "https://play.google.com/store/apps/details?id=com.about.studyaboutclubapp";

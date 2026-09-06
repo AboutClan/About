@@ -7,28 +7,28 @@ import { useRouter } from "next/router";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import {
   ActivityCategory,
   ActivityItem,
   HOME_ACTIVITY_ITEMS,
-} from "../../constants/contents/groupInfo";
-import { HOME_ACTIVITY_INTRO_POPUP_AT } from "../../constants/keys/localStorage";
-import { MODAL_QUEUE_PRIORITY } from "../../constants/modalQueuePriority";
+} from "@/constants/contents/groupInfo";
+import { HOME_ACTIVITY_INTRO_POPUP_AT } from "@/constants/keys/localStorage";
+import { MODAL_QUEUE_PRIORITY } from "@/constants/modalQueuePriority";
 import {
   SUPPORT_CATEGORY_LABEL,
   SUPPORT_CATEGORY_ORDER,
   SUPPORT_LIST,
   SupportCategory,
   SupportItem,
-} from "../../constants/support";
-import { useSingleModalSlot } from "../../hooks/custom/useSingleModalSlot";
+} from "@/constants/support";
+import { useSingleModalSlot } from "@/hooks/custom/useSingleModalSlot";
 import {
   HOME_ACTIVITY_DRAWER_QUERY_KEY,
   HomeActivityDrawerTab,
   transferHomeActivityDrawerOpenState,
   transferHomeActivityDrawerTabState,
-} from "../../recoils/transferRecoils";
-import RightDrawer from "../organisms/drawer/RightDrawer";
+} from "@/recoils/transferRecoils";
 
 // HOME_ACTIVITY_ITEMS의 mainCategory 값 자체가 group.category.main과 동일한 5분류라서
 // 별도 라벨/변환 매핑 없이 그대로 분류 기준으로 쓴다.

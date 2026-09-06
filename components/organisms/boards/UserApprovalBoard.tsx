@@ -1,8 +1,8 @@
 import { Box, Button, Flex, Stack } from "@chakra-ui/react";
 
-import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import ProfileCommentCard from "../../molecules/cards/ProfileCommentCard";
-import SocialingScoreBadge from "../../molecules/SocialingScoreBadge";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface UserApprovalBoardProps {
   users: { user: UserSimpleInfoProps; text: string }[];

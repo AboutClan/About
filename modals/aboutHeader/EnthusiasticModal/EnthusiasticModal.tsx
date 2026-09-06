@@ -3,13 +3,13 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
-import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
-import { useCounterQuery } from "../../../hooks/sub/counter/queries";
-import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import { ModalSubtitle } from "../../../styles/layout/modal";
-import { IModal } from "../../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../../Modals";
+import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
+import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
+import { useCounterQuery } from "@/hooks/sub/counter/queries";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { ModalSubtitle } from "@/styles/layout/modal";
+import { IModal } from "@/types/components/modalTypes";
 
 interface IEnthusiasticModal extends IModal {}
 

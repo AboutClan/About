@@ -1,7 +1,7 @@
 import { DefaultSession } from "next-auth";
 import { KakaoProfile } from "next-auth/providers/kakao";
 
-import { Location } from "./services/locationTypes";
+import { Location } from "@/types/services/locationTypes";
 declare module "next-auth/jwt" {
   // JWT 토큰의 타입을 확장합니다.
   interface JWT {

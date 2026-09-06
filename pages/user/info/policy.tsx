@@ -1,7 +1,7 @@
 import { Container, Heading, List, ListItem, Text } from "@chakra-ui/react";
 
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
 
 function Policy() {
   return (

@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useEffect } from "react";
 
-import { GROUP_OG_MAPPING } from "../group/[id]";
+import { GROUP_OG_MAPPING } from "@/pages/s/group/[id]";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const id = String(ctx.params?.id ?? "");

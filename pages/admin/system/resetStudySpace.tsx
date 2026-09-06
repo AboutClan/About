@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import axios from "axios";
 
-import { SERVER_URI } from "../../../constants/system";
+import { SERVER_URI } from "@/constants/system";
 
 function AdminResetstudy() {
   const secretKey = process.env.NEXTAUTH_SECRET;
@@ -51,7 +51,7 @@ export default AdminResetstudy;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

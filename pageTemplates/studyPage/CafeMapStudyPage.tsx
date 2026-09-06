@@ -2,14 +2,14 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 
-import BottomNav from "../../components/layouts/BottomNav";
-import Header from "../../components/layouts/Header";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-import { useStudyPassedDayQuery, useStudySetQuery } from "../../hooks/study/queries";
-import { getSafeAreaBottom } from "../../utils/validationUtils";
-import StudyControlButton from "../vote/StudyControlButton";
-import StudyPageCalendar from "./StudyPageCalendar";
-import StudyPagePlaceSection from "./StudyPagePlaceSection";
+import BottomNav from "@/components/layouts/BottomNav";
+import Header from "@/components/layouts/Header";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries";
+import StudyPageCalendar from "@/pageTemplates/studyPage/StudyPageCalendar";
+import StudyPagePlaceSection from "@/pageTemplates/studyPage/StudyPagePlaceSection";
+import StudyControlButton from "@/pageTemplates/vote/StudyControlButton";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 function getTodayStr() {
   return dayjs().format("YYYY-MM-DD");

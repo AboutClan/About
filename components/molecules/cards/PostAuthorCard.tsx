@@ -1,10 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { getDateDiff } from "../../../utils/dateTimeUtils";
-import Avatar from "../../atoms/Avatar";
-import { AboutIcon } from "../../Icons/AboutIcon";
+import Avatar from "@/components/atoms/Avatar";
+import { AboutIcon } from "@/components/Icons/AboutIcon";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { getDateDiff } from "@/utils/dateTimeUtils";
 
 interface PostAuthorCardProps {
   createdAt: string;

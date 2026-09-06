@@ -3,8 +3,8 @@ import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { CopyBtn } from "../../components/Icons/CopyIcon";
-import { PROMOTION_TEXT, PROMOTION_TITLE } from "../../constants/contentsText/Private";
+import { CopyBtn } from "@/components/Icons/CopyIcon";
+import { PROMOTION_TEXT, PROMOTION_TITLE } from "@/constants/contentsText/Private";
 
 function PromotionContent() {
   const [isText, setIsText] = useState(true);

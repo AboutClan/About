@@ -3,29 +3,29 @@ import dayjs from "dayjs";
 import { Bell } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import AlertCirclePoint from "../../../components/atoms/AlertCirclePoint";
-import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
-import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
-import { StarIcon } from "../../../components/Icons/StarIcon";
-import Header from "../../../components/layouts/Header";
-import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
+import AlertCirclePoint from "@/components/atoms/AlertCirclePoint";
+import CurrentLocationBtn from "@/components/atoms/CurrentLocationBtn";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import { StarIcon } from "@/components/Icons/StarIcon";
+import Header from "@/components/layouts/Header";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import RightDrawer from "@/components/organisms/drawer/RightDrawer";
 import LocationSearch, {
   mapxyToLatLng,
-} from "../../../components/organisms/location/LocationSearch";
-import { NaverLocationProps } from "../../../hooks/external/queries";
-import { usePlaceRankingQuery } from "../../../hooks/study/queries";
-import { CoordinatesProps, LocationProps } from "../../../types/common";
-import { DispatchType } from "../../../types/hooks/reactTypes";
-import { PlaceProps } from "../../../types/models/studyTypes/entityTypes";
+} from "@/components/organisms/location/LocationSearch";
+import { NaverLocationProps } from "@/hooks/external/queries";
+import { usePlaceRankingQuery } from "@/hooks/study/queries";
+import GuideButton from "@/pageTemplates/studyPage/studyPageMap/GuideButton";
+import StatusButton from "@/pageTemplates/studyPage/studyPageMap/StatusButton";
+import { CafeMapLogo } from "@/pageTemplates/studyPage/studyPageMap/StudyPageMap";
+import { CoordinatesProps, LocationProps } from "@/types/common";
+import { DispatchType } from "@/types/hooks/reactTypes";
+import { PlaceProps } from "@/types/models/studyTypes/entityTypes";
 import {
   StudyPlaceFilter,
   StudyPlaceProps,
-} from "../../../types/models/studyTypes/study-entity.types";
-import { getSafeAreaBottom } from "../../../utils/validationUtils";
-import GuideButton from "./GuideButton";
-import StatusButton from "./StatusButton";
-import { CafeMapLogo } from "./StudyPageMap";
+} from "@/types/models/studyTypes/study-entity.types";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 const MAP_BTN_SHADOW = "0 1px 3px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.05)";
 

@@ -7,13 +7,13 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import IconButton from "../../components/atoms/buttons/IconButton";
-import Calendar from "../../components/molecules/MonthCalendar";
-import { handleChangeDate } from "../../pageTemplates/home/study/studyController/StudyController";
-import { IModal } from "../../types/components/modalTypes";
-import { DispatchString } from "../../types/hooks/reactTypes";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
-import { IFooterOptions, IPaddingOptions, ModalLayout } from "../Modals";
+import IconButton from "@/components/atoms/buttons/IconButton";
+import Calendar from "@/components/molecules/MonthCalendar";
+import { IFooterOptions, IPaddingOptions, ModalLayout } from "@/modals/Modals";
+import { handleChangeDate } from "@/pageTemplates/home/study/studyController/StudyController";
+import { IModal } from "@/types/components/modalTypes";
+import { DispatchString } from "@/types/hooks/reactTypes";
+import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 
 interface DateCalendarModalProps extends IModal {
   date: string; // YYYY-MM-DD

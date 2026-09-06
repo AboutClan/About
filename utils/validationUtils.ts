@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { LOCATION_OPEN } from "../constants/location";
-import { ActiveLocation } from "../types/services/locationTypes";
+import { LOCATION_OPEN } from "@/constants/location";
+import { ActiveLocation } from "@/types/services/locationTypes";
 
 export function isLocationType(value: string): value is ActiveLocation {
   return LOCATION_OPEN.includes(value as ActiveLocation);

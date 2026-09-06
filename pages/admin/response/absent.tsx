@@ -2,11 +2,11 @@ import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
-import Header from "../../../components/layouts/Header";
-import { useUserRequestQuery } from "../../../hooks/admin/quries";
-import CheckAbsentModal from "../../../modals/admin/CheckAbsentModal";
-import ModalPortal from "../../../modals/ModalPortal";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import { useUserRequestQuery } from "@/hooks/admin/quries";
+import CheckAbsentModal from "@/modals/admin/CheckAbsentModal";
+import ModalPortal from "@/modals/ModalPortal";
 
 function AdminAbsent() {
   const { data: suggestData, isLoading } = useUserRequestQuery("불참");
@@ -116,7 +116,7 @@ export default AdminAbsent;
 
 import { GetServerSideProps } from "next";
 
-import { checkAdminAuth } from "../../../libs/serverSideProps/adminAuth";
+import { checkAdminAuth } from "@/libs/serverSideProps/adminAuth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return checkAdminAuth(context);

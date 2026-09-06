@@ -2,11 +2,11 @@ import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import CheckList from "../../../components/atoms/CheckList";
-import TabNav, { ITabNavOptions } from "../../../components/molecules/navs/TabNav";
-import { IModal } from "../../../types/components/modalTypes";
-import { IFooterOptions, ModalLayout } from "../../Modals";
-import PointSystemsModalPoint from "./PointSystemsModalPoint";
+import CheckList from "@/components/atoms/CheckList";
+import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
+import PointSystemsModalPoint from "@/modals/aboutHeader/pointSystemsModal/PointSystemsModalPoint";
+import { IFooterOptions, ModalLayout } from "@/modals/Modals";
+import { IModal } from "@/types/components/modalTypes";
 
 function PointSystemsModal({ setIsModal }: IModal) {
   const [isFirst, setIsFirst] = useState(true);

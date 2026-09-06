@@ -1,4 +1,4 @@
-import { IContentPopUpContents } from "../../modals/common/ContentPopUp";
+import { IContentPopUpContents } from "@/modals/common/ContentPopUp";
 
 export const MEMEBER_MASKING_AND_FRIEND: IContentPopUpContents = {
   title: "스터디 멤버 비공개 및 친구 기능",

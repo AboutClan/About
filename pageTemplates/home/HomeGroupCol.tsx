@@ -2,13 +2,13 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSetRecoilState } from "recoil";
 
-import SectionFooterButton from "../../components/atoms/SectionFooterButton";
-import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
-import { createGroupThumbnailProps } from "../../pages/group";
-import { backUrlState } from "../../recoils/navigationRecoils";
-import { IGroup } from "../../types/models/groupTypes/group";
-import { getGroupParticipantCount } from "../../utils/groupUtils";
-import GroupSkeletonMain from "../group/GroupSkeletonMain";
+import SectionFooterButton from "@/components/atoms/SectionFooterButton";
+import { GroupThumbnailCard } from "@/components/molecules/cards/GroupThumbnailCard";
+import { createGroupThumbnailProps } from "@/pages/group";
+import GroupSkeletonMain from "@/pageTemplates/group/GroupSkeletonMain";
+import { backUrlState } from "@/recoils/navigationRecoils";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { getGroupParticipantCount } from "@/utils/groupUtils";
 dayjs().locale("ko");
 
 interface HomeGroupColProps {

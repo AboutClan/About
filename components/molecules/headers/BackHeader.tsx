@@ -1,4 +1,4 @@
-import ArrowBackButton from "../../atoms/buttons/ArrowBackButton";
+import ArrowBackButton from "@/components/atoms/buttons/ArrowBackButton";
 
 interface IBackHeader {
   title: string;

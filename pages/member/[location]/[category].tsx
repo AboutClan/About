@@ -4,16 +4,16 @@ import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import Avatar from "../../../components/atoms/Avatar";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import { FRIEND_RECOMMEND_CATEGORY } from "../../../constants/contentsText/friend";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { prevPageUrlState } from "../../../recoils/previousAtoms";
-import { transferMemberDataState } from "../../../recoils/transferRecoils";
-import { IUser, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { birthToAge, birthToDayjs } from "../../../utils/convertUtils/convertTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import Avatar from "@/components/atoms/Avatar";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import { FRIEND_RECOMMEND_CATEGORY } from "@/constants/contentsText/friend";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { prevPageUrlState } from "@/recoils/previousAtoms";
+import { transferMemberDataState } from "@/recoils/transferRecoils";
+import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { birthToAge, birthToDayjs } from "@/utils/convertUtils/convertTypes";
+import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 function FriendCategory() {
   const router = useRouter();

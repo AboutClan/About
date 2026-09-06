@@ -4,16 +4,16 @@
 // import { useEffect, useState } from "react";
 // import styled from "styled-components";
 
-// import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
-// import { WEB_URL } from "../../constants/system";
-// import { ModalSubtitle } from "../../styles/layout/modal";
-// import { IModal } from "../../types/components/modalTypes";
-// import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
+// import { STUDY_MAIN_IMAGES } from "@/assets/images/studyMain";
+// import { WEB_URL } from "@/constants/system";
+// import { ModalSubtitle } from "@/styles/layout/modal";
+// import { IModal } from "@/types/components/modalTypes";
+// import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 
-// import { isWebView } from "../../utils/appEnvUtils";
-// import { getRandomIdx } from "../../utils/mathUtils";
-// import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
-// import { IFooterOptions, ModalLayout } from "../Modals";
+// import { isWebView } from "@/utils/appEnvUtils";
+// import { getRandomIdx } from "@/utils/mathUtils";
+// import { nativeMethodUtils } from "@/utils/nativeMethodUtils";
+// import { IFooterOptions, ModalLayout } from "@/modals/Modals";
 
 // const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 

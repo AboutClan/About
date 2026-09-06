@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Spinner from "../Spinner";
+import Spinner from "@/components/atoms/Spinner";
 
 export function MainLoading({
   size = "md",

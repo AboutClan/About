@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 
-import { useWindowWidth } from "../../hooks/custom/CustomHooks";
-import SectionHeader from "../atoms/SectionHeader";
+import SectionHeader from "@/components/atoms/SectionHeader";
+import { useWindowWidth } from "@/hooks/custom/CustomHooks";
 
 interface SlideSectionColProps {
   title: string;

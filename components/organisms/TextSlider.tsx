@@ -8,7 +8,7 @@ import SwiperCore from "swiper";
 import { Autoplay, Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { ShortArrowIcon } from "../Icons/ArrowIcons";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 
 SwiperCore.use([Autoplay, Scrollbar]);
 

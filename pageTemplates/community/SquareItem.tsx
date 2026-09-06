@@ -3,12 +3,12 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-import Avatar from "../../components/atoms/Avatar";
-import ThumbIcon from "../../components/Icons/ThumbIcon";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { SecretSquareListResponse } from "../../hooks/secretSquare/queries";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { getDateDiff } from "../../utils/dateTimeUtils";
+import Avatar from "@/components/atoms/Avatar";
+import ThumbIcon from "@/components/Icons/ThumbIcon";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { SecretSquareListResponse } from "@/hooks/secretSquare/queries";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { getDateDiff } from "@/utils/dateTimeUtils";
 
 interface SquareItemProps {
   item: SecretSquareListResponse["squareList"][0];

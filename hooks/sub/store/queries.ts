@@ -1,11 +1,11 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { STORE_GIFT } from "../../../constants/keys/queryKeys";
-import { SERVER_URI } from "../../../constants/system";
-import { QueryOptions } from "../../../types/hooks/reactTypes";
-import { IStoreQuery, StoreGiftProps } from "../../../types/models/store";
-import { shuffleArray } from "../../../utils/convertUtils/convertDatas";
+import { STORE_GIFT } from "@/constants/keys/queryKeys";
+import { SERVER_URI } from "@/constants/system";
+import { QueryOptions } from "@/types/hooks/reactTypes";
+import { IStoreQuery, StoreGiftProps } from "@/types/models/store";
+import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
 export const useStoreQuery = (
   status: "pending" | "end",

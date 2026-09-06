@@ -9,19 +9,19 @@ export default StudyControllerVoteButton;
 // import { useSession } from "next-auth/react";
 // import { useRecoilValue } from "recoil";
 
-// import DateVoteBlock from "../../../../components/molecules/DateVoteBlock";
-// import { useTypeToast } from "../../../../hooks/custom/CustomToast";
+// import DateVoteBlock from "@/components/molecules/DateVoteBlock";
+// import { useTypeToast } from "@/hooks/custom/CustomToast";
 // import {
 //   myRealStudyInfoState,
 //   myStudyInfoState,
 //   studyDateStatusState,
-// } from "../../../../recoils/studyRecoils";
-// import { DispatchType } from "../../../../types/hooks/reactTypes";
+// } from "@/recoils/studyRecoils";
+// import { DispatchType } from "@/types/hooks/reactTypes";
 // import {
 //   RealTimeMemberProps,
 //   StudyParticipationProps,
-// } from "../../../../types/models/studyTypes/studyDetails";
-// import { StudyDateStatus } from "../../../../types/models/studyTypes/studyInterActions";
+// } from "@/types/models/studyTypes/studyDetails";
+// import { StudyDateStatus } from "@/types/models/studyTypes/studyInterActions";
 
 // export type StudyVoteActionType =
 //   | "원클릭 스터디 투표"

@@ -1,12 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import MainBadge from "../../../components/atoms/MainBadge";
-import BlurredLink from "../../../components/molecules/BlurredLink";
-import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
-import { useCheckGuest } from "../../../hooks/custom/UserHooks";
-import { IGroup } from "../../../types/models/groupTypes/group";
-import { getGroupParticipantCount } from "../../../utils/groupUtils";
+import MainBadge from "@/components/atoms/MainBadge";
+import BlurredLink from "@/components/molecules/BlurredLink";
+import InfoBoxCol from "@/components/molecules/InfoBoxCol";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { getGroupParticipantCount } from "@/utils/groupUtils";
 
 interface GroupOverviewProps {
   group: IGroup;

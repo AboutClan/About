@@ -1,7 +1,7 @@
 import { signIn, signOut } from "next-auth/react";
 import { useEffect, useRef } from "react";
 
-import { setAuthIntent } from "../../utils/authIntentUtils";
+import { setAuthIntent } from "@/utils/authIntentUtils";
 
 function Confirm() {
   const ran = useRef(false);

@@ -3,8 +3,8 @@
 // pages/api/cookiepay/noti.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { markCookiepayResultWithRetry } from "../../../libs/cookiepayOrderClient";
-import { cookiepayPaycert } from "../../../utils/cookiepay";
+import { markCookiepayResultWithRetry } from "@/libs/cookiepayOrderClient";
+import { cookiepayPaycert } from "@/utils/cookiepay";
 
 export const config = {
   api: { bodyParser: true }, // JSON

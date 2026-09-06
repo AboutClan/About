@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 
-import Avatar from "../../components/atoms/Avatar";
-import SpecialBadge from "../../components/atoms/badges/SpecialBadge";
-import UserBadge from "../../components/atoms/badges/UserBadge";
-import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
-import { CameraIcon, ProfileCamera } from "./UserProfileSection";
+import Avatar from "@/components/atoms/Avatar";
+import SpecialBadge from "@/components/atoms/badges/SpecialBadge";
+import UserBadge from "@/components/atoms/badges/UserBadge";
+import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { CameraIcon, ProfileCamera } from "@/pageTemplates/user/UserProfileSection";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
 interface UserProfileBarProps {
   user: IUser;

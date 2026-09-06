@@ -1,4 +1,4 @@
-import { LOCATION_MAX_BOUNDARY } from "../../constants/serviceConstants/studyConstants/studyVoteMapConstants";
+import { LOCATION_MAX_BOUNDARY } from "@/constants/serviceConstants/studyConstants/studyVoteMapConstants";
 
 export function getLocationByCoordinates(lat: number, lon: number): string | null {
   for (const [location, boundary] of Object.entries(LOCATION_MAX_BOUNDARY)) {

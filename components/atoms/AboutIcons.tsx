@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-import { Alphabet } from "../../types/models/collections";
+import { Alphabet } from "@/types/models/collections";
 
 const ALPHABET_BG: Record<Alphabet, string> = {
   A: "var(--color-red)",

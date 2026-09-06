@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { MainLoading } from "../../components/atoms/loaders/MainLoading";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import ProfileCommentCard from "../../components/molecules/cards/ProfileCommentCard";
-import { useUidsToUsersInfoQuery, useUserInfoQuery } from "../../hooks/user/queries";
-import { prevPageUrlState } from "../../recoils/navigationRecoils";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
+import { useUidsToUsersInfoQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import { prevPageUrlState } from "@/recoils/navigationRecoils";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 function ProfileFriend() {
   const router = useRouter();

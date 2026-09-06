@@ -9,7 +9,7 @@
 // 이 정보를 미리 심어둬야 webhook/return이 나중에 orderNo만으로 최종 처리를 할 수 있다.
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { createCookiepayOrder } from "../../../libs/cookiepayOrderClient";
+import { createCookiepayOrder } from "@/libs/cookiepayOrderClient";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).json({ message: "POST only" });

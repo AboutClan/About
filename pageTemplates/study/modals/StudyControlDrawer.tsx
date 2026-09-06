@@ -4,12 +4,12 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import StudyApplyDrawer from "../../../components/services/study/apply/StudyApplyDrawer";
-import { useCheckGuest } from "../../../hooks/custom/UserHooks";
-import CafeMapGuestModal from "../../../modals/cafeMap/CafeMapGuestModal";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import StudyOpenDrawer from "../../vote/StudyOpenDrawer";
+import BottomFlexDrawer from "@/components/organisms/drawer/BottomFlexDrawer";
+import StudyApplyDrawer from "@/components/services/study/apply/StudyApplyDrawer";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import CafeMapGuestModal from "@/modals/cafeMap/CafeMapGuestModal";
+import StudyOpenDrawer from "@/pageTemplates/vote/StudyOpenDrawer";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 type DrawerType = "apply" | "open";
 

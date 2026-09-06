@@ -2,12 +2,12 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { ModalLayout } from "../../../modals/Modals";
-import { isWebView } from "../../../utils/appEnvUtils";
-import { setAuthIntent } from "../../../utils/authIntentUtils";
-import { navigateExternalLink } from "../../../utils/navigateUtils";
-import { getSafeAreaBottom } from "../../../utils/validationUtils";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { ModalLayout } from "@/modals/Modals";
+import { isWebView } from "@/utils/appEnvUtils";
+import { setAuthIntent } from "@/utils/authIntentUtils";
+import { navigateExternalLink } from "@/utils/navigateUtils";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 function GuestBottomNav() {
   const { data: session } = useSession();
   const toast = useToast();

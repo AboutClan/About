@@ -1,6 +1,6 @@
-import { IModal } from "../types/components/modalTypes";
-import { IAlertModalOptions } from "./AlertModal";
-import AlertSimpleModal from "./AlertSimpleModal";
+import { IAlertModalOptions } from "@/components/AlertModal";
+import AlertSimpleModal from "@/components/AlertSimpleModal";
+import { IModal } from "@/types/components/modalTypes";
 
 export default function AlertNotCompletedModal({ setIsModal }: IModal) {
   const options: IAlertModalOptions = {

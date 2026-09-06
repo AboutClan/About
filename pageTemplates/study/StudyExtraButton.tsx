@@ -1,14 +1,14 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
-import InfoList from "../../components/atoms/lists/InfoList";
-import Slide from "../../components/layouts/PageSlide";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useCheckGuest } from "../../hooks/custom/UserHooks";
-import { ModalLayout } from "../../modals/Modals";
-import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
-import { getSafeAreaBottom } from "../../utils/validationUtils";
-import { CheckIcon } from "../vote/StudyControlButton";
+import InfoList from "@/components/atoms/lists/InfoList";
+import Slide from "@/components/layouts/PageSlide";
+import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useCheckGuest } from "@/hooks/custom/UserHooks";
+import { ModalLayout } from "@/modals/Modals";
+import { CheckIcon } from "@/pageTemplates/vote/StudyControlButton";
+import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entity.types";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 interface StudyExtraButtonProps {
   myStudyInfo: StudyConfirmedMemberProps;
 }

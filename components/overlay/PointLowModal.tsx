@@ -1,9 +1,9 @@
 import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import { ModalLayout } from "../../modals/Modals";
-import { CloseProps } from "../../types/components/modalTypes";
-import Avatar from "../atoms/Avatar";
+import Avatar from "@/components/atoms/Avatar";
+import { ModalLayout } from "@/modals/Modals";
+import { CloseProps } from "@/types/components/modalTypes";
 
 function PointLowModal({ onClose }: CloseProps) {
   const router = useRouter();

@@ -1,4 +1,4 @@
-import { StudyRatingProps } from "../../types/models/studyTypes/study-entity.types";
+import { StudyRatingProps } from "@/types/models/studyTypes/study-entity.types";
 
 export const calculateTotalScore = (ratings: StudyRatingProps[]) => {
   const AIReview = ratings.find((r) => r.name === "어바웃 AI");

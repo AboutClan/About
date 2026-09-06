@@ -3,20 +3,20 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import BottomCommentInput from "../../components/atoms/BottomCommentInput";
-import Slide from "../../components/layouts/PageSlide";
-import UserCommentBlock from "../../components/molecules/UserCommentBlock";
-import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
+import BottomCommentInput from "@/components/atoms/BottomCommentInput";
+import Slide from "@/components/layouts/PageSlide";
+import UserCommentBlock from "@/components/molecules/UserCommentBlock";
+import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
 import {
   SubCommentParamProps,
   useCommentMutation,
   useSubCommentMutation,
-} from "../../hooks/common/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { getCommentArr } from "../../libs/comment/commentLib";
-import { UserCommentProps } from "../../types/components/propTypes";
-import { AvatarProps, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+} from "@/hooks/common/mutations";
+import { useUserInfoQuery } from "@/hooks/user/queries";
+import { getCommentArr } from "@/libs/comment/commentLib";
+import { UserCommentProps } from "@/types/components/propTypes";
+import { AvatarProps, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { dayjsToStr } from "@/utils/dateTimeUtils";
 interface SecretSquareCommentsProps {
   author: string | UserSimpleInfoProps;
   comments: UserCommentProps[];

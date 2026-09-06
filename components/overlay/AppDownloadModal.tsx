@@ -1,9 +1,9 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 
-import { useToast } from "../../hooks/custom/CustomToast";
-import { CloseProps } from "../../types/components/modalTypes";
-import { getDeviceOS, getSafeAreaBottom } from "../../utils/validationUtils";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { CloseProps } from "@/types/components/modalTypes";
+import { getDeviceOS, getSafeAreaBottom } from "@/utils/validationUtils";
 
 function AppDownloadModal({ onClose }: CloseProps) {
   const toast = useToast();

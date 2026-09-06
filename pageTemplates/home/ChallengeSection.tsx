@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import SectionHeader from "../../components/atoms/SectionHeader";
-import AvatarGroupsOverwrap from "../../components/molecules/groups/AvatarGroupsOverwrap";
+import SectionHeader from "@/components/atoms/SectionHeader";
+import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
 
 function ChallengeSection() {
   const router = useRouter();

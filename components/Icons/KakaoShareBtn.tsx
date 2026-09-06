@@ -2,10 +2,10 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 
-import { REVIEW_DATA } from "../../storage/Review";
-import { isWebView } from "../../utils/appEnvUtils";
-import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
-import { ShareIcon } from "./ShareIcon";
+import { ShareIcon } from "@/components/Icons/ShareIcon";
+import { REVIEW_DATA } from "@/storage/Review";
+import { isWebView } from "@/utils/appEnvUtils";
+import { nativeMethodUtils } from "@/utils/nativeMethodUtils";
 
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 

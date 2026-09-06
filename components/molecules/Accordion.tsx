@@ -8,9 +8,9 @@ import {
 import { useState } from "react";
 import styled from "styled-components";
 
-import { OPEN_KAKAO_LINK } from "../../constants/contentsText/Private";
-import { ShortArrowIcon } from "../Icons/ArrowIcons";
-import ExternalLink from "./ExternalLink";
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import ExternalLink from "@/components/molecules/ExternalLink";
+import { OPEN_KAKAO_LINK } from "@/constants/contentsText/Private";
 
 export interface IAccordionContent {
   title: string;

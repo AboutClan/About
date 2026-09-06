@@ -1,11 +1,11 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { SERVER_URI } from "../../constants/system";
-import { CommunityCategory } from "../../pages/community";
-import { QueryOptions } from "../../types/hooks/reactTypes";
-import type { SecretSquareItem } from "../../types/models/square";
-import { AvatarProps, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+import { SERVER_URI } from "@/constants/system";
+import { CommunityCategory } from "@/pages/community";
+import { QueryOptions } from "@/types/hooks/reactTypes";
+import type { SecretSquareItem } from "@/types/models/square";
+import { AvatarProps, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 export type SecretSquareListResponse = {
   squareList: {

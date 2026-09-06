@@ -2,15 +2,15 @@ import { Box, Button, Flex, Switch, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { UserItem } from "../../../components/molecules/UserItem";
-import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
-import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import GroupAdminInvitation from "../../../pageTemplates/group/admin/GroupAdminInvitation";
-import { IGroup } from "../../../types/models/groupTypes/group";
-import { IUser } from "../../../types/models/userTypes/userInfoTypes";
-import { safeDecodeTel } from "../../../utils/utils";
+import { UserItem } from "@/components/molecules/UserItem";
+import { useResetGroupQuery } from "@/hooks/custom/CustomHooks";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useGroupWaitingStatusMutation } from "@/hooks/groupStudy/mutations";
+import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import GroupAdminInvitation from "@/pageTemplates/group/admin/GroupAdminInvitation";
+import { IGroup } from "@/types/models/groupTypes/group";
+import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { safeDecodeTel } from "@/utils/utils";
 
 interface InviteSecionProps {
   group: IGroup;

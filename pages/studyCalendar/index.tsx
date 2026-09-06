@@ -2,17 +2,17 @@ import { Box } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 
-import { MainLoading } from "../../components/atoms/loaders/MainLoading";
-import RecordMonthNav from "../../components/atoms/MonthNav";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import RecordDetail from "../../pageTemplates/record/detail/RecordDetail";
-import RecordCalendar from "../../pageTemplates/record/RecordCalendar";
-import RecordCalendarSetting from "../../pageTemplates/record/RecordCalendarSetting";
-import RecordLocationCategory from "../../pageTemplates/record/RecordLocationCategory";
-import RecordNavigation from "../../pageTemplates/record/RecordNavigation";
-import RecordOverview from "../../pageTemplates/record/RecordOverview";
-import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
+import { MainLoading } from "@/components/atoms/loaders/MainLoading";
+import RecordMonthNav from "@/components/atoms/MonthNav";
+import Header from "@/components/layouts/Header";
+import Slide from "@/components/layouts/PageSlide";
+import RecordDetail from "@/pageTemplates/record/detail/RecordDetail";
+import RecordCalendar from "@/pageTemplates/record/RecordCalendar";
+import RecordCalendarSetting from "@/pageTemplates/record/RecordCalendarSetting";
+import RecordLocationCategory from "@/pageTemplates/record/RecordLocationCategory";
+import RecordNavigation from "@/pageTemplates/record/RecordNavigation";
+import RecordOverview from "@/pageTemplates/record/RecordOverview";
+import { IArrivedData } from "@/types/models/studyTypes/studyRecords";
 
 export interface IDateRange {
   startDate: Dayjs;

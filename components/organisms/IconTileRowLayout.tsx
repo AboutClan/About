@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { Size } from "../../types/components/assetTypes";
-import IconLinkTile, { IIconLinkTile } from "../atoms/IconLinkTile";
+import IconLinkTile, { IIconLinkTile } from "@/components/atoms/IconLinkTile";
+import { Size } from "@/types/components/assetTypes";
 
 interface IIconTileRowLayout {
   tileDataArr: IIconLinkTile[];
