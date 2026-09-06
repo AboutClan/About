@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 
 import { ShareIcon } from "@/components/Icons/ShareIcon";
-import { REVIEW_DATA } from "@/storage/Review";
+import { REVIEW_DATA } from "@/content/Review";
 import { isWebView } from "@/utils/appEnvUtils";
 import { nativeMethodUtils } from "@/utils/nativeMethodUtils";
 

@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import { IFooterOptions, ModalLayout } from "@/modals/Modals";
-import { PROMOTION_WIN } from "@/storage/winRecord";
+import { PROMOTION_WIN } from "@/content/winRecord";
 import { IModal } from "@/types/components/modalTypes";
 
 function PromotionMyCoolTimeModal({ setIsModal }: IModal) {

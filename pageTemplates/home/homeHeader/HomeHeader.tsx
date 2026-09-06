@@ -20,7 +20,7 @@ import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { useNoticeActiveLogQuery } from "@/hooks/user/sub/interaction/queries";
 import DailyCheckModal from "@/modals/aboutHeader/dailyCheckModal/DailyCheckModal";
-import { NOTICE_ARR } from "@/storage/notice";
+import { NOTICE_ARR } from "@/content/notice";
 
 function HomeHeader() {
   const router = useRouter();

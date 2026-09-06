@@ -6,7 +6,7 @@ import HighlightedTextButton from "@/components/atoms/buttons/HighlightedTextBut
 import SectionBar from "@/components/molecules/bars/SectionBar";
 import SummaryTable from "@/components/organisms/tables/SummaryTable";
 import { slideDirectionState } from "@/recoils/navigationRecoils";
-import { WIN_RECORD } from "@/storage/winRecord";
+import { WIN_RECORD } from "@/content/winRecord";
 
 export default function HomeWinRecordSection() {
   const router = useRouter();

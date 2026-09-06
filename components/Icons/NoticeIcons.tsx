@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { NoticeCategory } from "@/storage/notice";
+import { NoticeCategory } from "@/content/notice";
 import { InteractionType } from "@/types/globals/interaction";
 
 interface INoticeIcon {
