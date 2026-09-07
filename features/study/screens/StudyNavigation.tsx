@@ -17,11 +17,11 @@ import { StudyCancelModal } from "@/features/study/components/study/apply/ui/ove
 import { PlaceDrawer } from "@/features/study/components/study/apply/ui/overlay/PlaceDrawer";
 import StudyVoteTimeRulletDrawer from "@/features/study/components/studyVote/StudyVoteTimeRulletDrawer";
 import { useStudyAttendChangeMutation, useStudyVoteArrMutation } from "@/features/study/hooks/mutations";
+import { useStudyMutations } from "@/features/study/hooks/StudyHooks";
 import StudyAbsentModal from "@/features/study/modals/StudyAbsentModal";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useStudyMutations } from "@/hooks/custom/StudyHooks";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import CafeMapGuestModal from "@/modals/cafeMap/CafeMapGuestModal";
 import { LocationProps } from "@/types/common";
