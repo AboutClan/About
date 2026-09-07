@@ -4,9 +4,9 @@ import styled from "styled-components";
 
 import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import Header from "@/components/layouts/Header";
+import ModalPortal from "@/components/modals/ModalPortal";
 import { useUserRequestQuery } from "@/features/admin/hooks/quries";
 import CheckAbsentModal from "@/features/admin/modals/CheckAbsentModal";
-import ModalPortal from "@/modals/ModalPortal";
 
 function AdminAbsent() {
   const { data: suggestData, isLoading } = useUserRequestQuery("불참");

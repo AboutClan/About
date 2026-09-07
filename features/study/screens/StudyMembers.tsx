@@ -6,6 +6,7 @@ import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState }
 
 import { GATHER_MAIN_IMAGE_ARR } from "@/assets/gather";
 import { HeartIcon } from "@/components/Icons/HeartIcons";
+import ImageZoomModal from "@/components/modals/ImageZoomModal";
 import AttendanceBadge from "@/components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "@/components/molecules/cards/ProfileCommentCard";
 import {
@@ -26,7 +27,6 @@ import {
   useRealTimeHeartMutation,
   useRealTimeStatusMutation,
 } from "@/hooks/realtime/mutations";
-import ImageZoomModal from "@/modals/ImageZoomModal";
 import { CoordinatesProps } from "@/types/common";
 import {
   StudyConfirmedMemberProps,

@@ -12,6 +12,7 @@ import { ClockIcon } from "@/components/Icons/ClockIcons";
 import Slide from "@/components/layouts/PageSlide";
 import { BottomFlexDrawerOptions } from "@/components/modals/drawer/BottomFlexDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
+import CafeMapGuestModal from "@/features/cafeMap/modals/CafeMapGuestModal";
 import StudyApplyDrawer from "@/features/study/components/study/apply/StudyApplyDrawer";
 import { StudyCancelModal } from "@/features/study/components/study/apply/ui/overlay/CancelModal";
 import { PlaceDrawer } from "@/features/study/components/study/apply/ui/overlay/PlaceDrawer";
@@ -23,7 +24,6 @@ import StudyAbsentModal from "@/features/study/modals/StudyAbsentModal";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
-import CafeMapGuestModal from "@/modals/cafeMap/CafeMapGuestModal";
 import { LocationProps } from "@/types/common";
 import { CloseProps } from "@/types/components/modalTypes";
 import {

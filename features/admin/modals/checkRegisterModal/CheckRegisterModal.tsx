@@ -3,9 +3,9 @@ import styled from "styled-components";
 
 import { CopyBtn } from "@/components/Icons/CopyIcon";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
+import AlertDialog from "@/features/admin/modals/AlertDialog";
 import { useUserRegisterControlMutation } from "@/features/user/hooks/mutations";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
-import AlertDialog from "@/modals/AlertDialog";
 import { IModal } from "@/types/components/modalTypes";
 import { IRefetch } from "@/types/hooks/reactTypes";
 import { IUserRegisterForm } from "@/types/models/userTypes/userInfoTypes";

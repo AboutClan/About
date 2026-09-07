@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { Resolver, useForm } from "react-hook-form";
 import styled from "styled-components";
 
+import ModalPortal from "@/components/modals/ModalPortal";
 import { usePromotionQuery } from "@/features/promotion/hooks/queries";
 import PromotionApplyModal from "@/features/promotion/modals/PromotionApplyModal";
 import { useFailToast } from "@/hooks/custom/CustomToast";
-import ModalPortal from "@/modals/ModalPortal";
 import { IPromotionApply } from "@/types/models/promotion";
 
 type FormValues = {

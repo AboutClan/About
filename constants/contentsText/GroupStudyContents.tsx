@@ -1,4 +1,4 @@
-import { IRuleModalContent } from "@/modals/RuleModal";
+import { IRuleModalContent } from "@/components/modals/RuleModal";
 
 export const GROUP_STUDY_CATEGORY_ARR_ICONS = {
   // "시험 스터디": (

@@ -5,9 +5,9 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import InstagramCheckModal from "@/features/user/modals/InstagramCheckModal";
 import { BarRightIcon } from "@/features/user/screens/UserScoreBar";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
-import InstagramCheckModal from "@/modals/InstagramCheckModal";
 
 function UserPointBlock({ handleButton }: { handleButton: () => void }) {
   const { data: session } = useSession();

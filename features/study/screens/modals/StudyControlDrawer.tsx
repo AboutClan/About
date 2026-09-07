@@ -5,10 +5,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
+import CafeMapGuestModal from "@/features/cafeMap/modals/CafeMapGuestModal";
 import StudyApplyDrawer from "@/features/study/components/study/apply/StudyApplyDrawer";
 import StudyOpenDrawer from "@/features/vote/screens/StudyOpenDrawer";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
-import CafeMapGuestModal from "@/modals/cafeMap/CafeMapGuestModal";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 type DrawerType = "apply" | "open";
