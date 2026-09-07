@@ -3,8 +3,8 @@ import { useMutation, useQueryClient } from "react-query";
 
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import { SERVER_URI } from "@/constants/system";
+import { IApplyRest } from "@/features/user/modals/userRequest/RequestRestModal/RequestRestModal";
 import { requestServer } from "@/libs/methodHelpers";
-import { IApplyRest } from "@/modals/userRequest/RequestRestModal/RequestRestModal";
 import { MutationOptions } from "@/types/hooks/reactTypes";
 import {
   AvatarProps,

@@ -7,9 +7,9 @@ import styled from "styled-components";
 import { ModalLayout } from "@/components/modals/Modals";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
+import RequestChagneProfileImageModalBadge from "@/features/user/modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
+import SpecialAvatarModal from "@/features/user/modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
 import { useErrorToast, useFailToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import RequestChagneProfileImageModalBadge from "@/modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
-import SpecialAvatarModal from "@/modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
 import { IModal } from "@/types/components/modalTypes";
 
 function RequestChangeProfileImageModal({ setIsModal }: IModal) {

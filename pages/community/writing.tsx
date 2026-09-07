@@ -24,8 +24,8 @@ import ImageUploadSlider, {
 import { useCreateSecretSquareMutation } from "@/features/community/hooks/mutations";
 import PollCreatorDrawer from "@/features/community/screens/writing/PollCreatorDrawer";
 import SquareCategoryRadioGroup from "@/features/community/screens/writing/SquareCategoryRadioGroup";
+import RequestChangeProfileImageModalAvatar from "@/features/user/modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
 import { useToast } from "@/hooks/custom/CustomToast";
-import RequestChangeProfileImageModalAvatar from "@/modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
 import { SecretSquareFormData } from "@/types/models/square";
 import { AvatarProps } from "@/types/models/userTypes/userInfoTypes";
 

@@ -9,6 +9,9 @@ import { useQueryClient } from "react-query";
 import BottomDrawerLg from "@/components/modals/drawer/BottomDrawerLg";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
+import RequestChagneProfileImageModalBadge from "@/features/user/modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
+import RequestChangeProfileImageModalAvatar from "@/features/user/modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
+import SpecialAvatarModal from "@/features/user/modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
 import UserBenefitBanner from "@/features/user/screens/UserBenefitBanner";
 import UserCollection from "@/features/user/screens/UserCollection2";
 import UserPointBlock from "@/features/user/screens/UserPointBlock";
@@ -20,9 +23,6 @@ import UserSocialGuideDrawer from "@/features/user/screens/UserSocialGuideDrawer
 import UserTicketDeductionNotice from "@/features/user/screens/UserTicketDeductionNotice";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
-import RequestChagneProfileImageModalBadge from "@/modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
-import RequestChangeProfileImageModalAvatar from "@/modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
-import SpecialAvatarModal from "@/modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
 import { IModal } from "@/types/components/modalTypes";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
