@@ -6,7 +6,7 @@ import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import Select from "@/components/atoms/Select";
 import ButtonGroups, { ButtonOptionsProps } from "@/components/molecules/groups/ButtonGroups";
 import FeedLayout, { FeedLayoutProps } from "@/components/organisms/FeedLayout";
-import { useFeedsQuery } from "@/hooks/feed/queries";
+import { useFeedsQuery } from "@/features/feed/hooks/queries";
 import { convertFeedToLayout } from "@/libs/convertFeedToLayout";
 import { FeedProps, FeedType } from "@/types/models/feed";
 

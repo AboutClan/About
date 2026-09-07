@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import FeedLayout, { FeedLayoutProps } from "@/components/organisms/FeedLayout";
-import { useFeedsQuery } from "@/hooks/feed/queries";
+import { useFeedsQuery } from "@/features/feed/hooks/queries";
 import { FeedProps } from "@/types/models/feed";
 import { IGroup } from "@/types/models/groupTypes/group";
 import { getDateDiff } from "@/utils/dateTimeUtils";

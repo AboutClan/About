@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import ImageBasicSlider, {
   ImageTileProps,
 } from "@/components/organisms/sliders/ImageBasicSlider";
-import { useFeedsQuery } from "@/hooks/feed/queries";
+import { useFeedsQuery } from "@/features/feed/hooks/queries";
 import { FeedProps } from "@/types/models/feed";
 
 export default function GatherReviewSlider() {
