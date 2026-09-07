@@ -4,12 +4,12 @@ import { useState } from "react";
 
 import Textarea from "@/components/atoms/Textarea";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
+import { useStudyAbsenceMutation } from "@/features/study/hooks/mutations";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useUserRequestMutation } from "@/features/user/hooks/sub/request/mutations";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useRealTimeAbsenceMutation } from "@/hooks/realtime/mutations";
-import { useStudyAbsenceMutation } from "@/hooks/study/mutations";
 import { IModal } from "@/types/components/modalTypes";
 import { getTodayStr } from "@/utils/dateTimeUtils";
 
