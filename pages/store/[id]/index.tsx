@@ -10,12 +10,12 @@ import { useEffect, useState } from "react";
 import MenuButton from "@/components/atoms/buttons/MenuButton";
 import Header from "@/components/layouts/Header";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
+import { useStoreGiftQuery } from "@/features/store/hooks/queries";
 import StoreApplyGiftModal from "@/features/store/modals/StoreApplyGiftModal";
 import StoreGiftWinModal from "@/features/store/modals/StoreGiftWinModal";
 import StoreMembersModal from "@/features/store/modals/StoreMembersModal";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useHasMemership } from "@/hooks/custom/UserHooks";
-import { useStoreGiftQuery } from "@/hooks/sub/store/queries";
 
 dayjs.extend(localizedFormat);
 dayjs.locale("ko");

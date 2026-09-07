@@ -13,8 +13,8 @@ import ImageShadowCover from "@/components/molecules/ImageShadowCover";
 import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
 import WinnerTextSlider from "@/components/molecules/WinnerTextSlider";
 import { usePrizeQuery } from "@/constants/prize/queries";
+import { useStoreQuery } from "@/features/store/hooks/queries";
 import { useHasMemership } from "@/hooks/custom/UserHooks";
-import { useStoreQuery } from "@/hooks/sub/store/queries";
 import { IStoreApplicant, IStoreGift, StoreGiftProps } from "@/types/models/store";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
