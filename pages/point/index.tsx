@@ -2,11 +2,11 @@ import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import Header from "@/components/layouts/Header";
+import PointIntro from "@/features/point/screens/PointIntro";
+import PointPoint from "@/features/point/screens/PointPoint";
+import PointScore from "@/features/point/screens/PointScore";
+import PointSkeleton from "@/features/point/screens/skeleton/PointSkeleton";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import PointIntro from "@/pageTemplates/point/PointIntro";
-import PointPoint from "@/pageTemplates/point/PointPoint";
-import PointScore from "@/pageTemplates/point/PointScore";
-import PointSkeleton from "@/pageTemplates/point/skeleton/PointSkeleton";
 
 function Point() {
   const { data: session } = useSession();

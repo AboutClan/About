@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import PointScoreNavigation from "@/pageTemplates/point/pointScore/PointScoreNavigation";
+import PointScoreNavigation from "@/features/point/screens/pointScore/PointScoreNavigation";
 
 interface IPointScore {
   myScore: number;
