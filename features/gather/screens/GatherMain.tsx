@@ -9,7 +9,7 @@ import {
 } from "@/features/gather/components/GatherThumbnailCard";
 import { GatherFilterType, useGatherQuery } from "@/features/gather/hooks/queries";
 import GatherSkeletonMain from "@/features/gather/screens/GatherSkeletonMain";
-import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
+import { setGatherDataToCardCol } from "@/features/home/screens/HomeGatherCol";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 
 type SortedType = "최신 개설 순" | "일정 빠른 순" | "기본순";

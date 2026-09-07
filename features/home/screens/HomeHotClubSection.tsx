@@ -3,8 +3,8 @@ import { useMemo } from "react";
 
 import SlideSectionCol from "@/components/molecules/SlideSectionCol";
 import SlideSectionRow from "@/components/molecules/SlideSectionRow";
+import HomeGroupCol from "@/features/home/screens/HomeGroupCol";
 import { useGroupSnapshotQuery } from "@/hooks/groupStudy/queries";
-import HomeGroupCol from "@/pageTemplates/home/HomeGroupCol";
 
 function HomeHotClubSection() {
   const { data: groups } = useGroupSnapshotQuery();

@@ -6,7 +6,7 @@ import SectionHeader from "@/components/atoms/SectionHeader";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import { IImageTileData } from "@/components/molecules/layouts/ImageTileFlexLayout";
 import ImageTileGridLayout from "@/components/molecules/layouts/ImageTitleGridLayout";
-import { useFeedsQuery } from "@/hooks/feed/queries";
+import { useFeedsQuery } from "@/features/feed/hooks/queries";
 import { FeedProps } from "@/types/models/feed";
 
 export default function HomeReviewSection() {

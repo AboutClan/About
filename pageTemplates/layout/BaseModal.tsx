@@ -7,10 +7,10 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
+import WriteDrawer from "@/features/home/modals/writeDrawer";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import DailyCheckWinModal from "@/modals/aboutHeader/dailyCheckModal/DailyCheckWinModal";
-import WriteDrawer from "@/modals/home/writeDrawer";
 import ErrorUserInfoPopUp from "@/modals/pop-up/ErrorUserInfoPopUp";
 import {
   transferDailyCheckWinState,

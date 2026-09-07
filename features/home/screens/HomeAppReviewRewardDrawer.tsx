@@ -15,8 +15,8 @@ import { useQueryClient } from "react-query";
 
 import { HOME_APP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useUserPointMutation } from "@/features/user/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserPointMutation } from "@/hooks/user/mutations";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getDeviceOS } from "@/utils/validationUtils";
 

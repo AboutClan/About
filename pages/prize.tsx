@@ -8,7 +8,7 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import IconRowBlock2 from "@/components/molecules/IconRowBlock2";
 import { usePrizeQuery } from "@/constants/prize/queries";
-import { HomeIcon, RankingIconImage, StoreIconImage } from "@/pageTemplates/home/HomeNav";
+import { HomeIcon, RankingIconImage, StoreIconImage } from "@/features/home/screens/HomeNav";
 import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 
 function Prize() {

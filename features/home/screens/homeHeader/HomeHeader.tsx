@@ -16,10 +16,10 @@ import {
   RECENT_CHAT,
 } from "@/constants/keys/localStorage";
 import { NOTICE_ARR } from "@/content/notice";
-import { useRecentChatQuery } from "@/hooks/chat/queries";
+import { useRecentChatQuery } from "@/features/chat/hooks/queries";
+import { useNoticeActiveLogQuery } from "@/features/user/hooks/sub/interaction/queries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
-import { useNoticeActiveLogQuery } from "@/hooks/user/sub/interaction/queries";
 import DailyCheckModal from "@/modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 
 function HomeHeader() {

@@ -23,16 +23,16 @@ import { STUDY_ATTEND_AT } from "@/constants/keys/queryKeys";
 import { MODAL_QUEUE_PRIORITY } from "@/constants/modalQueuePriority";
 import { useGatherReviewOneQuery } from "@/features/gather/hooks/queries";
 import GatherRecordDrawer from "@/features/gather/modals/GatherRecordDrawer";
-import { useToast } from "@/hooks/custom/CustomToast";
-import { useSingleModalSlot } from "@/hooks/custom/useSingleModalSlot";
-import { usePushServiceInitialize } from "@/hooks/FcmManger/mutaion";
-import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
+import HomeAppReviewRewardDrawer, { HOME_APP_REVIEW_REWARD_SUB } from "@/features/home/screens/HomeAppReviewRewardDrawer";
+import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
 import {
   usePointSubLogQuery,
   useUserInfoQuery,
   useUserMembershipLogQuery,
-} from "@/hooks/user/queries";
-import HomeAppReviewRewardDrawer, { HOME_APP_REVIEW_REWARD_SUB } from "@/pageTemplates/home/HomeAppReviewRewardDrawer";
+} from "@/features/user/hooks/queries";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useSingleModalSlot } from "@/hooks/custom/useSingleModalSlot";
+import { usePushServiceInitialize } from "@/hooks/FcmManger/mutaion";
 import { hasShownHomeAutoPopupState } from "@/recoils/modalQueueRecoils";
 import { CloseProps } from "@/types/components/modalTypes";
 import { isPWA } from "@/utils/appEnvUtils";

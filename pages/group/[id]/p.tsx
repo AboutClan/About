@@ -10,6 +10,7 @@ import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import Slide from "@/components/layouts/PageSlide";
 import BottomButtonNav from "@/components/molecules/BottomButtonNav";
 import { useGatherGroupQuery, useGroupFeedsQuery } from "@/features/gather/hooks/queries";
+import { setGatherDataToCardCol } from "@/features/home/screens/HomeGatherCol";
 import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
 import GroupContent from "@/pageTemplates/group/detail/GroupContent";
 import GroupCover from "@/pageTemplates/group/detail/GroupCover";
@@ -17,7 +18,6 @@ import GroupOverview from "@/pageTemplates/group/detail/GroupOverview";
 import GroupParticipation from "@/pageTemplates/group/detail/GroupParticipation";
 import GroupReview from "@/pageTemplates/group/detail/GroupReview";
 import GroupGathering from "@/pageTemplates/group/GroupGathering";
-import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
 // 외부 공유용 공개 미리보기 페이지. 헤더/바텀내브 없이 소모임 정보만 단독으로 보여주고,

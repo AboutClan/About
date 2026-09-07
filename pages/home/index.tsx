@@ -4,17 +4,17 @@ import Divider from "@/components/atoms/Divider";
 import Slide from "@/components/layouts/PageSlide";
 import HomeActivityDrawer from "@/components/overlay/HomeActivityDrawer";
 import HomeActivityIntroPopup from "@/components/overlay/HomeActivityIntroPopup";
-import ChallengeSection from "@/pageTemplates/home/ChallengeSection";
-import HomeBannerSlide from "@/pageTemplates/home/HomeBannerSlide";
-import HomeFooter from "@/pageTemplates/home/HomeFooter";
-import HomeGatherSection from "@/pageTemplates/home/HomeGatherSection";
-import HomeGroupSection from "@/pageTemplates/home/HomeGroupSection";
-import HomeHeader from "@/pageTemplates/home/homeHeader/HomeHeader";
-import HomeHotClubSection from "@/pageTemplates/home/HomeHotClubSection";
-import HomeInitialSetting from "@/pageTemplates/home/HomeInitialSetting";
-import HomeNav from "@/pageTemplates/home/HomeNav";
-import HomeReviewSection from "@/pageTemplates/home/HomeReviewSection";
-import HomeStudySection from "@/pageTemplates/home/HomeStudySection";
+import ChallengeSection from "@/features/home/screens/ChallengeSection";
+import HomeBannerSlide from "@/features/home/screens/HomeBannerSlide";
+import HomeFooter from "@/features/home/screens/HomeFooter";
+import HomeGatherSection from "@/features/home/screens/HomeGatherSection";
+import HomeGroupSection from "@/features/home/screens/HomeGroupSection";
+import HomeHeader from "@/features/home/screens/homeHeader/HomeHeader";
+import HomeHotClubSection from "@/features/home/screens/HomeHotClubSection";
+import HomeInitialSetting from "@/features/home/screens/HomeInitialSetting";
+import HomeNav from "@/features/home/screens/HomeNav";
+import HomeReviewSection from "@/features/home/screens/HomeReviewSection";
+import HomeStudySection from "@/features/home/screens/HomeStudySection";
 
 function Home() {
   return (
