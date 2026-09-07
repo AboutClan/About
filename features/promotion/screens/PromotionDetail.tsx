@@ -2,9 +2,9 @@ import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
+import PromotionAllCoolTimeModal from "@/features/promotion/modals/PromotionAllCoolTimeModal";
+import PromotionMyCoolTimeModal from "@/features/promotion/modals/PromotionMyCoolTimeModal";
 import { usePromotionQuery } from "@/hooks/sub/promotion/queries";
-import PromotionAllCoolTimeModal from "@/modals/promotion/PromotionAllCoolTimeModal";
-import PromotionMyCoolTimeModal from "@/modals/promotion/PromotionMyCoolTimeModal";
 
 function PromotionDetail() {
   const [isMyModal, setIsMyModal] = useState(false);
