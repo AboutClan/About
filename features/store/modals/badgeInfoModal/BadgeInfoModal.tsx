@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { IFooterOptions, IHeaderOptions, ModalLayout } from "@/components/modals/Modals";
-import BadgeInfoModalFirstInfo from "@/modals/store/badgeInfoModal/BadgeInfoModalFirstInfo";
-import BadgeInfoModalSecondInfo from "@/modals/store/badgeInfoModal/BadgeInfoModalSecondInfo";
+import BadgeInfoModalFirstInfo from "@/features/store/modals/badgeInfoModal/BadgeInfoModalFirstInfo";
+import BadgeInfoModalSecondInfo from "@/features/store/modals/badgeInfoModal/BadgeInfoModalSecondInfo";
 import { IModal } from "@/types/components/modalTypes";
 
 function BadgeInfoModal2({ setIsModal }: IModal) {
