@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/atoms/Input";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
+import ProfileDetailPage from "@/features/profile/screens/ProfileDetailPage";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { useUserPhoneToUserInfoQuery } from "@/hooks/user/queries";
-import ProfileDetailPage from "@/pageTemplates/profile/ProfileDetailPage";
 
 const ADMIN_ROLES = ["previliged", "manager"];
 

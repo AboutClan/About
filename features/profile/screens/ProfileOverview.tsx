@@ -7,8 +7,8 @@ import styled from "styled-components";
 import Avatar from "@/components/atoms/Avatar";
 import UserBadge from "@/components/atoms/badges/UserBadge";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
+import ProfileOverviewSkeleton from "@/features/profile/screens/skeleton/ProfileOverviewSkeleton";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import ProfileOverviewSkeleton from "@/pageTemplates/profile/skeleton/ProfileOverviewSkeleton";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 

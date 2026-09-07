@@ -21,6 +21,8 @@ import {
   GatherThumbnailCardProps,
 } from "@/features/gather/components/GatherThumbnailCard";
 import { useGatherCountQuery, useGatherMyStatusQuery } from "@/features/gather/hooks/queries";
+import DetailInfo from "@/features/profile/screens/DetailInfo";
+import ProfileOverview from "@/features/profile/screens/ProfileOverview";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useGroupsTitleQuery } from "@/hooks/groupStudy/queries";
 import { useUserFriendMutation } from "@/hooks/user/mutations";
@@ -28,8 +30,6 @@ import { useUserReviewQuery } from "@/hooks/user/queries";
 import { useInteractionMutation } from "@/hooks/user/sub/interaction/mutations";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
 import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
-import DetailInfo from "@/pageTemplates/profile/DetailInfo";
-import ProfileOverview from "@/pageTemplates/profile/ProfileOverview";
 import UserReviewBar from "@/pageTemplates/user/UserReviewBar";
 import { transferUserName } from "@/recoils/transferRecoils";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
