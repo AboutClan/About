@@ -161,11 +161,11 @@ features/<domain>/
 
 ```ts
 // O
-import Header from "@/components/layout/Header";
+import Header from "@/components/layouts/Header";
 import { useGatherQuery } from "@/features/gather/hooks/queries";
 
 // X
-import Header from "../../../components/layout/Header";
+import Header from "../../../components/layouts/Header";
 ```
 
 이유: 파일을 옮겨도 그 파일 내부의 import가 바뀌지 않으므로, 구조 변경이 안전하고 diff가 작다.
@@ -254,21 +254,37 @@ Storybook 스토리는 9개(atoms 전용)뿐이라 시각 회귀 검증 범위�
 아래는 **의도적으로 남겨둔 것**이다. 단순 이동으로는 해결되지 않고 코드 변경이 필요해서,
 발견 시점에 근거와 함께 기록했다. 건드릴 일이 있으면 이 목록을 먼저 확인할 것.
 
-### 공유 코드가 feature를 참조하는 곳
+### 공유 코드가 feature를 참조하는 곳 (남은 6건)
 
-| 위치 | 참조 | 해결 방법 |
+전부 **도메인 훅 호출을 호출부로 끌어올려야** 해결되는 것들이다. 단순 이동으로는 위반이 다른
+파일로 옮겨갈 뿐이라 남겨두었다.
+
+| 위치 | 참조 | 왜 그냥 못 옮기는가 |
 |---|---|---|
-| `components/molecules/cards/StudyThumbnailCard` | `features/study/lib` | 공유 `PickerRowButton`이 이걸 써서 옮기면 위반이 이동만 함 |
+| `components/molecules/cards/StudyThumbnailCard` | `features/study/lib` | 공유 `PickerRowButton`이 사용 |
 | `components/molecules/cards/ProfileCommentCard` | `features/user/hooks` | 공유 컴포넌트 4개가 사용 |
-| `components/molecules/ContentHeartBar` | community·feed·user 훅 | 공유 `FeedLayout`이 사용 |
+| `components/molecules/ContentHeartBar` | feed·user 훅 | 공유 `FeedLayout`이 사용 → 영향이 7곳으로 번짐 |
 | `components/molecules/PlaceImage` | study·user 훅 | 공유 컴포넌트 3개가 사용 |
-| `components/organisms/WritingConditionLayout` | `features/gather` 화면 | gather·group 양쪽이 사용 → prop 주입으로 역전 필요 |
-| `modals/pop-up/StudyPreferenceDrawer` | `features/study` | pop-up 자체의 소유권이 미결정 |
+| `components/drawers/PaymentConfirmationDrawer` | register·user | 소비처 0건 |
+| `components/modals/common/BasicLiModal` | `features/user` | 소비처 0건 |
+
+**해결한 사례를 참고할 것.** 위반이라고 해서 항상 역전이 필요한 건 아니다. 실제로는 절반이
+"잘못된 위치" 문제였다.
+
+- `GatherWritingConditionAgeRange` — 이름만 gather였고 `age`/`setAge`만 받는 범용 컴포넌트였다.
+  공유 계층으로 옮기고 `AgeRangePicker`로 이름을 고치자 위반이 사라졌다.
+- `HeartIcon`, `HeartCircleIcon` — `Icons/`에 있었지만 아이콘이 아니라 user mutation을
+  호출하는 액션 버튼이었다. 도메인으로 옮기면 끝이었다.
+- `ImageSlider` — 이건 진짜 역전이 필요했다. 타입 문자열로 6개 슬라이드를 하드코딩 분기하면서
+  그중 둘이 도메인 코드였다. `children` 주입을 받도록 바꿨다.
+
+**먼저 물어볼 것: 이게 정말 그 도메인의 것인가, 아니면 이름/위치만 틀린 범용 코드인가?**
 
 ### 소유권 미결정
 
 `modals/aboutHeader`(14) · `modals/pop-up`(10) · `modals/system`(2) — 각각 여러 도메인이
-소비해 한 곳으로 정할 수 없다. `pageTemplates/layout`도 앱 셸이라 도메인이 아니다.
+소비해 한 곳으로 정할 수 없다. 이 안에 도메인 훅을 호출하는 모달이 11개 있는데, 배치를
+정하기 전에는 손대지 않는 게 낫다. `pageTemplates/layout`도 앱 셸이라 도메인이 아니다.
 
 ### 그 외
 
@@ -283,5 +299,18 @@ Storybook 스토리는 9개(atoms 전용)뿐이라 시각 회귀 검증 범위�
 
 ### 남은 단계
 
-`pages/*`를 얇은 진입점으로 정리하는 작업은 gather 1개 라우트에서만 시연했고 나머지는
-그대로다. 모달 Props 계약 통일(§7의 A/B 유형)도 아직 적용 전이다.
+우선순위 순으로 정리한다. 앞의 두 개는 **컴파일이 잡아주지 못하는 변경**이라, 손대기 전에
+테스트를 붙이는 편이 낫다는 점을 감안할 것.
+
+| 작업 | 규모 | 컴파일이 잡아주는가 |
+|---|---|---|
+| 위 6건의 훅 호출을 호출부로 끌어올리기 | 파일당 3~7곳 | 시그니처는 잡지만, 데이터 로딩·mutation 발생 **시점 변화**는 못 잡음 |
+| 모달 Props 계약 통일 (§7의 A/B 유형) | 호출부 다수 | 시그니처는 잡음. 단 `setIsModal`을 여닫기 외 용도로 읽는 곳이 있으면 깨짐 |
+| `pages/*` 얇은 진입점화 | 라우트 180여 개 | **거의 못 잡음.** `useEffect`를 화면으로 옮기면 실행 시점이 달라질 수 있음 |
+| `modals/aboutHeader`·`pop-up`·`system` 배치 결정 | 26개 파일 | 결정이 먼저, 이동은 그다음 |
+| 소비처 0건 파일 정리 | 10여 개 | 삭제 판단 필요 |
+
+**`pages/*` 얇은 진입점화는 한 번에 하지 않는 것을 권한다.** 180개 라우트를 동시에 바꾸면
+앱 전체를 다시 확인해야 하는데, 테스트가 없어 그 부담을 사람이 전부 진다. 대신 §8의 규칙을
+지키면서 **그 페이지를 어차피 수정할 일이 생겼을 때 함께 정리하면** 위험 없이 같은 결과에
+도달한다. gather 랜딩 라우트(232줄 → 5줄)가 그 예시다.

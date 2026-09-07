@@ -1,5 +1,26 @@
 # About 웹 프론트엔드 컴포넌트 아키텍처 재설계 계획 (v2)
 
+> **이 문서는 계획서다. 실행 결과와 현재 구조 규칙은
+> [`docs/architecture.md`](docs/architecture.md)를 본다.**
+>
+> ## 실행 결과 요약 (브랜치 `refactor/component-architecture`, 커밋 67개)
+>
+> | 완료 | 내용 |
+> |---|---|
+> | 기준선 | `typecheck`/`lint` 스크립트 신설, `@/*` 경로 별칭 도입 후 상대경로 import 전량 전환(802파일) |
+> | 도메인 이관 | **28개 도메인**을 `features/<domain>/`로 이관. `pageTemplates/`는 `layout`·`setting`만 남음 |
+> | 이름 통일 | `groupStudy`→`group`, `secretSquare`→`community` |
+> | 지도 경계 분리 | `studyPage`/`study`/`cafeMap`/`studyMap` 4개 도메인으로 정리, cafeMap↔studyPage 순환 0건 |
+> | 모달 통합 | 흩어져 있던 5곳 → 도메인 모달은 각 feature로, 공통 기반은 `components/modals/`로 |
+> | 공유 계층 정리 | 공유→feature 위반 20건 중 14건 해소 |
+> | 문서화 | `docs/architecture.md`에 구조 규칙·의존 방향·알려진 예외 기록 |
+>
+> **검증**: 매 배치마다 typecheck·lint·build 실행. 최종 전부 통과(156/156 페이지 생성).
+> **`pages/` 아래 파일의 추가·삭제·이름변경 0건 — 모든 URL이 리팩토링 전과 동일하다.**
+>
+> 남은 작업과 그 위험도는 `docs/architecture.md` §10에 정리했다. 요지는,
+> 남은 것들은 전부 **컴파일이 잡아주지 못하는 변경**이라 지금까지와 성격이 다르다는 것이다.
+
 > v1 대비 변경: 공유 컴포넌트 판단 기준(도메인 지식/소유권 우선, 사용처 개수는 보조), `components/shared`의 잡동사니화 방지(`components/patterns`로 재정의 + 엄격한 편입 기준), 모달 Props를 하나로 강제 통일하지 않고 `ModalLayout`/`RightDrawer`/`AlertDialog`의 실제 API를 재조사해 계약 유형별로 재설계, `pages/*`의 JSX/훅 절대 금지 완화(라우팅 책임 vs 도메인 책임 기준으로 판단), 수동 검증을 "통과"로 자칭하지 않고 체크리스트로 명시, 실행 범위를 Phase 0~2(gather 파일럿)까지로 한정하고 재승인 게이트 추가, 순수 이동과 구조 변경 커밋 분리 원칙 명문화, 별도 브랜치 + 기존 미커밋 변경 선(先) 커밋 원칙 추가.
 
 ## 실행 중 확정된 변경 (Phase 0)
