@@ -8,7 +8,7 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 
-import { SettingIcon } from "@/features/user/screens/UserHeader2";
+import { SettingIcon } from "@/components/Icons/CustomIcons";
 import { useKakaoShare } from "@/hooks/custom/KakaoShareHook2";
 
 export interface MenuProps {
