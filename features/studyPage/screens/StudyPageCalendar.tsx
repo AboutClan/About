@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import WeekSlideCalendar from "@/components/molecules/WeekSlideCalendar";
-import StudyPagePlaceSectionHeader from "@/pageTemplates/studyPage/studyPageDrawer/StudyPagePlaceBlockHeader";
+import StudyPagePlaceSectionHeader from "@/features/studyPage/screens/studyPageDrawer/StudyPagePlaceBlockHeader";
 import { DispatchString } from "@/types/hooks/reactTypes";
 
 interface StudyPageCalendarProps {

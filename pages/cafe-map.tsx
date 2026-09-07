@@ -6,18 +6,18 @@ import { useEffect, useRef, useState } from "react";
 import CafeMapBottomNav from "@/components/CafeMapBottomNav";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
-import { usePointSubLogQuery } from "@/features/user/hooks/queries";
-import { gaEvent } from "@/libs/gtag";
-import CafeMapAppInstallDrawer from "@/pageTemplates/studyPage/CafeMapAppInstallDrawer";
-import CafeMapArchivePage from "@/pageTemplates/studyPage/CafeMapArchivePage";
-import CafeMapFeedPage from "@/pageTemplates/studyPage/CafeMapFeedPage";
+import CafeMapAppInstallDrawer from "@/features/studyPage/screens/CafeMapAppInstallDrawer";
+import CafeMapArchivePage from "@/features/studyPage/screens/CafeMapArchivePage";
+import CafeMapFeedPage from "@/features/studyPage/screens/CafeMapFeedPage";
 import CafeMapInstagramRewardModal, {
   CAFE_MAP_INSTAGRAM_REWARD_SUB,
-} from "@/pageTemplates/studyPage/CafeMapInstagramRewardModal";
-import CafeMapMyPage from "@/pageTemplates/studyPage/CafeMapMyPage";
-import CafeMapReviewRequestDrawer from "@/pageTemplates/studyPage/CafeMapReviewRequestDrawer";
-import CafeMapStudyPage from "@/pageTemplates/studyPage/CafeMapStudyPage";
-import StudyPageMap from "@/pageTemplates/studyPage/studyPageMap/StudyPageMap";
+} from "@/features/studyPage/screens/CafeMapInstagramRewardModal";
+import CafeMapMyPage from "@/features/studyPage/screens/CafeMapMyPage";
+import CafeMapReviewRequestDrawer from "@/features/studyPage/screens/CafeMapReviewRequestDrawer";
+import CafeMapStudyPage from "@/features/studyPage/screens/CafeMapStudyPage";
+import StudyPageMap from "@/features/studyPage/screens/studyPageMap/StudyPageMap";
+import { usePointSubLogQuery } from "@/features/user/hooks/queries";
+import { gaEvent } from "@/libs/gtag";
 import { isApp, isMobileWeb } from "@/utils/validationUtils";
 
 const REVIEW_POPUP_INTERVAL_DAYS = 7;

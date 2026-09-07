@@ -15,8 +15,8 @@ import {
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { Input } from "@/components/atoms/Input";
+import { XIcon } from "@/features/studyPage/screens/studyPageMap/TopNav";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
-import { XIcon } from "@/pageTemplates/studyPage/studyPageMap/TopNav";
 import { SecretSquareFormData } from "@/types/models/square";
 
 interface PollCreatorDrawerProps {

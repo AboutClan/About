@@ -6,9 +6,9 @@ import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
+import StudyPageCalendar from "@/features/studyPage/screens/StudyPageCalendar";
+import StudyPagePlaceSection from "@/features/studyPage/screens/StudyPagePlaceSection";
 import StudyControlButton from "@/features/vote/screens/StudyControlButton";
-import StudyPageCalendar from "@/pageTemplates/studyPage/StudyPageCalendar";
-import StudyPagePlaceSection from "@/pageTemplates/studyPage/StudyPagePlaceSection";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 function getTodayStr() {

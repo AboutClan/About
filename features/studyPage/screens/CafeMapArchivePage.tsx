@@ -6,10 +6,10 @@ import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import Header from "@/components/layouts/Header";
 import { useStudyPlacesQuery } from "@/features/study/hooks/queries";
 import { RightReviewDrawer } from "@/features/study/screens/StudyReview";
+import { CafeListDrawer } from "@/features/studyPage/screens/CafeListDrawer";
+import { ARCHIVE_OPTIONS } from "@/features/studyPage/screens/studyPageMap/TopNav";
+import { StudyReviewDrawer } from "@/features/studyPage/screens/StudyReviewDrawer";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
-import { CafeListDrawer } from "@/pageTemplates/studyPage/CafeListDrawer";
-import { ARCHIVE_OPTIONS } from "@/pageTemplates/studyPage/studyPageMap/TopNav";
-import { StudyReviewDrawer } from "@/pageTemplates/studyPage/StudyReviewDrawer";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 

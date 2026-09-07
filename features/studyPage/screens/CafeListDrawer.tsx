@@ -4,8 +4,8 @@ import dayjs from "dayjs";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import { StarIcon } from "@/components/Icons/StarIcon";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
+import { XIcon } from "@/features/studyPage/screens/studyPageMap/TopNav";
 import { getPlaceScore } from "@/libs/study/studyUtils";
-import { XIcon } from "@/pageTemplates/studyPage/studyPageMap/TopNav";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 
 interface CafeListDrawerProps {

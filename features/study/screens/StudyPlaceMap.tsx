@@ -2,8 +2,8 @@ import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
 import SectionHeader from "@/components/atoms/SectionHeader";
-import PlaceInfoDrawer from "@/pageTemplates/studyPage/PlaceInfoDrawer";
-import StudyPageMap from "@/pageTemplates/studyPage/studyPageMap/StudyPageMap";
+import PlaceInfoDrawer from "@/features/studyPage/screens/PlaceInfoDrawer";
+import StudyPageMap from "@/features/studyPage/screens/studyPageMap/StudyPageMap";
 import { CoordinatesProps } from "@/types/common";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 

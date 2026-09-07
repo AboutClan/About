@@ -10,8 +10,8 @@ import {
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
 } from "@/features/study/hooks/queries";
+import { PlaceInfoBox } from "@/features/studyPage/screens/PlaceInfoDrawer";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
-import { PlaceInfoBox } from "@/pageTemplates/studyPage/PlaceInfoDrawer";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 
 const tabs = ["최근 후기", "신규 장소"] as const;

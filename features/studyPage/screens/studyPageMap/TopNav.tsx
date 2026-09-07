@@ -14,10 +14,10 @@ import LocationSearch, {
   mapxyToLatLng,
 } from "@/components/organisms/location/LocationSearch";
 import { usePlaceRankingQuery } from "@/features/study/hooks/queries";
+import GuideButton from "@/features/studyPage/screens/studyPageMap/GuideButton";
+import StatusButton from "@/features/studyPage/screens/studyPageMap/StatusButton";
+import { CafeMapLogo } from "@/features/studyPage/screens/studyPageMap/StudyPageMap";
 import { NaverLocationProps } from "@/hooks/external/queries";
-import GuideButton from "@/pageTemplates/studyPage/studyPageMap/GuideButton";
-import StatusButton from "@/pageTemplates/studyPage/studyPageMap/StatusButton";
-import { CafeMapLogo } from "@/pageTemplates/studyPage/studyPageMap/StudyPageMap";
 import { CoordinatesProps, LocationProps } from "@/types/common";
 import { DispatchType } from "@/types/hooks/reactTypes";
 import { PlaceProps } from "@/types/models/studyTypes/entityTypes";

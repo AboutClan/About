@@ -9,13 +9,13 @@ import Slide from "@/components/layouts/PageSlide";
 import { ModalLayout } from "@/components/modals/Modals";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import StudyIntroduceDrawer from "@/features/study/screens/StudyIntroduceDrawer";
+import { LocationAddDrawer } from "@/features/studyPage/screens/LocationAddDrawer";
+import StudyCrewRow from "@/features/studyPage/screens/StudyCrewRow";
+import StudyPageHeader from "@/features/studyPage/screens/StudyPageHeader";
+import StudyPagePlaceSection from "@/features/studyPage/screens/StudyPagePlaceSection";
 import StudyControlButton from "@/features/vote/screens/StudyControlButton";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { LocationAddDrawer } from "@/pageTemplates/studyPage/LocationAddDrawer";
-import StudyCrewRow from "@/pageTemplates/studyPage/StudyCrewRow";
-import StudyPageHeader from "@/pageTemplates/studyPage/StudyPageHeader";
-import StudyPagePlaceSection from "@/pageTemplates/studyPage/StudyPagePlaceSection";
 import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entity.types";
 import { getTodayStr } from "@/utils/dateTimeUtils";
 

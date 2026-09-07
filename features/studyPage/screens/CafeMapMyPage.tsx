@@ -9,6 +9,8 @@ import Divider from "@/components/atoms/Divider";
 import Header from "@/components/layouts/Header";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { useMyPlaceFavoritesQuery } from "@/features/study/hooks/queries";
+import { CafeCompactCard } from "@/features/studyPage/screens/CafeListDrawer";
+import { StudyReviewDrawer } from "@/features/studyPage/screens/StudyReviewDrawer";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import RequestSuggestModal from "@/features/user/modals/userRequest/RequestSuggestModal";
 import UserGatherSectionReview from "@/features/user/screens/UserGatherSectionReview";
@@ -18,8 +20,6 @@ import UserSocialGuideDrawer from "@/features/user/screens/UserSocialGuideDrawer
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useKakaoShare } from "@/hooks/custom/KakaoShareHook2";
 import CafeMapSecedeModal from "@/modals/cafeMap/CafeMapSecedeModal";
-import { CafeCompactCard } from "@/pageTemplates/studyPage/CafeListDrawer";
-import { StudyReviewDrawer } from "@/pageTemplates/studyPage/StudyReviewDrawer";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";

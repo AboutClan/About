@@ -24,8 +24,8 @@ import {
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
 } from "@/features/study/hooks/queries";
+import { PlaceInfoBox } from "@/features/studyPage/screens/PlaceInfoDrawer";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { PlaceInfoBox } from "@/pageTemplates/studyPage/PlaceInfoDrawer";
 import { CoordinatesProps } from "@/types/common";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 
