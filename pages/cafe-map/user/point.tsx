@@ -7,7 +7,7 @@ import { Fragment } from "react";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import IconRowBlock2 from "@/components/molecules/IconRowBlock2";
-import { usePointSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import { usePointSystemLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 
 function UserLogSection() {

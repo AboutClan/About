@@ -13,13 +13,13 @@ import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import LabeledInput from "@/components/molecules/LabeledInput";
 import SearchLocation from "@/components/organisms/SearchLocation";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useUserInfoMutation } from "@/features/user/hooks/mutations";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import { CameraIcon, ProfileCamera } from "@/features/user/screens/UserProfileSection";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { NaverLocationProps } from "@/hooks/external/queries";
-import { useUserInfoMutation } from "@/hooks/user/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { MajorLayout } from "@/pages/register/major";
 import { MBTILayout } from "@/pages/register/mbti";
-import { CameraIcon, ProfileCamera } from "@/pageTemplates/user/UserProfileSection";
 
 function Profile() {
   const router = useRouter();

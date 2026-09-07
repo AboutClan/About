@@ -19,11 +19,11 @@
 // import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
 // import { STUDY_RECORD_MODAL_AT } from "@/constants/keys/queryKeys";
 // import { useTypeToast } from "@/hooks/custom/CustomToast";
-// import { useUserInfoQuery } from "@/hooks/user/queries";
-// import { useCollectionAlphabetQuery } from "@/hooks/user/sub/collection/queries";
+// import { useUserInfoQuery } from "@/features/user/hooks/queries";
+// import { useCollectionAlphabetQuery } from "@/features/user/hooks/sub/collection/queries";
 // import PointScoreBar from "@/features/point/screens/pointScore/PointScoreBar";
 // import StudyHeader from "@/pageTemplates/study/StudyHeader";
-// import { changeAlphabet } from "@/pageTemplates/user/UserCollection2";
+// import { changeAlphabet } from "@/features/user/screens/UserCollection2";
 // import { dayjsToFormat, dayjsToTime } from "@/utils/dateTimeUtils";
 // import { getRandomIdx } from "@/utils/mathUtils";
 // function StudyResultPage() {

@@ -5,8 +5,8 @@ import { useQueryClient } from "react-query";
 import { ModalLayout } from "@/components/modals/Modals";
 import TextCheckButton from "@/components/molecules/TextCheckButton";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useUserPointMutation } from "@/features/user/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserPointMutation } from "@/hooks/user/mutations";
 import { CloseProps } from "@/types/components/modalTypes";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 

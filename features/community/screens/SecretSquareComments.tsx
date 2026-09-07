@@ -7,12 +7,12 @@ import BottomCommentInput from "@/components/atoms/BottomCommentInput";
 import Slide from "@/components/layouts/PageSlide";
 import UserCommentBlock from "@/components/molecules/UserCommentBlock";
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import {
   SubCommentParamProps,
   useCommentMutation,
   useSubCommentMutation,
 } from "@/hooks/common/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { getCommentArr } from "@/libs/comment/commentLib";
 import { UserCommentProps } from "@/types/components/propTypes";
 import { AvatarProps, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";

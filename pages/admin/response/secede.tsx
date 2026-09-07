@@ -8,7 +8,7 @@ import { CopyBtn } from "@/components/Icons/CopyIcon";
 import Header from "@/components/layouts/Header";
 import AdminLocationSelector from "@/components/molecules/picker/AdminLocationSelector";
 import { useUserRequestQuery } from "@/features/admin/hooks/quries";
-import { usePointCuoponLogQuery } from "@/hooks/user/queries";
+import { usePointCuoponLogQuery } from "@/features/user/hooks/queries";
 import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 

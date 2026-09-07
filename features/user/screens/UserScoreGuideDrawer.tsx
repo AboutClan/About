@@ -8,7 +8,7 @@ import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard"
 import InfoBoxCol from "@/components/molecules/InfoBoxCol";
 import ProgressMark from "@/components/molecules/ProgressMark";
 import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
-import { useMonthScoreLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import { useMonthScoreLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 
 interface UserScoreGuideDrawerProps {
   onClose: () => void;

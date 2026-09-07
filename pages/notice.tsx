@@ -7,8 +7,8 @@ import Slide from "@/components/layouts/PageSlide";
 import NoticeActive from "@/features/notice/screens/NoticeActive";
 import NoticeItem from "@/features/notice/screens/NoticeItem";
 import NoticeNav from "@/features/notice/screens/NoticeNav";
+import { useNoticeActiveLogQuery } from "@/features/user/hooks/sub/interaction/queries";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
-import { useNoticeActiveLogQuery } from "@/hooks/user/sub/interaction/queries";
 
 export type NoticeType = "notice" | "active";
 

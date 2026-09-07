@@ -6,8 +6,8 @@ import styled from "styled-components";
 import { CopyBtn } from "@/components/Icons/CopyIcon";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { PROMOTION_TEXT,PromotionComponent } from "@/constants/contentsText/Private";
+import { useUserRequestMutation } from "@/features/user/hooks/sub/request/mutations";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
-import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
 import { IModal } from "@/types/components/modalTypes";
 
 function RequestPromotionRewardModal({ setIsModal }: IModal) {

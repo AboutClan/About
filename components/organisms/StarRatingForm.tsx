@@ -9,7 +9,7 @@ import { usePointToast, useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 
 import { useStudyPlaceReviewMutation } from "@/hooks/study/mutations";
-import { usePointSystemMutation } from "@/hooks/user/mutations";
+import { usePointSystemMutation } from "@/features/user/hooks/mutations";
 import { ModalLayout } from "@/components/modals/Modals";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 import Textarea from "@/components/atoms/Textarea";

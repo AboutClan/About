@@ -7,12 +7,12 @@ import { useQueryClient } from "react-query";
 
 import BottomNav from "@/components/layouts/BottomNav";
 import { USER_INFO, USER_POINT_SYSTEM } from "@/constants/keys/queryKeys";
-import { useToast } from "@/hooks/custom/CustomToast";
 import {
   useCookiepayFinalizeMutation,
   useUserRegisterControlMutation,
-} from "@/hooks/user/mutations";
-import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
+} from "@/features/user/hooks/mutations";
+import { useUserRequestMutation } from "@/features/user/hooks/sub/request/mutations";
+import { useToast } from "@/hooks/custom/CustomToast";
 import { gaEvent } from "@/libs/gtag";
 import { isWebView } from "@/utils/appEnvUtils";
 import { setAuthIntent } from "@/utils/authIntentUtils";

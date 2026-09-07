@@ -9,9 +9,9 @@ import Avatar from "@/components/atoms/Avatar";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import ImageSlider from "@/components/organisms/imageSlider/ImageSlider";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useErrorToast, useFailToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { IModal } from "@/types/components/modalTypes";
 
 interface ISpecialAvatarModal extends IModal {}

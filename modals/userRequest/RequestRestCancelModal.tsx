@@ -5,8 +5,8 @@ import styled from "styled-components";
 
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import { IModal } from "@/types/components/modalTypes";
 import { IRest } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";

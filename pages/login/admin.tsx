@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import ForceLogoutDialog from "@/features/login/modals/ForceLogoutDialog";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { navigateExternalLink } from "@/utils/navigateUtils";

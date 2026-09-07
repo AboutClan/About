@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Input } from "@/components/atoms/Input";
 import Header from "@/components/layouts/Header";
-import { useUserRandomTicketMutation } from "@/hooks/user/mutations";
+import { useUserRandomTicketMutation } from "@/features/user/hooks/mutations";
 
 function Badge() {
   const [userId, setUserId] = useState("");

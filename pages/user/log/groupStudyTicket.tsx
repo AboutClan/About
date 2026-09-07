@@ -7,10 +7,10 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useGroupsMineQuery } from "@/hooks/groupStudy/queries";
-import { usePointSystemMutation, useUserTicketMutation } from "@/hooks/user/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
-import { getTemperatureTicket } from "@/pageTemplates/user/UserSocialGuideDrawer";
-import UserSocialGuideDrawer2 from "@/pageTemplates/user/UserSocialGuideDrawer2";
+import { usePointSystemMutation, useUserTicketMutation } from "@/features/user/hooks/mutations";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import { getTemperatureTicket } from "@/features/user/screens/UserSocialGuideDrawer";
+import UserSocialGuideDrawer2 from "@/features/user/screens/UserSocialGuideDrawer2";
 
 function GroupStudyTicketLogSection() {
   const toast = useToast();

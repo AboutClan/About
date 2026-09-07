@@ -6,8 +6,8 @@ import styled from "styled-components";
 
 import { ChartStudyOptions } from "@/components/organisms/chart/ChartOptions";
 import { MONTH_LIST } from "@/constants/util/util";
+import { useUserAttendRateQueries } from "@/features/user/hooks/sub/studyRecord/queries";
 import { useErrorToast } from "@/hooks/custom/CustomToast";
-import { useUserAttendRateQueries } from "@/hooks/user/sub/studyRecord/queries";
 import { IVoteRate } from "@/types/models/studyTypes/studyRecords";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 import { getMonth } from "@/utils/dateTimeUtils";

@@ -11,11 +11,11 @@ import Slide from "@/components/layouts/PageSlide";
 import LabeledInput from "@/components/molecules/LabeledInput";
 import SearchLocation from "@/components/organisms/SearchLocation";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useUserInfoMutation } from "@/features/user/hooks/mutations";
+import { useUserInfoQuery, useUserNicknamesQuery } from "@/features/user/hooks/queries";
+import { CameraIcon, ProfileCamera } from "@/features/user/screens/UserProfileSection";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { NaverLocationProps } from "@/hooks/external/queries";
-import { useUserInfoMutation } from "@/hooks/user/mutations";
-import { useUserInfoQuery, useUserNicknamesQuery } from "@/hooks/user/queries";
-import { CameraIcon, ProfileCamera } from "@/pageTemplates/user/UserProfileSection";
 
 function CafeMapProfile() {
   const router = useRouter();

@@ -12,9 +12,10 @@ import { CopyBtn } from "@/components/Icons/CopyIcon";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import { usePointSystemMutation, useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
+import { usePointCuoponLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
+import { UserOverviewModal } from "@/features/user/screens/userNavigation/UserNavigation";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { usePointSystemMutation, useUserInfoFieldMutation } from "@/hooks/user/mutations";
-import { usePointCuoponLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
 import RequestBirthModal from "@/modals/userRequest/RequestBirthModal";
 import RequestChargeDepositModal from "@/modals/userRequest/RequestChargeDepositModal";
 import RequestLevelUpModal from "@/modals/userRequest/RequestLevelUpModal";
@@ -24,7 +25,6 @@ import RequestRestModal from "@/modals/userRequest/RequestRestModal/RequestRestM
 import RequestSecedeModal from "@/modals/userRequest/RequestSecedeModal";
 import RequestSuggestModal from "@/modals/userRequest/RequestSuggestModal";
 import { RegisterLocationLayout } from "@/pages/register/location";
-import { UserOverviewModal } from "@/pageTemplates/user/userNavigation/UserNavigation";
 import { LocationProps } from "@/types/common";
 
 interface IUserNavigationModals {

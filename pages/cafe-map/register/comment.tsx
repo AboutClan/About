@@ -12,11 +12,11 @@ import { REGISTER_INFO } from "@/constants/keys/localStorage";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
-import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import {
   useUserCafeRegisterMutation,
   useUserInfoFieldMutation,
-} from "@/hooks/user/mutations";
+} from "@/features/user/hooks/mutations";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { gaEvent } from "@/libs/gtag";
 import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
 import { setAuthIntent } from "@/utils/authIntentUtils";

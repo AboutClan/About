@@ -12,6 +12,7 @@ import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
 import BottomButtonNav from "@/components/molecules/BottomButtonNav";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useFeedsQuery } from "@/features/feed/hooks/queries";
 import {
   useGatherParticipationMutation,
   useGatherWaitingMutation,
@@ -20,9 +21,8 @@ import {
 import GatherExpireModal from "@/features/gather/modals/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "@/features/gather/modals/gatherExpireModal/GatherReviewDrawer";
 import { transferGatherDataState } from "@/features/gather/state";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { useFeedsQuery } from "@/hooks/feed/queries";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { FeedProps } from "@/types/models/feed";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";

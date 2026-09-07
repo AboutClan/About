@@ -6,9 +6,9 @@ import styled from "styled-components";
 
 import RowTextBlockButton from "@/components/atoms/buttons/RowTextBlockButton";
 import TextDevider from "@/components/atoms/devider/TextDevider";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import { UserOverviewModal } from "@/features/user/screens/userNavigation/UserNavigation";
 import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoQuery } from "@/hooks/user/queries";
-import { UserOverviewModal } from "@/pageTemplates/user/userNavigation/UserNavigation";
 import { DispatchString } from "@/types/hooks/reactTypes";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 

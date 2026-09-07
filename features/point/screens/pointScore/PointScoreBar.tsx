@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import UserBadge from "@/components/atoms/badges/UserBadge";
 import ProgressBar from "@/components/atoms/ProgressBar";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 
 function PointScoreBar() {
   const { data: userInfo } = useUserInfoQuery();

@@ -9,7 +9,7 @@ import Slide from "@/components/layouts/PageSlide";
 import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
 import RegisterPaymentButton from "@/features/register/screens/access/RegisterPaymentButton";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { setAuthIntent } from "@/utils/authIntentUtils";
 
 const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";

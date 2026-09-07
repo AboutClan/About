@@ -21,7 +21,7 @@ export function Temp() {
 // import { useToast } from "@/hooks/custom/CustomToast";
 // import { useStudyPreferenceMutation } from "@/hooks/study/mutations";
 // import { useStudyPassedDayQuery } from "@/hooks/study/queries";
-// import { useUserInfoQuery } from "@/hooks/user/queries";
+// import { useUserInfoQuery } from "@/features/user/hooks/queries";
 // import { getStudyViewDayjs } from "@/libs/study/date/getStudyDateStatus";
 // import { getLocationByCoordinates } from "@/libs/study/getLocationByCoordinates";
 // import { setStudyThumbnailCard } from "@/libs/study/setStudyThumbnailCard";

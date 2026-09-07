@@ -7,8 +7,8 @@ import Avatar from "@/components/atoms/Avatar";
 import SpecialBadge from "@/components/atoms/badges/SpecialBadge";
 import UserBadge from "@/components/atoms/badges/UserBadge";
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { CameraIcon, ProfileCamera } from "@/features/user/screens/UserProfileSection";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
-import { CameraIcon, ProfileCamera } from "@/pageTemplates/user/UserProfileSection";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
 interface UserProfileBarProps {

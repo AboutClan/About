@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import Avatar from "@/components/atoms/Avatar";
 import { RankingNumIcon } from "@/components/Icons/RankingIcons";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 
 interface IRankingOverview {
   rank: number;

@@ -6,8 +6,8 @@ import styled from "styled-components";
 
 import { ModalLayout } from "@/components/modals/Modals";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
 import { useErrorToast, useFailToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import RequestChagneProfileImageModalBadge from "@/modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
 import SpecialAvatarModal from "@/modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
 import { IModal } from "@/types/components/modalTypes";

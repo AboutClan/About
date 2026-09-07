@@ -20,6 +20,7 @@ import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import MiniSemiGaugeNeedle from "@/components/molecules/GradeGauge";
 import { GROUP_STUDY } from "@/constants/keys/queryKeys";
+import { useUserRandomTicketMutation } from "@/features/user/hooks/mutations";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
@@ -31,7 +32,6 @@ import {
   useGroupIdMannerQuery,
   useGroupsMemberActivityQuery,
 } from "@/hooks/groupStudy/queries";
-import { useUserRandomTicketMutation } from "@/hooks/user/mutations";
 import { calculateGrade } from "@/pages/group/[id]/manner";
 import { DispatchType } from "@/types/hooks/reactTypes";
 import { GroupParicipantProps } from "@/types/models/groupTypes/group";

@@ -8,8 +8,8 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 
+import { SettingIcon } from "@/features/user/screens/UserHeader2";
 import { useKakaoShare } from "@/hooks/custom/KakaoShareHook2";
-import { SettingIcon } from "@/pageTemplates/user/UserHeader2";
 
 export interface MenuProps {
   icon?: React.ReactNode;

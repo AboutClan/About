@@ -13,15 +13,15 @@ import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
-import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
-import { useToast } from "@/hooks/custom/CustomToast";
-import { useStudyPassedDayQuery } from "@/hooks/study/queries";
 import {
   UserRating,
   UserReviewProps,
   useUserStudyReviewMutation,
-} from "@/hooks/user/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+} from "@/features/user/hooks/mutations";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+import { useToast } from "@/hooks/custom/CustomToast";
+import { useStudyPassedDayQuery } from "@/hooks/study/queries";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 import { getRandomImage } from "@/utils/imageUtils";

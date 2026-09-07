@@ -16,9 +16,9 @@ import { ACCORDION_CONTENT_FAQ } from "@/constants/contentsText/accordionContent
 import { REGISTER_INFO } from "@/constants/keys/localStorage";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { useUserInfoFieldMutation, useUserRegisterMutation } from "@/features/user/hooks/mutations";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoFieldMutation, useUserRegisterMutation } from "@/hooks/user/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { gaEvent } from "@/libs/gtag";
 import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
 import { setAuthIntent } from "@/utils/authIntentUtils";

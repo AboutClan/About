@@ -16,12 +16,12 @@ import StudyApplyDrawer from "@/components/services/study/apply/StudyApplyDrawer
 import { StudyCancelModal } from "@/components/services/study/apply/ui/overlay/CancelModal";
 import { PlaceDrawer } from "@/components/services/study/apply/ui/overlay/PlaceDrawer";
 import StudyVoteTimeRulletDrawer from "@/components/services/studyVote/StudyVoteTimeRulletDrawer";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useStudyMutations } from "@/hooks/custom/StudyHooks";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { useStudyAttendChangeMutation, useStudyVoteArrMutation } from "@/hooks/study/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import CafeMapGuestModal from "@/modals/cafeMap/CafeMapGuestModal";
 import StudyAbsentModal from "@/modals/study/StudyAbsentModal";
 import { LocationProps } from "@/types/common";

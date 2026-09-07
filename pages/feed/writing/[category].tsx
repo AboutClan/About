@@ -15,12 +15,12 @@ import UserSecretButton from "@/components/molecules/UserSecretButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "@/components/organisms/sliders/ImageUploadSlider";
+import { useFeedMutation } from "@/features/feed/hooks/mutations";
 import { useGatherIDQuery } from "@/features/gather/hooks/queries";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { usePointSystemMutation } from "@/features/user/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useHasMemership, useUserInfo } from "@/hooks/custom/UserHooks";
-import { useFeedMutation } from "@/hooks/feed/mutations";
-import { usePointSystemMutation } from "@/hooks/user/mutations";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 import { appendFormData } from "@/utils/formDataUtils";

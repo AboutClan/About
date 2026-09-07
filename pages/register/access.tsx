@@ -18,7 +18,7 @@ import RegisterPaymentButton from "@/features/register/screens/access/RegisterPa
 import RegisterReview from "@/features/register/screens/access/RegisterReview";
 import RegisterSlideImage from "@/features/register/screens/access/RegisterSlideImage";
 import RegisterSlideImage2 from "@/features/register/screens/access/RegisterSlideImage2";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 
 const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
 

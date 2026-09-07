@@ -17,7 +17,7 @@ import { ChatTalkIcon } from "@/components/Icons/chatIcons";
 import { CrownIcon } from "@/components/Icons/icons";
 import { ModalLayout } from "@/components/modals/Modals";
 import BlurredPart from "@/components/molecules/BlurredPart";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { CommentProps } from "@/types/models/commonTypes";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 

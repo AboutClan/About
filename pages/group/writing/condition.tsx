@@ -14,8 +14,8 @@ import WritingConditionLayout, {
 import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import GroupConfirmModal from "@/modals/groupStudy/WritingConfirmModal";
 import { IGroupWriting } from "@/types/models/groupTypes/group";
 import { setLocalStorageObj } from "@/utils/storageUtils";

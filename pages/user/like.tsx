@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
-import { useInteractionLikeQuery } from "@/hooks/user/sub/interaction/queries";
+import { useInteractionLikeQuery } from "@/features/user/hooks/sub/interaction/queries";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 function Like() {

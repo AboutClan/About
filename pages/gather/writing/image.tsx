@@ -18,8 +18,8 @@ import GatherWritingConfirmModal from "@/features/gather/modals/GatherWritingCon
 import { sharedGatherWritingState } from "@/features/gather/state";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { CameraIcon } from "@/features/user/screens/UserProfileSection";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
-import { CameraIcon } from "@/pageTemplates/user/UserProfileSection";
 import {
   GatherCategory,
   IGather,

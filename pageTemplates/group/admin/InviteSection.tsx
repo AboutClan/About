@@ -3,10 +3,10 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { UserItem } from "@/components/molecules/UserItem";
+import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
 import { useResetGroupQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "@/hooks/groupStudy/mutations";
-import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import GroupAdminInvitation from "@/pageTemplates/group/admin/GroupAdminInvitation";
 import { IGroup } from "@/types/models/groupTypes/group";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";

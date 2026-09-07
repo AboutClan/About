@@ -21,16 +21,16 @@ import {
   GatherThumbnailCardProps,
 } from "@/features/gather/components/GatherThumbnailCard";
 import { useGatherCountQuery, useGatherMyStatusQuery } from "@/features/gather/hooks/queries";
+import { setGatherDataToCardCol } from "@/features/home/screens/HomeGatherCol";
 import DetailInfo from "@/features/profile/screens/DetailInfo";
 import ProfileOverview from "@/features/profile/screens/ProfileOverview";
+import { useUserFriendMutation } from "@/features/user/hooks/mutations";
+import { useUserReviewQuery } from "@/features/user/hooks/queries";
+import { useInteractionMutation } from "@/features/user/hooks/sub/interaction/mutations";
+import { useUserRequestMutation } from "@/features/user/hooks/sub/request/mutations";
+import UserReviewBar from "@/features/user/screens/UserReviewBar";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useGroupsTitleQuery } from "@/hooks/groupStudy/queries";
-import { useUserFriendMutation } from "@/hooks/user/mutations";
-import { useUserReviewQuery } from "@/hooks/user/queries";
-import { useInteractionMutation } from "@/hooks/user/sub/interaction/mutations";
-import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
-import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
-import UserReviewBar from "@/pageTemplates/user/UserReviewBar";
 import { transferUserName } from "@/recoils/transferRecoils";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";

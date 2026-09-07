@@ -14,9 +14,9 @@ import { USER_INFO } from "@/constants/keys/queryKeys";
 import { useAdminPointMutation } from "@/features/admin/hooks/mutation";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { usePointSystemMutation } from "@/features/user/hooks/mutations";
+import { usePointSystemLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { usePointSystemMutation } from "@/hooks/user/mutations";
-import { usePointSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
 
 function Friend() {
   const { data: session } = useSession();

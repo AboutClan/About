@@ -6,7 +6,7 @@ import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import InfoBoxCol from "@/components/molecules/InfoBoxCol";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { UserMemberShip, UserRole } from "@/types/models/userTypes/userInfoTypes";
 
 interface UserSocialGuideDrawerProps {

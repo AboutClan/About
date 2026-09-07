@@ -14,7 +14,7 @@ import WinnerTextSlider from "@/components/molecules/WinnerTextSlider";
 import { usePrizeQuery } from "@/constants/prize/queries";
 import { useAllUserDataQuery, UserStudyDataProps } from "@/features/admin/hooks/quries";
 import RankingMembers from "@/features/ranking/screens/RankingMembers";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
 export type RankingTab = "월간 활동 랭킹" | "누적 인기 랭킹" | "스터디 랭킹";

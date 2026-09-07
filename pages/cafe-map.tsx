@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import CafeMapBottomNav from "@/components/CafeMapBottomNav";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
-import { usePointSubLogQuery } from "@/hooks/user/queries";
+import { usePointSubLogQuery } from "@/features/user/hooks/queries";
 import { gaEvent } from "@/libs/gtag";
 import CafeMapAppInstallDrawer from "@/pageTemplates/studyPage/CafeMapAppInstallDrawer";
 import CafeMapArchivePage from "@/pageTemplates/studyPage/CafeMapArchivePage";

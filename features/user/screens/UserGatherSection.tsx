@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
+import { useFeedsQuery } from "@/features/feed/hooks/queries";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
@@ -11,10 +12,9 @@ import {
 import { useGatherMyStatusQuery } from "@/features/gather/hooks/queries";
 import GatherReviewDrawer from "@/features/gather/modals/gatherExpireModal/GatherReviewDrawer";
 import GatherSkeletonMain from "@/features/gather/screens/GatherSkeletonMain";
+import { setGatherDataToCardCol } from "@/features/home/screens/HomeGatherCol";
+import UserGatherSectionReview from "@/features/user/screens/UserGatherSectionReview";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { useFeedsQuery } from "@/hooks/feed/queries";
-import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
-import UserGatherSectionReview from "@/pageTemplates/user/UserGatherSectionReview";
 import { backUrlState } from "@/recoils/navigationRecoils";
 import { FeedProps } from "@/types/models/feed";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";

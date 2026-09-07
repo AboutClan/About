@@ -10,13 +10,13 @@ import Header from "@/components/layouts/Header";
 import { GROUP_STUDY } from "@/constants/keys/queryKeys";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
 import {
   useGroupParticipationMutation,
   useGroupWaitingMutation,
 } from "@/hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import ParticipateModal from "@/pageTemplates/group/ParticipateModal";
 
 function Participate() {

@@ -7,9 +7,9 @@ import styled from "styled-components";
 import { PopOverIcon } from "@/components/Icons/PopOverIcon";
 import { IFooterOptions, ModalFooterTwo, ModalLayout } from "@/components/modals/Modals";
 import { GROUP_STUDY } from "@/constants/keys/queryKeys";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
 import { useGroupWaitingMutation } from "@/hooks/groupStudy/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { ModalSubtitle } from "@/styles/layout/modal";
 import { IModal } from "@/types/components/modalTypes";
 

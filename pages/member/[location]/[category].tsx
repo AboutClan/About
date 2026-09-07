@@ -8,7 +8,7 @@ import Avatar from "@/components/atoms/Avatar";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import { FRIEND_RECOMMEND_CATEGORY } from "@/constants/contentsText/friend";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { prevPageUrlState } from "@/recoils/previousAtoms";
 import { transferMemberDataState } from "@/recoils/transferRecoils";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";

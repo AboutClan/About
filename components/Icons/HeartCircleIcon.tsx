@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { LIKE_HEART } from "@/constants/keys/localStorage";
+import { useInteractionMutation } from "@/features/user/hooks/sub/interaction/mutations";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
-import { useInteractionMutation } from "@/hooks/user/sub/interaction/mutations";
 import { isHeartCheckLocalStorage, pushArrToLocalStorage } from "@/utils/storageUtils";
 
 interface IHeartCircleIcon {

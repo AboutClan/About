@@ -8,9 +8,9 @@ import BottomNav from "@/components/layouts/BottomNav";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
+import { useUserRequestMutation } from "@/features/user/hooks/sub/request/mutations";
 import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
-import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
 import { IModal } from "@/types/components/modalTypes";
 
 function RequestSecedeModal({ setIsModal }: IModal) {

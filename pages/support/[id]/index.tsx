@@ -9,11 +9,11 @@ import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import { SUPPORT_CATEGORY_LABEL, SUPPORT_LIST } from "@/constants/support";
-import { useCouponIssueByPartnerMutation } from "@/hooks/coupon/mutations";
+import { useCouponIssueByPartnerMutation } from "@/features/coupon/hooks/mutations";
+import MemberCardModal from "@/features/user/screens/MemberCardModal";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest, useDenyGuest } from "@/hooks/custom/UserHooks";
 import SupportCouponModal from "@/pageTemplates/support/SupportCouponModal";
-import MemberCardModal from "@/pageTemplates/user/MemberCardModal";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 
 const IMAGE_SIZE = 96;

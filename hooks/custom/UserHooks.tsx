@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { IUser, UserMemberShip } from "@/types/models/userTypes/userInfoTypes";
 
 export const useUserInfo = (): IUser => {

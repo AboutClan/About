@@ -6,9 +6,9 @@ import { useQueryClient } from "react-query";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import InfoBoxCol, { InfoBoxProps } from "@/components/molecules/InfoBoxCol";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { IModal } from "@/types/components/modalTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 

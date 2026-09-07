@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 
 import { ModalLayout } from "@/components/modals/Modals";
 import ForceLogoutDialog from "@/features/login/modals/ForceLogoutDialog";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { setAuthIntent } from "@/utils/authIntentUtils";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";

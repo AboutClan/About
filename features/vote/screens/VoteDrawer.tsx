@@ -20,7 +20,7 @@ export function Temp() {
 // import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 // import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 // import { useStudyVoteMutation } from "@/hooks/study/mutations";
-// import { useUserInfoQuery } from "@/hooks/user/queries";
+// import { useUserInfoQuery } from "@/features/user/hooks/queries";
 // import { convertStudyToParticipations } from "@/libs/study/getMyStudyMethods";
 // import { setStudyThumbnailCard } from "@/libs/study/setStudyThumbnailCard";
 // import { myStudyParticipationState } from "@/recoils/studyRecoils";

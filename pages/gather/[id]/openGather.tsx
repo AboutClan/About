@@ -12,8 +12,8 @@ import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
 import { useOpenGatherMemberMutation } from "@/features/gather/hooks/mutations";
 import { useGatherIDQuery } from "@/features/gather/hooks/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 export interface OpenGatherVoteProps {
@@ -282,7 +282,7 @@ function GridItem2({ gender, birth, introduceText, mbti }: Partial<IUser>) {
 
 import Divider from "@/components/atoms/Divider";
 import { ModalLayout } from "@/components/modals/Modals";
-import { usePointSystemMutation } from "@/hooks/user/mutations";
+import { usePointSystemMutation } from "@/features/user/hooks/mutations";
 
 type StepItem = {
   step: number;

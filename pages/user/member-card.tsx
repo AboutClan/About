@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
-import MemberCard from "@/pageTemplates/user/MemberCard";
+import MemberCard from "@/features/user/screens/MemberCard";
 
 export default function MemberCardPage() {
   return (

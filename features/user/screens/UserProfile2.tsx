@@ -3,9 +3,9 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import { useNoticeActiveLogQuery } from "@/features/user/hooks/sub/interaction/queries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoQuery } from "@/hooks/user/queries";
-import { useNoticeActiveLogQuery } from "@/hooks/user/sub/interaction/queries";
 
 function UserProfile() {
   const typeToast = useTypeToast();

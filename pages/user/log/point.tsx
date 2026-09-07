@@ -8,7 +8,7 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import PointGuideModalButton from "@/components/modalButtons/PointGuideModalButton";
 import IconRowBlock2 from "@/components/molecules/IconRowBlock2";
-import { usePointSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import { usePointSystemLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 

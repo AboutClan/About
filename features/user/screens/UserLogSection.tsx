@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import Select from "@/components/atoms/Select";
 import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
-import { usePointSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import { usePointSystemLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 
 function UserLogSection() {

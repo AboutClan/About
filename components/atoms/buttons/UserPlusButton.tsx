@@ -5,8 +5,8 @@ import { useState } from "react";
 import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
 import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
 import { UserPlusIcon } from "@/components/Icons/UserIcons";
+import { useInteractionMutation } from "@/features/user/hooks/sub/interaction/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useInteractionMutation } from "@/hooks/user/sub/interaction/mutations";
 interface UserPlusButtonProps {
   toUid: string;
   isMyFriend;

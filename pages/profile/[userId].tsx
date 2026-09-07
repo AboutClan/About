@@ -1,7 +1,7 @@
 import { useParams } from "next/navigation";
 
 import ProfileDetailPage from "@/features/profile/screens/ProfileDetailPage";
-import { useUserIdToUserInfoQuery } from "@/hooks/user/queries";
+import { useUserIdToUserInfoQuery } from "@/features/user/hooks/queries";
 
 function ProfilePage() {
   const { userId } = useParams<{ userId: string }>() || {};

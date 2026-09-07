@@ -9,9 +9,9 @@ import { REGISTER_INFO } from "@/constants/keys/localStorage";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { useUserInfoMutation } from "@/features/user/hooks/mutations";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoMutation } from "@/hooks/user/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 function Instagram() {

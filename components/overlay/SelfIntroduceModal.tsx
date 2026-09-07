@@ -5,8 +5,8 @@ import { useQueryClient } from "react-query";
 import Textarea from "@/components/atoms/Textarea";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import { useUserInfoMutation } from "@/features/user/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoMutation } from "@/hooks/user/mutations";
 import { CloseProps } from "@/types/components/modalTypes";
 
 interface SelfIntroduceModal extends CloseProps {}

@@ -6,7 +6,7 @@ import PointIntro from "@/features/point/screens/PointIntro";
 import PointPoint from "@/features/point/screens/PointPoint";
 import PointScore from "@/features/point/screens/PointScore";
 import PointSkeleton from "@/features/point/screens/skeleton/PointSkeleton";
-import { useUserInfoQuery } from "@/hooks/user/queries";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 
 function Point() {
   const { data: session } = useSession();

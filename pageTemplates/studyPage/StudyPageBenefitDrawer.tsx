@@ -5,7 +5,7 @@ import Avatar from "@/components/atoms/Avatar";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import InfoBoxCol from "@/components/molecules/InfoBoxCol";
-import { usePointPlusLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import { usePointPlusLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 
 type BenefitName = "study" | "event" | "host" | "etc";
 

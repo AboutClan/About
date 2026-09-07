@@ -2,8 +2,8 @@ import { Badge, Box, Button, Flex, Heading, Stack, Text } from "@chakra-ui/react
 import { useState } from "react";
 
 import { Input } from "@/components/atoms/Input";
+import { useUserInfoByUidQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoByUidQuery } from "@/hooks/user/queries";
 import { DispatchNumber, DispatchString } from "@/types/hooks/reactTypes";
 
 interface RegisterInviteProps {

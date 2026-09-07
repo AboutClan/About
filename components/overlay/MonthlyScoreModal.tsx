@@ -9,7 +9,7 @@ import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import ProgressMark from "@/components/molecules/ProgressMark";
 import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
 import { USER_ROLE } from "@/constants/settingValue/role";
-import { usePointSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
+import { usePointSystemLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 import { CloseProps } from "@/types/components/modalTypes";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 

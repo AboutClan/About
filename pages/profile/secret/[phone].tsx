@@ -6,8 +6,8 @@ import { Input } from "@/components/atoms/Input";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import ProfileDetailPage from "@/features/profile/screens/ProfileDetailPage";
+import { useUserPhoneToUserInfoQuery } from "@/features/user/hooks/queries";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { useUserPhoneToUserInfoQuery } from "@/hooks/user/queries";
 
 const ADMIN_ROLES = ["previliged", "manager"];
 

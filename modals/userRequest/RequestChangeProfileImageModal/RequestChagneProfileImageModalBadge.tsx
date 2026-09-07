@@ -7,9 +7,9 @@ import {
   BADGE_COLOR_MAPPINGS,
   USER_BADGE_ARR,
 } from "@/constants/serviceConstants/badgeConstants";
+import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 
 function RequestChagneProfileImageModalBadge({ setIsModal }) {
   const typeToast = useTypeToast();

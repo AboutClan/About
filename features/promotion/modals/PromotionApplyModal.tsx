@@ -4,10 +4,10 @@ import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import { IFooterOptions, ModalFooterOne, ModalFooterTwo, ModalLayout } from "@/components/modals/Modals";
+import { usePromotionMutation } from "@/features/promotion/hooks/mutations";
+import { usePromotionQuery } from "@/features/promotion/hooks/queries";
+import { useUserRequestMutation } from "@/features/user/hooks/sub/request/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { usePromotionMutation } from "@/hooks/sub/promotion/mutations";
-import { usePromotionQuery } from "@/hooks/sub/promotion/queries";
-import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
 import { ModalSubtitle } from "@/styles/layout/modal";
 import { IModal } from "@/types/components/modalTypes";
 

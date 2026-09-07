@@ -34,10 +34,10 @@ import { ModalLayout } from "@/components/modals/Modals";
 import WinnerTextSlider from "@/components/molecules/WinnerTextSlider";
 import { COLOR_TABLE } from "@/constants/colorConstants";
 import { usePrizeQuery } from "@/constants/prize/queries";
+import { usePrizeMutation } from "@/features/store/hooks/mutation";
+import { usePointSystemMutation, useUserRandomTicketMutation } from "@/features/user/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { usePrizeMutation } from "@/hooks/sub/store/mutation";
-import { usePointSystemMutation, useUserRandomTicketMutation } from "@/hooks/user/mutations";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
 const MotionDiv = chakra(motion.div, {

@@ -15,9 +15,9 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
+import { usePointSystemMutation } from "@/features/user/hooks/mutations";
+import { useUserRequestMutation } from "@/features/user/hooks/sub/request/mutations";
 import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
-import { usePointSystemMutation } from "@/hooks/user/mutations";
-import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
 import { IModal } from "@/types/components/modalTypes";
 import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 

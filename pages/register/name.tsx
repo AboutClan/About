@@ -6,7 +6,7 @@ import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "@/constants/keys/localStorage";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
-import { useUserKakaoInfoQuery } from "@/hooks/user/queries";
+import { useUserKakaoInfoQuery } from "@/features/user/hooks/queries";
 import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 import { checkIsKorean } from "@/utils/validationUtils";

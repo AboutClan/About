@@ -4,9 +4,9 @@ import { useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useState } from "react";
 
 import { HeartIcon } from "@/components/Icons/HeartIcons";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { usePlaceLikeMutation } from "@/hooks/study/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 
 interface PlaceHeartImageProps {
   imageProps: {

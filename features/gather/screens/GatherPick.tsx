@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import BlurredPart from "@/components/molecules/BlurredPart";
 import { useGatherRequestLikeMutation } from "@/features/gather/hooks/mutations";
 import { useGatherRequestQuery } from "@/features/gather/hooks/queries";
+import { usePointSystemMutation } from "@/features/user/hooks/mutations";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { usePointSystemMutation } from "@/hooks/user/mutations";
-import { useUserInfoQuery } from "@/hooks/user/queries";
 import { getDateDiff } from "@/utils/dateTimeUtils";
 
 function GatherPick() {

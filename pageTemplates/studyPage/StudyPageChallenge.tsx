@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import SectionHeader from "@/components/atoms/SectionHeader";
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
 import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
+import { usePointPlusLogQuery } from "@/features/user/hooks/queries";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { usePointPlusLogQuery } from "@/hooks/user/queries";
 
 function StudyPageChallenge() {
   const router = useRouter();

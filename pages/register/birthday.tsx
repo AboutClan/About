@@ -14,7 +14,7 @@ import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "@/constants/keys/localStorage";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
-import { useUserInfoQuery } from "@/hooks/user/queries"; // 프로젝트 경로 기준
+import { useUserInfoQuery } from "@/features/user/hooks/queries"; // 프로젝트 경로 기준
 import { IUser, IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
 import { birthToAge } from "@/utils/convertUtils/convertTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";

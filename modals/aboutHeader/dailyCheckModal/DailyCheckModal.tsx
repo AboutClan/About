@@ -7,11 +7,11 @@ import { StarIcon } from "@/components/Icons/StarIcons";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import InfoBoxCol from "@/components/molecules/InfoBoxCol";
 import { DAILY_CHECK_POP_UP } from "@/constants/keys/localStorage";
+import { usePointSystemMutation } from "@/features/user/hooks/mutations";
+import { useCollectionAlphabetQuery } from "@/features/user/hooks/sub/collection/queries";
+import { useDailyCheckMutation } from "@/features/user/hooks/sub/dailyCheck/mutation";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useHasMemership, useUserInfo } from "@/hooks/custom/UserHooks";
-import { usePointSystemMutation } from "@/hooks/user/mutations";
-import { useCollectionAlphabetQuery } from "@/hooks/user/sub/collection/queries";
-import { useDailyCheckMutation } from "@/hooks/user/sub/dailyCheck/mutation";
 import { IModal } from "@/types/components/modalTypes";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 

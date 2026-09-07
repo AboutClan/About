@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Input } from "@/components/atoms/Input";
 import Header from "@/components/layouts/Header";
 import { USER_BADGE_ARR } from "@/constants/serviceConstants/badgeConstants";
+import { useAddBadgeListMutation } from "@/features/user/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useAddBadgeListMutation } from "@/hooks/user/mutations";
 
 function Badge() {
   const toast = useToast();

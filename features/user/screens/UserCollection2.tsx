@@ -7,11 +7,11 @@ import styled from "styled-components";
 
 import { AboutIcon } from "@/components/atoms/AboutIcons";
 import { COLLECTION_ALPHABET } from "@/constants/keys/queryKeys";
+import { useAlphabetMutation } from "@/features/user/hooks/sub/collection/mutations";
+import { useCollectionAlphabetQuery } from "@/features/user/hooks/sub/collection/queries";
+import { ArrowIcon } from "@/features/user/screens/UserProfile2";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
-import { useAlphabetMutation } from "@/hooks/user/sub/collection/mutations";
-import { useCollectionAlphabetQuery } from "@/hooks/user/sub/collection/queries";
 import { getRandomAlphabet } from "@/libs/userEventLibs/collection";
-import { ArrowIcon } from "@/pageTemplates/user/UserProfile2";
 import { Alphabet } from "@/types/models/collections";
 
 export const changeAlphabet = (alphabet: Alphabet) => {

@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import Avatar from "@/components/atoms/Avatar";
 import { getTemperatureColor } from "@/components/molecules/SocialingScoreBadge";
-import { useUserReviewQuery } from "@/hooks/user/queries";
+import { useUserReviewQuery } from "@/features/user/hooks/queries";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
 interface UserReviewBarProps {

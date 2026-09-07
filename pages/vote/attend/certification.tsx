@@ -19,7 +19,7 @@ export default Certification;
 // import { useToast } from "@/hooks/custom/CustomToast";
 // import { useKeypadHeight } from "@/hooks/custom/useKeypadHeight";
 // import { useStudySetQuery } from "@/hooks/study/queries";
-// import { useUserInfoQuery } from "@/hooks/user/queries";
+// import { useUserInfoQuery } from "@/features/user/hooks/queries";
 // import { transferStudyAttendanceState } from "@/recoils/transferRecoils";
 // import { LocationProps } from "@/types/common";
 

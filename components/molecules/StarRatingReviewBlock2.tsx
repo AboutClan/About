@@ -6,8 +6,8 @@ import Avatar from "@/components/atoms/Avatar";
 import StarRating from "@/components/atoms/StarRating";
 import { StarIcon } from "@/components/Icons/StarIcon";
 import { BLOCKED_CAFE_REVIEWERS } from "@/constants/keys/localStorage";
+import { useUserRequestMutation } from "@/features/user/hooks/sub/request/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
 import { StudyRatingProps } from "@/types/models/studyTypes/study-entity.types";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
