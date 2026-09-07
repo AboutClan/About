@@ -7,13 +7,13 @@ import {
   useCouponBulkRegisterMutation,
   useCouponIssueByPartnerMutation,
   useCouponRegisterMutation,
-} from "@/hooks/coupon/mutations";
+} from "@/features/coupon/hooks/mutations";
 import {
   useCouponByNameQuery,
   useCouponListQuery,
   useCouponMineQuery,
   useCouponQuery,
-} from "@/hooks/coupon/queries";
+} from "@/features/coupon/hooks/queries";
 
 // 솜씨당 발급 쿠폰 코드 (일괄 등록 대상)
 const SOMSSIDANG_COUPON_CODES = [
