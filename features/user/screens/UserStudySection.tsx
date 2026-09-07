@@ -7,8 +7,8 @@ import {
   StudyThumbnailCardProps,
 } from "@/components/molecules/cards/StudyThumbnailCard";
 import GatherSkeletonMain from "@/features/gather/screens/GatherSkeletonMain";
+import { useStudyMineQuery } from "@/features/study/hooks/queries";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { useStudyMineQuery } from "@/hooks/study/queries";
 import { StudyType } from "@/types/models/studyTypes/study-set.types";
 
 function UserStudySection() {

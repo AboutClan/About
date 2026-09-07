@@ -13,8 +13,8 @@ import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import LocationSearch, {
   mapxyToLatLng,
 } from "@/components/organisms/location/LocationSearch";
+import { usePlaceRankingQuery } from "@/features/study/hooks/queries";
 import { NaverLocationProps } from "@/hooks/external/queries";
-import { usePlaceRankingQuery } from "@/hooks/study/queries";
 import GuideButton from "@/pageTemplates/studyPage/studyPageMap/GuideButton";
 import StatusButton from "@/pageTemplates/studyPage/studyPageMap/StatusButton";
 import { CafeMapLogo } from "@/pageTemplates/studyPage/studyPageMap/StudyPageMap";

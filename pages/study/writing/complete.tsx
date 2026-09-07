@@ -7,8 +7,8 @@ import Slide from "@/components/layouts/PageSlide";
 import ProgressStatus from "@/components/molecules/ProgressStatus";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { useStudyAdditionMutation } from "@/features/study/hooks/mutations";
 import { usePointToast } from "@/hooks/custom/CustomToast";
-import { useStudyAdditionMutation } from "@/hooks/study/mutations";
 import { sharedStudyWritingState } from "@/recoils/sharedDataAtoms";
 
 function WritingStudyComplete() {

@@ -4,8 +4,8 @@ import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import Header from "@/components/layouts/Header";
+import { useStudyStatusMutation } from "@/features/study/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useStudyStatusMutation } from "@/hooks/study/mutations";
 
 function StudyAddition() {
   const toast = useToast();

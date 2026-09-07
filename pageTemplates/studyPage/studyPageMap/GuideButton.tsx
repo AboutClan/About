@@ -19,12 +19,12 @@ import Spinner from "@/components/atoms/Spinner";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
 import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
-import { useToast } from "@/hooks/custom/CustomToast";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
-} from "@/hooks/study/queries";
+} from "@/features/study/hooks/queries";
+import { useToast } from "@/hooks/custom/CustomToast";
 import { PlaceInfoBox } from "@/pageTemplates/studyPage/PlaceInfoDrawer";
 import { CoordinatesProps } from "@/types/common";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";

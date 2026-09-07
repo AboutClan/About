@@ -13,11 +13,11 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import ImageUploadInput from "@/components/molecules/ImageUploadInput";
 import { STUDY_ATTEND_AT } from "@/constants/keys/queryKeys";
+import { useStudyAttendCheckMutation } from "@/features/study/hooks/mutations";
+import { useStudySetQuery } from "@/features/study/hooks/queries";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useRealTimeAttendMutation } from "@/hooks/realtime/mutations";
-import { useStudyAttendCheckMutation } from "@/hooks/study/mutations";
-import { useStudySetQuery } from "@/hooks/study/queries";
 import { transferStudyRewardState } from "@/recoils/transferRecoils";
 import {
   StudyConfirmedSetProps,

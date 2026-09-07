@@ -19,8 +19,8 @@ export function Temp() {
 // import { USER_INFO } from "@/constants/keys/queryKeys";
 // import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 // import { useToast } from "@/hooks/custom/CustomToast";
-// import { useStudyPreferenceMutation } from "@/hooks/study/mutations";
-// import { useStudyPassedDayQuery } from "@/hooks/study/queries";
+// import { useStudyPreferenceMutation } from "@/features/study/hooks/mutations";
+// import { useStudyPassedDayQuery } from "@/features/study/hooks/queries";
 // import { useUserInfoQuery } from "@/features/user/hooks/queries";
 // import { getStudyViewDayjs } from "@/libs/study/date/getStudyDateStatus";
 // import { getLocationByCoordinates } from "@/libs/study/getLocationByCoordinates";

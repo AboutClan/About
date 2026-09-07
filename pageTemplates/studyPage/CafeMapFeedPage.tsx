@@ -6,12 +6,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import Header from "@/components/layouts/Header";
 import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
-import { RightReviewDrawer } from "@/features/study/screens/StudyReview";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
-} from "@/hooks/study/queries";
+} from "@/features/study/hooks/queries";
+import { RightReviewDrawer } from "@/features/study/screens/StudyReview";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 import { PlaceInfoBox } from "@/pageTemplates/studyPage/PlaceInfoDrawer";
 import { StudyReviewDrawer } from "@/pageTemplates/studyPage/StudyReviewDrawer";

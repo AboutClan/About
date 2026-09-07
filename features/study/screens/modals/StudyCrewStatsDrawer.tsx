@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import Avatar from "@/components/atoms/Avatar";
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
-import { useStudyCrewStatsQuery } from "@/hooks/study/queries";
+import { useStudyCrewStatsQuery } from "@/features/study/hooks/queries";
 import { StudyParticipationProps } from "@/types/models/studyTypes/study-entity.types";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 

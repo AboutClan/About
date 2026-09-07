@@ -1,5 +1,12 @@
 import { Dayjs } from "dayjs";
 
+import {
+  useStudyAbsenceMutation,
+  useStudyParticipateMutation,
+  useStudyParticipationTimeChangeMutation,
+  useStudyResultTimeChangeMutation,
+  useStudyVoteMutation,
+} from "@/features/study/hooks/mutations";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import {
@@ -8,13 +15,6 @@ import {
   useRealTimeTimeChangeMutation,
   useRealtimeVoteMutation,
 } from "@/hooks/realtime/mutations";
-import {
-  useStudyAbsenceMutation,
-  useStudyParticipateMutation,
-  useStudyParticipationTimeChangeMutation,
-  useStudyResultTimeChangeMutation,
-  useStudyVoteMutation,
-} from "@/hooks/study/mutations";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 // export const useStudySetQuery = (date: string, isEnabled: boolean): { studySet: StudySetProps } => {

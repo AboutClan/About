@@ -23,6 +23,7 @@ import {
 } from "@/constants/service/study/place";
 import StudyStep from "@/features/gather/screens/detail/StudyStep";
 import { useGroupIdQuery, useMyCrewGroupStudyQuery } from "@/features/group/hooks/queries";
+import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import StudyLinkModal from "@/features/study/screens/modals/StudyLinkModal";
 import StudyAddressMap from "@/features/study/screens/StudyAddressMap";
 import StudyCover from "@/features/study/screens/StudyCover";
@@ -37,7 +38,6 @@ import StudyReviewSection from "@/features/study/screens/StudyReview";
 import StudyTimeBoard from "@/features/study/screens/StudyTimeBoard";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries";
 import { shortenParticipations } from "@/libs/study/studyConverters";
 import { getMyStudyDateArr } from "@/libs/study/studyHelpers";
 import { createGroupThumbnailProps } from "@/pages/group";

@@ -4,7 +4,7 @@ import {
   InitialStudyPassedDayProps,
   InitialStudyPassedDayUserProps,
   StudySetInitialDataProps,
-} from "@/hooks/study/queries";
+} from "@/features/study/hooks/queries";
 import {
   StudyConfirmedProps,
   StudyParticipationProps,

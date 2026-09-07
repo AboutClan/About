@@ -12,7 +12,7 @@ import {
   StudyThumbnailCardProps,
 } from "@/components/molecules/cards/StudyThumbnailCard";
 import { StudyThumbnailCardSkeleton } from "@/components/skeleton/StudyThumbnailCardSkeleton";
-import { useStudySetQuery } from "@/hooks/study/queries";
+import { useStudySetQuery } from "@/features/study/hooks/queries";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,

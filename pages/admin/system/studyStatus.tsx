@@ -30,7 +30,7 @@ export default StudyType;
 // import styled from "styled-components";
 
 // import Header from "@/components/layouts/Header";
-// import { useStudyPassedDayQuery } from "@/hooks/study/queries";
+// import { useStudyPassedDayQuery } from "@/features/study/hooks/queries";
 // import { StudyType } from "@/types/models/studyTypes/studyDetails";
 // import { dayjsToStr } from "@/utils/dateTimeUtils";
 

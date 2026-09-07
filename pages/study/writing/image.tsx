@@ -13,8 +13,8 @@ import ProgressStatus from "@/components/molecules/ProgressStatus";
 import ImageBasicSlider2 from "@/components/organisms/sliders/ImageBasicSlider2";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { useStudyAdditionMutation } from "@/features/study/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useStudyAdditionMutation } from "@/hooks/study/mutations";
 import { getStudyViewDate } from "@/libs/study/date/getStudyDateStatus";
 import { sharedStudyWritingState } from "@/recoils/sharedDataAtoms";
 

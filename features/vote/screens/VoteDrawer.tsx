@@ -19,7 +19,7 @@ export function Temp() {
 // import { LOCATION_OPEN } from "@/constants/location";
 // import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 // import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-// import { useStudyVoteMutation } from "@/hooks/study/mutations";
+// import { useStudyVoteMutation } from "@/features/study/hooks/mutations";
 // import { useUserInfoQuery } from "@/features/user/hooks/queries";
 // import { convertStudyToParticipations } from "@/libs/study/getMyStudyMethods";
 // import { setStudyThumbnailCard } from "@/libs/study/setStudyThumbnailCard";

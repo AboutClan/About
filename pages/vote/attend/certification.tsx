@@ -18,7 +18,7 @@ export default Certification;
 // import LocationSearch from "@/components/organisms/location/LocationSearch";
 // import { useToast } from "@/hooks/custom/CustomToast";
 // import { useKeypadHeight } from "@/hooks/custom/useKeypadHeight";
-// import { useStudySetQuery } from "@/hooks/study/queries";
+// import { useStudySetQuery } from "@/features/study/hooks/queries";
 // import { useUserInfoQuery } from "@/features/user/hooks/queries";
 // import { transferStudyAttendanceState } from "@/recoils/transferRecoils";
 // import { LocationProps } from "@/types/common";

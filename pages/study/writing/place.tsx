@@ -8,8 +8,8 @@ import Slide from "@/components/layouts/PageSlide";
 import SearchLocation from "@/components/organisms/SearchLocation";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
+import { useStudyAdditionMutation } from "@/features/study/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useStudyAdditionMutation } from "@/hooks/study/mutations";
 import { LocationProps } from "@/types/common";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 

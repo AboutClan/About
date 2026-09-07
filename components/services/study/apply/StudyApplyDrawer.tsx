@@ -10,12 +10,12 @@ import { StudyCancelModal } from "@/components/services/study/apply/ui/overlay/C
 import { PlaceDrawer } from "@/components/services/study/apply/ui/overlay/PlaceDrawer";
 import StudyApplySection from "@/components/services/study/apply/ui/StudyApplySection";
 import StudyVoteTimeRulletDrawer from "@/components/services/studyVote/StudyVoteTimeRulletDrawer";
+import { useStudyVoteArrMutation } from "@/features/study/hooks/mutations";
+import { useStudySetQuery } from "@/features/study/hooks/queries";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
-import { useStudyVoteArrMutation } from "@/hooks/study/mutations";
-import { useStudySetQuery } from "@/hooks/study/queries";
 import { LocationProps } from "@/types/common";
 import { IStudyVoteTime } from "@/types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "@/utils/dateTimeUtils";

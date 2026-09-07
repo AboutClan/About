@@ -14,8 +14,8 @@ import {
 } from "@/constants/service/study/place";
 import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
 import { useGroupIdQuery } from "@/features/group/hooks/queries";
+import { useStudyInviteMutation } from "@/features/study/hooks/mutations";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
-import { useStudyInviteMutation } from "@/hooks/study/mutations";
 import { CloseProps } from "@/types/components/modalTypes";
 import { StudyCrew } from "@/types/models/studyTypes/study-entity.types";
 import { StudyVoteProps } from "@/types/models/studyTypes/studyInterActions";

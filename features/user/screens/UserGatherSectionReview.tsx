@@ -4,9 +4,9 @@ import { useState } from "react";
 
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
+import { useMyPlaceQuery } from "@/features/study/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
-import { useMyPlaceQuery } from "@/hooks/study/queries";
 
 function UserGatherSectionReview() {
   const toast = useToast();

@@ -8,7 +8,7 @@ import { CAFE_REVIEW_ARR, STUDY_PLACE, STUDY_VOTE } from "@/constants/keys/query
 import { usePointToast, useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 
-import { useStudyPlaceReviewMutation } from "@/hooks/study/mutations";
+import { useStudyPlaceReviewMutation } from "@/features/study/hooks/mutations";
 import { usePointSystemMutation } from "@/features/user/hooks/mutations";
 import { ModalLayout } from "@/components/modals/Modals";
 import { getSafeAreaBottom } from "@/utils/validationUtils";

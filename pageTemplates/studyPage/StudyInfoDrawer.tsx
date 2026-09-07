@@ -16,7 +16,7 @@
 // import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 // import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 // import { useRealtimeVoteMutation } from "@/hooks/realtime/mutations";
-// import { useStudyCommentMutation, useStudyVoteMutation } from "@/hooks/study/mutations";
+// import { useStudyCommentMutation, useStudyVoteMutation } from "@/features/study/hooks/mutations";
 // import { useUserInfoQuery } from "@/features/user/hooks/queries";
 // import { ModalLayout } from "@/components/modals/Modals";
 // import { DispatchType } from "@/types/hooks/reactTypes";

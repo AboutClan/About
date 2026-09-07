@@ -10,8 +10,8 @@ import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
 } from "@/components/molecules/cards/StudyThumbnailCard";
+import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import { useUserCurrentLocation } from "@/hooks/custom/CurrentLocationHook";
-import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,

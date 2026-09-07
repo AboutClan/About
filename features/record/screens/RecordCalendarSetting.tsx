@@ -2,8 +2,8 @@ import dayjs, { Dayjs } from "dayjs";
 import { useEffect } from "react";
 
 import { ALL_스터디인증 } from "@/constants/serviceConstants/studyConstants/studyPlaceConstants";
+import { useStudyAttendRecordQuery } from "@/features/study/hooks/queries";
 import { useErrorToast } from "@/hooks/custom/CustomToast";
-import { useStudyAttendRecordQuery } from "@/hooks/study/queries";
 import { DispatchBoolean, DispatchType } from "@/types/hooks/reactTypes";
 import { IArrivedData } from "@/types/models/studyTypes/studyRecords";
 
