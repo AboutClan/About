@@ -10,10 +10,10 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import { SUPPORT_CATEGORY_LABEL, SUPPORT_LIST } from "@/constants/support";
 import { useCouponIssueByPartnerMutation } from "@/features/coupon/hooks/mutations";
+import SupportCouponModal from "@/features/support/screens/SupportCouponModal";
 import MemberCardModal from "@/features/user/screens/MemberCardModal";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest, useDenyGuest } from "@/hooks/custom/UserHooks";
-import SupportCouponModal from "@/pageTemplates/support/SupportCouponModal";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 
 const IMAGE_SIZE = 96;
