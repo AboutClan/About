@@ -4,10 +4,10 @@ export default function Empty() {
 
 // import styled from "styled-components";
 
-// import MemberSectionTitle from "@/pageTemplates/member/MemberSectionTitle";
-// import MemberMyProfileSkeleton from "@/pageTemplates/member/memberSkeleton/MemberMyProfileSkeleton";
-// import MemberOverviewSkeleton from "@/pageTemplates/member/memberSkeleton/MemberOverviewSkeleton";
-// import MemberSectionListSkeleton from "@/pageTemplates/member/memberSkeleton/MemberSectionListSkeleton";
+// import MemberSectionTitle from "@/features/member/screens/MemberSectionTitle";
+// import MemberMyProfileSkeleton from "@/features/member/screens/memberSkeleton/MemberMyProfileSkeleton";
+// import MemberOverviewSkeleton from "@/features/member/screens/memberSkeleton/MemberOverviewSkeleton";
+// import MemberSectionListSkeleton from "@/features/member/screens/memberSkeleton/MemberSectionListSkeleton";
 
 // function MemberSkeleton() {
 //   return (

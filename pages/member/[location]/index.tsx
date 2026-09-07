@@ -14,10 +14,10 @@ export default function Empty() {
 // import SectionBar from "@/components/molecules/bars/SectionBar";
 // import BlurredPart from "@/components/molecules/BlurredPart";
 // import { useAllUserDataQuery } from "@/hooks/admin/quries";
-// import MemberHeader from "@/pageTemplates/member/MemberHeader";
-// import MemberRecommend from "@/pageTemplates/member/MemberRecommend";
-// import MemberSectionList from "@/pageTemplates/member/MemberSectionList";
-// import MemberSectionTitle from "@/pageTemplates/member/MemberSectionTitle";
+// import MemberHeader from "@/features/member/screens/MemberHeader";
+// import MemberRecommend from "@/features/member/screens/MemberRecommend";
+// import MemberSectionList from "@/features/member/screens/MemberSectionList";
+// import MemberSectionTitle from "@/features/member/screens/MemberSectionTitle";
 // import { transferMemberDataState } from "@/recoils/transferRecoils";
 // // import { Location } from "@/types/serviceTypes/locationTypes";
 // import { IGroupedMembers, MemberGroup } from "@/types/models/member";
