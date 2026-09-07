@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
-import StudyApplyDrawer from "@/components/services/study/apply/StudyApplyDrawer";
+import StudyApplyDrawer from "@/features/study/components/study/apply/StudyApplyDrawer";
 import StudyOpenDrawer from "@/features/vote/screens/StudyOpenDrawer";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import CafeMapGuestModal from "@/modals/cafeMap/CafeMapGuestModal";

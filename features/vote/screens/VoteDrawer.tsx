@@ -15,7 +15,7 @@ export function Temp() {
 // import BottomFlexDrawer, {
 //   BottomFlexDrawerOptions,
 // } from "@/components/modals/drawer/BottomFlexDrawer";
-// import StudyVoteTimeRulletDrawer from "@/components/services/studyVote/StudyVoteTimeRulletDrawer";
+// import StudyVoteTimeRulletDrawer from "@/features/study/components/studyVote/StudyVoteTimeRulletDrawer";
 // import { LOCATION_OPEN } from "@/constants/location";
 // import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 // import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";

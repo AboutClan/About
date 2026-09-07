@@ -10,7 +10,7 @@ import { BottomFlexDrawerOptions } from "@/components/modals/drawer/BottomFlexDr
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import DatePointButton from "@/components/molecules/DatePointButton";
 import SearchLocation from "@/components/organisms/SearchLocation";
-import StudyVoteTimeRulletDrawer from "@/components/services/studyVote/StudyVoteTimeRulletDrawer";
+import StudyVoteTimeRulletDrawer from "@/features/study/components/studyVote/StudyVoteTimeRulletDrawer";
 import StudyPageMap from "@/features/studyPage/screens/studyPageMap/StudyPageMap";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";

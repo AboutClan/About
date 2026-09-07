@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 
 import { PlusIcon } from "@/components/Icons/MathIcons";
-import { StudyInviteDrawer } from "@/components/services/study/invite/StudyInviteDrawer";
+import { StudyInviteDrawer } from "@/features/study/components/study/invite/StudyInviteDrawer";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
