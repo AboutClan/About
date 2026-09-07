@@ -6,8 +6,8 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import InfoModalButton from "@/components/modalButtons/InfoModalButton";
 import { RECENT_CHAT } from "@/constants/keys/localStorage";
+import { useMyChatsQuery, useRecentChatQuery } from "@/features/chat/hooks/queries";
 import NoticeChat from "@/features/notice/screens/NoticeChat";
-import { useMyChatsQuery, useRecentChatQuery } from "@/hooks/chat/queries";
 
 export type NoticeType = "notice" | "active";
 

@@ -9,7 +9,7 @@ import { Input } from "@/components/atoms/Input";
 import Header from "@/components/layouts/Header";
 import { useAdminPointMutation } from "@/features/admin/hooks/mutation";
 import { useUserRequestQuery } from "@/features/admin/hooks/quries";
-import { useChatMutation } from "@/hooks/chat/mutations";
+import { useChatMutation } from "@/features/chat/hooks/mutations";
 import { ModalLayout } from "@/components/modals/Modals";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
