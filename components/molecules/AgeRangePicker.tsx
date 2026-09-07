@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 
 import RangeSlider from "@/components/molecules/RangeSlider";
 
-interface IGatherWritingConditionAgeRange {
+interface AgeRangePickerProps {
   age: number[];
   setAge: (ageRange: number[]) => void;
 }
 
-export type GatherAgeSection =
+export type AgeSection =
   | "상관 없음"
   | "20대 초반"
   | "20대 초중반"
@@ -17,10 +17,10 @@ export type GatherAgeSection =
 
 const AGE_BAR = [19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
 
-function GatherWritingConditionAgeRange({ age, setAge }: IGatherWritingConditionAgeRange) {
-  const [buttonText, setButtonText] = useState<GatherAgeSection>("상관 없음");
+function AgeRangePicker({ age, setAge }: AgeRangePickerProps) {
+  const [buttonText, setButtonText] = useState<AgeSection>("상관 없음");
 
-  const buttonArr: GatherAgeSection[] = [
+  const buttonArr: AgeSection[] = [
     "상관 없음",
     "20대 초반",
     "20대 초중반",
@@ -67,4 +67,4 @@ function GatherWritingConditionAgeRange({ age, setAge }: IGatherWritingCondition
   );
 }
 
-export default GatherWritingConditionAgeRange;
+export default AgeRangePicker;

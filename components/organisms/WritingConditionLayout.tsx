@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import CountNum from "@/components/atoms/CountNum";
 import { Input } from "@/components/atoms/Input";
 import { PopOverIcon } from "@/components/Icons/PopOverIcon";
-import GatherWritingConditionAgeRange from "@/components/molecules/GatherWritingConditionAgeRange";
+import AgeRangePicker from "@/components/molecules/AgeRangePicker";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { DispatchType } from "@/types/hooks/reactTypes";
 
@@ -134,7 +134,7 @@ function WritingConditionLayout({ conditions, setConditions }: WritingConditionL
             <Box ml={2}>나이(만)</Box>
           </Flex>
         </RowBlock>
-        <GatherWritingConditionAgeRange
+        <AgeRangePicker
           age={conditions?.age}
           setAge={(ageRange: number[]) => setConditions((old) => ({ ...old, age: ageRange }))}
         />

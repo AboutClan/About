@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { PopOverIcon } from "@/components/Icons/PopOverIcon";
 import { ModalLayout } from "@/components/modals/Modals";
-import GatherWritingConditionAgeRange from "@/components/molecules/GatherWritingConditionAgeRange";
+import AgeRangePicker from "@/components/molecules/AgeRangePicker";
 import { ConditionType } from "@/components/organisms/WritingConditionLayout";
 import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
 import GatherWritingConditionCnt from "@/features/gather/screens/writing/condition/GatherWritingConditionCnt";
@@ -97,7 +97,7 @@ function GatherWritingUserConditionModal({
           onChange={(e) => toggleSwitch(e, "age")}
         />
       </Item>
-      {isAgeCondition && <GatherWritingConditionAgeRange age={age} setAge={setAge} />}
+      {isAgeCondition && <AgeRangePicker age={age} setAge={setAge} />}
     </ModalLayout>
   );
 }
