@@ -10,12 +10,11 @@ import styled from "styled-components";
 import UserCommentBlock from "@/components/molecules/UserCommentBlock";
 import UserCommentInput from "@/components/molecules/UserCommentInput";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
-import { ReplyProps } from "@/features/community/screens/SecretSquareComments";
 import { transferGatherDataState } from "@/features/gather/state";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useCommentMutation, useSubCommentMutation } from "@/hooks/common/mutations";
 import { getCommentArr } from "@/libs/comment/commentLib";
-import { UserCommentProps } from "@/types/components/propTypes";
+import { ReplyProps , UserCommentProps } from "@/types/components/propTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 

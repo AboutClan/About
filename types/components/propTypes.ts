@@ -1,5 +1,6 @@
 import { ThemeTypings } from "@chakra-ui/react";
 
+import { SubCommentParamProps } from "@/hooks/common/mutations";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { LocationEn } from "@/types/services/locationTypes";
 import { TimeStampProps } from "@/types/utils/timeAndDate";
@@ -32,4 +33,9 @@ export interface BasicButtonProps {
   text: string;
   func: () => void;
   isLoading?: boolean;
+}
+
+export interface ReplyProps extends Omit<SubCommentParamProps, "comment"> {
+  replyName: string;
+  parentId?: string;
 }

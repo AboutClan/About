@@ -9,13 +9,12 @@ import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard"
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
 import UserCommentBlock from "@/components/molecules/UserCommentBlock";
 import UserCommentInput from "@/components/molecules/UserCommentInput";
-import { ReplyProps } from "@/features/community/screens/SecretSquareComments";
 import { useFeedLikeMutation } from "@/features/feed/hooks/mutations";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useCommentMutation, useSubCommentMutation } from "@/hooks/common/mutations";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { getCommentArr } from "@/libs/comment/commentLib";
-import { UserCommentProps } from "@/types/components/propTypes";
+import { ReplyProps , UserCommentProps } from "@/types/components/propTypes";
 import { FeedComment } from "@/types/models/feed";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "@/utils/dateTimeUtils";

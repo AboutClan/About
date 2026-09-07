@@ -4,13 +4,12 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import BottomCommentInput from "@/components/atoms/BottomCommentInput";
-import { ReplyProps } from "@/features/community/screens/SecretSquareComments";
 import CommentSection from "@/features/group/components/CommentSection";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useCommentMutation, useSubCommentMutation } from "@/hooks/common/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { getCommentArr } from "@/libs/comment/commentLib";
-import { UserCommentProps } from "@/types/components/propTypes";
+import { ReplyProps , UserCommentProps } from "@/types/components/propTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 interface IGroupComments {

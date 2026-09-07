@@ -14,7 +14,7 @@ import {
   useSubCommentMutation,
 } from "@/hooks/common/mutations";
 import { getCommentArr } from "@/libs/comment/commentLib";
-import { UserCommentProps } from "@/types/components/propTypes";
+import { ReplyProps, UserCommentProps } from "@/types/components/propTypes";
 import { AvatarProps, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 interface SecretSquareCommentsProps {
@@ -22,11 +22,6 @@ interface SecretSquareCommentsProps {
   comments: UserCommentProps[];
   refetch: () => void;
   avatar: AvatarProps;
-}
-
-export interface ReplyProps extends Omit<SubCommentParamProps, "comment"> {
-  replyName: string;
-  parentId?: string;
 }
 
 function SecretSquareComments({ author, comments, refetch, avatar }: SecretSquareCommentsProps) {
