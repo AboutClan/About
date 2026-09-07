@@ -23,24 +23,24 @@ import {
 } from "@/constants/service/study/place";
 import StudyStep from "@/features/gather/screens/detail/StudyStep";
 import { useGroupIdQuery, useMyCrewGroupStudyQuery } from "@/features/group/hooks/queries";
+import StudyLinkModal from "@/features/study/screens/modals/StudyLinkModal";
+import StudyAddressMap from "@/features/study/screens/StudyAddressMap";
+import StudyCover from "@/features/study/screens/StudyCover";
+import StudyExtraButton from "@/features/study/screens/StudyExtraButton";
+import StudyHeader from "@/features/study/screens/StudyHeader";
+import StudyMembers, { StudyMembersHandle } from "@/features/study/screens/StudyMembers";
+import StudyNavigation from "@/features/study/screens/StudyNavigation";
+import StudyNearMap from "@/features/study/screens/StudyNearMap";
+import StudyOverview from "@/features/study/screens/StudyOverView";
+import StudyPlaceMap from "@/features/study/screens/StudyPlaceMap";
+import StudyReviewSection from "@/features/study/screens/StudyReview";
+import StudyTimeBoard from "@/features/study/screens/StudyTimeBoard";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries";
 import { shortenParticipations } from "@/libs/study/studyConverters";
 import { getMyStudyDateArr } from "@/libs/study/studyHelpers";
 import { createGroupThumbnailProps } from "@/pages/group";
-import StudyLinkModal from "@/pageTemplates/study/modals/StudyLinkModal";
-import StudyAddressMap from "@/pageTemplates/study/StudyAddressMap";
-import StudyCover from "@/pageTemplates/study/StudyCover";
-import StudyExtraButton from "@/pageTemplates/study/StudyExtraButton";
-import StudyHeader from "@/pageTemplates/study/StudyHeader";
-import StudyMembers, { StudyMembersHandle } from "@/pageTemplates/study/StudyMembers";
-import StudyNavigation from "@/pageTemplates/study/StudyNavigation";
-import StudyNearMap from "@/pageTemplates/study/StudyNearMap";
-import StudyOverview from "@/pageTemplates/study/StudyOverView";
-import StudyPlaceMap from "@/pageTemplates/study/StudyPlaceMap";
-import StudyReviewSection from "@/pageTemplates/study/StudyReview";
-import StudyTimeBoard from "@/pageTemplates/study/StudyTimeBoard";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,

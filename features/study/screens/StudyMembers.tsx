@@ -15,6 +15,7 @@ import {
 import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
 import { STUDY_HEART_ARR } from "@/constants/keys/localStorage";
 import { STUDY_LOCATION_CENTER_MAPPING } from "@/constants/service/study/place";
+import StudyCrewStatsDrawer from "@/features/study/screens/modals/StudyCrewStatsDrawer";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
@@ -26,7 +27,6 @@ import {
 import { useStudyCommentMutation } from "@/hooks/study/mutations";
 import { getNearLocationCluster } from "@/libs/study/setStudyMapOptions";
 import ImageZoomModal from "@/modals/ImageZoomModal";
-import StudyCrewStatsDrawer from "@/pageTemplates/study/modals/StudyCrewStatsDrawer";
 import { CoordinatesProps } from "@/types/common";
 import {
   StudyConfirmedMemberProps,

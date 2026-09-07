@@ -3,7 +3,7 @@ import Image from "next/image";
 import styled from "styled-components";
 
 import ProcessGuide from "@/features/gather/screens/detail/OpenGatherStep";
-import StudyAddressMap from "@/pageTemplates/study/StudyAddressMap";
+import StudyAddressMap from "@/features/study/screens/StudyAddressMap";
 import { IGatherLocation } from "@/types/models/gatherTypes/gatherTypes";
 
 interface IGather {

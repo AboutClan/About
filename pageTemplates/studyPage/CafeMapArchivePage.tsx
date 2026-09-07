@@ -4,9 +4,9 @@ import { useState } from "react";
 
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import Header from "@/components/layouts/Header";
+import { RightReviewDrawer } from "@/features/study/screens/StudyReview";
 import { useStudyPlacesQuery } from "@/hooks/study/queries";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
-import { RightReviewDrawer } from "@/pageTemplates/study/StudyReview";
 import { CafeListDrawer } from "@/pageTemplates/studyPage/CafeListDrawer";
 import { ARCHIVE_OPTIONS } from "@/pageTemplates/studyPage/studyPageMap/TopNav";
 import { StudyReviewDrawer } from "@/pageTemplates/studyPage/StudyReviewDrawer";

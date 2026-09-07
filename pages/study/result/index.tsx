@@ -22,7 +22,7 @@
 // import { useUserInfoQuery } from "@/features/user/hooks/queries";
 // import { useCollectionAlphabetQuery } from "@/features/user/hooks/sub/collection/queries";
 // import PointScoreBar from "@/features/point/screens/pointScore/PointScoreBar";
-// import StudyHeader from "@/pageTemplates/study/StudyHeader";
+// import StudyHeader from "@/features/study/screens/StudyHeader";
 // import { changeAlphabet } from "@/features/user/screens/UserCollection2";
 // import { dayjsToFormat, dayjsToTime } from "@/utils/dateTimeUtils";
 // import { getRandomIdx } from "@/utils/mathUtils";

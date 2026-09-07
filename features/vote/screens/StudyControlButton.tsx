@@ -2,7 +2,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import ControlButton from "@/components/ControlButton";
-import StudyControlDrawer from "@/pageTemplates/study/modals/StudyControlDrawer";
+import StudyControlDrawer from "@/features/study/screens/modals/StudyControlDrawer";
 
 export const UNMATCHED_POP_UP_STORAGE = "unmatchedPopUpStorage";
 interface StudyControlButtonProps {
