@@ -5,9 +5,9 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { ModalLayout } from "@/components/modals/Modals";
+import ForceLogoutDialog from "@/features/login/modals/ForceLogoutDialog";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import ForceLogoutDialog from "@/modals/login/ForceLogoutDialog";
 import { setAuthIntent } from "@/utils/authIntentUtils";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
