@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { useSetRecoilState } from "recoil";
 
 import SectionFooterButton from "@/components/atoms/SectionFooterButton";
-import { GroupThumbnailCard } from "@/components/molecules/cards/GroupThumbnailCard";
+import { GroupThumbnailCard } from "@/features/group/components/GroupThumbnailCard";
 import { getGroupParticipantCount } from "@/features/group/lib/groupUtils";
 import GroupSkeletonMain from "@/features/group/screens/GroupSkeletonMain";
 import { createGroupThumbnailProps } from "@/pages/group";

@@ -4,13 +4,13 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
-import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
 } from "@/features/study/hooks/queries";
 import { PlaceInfoBox } from "@/features/studyMap/components/PlaceInfoDrawer";
+import StarRatingReviewBlock2 from "@/features/user/components/StarRatingReviewBlock2";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 

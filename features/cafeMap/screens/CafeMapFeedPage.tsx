@@ -5,7 +5,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import Header from "@/components/layouts/Header";
-import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,
@@ -14,6 +13,7 @@ import {
 import { RightReviewDrawer } from "@/features/study/screens/StudyReview";
 import { PlaceInfoBox } from "@/features/studyMap/components/PlaceInfoDrawer";
 import { StudyReviewDrawer } from "@/features/studyMap/components/StudyReviewDrawer";
+import StarRatingReviewBlock2 from "@/features/user/components/StarRatingReviewBlock2";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "@/utils/validationUtils";

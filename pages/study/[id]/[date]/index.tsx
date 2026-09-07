@@ -9,7 +9,6 @@ import InfoList from "@/components/atoms/lists/InfoList";
 import { MainLoading, MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import Select from "@/components/atoms/Select";
 import Slide from "@/components/layouts/PageSlide";
-import { GroupThumbnailCard } from "@/components/molecules/cards/GroupThumbnailCard";
 import TabNav from "@/components/molecules/navs/TabNav";
 import {
   STUDY_CREW_ID_MAPPING,
@@ -22,6 +21,7 @@ import {
   StudyCrewSlug,
 } from "@/constants/service/study/place";
 import StudyStep from "@/features/gather/screens/detail/StudyStep";
+import { GroupThumbnailCard } from "@/features/group/components/GroupThumbnailCard";
 import { useGroupIdQuery, useMyCrewGroupStudyQuery } from "@/features/group/hooks/queries";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import { shortenParticipations } from "@/features/study/lib/studyConverters";

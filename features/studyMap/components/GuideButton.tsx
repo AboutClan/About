@@ -18,13 +18,13 @@ import ScreenOverlay from "@/components/atoms/ScreenOverlay";
 import Spinner from "@/components/atoms/Spinner";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { ModalLayout } from "@/components/modals/Modals";
-import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
 import {
   StudyReviewProps,
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
 } from "@/features/study/hooks/queries";
 import { PlaceInfoBox } from "@/features/studyMap/components/PlaceInfoDrawer";
+import StarRatingReviewBlock2 from "@/features/user/components/StarRatingReviewBlock2";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { CoordinatesProps } from "@/types/common";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";

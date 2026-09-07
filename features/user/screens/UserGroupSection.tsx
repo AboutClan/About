@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
-import { GroupThumbnailCard } from "@/components/molecules/cards/GroupThumbnailCard";
 import ButtonGroups from "@/components/molecules/groups/ButtonGroups";
+import { GroupThumbnailCard } from "@/features/group/components/GroupThumbnailCard";
 import { useGroupMyStatusQuery } from "@/features/group/hooks/queries";
 import { getGroupParticipantCount } from "@/features/group/lib/groupUtils";
 import GroupSkeletonMain from "@/features/group/screens/GroupSkeletonMain";
