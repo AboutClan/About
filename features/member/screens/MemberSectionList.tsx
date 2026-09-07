@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import ImageSlider from "@/components/organisms/imageSlider/ImageSlider";
+import ImageSliderMember from "@/features/member/components/ImageSliderMember";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
 interface IMemberMember {
@@ -10,7 +11,9 @@ interface IMemberMember {
 function MemberSectionList({ members }: IMemberMember) {
   return (
     <Layout>
-      <ImageSlider type="member" imageContainer={members} />
+      <ImageSlider type="member" imageContainer={members}>
+        <ImageSliderMember imageContainer={members} />
+      </ImageSlider>
     </Layout>
   );
 }

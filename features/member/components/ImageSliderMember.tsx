@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Avatar from "@/components/atoms/Avatar";
-import HeartCircleIcon from "@/components/Icons/HeartCircleIcon";
 import { ImageContainer } from "@/components/organisms/imageSlider/ImageSlider";
+import HeartCircleIcon from "@/features/user/components/HeartCircleIcon";
 import { prevPageUrlState } from "@/recoils/previousAtoms";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";

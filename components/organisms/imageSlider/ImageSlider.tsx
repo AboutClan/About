@@ -8,7 +8,6 @@ import { Navigation, Pagination } from "swiper/modules";
 
 import ImageSliderAvatarColor from "@/components/organisms/imageSlider/imageSliderType/ImageSliderAvatarColor";
 import ImageSliderGatherReviewNav from "@/components/organisms/imageSlider/imageSliderType/ImageSliderGatherReviewNav";
-import ImageSliderMember from "@/components/organisms/imageSlider/imageSliderType/ImageSliderMember";
 import ImageSliderPoint from "@/components/organisms/imageSlider/imageSliderType/ImageSliderPoint";
 import ImageSliderReview from "@/components/organisms/imageSlider/imageSliderType/ImageSliderReview";
 import ImageSliderSpecialBg from "@/components/organisms/imageSlider/imageSliderType/ImageSliderSpecialBg";
@@ -27,21 +26,23 @@ interface IImageSlider {
   type: string;
   imageContainer: ImageContainer;
   onClick?: (idx?: number) => void;
+  /** 도메인 전용 슬라이드는 여기로 주입한다. 주입하면 아래 내장 타입 분기 대신 이것이 렌더된다. */
+  children?: React.ReactNode;
 }
 
-function ImageSlider({ type, imageContainer, onClick }: IImageSlider) {
+function ImageSlider({ type, imageContainer, onClick, children }: IImageSlider) {
   return (
     <>
       {imageContainer && (
         <Layout isHeight={type === "review"}>
-          {type === "point" ? (
+          {children ? (
+            children
+          ) : type === "point" ? (
             <ImageSliderPoint imageContainer={imageContainer} />
           ) : imageContainer?.length && type === "review" ? (
             <ImageSliderReview imageContainer={imageContainer} />
           ) : type === "gatherReviewNav" ? (
             <ImageSliderGatherReviewNav imageContainer={imageContainer} />
-          ) : type === "member" ? (
-            <ImageSliderMember imageContainer={imageContainer} />
           ) : type === "avatarColor" ? (
             <ImageSliderAvatarColor imageContainer={imageContainer} onClick={onClick} />
           ) : type === "specialBg" ? (
