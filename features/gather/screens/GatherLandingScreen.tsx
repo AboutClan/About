@@ -13,8 +13,8 @@ import GatherHeader from "@/features/gather/screens/GatherHeader";
 import GatherMain from "@/features/gather/screens/GatherMain";
 import GatherPick from "@/features/gather/screens/GatherPick";
 import { sharedGatherWritingState, transferGatherDataState } from "@/features/gather/state";
+import SquareLoungeSection from "@/features/square/screens/SquareLoungeSection";
 import { useToast } from "@/hooks/custom/CustomToast";
-import SquareLoungeSection from "@/pageTemplates/square/SquareLoungeSection";
 
 export default function GatherLandingScreen() {
   const router = useRouter();
