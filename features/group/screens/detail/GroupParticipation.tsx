@@ -7,7 +7,7 @@ import { IProfileCommentCard } from "@/components/molecules/cards/ProfileComment
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
 import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
-import { GROUP_STUDY_ROLE } from "@/constants/settingValue/groupStudy";
+import { GROUP_STUDY_ROLE } from "@/features/group/constants/groupStudy";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { IGroup } from "@/types/models/groupTypes/group";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";

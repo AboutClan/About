@@ -4,9 +4,9 @@ import dayjs from "dayjs";
 import MainBadge from "@/components/atoms/MainBadge";
 import BlurredLink from "@/components/molecules/BlurredLink";
 import InfoBoxCol from "@/components/molecules/InfoBoxCol";
+import { getGroupParticipantCount } from "@/features/group/lib/groupUtils";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { IGroup } from "@/types/models/groupTypes/group";
-import { getGroupParticipantCount } from "@/utils/groupUtils";
 
 interface GroupOverviewProps {
   group: IGroup;

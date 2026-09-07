@@ -6,10 +6,10 @@ import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
 import { GroupThumbnailCard } from "@/components/molecules/cards/GroupThumbnailCard";
 import ButtonGroups from "@/components/molecules/groups/ButtonGroups";
 import { useGroupMyStatusQuery } from "@/features/group/hooks/queries";
+import { getGroupParticipantCount } from "@/features/group/lib/groupUtils";
 import GroupSkeletonMain from "@/features/group/screens/GroupSkeletonMain";
 import { createGroupThumbnailProps } from "@/pages/group";
 import { IGroup } from "@/types/models/groupTypes/group";
-import { getGroupParticipantCount } from "@/utils/groupUtils";
 
 type GroupType = "참여중인 모임" | "내가 개설한 모임";
 

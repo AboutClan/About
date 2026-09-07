@@ -4,11 +4,11 @@ import { useSetRecoilState } from "recoil";
 
 import SectionFooterButton from "@/components/atoms/SectionFooterButton";
 import { GroupThumbnailCard } from "@/components/molecules/cards/GroupThumbnailCard";
+import { getGroupParticipantCount } from "@/features/group/lib/groupUtils";
 import GroupSkeletonMain from "@/features/group/screens/GroupSkeletonMain";
 import { createGroupThumbnailProps } from "@/pages/group";
 import { backUrlState } from "@/recoils/navigationRecoils";
 import { IGroup } from "@/types/models/groupTypes/group";
-import { getGroupParticipantCount } from "@/utils/groupUtils";
 dayjs().locale("ko");
 
 interface HomeGroupColProps {

@@ -14,12 +14,12 @@ import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
 import { GroupCategoryMain } from "@/constants/contentsText/GroupContents";
 import { ABOUT_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
 import { useGroupQuery } from "@/features/group/hooks/queries";
+import { getGroupParticipantCount } from "@/features/group/lib/groupUtils";
 import GroupMine from "@/features/group/screens/GroupMine";
 import GroupSkeletonMain from "@/features/group/screens/GroupSkeletonMain";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { GroupStatus, IGroup } from "@/types/models/groupTypes/group";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
-import { getGroupParticipantCount } from "@/utils/groupUtils";
 
 type Status = "모집중" | "종료" | "오픈 예정";
 

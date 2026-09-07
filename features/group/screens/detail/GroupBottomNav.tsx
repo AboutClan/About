@@ -14,10 +14,10 @@ import {
   useGroupWaitingMutation,
   useGroupWaitingStatusMutation,
 } from "@/features/group/hooks/mutations";
+import { getGroupParticipantCount } from "@/features/group/lib/groupUtils";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { IGroup } from "@/types/models/groupTypes/group";
-import { getGroupParticipantCount } from "@/utils/groupUtils";
 
 interface IGroupBottomNav {
   data: IGroup;
