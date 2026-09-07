@@ -38,7 +38,7 @@ export function Temp() {
 // import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
 // import { getDistanceFromLatLonInKm, getRandomIdx } from "@/utils/mathUtils";
 // import { iPhoneNotchSize } from "@/utils/validationUtils";
-// import VoteDrawerPlaceDrawer from "@/pageTemplates/vote/voteDrawer/StudyOpenDrawer";
+// import VoteDrawerPlaceDrawer from "@/features/vote/screens/voteDrawer/StudyOpenDrawer";
 // export interface VoteDrawerItemProps {
 //   place: StudyPlaceProps;
 //   voteCnt: number;

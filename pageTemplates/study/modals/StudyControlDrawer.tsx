@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import StudyApplyDrawer from "@/components/services/study/apply/StudyApplyDrawer";
+import StudyOpenDrawer from "@/features/vote/screens/StudyOpenDrawer";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import CafeMapGuestModal from "@/modals/cafeMap/CafeMapGuestModal";
-import StudyOpenDrawer from "@/pageTemplates/vote/StudyOpenDrawer";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 type DrawerType = "apply" | "open";

@@ -5,10 +5,10 @@ import { useMemo, useState } from "react";
 import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
+import StudyControlButton from "@/features/vote/screens/StudyControlButton";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries";
 import StudyPageCalendar from "@/pageTemplates/studyPage/StudyPageCalendar";
 import StudyPagePlaceSection from "@/pageTemplates/studyPage/StudyPagePlaceSection";
-import StudyControlButton from "@/pageTemplates/vote/StudyControlButton";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 function getTodayStr() {
