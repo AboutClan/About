@@ -7,9 +7,9 @@ import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import ProgressStatus from "@/components/molecules/ProgressStatus";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useFailToast } from "@/hooks/custom/CustomToast";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { sharedStudyWritingState } from "@/recoils/sharedDataAtoms";
 
 function WritingStudyContent() {

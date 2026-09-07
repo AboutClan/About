@@ -11,12 +11,12 @@ import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
 import TextCheckButton from "@/components/molecules/TextCheckButton";
 import { USER_INFO } from "@/constants/keys/queryKeys";
-import { useAdminPointMutation } from "@/hooks/admin/mutation";
+import { useAdminPointMutation } from "@/features/admin/hooks/mutation";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { usePointSystemMutation } from "@/hooks/user/mutations";
 import { usePointSystemLogQuery, useUserInfoQuery } from "@/hooks/user/queries";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 
 function Friend() {
   const { data: session } = useSession();

@@ -4,9 +4,9 @@ import { useState } from "react";
 
 import { Input } from "@/components/atoms/Input";
 import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast } from "@/hooks/custom/CustomToast";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 
 function LoginId() {
   const router = useRouter();

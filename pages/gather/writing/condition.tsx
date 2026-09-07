@@ -12,9 +12,9 @@ import WritingConditionLayout, {
 } from "@/components/organisms/WritingConditionLayout";
 import { GATHER_WRITING_INFO } from "@/constants/keys/localStorage";
 import { sharedGatherWritingState } from "@/features/gather/state";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast } from "@/hooks/custom/CustomToast";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { IGatherWriting } from "@/types/models/gatherTypes/gatherTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 import { randomPassword } from "@/utils/validationUtils";

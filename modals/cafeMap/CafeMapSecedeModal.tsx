@@ -6,11 +6,11 @@ import InfoList from "@/components/atoms/lists/InfoList";
 import Textarea from "@/components/atoms/Textarea";
 import BottomNav from "@/components/layouts/BottomNav";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { IModal } from "@/types/components/modalTypes";
 
 function CafeMapSecedeModal({ setIsModal }: IModal) {

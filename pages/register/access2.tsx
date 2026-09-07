@@ -9,12 +9,12 @@ import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
 import ValueBoxCol2 from "@/components/molecules/ValueBoxCol2";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserRegisterControlMutation } from "@/hooks/user/mutations";
 import { gaEvent } from "@/libs/gtag";
 import { VALUE_BOX_COL_ITEMS } from "@/pages/register/fee";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getTrafficSourceCode } from "@/utils/storageUtils";
 

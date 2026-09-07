@@ -7,18 +7,18 @@ import { useEffect, useState } from "react";
 
 import Slide from "@/components/layouts/PageSlide";
 import HomeActivityDrawer from "@/components/overlay/HomeActivityDrawer";
+import RegisterAccessHeader from "@/features/register/screens/access/RegisterAccessHeader";
+import RegisterComparation from "@/features/register/screens/access/RegisterComparation";
+import RegisterFAQ from "@/features/register/screens/access/RegisterFAQ";
+import RegisterFee from "@/features/register/screens/access/RegisterFee";
+import RegisterGatherCount from "@/features/register/screens/access/RegisterGatherCount";
+import RegisterGroup from "@/features/register/screens/access/RegisterGroup";
+import RegisterInvite from "@/features/register/screens/access/RegisterInvite";
+import RegisterPaymentButton from "@/features/register/screens/access/RegisterPaymentButton";
+import RegisterReview from "@/features/register/screens/access/RegisterReview";
+import RegisterSlideImage from "@/features/register/screens/access/RegisterSlideImage";
+import RegisterSlideImage2 from "@/features/register/screens/access/RegisterSlideImage2";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import RegisterAccessHeader from "@/pageTemplates/register/access/RegisterAccessHeader";
-import RegisterComparation from "@/pageTemplates/register/access/RegisterComparation";
-import RegisterFAQ from "@/pageTemplates/register/access/RegisterFAQ";
-import RegisterFee from "@/pageTemplates/register/access/RegisterFee";
-import RegisterGatherCount from "@/pageTemplates/register/access/RegisterGatherCount";
-import RegisterGroup from "@/pageTemplates/register/access/RegisterGroup";
-import RegisterInvite from "@/pageTemplates/register/access/RegisterInvite";
-import RegisterPaymentButton from "@/pageTemplates/register/access/RegisterPaymentButton";
-import RegisterReview from "@/pageTemplates/register/access/RegisterReview";
-import RegisterSlideImage from "@/pageTemplates/register/access/RegisterSlideImage";
-import RegisterSlideImage2 from "@/pageTemplates/register/access/RegisterSlideImage2";
 
 const JQ_SRC = "https://code.jquery.com/jquery-1.12.4.min.js";
 

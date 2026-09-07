@@ -9,13 +9,13 @@ import BottomNav from "@/components/layouts/BottomNav";
 import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "@/constants/keys/localStorage";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation, useUserRegisterMutation } from "@/hooks/user/mutations";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
 import { gaEvent } from "@/libs/gtag";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
 import { setAuthIntent } from "@/utils/authIntentUtils";
 import {

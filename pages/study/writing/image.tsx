@@ -11,11 +11,11 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import ProgressStatus from "@/components/molecules/ProgressStatus";
 import ImageBasicSlider2 from "@/components/organisms/sliders/ImageBasicSlider2";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useStudyAdditionMutation } from "@/hooks/study/mutations";
 import { getStudyViewDate } from "@/libs/study/date/getStudyDateStatus";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { sharedStudyWritingState } from "@/recoils/sharedDataAtoms";
 
 function WritingStudyImage() {

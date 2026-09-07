@@ -12,9 +12,9 @@ import {
   GroupCategoryMain,
 } from "@/constants/contentsText/GroupContents";
 import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useFailToast } from "@/hooks/custom/CustomToast";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { IGroupWriting } from "@/types/models/groupTypes/group";
 import { setLocalStorageObj } from "@/utils/storageUtils";
 function WritingStudyCategoryMain() {

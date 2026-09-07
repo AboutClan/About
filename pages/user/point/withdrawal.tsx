@@ -7,10 +7,10 @@ import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import LabeledInput from "@/components/molecules/LabeledInput";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 
 function WithDrawel() {
   const router = useRouter();

@@ -12,9 +12,9 @@ import ProgressStatus from "@/components/molecules/ProgressStatus";
 import GatherWritingDateDate from "@/features/gather/screens/writing/GatherWritingDateDate";
 import GatherWritingDateSubject from "@/features/gather/screens/writing/GatherWritingDateSubject";
 import { sharedGatherWritingState } from "@/features/gather/state";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useFailToast } from "@/hooks/custom/CustomToast";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { IGatherListItem } from "@/types/models/gatherTypes/gatherTypes";
 
 function WritingDate() {

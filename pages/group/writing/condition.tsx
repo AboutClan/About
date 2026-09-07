@@ -12,11 +12,11 @@ import WritingConditionLayout, {
   WritingConditionProps,
 } from "@/components/organisms/WritingConditionLayout";
 import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import GroupConfirmModal from "@/modals/groupStudy/WritingConfirmModal";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { IGroupWriting } from "@/types/models/groupTypes/group";
 import { setLocalStorageObj } from "@/utils/storageUtils";
 

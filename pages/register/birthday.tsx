@@ -12,9 +12,9 @@ import styled from "styled-components";
 import BottomNav from "@/components/layouts/BottomNav";
 import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useUserInfoQuery } from "@/hooks/user/queries"; // 프로젝트 경로 기준
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { IUser, IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
 import { birthToAge } from "@/utils/convertUtils/convertTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";

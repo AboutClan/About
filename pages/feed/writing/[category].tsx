@@ -16,11 +16,11 @@ import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "@/components/organisms/sliders/ImageUploadSlider";
 import { useGatherIDQuery } from "@/features/gather/hooks/queries";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useHasMemership, useUserInfo } from "@/hooks/custom/UserHooks";
 import { useFeedMutation } from "@/hooks/feed/mutations";
 import { usePointSystemMutation } from "@/hooks/user/mutations";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 import { appendFormData } from "@/utils/formDataUtils";

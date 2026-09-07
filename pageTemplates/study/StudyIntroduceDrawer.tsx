@@ -3,9 +3,9 @@ import { useState } from "react";
 
 import BottomNav from "@/components/layouts/BottomNav";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "@/hooks/user/mutations";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 
 type StudyStyleProps = {
   style: string | null;

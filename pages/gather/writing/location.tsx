@@ -10,9 +10,9 @@ import { ModalLayout } from "@/components/modals/Modals";
 import ProgressStatus from "@/components/molecules/ProgressStatus";
 import SearchLocation from "@/components/organisms/SearchLocation";
 import { sharedGatherWritingState } from "@/features/gather/state";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast } from "@/hooks/custom/CustomToast";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { LocationProps } from "@/types/common";
 
 function WritingGahterLocation() {

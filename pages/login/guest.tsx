@@ -6,8 +6,8 @@ import { useState } from "react";
 import Avatar from "@/components/atoms/Avatar";
 import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 
 type Button = "home" | "cafe-map";
 

@@ -4,8 +4,8 @@ import { useState } from "react";
 
 import { Input } from "@/components/atoms/Input";
 import Header from "@/components/layouts/Header";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import { useToast } from "@/hooks/custom/CustomToast";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
 
 const publicID = "teamAbout";
 const publicPW = "20260710";

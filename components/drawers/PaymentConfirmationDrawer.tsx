@@ -8,9 +8,9 @@ import LabeledInput from "@/components/molecules/LabeledInput";
 import TabNav from "@/components/molecules/navs/TabNav";
 import TextCheckButton from "@/components/molecules/TextCheckButton";
 import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { CloseProps } from "@/types/components/modalTypes";
 
 function PaymentConfirmationDrawer({ onClose }: CloseProps) {

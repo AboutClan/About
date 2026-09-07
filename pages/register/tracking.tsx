@@ -5,8 +5,8 @@ import Textarea from "@/components/atoms/Textarea";
 import BottomNav from "@/components/layouts/BottomNav";
 import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "@/constants/keys/localStorage";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { IUserRegisterFormWriting } from "@/types/models/userTypes/userInfoTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 

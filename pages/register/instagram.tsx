@@ -7,11 +7,11 @@ import BottomNav from "@/components/layouts/BottomNav";
 import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "@/constants/keys/localStorage";
 import { USER_INFO } from "@/constants/keys/queryKeys";
+import RegisterLayout from "@/features/register/screens/RegisterLayout";
+import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoMutation } from "@/hooks/user/mutations";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import RegisterLayout from "@/pageTemplates/register/RegisterLayout";
-import RegisterOverview from "@/pageTemplates/register/RegisterOverview";
 import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 function Instagram() {
