@@ -12,9 +12,9 @@ import InfoModalButton from "@/components/modalButtons/InfoModalButton";
 import TabNav from "@/components/molecules/navs/TabNav";
 import WinnerTextSlider from "@/components/molecules/WinnerTextSlider";
 import { usePrizeQuery } from "@/constants/prize/queries";
+import RankingMembers from "@/features/ranking/screens/RankingMembers";
 import { useAllUserDataQuery, UserStudyDataProps } from "@/hooks/admin/quries";
 import { useUserInfoQuery } from "@/hooks/user/queries";
-import RankingMembers from "@/pageTemplates/ranking/RankingMembers";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
 export type RankingTab = "월간 활동 랭킹" | "누적 인기 랭킹" | "스터디 랭킹";
