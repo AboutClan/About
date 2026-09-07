@@ -13,7 +13,7 @@ import {
 import dayjs from "dayjs";
 
 import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
-import { ANDROID_APP_STORE_URL, IOS_APP_STORE_URL } from "@/features/studyPage/screens/CafeMapAppInstallDrawer";
+import { ANDROID_APP_STORE_URL, IOS_APP_STORE_URL } from "@/features/cafeMap/screens/CafeMapAppInstallDrawer";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getDeviceOS } from "@/utils/validationUtils";
 
