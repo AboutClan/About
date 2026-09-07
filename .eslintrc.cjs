@@ -8,7 +8,7 @@ module.exports = {
     "plugin:storybook/recommended",
     "prettier",
   ],
-  ignorePatterns: [".eslintrc.cjs", "public", "*.config.ts", ".next", "storybook-static"],
+  ignorePatterns: [".eslintrc.cjs", "public", "*.config.ts", ".next", "storybook-static", "next-env.d.ts"],
   plugins: ["simple-import-sort"],
   rules: {
     "import/named": "off",

@@ -12,6 +12,7 @@ import { ModalLayout } from "@/components/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
+// eslint-disable-next-line react-hooks/rules-of-hooks -- Swiper의 static 메서드이며 React Hook이 아니다 (react-hooks v5 오탐)
 SwiperCore.use([Scrollbar]);
 
 interface StoreMembersModalProps extends IModal {

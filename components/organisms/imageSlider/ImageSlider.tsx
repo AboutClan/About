@@ -12,6 +12,7 @@ import ImageSliderPoint from "@/components/organisms/imageSlider/imageSliderType
 import ImageSliderReview from "@/components/organisms/imageSlider/imageSliderType/ImageSliderReview";
 import ImageSliderSpecialBg from "@/components/organisms/imageSlider/imageSliderType/ImageSliderSpecialBg";
 
+// eslint-disable-next-line react-hooks/rules-of-hooks -- Swiper의 static 메서드이며 React Hook이 아니다 (react-hooks v5 오탐)
 SwiperCore.use([Navigation, Pagination]); // apply the Pagination module
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ImageContainer = any;

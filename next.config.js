@@ -1,16 +1,9 @@
 /** @type {import('next').NextConfig} */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+const nextConfig = {
+  // Next 15는 상위 디렉터리의 무관한 lockfile을 workspace root로 추론할 수 있다.
+  // 빌드 트레이스 기준점을 이 프로젝트로 명시 고정한다.
+  outputFileTracingRoot: __dirname,
 
-const isProduction = process.env.NODE_ENV === "production";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const withPWA = require("next-pwa")({
-  dest: "public",
-  disable: typeof window === "undefined" || !isProduction,
-  sourcemap: !isProduction,
-});
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const baseNextConfig = {
   async redirects() {
     return [
       {
@@ -74,7 +67,6 @@ const baseNextConfig = {
 
     domains: [
       "study-about.club",
-      "localhost:3000",
       "studyabout.s3.ap-northeast-2.amazonaws.com",
       "p.kakaocdn.net",
       "k.kakaocdn.net",
@@ -159,7 +151,5 @@ const baseNextConfig = {
     ];
   },
 };
-
-const nextConfig = withPWA(baseNextConfig);
 
 module.exports = nextConfig;
