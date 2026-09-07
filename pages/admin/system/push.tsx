@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Input } from "@/components/atoms/Input";
 import Header from "@/components/layouts/Header";
-import { usePushQuery } from "@/hooks/admin/quries";
+import { usePushQuery } from "@/features/admin/hooks/quries";
 
 function PushPage() {
   const [value, setValue] = useState("");

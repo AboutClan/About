@@ -6,11 +6,11 @@ import { Input } from "@/components/atoms/Input";
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import InviteUserGroups from "@/components/molecules/groups/InviteUserGroups";
 import { GATHER_CONTENT } from "@/constants/keys/queryKeys";
+import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
 import {
   useGatherInviteDummyMutation,
   useGatherInviteMutation,
 } from "@/features/gather/hooks/mutations";
-import { useAllUserDataQuery } from "@/hooks/admin/quries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { useGroupIdQuery } from "@/hooks/groupStudy/queries";

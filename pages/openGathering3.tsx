@@ -2,7 +2,7 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
 import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
-import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
 
 function OpenGathering() {
   const { data: allUserData } = useAllUserDataQuery(null, {

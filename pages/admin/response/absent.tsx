@@ -4,8 +4,8 @@ import styled from "styled-components";
 
 import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import Header from "@/components/layouts/Header";
-import { useUserRequestQuery } from "@/hooks/admin/quries";
-import CheckAbsentModal from "@/modals/admin/CheckAbsentModal";
+import { useUserRequestQuery } from "@/features/admin/hooks/quries";
+import CheckAbsentModal from "@/features/admin/modals/CheckAbsentModal";
 import ModalPortal from "@/modals/ModalPortal";
 
 function AdminAbsent() {

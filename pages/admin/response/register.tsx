@@ -5,8 +5,8 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "@/components/layouts/Header";
-import { useUserRegisterFormsQuery } from "@/hooks/admin/quries";
-import CheckRegisterModal from "@/modals/admin/checkRegisterModal/CheckRegisterModal";
+import { useUserRegisterFormsQuery } from "@/features/admin/hooks/quries";
+import CheckRegisterModal from "@/features/admin/modals/checkRegisterModal/CheckRegisterModal";
 import { IUserRegisterForm } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 

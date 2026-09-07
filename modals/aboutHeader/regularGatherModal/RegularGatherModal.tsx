@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 import { RABBIT_RUN } from "@/constants/keys/localStorage";
-import { useUserRequestQuery } from "@/hooks/admin/quries";
+import { useUserRequestQuery } from "@/features/admin/hooks/quries";
 import { useErrorToast, useFailToast, useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfoQuery } from "@/hooks/user/queries";
 import { useUserRequestMutation } from "@/hooks/user/sub/request/mutations";

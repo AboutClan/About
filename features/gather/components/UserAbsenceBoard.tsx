@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import AlertModal from "@/components/AlertModal";
 import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
-import { useAdminPoint2Mutation } from "@/hooks/admin/mutation";
+import { useAdminPoint2Mutation } from "@/features/admin/hooks/mutation";
 import { usePointSystemMutation } from "@/hooks/user/mutations";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";

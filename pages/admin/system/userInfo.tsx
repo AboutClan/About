@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import Header from "@/components/layouts/Header";
-import { useUpdateProfileMutation } from "@/hooks/admin/mutation";
+import { useUpdateProfileMutation } from "@/features/admin/hooks/mutation";
 import { IUser, UserRole } from "@/types/models/userTypes/userInfoTypes";
 
 function AdminUserInfo() {

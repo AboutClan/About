@@ -12,7 +12,7 @@ import {
   STUDY_CREW_ID_MAPPING,
   STUDY_CREW_PLACE_MAPPING,
 } from "@/constants/service/study/place";
-import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
 import { useStudyInviteMutation } from "@/hooks/study/mutations";

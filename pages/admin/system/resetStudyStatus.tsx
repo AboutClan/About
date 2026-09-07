@@ -5,7 +5,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import Header from "@/components/layouts/Header";
-import { useVoteStatusResetMutation } from "@/hooks/admin/mutation";
+import { useVoteStatusResetMutation } from "@/features/admin/hooks/mutation";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 function ResetStudyStatus() {

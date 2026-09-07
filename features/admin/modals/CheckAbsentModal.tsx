@@ -1,7 +1,7 @@
 /* eslint-disable */
 import styled from "styled-components";
 
-import { useAdminDepositMutation } from "@/hooks/admin/mutation";
+import { useAdminDepositMutation } from "@/features/admin/hooks/mutation";
 import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { IModal } from "@/types/components/modalTypes";
 

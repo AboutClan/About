@@ -13,7 +13,7 @@ export default function Empty() {
 // import Slide from "@/components/layouts/PageSlide";
 // import SectionBar from "@/components/molecules/bars/SectionBar";
 // import BlurredPart from "@/components/molecules/BlurredPart";
-// import { useAllUserDataQuery } from "@/hooks/admin/quries";
+// import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
 // import MemberHeader from "@/features/member/screens/MemberHeader";
 // import MemberRecommend from "@/features/member/screens/MemberRecommend";
 // import MemberSectionList from "@/features/member/screens/MemberSectionList";

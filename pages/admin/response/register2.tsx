@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 import Header from "@/components/layouts/Header";
 import { CopyBtn } from "@/components/Icons/CopyIcon";
-import { useUserRegisterFormsQuery } from "@/hooks/admin/quries";
+import { useUserRegisterFormsQuery } from "@/features/admin/hooks/quries";
 import { IUserRegisterForm } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 

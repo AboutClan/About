@@ -6,7 +6,7 @@ import AlertModal, { IAlertModalOptions } from "@/components/AlertModal";
 import { Input } from "@/components/atoms/Input";
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import InviteUserGroups from "@/components/molecules/groups/InviteUserGroups";
-import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
 import { useResetGroupQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";

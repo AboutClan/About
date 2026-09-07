@@ -3,7 +3,7 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
 import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
-import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { birthToAge } from "@/utils/convertUtils/convertTypes";

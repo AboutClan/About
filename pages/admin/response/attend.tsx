@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import Header from "@/components/layouts/Header";
-import { useUserRequestQuery } from "@/hooks/admin/quries";
+import { useUserRequestQuery } from "@/features/admin/hooks/quries";
 
 function CheckAttendWinner() {
   const { data, isLoading } = useUserRequestQuery("출금");

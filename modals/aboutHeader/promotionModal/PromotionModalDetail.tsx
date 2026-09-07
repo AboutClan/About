@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 
 import Skeleton from "@/components/atoms/skeleton/Skeleton";
-import { useUserRequestQuery } from "@/hooks/admin/quries";
+import { useUserRequestQuery } from "@/features/admin/hooks/quries";
 
 function PromotionModalDetail() {
   const { data: promotionData, isLoading } = useUserRequestQuery("홍보");

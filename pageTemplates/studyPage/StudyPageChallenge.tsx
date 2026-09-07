@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import SectionHeader from "@/components/atoms/SectionHeader";
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
-import { useAllUserDataQuery } from "@/hooks/admin/quries";
+import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { usePointPlusLogQuery } from "@/hooks/user/queries";
 
