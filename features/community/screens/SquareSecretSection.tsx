@@ -8,9 +8,9 @@ import BlurredPart from "@/components/molecules/BlurredPart";
 import {
   SecretSquareListResponse,
   useSecretSquareListQuery,
-} from "@/hooks/secretSquare/queries";
+} from "@/features/community/hooks/queries";
+import SquareItem from "@/features/community/screens/SquareItem";
 import { CommunityCategory } from "@/pages/community";
-import SquareItem from "@/pageTemplates/community/SquareItem";
 
 interface SquareSecretSectionProps {
   category: CommunityCategory;

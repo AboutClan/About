@@ -7,9 +7,9 @@ import { Writing2Icon } from "@/components/Icons/ControlButtonIcon";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
+import SquareSecretSection from "@/features/community/screens/SquareSecretSection";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
-import SquareSecretSection from "@/pageTemplates/community/SquareSecretSection";
 
 export const CATEGORY_ARR = ["전체", "일상 · 자유", "팀원모집", "정보공유", "홍보"] as const;
 export type CommunityCategory = (typeof CATEGORY_ARR)[number];

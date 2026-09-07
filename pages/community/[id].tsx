@@ -17,15 +17,15 @@ import {
   useDeleteSecretSquareMutation,
   usePatchPollMutation,
   usePutLikeSecretSquareMutation,
-} from "@/hooks/secretSquare/mutations";
+} from "@/features/community/hooks/mutations";
 import {
   useCurrentPollStatusQuery,
   useGetSquareDetailQuery,
   useLikeStatus,
-} from "@/hooks/secretSquare/queries";
+} from "@/features/community/hooks/queries";
+import PollItemButton from "@/features/community/screens/PollItemButton";
+import SecretSquareComments from "@/features/community/screens/SecretSquareComments";
 import { VoteIcon } from "@/pages/community/writing";
-import PollItemButton from "@/pageTemplates/community/PollItemButton";
-import SecretSquareComments from "@/pageTemplates/community/SecretSquareComments";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 function SecretSquareDetailPage() {

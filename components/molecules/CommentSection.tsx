@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 
 import UserCommentBlock from "@/components/molecules/UserCommentBlock";
-import { ReplyProps } from "@/pageTemplates/community/SecretSquareComments";
+import { ReplyProps } from "@/features/community/screens/SecretSquareComments";
 import { UserCommentProps } from "@/types/components/propTypes";
 import { DispatchType } from "@/types/hooks/reactTypes";
 

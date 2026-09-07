@@ -21,11 +21,11 @@ import ImageUploadButton from "@/components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "@/components/organisms/sliders/ImageUploadSlider";
+import { useCreateSecretSquareMutation } from "@/features/community/hooks/mutations";
+import PollCreatorDrawer from "@/features/community/screens/writing/PollCreatorDrawer";
+import SquareCategoryRadioGroup from "@/features/community/screens/writing/SquareCategoryRadioGroup";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useCreateSecretSquareMutation } from "@/hooks/secretSquare/mutations";
 import RequestChangeProfileImageModalAvatar from "@/modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
-import PollCreatorDrawer from "@/pageTemplates/community/writing/PollCreatorDrawer";
-import SquareCategoryRadioGroup from "@/pageTemplates/community/writing/SquareCategoryRadioGroup";
 import { SecretSquareFormData } from "@/types/models/square";
 import { AvatarProps } from "@/types/models/userTypes/userInfoTypes";
 

@@ -6,7 +6,7 @@ import { Dispatch, useEffect, useState } from "react";
 import BottomFlexDrawer, { BottomFlexDrawerOptions } from "@/components/modals/drawer/BottomFlexDrawer";
 import RulletPickerTwo from "@/components/molecules/picker/RulletPickerTwo";
 import { STUDY_VOTE_HOUR_ARR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
-import { TimeOptionCard } from "@/pageTemplates/community/TestClock";
+import { TimeOptionCard } from "@/features/community/screens/TestClock";
 import { IModal } from "@/types/components/modalTypes";
 import { createTimeArr, parseTimeToDayjs } from "@/utils/dateTimeUtils";
 

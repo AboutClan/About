@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import Avatar from "@/components/atoms/Avatar";
-import { ReplyProps } from "@/pageTemplates/community/SecretSquareComments";
+import { ReplyProps } from "@/features/community/screens/SecretSquareComments";
 import { DispatchType } from "@/types/hooks/reactTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 

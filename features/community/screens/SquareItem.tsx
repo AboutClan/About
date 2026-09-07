@@ -5,8 +5,8 @@ import { useSession } from "next-auth/react";
 
 import Avatar from "@/components/atoms/Avatar";
 import ThumbIcon from "@/components/Icons/ThumbIcon";
+import { SecretSquareListResponse } from "@/features/community/hooks/queries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
-import { SecretSquareListResponse } from "@/hooks/secretSquare/queries";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "@/utils/dateTimeUtils";
 

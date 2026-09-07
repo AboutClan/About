@@ -2,8 +2,8 @@ import { Box } from "@chakra-ui/react";
 
 import UserCommentInput from "@/components/molecules/UserCommentInput";
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { ReplyProps } from "@/features/community/screens/SecretSquareComments";
 import { useKeypadHeight } from "@/hooks/custom/useKeypadHeight";
-import { ReplyProps } from "@/pageTemplates/community/SecretSquareComments";
 import { DispatchType } from "@/types/hooks/reactTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
