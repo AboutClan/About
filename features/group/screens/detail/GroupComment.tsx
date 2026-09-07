@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import BottomCommentInput from "@/components/atoms/BottomCommentInput";
-import CommentSection from "@/components/molecules/CommentSection";
 import { ReplyProps } from "@/features/community/screens/SecretSquareComments";
+import CommentSection from "@/features/group/components/CommentSection";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useCommentMutation, useSubCommentMutation } from "@/hooks/common/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";

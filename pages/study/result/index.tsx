@@ -9,7 +9,7 @@
 // import { AboutIcon } from "@/components/atoms/AboutIcons";
 // import IconRowBlock from "@/components/atoms/blocks/IconRowBlock";
 // import BottomNavButton from "@/components/atoms/BottomNavButton";
-// import UserPlusButton from "@/components/atoms/buttons/UserPlusButton";
+// import UserPlusButton from "@/features/study/components/UserPlusButton";
 // import ProgressBar from "@/components/atoms/ProgressBar";
 // import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 // import HeartIcon from "@/components/Icons/HeartIcon";

@@ -9,7 +9,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import AppDownloadModal from "@/components/overlay/AppDownloadModal";
 import FriendInviteModal from "@/components/overlay/FriendInviteModal";
 import LimitModal from "@/components/overlay/LimitModal";
-import NewbieBenefitModal from "@/components/overlay/NewbieBenefitModal";
 import StudyRecordDrawer from "@/components/overlay/StudyRecordDrawer";
 import ForceUpdateModal from "@/components/overlay/UpdateModal";
 import {
@@ -23,6 +22,7 @@ import { STUDY_ATTEND_AT } from "@/constants/keys/queryKeys";
 import { MODAL_QUEUE_PRIORITY } from "@/constants/modalQueuePriority";
 import { useGatherReviewOneQuery } from "@/features/gather/hooks/queries";
 import GatherRecordDrawer from "@/features/gather/modals/GatherRecordDrawer";
+import NewbieBenefitModal from "@/features/home/modals/NewbieBenefitModal";
 import HomeAppReviewRewardDrawer, { HOME_APP_REVIEW_REWARD_SUB } from "@/features/home/screens/HomeAppReviewRewardDrawer";
 import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
 import {

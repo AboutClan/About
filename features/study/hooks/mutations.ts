@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import { useMutation } from "react-query";
 
-import { PlaceReviewProps2 } from "@/components/organisms/StarRatingForm";
+import { PlaceReviewProps2 } from "@/features/study/components/StarRatingForm";
 import { requestServer } from "@/libs/methodHelpers";
 import { PointInfoProps, PointValueProps } from "@/types/common";
 import { MutationOptions } from "@/types/hooks/reactTypes";

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Chart from "@/components/organisms/chart/Chart";
+import Chart from "@/features/record/components/Chart";
 
 function RecordAnalysisGraph() {
   return (

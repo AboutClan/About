@@ -5,7 +5,7 @@ import SectionHeader from "@/components/atoms/SectionHeader";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
-import ReviewForm from "@/components/organisms/StarRatingForm";
+import ReviewForm from "@/features/study/components/StarRatingForm";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
