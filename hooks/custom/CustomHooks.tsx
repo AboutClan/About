@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
-import { GROUP_STUDY, STUDY_VOTE } from "@/constants/keys/queryKeys";
+import { STUDY_VOTE } from "@/constants/keys/queryKeys";
 
 export const useToken = () => {
   const { data: session, status } = useSession();
@@ -53,19 +53,6 @@ export const useResetStudyQuery = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     () => {
       queryClient.invalidateQueries({ queryKey: [STUDY_VOTE], exact: false });
-    },
-    [queryClient],
-  );
-
-  return refetchWithDelay;
-};
-export const useResetGroupQuery = () => {
-  const queryClient = useQueryClient();
-
-  const refetchWithDelay = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    () => {
-      queryClient.invalidateQueries({ queryKey: [GROUP_STUDY], exact: false });
     },
     [queryClient],
   );

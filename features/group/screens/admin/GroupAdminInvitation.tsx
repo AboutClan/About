@@ -11,8 +11,8 @@ import {
   useGroupInviteDummyMutation,
   useGroupInviteMutation,
 } from "@/features/group/hooks/mutations";
+import { useResetGroupQuery } from "@/features/group/hooks/useResetGroupQuery";
 import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
-import { useResetGroupQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { IGroup } from "@/types/models/groupTypes/group";

@@ -21,9 +21,9 @@ import {
   useGroupParticipationMutation,
 } from "@/features/group/hooks/mutations";
 import { useGroupIdMannerQuery } from "@/features/group/hooks/queries";
+import { useResetGroupQuery } from "@/features/group/hooks/useResetGroupQuery";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
-import { useResetGroupQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { calculateGrade } from "@/pages/group/[id]/manner";
