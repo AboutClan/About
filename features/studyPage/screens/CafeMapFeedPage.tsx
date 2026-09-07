@@ -12,8 +12,8 @@ import {
   useStudyReviewsQuery,
 } from "@/features/study/hooks/queries";
 import { RightReviewDrawer } from "@/features/study/screens/StudyReview";
-import { PlaceInfoBox } from "@/features/studyPage/screens/PlaceInfoDrawer";
-import { StudyReviewDrawer } from "@/features/studyPage/screens/StudyReviewDrawer";
+import { PlaceInfoBox } from "@/features/studyMap/components/PlaceInfoDrawer";
+import { StudyReviewDrawer } from "@/features/studyMap/components/StudyReviewDrawer";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "@/utils/validationUtils";

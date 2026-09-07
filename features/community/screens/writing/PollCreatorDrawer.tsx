@@ -15,7 +15,7 @@ import {
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { Input } from "@/components/atoms/Input";
-import { XIcon } from "@/features/studyPage/screens/studyPageMap/TopNav";
+import { XIcon } from "@/features/studyMap/components/TopNav";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { SecretSquareFormData } from "@/types/models/square";
 

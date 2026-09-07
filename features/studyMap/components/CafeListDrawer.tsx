@@ -5,7 +5,7 @@ import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import { StarIcon } from "@/components/Icons/StarIcon";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { getPlaceScore } from "@/features/study/lib/studyUtils";
-import { XIcon } from "@/features/studyPage/screens/studyPageMap/TopNav";
+import { XIcon } from "@/features/studyMap/components/TopNav";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 
 interface CafeListDrawerProps {

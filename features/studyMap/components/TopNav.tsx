@@ -14,9 +14,9 @@ import LocationSearch, {
   mapxyToLatLng,
 } from "@/components/organisms/location/LocationSearch";
 import { usePlaceRankingQuery } from "@/features/study/hooks/queries";
-import GuideButton from "@/features/studyPage/screens/studyPageMap/GuideButton";
-import StatusButton from "@/features/studyPage/screens/studyPageMap/StatusButton";
-import { CafeMapLogo } from "@/features/studyPage/screens/studyPageMap/StudyPageMap";
+import GuideButton from "@/features/studyMap/components/GuideButton";
+import StatusButton from "@/features/studyMap/components/StatusButton";
+import { CafeMapLogo } from "@/features/studyMap/components/StudyPageMap";
 import { NaverLocationProps } from "@/hooks/external/queries";
 import { CoordinatesProps, LocationProps } from "@/types/common";
 import { DispatchType } from "@/types/hooks/reactTypes";

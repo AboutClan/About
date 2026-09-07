@@ -10,7 +10,7 @@ import {
   useStudyPlacesCursorQuery,
   useStudyReviewsQuery,
 } from "@/features/study/hooks/queries";
-import { PlaceInfoBox } from "@/features/studyPage/screens/PlaceInfoDrawer";
+import { PlaceInfoBox } from "@/features/studyMap/components/PlaceInfoDrawer";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 

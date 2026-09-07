@@ -4,7 +4,7 @@ import Divider from "@/components/atoms/Divider";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import StarRatingReviewBlock2 from "@/components/molecules/StarRatingReviewBlock2";
 import { CAFE_REVIEW_ARR } from "@/constants/keys/queryKeys";
-import { PlaceInfoBox } from "@/features/studyPage/screens/PlaceInfoDrawer";
+import { PlaceInfoBox } from "@/features/studyMap/components/PlaceInfoDrawer";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "@/utils/validationUtils";

@@ -9,7 +9,7 @@ import Slide from "@/components/layouts/PageSlide";
 import { ModalLayout } from "@/components/modals/Modals";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import StudyIntroduceDrawer from "@/features/study/screens/StudyIntroduceDrawer";
-import { LocationAddDrawer } from "@/features/studyPage/screens/LocationAddDrawer";
+import { LocationAddDrawer } from "@/features/studyMap/components/LocationAddDrawer";
 import StudyCrewRow from "@/features/studyPage/screens/StudyCrewRow";
 import StudyPageHeader from "@/features/studyPage/screens/StudyPageHeader";
 import StudyPagePlaceSection from "@/features/studyPage/screens/StudyPagePlaceSection";

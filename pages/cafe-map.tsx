@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import CafeMapBottomNav from "@/components/CafeMapBottomNav";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
+import StudyPageMap from "@/features/studyMap/components/StudyPageMap";
 import CafeMapAppInstallDrawer from "@/features/studyPage/screens/CafeMapAppInstallDrawer";
 import CafeMapArchivePage from "@/features/studyPage/screens/CafeMapArchivePage";
 import CafeMapFeedPage from "@/features/studyPage/screens/CafeMapFeedPage";
@@ -15,7 +16,6 @@ import CafeMapInstagramRewardModal, {
 import CafeMapMyPage from "@/features/studyPage/screens/CafeMapMyPage";
 import CafeMapReviewRequestDrawer from "@/features/studyPage/screens/CafeMapReviewRequestDrawer";
 import CafeMapStudyPage from "@/features/studyPage/screens/CafeMapStudyPage";
-import StudyPageMap from "@/features/studyPage/screens/studyPageMap/StudyPageMap";
 import { usePointSubLogQuery } from "@/features/user/hooks/queries";
 import { gaEvent } from "@/libs/gtag";
 import { isApp, isMobileWeb } from "@/utils/validationUtils";
