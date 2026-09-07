@@ -3,9 +3,10 @@
 이 문서는 새 기능을 추가하거나 기존 코드를 수정할 때 따라야 할 구조 규칙을 정의한다.
 전체 배경과 마이그레이션 계획은 저장소 루트의 [`refactor-plan.md`](../refactor-plan.md)를 참고한다.
 
-> **상태: 마이그레이션 진행 중.** 아래 목표 구조로 도메인 단위로 이전하고 있다.
-> 아직 이전되지 않은 영역(`pageTemplates/`, 최상위 `modals/`, `components/atoms|molecules|organisms|...`)이
-> 남아 있으며, 그 코드를 수정할 때는 기존 위치를 유지하되 **새로 만드는 코드는 이 문서를 따른다.**
+> **상태: 도메인 이전 완료.** 28개 도메인이 `features/` 아래로 옮겨졌고 `pageTemplates/`는
+> `layout`·`setting`만 남았다. 공유 계층(`components/`)에는 아직 `atoms`/`molecules`/`organisms`라는
+> 예전 이름이 남아 있는데, 이는 **이름만 남은 것이고 분류 기준은 이 문서를 따른다**(§3 참고).
+> 남은 작업과 알려진 예외는 §9에 정리했다.
 
 ---
 
@@ -63,6 +64,21 @@ features/<domain>/
 ```
 
 도메인 이름은 `pages/<name>` 라우트 이름을 기준으로 한다. 같은 도메인을 두 이름으로 부르지 않는다.
+(과거에 `groupStudy`/`group`, `secretSquare`/`community`처럼 같은 도메인을 두 이름으로 부르던 것은
+각각 `group`, `community`로 통일했다.)
+
+**스터디 관련 4개 도메인의 경계** — 이름이 비슷해 혼동하기 쉬우므로 명시한다.
+
+| 도메인 | 책임 | 진입점 |
+|---|---|---|
+| `studyPage` | 바텀네비 스터디 탭 화면 | `pages/studyPage.tsx` |
+| `study` | 여러 곳에서 진입하는 스터디 개별 화면 | `pages/study/*` |
+| `cafeMap` | 카페맵 제품 전용 화면 | `pages/cafe-map*` (13개 라우트) |
+| `studyMap` | 위 셋과 `vote`가 함께 쓰는 **지도·장소 선택 UI** | 없음 (다른 도메인이 참조) |
+
+`studyMap`은 화면이 아니라 공유 모듈이다. 지도(`StudyPageMap`)와 지도가 여는 드로어
+(`PlaceInfoDrawer`, `CafeListDrawer`, `StudyReviewDrawer`, `LocationAddDrawer`, `StudyMapMenuDrawer`)만
+소유한다. 지도와 무관한 코드를 여기에 넣지 않는다.
 
 ### `components/` — 공유 UI
 
@@ -72,14 +88,14 @@ features/<domain>/
 |---|---|---|
 | `layouts/` | 앱 셸 (Header, PageSlide, Layout) | 앱 전체에 1벌만 존재하는 구조적 컴포넌트 |
 | `modals/` | 모달/드로어 공통 기반(`Modals.tsx`, `drawer/`)과 범용 다이얼로그 | 열림/닫힘 메커니즘만 다루고, 내용은 children으로 주입받음 |
-| `Icons/` | 아이콘 컴포넌트 | — |
-| `ui/` *(예정)* | 단일 책임 프리미티브 (Button, Badge, Skeleton) | 표시값·콜백만 받고, 도메인 엔티티를 import하지 않으며, 디자인 변경 시에만 수정됨 |
-| `patterns/` *(예정)* | 프리미티브보다 복합적인 범용 UI 패턴 (Carousel, Accordion, Pagination) | 도메인 이름을 붙일 수 없고, 다른 프로젝트에 복사해도 의미가 통함 |
+| `Icons/` | 아이콘 컴포넌트 | 도메인 화면이 아이콘 저장소 역할을 하지 않는다. 화면 안에 아이콘을 정의해 다른 곳에서 가져다 쓰지 말 것 |
+| `atoms/` | 단일 책임 프리미티브 (Button, Badge, Skeleton) | 표시값·콜백만 받고, 도메인 엔티티를 import하지 않으며, 디자인 변경 시에만 수정됨 |
+| `molecules/`, `organisms/` | 프리미티브보다 복합적인 범용 UI 패턴 | 도메인 이름을 붙일 수 없고, 다른 프로젝트에 복사해도 의미가 통함 |
 
-> `ui/`와 `patterns/`는 아직 만들지 않았다. 현재 `components/atoms|molecules|organisms/`에는
-> 공유 프리미티브와 도메인 소유 컴포넌트(`Avatar`, `MenuButton` 등)가 섞여 있어, 무엇이 공유인지
-> 확정하려면 먼저 도메인 이관으로 도메인 소유분을 걷어내야 한다. 도메인 이관이 끝난 뒤
-> 남는 것을 `ui/`·`patterns/`로 정리한다. 그때까지 새 프리미티브는 기존 `atoms/`에 둔다.
+> 폴더 이름은 예전 Atomic Design에서 왔지만 **계층 규칙으로 쓰지 않는다.** 실질적인 구분은
+> `atoms` = 프리미티브, `molecules`/`organisms` = 복합 패턴이며, 판단 기준은 §3이다.
+> 이름을 `ui`/`patterns`로 바꾸는 것은 400개 이상 파일의 import가 바뀌는 대형 변경이라
+> 실익 대비 비용을 이유로 보류했다.
 
 ---
 
@@ -226,3 +242,46 @@ yarn build       # next build
 
 Storybook 스토리는 9개(atoms 전용)뿐이라 시각 회귀 검증 범위가 매우 좁다.
 화면 동작은 `yarn dev`로 직접 확인해야 한다.
+
+> **`yarn build`는 `yarn dev`가 떠 있으면 실패한다.** 두 프로세스가 같은 `.next` 디렉터리를
+> 쓰기 때문이며, Windows에서는 `EPERM: ... .next\trace` 오류로 죽거나 타입 검사 단계에서
+> 무한 대기한다. 빌드 전에 dev 서버를 종료할 것.
+
+---
+
+## 10. 알려진 예외와 남은 작업
+
+아래는 **의도적으로 남겨둔 것**이다. 단순 이동으로는 해결되지 않고 코드 변경이 필요해서,
+발견 시점에 근거와 함께 기록했다. 건드릴 일이 있으면 이 목록을 먼저 확인할 것.
+
+### 공유 코드가 feature를 참조하는 곳
+
+| 위치 | 참조 | 해결 방법 |
+|---|---|---|
+| `components/molecules/cards/StudyThumbnailCard` | `features/study/lib` | 공유 `PickerRowButton`이 이걸 써서 옮기면 위반이 이동만 함 |
+| `components/molecules/cards/ProfileCommentCard` | `features/user/hooks` | 공유 컴포넌트 4개가 사용 |
+| `components/molecules/ContentHeartBar` | community·feed·user 훅 | 공유 `FeedLayout`이 사용 |
+| `components/molecules/PlaceImage` | study·user 훅 | 공유 컴포넌트 3개가 사용 |
+| `components/organisms/WritingConditionLayout` | `features/gather` 화면 | gather·group 양쪽이 사용 → prop 주입으로 역전 필요 |
+| `modals/pop-up/StudyPreferenceDrawer` | `features/study` | pop-up 자체의 소유권이 미결정 |
+
+### 소유권 미결정
+
+`modals/aboutHeader`(14) · `modals/pop-up`(10) · `modals/system`(2) — 각각 여러 도메인이
+소비해 한 곳으로 정할 수 없다. `pageTemplates/layout`도 앱 셸이라 도메인이 아니다.
+
+### 그 외
+
+- `features/cafeMap/screens/CafeMapStudyPage`가 `features/studyPage`의 화면 2개를 참조한다
+  (도메인 간 화면 참조는 원칙상 금지이나, 카페맵이 스터디 탭 UI를 재사용하는 실제 관계다).
+- `features/studyMap/components/StudyPageMap`이 `features/study/screens/StudyReview`의
+  `RightReviewDrawer`를 참조한다 — 컴포넌트 추출이 필요하다.
+- `features/community`가 `features/studyMap/components/TopNav`의 `XIcon`을 가져다 쓴다.
+- 소비처가 0건인 파일이 10여 개 있다(`libs/group/checkGroupGathering`,
+  `constants/contentsText/GroupStudyContents`, group 관련 recoil atom 3개 등). 확인 없이
+  삭제하지 않았다.
+
+### 남은 단계
+
+`pages/*`를 얇은 진입점으로 정리하는 작업은 gather 1개 라우트에서만 시연했고 나머지는
+그대로다. 모달 Props 계약 통일(§7의 A/B 유형)도 아직 적용 전이다.
