@@ -2,8 +2,8 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 import Avatar from "@/components/atoms/Avatar";
+import { useGroupMyStatusQuery } from "@/features/group/hooks/queries";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
-import { useGroupMyStatusQuery } from "@/hooks/groupStudy/queries";
 import { birthToAge } from "@/utils/convertUtils/convertTypes";
 
 const ROLE_KR: Record<string, string> = {

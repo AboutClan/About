@@ -9,13 +9,13 @@ import { useQueryClient } from "react-query";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import BottomButtonNav from "@/components/molecules/BottomButtonNav";
 import { GROUP_STUDY, USER_INFO } from "@/constants/keys/queryKeys";
-import { useUserInfoQuery } from "@/features/user/hooks/queries";
-import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import {
   useGroupParticipationMutation,
   useGroupWaitingMutation,
   useGroupWaitingStatusMutation,
-} from "@/hooks/groupStudy/mutations";
+} from "@/features/group/hooks/mutations";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import { useErrorToast, useToast } from "@/hooks/custom/CustomToast";
 import { IGroup } from "@/types/models/groupTypes/group";
 import { getGroupParticipantCount } from "@/utils/groupUtils";
 

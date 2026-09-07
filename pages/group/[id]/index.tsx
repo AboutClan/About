@@ -20,19 +20,19 @@ import MiniSemiGaugeNeedle from "@/components/molecules/GradeGauge";
 import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
 import { useGatherGroupQuery, useGroupFeedsQuery } from "@/features/gather/hooks/queries";
 import { sharedGatherWritingState } from "@/features/gather/state";
+import { useGroupIdMannerQuery, useGroupIdQuery } from "@/features/group/hooks/queries";
+import GroupBottomNav from "@/features/group/screens/detail/GroupBottomNav";
+import GroupContent from "@/features/group/screens/detail/GroupContent";
+import GroupCover from "@/features/group/screens/detail/GroupCover";
+import GroupHeader from "@/features/group/screens/detail/GroupHeader";
+import GroupOverview from "@/features/group/screens/detail/GroupOverview";
+import GroupParticipation from "@/features/group/screens/detail/GroupParticipation";
+import GroupReview from "@/features/group/screens/detail/GroupReview";
+import GroupGathering from "@/features/group/screens/GroupGathering";
+import { setGatherDataToCardCol } from "@/features/home/screens/HomeGatherCol";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { useGroupIdMannerQuery, useGroupIdQuery } from "@/hooks/groupStudy/queries";
 import { calculateGrade } from "@/pages/group/[id]/manner";
-import GroupBottomNav from "@/pageTemplates/group/detail/GroupBottomNav";
-import GroupContent from "@/pageTemplates/group/detail/GroupContent";
-import GroupCover from "@/pageTemplates/group/detail/GroupCover";
-import GroupHeader from "@/pageTemplates/group/detail/GroupHeader";
-import GroupOverview from "@/pageTemplates/group/detail/GroupOverview";
-import GroupParticipation from "@/pageTemplates/group/detail/GroupParticipation";
-import GroupReview from "@/pageTemplates/group/detail/GroupReview";
-import GroupGathering from "@/pageTemplates/group/GroupGathering";
-import { setGatherDataToCardCol } from "@/pageTemplates/home/HomeGatherCol";
 import { backUrlState } from "@/recoils/navigationRecoils";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { GroupMemberRole } from "@/types/models/groupTypes/group";
@@ -177,7 +177,7 @@ function GroupDetail() {
         />
       )}
       {!group && <MainLoading />}
-      {group && !findMyInfo && isAdmin ? <GroupBottomNav data={group} /> : null}
+      {group && !findMyInfo && !isAdmin ? <GroupBottomNav data={group} /> : null}
       {isModal && (
         <ResultModal
           onClose={() => setIsModal(false)}

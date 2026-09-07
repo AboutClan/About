@@ -6,8 +6,8 @@ import { MouseEvent, useMemo } from "react";
 import { GATHER_MAIN_IMAGE_ARR } from "@/assets/gather";
 import { PlusIcon } from "@/components/Icons/MathIcons";
 import ImageTileSlider, { IImageTile } from "@/components/organisms/sliders/ImageTileSlider";
+import { useGroupsMineQuery } from "@/features/group/hooks/queries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
-import { useGroupsMineQuery } from "@/hooks/groupStudy/queries";
 import { getRandomImage } from "@/utils/imageUtils";
 
 function GroupMine() {

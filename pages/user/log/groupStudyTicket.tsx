@@ -6,7 +6,7 @@ import { useState } from "react";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useGroupsMineQuery } from "@/hooks/groupStudy/queries";
+import { useGroupsMineQuery } from "@/features/group/hooks/queries";
 import { usePointSystemMutation, useUserTicketMutation } from "@/features/user/hooks/mutations";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { getTemperatureTicket } from "@/features/user/screens/UserSocialGuideDrawer";

@@ -5,8 +5,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import AttendCheckModal from "@/features/group/modals/AttendCheckModal";
 import { useFailToast } from "@/hooks/custom/CustomToast";
-import AttendCheckModal from "@/modals/groupStudy/AttendCheckModal";
 import { IGroup, IWeekRecord } from "@/types/models/groupTypes/group";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 

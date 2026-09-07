@@ -8,16 +8,16 @@ import Textarea from "@/components/atoms/Textarea";
 import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
 import { GROUP_STUDY } from "@/constants/keys/queryKeys";
+import {
+  useGroupParticipationMutation,
+  useGroupWaitingMutation,
+} from "@/features/group/hooks/mutations";
+import { useGroupIdQuery } from "@/features/group/hooks/queries";
+import ParticipateModal from "@/features/group/screens/ParticipateModal";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
-import {
-  useGroupParticipationMutation,
-  useGroupWaitingMutation,
-} from "@/hooks/groupStudy/mutations";
-import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
-import ParticipateModal from "@/pageTemplates/group/ParticipateModal";
 
 function Participate() {
   const router = useRouter();

@@ -16,16 +16,16 @@ import TextCheckButton from "@/components/molecules/TextCheckButton";
 import ValueBoxCol, { ValueBoxColItemProps } from "@/components/molecules/ValueBoxCol";
 import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
 import { AdminManageIcon, EditIcon, MemberHeartIcon } from "@/features/gather/screens/detail/GatherHeader";
+import {
+  useGroupDepositMutation,
+  useGroupParticipationMutation,
+} from "@/features/group/hooks/mutations";
+import { useGroupIdMannerQuery } from "@/features/group/hooks/queries";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useResetGroupQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import {
-  useGroupDepositMutation,
-  useGroupParticipationMutation,
-} from "@/hooks/groupStudy/mutations";
-import { useGroupIdMannerQuery } from "@/hooks/groupStudy/queries";
 import { calculateGrade } from "@/pages/group/[id]/manner";
 import { IGroup } from "@/types/models/groupTypes/group";
 import { setLocalStorageObj } from "@/utils/storageUtils";

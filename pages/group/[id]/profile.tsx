@@ -13,7 +13,7 @@ import {
   getTemperatureColor,
 } from "@/components/molecules/SocialingScoreBadge";
 import { useGatherGroupQuery } from "@/features/gather/hooks/queries";
-import { useGroupIdQuery, useGroupsMemberActivityQuery } from "@/hooks/groupStudy/queries";
+import { useGroupIdQuery, useGroupsMemberActivityQuery } from "@/features/group/hooks/queries";
 import { GroupParicipantProps } from "@/types/models/groupTypes/group";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";

@@ -22,9 +22,9 @@ import {
   StudyCrewSlug,
 } from "@/constants/service/study/place";
 import StudyStep from "@/features/gather/screens/detail/StudyStep";
+import { useGroupIdQuery, useMyCrewGroupStudyQuery } from "@/features/group/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { useGroupIdQuery, useMyCrewGroupStudyQuery } from "@/hooks/groupStudy/queries";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/hooks/study/queries";
 import { shortenParticipations } from "@/libs/study/studyConverters";
 import { getMyStudyDateArr } from "@/libs/study/studyHelpers";

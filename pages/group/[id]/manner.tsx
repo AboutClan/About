@@ -5,7 +5,7 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
 import GradeGauge from "@/components/molecules/GradeGauge";
-import { useGroupIdMannerQuery, useGroupIdQuery } from "@/hooks/groupStudy/queries";
+import { useGroupIdMannerQuery, useGroupIdQuery } from "@/features/group/hooks/queries";
 
 export default function Manner() {
   const { id } = useParams<{ id: string }>() || {};

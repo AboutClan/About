@@ -13,10 +13,10 @@ import { GroupThumbnailCard } from "@/components/molecules/cards/GroupThumbnailC
 import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
 import { GroupCategoryMain } from "@/constants/contentsText/GroupContents";
 import { ABOUT_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { useGroupQuery } from "@/features/group/hooks/queries";
+import GroupMine from "@/features/group/screens/GroupMine";
+import GroupSkeletonMain from "@/features/group/screens/GroupSkeletonMain";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { useGroupQuery } from "@/hooks/groupStudy/queries";
-import GroupMine from "@/pageTemplates/group/GroupMine";
-import GroupSkeletonMain from "@/pageTemplates/group/GroupSkeletonMain";
 import { GroupStatus, IGroup } from "@/types/models/groupTypes/group";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { getGroupParticipantCount } from "@/utils/groupUtils";

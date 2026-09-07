@@ -9,8 +9,8 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
 import { GROUP_STUDY } from "@/constants/keys/queryKeys";
-import { useGroupMonthAttendMutation } from "@/hooks/groupStudy/mutations";
-import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
+import { useGroupMonthAttendMutation } from "@/features/group/hooks/mutations";
+import { useGroupIdQuery } from "@/features/group/hooks/queries";
 import { GroupParicipantProps } from "@/types/models/groupTypes/group";
 
 export default function Month() {

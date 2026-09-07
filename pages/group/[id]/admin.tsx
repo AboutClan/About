@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import TabNav from "@/components/molecules/navs/TabNav";
-import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
-import { AdminSection } from "@/pageTemplates/group/admin/AdminSection";
-import DeleteSection from "@/pageTemplates/group/admin/DeleteSection";
-import { InviteSection } from "@/pageTemplates/group/admin/InviteSection";
+import { useGroupIdQuery } from "@/features/group/hooks/queries";
+import { AdminSection } from "@/features/group/screens/admin/AdminSection";
+import DeleteSection from "@/features/group/screens/admin/DeleteSection";
+import { InviteSection } from "@/features/group/screens/admin/InviteSection";
 import { GroupParicipantProps } from "@/types/models/groupTypes/group";
 
 const TAB_ARR = ["참여 인원 관리", "신청 인원 확인", "내보내기/보증금"] as const;

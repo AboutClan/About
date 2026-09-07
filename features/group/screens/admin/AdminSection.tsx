@@ -20,18 +20,18 @@ import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import MiniSemiGaugeNeedle from "@/components/molecules/GradeGauge";
 import { GROUP_STUDY } from "@/constants/keys/queryKeys";
-import { useUserRandomTicketMutation } from "@/features/user/hooks/mutations";
-import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   useGroupMemberRoleMutation,
   useGroupRandomTicketMutation,
-} from "@/hooks/groupStudy/mutations";
+} from "@/features/group/hooks/mutations";
 import {
   GradeProps,
   useGroupIdMannerQuery,
   useGroupsMemberActivityQuery,
-} from "@/hooks/groupStudy/queries";
+} from "@/features/group/hooks/queries";
+import { useUserRandomTicketMutation } from "@/features/user/hooks/mutations";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { calculateGrade } from "@/pages/group/[id]/manner";
 import { DispatchType } from "@/types/hooks/reactTypes";
 import { GroupParicipantProps } from "@/types/models/groupTypes/group";

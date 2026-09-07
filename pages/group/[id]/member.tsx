@@ -9,12 +9,12 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
 import { GROUP_STUDY } from "@/constants/keys/queryKeys";
-import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import {
   useGroupExileUserMutation,
   useGroupMemberRoleMutation,
-} from "@/hooks/groupStudy/mutations";
-import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
+} from "@/features/group/hooks/mutations";
+import { useGroupIdQuery } from "@/features/group/hooks/queries";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { GroupMemberRole, GroupParicipantProps } from "@/types/models/groupTypes/group";
 
 export default function Member() {

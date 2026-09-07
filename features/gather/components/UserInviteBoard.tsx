@@ -11,9 +11,9 @@ import {
   useGatherInviteDummyMutation,
   useGatherInviteMutation,
 } from "@/features/gather/hooks/mutations";
+import { useGroupIdQuery } from "@/features/group/hooks/queries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { searchName } from "@/utils/stringUtils";
 

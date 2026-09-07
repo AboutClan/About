@@ -3,11 +3,11 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { UserItem } from "@/components/molecules/UserItem";
+import { useGroupWaitingStatusMutation } from "@/features/group/hooks/mutations";
+import GroupAdminInvitation from "@/features/group/screens/admin/GroupAdminInvitation";
 import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
 import { useResetGroupQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { useGroupWaitingStatusMutation } from "@/hooks/groupStudy/mutations";
-import GroupAdminInvitation from "@/pageTemplates/group/admin/GroupAdminInvitation";
 import { IGroup } from "@/types/models/groupTypes/group";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 import { safeDecodeTel } from "@/utils/utils";

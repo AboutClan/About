@@ -2,8 +2,8 @@ import { Box } from "@chakra-ui/react";
 
 import SlideSectionCol from "@/components/molecules/SlideSectionCol";
 import SlideSectionRow from "@/components/molecules/SlideSectionRow";
+import { useGroupSnapshotQuery } from "@/features/group/hooks/queries";
 import HomeGroupCol from "@/features/home/screens/HomeGroupCol";
-import { useGroupSnapshotQuery } from "@/hooks/groupStudy/queries";
 
 function HomeGroupSection() {
   const { data: groups } = useGroupSnapshotQuery();

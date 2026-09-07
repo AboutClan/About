@@ -13,8 +13,8 @@ import {
   STUDY_CREW_PLACE_MAPPING,
 } from "@/constants/service/study/place";
 import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
+import { useGroupIdQuery } from "@/features/group/hooks/queries";
 import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
-import { useGroupIdQuery } from "@/hooks/groupStudy/queries";
 import { useStudyInviteMutation } from "@/hooks/study/mutations";
 import { CloseProps } from "@/types/components/modalTypes";
 import { StudyCrew } from "@/types/models/studyTypes/study-entity.types";

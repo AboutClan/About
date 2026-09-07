@@ -6,7 +6,7 @@ import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
 import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
 import TabNav from "@/components/molecules/navs/TabNav";
-import { useGroupIdQuery, useGroupsMemberActivityQuery } from "@/hooks/groupStudy/queries";
+import { useGroupIdQuery, useGroupsMemberActivityQuery } from "@/features/group/hooks/queries";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 export default function Member() {

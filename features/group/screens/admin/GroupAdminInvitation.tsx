@@ -7,14 +7,14 @@ import { Input } from "@/components/atoms/Input";
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import InviteUserGroups from "@/components/molecules/groups/InviteUserGroups";
 import { useAllUserDataQuery } from "@/features/admin/hooks/quries";
+import {
+  useGroupInviteDummyMutation,
+  useGroupInviteMutation,
+} from "@/features/group/hooks/mutations";
 import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
 import { useResetGroupQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import {
-  useGroupInviteDummyMutation,
-  useGroupInviteMutation,
-} from "@/hooks/groupStudy/mutations";
 import { IGroup } from "@/types/models/groupTypes/group";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { searchName } from "@/utils/stringUtils";
