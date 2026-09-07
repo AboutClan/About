@@ -7,7 +7,7 @@ import {
   useStudyResultTimeChangeMutation,
   useStudyVoteMutation,
 } from "@/features/study/hooks/mutations";
-import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import {
   useRealTimeAbsenceMutation,

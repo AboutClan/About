@@ -8,7 +8,7 @@ export function Temp() {
 // import { useRecoilValue } from "recoil";
 
 // import Textarea from "@/components/atoms/Textarea";
-// import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+// import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 // import { useStudyAttendCheckMutation } from "@/features/study/hooks/mutations";
 // import { findMyStudyInfo } from "@/features/study/lib/studySelectors";
 // import { myStudyParticipationState } from "@/recoils/studyRecoils";

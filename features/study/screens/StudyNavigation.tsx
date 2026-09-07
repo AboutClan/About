@@ -18,9 +18,9 @@ import { PlaceDrawer } from "@/features/study/components/study/apply/ui/overlay/
 import StudyVoteTimeRulletDrawer from "@/features/study/components/studyVote/StudyVoteTimeRulletDrawer";
 import { useStudyAttendChangeMutation, useStudyVoteArrMutation } from "@/features/study/hooks/mutations";
 import { useStudyMutations } from "@/features/study/hooks/StudyHooks";
+import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 import StudyAbsentModal from "@/features/study/modals/StudyAbsentModal";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
-import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import CafeMapGuestModal from "@/modals/cafeMap/CafeMapGuestModal";

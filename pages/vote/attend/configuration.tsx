@@ -15,7 +15,7 @@ import ImageUploadInput from "@/components/molecules/ImageUploadInput";
 import { STUDY_ATTEND_AT } from "@/constants/keys/queryKeys";
 import { useStudyAttendCheckMutation } from "@/features/study/hooks/mutations";
 import { useStudySetQuery } from "@/features/study/hooks/queries";
-import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useRealTimeAttendMutation } from "@/hooks/realtime/mutations";
 import { transferStudyRewardState } from "@/recoils/transferRecoils";

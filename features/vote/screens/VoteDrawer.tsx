@@ -17,7 +17,7 @@ export function Temp() {
 // } from "@/components/modals/drawer/BottomFlexDrawer";
 // import StudyVoteTimeRulletDrawer from "@/features/study/components/studyVote/StudyVoteTimeRulletDrawer";
 // import { LOCATION_OPEN } from "@/constants/location";
-// import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+// import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 // import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 // import { useStudyVoteMutation } from "@/features/study/hooks/mutations";
 // import { useUserInfoQuery } from "@/features/user/hooks/queries";

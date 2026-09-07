@@ -13,7 +13,7 @@
 //   BottomFlexDrawerOptions,
 // } from "@/components/modals/drawer/BottomFlexDrawer";
 // import StudyVoteTimeRulletDrawer from "@/features/study/components/studyVote/StudyVoteTimeRulletDrawer";
-// import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+// import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 // import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 // import { useRealtimeVoteMutation } from "@/hooks/realtime/mutations";
 // import { useStudyCommentMutation, useStudyVoteMutation } from "@/features/study/hooks/mutations";

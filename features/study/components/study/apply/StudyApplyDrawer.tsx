@@ -12,8 +12,8 @@ import StudyApplySection from "@/features/study/components/study/apply/ui/StudyA
 import StudyVoteTimeRulletDrawer from "@/features/study/components/studyVote/StudyVoteTimeRulletDrawer";
 import { useStudyVoteArrMutation } from "@/features/study/hooks/mutations";
 import { useStudySetQuery } from "@/features/study/hooks/queries";
+import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
-import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { LocationProps } from "@/types/common";

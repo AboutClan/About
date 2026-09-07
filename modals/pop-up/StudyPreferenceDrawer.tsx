@@ -17,7 +17,7 @@ export function Temp() {
 // } from "@/components/modals/drawer/BottomFlexDrawer";
 // import { USER_LOCATION } from "@/constants/keys/localStorage";
 // import { USER_INFO } from "@/constants/keys/queryKeys";
-// import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+// import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 // import { useToast } from "@/hooks/custom/CustomToast";
 // import { useStudyPreferenceMutation } from "@/features/study/hooks/mutations";
 // import { useStudyPassedDayQuery } from "@/features/study/hooks/queries";

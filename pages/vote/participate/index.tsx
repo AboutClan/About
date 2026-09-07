@@ -20,7 +20,7 @@ export default Index;
 // import { IImageTileData } from "@/components/molecules/layouts/ImageTileFlexLayout";
 // import ImageTileGridLayout from "@/components/molecules/layouts/ImageTitleGridLayout";
 // import { LOCATION_OPEN } from "@/constants/location";
-// import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
+// import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 // import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 // import { useStudyVoteMutation } from "@/features/study/hooks/mutations";
 // import { useStudyPassedDayQuery } from "@/features/study/hooks/queries";
