@@ -5,13 +5,13 @@ import { useState } from "react";
 
 import Avatar from "@/components/atoms/Avatar";
 import { EllipsisIcon } from "@/components/Icons/DotIcons";
+import CommentEditModal from "@/components/modals/common/CommentEditModal";
 import { ReplyProps } from "@/features/community/screens/SecretSquareComments";
 import {
   useCommentLikeMutation,
   useCommentMutation,
   useSubCommentMutation,
 } from "@/hooks/common/mutations";
-import CommentEditModal from "@/modals/common/CommentEditModal";
 import { UserCommentProps as CommentProps } from "@/types/components/propTypes";
 import { DispatchType } from "@/types/hooks/reactTypes";
 import { getDateDiff } from "@/utils/dateTimeUtils";
