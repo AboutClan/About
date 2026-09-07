@@ -305,18 +305,20 @@ flowchart LR
 
 ### Requirements
 
-- Node.js `20.11.0`
-- npm `10.2.4`
+- Node.js `24.20.0` (Active LTS) — 저장소 루트의 `.nvmrc` 참조
+- npm `11.x` (Node 24에 번들)
 
-Production Docker 환경은 위 버전을 사용합니다.
+Production Docker 환경도 동일한 Node 24를 사용합니다. `nvm` 사용 시 `nvm use`로 `.nvmrc` 버전을 그대로 적용할 수 있습니다.
 
 ### Installation
 
 ```bash
 git clone https://github.com/AboutClan/About.git
 cd About
-npm install
+npm ci
 ```
+
+`package-lock.json`에 고정된 의존성 트리를 그대로 재현하려면 `npm install`이 아니라 `npm ci`를 사용합니다.
 
 ### Environment Variables
 
@@ -338,18 +340,10 @@ npm install
 
 ### Development
 
-현재 `dev` 스크립트는 Windows 명령어 형식으로 작성되어 있습니다.
-
-#### Windows
+`dev` 스크립트는 OS에 관계없이 동일하게 동작합니다.
 
 ```bash
 npm run dev
-```
-
-#### macOS / Linux
-
-```bash
-NODE_OPTIONS=--openssl-legacy-provider npx next dev
 ```
 
 개발 서버는 기본적으로 `http://localhost:3000`에서 실행됩니다.

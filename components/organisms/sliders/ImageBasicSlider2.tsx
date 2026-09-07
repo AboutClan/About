@@ -11,6 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import ImageShadowCover from "@/components/molecules/ImageShadowCover";
 
+// eslint-disable-next-line react-hooks/rules-of-hooks -- Swiper의 static 메서드이며 React Hook이 아니다 (react-hooks v5 오탐)
 SwiperCore.use([Navigation, Pagination]);
 
 export interface ImageTileProps {

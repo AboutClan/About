@@ -4,18 +4,18 @@
   "description": "- About 프로젝트는 데스크탑이 아닌 모바일을 메인으로 하는 서비스이다.\r - 게스트 로그인을 통해 해당 서비스를 직접 확인할 수 있다.\r - [https://studyabout.club](https://studyabout.club)",
   "main": "next.config.js",
   "scripts": {
-    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=chpt_1eb5fea11274ebd",
+    "chromatic": "npx chromatic",
     "typecheck": "tsc --noEmit",
     "lint": "eslint ."
   },
   "engines": {
-    "node": "20.11.0",
-    "npm": "10.2.4"
+    "node": ">=24.0.0 <25",
+    "npm": ">=11"
   },
   "author": "",
   "license": "ISC",
@@ -26,7 +26,7 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@next-auth/mongodb-adapter": "^1.1.3",
-    "@next/third-parties": "^14.1.4",
+    "@next/third-parties": "15.5.25",
     "@portone/browser-sdk": "^0.0.11",
     "@tosspayments/tosspayments-sdk": "^2.5.0",
     "@types/navermaps": "^3.7.4",
@@ -43,9 +43,8 @@
     "lucide-react": "^1.17.0",
     "mongodb": "^5.9.2",
     "mongoose": "^8.1.1",
-    "next": "^14.1.0",
+    "next": "15.5.25",
     "next-auth": "^4.24.5",
-    "next-pwa": "^5.6.0",
     "pretendard": "^1.3.9",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
@@ -59,22 +58,22 @@
     "swiper": "^11.1.14"
   },
   "devDependencies": {
-    "@storybook/nextjs": "^8.0.10",
-    "@storybook/react": "^8.0.10",
-    "@storybook/test": "^8.0.10",
+    "@chromatic-com/storybook": "^4.1.3",
+    "@storybook/addon-links": "^9.1.20",
+    "@storybook/nextjs": "^9.1.20",
+    "@storybook/react": "^9.1.20",
     "@types/react": "18.2.55",
     "@types/styled-components": "^5.1.34",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
     "chromatic": "^11.3.0",
     "eslint": "8.56.0",
-    "eslint-config-next": "^14.2.1",
+    "eslint-config-next": "^15.5.25",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-simple-import-sort": "^12.1.0",
-    "eslint-plugin-storybook": "^0.8.0",
-    "storybook": "^8.0.10",
+    "eslint-plugin-storybook": "^10.6.0",
+    "storybook": "^9.1.20",
     "typescript": "^5.3.3"
-  },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  }
 }

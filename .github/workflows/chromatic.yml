@@ -11,10 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     # Job steps
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: yarn
+      #👇 .nvmrc의 Node 버전으로 고정 (Docker/로컬과 동일한 런타임 보장)
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+      #👇 package-lock.json 기준 설치 (이 저장소에는 yarn.lock이 없다)
+      - run: npm ci
         #👇 Adds Chromatic as a step in the workflow
       - uses: chromaui/action@v1
         # Options required for Chromatic's GitHub Action
