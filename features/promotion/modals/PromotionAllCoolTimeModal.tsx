@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { IFooterOptions, IHeaderOptions, IPaddingOptions, ModalLayout } from "@/components/modals/Modals";
 import { PROMOTION_WIN_DATE } from "@/constants/settingValue/dateSettingValue";
-import { usePromotionQuery } from "@/hooks/sub/promotion/queries";
+import { usePromotionQuery } from "@/features/promotion/hooks/queries";
 import { IModal } from "@/types/components/modalTypes";
 import { IPromotionApply } from "@/types/models/promotion";
 
