@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { LOCATION_OPEN } from "@/constants/location";
 import { PLACE_TO_LOCATION } from "@/constants/serviceConstants/studyConstants/studyLocationConstants";
-import RecordDetailStudyBlock from "@/pageTemplates/record/detail/RecordDetailStudyBlock";
+import RecordDetailStudyBlock from "@/features/record/screens/detail/RecordDetailStudyBlock";
 import { IArrivedData, IArrivedInfoList } from "@/types/models/studyTypes/studyRecords";
 import { Location } from "@/types/services/locationTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";

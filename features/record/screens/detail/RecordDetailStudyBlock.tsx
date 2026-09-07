@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { LOCATION_TO_COLOR } from "@/constants/location";
 import { PLACE_TO_NAME } from "@/constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { PLACE_TO_LOCATION } from "@/constants/serviceConstants/studyConstants/studyLocationConstants";
-import { ISortedLocationStudies } from "@/pageTemplates/record/detail/RecordDetail";
+import { ISortedLocationStudies } from "@/features/record/screens/detail/RecordDetail";
 import { Location } from "@/types/services/locationTypes";
 
 interface IRecordDetailStudyBlock {

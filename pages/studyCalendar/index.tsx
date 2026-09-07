@@ -6,12 +6,12 @@ import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import RecordMonthNav from "@/components/atoms/MonthNav";
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
-import RecordDetail from "@/pageTemplates/record/detail/RecordDetail";
-import RecordCalendar from "@/pageTemplates/record/RecordCalendar";
-import RecordCalendarSetting from "@/pageTemplates/record/RecordCalendarSetting";
-import RecordLocationCategory from "@/pageTemplates/record/RecordLocationCategory";
-import RecordNavigation from "@/pageTemplates/record/RecordNavigation";
-import RecordOverview from "@/pageTemplates/record/RecordOverview";
+import RecordDetail from "@/features/record/screens/detail/RecordDetail";
+import RecordCalendar from "@/features/record/screens/RecordCalendar";
+import RecordCalendarSetting from "@/features/record/screens/RecordCalendarSetting";
+import RecordLocationCategory from "@/features/record/screens/RecordLocationCategory";
+import RecordNavigation from "@/features/record/screens/RecordNavigation";
+import RecordOverview from "@/features/record/screens/RecordOverview";
 import { IArrivedData } from "@/types/models/studyTypes/studyRecords";
 
 export interface IDateRange {
