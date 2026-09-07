@@ -4,11 +4,11 @@ import styled from "styled-components";
 
 import Header from "@/components/layouts/Header";
 import Slide from "@/components/layouts/PageSlide";
+import NoticeActive from "@/features/notice/screens/NoticeActive";
+import NoticeItem from "@/features/notice/screens/NoticeItem";
+import NoticeNav from "@/features/notice/screens/NoticeNav";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { useNoticeActiveLogQuery } from "@/hooks/user/sub/interaction/queries";
-import NoticeActive from "@/pageTemplates/notice/NoticeActive";
-import NoticeItem from "@/pageTemplates/notice/NoticeItem";
-import NoticeNav from "@/pageTemplates/notice/NoticeNav";
 
 export type NoticeType = "notice" | "active";
 
