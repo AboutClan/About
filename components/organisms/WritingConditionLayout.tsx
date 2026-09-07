@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import CountNum from "@/components/atoms/CountNum";
 import { Input } from "@/components/atoms/Input";
 import { PopOverIcon } from "@/components/Icons/PopOverIcon";
-import GatherWritingConditionAgeRange from "@/features/gather/screens/writing/condition/GatherWritingConditionAgeRange";
+import GatherWritingConditionAgeRange from "@/components/molecules/GatherWritingConditionAgeRange";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { DispatchType } from "@/types/hooks/reactTypes";
 

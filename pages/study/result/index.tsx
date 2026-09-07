@@ -12,7 +12,7 @@
 // import UserPlusButton from "@/features/study/components/UserPlusButton";
 // import ProgressBar from "@/components/atoms/ProgressBar";
 // import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
-// import HeartIcon from "@/components/Icons/HeartIcon";
+// import HeartIcon from "@/features/user/components/HeartIcon";
 // import { RankingNumIcon } from "@/components/Icons/RankingIcons";
 // import { StarIcon } from "@/components/Icons/StarIcons";
 // import Slide from "@/components/layouts/PageSlide";

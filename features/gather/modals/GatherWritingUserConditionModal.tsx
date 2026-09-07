@@ -5,9 +5,9 @@ import styled from "styled-components";
 
 import { PopOverIcon } from "@/components/Icons/PopOverIcon";
 import { ModalLayout } from "@/components/modals/Modals";
+import GatherWritingConditionAgeRange from "@/components/molecules/GatherWritingConditionAgeRange";
 import { ConditionType } from "@/components/organisms/WritingConditionLayout";
 import { GROUP_WRITING_STORE } from "@/constants/keys/localStorage";
-import GatherWritingConditionAgeRange from "@/features/gather/screens/writing/condition/GatherWritingConditionAgeRange";
 import GatherWritingConditionCnt from "@/features/gather/screens/writing/condition/GatherWritingConditionCnt";
 import { sharedGatherWritingState } from "@/features/gather/state";
 import { GroupConditionType } from "@/pages/group/writing/condition";
