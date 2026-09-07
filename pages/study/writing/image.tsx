@@ -14,8 +14,8 @@ import ImageBasicSlider2 from "@/components/organisms/sliders/ImageBasicSlider2"
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useStudyAdditionMutation } from "@/features/study/hooks/mutations";
+import { getStudyViewDate } from "@/features/study/lib/date/getStudyDateStatus";
 import { useToast } from "@/hooks/custom/CustomToast";
-import { getStudyViewDate } from "@/libs/study/date/getStudyDateStatus";
 import { sharedStudyWritingState } from "@/recoils/sharedDataAtoms";
 
 function WritingStudyImage() {

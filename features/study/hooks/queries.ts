@@ -12,7 +12,7 @@ import {
   STUDY_VOTE_CNT,
 } from "@/constants/keys/queryKeys";
 import { SERVER_URI } from "@/constants/system";
-import { setStudyOneDayData, setStudyWeekData } from "@/libs/study/studyConverters";
+import { setStudyOneDayData, setStudyWeekData } from "@/features/study/lib/studyConverters";
 import { CoordinatesProps, TimeRangeProps } from "@/types/common";
 import { QueryOptions } from "@/types/hooks/reactTypes";
 import { PlaceProps } from "@/types/models/studyTypes/entityTypes";

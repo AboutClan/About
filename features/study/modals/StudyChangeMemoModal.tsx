@@ -10,7 +10,7 @@ export function Temp() {
 // import Textarea from "@/components/atoms/Textarea";
 // import { useResetStudyQuery } from "@/hooks/custom/CustomHooks";
 // import { useStudyAttendCheckMutation } from "@/features/study/hooks/mutations";
-// import { findMyStudyInfo } from "@/libs/study/studySelectors";
+// import { findMyStudyInfo } from "@/features/study/lib/studySelectors";
 // import { myStudyParticipationState } from "@/recoils/studyRecoils";
 // import { IModal } from "@/types/components/modalTypes";
 // import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";

@@ -5,8 +5,8 @@ import {
   getPlaceBasicIcon,
   getPlaceCountIcon,
   getVoteLocationIcon,
-} from "@/libs/study/getStudyVoteIcon";
-import { getPlaceScore } from "@/libs/study/studyUtils";
+} from "@/features/study/lib/getStudyVoteIcon";
+import { getPlaceScore } from "@/features/study/lib/studyUtils";
 import { CoordinatesProps } from "@/types/common";
 import { IMapOptions, IMarkerOptions } from "@/types/externals/naverMapTypes";
 import {

@@ -2,7 +2,7 @@ import dayjs, { Dayjs } from "dayjs";
 
 import { GATHER_MAIN_IMAGE_ARR } from "@/assets/gather";
 import { StudyThumbnailCardProps } from "@/components/molecules/cards/StudyThumbnailCard";
-import { shortenParticipations } from "@/libs/study/studyConverters";
+import { shortenParticipations } from "@/features/study/lib/studyConverters";
 import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entity.types";
 import { StudySetProps, StudyType } from "@/types/models/studyTypes/study-set.types";
 import { dayjsToFormat, getTodayStr } from "@/utils/dateTimeUtils";

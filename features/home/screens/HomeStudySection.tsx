@@ -16,7 +16,7 @@ import { useStudySetQuery } from "@/features/study/hooks/queries";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
-} from "@/libs/study/thumbnailCardLibs";
+} from "@/features/study/lib/thumbnailCardLibs";
 import { backUrlState } from "@/recoils/navigationRecoils";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 

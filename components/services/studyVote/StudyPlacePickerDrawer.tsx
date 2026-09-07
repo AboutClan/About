@@ -4,7 +4,7 @@
 // import {
 //   setStudyThumbnailCard,
 //   sortThumbnailCardInfoArr,
-// } from "@/libs/study/thumbnailCardLibs";
+// } from "@/features/study/lib/thumbnailCardLibs";
 // import { CoordinatesProps } from "@/types/common";
 // import { IModal } from "@/types/components/modalTypes";
 

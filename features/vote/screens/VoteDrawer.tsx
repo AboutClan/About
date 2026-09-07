@@ -21,8 +21,8 @@ export function Temp() {
 // import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 // import { useStudyVoteMutation } from "@/features/study/hooks/mutations";
 // import { useUserInfoQuery } from "@/features/user/hooks/queries";
-// import { convertStudyToParticipations } from "@/libs/study/getMyStudyMethods";
-// import { setStudyThumbnailCard } from "@/libs/study/setStudyThumbnailCard";
+// import { convertStudyToParticipations } from "@/features/study/lib/getMyStudyMethods";
+// import { setStudyThumbnailCard } from "@/features/study/lib/setStudyThumbnailCard";
 // import { myStudyParticipationState } from "@/recoils/studyRecoils";
 // import { CoordinatesProps } from "@/types/common";
 // import { IModal } from "@/types/components/modalTypes";

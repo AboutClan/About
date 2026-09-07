@@ -22,9 +22,9 @@ export function Temp() {
 // import { useStudyPreferenceMutation } from "@/features/study/hooks/mutations";
 // import { useStudyPassedDayQuery } from "@/features/study/hooks/queries";
 // import { useUserInfoQuery } from "@/features/user/hooks/queries";
-// import { getStudyViewDayjs } from "@/libs/study/date/getStudyDateStatus";
-// import { getLocationByCoordinates } from "@/libs/study/getLocationByCoordinates";
-// import { setStudyThumbnailCard } from "@/libs/study/setStudyThumbnailCard";
+// import { getStudyViewDayjs } from "@/features/study/lib/date/getStudyDateStatus";
+// import { getLocationByCoordinates } from "@/features/study/lib/getLocationByCoordinates";
+// import { setStudyThumbnailCard } from "@/features/study/lib/setStudyThumbnailCard";
 // import { IModal } from "@/types/components/modalTypes";
 // import { Location } from "@/types/services/locationTypes";
 // import { dayjsToStr } from "@/utils/dateTimeUtils";

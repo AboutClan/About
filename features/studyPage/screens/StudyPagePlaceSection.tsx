@@ -11,7 +11,7 @@ import { useLastStudySetQuery } from "@/features/study/hooks/queries";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
-} from "@/libs/study/thumbnailCardLibs";
+} from "@/features/study/lib/thumbnailCardLibs";
 import { DispatchString } from "@/types/hooks/reactTypes";
 import { StudySetProps } from "@/types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";

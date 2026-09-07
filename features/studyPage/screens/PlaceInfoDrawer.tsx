@@ -7,7 +7,7 @@ import StarRating from "@/components/atoms/StarRating";
 import { StarIcon } from "@/components/Icons/StarIcon";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import PlaceImage from "@/components/molecules/PlaceImage";
-import { getPlaceScore } from "@/libs/study/studyUtils";
+import { getPlaceScore } from "@/features/study/lib/studyUtils";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getRandomImage } from "@/utils/imageUtils";
 import { navigateExternalLink } from "@/utils/navigateUtils";

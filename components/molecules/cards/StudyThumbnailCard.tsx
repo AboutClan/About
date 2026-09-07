@@ -9,7 +9,7 @@ import { LocationDotIcon } from "@/components/Icons/LocationIcons";
 import { UserIcon } from "@/components/Icons/UserIcons";
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
 import PlaceImage from "@/components/molecules/PlaceImage";
-import { getStudyBadge } from "@/libs/study/studyHelpers";
+import { getStudyBadge } from "@/features/study/lib/studyHelpers";
 import { SingleLineText } from "@/styles/layout/components";
 import { StudyType } from "@/types/models/studyTypes/study-set.types";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";

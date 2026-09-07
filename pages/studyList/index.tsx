@@ -11,11 +11,11 @@ import {
   StudyThumbnailCardProps,
 } from "@/components/molecules/cards/StudyThumbnailCard";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
-import { useUserCurrentLocation } from "@/hooks/custom/CurrentLocationHook";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
-} from "@/libs/study/thumbnailCardLibs";
+} from "@/features/study/lib/thumbnailCardLibs";
+import { useUserCurrentLocation } from "@/hooks/custom/CurrentLocationHook";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 
 export default function StudyList() {

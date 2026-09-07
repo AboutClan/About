@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 import ColorLabelRow from "@/components/molecules/rows/ColorLabelRow";
 import VoteMap from "@/components/organisms/VoteMap";
-import { getPlaceBasicIcon } from "@/libs/study/getStudyVoteIcon";
-import { getMapOptions } from "@/libs/study/setStudyMapOptions";
+import { getPlaceBasicIcon } from "@/features/study/lib/getStudyVoteIcon";
+import { getMapOptions } from "@/features/study/lib/setStudyMapOptions";
 import { LocationProps } from "@/types/common";
 import { IMapOptions, IMarkerOptions } from "@/types/externals/naverMapTypes";
 
