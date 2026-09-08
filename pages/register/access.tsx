@@ -3,10 +3,16 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import Script from "next/script";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import Slide from "@/components/layouts/PageSlide";
 import HomeActivityDrawer from "@/components/overlay/HomeActivityDrawer";
+import {
+  Gender,
+  getRegisterGender,
+  normalizeGender,
+} from "@/features/register/lib/registerGender";
 import RegisterAccessHeader from "@/features/register/screens/access/RegisterAccessHeader";
 import RegisterComparation from "@/features/register/screens/access/RegisterComparation";
 import RegisterFAQ from "@/features/register/screens/access/RegisterFAQ";
@@ -38,8 +44,25 @@ function Access() {
   // 써야 한다. next-auth 세션(JWT)의 role은 승인 직후 즉시 갱신되지 않아 DB 값과 어긋날 수 있고,
   // 그 상태로 서로 다른 role을 기준으로 판단하면 /home ↔ /register/access 무한 리다이렉트가 생길 수 있다.
   const { data: userInfo } = useUserInfoQuery();
+  const { data: session } = useSession();
 
-  const fee = userInfo?.gender === "남성" ? MALE_FEE : BASE_FEE;
+  // 가입 신청서(POST /register)의 성별은 승인(POST /register/approval) 시점에야 유저 문서로
+  // 옮겨지는데, 그 승인은 이 화면에서 결제가 끝난 뒤에 일어난다. 즉 지금 GET /user/profile의
+  // gender는 비어 있거나 카카오 원본("male"/"female")이라 그대로 비교하면 남성도 기본 금액이
+  // 청구된다. 그래서 성별을 고른 시점에 저장해 둔 값을 먼저 보고, 없을 때만 유저 문서를 본다.
+  // localStorage는 서버 렌더에서 읽을 수 없어 첫 렌더 후에 채운다(hydration 불일치 방지).
+  const [storedGender, setStoredGender] = useState<Gender | null>(null);
+
+  useEffect(() => {
+    setStoredGender(getRegisterGender(session?.user?.uid));
+  }, [session?.user?.uid]);
+
+  const gender =
+    storedGender ??
+    normalizeGender(userInfo?.gender) ??
+    normalizeGender(userInfo?.kakao_account?.gender);
+
+  const fee = gender === "남성" ? MALE_FEE : BASE_FEE;
 
   // useEffect(() => {
   //   const role = userInfo?.role;

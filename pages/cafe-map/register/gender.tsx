@@ -1,9 +1,11 @@
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import BottomNav from "@/components/layouts/BottomNav";
 import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "@/constants/keys/localStorage";
+import { saveRegisterGender } from "@/features/register/lib/registerGender";
 import RegisterLayout from "@/features/register/screens/RegisterLayout";
 import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useUserKakaoInfoQuery } from "@/features/user/hooks/queries";
@@ -12,6 +14,7 @@ import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 function Gender() {
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
+  const { data: session } = useSession();
 
   const { data, type } = useUserKakaoInfoQuery();
 
@@ -42,6 +45,8 @@ function Gender() {
       return;
     }
     setLocalStorageObj(REGISTER_INFO, { ...info, gender });
+    // REGISTER_INFO는 가입 신청 완료 시 비워지므로, 결제 화면까지 남길 성별을 따로 저장한다.
+    saveRegisterGender(session?.user?.uid, gender);
   };
 
   return (

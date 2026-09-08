@@ -59,6 +59,9 @@ export const RABBIT_RUN = "rabbitRun";
 export const RECENT_CHAT = "recentChat";
 
 export const REGISTER_INFO = "registerInfo";
+// 가입 신청 완료 후 REGISTER_INFO는 비워지지만, 결제 화면(/register/access)에서
+// 성별에 따른 가입비를 계산해야 해서 성별만 따로 남겨둔다.
+export const REGISTER_GENDER = "registerGender";
 export const GROUP_WRITING_STORE = "groupWritingStore";
 
 export const USER_GUIDE = "useGuide";

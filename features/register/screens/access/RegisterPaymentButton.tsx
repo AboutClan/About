@@ -7,6 +7,7 @@ import { useQueryClient } from "react-query";
 
 import BottomNav from "@/components/layouts/BottomNav";
 import { USER_INFO, USER_POINT_SYSTEM } from "@/constants/keys/queryKeys";
+import { clearRegisterGender } from "@/features/register/lib/registerGender";
 import {
   useCookiepayFinalizeMutation,
   useUserRegisterControlMutation,
@@ -102,6 +103,8 @@ function RegisterPaymentButton({
         }, 500);
       } else {
         gaEvent("sign_up_complete", { traffic_source_code: getTrafficSourceCode() });
+        // 가입비 계산용으로만 남겨둔 값이라 가입이 끝나면 지운다.
+        clearRegisterGender();
         router.replace("/register/access", undefined, { shallow: true });
         toast("success", "가입이 완료되었습니다!");
         queryClient.resetQueries([USER_INFO]);
@@ -132,6 +135,7 @@ function RegisterPaymentButton({
   const { mutate: approve, isLoading } = useUserRegisterControlMutation("post", {
     onSuccess() {
       gaEvent("sign_up_complete", { traffic_source_code: getTrafficSourceCode() });
+      clearRegisterGender();
       router.replace("/register/access", undefined, { shallow: true });
       toast("success", "가입이 완료되었습니다!");
       queryClient.resetQueries([USER_INFO]);
