@@ -241,7 +241,7 @@ flowchart LR
 
 | Category | Technologies |
 | --- | --- |
-| Framework | Next.js 14 Pages Router, React 18, TypeScript |
+| Framework | Next.js 15 Pages Router, React 18, TypeScript |
 | UI | Chakra UI, Emotion, styled-components, Framer Motion, Swiper |
 | State | React Query v3, Recoil, React Hook Form |
 | Authentication | NextAuth, Kakao OAuth, Apple OAuth, NICE 본인인증 |
@@ -250,8 +250,7 @@ flowchart LR
 | Payment | TossPayments Widget SDK, PortOne Browser SDK, CookiePay |
 | Data | MongoDB, Mongoose, Next.js API Routes |
 | App Integration | React Native WebView, Deep Link, FCM |
-| PWA | next-pwa |
-| UI Documentation | Storybook 8, Chromatic |
+| UI Documentation | Storybook 9, Chromatic |
 | Quality | ESLint, Prettier, TypeScript |
 | Deployment | Docker, AWS CodeBuild, ECR, CodeDeploy, EC2, Secrets Manager |
 
@@ -259,9 +258,11 @@ flowchart LR
 
 ## Project Structure
 
+도메인 단위 구조다. 자세한 규칙과 알려진 예외는 [`docs/architecture.md`](docs/architecture.md)에 있다.
+
 ```text
 .
-├── pages/                 # Pages Router 기반 라우트
+├── pages/                 # Pages Router 라우트 진입점
 │   ├── admin/             # 관리자 화면
 │   ├── api/               # NextAuth·결제·외부 API 프록시
 │   ├── cafe-map/          # 카공지도
@@ -272,28 +273,35 @@ flowchart LR
 │   ├── profile/           # 프로필·마이페이지
 │   ├── payment/           # 가입비·결제 결과
 │   └── register/          # 회원가입 온보딩
-├── pageTemplates/         # 페이지 단위 화면 구성과 도메인 UI
-├── components/
-│   ├── atoms/             # 최소 단위 UI
-│   ├── molecules/         # 조합형 UI
-│   ├── organisms/         # 도메인 단위 UI
+├── features/<domain>/     # 도메인별 코드 (28개 도메인)
+│   ├── screens/           # 페이지 단위 화면 조합
+│   ├── components/        # 도메인 전용 컴포넌트
+│   ├── modals/            # 도메인 전용 모달
+│   ├── hooks/             # queries.ts / mutations.ts
+│   └── lib/               # 순수 비즈니스 로직
+├── components/            # 도메인 지식이 없는 공유 UI
+│   ├── atoms/             # 이름은 남아 있으나 분류 기준은
+│   ├── molecules/         #   docs/architecture.md §3을 따른다
+│   ├── organisms/
+│   ├── Icons/             # 아이콘
 │   ├── layouts/           # 공통 레이아웃
-│   ├── drawers/           # 모바일 Drawer
-│   ├── modals/            # 공통 모달
+│   ├── modals/  drawers/  overlay/
 │   └── services/          # 서비스 연동 컴포넌트
-├── hooks/                 # 공통·도메인 커스텀 훅
-├── recoils/               # 클라이언트 임시 상태
-├── models/                # 데이터 모델
-├── types/                 # TypeScript 타입
-├── libs/                  # 라이브러리 초기화·공통 설정
-├── utils/                 # 공통 유틸리티
+├── pageTemplates/         # layout·setting만 남음 (도메인은 features/로 이관 완료)
+├── modals/                # 소유권 미결정 모달 (aboutHeader·pop-up·system)
+├── hooks/                 # 여러 도메인이 공유하는 훅
+├── recoils/               # 앱 전역 상태 atom
+├── content/               # 정적 콘텐츠 데이터 (공지·후기 등)
+├── libs/                  # 서버 전용 코드·클라이언트 초기화
+├── models/                # mongoose 모델
+├── types/                 # 공유 TypeScript 타입
+├── utils/                 # 도메인과 무관한 범용 헬퍼
 ├── constants/             # 상수와 정책값
 ├── @natives/              # WebView·네이티브 연동
-├── stories/               # Storybook 스토리
-├── styles/                # 전역 스타일
-├── public/                # 정적 파일
+├── stories/               # Storybook 스토리 (atoms 9개)
+├── docs/architecture.md   # 구조 규칙·의존 방향·알려진 예외
 ├── theme.ts               # Chakra UI 테마
-├── next.config.js         # Next.js·PWA·이미지 설정
+├── next.config.js         # Next.js·이미지·리다이렉트 설정
 ├── buildspec.yml          # AWS CodeBuild
 ├── appspec.yml            # AWS CodeDeploy
 └── Dockerfile             # Production 이미지
