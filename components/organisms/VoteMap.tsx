@@ -28,6 +28,12 @@ interface VoteMapProps {
     lon: number;
     size?: "sm" | "md" | "lg";
   }[];
+  /**
+   * 이 점들이 모두 보이도록 지도를 맞춘다(mapOptions의 zoom보다 우선).
+   * 매 렌더 새 배열이 되지 않도록 호출 측에서 useMemo로 감쌀 것.
+   * getMapOptions의 minZoom(10)보다 더 넓은 범위는 담기지 않는다.
+   */
+  fitBounds?: { lat: number; lon: number }[];
   centerValue?: {
     lat: number;
     lng: number;
@@ -44,6 +50,7 @@ function VoteMap({
   centerChange,
   selectedMarkerId,
   circleCenter,
+  fitBounds,
   centerValue,
   onMapReady,
 }: VoteMapProps) {
@@ -99,6 +106,32 @@ function VoteMap({
 
     mapInstanceRef.current.setOptions(mapOptions);
   }, [mapOptions]);
+
+  // mapOptions가 갱신되면 setOptions가 zoom을 되돌려 놓기 때문에,
+  // fitBounds도 그 뒤에 다시 적용해야 한다. (deps에 mapOptions가 없으면
+  // 기준점을 추가한 직후 줌이 기본값으로 되돌아간다.)
+  useEffect(() => {
+    if (!mapReady || !fitBounds?.length || typeof naver === "undefined") return;
+
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    const lats = fitBounds.map((p) => p.lat);
+    const lons = fitBounds.map((p) => p.lon);
+
+    const bounds = new naver.maps.LatLngBounds(
+      new naver.maps.LatLng(Math.min(...lats), Math.min(...lons)),
+      new naver.maps.LatLng(Math.max(...lats), Math.max(...lons)),
+    );
+
+    // 지도 컨테이너 레이아웃이 잡힌 뒤에 맞춰야 좁은 화면에서 계산이 어긋나지 않는다.
+    const raf = requestAnimationFrame(() => {
+      naver.maps.Event.trigger(map, "resize");
+      map.fitBounds(bounds);
+    });
+
+    return () => cancelAnimationFrame(raf);
+  }, [fitBounds, mapReady, mapOptions]);
 
   useEffect(() => {
     if (!mapInstanceRef.current || typeof naver === "undefined") return;
@@ -248,10 +281,10 @@ function VoteMap({
       const radius = !circleItem.size
         ? 1000
         : circleItem.size === "sm"
-        ? 2000
-        : circleItem.size === "md"
-        ? 3000
-        : 4000;
+          ? 2000
+          : circleItem.size === "md"
+            ? 3000
+            : 4000;
 
       const circle = new naver.maps.Circle({
         map,

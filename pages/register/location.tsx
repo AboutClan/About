@@ -1,5 +1,5 @@
 import { Box, Flex, Switch } from "@chakra-ui/react";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, ReactNode, useState } from "react";
 
 import BottomNav from "@/components/layouts/BottomNav";
 import ProgressHeader from "@/components/molecules/headers/ProgressHeader";
@@ -63,6 +63,10 @@ interface RegisterLocationLayoutProps {
   isLoading?: boolean;
   isChangeLocation?: boolean | null;
   setIsChangeLocation?: DispatchBoolean;
+  /** 검색 입력 위(스크롤 영역 안)에 끼워 넣을 영역. 미전달이면 기존 화면 그대로다. */
+  topSlot?: ReactNode;
+  /** 검색 입력 바로 위에 붙는 섹션 라벨. topSlot과 구분을 주려고 쓴다. */
+  searchSectionLabel?: ReactNode;
 }
 
 export function RegisterLocationLayout({
@@ -77,6 +81,8 @@ export function RegisterLocationLayout({
   isLoading,
   isChangeLocation = null,
   setIsChangeLocation = null,
+  topSlot,
+  searchSectionLabel,
 }: RegisterLocationLayoutProps) {
   const content = (
     <RegisterLayout errorMessage={errorMessage} isSlide={isSlide}>
@@ -93,6 +99,8 @@ export function RegisterLocationLayout({
           </>
         )}
       </RegisterOverview>
+      {topSlot}
+      {searchSectionLabel}
       <Box>
         <SearchLocation
           placeInfo={placeInfo}
@@ -136,7 +144,13 @@ export function RegisterLocationLayout({
           {content}
         </Box>
         <Box px={4}>
-          <BottomNav isLoading={isLoading} onClick={handleButton} url={url} text={text} isSlide={false} />
+          <BottomNav
+            isLoading={isLoading}
+            onClick={handleButton}
+            url={url}
+            text={text}
+            isSlide={false}
+          />
         </Box>
       </Flex>
     );

@@ -9,6 +9,8 @@ import Slide from "@/components/layouts/PageSlide";
 import { ModalLayout } from "@/components/modals/Modals";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import StudyIntroduceDrawer from "@/features/study/screens/StudyIntroduceDrawer";
+import StudyMyApplySection from "@/features/study/screens/StudyMyApplySection";
+import StudyUnmatchedBanner from "@/features/study/screens/StudyUnmatchedBanner";
 import { LocationAddDrawer } from "@/features/studyMap/components/LocationAddDrawer";
 import StudyCrewRow from "@/features/studyPage/screens/StudyCrewRow";
 import StudyPageHeader from "@/features/studyPage/screens/StudyPageHeader";
@@ -48,6 +50,17 @@ export default function StudyPage() {
   const { data: passedStudyData } = useStudyPassedDayQuery(date, {
     enabled: !!date && isPassedDate,
   });
+
+  // 오늘 결과가 확정된 뒤, 내가 매칭에서 빠졌는지. 서버가 unmatchedUsers를 내려주지만
+  // 지금까지 컨버터에서 버려져 화면에 도달하지 못했다.
+  const isUnmatchedToday = useMemo(() => {
+    if (!studySet?.unmatched?.length || !userInfo?._id) return false;
+
+    return studySet.unmatched.some(
+      (entry) =>
+        entry.date === getTodayStr() && entry.users.some((user) => user._id === userInfo._id),
+    );
+  }, [studySet?.unmatched, userInfo?._id]);
 
   const replaceQuery = (query: Record<string, string | null | undefined>) => {
     const nextQuery = {
@@ -175,6 +188,33 @@ export default function StudyPage() {
         <StudyCrewRow />
       </Slide>
 
+      {isUnmatchedToday && (
+        <Slide>
+          <Box mb={4}>
+            <StudyUnmatchedBanner
+              // drawer=apply가 StudyControlButton의 시트를 열고,
+              // modal=apply를 StudyControlDrawer가 받아 신청 드로어까지 연다.
+              onApplyOtherDate={() => replaceQuery({ drawer: "apply", modal: "apply" })}
+              onSoloStudy={() =>
+                router.push(`/vote/attend/configuration?date=${getTodayStr()}&type=soloRealTimes`)
+              }
+            />
+          </Box>
+        </Slide>
+      )}
+
+      {userInfo?.role !== "guest" && studySet && (
+        <Slide>
+          <Box mb={4}>
+            <StudyMyApplySection
+              studySet={studySet}
+              myId={userInfo?._id}
+              onEdit={() => replaceQuery({ drawer: "apply", modal: "applyChange" })}
+            />
+          </Box>
+        </Slide>
+      )}
+
       <Slide>
         <StudyPagePlaceSection
           studySet={isPassedDate ? passedStudyData : studySet}
@@ -187,13 +227,13 @@ export default function StudyPage() {
 
       {modal === "cafe" && <LocationAddDrawer onClose={closeDrawer} />}
 
-      <Box mb={20} mt={5}>
-        <StudyControlButton date={date} />
-      </Box>
+      {userInfo?.role !== "guest" && (
+        <Box mb={20} mt={5}>
+          <StudyControlButton date={date} />
+        </Box>
+      )}
 
       {modal === "introduce" && <StudyIntroduceDrawer onClose={closeDrawer} />}
-
-    
     </>
   );
 }

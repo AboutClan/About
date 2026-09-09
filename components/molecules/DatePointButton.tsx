@@ -43,7 +43,6 @@ function DatePointButton({
   }
 
   const dateNum = dayjs(date).date();
-  console.log(31, date, dateNum);
   return (
     <Button
       variant="unstyled"

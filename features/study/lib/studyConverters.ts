@@ -13,6 +13,7 @@ import {
   StudyConfirmedSetProps,
   StudyParticipationsSetProps,
   StudySetProps,
+  StudyWeekSetProps,
 } from "@/types/models/studyTypes/study-set.types";
 
 // export const convertStudyToMergeStudy = (
@@ -35,12 +36,22 @@ import {
 
 export const setStudyWeekData = (
   initialStudySet: StudySetInitialDataProps[] = [],
-): StudySetProps => {
-  return initialStudySet.reduce<StudySetProps>(
+): StudyWeekSetProps => {
+  return initialStudySet.reduce<StudyWeekSetProps>(
     (acc, oneDay) => {
-      const { date, participations = [], realTimes, results = [] } = oneDay;
+      const {
+        date,
+        participations = [],
+        realTimes,
+        results = [],
+        unmatchedUsers = [],
+      } = oneDay;
 
       acc.participations.push({ date, study: convertParticipations(participations) });
+
+      if (unmatchedUsers.length) {
+        acc.unmatched.push({ date, users: unmatchedUsers });
+      }
 
       if (realTimes?.length) {
         const { soloUsers, openUsers } = realTimes.reduce(
@@ -98,7 +109,7 @@ export const setStudyWeekData = (
 
       return acc;
     },
-    { participations: [], soloRealTimes: [], openRealTimes: [], results: [] },
+    { participations: [], soloRealTimes: [], openRealTimes: [], results: [], unmatched: [] },
   );
 };
 export const setStudyOneDayData = (
@@ -407,19 +418,31 @@ export const setRealTimesGroup = (
 const convertParticipations = (
   participations: InitialParticipationsProps[],
 ): StudyParticipationProps[] => {
-  return participations.map((par) => ({
-    ...par,
-    location: {
+  return participations.map((par) => {
+    const primary = {
       name: "",
       latitude: par.latitude,
       longitude: par.longitude,
       address: par.locationDetail,
-    },
-    times: {
-      start: par.start,
-      end: par.end,
-    },
-  }));
+    };
+
+    return {
+      ...par,
+      location: primary,
+      locations: par.anchors?.length
+        ? par.anchors.map((anchor) => ({
+            name: "",
+            latitude: anchor.latitude,
+            longitude: anchor.longitude,
+            address: anchor.locationDetail ?? par.locationDetail,
+          }))
+        : [primary],
+      times: {
+        start: par.start,
+        end: par.end,
+      },
+    };
+  });
 };
 
 export const shortenParticipations = (

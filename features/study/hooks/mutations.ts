@@ -7,7 +7,11 @@ import { requestServer } from "@/libs/methodHelpers";
 import { PointInfoProps, PointValueProps } from "@/types/common";
 import { MutationOptions } from "@/types/hooks/reactTypes";
 import { PlaceRegisterProps, PlaceReviewProps } from "@/types/models/studyTypes/entityTypes";
-import { IStudyVoteTime, StudyVoteProps } from "@/types/models/studyTypes/studyInterActions";
+import {
+  IStudyVoteTime,
+  StudyVoteAnchorProps,
+  StudyVoteProps,
+} from "@/types/models/studyTypes/studyInterActions";
 import { DayjsTimeProps, StringTimeProps } from "@/types/utils/timeAndDate";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 
@@ -28,10 +32,15 @@ export const useStudyVoteArrMutation = (
       end: string;
       latitude: number;
       longitude: number;
+      locationDetail: string;
+      eps: number;
+      anchors?: StudyVoteAnchorProps[];
       dates: string[];
     }>({
       method: "post",
-      url: `vote2/${dates?.[0]}/dateArr`,
+      // 신청 취소는 dates가 빈 배열이라 URL의 :date가 비는데, 서버는 :date를 쓰지 않고
+      // body의 dates만 본다. 그래도 로그가 지저분해지므로 오늘 날짜로 채워 둔다.
+      url: `vote2/${dates?.[0] ?? dayjsToStr(dayjs())}/dateArr`,
       body: { ...voteInfo, start: start.toISOString(), end: end.toISOString(), dates },
     });
   }, options);

@@ -198,15 +198,41 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
       : filterMembers;
 
   const buildParticipationCard = (participant: StudyParticipationProps): IProfileCommentCard => {
-    const addressArr = participant.location?.address?.split(" ");
-    const locationName = addressArr?.[1] || addressArr?.[0];
+    // 기준점을 2개까지 지정할 수 있으므로 지역도 최대 2개가 나온다.
+    // 같은 구를 두 번 찍은 경우는 하나로 합친다.
+    const sources = participant.locations?.length
+      ? participant.locations
+      : [participant.location];
+
+    const regionNames = Array.from(
+      new Set(
+        sources
+          .map((loc) => {
+            const addressArr = loc?.address?.split(" ");
+            return addressArr?.[1] || addressArr?.[0];
+          })
+          .filter(Boolean),
+      ),
+    ).slice(0, 2);
+
     return {
       user: participant.user,
       memo: participant.user?.comment,
-      rightComponent: locationName ? (
-        <Badge variant="subtle" colorScheme="blue" size="md" maxW="70px" isTruncated>
-          {locationName}
-        </Badge>
+      rightComponent: regionNames.length ? (
+        <Flex gap={1} justify="flex-end" flexShrink={0}>
+          {regionNames.map((name) => (
+            <Badge
+              key={name}
+              variant="subtle"
+              colorScheme="blue"
+              size="md"
+              maxW="66px"
+              isTruncated
+            >
+              {name}
+            </Badge>
+          ))}
+        </Flex>
       ) : null,
     };
   };

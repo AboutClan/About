@@ -3,7 +3,9 @@ import dayjs, { Dayjs } from "dayjs";
 import Image from "next/image";
 import { Dispatch, useEffect, useState } from "react";
 
-import BottomFlexDrawer, { BottomFlexDrawerOptions } from "@/components/modals/drawer/BottomFlexDrawer";
+import BottomFlexDrawer, {
+  BottomFlexDrawerOptions,
+} from "@/components/modals/drawer/BottomFlexDrawer";
 import RulletPickerTwo from "@/components/molecules/picker/RulletPickerTwo";
 import { STUDY_VOTE_HOUR_ARR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
 import { TimeOptionCard } from "@/features/community/screens/TestClock";
@@ -99,7 +101,27 @@ export default function StudyVoteTimeRulletDrawer({
             </Button>
           </>
         ) : (
-          <StudyVoteTimeRullets defaultVoteTime={defaultVoteTime} setVoteTime={setVoteTime} />
+          <>
+            <Flex w="full" mb={2}>
+              <Button
+                variant="unstyled"
+                display="flex"
+                alignItems="center"
+                h="auto"
+                fontSize="13px"
+                fontWeight={500}
+                color="gray.600"
+                onClick={() => {
+                  // 프리셋으로 돌아가면 기본값(점심)이 다시 적용된다.
+                  setSelectedPreset("lunch");
+                  setIsFirst(true);
+                }}
+              >
+                ← 추천 시간대로
+              </Button>
+            </Flex>
+            <StudyVoteTimeRullets defaultVoteTime={defaultVoteTime} setVoteTime={setVoteTime} />
+          </>
         )}
       </BottomFlexDrawer>
     </>

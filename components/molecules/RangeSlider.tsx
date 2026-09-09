@@ -16,9 +16,17 @@ interface RangeSliderProps {
   setNums: DispatchType<number[]>;
   numberArr: number[];
   isNumber?: boolean;
+  /** 눈금 라벨을 직접 지정한다. 미전달 시 기존 동작(숫자 또는 "N단계") 그대로. */
+  labelArr?: string[];
 }
 
-function RangeSlider({ defaultNums, setNums, numberArr, isNumber = true }: RangeSliderProps) {
+function RangeSlider({
+  defaultNums,
+  setNums,
+  numberArr,
+  isNumber = true,
+  labelArr,
+}: RangeSliderProps) {
   return (
     <>
       <Layout initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }}>
@@ -52,8 +60,14 @@ function RangeSlider({ defaultNums, setNums, numberArr, isNumber = true }: Range
         <Flex justify="space-between" mt={3}>
           {numberArr.map((num, idx) => (
             <Box color="gray.600" fontSize="12px" key={num}>
-              {!isNumber && idx === 0 ? "범위" : num}
-              {!isNumber && idx !== 0 && "단계"}
+              {labelArr ? (
+                labelArr[idx]
+              ) : (
+                <>
+                  {!isNumber && idx === 0 ? "범위" : num}
+                  {!isNumber && idx !== 0 && "단계"}
+                </>
+              )}
             </Box>
           ))}
         </Flex>

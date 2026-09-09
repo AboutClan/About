@@ -13,6 +13,8 @@ import { StringTimeProps, TimeStampProps } from "@/types/utils/timeAndDate";
 export interface StudyParticipationProps {
   user: UserSimpleInfoProps;
   location: LocationProps;
+  /** 기준점이 여러 개일 수 있다. location은 anchors[0]과 같다. */
+  locations?: LocationProps[];
   isBeforeResult: boolean;
   times: TimeRangeProps;
   dates?: string[];

@@ -1,4 +1,5 @@
 import { StudyConfirmedProps, StudyParticipationProps } from "@/types/models/studyTypes/study-entity.types";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 /**
  * Collection of two types of study sets
@@ -12,6 +13,15 @@ type StudyValueMap = {
 };
 
 export type StudySetProps = { [K in keyof StudyValueMap]: StudyValueMap[K][] };
+
+/**
+ * 주간 응답 전용. StudySetProps는 매핑 타입이라 여기에 필드를 직접 넣으면
+ * StudySetEntry까지 오염되므로 상속으로만 얹는다.
+ */
+export interface StudyWeekSetProps extends StudySetProps {
+  /** 매칭에 실패한 사람들. 결과가 확정된 날짜에만 채워진다. */
+  unmatched: { date: string; users: UserSimpleInfoProps[] }[];
+}
 
 /**
  * study entry types

@@ -22,7 +22,10 @@ import {
   StudyPlaceProps,
   StudyRatingProps,
 } from "@/types/models/studyTypes/study-entity.types";
-import { StudySetProps } from "@/types/models/studyTypes/study-set.types";
+import {
+  StudySetProps,
+  StudyWeekSetProps,
+} from "@/types/models/studyTypes/study-set.types";
 import { IStudyVotePlaces } from "@/types/models/studyTypes/studyInterActions";
 import { IArrivedData, VoteCntProps } from "@/types/models/studyTypes/studyRecords";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
@@ -49,6 +52,8 @@ export interface InitialParticipationsProps {
   longitude: number;
   user: UserSimpleInfoProps;
   isBeforeResult: boolean;
+  /** 매칭 기준점 1~2개. 서버가 없으면 flat 좌표로 정규화해 내려준다. */
+  anchors?: { latitude: number; longitude: number; locationDetail?: string }[];
 }
 
 export interface InitialRealTimesProps {
@@ -67,17 +72,17 @@ export interface InitialRealTimesProps {
 }
 
 type StudyWeekQueryOptions = Omit<
-  UseQueryOptions<StudySetInitialDataProps[], AxiosError, StudySetProps>,
+  UseQueryOptions<StudySetInitialDataProps[], AxiosError, StudyWeekSetProps>,
   "queryKey" | "queryFn" | "select"
 >;
 
 const studyWeekCacheMap = new WeakMap<
   StudySetInitialDataProps[], // 서버 원본 배열 "참조" 키
-  Map<string, StudySetProps> // dateKey별 결과 저장
+  Map<string, StudyWeekSetProps> // dateKey별 결과 저장
 >();
 
 export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) =>
-  useQuery<StudySetInitialDataProps[], AxiosError, StudySetProps>(
+  useQuery<StudySetInitialDataProps[], AxiosError, StudyWeekSetProps>(
     [STUDY_VOTE, "week"],
     async () => {
       const { data } = await axios.get<StudySetInitialDataProps[]>(`${SERVER_URI}/vote2/week`);
