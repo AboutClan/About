@@ -7,8 +7,9 @@ import { CopyBtn } from "@/components/Icons/CopyIcon";
 import { useUserRegisterFormsQuery } from "@/features/admin/hooks/quries";
 import { IUserRegisterForm } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
+import { safeDecodeTel } from "@/utils/utils";
 
-const START_DATE = "2026-05-21";
+const START_DATETIME = "2026-07-28 16:30";
 const MIN_BIRTH_YEAR = 1997;
 
 const getBirthYear = (birth: string) => {
@@ -29,35 +30,40 @@ function AdminRegister2() {
   const { data: applyData } = useUserRegisterFormsQuery();
 
   const filteredData =
-    applyData?.filter((who) => {
-      const isAfterStart = !dayjs(who.updatedAt).isBefore(dayjs(START_DATE), "day");
-      const birthYear = getBirthYear(who.birth);
-      const isYoungerThanMinBirthYear = birthYear !== null && birthYear > MIN_BIRTH_YEAR;
+    applyData
+      ?.filter((who) => {
+        const isAfterStart = !dayjs(who.updatedAt).isBefore(dayjs(START_DATETIME));
+        const birthYear = getBirthYear(who.birth);
+        const isYoungerThanMinBirthYear = birthYear !== null && birthYear > MIN_BIRTH_YEAR;
 
-      return isAfterStart && isYoungerThanMinBirthYear;
-    }) ?? [];
+        return isAfterStart && isYoungerThanMinBirthYear;
+      })
+      .map((who) => ({ ...who, telephone: safeDecodeTel(who.telephone) })) ?? [];
 
-  const maleContacts = filteredData
-    .filter((who) => who.gender === "남성")
-    .map((who) => who.telephone)
-    .filter(Boolean)
-    .join("\n");
+  const getContacts = (gender: IUserRegisterForm["gender"]) =>
+    filteredData
+      .filter((who) => who.gender === gender)
+      .map((who) => who.telephone)
+      .filter(Boolean);
 
-  const femaleContacts = filteredData
-    .filter((who) => who.gender === "여성")
-    .map((who) => who.telephone)
-    .filter(Boolean)
-    .join("\n");
+  const maleContacts = getContacts("남성");
+  const femaleContacts = getContacts("여성");
 
   return (
     <>
       <Header title="연락처 일괄 조회" url="/admin" />
       <Layout>
         <TopBar>
-          <span>총 {filteredData.length}명</span>
+          <span>
+            총 {filteredData.length}명 (남 {maleContacts.length} / 여 {femaleContacts.length})
+          </span>
           <CopyBtnGroup>
-            {maleContacts && <CopyBtn size="md" text={maleContacts} label="남성 전체 복사" />}
-            {femaleContacts && <CopyBtn size="md" text={femaleContacts} label="여성 전체 복사" />}
+            {!!maleContacts.length && (
+              <CopyBtn size="md" text={maleContacts.join("\n")} label="남성 전체 복사" />
+            )}
+            {!!femaleContacts.length && (
+              <CopyBtn size="md" text={femaleContacts.join("\n")} label="여성 전체 복사" />
+            )}
           </CopyBtnGroup>
         </TopBar>
         <Main>
