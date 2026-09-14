@@ -141,7 +141,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
           rightText={
             gatherType === "officialGather" ? (
               <>
-                현재 신청중인 인원{" "}
+                {status === "pending" ? "현재 신청중인 인원" : "총 신청 인원"}{" "}
                 <Box as="span" fontWeight={600}>
                   {applicantCount}명
                 </Box>

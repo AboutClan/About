@@ -76,7 +76,7 @@ function GatherOfficialParticipationChart({ data }: IGatherOfficialParticipation
           참여 인원 통계
         </Text>
         <Text fontSize="12px" color="gray.500">
-          현재 신청중인 인원{" "}
+          {data.status === "pending" ? "현재 신청중인 인원" : "총 신청 인원"}{" "}
           <Text as="span" fontWeight={600}>
             {applicantCount}명
           </Text>

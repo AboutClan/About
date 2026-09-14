@@ -151,13 +151,15 @@ export function GatherThumbnailCard({
                   : statusProps.text}
               </Badge>
 
-              <Badge size="md" colorScheme="gray" color="var(--gray-600)">
-                {category}
-              </Badge>
+              {gatherType !== "officialGather" && (
+                <Badge size="md" colorScheme="gray" color="var(--gray-600)">
+                  {category}
+                </Badge>
+              )}
             </Flex>
             {gatherType === "officialGather" ? (
               <Box fontSize="12px" fontWeight={400} color="gray.500">
-                현재 신청중인 인원{" "}
+                {status === "pending" ? "현재 신청중인 인원" : "총 신청 인원"}{" "}
                 <Box as="span" fontWeight={600}>
                   {applicantCount}명
                 </Box>
