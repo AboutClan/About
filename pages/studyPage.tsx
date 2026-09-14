@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import Slide from "@/components/layouts/PageSlide";
 import { ModalLayout } from "@/components/modals/Modals";
+import { STUDY_UNMATCHED_BANNER_CLOSED_AT } from "@/constants/keys/localStorage";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import StudyIntroduceDrawer from "@/features/study/screens/StudyIntroduceDrawer";
 import StudyMyApplySection from "@/features/study/screens/StudyMyApplySection";
@@ -20,6 +21,7 @@ import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entity.types";
 import { getTodayStr } from "@/utils/dateTimeUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 type ModalType = "cafe" | "introduce" | null;
 
@@ -61,6 +63,20 @@ export default function StudyPage() {
         entry.date === getTodayStr() && entry.users.some((user) => user._id === userInfo._id),
     );
   }, [studySet?.unmatched, userInfo?._id]);
+
+  // 배너를 닫은 날짜. 같은 날 다시 방문해도 뜨지 않고, 다음 날 실패하면 다시 보인다.
+  // localStorage는 클라이언트에서만 읽을 수 있어 마운트 후에 불러온다.
+  const [unmatchedBannerClosedAt, setUnmatchedBannerClosedAt] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUnmatchedBannerClosedAt(getLocalStorageObj(STUDY_UNMATCHED_BANNER_CLOSED_AT));
+  }, []);
+
+  const closeUnmatchedBanner = () => {
+    const today = getTodayStr();
+    setUnmatchedBannerClosedAt(today);
+    setLocalStorageObj(STUDY_UNMATCHED_BANNER_CLOSED_AT, today);
+  };
 
   const replaceQuery = (query: Record<string, string | null | undefined>) => {
     const nextQuery = {
@@ -188,10 +204,11 @@ export default function StudyPage() {
         <StudyCrewRow />
       </Slide>
 
-      {isUnmatchedToday && (
+      {isUnmatchedToday && unmatchedBannerClosedAt !== getTodayStr() && (
         <Slide>
           <Box mb={4}>
             <StudyUnmatchedBanner
+              onClose={closeUnmatchedBanner}
               // drawer=apply가 StudyControlButton의 시트를 열고,
               // modal=apply를 StudyControlDrawer가 받아 신청 드로어까지 연다.
               onApplyOtherDate={() => replaceQuery({ drawer: "apply", modal: "apply" })}

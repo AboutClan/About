@@ -3,27 +3,58 @@ import { useEffect, useState } from "react";
 
 import AlertModal from "@/components/AlertModal";
 import ProfileCommentCard from "@/components/molecules/cards/ProfileCommentCard";
-import { useAdminPoint2Mutation } from "@/features/admin/hooks/mutation";
 import { usePointSystemMutation } from "@/features/user/hooks/mutations";
-import { IGather } from "@/types/models/gatherTypes/gatherTypes";
+import { GatherAbsenceType, IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+
+interface AbsenceBoardUser {
+  user: UserSimpleInfoProps;
+  text: string;
+  isAbsence: boolean;
+  absenceType?: GatherAbsenceType;
+}
 
 interface UserAbsenceBoardProps {
   gatherData: IGather;
-  users: { user: UserSimpleInfoProps; text: string; isAbsence: boolean }[];
-
-  handleDelete: (userId: string) => void;
+  users: AbsenceBoardUser[];
+  handleDelete: (userId: string, type: GatherAbsenceType) => void;
 }
 
-function UserAbsenceBoard({ gatherData, users, handleDelete }: UserAbsenceBoardProps) {
-  const { mutate: updatePoint } = useAdminPoint2Mutation();
+// 차감 금액의 기준은 서버(CONST.POINT.GATHER_ABSENCE_*)다. 여기 값은 안내 문구용이다.
+const ABSENCE_OPTIONS: Record<
+  GatherAbsenceType,
+  { label: string; point: number; colorScheme: string; variant: string; description: string }
+> = {
+  normal: {
+    label: "일반 불참",
+    point: 1000,
+    colorScheme: "orange",
+    variant: "subtle",
+    description: "모임 하루이틀 전에 불참을 알린 경우예요.",
+  },
+  noshow: {
+    label: "당일 노쇼",
+    point: 3000,
+    colorScheme: "red",
+    variant: "subtle",
+    description: "모임 당일에 불참한 경우예요.",
+  },
+  nomanner: {
+    label: "비매너 불참",
+    point: 5000,
+    colorScheme: "red",
+    variant: "solid",
+    description: "연락 없이 당일에 불참한 경우예요.",
+  },
+};
+
+const ABSENCE_ORDER: GatherAbsenceType[] = ["normal", "noshow", "nomanner"];
+
+function UserAbsenceBoard({ users, handleDelete }: UserAbsenceBoardProps) {
   const { mutate: getPoint } = usePointSystemMutation("point");
 
-  const [deleteUserId, setDeleteUserId] = useState<string>(null);
-  const [isNoManner, setIsNoManner] = useState(false);
-  const [members, setMembers] = useState<
-    { user: UserSimpleInfoProps; text: string; isAbsence: boolean }[]
-  >([]);
+  const [target, setTarget] = useState<{ userId: string; type: GatherAbsenceType }>(null);
+  const [members, setMembers] = useState<AbsenceBoardUser[]>([]);
 
   useEffect(() => {
     if (!members.length && users.length) {
@@ -31,98 +62,61 @@ function UserAbsenceBoard({ gatherData, users, handleDelete }: UserAbsenceBoardP
     }
   }, [users]);
 
-  const title =
-    gatherData.title.length > 16 ? gatherData.title.slice(0, 16) + "..." : gatherData.title;
-
-  const deleteUserUid = gatherData?.participants?.find((par) => par?.user._id === deleteUserId)
-    ?.user?.uid;
+  const targetOption = target ? ABSENCE_OPTIONS[target.type] : null;
 
   return (
     <>
       <Flex direction="column">
-        {members?.map((user, idx) => (
+        {members?.map((member, idx) => (
           <ProfileCommentCard
             key={idx}
-            user={user.user}
-            comment={{ comment: user.text }}
+            user={member.user}
+            comment={{ comment: member.text }}
             rightComponent={
-              user.isAbsence ? (
+              member.isAbsence ? (
                 <Box fontSize="11px" color="red">
-                  불참 처리
+                  {ABSENCE_OPTIONS[member.absenceType]?.label ?? "불참 처리"}
                 </Box>
               ) : (
-                <>
-                  <Flex>
+                <Flex gap={1}>
+                  {ABSENCE_ORDER.map((type) => (
                     <Button
-                      mr={1}
-                      isDisabled={user?.isAbsence ? true : false}
-                      size="sm"
-                      colorScheme={user?.isAbsence ? "gray" : "orange"}
-                      variant="subtle"
-                      onClick={() => {
-                        setIsNoManner(false);
-                        setDeleteUserId(user.user._id);
-                      }}
+                      key={type}
+                      size="xs"
+                      colorScheme={ABSENCE_OPTIONS[type].colorScheme}
+                      variant={ABSENCE_OPTIONS[type].variant}
+                      onClick={() => setTarget({ userId: member.user._id, type })}
                     >
-                      일반 불참
+                      {ABSENCE_OPTIONS[type].label}
                     </Button>
-                    <Button
-                      isDisabled={user?.isAbsence ? true : false}
-                      size="sm"
-                      variant="subtle"
-                      colorScheme="red"
-                      onClick={() => {
-                        setIsNoManner(true);
-                        setDeleteUserId(user.user._id);
-                      }}
-                    >
-                      비매너 불참
-                    </Button>
-                  </Flex>
-                </>
+                  ))}
+                </Flex>
               )
             }
           />
         ))}
       </Flex>
-      {deleteUserId && (
+      {target && targetOption && (
         <AlertModal
           options={{
-            title: isNoManner ? "비매너 불참" : "일반 불참",
-            subTitle: isNoManner
-              ? "무단 잠수, 불참으로 인한 피해 발생, 이해할 수 없는 파토 등 비매너 불참의 경우 체크해 주세요. 해당 멤버는 3,000원의 패널티가 부과되며, 모임장님에게도 추가 보상이 전달됩니다. (초대받은 경우 제외)"
-              : `모임 직전에 불참한 인원인가요? 해당 멤버는 2,000원의 패널티가 부과되며, 모임장님에게도 추가 보상이 전달됩니다. (초대받은 경우 제외)`,
+            title: targetOption.label,
+            subTitle: `${targetOption.description} 해당 멤버에게 ${targetOption.point.toLocaleString()} 포인트 패널티가 부과되고 알림이 발송되며, 모임장님에게도 추가 보상이 전달됩니다.`,
             func: () => {
-              handleDelete(deleteUserId);
-
-              if (isNoManner) {
-                updatePoint({
-                  uid: deleteUserUid,
-                  data: {
-                    value: -3000,
-                    sub: "gather",
-                    message: `[${title}] 모임 불참 패널티(비매너)`,
-                  },
-                });
-              } else {
-                updatePoint({
-                  uid: deleteUserUid,
-                  data: { value: -2000, sub: "gather", message: `[${title}] 모임 불참 패널티` },
-                });
-              }
+              handleDelete(target.userId, target.type);
               getPoint({ value: 1000, sub: "gather", message: "노쇼 인원에 대한 포인트 보상" });
 
               setMembers((old) =>
-                old.map((props) => ({
-                  ...props,
-                  isAbsence: props.user._id === deleteUserId ? true : props.isAbsence,
-                })),
+                old.map((props) =>
+                  props.user._id === target.userId
+                    ? { ...props, isAbsence: true, absenceType: target.type }
+                    : props,
+                ),
               );
-              setDeleteUserId(null);
+              setTarget(null);
             },
             text: "불참 처리",
           }}
-          setIsModal={() => setDeleteUserId(null)}
+          setIsModal={() => setTarget(null)}
         />
       )}
     </>

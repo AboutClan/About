@@ -17,7 +17,7 @@ import {
   useGatherStatusMutation,
 } from "@/features/gather/hooks/mutations";
 import { useResetGatherQuery } from "@/features/gather/hooks/useResetGatherQuery";
-import { isGatherEditState , sharedGatherWritingState } from "@/features/gather/state";
+import { isGatherEditState, sharedGatherWritingState } from "@/features/gather/state";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useKakaoShare } from "@/hooks/custom/KakaoShareHook2";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
@@ -162,8 +162,9 @@ function GatherHeader({ gatherData }: IGatherHeader) {
                 user: who.user,
                 text: who.user.comment,
                 isAbsence: who?.absence,
+                absenceType: who?.absenceType,
               }))}
-            handleDelete={(userId) => absenceCheck({ userId })}
+            handleDelete={(userId, type) => absenceCheck({ userId, type })}
           />
         </RightDrawer>
       )}{" "}

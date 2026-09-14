@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
@@ -11,6 +11,7 @@ import GatherDateParticipationChart, {
   IGatherDateParticipationStat,
 } from "@/features/gather/screens/detail/GatherDateParticipationChart";
 import GatherOfficialParticipationChart from "@/features/gather/screens/detail/GatherOfficialParticipationChart";
+import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   GatherCategory,
@@ -32,7 +33,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
     (acc, par) => acc + 1 + (par.withCompanion ? 1 : 0),
     0,
   );
-  console.log(5, data);
+  const applicantCount = getApplicantCount(participantsCnt, data.waiting?.length ?? 0, data.id);
   const isMyGather = data.participants?.some((p) => p.user?._id === userInfo?._id);
 
   const isPrivileged = userInfo?.role === "previliged";
@@ -137,6 +138,16 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
           type={status as "open" | "pending"}
           participantsCnt={participantsCnt + (isAdminOpen ? 0 : 1)}
           maxCnt={data?.memberCnt.max}
+          rightText={
+            gatherType === "officialGather" ? (
+              <>
+                현재 신청중인 인원{" "}
+                <Box as="span" fontWeight={600}>
+                  {applicantCount}명
+                </Box>
+              </>
+            ) : undefined
+          }
         />
         {isPrivileged && isAnonymizedGather && (
           <Flex justify="flex-end" mb={2}>

@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 
+import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 import { birthToAge } from "@/utils/convertUtils/convertTypes";
@@ -58,15 +59,29 @@ function GatherOfficialParticipationChart({ data }: IGatherOfficialParticipation
 
   if (!total) return null;
 
+  const participantsCnt = (data?.participants || []).reduce(
+    (acc, par) => acc + 1 + (par.withCompanion ? 1 : 0),
+    0,
+  );
+  const applicantCount = getApplicantCount(participantsCnt, data.waiting?.length ?? 0, data.id);
+
   const maxTotal = Math.max(...ageStats.map((stat) => stat.male + stat.female), 1);
   const malePercent = Math.round((totalMale / total) * 100);
   const femalePercent = 100 - malePercent;
 
   return (
     <Box mt={6} mx={5} p={5} py={4} bg="gray.100" border="var(--border-main)" borderRadius="8px">
-      <Text fontSize="15px" fontWeight="bold" mb={1}>
-        참여 인원 통계
-      </Text>
+      <Flex justify="space-between" align="baseline" mb={1}>
+        <Text fontSize="15px" fontWeight="bold">
+          참여 인원 통계
+        </Text>
+        <Text fontSize="12px" color="gray.500">
+          현재 신청중인 인원{" "}
+          <Text as="span" fontWeight={600}>
+            {applicantCount}명
+          </Text>
+        </Text>
+      </Flex>
       <Text fontSize="12px" color="gray.500" mb={4}>
         나이와 성비로 살펴보는 참여 현황이에요
       </Text>

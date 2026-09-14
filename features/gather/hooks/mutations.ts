@@ -3,13 +3,17 @@ import { useMutation } from "react-query";
 
 import { requestServer } from "@/libs/methodHelpers";
 import { MutationOptions } from "@/types/hooks/reactTypes";
-import { GatherRequestWritingProps, IGather } from "@/types/models/gatherTypes/gatherTypes";
+import {
+  GatherAbsenceType,
+  GatherRequestWritingProps,
+  IGather,
+} from "@/types/models/gatherTypes/gatherTypes";
 
 type GatherWritingParam<T> = T extends "post"
   ? FormData
   : T extends "patch"
-  ? FormData | { gather: IGather }
-  : { gatherId: number };
+    ? FormData | { gather: IGather }
+    : { gatherId: number };
 
 /** gather info */
 export const useGatherWritingMutation = <T extends "post" | "patch" | "delete">(
@@ -201,16 +205,17 @@ export const useGatherStatusMutation = (gatherId: number, options?: MutationOpti
   );
 export const useGatherAbsenceCheckMutation = (
   gatherId: number,
-  options?: MutationOptions<{ userId: string }>,
+  options?: MutationOptions<{ userId: string; type: GatherAbsenceType }>,
 ) =>
-  useMutation<void, AxiosError, { userId: string }>(
-    ({ userId }) =>
-      requestServer<{ gatherId: string; userId: string }>({
+  useMutation<void, AxiosError, { userId: string; type: GatherAbsenceType }>(
+    ({ userId, type }) =>
+      requestServer<{ gatherId: string; userId: string; type: GatherAbsenceType }>({
         method: "post",
         url: "gather/absence",
         body: {
           gatherId: gatherId + "",
           userId,
+          type,
         },
       }),
     options,

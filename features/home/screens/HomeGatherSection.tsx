@@ -11,13 +11,11 @@ const FEATURED_CATEGORIES = ["officialGather", "openGather", "secretGather", "ga
 
 function HomeGatherSection() {
   const { data: gathers } = useGatherQuery(-1);
-  console.log(4, gathers);
   // 첫번째 섹션(공식 행사)에는 officialGather/openGather/secretGather만 노출된다.
   const featuredPool = gathers?.filter(
     (gather) => gather && FEATURED_CATEGORIES.includes(gather.category),
   );
 
-  console.log(3, featuredPool);
   const featuredData = FEATURED_GATHER_ID_ORDER.length
     ? FEATURED_GATHER_ID_ORDER.map((id) =>
         featuredPool?.find((gather) => gather?.id === id),
@@ -28,9 +26,6 @@ function HomeGatherSection() {
   const usedIds = new Set(featuredData?.map((gather) => gather?.id));
 
   const upcomingData = gathers?.slice(6, 12)?.filter((gather) => gather && !usedIds.has(gather.id));
-  upcomingData?.forEach((gather) => usedIds.add(gather.id));
-
-  const recentData = gathers?.slice(12, 18)?.filter((gather) => gather && !usedIds.has(gather.id));
 
   return (
     <>
@@ -54,28 +49,6 @@ function HomeGatherSection() {
           />
         </SlideSectionCol>
       </SlideSectionRow>
-      {recentData?.length >= 6 && (
-        <SlideSectionRow gap="12px">
-          <SlideSectionCol
-            title="따끈따끈 방금 개설된 모임"
-            subTitle="가장 최근에 새로 열린 모임이에요"
-          >
-            <HomeGatherCol
-              gathers={recentData?.slice(0, 3)?.filter((data) => !!data)}
-              isPriority={false}
-            />
-          </SlideSectionCol>
-          <SlideSectionCol
-            title="따끈따끈 방금 개설된 모임"
-            subTitle="가장 최근에 새로 열린 모임이에요"
-          >
-            <HomeGatherCol
-              gathers={recentData?.slice(3, 6)?.filter((data) => !!data)}
-              isPriority={false}
-            />
-          </SlideSectionCol>
-        </SlideSectionRow>
-      )}
       <SlideSectionRow gap="12px">
         <SlideSectionCol
           title="🔥 놓치면 후회하는 About 공식 행사"

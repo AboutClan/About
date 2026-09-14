@@ -10,8 +10,8 @@ export const GATHER_REVIEW_WRITE = "gatherReviewWrite";
 export const GATHER_REVIEW_RECEIVE = "gatherReviewReceive";
 export const POINT_RECEIVE_AT = "pointReceiveAt";
 export const MEMBERSHIP_AT = "memberShipAt";
-export const FRIEND_INVITE_AT="friendInviteAt"
-export const MT_AT="mtAt"
+export const FRIEND_INVITE_AT = "friendInviteAt";
+export const MT_AT = "mtAt";
 
 //스터디
 
@@ -20,11 +20,13 @@ export const RECENT_STUDY_RECORD = {};
 
 /** */
 export const MY_TODAY_STUDY_FIXED = "myTodayStudyFixed";
+// 매칭 실패 배너를 닫은 날짜(YYYY-MM-DD). 같은 날에는 다시 띄우지 않는다.
+export const STUDY_UNMATCHED_BANNER_CLOSED_AT = "studyUnmatchedBannerClosedAt";
 
 //알림
 export const GATHER_ALERT = "gatherAlert";
 export const NOTICE_ALERT = "noticeAlert";
-export const NOTICE_MESSAGE_ALERT="noticeMessageAlert"
+export const NOTICE_MESSAGE_ALERT = "noticeMessageAlert";
 export const POINT_ALERT = "pointAlert";
 export const LIKE_HEART = "LikeHeart";
 

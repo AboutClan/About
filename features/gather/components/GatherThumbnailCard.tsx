@@ -9,6 +9,7 @@ import { UserIcon } from "@/components/Icons/UserIcons";
 import { InfinityIcon } from "@/components/molecules/cards/StudyThumbnailCard";
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { SingleLineText } from "@/styles/layout/components";
 import {
@@ -98,6 +99,8 @@ export function GatherThumbnailCard({
     0,
   );
 
+  const applicantCount = getApplicantCount(participantsCnt, waitings?.length ?? 0, id);
+
   const has = !!(gatherReview || memberReview);
 
   const statusProps =
@@ -152,7 +155,14 @@ export function GatherThumbnailCard({
                 {category}
               </Badge>
             </Flex>
-            {gatherType === "openGather" ? (
+            {gatherType === "officialGather" ? (
+              <Box fontSize="12px" fontWeight={400} color="gray.500">
+                현재 신청중인 인원{" "}
+                <Box as="span" fontWeight={600}>
+                  {applicantCount}명
+                </Box>
+              </Box>
+            ) : gatherType === "openGather" ? (
               <Badge size="md" ml={1} variant="subtle" colorScheme="blue">
                 오픈 번개
               </Badge>

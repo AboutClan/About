@@ -50,16 +50,10 @@ export interface IGatherWriting {
 }
 
 export type GatherCategory =
-  | "gather"
-  | "event"
-  | "group"
-  | "official"
-  | "openGather"
-  | "secretGather"
-  | "officialGather";
+  "gather" | "event" | "group" | "official" | "openGather" | "secretGather" | "officialGather";
 export type IGatherType = { title: GatherCategoryMain; subtitle?: string };
 
-export type GatherStatus = "open" | "close" | "end" | "pending" | "planned" | "expired"|"today";
+export type GatherStatus = "open" | "close" | "end" | "pending" | "planned" | "expired" | "today";
 
 export type IGatherLocation = {
   main: string;
@@ -80,11 +74,16 @@ export interface IGatherListItem {
     minutes?: number;
   };
 }
+
+/** 모임장이 불참 인원을 체크할 때 고르는 유형. 서버의 GatherAbsenceType과 같다. */
+export type GatherAbsenceType = "normal" | "noshow" | "nomanner";
+
 export interface IGatherParticipants {
   user?: UserSimpleInfoProps;
   phase?: "first" | "second";
   reviewed?: boolean;
   absence?: boolean;
+  absenceType?: GatherAbsenceType;
   withCompanion?: boolean;
   isDummy?: boolean;
   dummyId?: string;
