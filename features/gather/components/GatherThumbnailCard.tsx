@@ -132,7 +132,7 @@ export function GatherThumbnailCard({
       <Flex justify="space-between">
         <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
         <Flex direction="column" ml="12px" flex={1}>
-          <Flex justify="space-between">
+          <Flex justify="space-between" align="center">
             <Flex>
               <Badge
                 mr={1}
