@@ -893,9 +893,14 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["스터디 페이지에 [개인 공부 인증 → 리워드] 기능 추가"],
   },
   {
+    date: "2026-09-16",
+    isCompleted: true,
+    textArr: ["안드로이드에서 [현재 위치 탐색]이 안되던 오류 수정"],
+  },
+  {
     date: "2026-05-18",
     isCompleted: false,
-    textArr: ["스터디 기능 오픈 (9월 10일)"],
+    textArr: ["스터디 기능 오픈 (9월 20일)"],
   },
 ];
 
