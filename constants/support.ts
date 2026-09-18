@@ -52,6 +52,11 @@ export const SUPPORT_LIST: SupportItem[] = [
       "어바웃 멤버 및 지인 적용 가능",
       "하단의 [제휴 혜택 받기] 버튼을 눌러 쿠폰을 받을 수 있습니다",
     ],
+    coupon: {
+      link: "https://event.eduwill.net/Event/2023/0/firm",
+      code: "623002",
+      text: "사이트 접속 → 제휴 혜택 받기 → 쿠폰코드 입력",
+    },
   },
   {
     id: "cafe-lounge",
@@ -251,10 +256,15 @@ export const SUPPORT_LIST: SupportItem[] = [
     imageUrl:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%A0%9C%ED%9C%B4%20%EC%97%85%EC%B2%B4%20%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%A1%AF%EB%8D%B0%EB%AE%A4%EC%A7%80%EC%97%84%203.png",
     description:
-      "롯데월드타워 7층에 위치한 컨템퍼러리 미술 전문 미술관으로, 시즌마다 새로운 주제와 작가의 전시를 선보입니다.",
+      "<이강소 : 일어나고 사라지는> 롯데월드타워 7층에 위치한 컨템퍼러리 미술 전문 미술관으로, 시즌마다 새로운 주제와 작가의 전시를 선보입니다.",
     benefits: ["입장권 20,000원 → 10,000원", "입장권 50% 할인"],
     link: "https://www.lottemuseum.com/",
     useLink: "https://www.lottemuseum.com/",
+    coupon: {
+      link: "https://ticket.interpark.com/Contents/PartnerClosure?BizCode=65639",
+      code: "2026LKS",
+      text: "아래 예매 링크에 쿠폰코드 입력",
+    },
     texts: [
       "어바웃 멤버 및 지인 적용 가능",
       "하단의 [제휴 혜택 받기] 버튼을 눌러 쿠폰을 받을 수 있습니다",
