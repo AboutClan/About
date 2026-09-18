@@ -1,15 +1,17 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 
-import BottomNav from "@/components/layouts/BottomNav";
 import Header from "@/components/layouts/Header";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
+import { STUDY_SPACE_POP_UP } from "@/constants/keys/localStorage";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import StudyPageCalendar from "@/features/studyPage/screens/StudyPageCalendar";
 import StudyPagePlaceSection from "@/features/studyPage/screens/StudyPagePlaceSection";
 import StudyControlButton from "@/features/vote/screens/StudyControlButton";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
+
+const STUDY_APPLY_FORM_URL = "https://forms.gle/Kuj4cgEsjNnRRPM18";
 
 function getTodayStr() {
   return dayjs().format("YYYY-MM-DD");
@@ -17,7 +19,9 @@ function getTodayStr() {
 
 export default function CafeMapStudyPage() {
   const [date, setDate] = useState<string>(getTodayStr());
-  const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [isPopupOpen, setIsPopupOpen] = useState(
+    () => typeof window !== "undefined" && !localStorage.getItem(STUDY_SPACE_POP_UP),
+  );
 
   const isPassedDate = useMemo(
     () => dayjs(date).startOf("day").isBefore(dayjs().startOf("day")),
@@ -65,65 +69,99 @@ export default function CafeMapStudyPage() {
       {isPopupOpen && (
         <BottomFlexDrawer
           isHideBottom
-          height={476}
+          height={520}
           isDrawerUp
           setIsModal={() => setIsPopupOpen(false)}
           isOverlay
           zIndex={701}
         >
-          <Flex flexDir="column" w="full">
-            <Box fontSize="20px" fontWeight={800} mb={5}>
-              🚀 우리 동네 카공 스터디
+          <Flex flexDir="column" w="full" flex={1} minH={0}>
+            <Box flex={1} minH={0} overflowY="auto">
+              <Box fontSize="20px" fontWeight={800} mb={5}>
+                🚀 우리 동네 카공 스터디
+              </Box>
+
+              <Box fontSize="13px" color="gray.700" lineHeight="22px" mb={4}>
+                혼자서는 공부가 잘 안되는 날,
+                <br />
+                언제 어디서든 카공할 사람을 찾고,
+                <br />
+                함께 성장할 수 있는 카공 문화를 만들어가고자 합니다.
+              </Box>
+
+              <Box
+                fontSize="13px"
+                color="gray.500"
+                lineHeight="24px"
+                bg="gray.50"
+                fontWeight={500}
+                borderRadius="10px"
+                px={3}
+                py={3}
+                mb={4}
+              >
+                <li>
+                  현재는 <b style={{ fontWeight: 500 }}>20대</b>부터 순차적으로 스터디를 오픈하고
+                  있어요.
+                </li>
+                <li>
+                  20대는 <b style={{ fontWeight: 500 }}>별도 가입비 없이</b> 바로 스터디 활동을
+                  시작할 수 있어요.
+                </li>
+              </Box>
+
+              <Box fontSize="14px" fontWeight={700} mb={2}>
+                ✨ 스터디 기능 설명
+              </Box>
+              <Flex flexDir="column" gap={1.5} mb={5}>
+                {[
+                  "실명 인증 기반 · 가입비 없음",
+                  "스터디장 & 승인제 시스템",
+                  "출석 체크 및 스터디 편의 기능",
+                  "노쇼 패널티 시스템 & 모임 후 멤버 평가",
+                  "매너온도 기반 신뢰 관리",
+                ].map((text) => (
+                  <Flex key={text} align="center" gap={2}>
+                    <Box
+                      w="4px"
+                      h="4px"
+                      borderRadius="full"
+                      bg="var(--color-mint)"
+                      flexShrink={0}
+                    />
+                    <Box fontSize="13px" color="gray.700">
+                      {text}
+                    </Box>
+                  </Flex>
+                ))}
+              </Flex>
             </Box>
 
-            <Box fontSize="13px" color="gray.700" lineHeight="22px" mb={4}>
-              혼자서는 공부가 잘 안되는 날,
-              <br />
-              언제 어디서든 카공할 사람을 찾고,
-              <br />
-              함께 성장할 수 있는 카공 문화를 만들어가고자 합니다.
-            </Box>
-
-            <Box
-              fontSize="13px"
-              color="gray.500"
-              lineHeight="24px"
-              bg="gray.50"
-              fontWeight={500}
-              borderRadius="10px"
-              px={3}
-              py={3}
-              mb={4}
-            >
-              <li>
-                현재는 <b style={{ fontWeight: 500 }}>[실시간 공부 인증]</b>만 이용 가능합니다.
-              </li>
-              <li>
-                <b style={{ fontWeight: 500 }}>[동네 카공 스터디]</b>는 9월 10일 출시 예정
-              </li>
-            </Box>
-
-            <Box fontSize="14px" fontWeight={700} mb={2}>
-              ✨ 스터디 기능 설명
-            </Box>
-            <Flex flexDir="column" gap={1.5} mb={5}>
-              {[
-                "실명 인증 기반 · 가입비 없음",
-                "스터디장 & 승인제 시스템",
-                "출석 체크 및 스터디 편의 기능",
-                "노쇼 패널티 시스템 & 모임 후 멤버 평가",
-                "매너온도 기반 신뢰 관리",
-              ].map((text) => (
-                <Flex key={text} align="center" gap={2}>
-                  <Box w="4px" h="4px" borderRadius="full" bg="var(--color-mint)" flexShrink={0} />
-                  <Box fontSize="13px" color="gray.700">
-                    {text}
-                  </Box>
-                </Flex>
-              ))}
+            <Flex direction="column" w="100%" mt={2}>
+              <a
+                href={STUDY_APPLY_FORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ width: "100%" }}
+              >
+                <Button as="div" w="full" size="lg" colorScheme="mint">
+                  20대 스터디 신청하기
+                </Button>
+              </a>
+              <Button
+                my={2}
+                h="24px"
+                color="gray.500"
+                fontWeight="semibold"
+                variant="ghost"
+                onClick={() => {
+                  localStorage.setItem(STUDY_SPACE_POP_UP, "DONE");
+                  setIsPopupOpen(false);
+                }}
+              >
+                다시 보지 않기
+              </Button>
             </Flex>
-
-            <BottomNav isSlide={false} text="확인했어요" onClick={() => setIsPopupOpen(false)} />
           </Flex>
         </BottomFlexDrawer>
       )}
