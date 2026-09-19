@@ -12,7 +12,11 @@ import axios from "axios";
 import { SERVER_URI } from "@/constants/system";
 
 // nest-back과 반드시 동일한 값이어야 한다 (nest-back: src/utils/internalAuth.ts).
-const INTERNAL_KEY = "e7996cfca3b07958cf2233af8152d2344da052d15ae0523d1ced5649af928388";
+// COOKIEPAY_INTERNAL_KEY 환경변수를 Vercel/EC2 양쪽에 설정한 뒤에는 아래 하드코딩된
+// fallback 값을 제거할 것 (git 이력에 평문으로 남아있던 값이라 더는 신뢰할 수 없음).
+const INTERNAL_KEY =
+  process.env.COOKIEPAY_INTERNAL_KEY ||
+  "e7996cfca3b07958cf2233af8152d2344da052d15ae0523d1ced5649af928388";
 
 function client() {
   return axios.create({

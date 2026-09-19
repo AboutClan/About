@@ -140,6 +140,15 @@ export function CafeListDrawer({
   );
 }
 
+// 영업시간 문자열("HH:mm - HH:mm")로 지금 영업 중인지 판단. 시간 정보가 없으면 isOpen 은 null.
+export function getOpenStatus(place: StudyPlaceProps): { hour: string; isOpen: boolean | null } {
+  const hour = place.operatingHours?.[0]?.[1] ?? "";
+  if (!hour) return { hour, isOpen: null };
+  const [start, end] = hour.split(" - ");
+  const now = dayjs().format("HH:mm");
+  return { hour, isOpen: now >= start && now <= end };
+}
+
 export function CafeCompactCard({
   place,
   onReviewClick,
@@ -151,13 +160,7 @@ export function CafeCompactCard({
   const reviewCnt =
     (place.ratings?.length || 0) + 2 + Number(place?.location?.latitude?.toString().slice(-1));
 
-  const hour = place.operatingHours?.[0]?.[1] ?? "";
-  const isOpen = (() => {
-    if (!hour) return null;
-    const [start, end] = hour.split(" - ");
-    const now = dayjs().format("HH:mm");
-    return now >= start && now <= end;
-  })();
+  const { hour, isOpen } = getOpenStatus(place);
 
   return (
     <Flex

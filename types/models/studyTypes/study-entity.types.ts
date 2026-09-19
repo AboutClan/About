@@ -83,6 +83,7 @@ export interface StudyCafeMetaProps {
   hasGoodWifi: boolean;
   hasGoodValueDrinks: boolean;
   hasTimeLimit: boolean;
+  goodForDate?: boolean;
 }
 
 // export interface RealTimeMemberProps extends StudyConfirmedMemberProps {

@@ -7,12 +7,13 @@ import CafeMapBottomNav from "@/components/CafeMapBottomNav";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
 import CafeMapAppInstallDrawer from "@/features/cafeMap/screens/CafeMapAppInstallDrawer";
-import CafeMapArchivePage from "@/features/cafeMap/screens/CafeMapArchivePage";
+import CafeMapCommunityPage from "@/features/cafeMap/screens/CafeMapCommunityPage";
 import CafeMapFeedPage from "@/features/cafeMap/screens/CafeMapFeedPage";
 import CafeMapInstagramRewardModal, {
   CAFE_MAP_INSTAGRAM_REWARD_SUB,
 } from "@/features/cafeMap/screens/CafeMapInstagramRewardModal";
 import CafeMapMyPage from "@/features/cafeMap/screens/CafeMapMyPage";
+import CafeMapRankingPage from "@/features/cafeMap/screens/CafeMapRankingPage";
 import CafeMapReviewRequestDrawer from "@/features/cafeMap/screens/CafeMapReviewRequestDrawer";
 import CafeMapStudyPage from "@/features/cafeMap/screens/CafeMapStudyPage";
 import StudyPageMap from "@/features/studyMap/components/StudyPageMap";
@@ -112,8 +113,9 @@ function StudyMap() {
     <>
       {activeTab === "map" && <StudyPageMap isDefaultOpen onClose={onClose} isDown isCafeMap />}
       {activeTab === "feed" && <CafeMapFeedPage />}
-      {activeTab === "bookmark" && <CafeMapArchivePage />}
+      {activeTab === "ranking" && <CafeMapRankingPage />}
       {activeTab === "study" && <CafeMapStudyPage />}
+      {activeTab === "community" && <CafeMapCommunityPage />}
       {activeTab === "profile" && <CafeMapMyPage />}
       <CafeMapBottomNav />
       {isModal && (

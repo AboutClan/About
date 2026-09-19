@@ -31,7 +31,7 @@ function findScrollContainer(el: HTMLElement | null): HTMLElement | null {
   return null;
 }
 
-function useCursorData<T>(
+export function useCursorData<T>(
   useQueryFn: (cursor: number) => { data: T[] | undefined; isLoading: boolean },
 ) {
   const [items, setItems] = useState<T[]>([]);
@@ -56,7 +56,7 @@ function useCursorData<T>(
   return { items, isLoading, firstLoad, hasMore, loadMore };
 }
 
-function useScrollInfinite({
+export function useScrollInfinite({
   isActive,
   isLoading,
   firstLoad,

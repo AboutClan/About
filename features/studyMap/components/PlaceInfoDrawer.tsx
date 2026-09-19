@@ -23,6 +23,12 @@ interface PlaceInfoDrawerProps {
   zIndex?: number;
 }
 
+// 카페 정보 드로어 높이. 지도에서 카페를 드로어 위 영역 가운데로 옮길 때도 쓴다.
+export const getPlaceInfoDrawerHeight = (hasVotePick: boolean) => {
+  const baseH = hasVotePick ? 476 : 432;
+  return typeof window !== "undefined" ? Math.min(baseH, window.innerHeight - 80) : baseH;
+};
+
 function PlaceInfoDrawer({
   placeInfo,
   onClose,
@@ -32,9 +38,7 @@ function PlaceInfoDrawer({
   pickReviewPlace,
   zIndex = 1000,
 }: PlaceInfoDrawerProps) {
-  const baseH = !handleVotePick ? 432 : 476;
-  const drawerHeight =
-    typeof window !== "undefined" ? Math.min(baseH, window.innerHeight - 80) : baseH;
+  const drawerHeight = getPlaceInfoDrawerHeight(!!handleVotePick);
 
   return (
     <>

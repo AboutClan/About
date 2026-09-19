@@ -1,6 +1,8 @@
 import clustering from "density-clustering";
 
 import {
+  getCafeMapPinSize,
+  getCafeMapPlaceIcon,
   getCurrentLocationIcon,
   getPlaceBasicIcon,
   getPlaceCountIcon,
@@ -54,6 +56,7 @@ export const getStudyPlaceMarkersOptions = (
   zoomNumber: number,
   centerLocation?: CoordinatesProps,
   defaultLocation?: CoordinatesProps,
+  isCafeMap = false,
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined" || !placeData?.length) return;
   const temp = [];
@@ -151,6 +154,43 @@ export const getStudyPlaceMarkersOptions = (
 
   if (clusters) {
     clusters.forEach((cluster) => {
+      const isDefaultPlace =
+        defaultLocation && cluster?.defaultLocationLat === defaultLocation?.lat;
+
+      if (isCafeMap) {
+        const normalPin = getCafeMapPinSize({ isEmphasized: isDefaultPlace });
+        const selectedPin = getCafeMapPinSize({ isSelected: true });
+        temp.push({
+          id: cluster._id,
+          ids: cluster.ids,
+          type: "place",
+          position: new naver.maps.LatLng(cluster.center[0], cluster.center[1]),
+          icon: {
+            content: getCafeMapPlaceIcon({
+              // 카공지도는 카페 밀도가 높아 14 에서 라벨이 겹치므로 15 부터 표시.
+              text: cluster.count === 1 && zoomNumber >= 15 ? cluster.name : null,
+              rating: cluster.rating,
+              count: cluster.count,
+              isEmphasized: isDefaultPlace,
+            }),
+            size: new naver.maps.Size(normalPin.width, normalPin.height),
+            anchor: new naver.maps.Point(normalPin.width / 2, normalPin.height),
+          },
+          selectedIcon: {
+            content: getCafeMapPlaceIcon({
+              // 선택된 카페는 줌과 관계없이 이름을 보여준다 (클러스터는 목록으로 열리므로 제외).
+              text: cluster.count === 1 ? cluster.name : null,
+              rating: cluster.rating,
+              count: cluster.count,
+              isSelected: true,
+            }),
+            size: new naver.maps.Size(selectedPin.width, selectedPin.height),
+            anchor: new naver.maps.Point(selectedPin.width / 2, selectedPin.height),
+          },
+        });
+        return;
+      }
+
       const normalIcon = {
         content:
           defaultLocation && cluster?.defaultLocationLat === defaultLocation?.lat

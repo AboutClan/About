@@ -8,12 +8,16 @@ import ScreenOverlay from "@/components/atoms/ScreenOverlay";
 import { ModalLayout } from "@/components/modals/Modals";
 import VoteMap from "@/components/organisms/VoteMap";
 import { useStudyPlacesQuery } from "@/features/study/hooks/queries";
+import { getCafeMapPinSize, getCafeMapPlaceIcon } from "@/features/study/lib/getStudyVoteIcon";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "@/features/study/lib/setStudyMapOptions";
 import { getPlaceScore } from "@/features/study/lib/studyUtils";
 import { RightReviewDrawer } from "@/features/study/screens/StudyReview";
 import { CafeListDrawer } from "@/features/studyMap/components/CafeListDrawer";
+import CafeListSheet, { CafeListSheetSnap } from "@/features/studyMap/components/CafeListSheet";
 import { LocationAddDrawer } from "@/features/studyMap/components/LocationAddDrawer";
-import PlaceInfoDrawer from "@/features/studyMap/components/PlaceInfoDrawer";
+import PlaceInfoDrawer, {
+  getPlaceInfoDrawerHeight,
+} from "@/features/studyMap/components/PlaceInfoDrawer";
 import StudyMapMenuDrawer from "@/features/studyMap/components/StudyMapMenuDrawer";
 import { StudyReviewDrawer } from "@/features/studyMap/components/StudyReviewDrawer";
 import StudyMapNav, { ARCHIVE_OPTIONS } from "@/features/studyMap/components/TopNav";
@@ -43,6 +47,15 @@ interface StudyPageMapProps {
   hasBackButton?: boolean;
   noModalUpdate?: boolean;
 }
+
+// 카공지도 화면 위쪽에서 지도를 가리는 높이: 상단 헤더 + 검색창 + 필터 칩 줄
+const CAFE_MAP_TOP_OBSCURED = 184;
+// 묶음 마커 안의 카페를 선택했을 때 개별 핀이 보이도록 확대하는 줌
+const CAFE_MAP_FOCUS_ZOOM = 16;
+// [콘센트 많음] / [자리 여유] 필터 기준 (getPlaceScore 가중 평균)
+// 2026-09 전체 재평가 후 활성 카페의 약 26~27%가 통과하도록 설정 (자리 여유 = 자리 + 혼잡도)
+const MANY_OUTLETS_MIN_POWER = 4.5;
+const SPACIOUS_MIN_SPACE = 4.7;
 
 function StudyPageMap({
   isDefaultOpen = false,
@@ -121,6 +134,17 @@ function StudyPageMap({
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
   const [ids, setIds] = useState<string[]>([]);
+  // 카공지도 홈의 상시 리스트 시트 높이 단계
+  const [sheetSnap, setSheetSnap] = useState<CafeListSheetSnap>("peek");
+  // 카공지도: 선택한 카페를 "헤더·칩 아래 ~ 카페 정보 드로어 위" 영역 가운데로 옮기는 요청
+  // 카페 정보 드로어의 딤(가림막) 위에 선택한 핀을 다시 그릴 화면 위치 (지도 이동이 끝난 뒤 채워짐)
+  const [focusPinPoint, setFocusPinPoint] = useState<{ x: number; y: number } | null>(null);
+  const [focusRequest, setFocusRequest] = useState<{
+    lat: number;
+    lon: number;
+    targetY: number;
+    zoom?: number;
+  } | null>(null);
   const [filterType, setFilterType] = useState<StudyPlaceFilter>("all");
   const [reviewPlaceInfo, setReviewPlaceInfo] = useState<StudyPlaceProps | null>(null);
   const [amenityFilters, setAmenityFilters] = useState<string[]>([]);
@@ -286,6 +310,8 @@ function StudyPageMap({
       }
       return;
     }
+    // 카공지도는 openCafeMapPlace 가 드로어에 가리지 않는 위치로 직접 맞춘다.
+    if (isCafeMap) return;
     setMapOptions((prev) =>
       getMapOptions(
         {
@@ -328,6 +354,33 @@ function StudyPageMap({
 
   // markerCenter 기준 markerRadiusKm 이내 place 만 추출. placeData / markerCenter /
   // markerRadiusKm 가 바뀔 때만 재계산. currentMapCenter 가 계속 흔들려도 영향 없음.
+  // 별점·편의시설 필터. 지도 마커(visiblePlaceData)와 카공지도 리스트 시트가 같은 조건을 쓴다.
+  const matchesFilters = useCallback(
+    (place: StudyPlaceProps) => {
+      if (filterType === "good" && getPlaceScore(place.ratings).total < 4.0) return false;
+      return amenityFilters.every((f) => {
+        if (f === "hasManyOutlets") {
+          return getPlaceScore(place.ratings).power >= MANY_OUTLETS_MIN_POWER;
+        }
+        if (f === "isUsuallySpacious") {
+          return getPlaceScore(place.ratings).space >= SPACIOUS_MIN_SPACE;
+        }
+        if (f === "goodForDate") return place.studyCafeMeta?.goodForDate === true;
+        if (f === "hasWifi") return place.studyCafeMeta?.hasGoodWifi === true;
+        if (f === "is24Hours") return place.studyCafeMeta?.is24Hours === true;
+        if (f === "hasParking") return place.studyCafeMeta?.hasParking === true;
+        // [기타] 바텀시트 필터
+        if (f === "hasGroupSeats") return place.studyCafeMeta?.hasGroupSeats === true;
+        if (f === "hasComfortableSeats") return place.studyCafeMeta?.hasComfortableSeats === true;
+        if (f === "hasGoodValueDrinks") return place.studyCafeMeta?.hasGoodValueDrinks === true;
+        if (f === "hasCleanRestroom") return place.studyCafeMeta?.hasCleanRestroom === true;
+        if (f === "noTimeLimit") return place.studyCafeMeta?.hasTimeLimit !== true;
+        return true;
+      });
+    },
+    [filterType, amenityFilters],
+  );
+
   const visiblePlaceData = useMemo(() => {
     if (!placeData?.length) return [];
 
@@ -347,27 +400,8 @@ function StudyPageMap({
       });
     }
 
-    if (filterType === "good") {
-      result = result.filter((place) => getPlaceScore(place.ratings).total >= 4.0);
-    }
-
-    if (amenityFilters.length > 0) {
-      result = result.filter((place) =>
-        amenityFilters.every((f) => {
-          if (f === "hasGroupSeats") return place.studyCafeMeta?.hasGroupSeats === true;
-          if (f === "hasWifi") return place.studyCafeMeta?.hasGoodWifi === true;
-          if (f === "is24Hours") return place.studyCafeMeta?.is24Hours === true;
-          if (f === "hasParking") return place.studyCafeMeta?.hasParking === true;
-          if (f === "isUsuallySpacious") {
-            return getPlaceScore(place.ratings).space >= 4;
-          }
-          return true;
-        }),
-      );
-    }
-
-    return result;
-  }, [placeData, markerCenter, markerRadiusKm, filterType, amenityFilters, selectedPickNickname]);
+    return result.filter(matchesFilters);
+  }, [placeData, markerCenter, markerRadiusKm, filterType, selectedPickNickname, matchesFilters]);
   useEffect(() => {
     if (!visiblePlaceData.length) {
       setMarkersOptions([]);
@@ -380,9 +414,11 @@ function StudyPageMap({
         zoomNumber,
         isMapExpansion && !defaultLocation ? currentLocation : null,
         defaultLocation,
+        isCafeMap,
       ),
     );
   }, [
+    isCafeMap,
     visiblePlaceData,
     zoomNumber,
     currentLocation,
@@ -391,10 +427,45 @@ function StudyPageMap({
     naverReadyTick,
   ]);
 
+  // 카공지도: 시트가 절반 이상 열려 있을 때 지도를 누르면 시트를 내린다
+  const handleMapClick = useCallback(() => {
+    setSheetSnap("peek");
+  }, []);
+
+  // 카공지도에서 카페를 선택(마커 탭·리스트 행 탭)했을 때: 정보 드로어를 열고 지도를 맞춘다.
+  const openCafeMapPlace = useCallback(
+    (place: StudyPlaceProps) => {
+      setSheetSnap("peek");
+      setFocusPinPoint(null);
+      setSelectedPlaceId(place._id);
+      setPlaceInfo(place);
+      setDrawerType("placeInfo");
+      if (!noModalUpdate) updateQuery({ modal: "placeDrawer" });
+
+      const drawerTop = window.innerHeight - getPlaceInfoDrawerHeight(false);
+      // 묶음 마커 안에 있으면 선택 표시가 보이도록 개별 핀이 나오는 줌까지 확대
+      const isClustered = markersOptions?.some(
+        (option) => (option.ids?.length ?? 0) > 1 && option.ids.includes(place._id),
+      );
+      setFocusRequest({
+        lat: place.location.latitude,
+        lon: place.location.longitude,
+        targetY: (CAFE_MAP_TOP_OBSCURED + drawerTop) / 2,
+        zoom: isClustered ? CAFE_MAP_FOCUS_ZOOM : undefined,
+      });
+    },
+    [markersOptions, noModalUpdate, updateQuery],
+  );
+
   const handleMarker = useCallback(
     (id: string, currentZoom: number, ids?: string[]) => {
       if (ids && ids.length > 1) {
         setIds(ids);
+        if (isCafeMap) {
+          // 카공지도는 상시 시트가 목록을 대신 보여준다 (뒤로가기 대상 아님)
+          setSheetSnap("half");
+          return;
+        }
         setDrawerType("list");
         if (!noModalUpdate) {
           updateQuery({
@@ -405,6 +476,10 @@ function StudyPageMap({
       }
       const findPlace = placeData?.find((place) => place._id === id);
       if (!findPlace) return;
+      if (isCafeMap) {
+        openCafeMapPlace(findPlace);
+        return;
+      }
       setSelectedPlaceId(id);
       setPlaceInfo(findPlace);
       setDrawerType("placeInfo");
@@ -418,7 +493,7 @@ function StudyPageMap({
         });
       }
     },
-    [placeData, updateQuery, noModalUpdate],
+    [placeData, updateQuery, noModalUpdate, isCafeMap, openCafeMapPlace],
   );
 
   useEffect(() => {
@@ -498,7 +573,8 @@ function StudyPageMap({
     if (filterType === "about" && selectedPickNickname) {
       wasPickFilterRef.current = true;
       applyPickCentroid(selectedPickNickname);
-      setDrawerType("about");
+      if (isCafeMap) setSheetSnap("half");
+      else setDrawerType("about");
     } else if (filterType !== "about") {
       if (wasPickFilterRef.current) {
         wasPickFilterRef.current = false;
@@ -567,6 +643,47 @@ function StudyPageMap({
     mapOptions?.center?.x,
     viewportRadiusKm,
   ]);
+
+  // 카공지도 리스트 시트 목록: 클러스터 선택 > PICK > 지금 화면에 보이는 반경 안의 카페
+  const listCenterLat = currentMapCenter?.lat ?? mapOptions?.center?.y;
+  const listCenterLon = currentMapCenter?.lon ?? mapOptions?.center?.x;
+  const sheetPlaces = useMemo(() => {
+    if (!isCafeMap || !placeData) return [];
+    if (ids.length) return placeData.filter((place) => ids.includes(place._id));
+    if (filterType === "about") {
+      return placeData.filter((place) => place.pick === selectedPickNickname && matchesFilters(place));
+    }
+    if (listCenterLat == null || listCenterLon == null) return [];
+    return placeData.filter(
+      (place) =>
+        getDistanceFromLatLonInKm(
+          listCenterLat,
+          listCenterLon,
+          place.location.latitude,
+          place.location.longitude,
+        ) < viewportRadiusKm && matchesFilters(place),
+    );
+  }, [
+    isCafeMap,
+    placeData,
+    ids,
+    filterType,
+    selectedPickNickname,
+    matchesFilters,
+    listCenterLat,
+    listCenterLon,
+    viewportRadiusKm,
+  ]);
+  // 거리 표시·거리순 기준점: 내 위치, 없으면 지도 중심
+  const sheetRefPoint = useMemo(
+    () =>
+      currentLocation
+        ? { lat: currentLocation.lat, lon: currentLocation.lon }
+        : listCenterLat != null && listCenterLon != null
+        ? { lat: listCenterLat, lon: listCenterLon }
+        : null,
+    [currentLocation, listCenterLat, listCenterLon],
+  );
 
   return (
     <>
@@ -652,7 +769,7 @@ function StudyPageMap({
               setAmenityFilters={setAmenityFilters}
               selectedPickNickname={selectedPickNickname}
               setSelectedPickNickname={setSelectedPickNickname}
-              openAboutDrawer={() => setDrawerType("about")}
+              openAboutDrawer={() => (isCafeMap ? setSheetSnap("half") : setDrawerType("about"))}
               pickReviewPlace={(place) => {
                 setReviewPlaceInfo(place);
                 updateQuery({ modal: "reviewPlace" });
@@ -688,6 +805,9 @@ function StudyPageMap({
               handleMarker={handleMarker}
               selectedMarkerId={selectedPlaceId}
               zoomChange={(zoom: number) => setZoomNumber(zoom)}
+              onMapClick={isCafeMap ? handleMapClick : undefined}
+              focusRequest={isCafeMap ? focusRequest : undefined}
+              onFocusSettled={isCafeMap ? setFocusPinPoint : undefined}
               centerChange={handleCenterChange}
               centerValue={pickCenter}
               onMapReady={() => setNaverReadyTick((t) => t + 1)}
@@ -695,6 +815,23 @@ function StudyPageMap({
           </ClipLayer>
         </Box>
       </Box>
+      {isCafeMap && isMapExpansion && (
+        <CafeListSheet
+          places={sheetPlaces}
+          refPoint={sheetRefPoint}
+          snap={sheetSnap}
+          onSnapChange={setSheetSnap}
+          onPlaceClick={openCafeMapPlace}
+          scopeLabel={
+            ids.length
+              ? "선택한 위치"
+              : filterType === "about"
+              ? ARCHIVE_OPTIONS.find((o) => o.nickname === selectedPickNickname)?.title ?? "PICK"
+              : undefined
+          }
+          onClearScope={ids.length ? () => setIds([]) : undefined}
+        />
+      )}
       {drawerType === "addCafe" && (
         <LocationAddDrawer
           placeArr={placeData}
@@ -788,6 +925,26 @@ function StudyPageMap({
           </ModalContent>
         </Modal>
       )} */}
+      {isCafeMap && drawerType === "placeInfo" && placeInfo && focusPinPoint && (
+        // 네이버 지도의 핀은 딤 아래에 깔리므로, 같은 모양의 선택 핀을 딤 위 같은 자리에 겹쳐 그린다.
+        // 터치는 통과시켜 딤을 누르면 지금처럼 드로어가 닫힌다.
+        <Box
+          pos="fixed"
+          left={`${focusPinPoint.x - getCafeMapPinSize({ isSelected: true }).width / 2}px`}
+          top={`${focusPinPoint.y - getCafeMapPinSize({ isSelected: true }).height}px`}
+          zIndex={1001}
+          pointerEvents="none"
+          dangerouslySetInnerHTML={{
+            __html: getCafeMapPlaceIcon({
+              text: placeInfo.location.name,
+              rating: placeInfo.ratings?.length
+                ? getPlaceScore(placeInfo.ratings).total
+                : undefined,
+              isSelected: true,
+            }),
+          }}
+        />
+      )}
       {drawerType === "placeInfo" && (
         <PlaceInfoDrawer
           handleVotePick={

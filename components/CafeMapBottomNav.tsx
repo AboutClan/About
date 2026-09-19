@@ -2,9 +2,10 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
+import { useToast } from "@/hooks/custom/CustomToast";
 import { BOTTOM_NAV_HEIGHT_PX, getSafeAreaBottom } from "@/utils/validationUtils";
 
-type TabId = "map" | "feed" | "study" | "bookmark" | "profile";
+type TabId = "map" | "ranking" | "study" | "community" | "profile";
 
 interface TabItem {
   id: TabId;
@@ -20,19 +21,19 @@ const TABS: TabItem[] = [
     icon: (isActive) => <MapTabIcon isActive={isActive} />,
   },
   {
-    id: "feed",
-    label: "피드",
-    icon: (isActive) => <FeedTabIcon isActive={isActive} />,
-  },
-  {
-    id: "bookmark",
-    label: "아카이브",
-    icon: (isActive) => <BookmarkTabIcon isActive={isActive} />,
+    id: "ranking",
+    label: "랭킹",
+    icon: (isActive) => <RankingTabIcon isActive={isActive} />,
   },
   {
     id: "study",
     label: "스터디",
     icon: (isActive) => <StudyTabIcon isActive={isActive} />,
+  },
+  {
+    id: "community",
+    label: "커뮤니티",
+    icon: (isActive) => <CommunityTabIcon isActive={isActive} />,
   },
   {
     id: "profile",
@@ -43,6 +44,7 @@ const TABS: TabItem[] = [
 
 export default function CafeMapBottomNav() {
   const router = useRouter();
+  const toast = useToast();
   const { data: session } = useSession();
   const isLoggedIn =
     !!session && session.user?.role !== "guest" && session.user?.role !== "newUser";
@@ -50,7 +52,10 @@ export default function CafeMapBottomNav() {
   const activeTab: TabId = (router.query.tab as TabId) || "map";
 
   const handleTabClick = (tab: TabItem) => {
-    if (tab.isComingSoon) return;
+    if (tab.isComingSoon) {
+      toast("info", `${tab.label}는 9월 30일 오픈 예정이에요!`);
+      return;
+    }
     if (activeTab === tab.id) return;
 
     if (tab.id === "map") {
@@ -125,7 +130,7 @@ function MapTabIcon({ isActive }: { isActive: boolean }) {
   );
 }
 
-function FeedTabIcon({ isActive }: { isActive: boolean }) {
+function CommunityTabIcon({ isActive }: { isActive: boolean }) {
   const color = isActive ? "var(--color-mint)" : "var(--gray-500)";
   return (
     <svg
@@ -135,7 +140,7 @@ function FeedTabIcon({ isActive }: { isActive: boolean }) {
       width="20px"
       fill={color}
     >
-      <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h280v-480H160v480Zm360 0h280v-480H520v480Zm40-120h200v-60H560v60Zm0-100h200v-60H560v60Zm0-100h200v-60H560v60ZM160-240v-480 480Z" />
+      <path d="M280-240q-17 0-28.5-11.5T240-280v-80h520v-360h80q17 0 28.5 11.5T880-680v503q0 27-24.5 37.5T812-148l-92-92H280Zm-40-200-92 92q-19 19-43.5 8.5T80-377v-463q0-17 11.5-28.5T120-880h520q17 0 28.5 11.5T680-840v360q0 17-11.5 28.5T640-440H240Zm360-80v-280H160v280h440Zm-440 0v-280 280Z" />
     </svg>
   );
 }
@@ -155,7 +160,7 @@ function StudyTabIcon({ isActive }: { isActive: boolean }) {
   );
 }
 
-function BookmarkTabIcon({ isActive }: { isActive: boolean }) {
+function RankingTabIcon({ isActive }: { isActive: boolean }) {
   const color = isActive ? "var(--color-mint)" : "var(--gray-500)";
   return (
     <svg
@@ -165,7 +170,7 @@ function BookmarkTabIcon({ isActive }: { isActive: boolean }) {
       width="20px"
       fill={color}
     >
-      <path d="M455-64q-12-4-23-12L192-256q-15-11-23.5-28t-8.5-36v-480q0-33 23.5-56.5T240-880h480q33 0 56.5 23.5T800-800v480q0 19-8.5 36T768-256L528-76q-11 8-23 12t-25 4q-13 0-25-4Zm25-76 240-180v-480H240v480l240 180Zm-42-334-56-56q-12-12-28-11.5T326-530q-12 12-12.5 28.5T325-473l85 85q12 12 28 12t28-12l170-170q12-12 11.5-28T636-614q-12-12-28.5-12.5T579-615L438-474Zm42-326H240h480-240Z" />
+      <path d="M536.5-543.5Q560-567 560-600t-23.5-56.5Q513-680 480-680t-56.5 23.5Q400-633 400-600t23.5 56.5Q447-520 480-520t56.5-23.5ZM440-200v-124q-49-11-87.5-41.5T296-442q-75-9-125.5-65.5T120-640v-40q0-33 23.5-56.5T200-760h80q0-33 23.5-56.5T360-840h240q33 0 56.5 23.5T680-760h80q33 0 56.5 23.5T840-680v40q0 76-50.5 132.5T664-442q-18 46-56.5 76.5T520-324v124h120q17 0 28.5 11.5T680-160q0 17-11.5 28.5T640-120H320q-17 0-28.5-11.5T280-160q0-17 11.5-28.5T320-200h120ZM280-528v-152h-80v40q0 38 22 68.5t58 43.5Zm285 93q35-35 35-85v-240H360v240q0 50 35 85t85 35q50 0 85-35Zm115-93q36-13 58-43.5t22-68.5v-40h-80v152Zm-200-52Z" />
     </svg>
   );
 }

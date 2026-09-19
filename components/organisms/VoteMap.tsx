@@ -16,6 +16,8 @@ interface VoteMapProps {
   resizeToggle?: boolean;
   handleMarker?: (id: string, currentZoom: number, ids?: string[]) => void;
   zoomChange?: (zoom: number) => void;
+  /** 지도 빈 곳을 탭했을 때 (마커 탭·드래그에는 호출되지 않음) */
+  onMapClick?: () => void;
   centerChange?: (info: {
     lat: number;
     lon: number;
@@ -39,6 +41,14 @@ interface VoteMapProps {
     lng: number;
   };
   onMapReady?: () => void;
+  /**
+   * 이 좌표가 화면(viewport) 기준 targetY(px) 높이, 가로 가운데에 오도록 지도를 옮긴다
+   * (헤더·드로어에 가려지지 않는 영역 가운데 맞추기용). zoom 이 있으면 먼저 그 줌까지 확대한다.
+   * 같은 좌표를 다시 요청할 수 있게 매번 새 객체로 넘길 것.
+   */
+  focusRequest?: { lat: number; lon: number; targetY: number; zoom?: number } | null;
+  /** focusRequest 이동이 끝났을 때, 그 좌표가 놓인 화면(viewport) 위치 */
+  onFocusSettled?: (point: { x: number; y: number }) => void;
 }
 
 function VoteMap({
@@ -47,12 +57,15 @@ function VoteMap({
   resizeToggle,
   handleMarker,
   zoomChange,
+  onMapClick,
   centerChange,
   selectedMarkerId,
   circleCenter,
   fitBounds,
   centerValue,
   onMapReady,
+  focusRequest,
+  onFocusSettled,
 }: VoteMapProps) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
@@ -84,6 +97,10 @@ function VoteMap({
   // 이게 없으면 idle / zoom_changed listener effect 가 첫 mount 에 mapInstance 가
   // 아직 null 이라 early-return 되어 리스너가 영영 등록되지 않는다.
   const [mapReady, setMapReady] = useState(false);
+
+  // 부모가 매 렌더 새 콜백을 넘겨도 focus effect 가 다시 돌지 않게 ref 로 읽는다.
+  const onFocusSettledRef = useRef(onFocusSettled);
+  onFocusSettledRef.current = onFocusSettled;
 
   useEffect(() => {
     if (!mapRef.current || typeof naver === "undefined" || !mapOptions) return;
@@ -154,6 +171,19 @@ function VoteMap({
       naver.maps.Event.removeListener(zoomListener);
     };
   }, [mapReady, zoomChange]);
+
+  useEffect(() => {
+    if (!mapReady || !onMapClick) return;
+
+    const map = mapInstanceRef.current;
+    if (!map || typeof naver === "undefined") return;
+
+    const clickListener = naver.maps.Event.addListener(map, "click", () => onMapClick());
+
+    return () => {
+      naver.maps.Event.removeListener(clickListener);
+    };
+  }, [mapReady, onMapClick]);
 
   useEffect(() => {
     if (!mapReady) return;
@@ -368,6 +398,40 @@ function VoteMap({
 
     mapInstanceRef.current.panTo(new naver.maps.LatLng(centerValue.lat, centerValue.lng));
   }, [centerValue]);
+
+  // mapOptions effect(setOptions) 보다 뒤에 선언되어야, 같은 렌더에서 중심이 되돌려지지 않는다.
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!mapReady || !focusRequest || !map || typeof naver === "undefined") return;
+
+    if (focusRequest.zoom && map.getZoom() < focusRequest.zoom) {
+      map.setZoom(focusRequest.zoom, false);
+    }
+    // 좌표를 지도 중심에 둔 뒤, 지도 중심(화면 기준)과 targetY 의 차이만큼 중심을 아래로 민다.
+    // 지도 박스는 헤더 아래에서 시작하므로 실제 위치를 재서 계산한다.
+    const rect = mapRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const mapCenterY = rect.top + rect.height / 2;
+    // 이동이 짧으면 idle 이 panBy 호출 중에 바로 오므로 이동 전에 등록한다.
+    // idle 이 오지 않는 경우를 대비해 타이머로도 한 번 알린다.
+    const settledPoint = { x: rect.left + rect.width / 2, y: focusRequest.targetY };
+    let notified = false;
+    const notify = () => {
+      if (notified) return;
+      notified = true;
+      onFocusSettledRef.current?.(settledPoint);
+    };
+    const idleListener = naver.maps.Event.addListener(map, "idle", notify);
+    const fallbackTimer = setTimeout(notify, 600);
+
+    map.setCenter(new naver.maps.LatLng(focusRequest.lat, focusRequest.lon));
+    map.panBy(new naver.maps.Point(0, mapCenterY - focusRequest.targetY));
+
+    return () => {
+      clearTimeout(fallbackTimer);
+      naver.maps.Event.removeListener(idleListener);
+    };
+  }, [focusRequest, mapReady]);
 
   return <Map ref={mapRef} id="map" />;
 }
