@@ -20,6 +20,7 @@ import BlurredPart from "@/components/molecules/BlurredPart";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { CommentProps } from "@/types/models/commonTypes";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { maskUserName } from "@/utils/stringUtils";
 
 export interface IProfileCommentCard {
   user: UserSimpleInfoProps;
@@ -84,7 +85,6 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
-  console.log(13, isCafeMap, studyUser);
   return (
     <>
       <BlurredPart isBlur={pendingType === "pending"} text="참여 승인 대기중...">
@@ -97,10 +97,12 @@ export default function ProfileCommentCard({
             <Flex direction="column" flex={1} justify="center" ml={3} my={1} minW={0}>
               <Flex align="center" mb={memo || comment ? 1 : 0} overflow="hidden" flexWrap="nowrap">
                 <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
+                  {/* 카공지도에서는 닉네임이 있으면 닉네임, 없으면 마스킹. 예전엔 user.name 으로
+                      폴백해서 닉네임 미설정 회원(백엔드가 "" 로 채운다)의 실명이 그대로 노출됐다. */}
                   {isCafeMap
-                    ? studyUser?.nickname || user?.name || "익명"
+                    ? studyUser?.nickname || maskUserName(user?.name)
                     : isGuest
-                    ? user?.name.slice(0, 1) + `*` + user?.name.slice(2)
+                    ? maskUserName(user?.name)
                     : user?.name || "익명"}
                 </Box>
 

@@ -62,3 +62,14 @@ export const searchName = (
     return false;
   });
 };
+
+/**
+ * 실명 노출을 막는 마스킹. 가운데 글자만 *로 가린다. (김철수 → 김*수, 김수 → 김*)
+ * 카공지도는 어바웃 회원 실명을 그대로 보여주면 안 되는 외부 서비스라
+ * 이름을 그리는 지점은 모두 이걸 거친다.
+ */
+export const maskUserName = (name: string | undefined | null) => {
+  if (!name) return "익명";
+  if (name.length <= 1) return name;
+  return name.slice(0, 1) + "*" + name.slice(2);
+};

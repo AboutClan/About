@@ -413,7 +413,10 @@ export default function Page() {
                     isCrew={tab === "스터디 크루"}
                   /> */}
                   {isOpenStudy && members?.length && (
-                    <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
+                    <StudyTimeBoard
+                      members={members as StudyConfirmedMemberProps[]}
+                      isCafeMap={isCafeMap}
+                    />
                   )}
                   <Box h="1px" bg="gray.100" my={4} />
                   <Box pb={2} pos="relative">

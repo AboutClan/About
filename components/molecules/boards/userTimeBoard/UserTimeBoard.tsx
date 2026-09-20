@@ -6,6 +6,7 @@ import { COLOR_400_ARR } from "@/constants/colorConstants";
 import { STUDY_VOTE_HOUR_ARR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { TimeRangeProps } from "@/types/models/utilTypes";
+import { maskUserName } from "@/utils/stringUtils";
 
 export interface ITimeBoardParticipant {
   name: string;
@@ -14,6 +15,7 @@ export interface ITimeBoardParticipant {
 
 interface ITimeBoard {
   members: ITimeBoardParticipant[];
+  isCafeMap?: boolean;
 }
 
 interface IUserTimeBlock {
@@ -24,8 +26,10 @@ interface IUserTimeBlock {
   end: string;
 }
 
-export default function UserTimeBoard({ members }: ITimeBoard) {
+export default function UserTimeBoard({ members, isCafeMap }: ITimeBoard) {
   const isGuest = useCheckGuest();
+  // 카공지도는 로그인 회원(role !== guest)도 어바웃 실명을 보면 안 된다.
+  const isMasked = isGuest || isCafeMap;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [blockWidth, setBlockWidth] = useState<number>(0);
@@ -88,7 +92,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
                 py={0.5}
                 bg={COLOR_400_ARR[idx]}
               >
-                {isGuest ? props.name.slice(0, 1) + "*" + props.name.slice(2) : props.name}
+                {isMasked ? maskUserName(props.name) : props.name}
                 <br />
                 {props.start} - {props.startToEndInterval >= 2 && props.end}
               </Box>

@@ -210,7 +210,6 @@ export const setStudyThumbnailCard = (
         }, null);
     };
 
-    console.log(members);
     // 2명 이상 겹치는 구간이 없으면(1인 스터디 등) 전체 구간으로 폴백
 
     const result = getOverlapTimeRange() ?? getFallbackTimeRange();
