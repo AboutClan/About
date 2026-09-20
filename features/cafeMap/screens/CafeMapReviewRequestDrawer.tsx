@@ -10,13 +10,16 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import dayjs from "dayjs";
 
-import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
+import DrawerHandle from "@/components/atoms/DrawerHandle";
+import { CAFE_MAP_REVIEW_POPUP } from "@/constants/keys/localStorage";
 import { ANDROID_APP_STORE_URL, IOS_APP_STORE_URL } from "@/features/cafeMap/screens/CafeMapAppInstallDrawer";
+import { finishPopup, snoozePopup } from "@/features/cafeMap/utils/cafeMapPopup";
 import { useBackGuard } from "@/hooks/custom/useBackGuard";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getDeviceOS } from "@/utils/validationUtils";
+
+const LATER_SNOOZE_DAYS = 7;
 
 interface Props {
   onClose: () => void;
@@ -26,7 +29,7 @@ export default function CafeMapReviewRequestDrawer({ onClose }: Props) {
   const os = getDeviceOS();
 
   const handleReviewClick = () => {
-    localStorage.setItem(CAFE_MAP_REVIEW_POPUP_AT, "DONE");
+    finishPopup(CAFE_MAP_REVIEW_POPUP);
 
     const reviewUrl =
       os === "iOS"
@@ -38,7 +41,7 @@ export default function CafeMapReviewRequestDrawer({ onClose }: Props) {
   };
 
   const handleLaterClick = () => {
-    localStorage.setItem(CAFE_MAP_REVIEW_POPUP_AT, dayjs().format("YYYYMMDD"));
+    snoozePopup(CAFE_MAP_REVIEW_POPUP, LATER_SNOOZE_DAYS);
     onClose();
   };
 
@@ -51,8 +54,8 @@ export default function CafeMapReviewRequestDrawer({ onClose }: Props) {
       <DrawerOverlay />
       <DrawerContent borderTopRadius="20px" maxW="var(--max-width)" mx="auto">
         <DrawerBody p={0}>
-          <VStack spacing={0} pt={3} px={5}>
-            <Box w="56px" h="4px" borderRadius="4px" bg="gray.300" opacity={0.6} mb={5} />
+          <VStack spacing={0} px={5}>
+            <DrawerHandle mb={2} />
 
             <Box
               w="72px"

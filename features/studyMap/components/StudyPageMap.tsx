@@ -7,6 +7,7 @@ import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import ScreenOverlay from "@/components/atoms/ScreenOverlay";
 import { ModalLayout } from "@/components/modals/Modals";
 import VoteMap from "@/components/organisms/VoteMap";
+import { markCafeMapEngagement } from "@/features/cafeMap/utils/cafeMapPopup";
 import { useStudyPlacesQuery } from "@/features/study/hooks/queries";
 import { getCafeMapPinSize, getCafeMapPlaceIcon } from "@/features/study/lib/getStudyVoteIcon";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "@/features/study/lib/setStudyMapOptions";
@@ -163,6 +164,18 @@ function StudyPageMap({
   const [drawerType, setDrawerType] = useState<"menu" | "list" | "placeInfo" | "addCafe" | "about">(
     null,
   );
+
+  // 카공지도에서 카페 상세를 "닫은" 시점을 긍정 행동 완료로 본다.
+  // 여는 순간에 기록하면 리뷰 요청 드로어가 상세 위를 덮어버려서, 닫힐 때로 미뤘다.
+  const prevDrawerTypeRef = useRef(drawerType);
+
+  useEffect(() => {
+    const prevDrawerType = prevDrawerTypeRef.current;
+    prevDrawerTypeRef.current = drawerType;
+
+    if (!isCafeMap) return;
+    if (prevDrawerType === "placeInfo" && drawerType !== "placeInfo") markCafeMapEngagement();
+  }, [drawerType, isCafeMap]);
 
   const placeDataRef = useRef<typeof placeData>(undefined);
 

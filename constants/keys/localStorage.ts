@@ -50,7 +50,15 @@ export const NEW_POINT_SYSTEM_POP_UP = "newPointSystemPopUp";
 export const ENTHUSIASTIC_POP_UP = "enthusiasticPopUp";
 export const INSTAGRAM_POP_UP = "instagramPopUp";
 export const HOME_ACTIVITY_INTRO_POPUP_AT = "aboutHomeActivityPopupLastShownAt";
+// 카공지도 팝업 상태. 설치 유도/리뷰 요청 모두 { snoozeUntil, dismissCount, done } JSON 하나로 관리한다.
+export const CAFE_MAP_INSTALL_POPUP = "cafeMapInstallPopup";
+export const CAFE_MAP_REVIEW_POPUP = "cafeMapReviewPopup";
+// 노출 게이트용 카운터
+export const CAFE_MAP_VISIT_COUNT = "cafeMapVisitCount";
+export const CAFE_MAP_ENGAGEMENT_COUNT = "cafeMapEngagementCount";
+// 구버전 키(마이그레이션 후 제거된다)
 export const CAFE_MAP_REVIEW_POPUP_AT = "cafeMapReviewPopupAt";
+export const CAFE_MAP_INSTALL_POPUP_AT = "cafeMapAppInstallDrawerHidden";
 export const HOME_APP_REVIEW_POPUP_AT = "homeAppReviewPopupAt";
 export const HOME_POPUP_DAILY_COUNT = "homePopupDailyCount";
 

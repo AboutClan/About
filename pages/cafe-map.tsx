@@ -1,28 +1,30 @@
-import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
 import CafeMapBottomNav from "@/components/CafeMapBottomNav";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
-import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
+import { CAFE_MAP_INSTALL_POPUP, CAFE_MAP_REVIEW_POPUP } from "@/constants/keys/localStorage";
 import CafeMapAppInstallDrawer from "@/features/cafeMap/screens/CafeMapAppInstallDrawer";
 import CafeMapCommunityPage from "@/features/cafeMap/screens/CafeMapCommunityPage";
 import CafeMapFeedPage from "@/features/cafeMap/screens/CafeMapFeedPage";
-import CafeMapInstagramRewardModal, {
-  CAFE_MAP_INSTAGRAM_REWARD_SUB,
-} from "@/features/cafeMap/screens/CafeMapInstagramRewardModal";
 import CafeMapMyPage from "@/features/cafeMap/screens/CafeMapMyPage";
 import CafeMapRankingPage from "@/features/cafeMap/screens/CafeMapRankingPage";
 import CafeMapReviewRequestDrawer from "@/features/cafeMap/screens/CafeMapReviewRequestDrawer";
 import CafeMapStudyPage from "@/features/cafeMap/screens/CafeMapStudyPage";
+import {
+  CAFE_MAP_ENGAGEMENT_EVENT,
+  getCafeMapEngagementCount,
+  increaseCafeMapVisitCount,
+  INSTALL_POPUP_MIN_VISIT,
+  isPopupBlocked,
+  migrateLegacyPopupState,
+  REVIEW_POPUP_MIN_VISIT,
+} from "@/features/cafeMap/utils/cafeMapPopup";
 import StudyPageMap from "@/features/studyMap/components/StudyPageMap";
-import { usePointSubLogQuery } from "@/features/user/hooks/queries";
 import { useBackGuard } from "@/hooks/custom/useBackGuard";
 import { gaEvent } from "@/libs/gtag";
 import { isApp, isMobileWeb } from "@/utils/validationUtils";
-
-const REVIEW_POPUP_INTERVAL_DAYS = 7;
 
 function StudyMap() {
   const { data: session, status } = useSession();
@@ -32,50 +34,44 @@ function StudyMap() {
   const [isGuestModal, setIsGuestModal] = useState(false);
   const [showAppInstallDrawer, setShowAppInstallDrawer] = useState(false);
   const [showReviewDrawer, setShowReviewDrawer] = useState(false);
-  const [showInstagramModal, setShowInstagramModal] = useState(false);
   const guestSignInTriedRef = useRef(false);
 
   // 게스트 안내 모달도 로컬 state라 히스토리에 없다. 뒤로가기로 닫히게 등록한다.
-  // (나머지 팝업 3종은 각 컴포넌트 안에서 스스로 등록한다.)
+  // (설치 유도·리뷰 요청 드로어는 각 컴포넌트 안에서 스스로 등록한다.)
   useBackGuard(isModal, () => setIsModal(false));
 
   const activeTab = (router.query.tab as string) || "map";
 
-  // 카공지도 앱으로 접속해 회원가입을 완료한(role: cafe_user) 유저에게만 조회 —
-  // 로그가 없으면(한 번도 지급받지 않았으면) 인스타 팔로우 리워드 팝업을 띄운다.
-  const isCafeUser = isApp() && session?.user?.role === "cafe_user";
-
-  const { data: instagramRewardLog } = usePointSubLogQuery(CAFE_MAP_INSTAGRAM_REWARD_SUB, {
-    enabled: isCafeUser,
-  });
+  // 진입 횟수는 설치 유도·리뷰 요청 두 팝업의 공통 게이트라 한 곳에서만 올린다.
+  const visitCountRef = useRef(0);
 
   useEffect(() => {
-    if (!isCafeUser) return;
-    if (instagramRewardLog === undefined) return;
-    if (instagramRewardLog) return;
+    migrateLegacyPopupState();
+    visitCountRef.current = increaseCafeMapVisitCount();
 
-    setShowInstagramModal(true);
-  }, [isCafeUser, instagramRewardLog]);
+    // 설치 유도: 모바일웹에서만. 첫 진입에 바로 띄우지 않고,
+    // 카페 상세를 한 번이라도 봤거나 2회차 진입부터 노출한다.
+    if (!isMobileWeb()) return;
+    if (isPopupBlocked(CAFE_MAP_INSTALL_POPUP)) return;
+    if (visitCountRef.current < INSTALL_POPUP_MIN_VISIT && getCafeMapEngagementCount() < 1) return;
 
-  useEffect(() => {
-    if (isMobileWeb()) {
-      const savedAt = localStorage.getItem("cafeMapAppInstallDrawerHidden");
-      const hiddenUntil = savedAt ? Number(savedAt) + 24 * 60 * 60 * 1000 : 0;
-      if (Date.now() > hiddenUntil) setShowAppInstallDrawer(true);
-    }
+    setShowAppInstallDrawer(true);
   }, []);
 
   useEffect(() => {
-    // 카공지도 앱으로 접속한 경우에만 스토어 별점 리뷰를 요청한다.
+    // 리뷰 요청: 카공지도 앱에서만. 첫 실행부터 묻지 않고,
+    // 3회차 이상 진입한 유저가 카페 상세 열람 같은 긍정 행동을 마친 직후에만 노출한다.
     if (!isApp()) return;
 
-    const savedAt = localStorage.getItem(CAFE_MAP_REVIEW_POPUP_AT);
-    if (savedAt === "DONE") return;
-    if (savedAt && dayjs().diff(dayjs(savedAt, "YYYYMMDD"), "day") < REVIEW_POPUP_INTERVAL_DAYS) {
-      return;
-    }
+    const handleEngagement = () => {
+      if (isPopupBlocked(CAFE_MAP_REVIEW_POPUP)) return;
+      if (visitCountRef.current < REVIEW_POPUP_MIN_VISIT) return;
 
-    setShowReviewDrawer(true);
+      setShowReviewDrawer(true);
+    };
+
+    window.addEventListener(CAFE_MAP_ENGAGEMENT_EVENT, handleEngagement);
+    return () => window.removeEventListener(CAFE_MAP_ENGAGEMENT_EVENT, handleEngagement);
   }, []);
 
   useEffect(() => {
@@ -137,9 +133,6 @@ function StudyMap() {
       )}
       {showReviewDrawer && (
         <CafeMapReviewRequestDrawer onClose={() => setShowReviewDrawer(false)} />
-      )}
-      {showInstagramModal && (
-        <CafeMapInstagramRewardModal onClose={() => setShowInstagramModal(false)} />
       )}
     </>
   );
