@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 import { useToast } from "@/hooks/custom/CustomToast";
 import { BOTTOM_NAV_HEIGHT_PX, getSafeAreaBottom } from "@/utils/validationUtils";
@@ -37,7 +37,7 @@ const TABS: TabItem[] = [
   },
   {
     id: "profile",
-    label: "마이페이지",
+    label: "내 정보",
     icon: (isActive) => <ProfileTabIcon isActive={isActive} />,
   },
 ];

@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { MouseEvent, useEffect, useState } from "react";
 
 import { HeartIcon } from "@/components/Icons/HeartIcons";

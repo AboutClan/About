@@ -1,20 +1,16 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
 import CafeMapBottomNav from "@/components/CafeMapBottomNav";
-import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
+import { IFooterOptions } from "@/components/modals/Modals";
 import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
-import CafeMapAppInstallDrawer from "@/features/cafeMap/screens/CafeMapAppInstallDrawer";
 import CafeMapCommunityPage from "@/features/cafeMap/screens/CafeMapCommunityPage";
 import CafeMapFeedPage from "@/features/cafeMap/screens/CafeMapFeedPage";
-import CafeMapInstagramRewardModal, {
-  CAFE_MAP_INSTAGRAM_REWARD_SUB,
-} from "@/features/cafeMap/screens/CafeMapInstagramRewardModal";
+import { CAFE_MAP_INSTAGRAM_REWARD_SUB } from "@/features/cafeMap/screens/CafeMapInstagramRewardModal";
 import CafeMapMyPage from "@/features/cafeMap/screens/CafeMapMyPage";
 import CafeMapRankingPage from "@/features/cafeMap/screens/CafeMapRankingPage";
-import CafeMapReviewRequestDrawer from "@/features/cafeMap/screens/CafeMapReviewRequestDrawer";
 import CafeMapStudyPage from "@/features/cafeMap/screens/CafeMapStudyPage";
 import StudyPageMap from "@/features/studyMap/components/StudyPageMap";
 import { usePointSubLogQuery } from "@/features/user/hooks/queries";
@@ -123,7 +119,7 @@ function StudyMap() {
       {activeTab === "community" && <CafeMapCommunityPage />}
       {activeTab === "profile" && <CafeMapMyPage />}
       <CafeMapBottomNav />
-      {isModal && (
+      {/* {isModal && (
         <ModalLayout title="안내사항" footerOptions={footerOptions} setIsModal={setIsModal}>
           <p>
             현재 <b>게스트 뷰어</b>를 이용하고 있습니다.
@@ -140,7 +136,7 @@ function StudyMap() {
       )}
       {showInstagramModal && (
         <CafeMapInstagramRewardModal onClose={() => setShowInstagramModal(false)} />
-      )}
+      )} */}
     </>
   );
 }

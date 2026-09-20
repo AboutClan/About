@@ -8,10 +8,10 @@ import { StarIcon } from "@/components/Icons/StarIcon";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import PlaceImage from "@/components/molecules/PlaceImage";
 import { getPlaceScore } from "@/features/study/lib/studyUtils";
-import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { StudyCafeMetaProps, StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getRandomImage } from "@/utils/imageUtils";
 import { navigateExternalLink } from "@/utils/navigateUtils";
-import { getSafeAreaBottom,isApp  } from "@/utils/validationUtils";
+import { getSafeAreaBottom, isApp } from "@/utils/validationUtils";
 
 interface PlaceInfoDrawerProps {
   placeInfo: StudyPlaceProps;
@@ -21,11 +21,18 @@ interface PlaceInfoDrawerProps {
   isChange?: boolean;
   pickReviewPlace: (place: StudyPlaceProps) => void;
   zIndex?: number;
+  /** 카공지도(cafe-map)에서는 하단 버튼 줄([지도에서 보기]/[후기 게시판])을 쓰지 않는다. */
+  hideActions?: boolean;
 }
 
+// 하단 버튼 줄 높이(mt 12 + 버튼 48 + pb 8)에서, 버튼을 감췄을 때 남겨 두는
+// 하단 여백(HIDDEN_ACTIONS_BOTTOM_PADDING)만큼을 뺀 값. 버튼을 감추면 이만큼 드로어를 줄인다.
+const HIDDEN_ACTIONS_BOTTOM_PADDING = 20;
+const ACTION_ROW_HEIGHT = 68 - HIDDEN_ACTIONS_BOTTOM_PADDING;
+
 // 카페 정보 드로어 높이. 지도에서 카페를 드로어 위 영역 가운데로 옮길 때도 쓴다.
-export const getPlaceInfoDrawerHeight = (hasVotePick: boolean) => {
-  const baseH = hasVotePick ? 476 : 432;
+export const getPlaceInfoDrawerHeight = (hasVotePick: boolean, hideActions = false) => {
+  const baseH = (hasVotePick ? 476 : 432) - (hideActions ? ACTION_ROW_HEIGHT : 0);
   return typeof window !== "undefined" ? Math.min(baseH, window.innerHeight - 80) : baseH;
 };
 
@@ -37,8 +44,9 @@ function PlaceInfoDrawer({
   isChange,
   pickReviewPlace,
   zIndex = 1000,
+  hideActions = false,
 }: PlaceInfoDrawerProps) {
-  const drawerHeight = getPlaceInfoDrawerHeight(!!handleVotePick);
+  const drawerHeight = getPlaceInfoDrawerHeight(!!handleVotePick, hideActions);
 
   return (
     <>
@@ -56,6 +64,7 @@ function PlaceInfoDrawer({
           handleVotePick={handleVotePick}
           isChange={isChange}
           handleClick={() => pickReviewPlace(placeInfo)}
+          hideActions={hideActions}
         />
       </BottomFlexDrawer>
     </>
@@ -165,16 +174,23 @@ export function PlaceInfoCard({
   );
 }
 
-const CAFE_META_LABELS: Record<string, string> = {
-  hasCleanRestroom: "화장실 깨끗",
-  hasComforpowerSeats: "편한 좌석",
-  hasGoodValueDrinks: "가성비",
-  hasGoodWifi: "와이파이",
-  hasGroupSeats: "단체석",
+// 라벨 문구는 TopNav 의 필터 버튼/[기타] 시트와 같은 말을 쓴다.
+// Record<keyof StudyCafeMetaProps> 로 묶어 두면 키 오타·누락이 타입 에러로 잡힌다
+// (이전엔 Record<string, string> 이라 hasComfortableSeats 오타가 조용히 죽어 있었다).
+// 배열 순서 = 배지 노출 순서.
+const CAFE_META_LABELS: Record<keyof StudyCafeMetaProps, string> = {
+  is24Hours: "심야 운영",
   hasParking: "주차 가능",
+  goodForDate: "데이트하기 좋은",
+  hasGoodWifi: "와이파이 빵빵",
+  hasGoodValueDrinks: "가성비",
+  hasCleanRestroom: "화장실 깨끗",
+  hasGroupSeats: "단체석",
+  hasComfortableSeats: "좌석 편한",
   hasTimeLimit: "시간 제한",
-  is24Hours: "24시간",
 };
+
+const CAFE_META_BADGE_ORDER = Object.keys(CAFE_META_LABELS) as (keyof StudyCafeMetaProps)[];
 
 export function PlaceInfoBox({
   placeInfo,
@@ -185,6 +201,7 @@ export function PlaceInfoBox({
   isShort = false,
   customSubText,
   hasButton = true,
+  hideActions = false,
 }: {
   placeInfo: StudyPlaceProps;
   isDown: boolean;
@@ -194,6 +211,8 @@ export function PlaceInfoBox({
   isShort?: boolean;
   customSubText?: string;
   hasButton?: boolean;
+  /** true 면 하단 버튼 영역을 아예 그리지 않는다(카공지도). */
+  hideActions?: boolean;
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isMapPickerOpen, setIsMapPickerOpen] = useState(false);
@@ -233,15 +252,22 @@ export function PlaceInfoBox({
     handleVotePick?.();
   };
 
-  const badges = Object.entries(placeInfo?.studyCafeMeta ?? {})
-    .filter(([, val]) => val === true)
-    .map(([key]) => CAFE_META_LABELS[key])
-    .filter(Boolean)
-    .slice(0, 5);
+  // 필터에 있는 항목은 true 인 것을 전부 배지로 보여준다(개수 제한 없음).
+  // 콘센트·자리 여유·분위기는 위 별점 행이 담당하므로 meta 에 없다.
+  const badges = CAFE_META_BADGE_ORDER.filter(
+    (key) => placeInfo?.studyCafeMeta?.[key] === true,
+  ).map((key) => CAFE_META_LABELS[key]);
 
   return (
     <>
-      <Flex mt={2} w="full" h="full" direction="column" align="start" pb={0}>
+      <Flex
+        mt={2}
+        w="full"
+        h="full"
+        direction="column"
+        align="start"
+        pb={hideActions ? `${HIDDEN_ACTIONS_BOTTOM_PADDING}px` : 0}
+      >
         <PlaceInfoCard placeInfo={placeInfo} isDown={isDown} customSubText={customSubText} />
 
         {!isShort && (
@@ -261,27 +287,38 @@ export function PlaceInfoBox({
             <InfoRow label="콘센트" value={score.power} hasBorder />
             <InfoRow label="자리 여유" value={score.space} />
 
-            <Flex mt={1} pt={3} borderTop="1px solid" borderColor="gray.100" wrap="wrap" gap="6px">
-              {(badges.length ? badges : ["와이파이", "화장실 깨끗", "편한 좌석"]).map((label) => (
-                <Badge
-                  key={label}
-                  h="20px"
-                  variant="subtle"
-                  px={2}
-                  py={1}
-                  color="gray.500"
-                  lineHeight="12px"
-                  fontSize="9px"
-                  borderRadius="10px"
-                  colorScheme="gray"
-                >
-                  {label}
-                </Badge>
-              ))}
-            </Flex>
+            {/* 메타가 없는 카페에 고정 배지를 보여주면 없는 정보를 있다고 말하게 되므로,
+                true 인 항목이 하나도 없으면 줄 자체를 그리지 않는다. */}
+            {badges.length > 0 && (
+              <Flex
+                mt={1}
+                pt={3}
+                borderTop="1px solid"
+                borderColor="gray.100"
+                wrap="wrap"
+                gap="6px"
+              >
+                {badges.map((label) => (
+                  <Badge
+                    key={label}
+                    h="20px"
+                    variant="subtle"
+                    px={2}
+                    py={1}
+                    color="gray.500"
+                    lineHeight="12px"
+                    fontSize="9px"
+                    borderRadius="10px"
+                    colorScheme="gray"
+                  >
+                    {label}
+                  </Badge>
+                ))}
+              </Flex>
+            )}
           </Flex>
         )}
-        {hasButton ? (
+        {hideActions ? null : hasButton ? (
           <Flex w="full" mt={3} pb={2}>
             <Button
               color="mint"

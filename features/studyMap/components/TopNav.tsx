@@ -10,21 +10,15 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { Bell } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import AlertCirclePoint from "@/components/atoms/AlertCirclePoint";
-import CurrentLocationBtn from "@/components/atoms/CurrentLocationBtn";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import { StarIcon } from "@/components/Icons/StarIcon";
-import Header from "@/components/layouts/Header";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
-import LocationSearch, { mapxyToLatLng } from "@/components/organisms/location/LocationSearch";
+import { mapxyToLatLng } from "@/components/organisms/location/LocationSearch";
 import { usePlaceRankingQuery } from "@/features/study/hooks/queries";
 import { CAFE_LIST_SHEET_PEEK } from "@/features/studyMap/components/CafeListSheet";
-import GuideButton from "@/features/studyMap/components/GuideButton";
-import { CafeMapLogo } from "@/features/studyMap/components/StudyPageMap";
 import { NaverLocationProps } from "@/hooks/external/queries";
 import { CoordinatesProps, LocationProps } from "@/types/common";
 import { DispatchType } from "@/types/hooks/reactTypes";
@@ -282,7 +276,7 @@ function StudyMapNav({
       {/* 상단 헤더 + 검색바 (확장 시에만) */}
       {isMapExpansion && (
         <>
-          {!isFocus && (
+          {/* {!isFocus && (
             <Box
               h="calc(100dvh - 112px)"
               w="full"
@@ -370,13 +364,27 @@ function StudyMapNav({
                 onSelect={handleSearchSelect}
               />
             </Flex>
-          </Flex>
+          </Flex> */}
+          {/* 상단 스크림 — 최소 줌처럼 basemap이 밝을 때 흰색 필터 칩이 배경에 묻히는 걸 막는다.
+              칩 줄(zIndex 100) 바로 아래에 깔고, 지도 조작을 막지 않도록 pointerEvents 해제 */}
+          <Box
+            pos="fixed"
+            top={0}
+            left={0}
+            right={0}
+            h="96px"
+            maxW="var(--max-width)"
+            mx="auto"
+            zIndex={99}
+            pointerEvents="none"
+            bg="linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0) 100%)"
+          />
           <Flex
             w="100%"
             flexDir="column"
             align="center"
             pos="fixed"
-            top="calc(112px)"
+            top={2}
             left={0}
             right={0}
             maxW="var(--max-width)"
@@ -466,83 +474,6 @@ function StudyMapNav({
             {/* <Box>
               <StatusButton />
             </Box> */}
-            <Flex ml="auto" gap={2} align="flex-start">
-              {/* 별점 4.0이상 토글 — 선택 시 별 채움, 해제 시 빈 별.
-                  별만 두면 즐겨찾기로 오해할 수 있어 '4.0+' 뱃지를 원 아래 테두리에 걸쳐 표시 */}
-              <Button
-                aria-label="별점 4.0 이상만 보기"
-                aria-pressed={isRating40Active}
-                pos="relative"
-                overflow="visible"
-                rounded="full"
-                bgColor="white"
-                boxShadow={MAP_BTN_SHADOW}
-                w="40px"
-                h="40px"
-                minW="40px"
-                p="0"
-                border="var(--border-main)"
-                borderColor="var(--gray-300)"
-                borderWidth="1px"
-                onClick={handleRating40Toggle}
-                _hover={{ bgColor: "white" }}
-                _active={{ bgColor: "white" }}
-                _focus={{ bgColor: "white" }}
-              >
-                <Box mt="-3px" sx={{ svg: { width: "24px", height: "24px" } }}>
-                  <StarIcon type={isRating40Active ? "fill" : "empty"} size="lg" />
-                </Box>
-                <Box
-                  as="span"
-                  pos="absolute"
-                  bottom="-7px"
-                  left="50%"
-                  transform="translateX(-50%)"
-                  px="5px"
-                  h="15px"
-                  lineHeight="13px"
-                  borderRadius="full"
-                  fontSize="9px"
-                  fontWeight={700}
-                  whiteSpace="nowrap"
-                  bg={isRating40Active ? "var(--color-mint)" : "white"}
-                  color={isRating40Active ? "white" : "gray.600"}
-                  border="1px solid"
-                  borderColor={isRating40Active ? "var(--color-mint)" : "var(--gray-300)"}
-                >
-                  4.0+
-                </Box>
-              </Button>
-              {/* 카공지도는 랭킹이 하단 [랭킹] 탭으로 이동 */}
-              {!isCafeMap && (
-                <Button
-                  rounded="full"
-                  bgColor="white"
-                  boxShadow={MAP_BTN_SHADOW}
-                  w="40px"
-                  h="40px"
-                  minW="40px"
-                  size="sm"
-                  p="0"
-                  border="var(--border-main)"
-                  borderColor="var(--gray-300)"
-                  borderWidth="1px"
-                  onClick={() => setIsRankingOpen(true)}
-                  _hover={{ bgColor: "white" }}
-                  _active={{ bgColor: "white" }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="21px"
-                    viewBox="0 -960 960 960"
-                    width="21px"
-                    fill="var(--gray-800)"
-                  >
-                    <path d="M536.5-543.5Q560-567 560-600t-23.5-56.5Q513-680 480-680t-56.5 23.5Q400-633 400-600t23.5 56.5Q447-520 480-520t56.5-23.5ZM440-200v-124q-49-11-87.5-41.5T296-442q-75-9-125.5-65.5T120-640v-40q0-33 23.5-56.5T200-760h80q0-33 23.5-56.5T360-840h240q33 0 56.5 23.5T680-760h80q33 0 56.5 23.5T840-680v40q0 76-50.5 132.5T664-442q-18 46-56.5 76.5T520-324v124h120q17 0 28.5 11.5T680-160q0 17-11.5 28.5T640-120H320q-17 0-28.5-11.5T280-160q0-17 11.5-28.5T320-200h120ZM280-528v-152h-80v40q0 38 22 68.5t58 43.5Zm285 93q35-35 35-85v-240H360v240q0 50 35 85t85 35q50 0 85-35Zm115-93q36-13 58-43.5t22-68.5v-40h-80v152Zm-200-52Z" />
-                  </svg>
-                </Button>
-              )}
-            </Flex>
           </Flex>
         </>
       )}
@@ -690,7 +621,7 @@ function StudyMapNav({
           sx={{ paddingBottom: isCafeMap ? "16px" : getSafeAreaBottom(16 + extraBottomPadding) }}
         >
           <Flex px={4} justify="space-between" align="center">
-            {hasBackButton ? (
+            {/* {hasBackButton ? (
               <Button
                 rounded="full"
                 bgColor="white"
@@ -710,7 +641,7 @@ function StudyMapNav({
               <Box>
                 <CurrentLocationBtn onClick={handleLocationRefetch} isBig={true} />
               </Box>
-            )}
+            )} */}
 
             <>
               {!isCafeMap && (
@@ -732,13 +663,13 @@ function StudyMapNav({
               )}
 
               <Box>
-                <GuideButton
+                {/* <GuideButton
                   pickReviewPlace={pickReviewPlace}
                   openReviewForm={openReviewForm}
                   addCafe={addCafe}
                   findNearestPlace={findNearestPlace}
                   getCurrentLocation={getCurrentLocation}
-                />
+                /> */}
                 {/* <Button
                   rounded="full"
                   bgColor="white"

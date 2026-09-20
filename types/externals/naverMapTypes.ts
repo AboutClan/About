@@ -1,6 +1,10 @@
 /* eslint-disable */
 
 export interface IMapOptions {
+  /** GL(벡터) 렌더링. customStyleId 를 쓰려면 반드시 true + 스크립트에 submodules=gl */
+  gl?: boolean;
+  /** 네이버 Style Editor 에서 발행한 커스텀 스타일 Metadata ID */
+  customStyleId?: string;
   background?: string;
   baseTileOpacity?: number;
   bounds?: any;

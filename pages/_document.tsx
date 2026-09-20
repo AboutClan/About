@@ -13,6 +13,19 @@ import { GROUP_OG_MAPPING } from "@/pages/s/group/[id]";
 
 const CAFE_MAP_HOSTS = ["xn--ob0b42knwutje.com", "www.xn--ob0b42knwutje.com", "카공지도.com"];
 
+// 네이버 지도 SDK.
+// 커스텀 스타일(Style Editor)은 GL 벡터맵에서만 동작하고, GL 은 신규 Application 키
+// (ncpKeyId, oapi 도메인)에서만 인증된다. 기존 키(ncpClientId, openapi 도메인)로 gl 을
+// 요청하면 401 로 지도 자체가 안 뜨므로, 신규 키가 있을 때만 oapi + gl 로 전환하고
+// 없으면 기존 키로 폴백한다(= 프로덕션에 env 를 안 넣으면 지금과 동일하게 동작).
+const NAVER_MAP_KEY_ID = process.env.NEXT_PUBLIC_NAVER_MAP_KEY_ID;
+const NAVER_MAP_STYLE_ID = process.env.NEXT_PUBLIC_NAVER_MAP_STYLE_ID;
+const NAVER_MAP_SCRIPT_SRC = NAVER_MAP_KEY_ID
+  ? `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_KEY_ID}&submodules=geocoder${
+      NAVER_MAP_STYLE_ID ? ",gl" : ""
+    }`
+  : "https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=kyi1yirf4s&submodules=geocoder";
+
 const DEFAULT_IMAGE =
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg";
 const CAFE_MAP_IMAGE =
@@ -176,10 +189,7 @@ export default class MyDocument extends Document<MyDocumentProps> {
           <script src="https://www.cookiepayments.com/js/cookiepayments-1.1.4.js" defer></script>
           {/* <script src="https://sandbox.cookiepayments.com/js/cookiepayments-1.1.4.js"></script> */}
 
-          <script
-            defer
-            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=kyi1yirf4s&submodules=geocoder"
-          ></script>
+          <script defer src={NAVER_MAP_SCRIPT_SRC}></script>
         </Head>
         <body>
           <Main />

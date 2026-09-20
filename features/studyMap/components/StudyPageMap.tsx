@@ -8,12 +8,15 @@ import ScreenOverlay from "@/components/atoms/ScreenOverlay";
 import { ModalLayout } from "@/components/modals/Modals";
 import VoteMap from "@/components/organisms/VoteMap";
 import { useStudyPlacesQuery } from "@/features/study/hooks/queries";
-import { getCafeMapPinSize, getCafeMapPlaceIcon } from "@/features/study/lib/getStudyVoteIcon";
-import { getMapOptions, getStudyPlaceMarkersOptions } from "@/features/study/lib/setStudyMapOptions";
+import {
+  getMapOptions,
+  getStudyPlaceMarkersOptions,
+  withCafeMapStyle,
+} from "@/features/study/lib/setStudyMapOptions";
 import { getPlaceScore } from "@/features/study/lib/studyUtils";
 import { RightReviewDrawer } from "@/features/study/screens/StudyReview";
 import { CafeListDrawer } from "@/features/studyMap/components/CafeListDrawer";
-import CafeListSheet, { CafeListSheetSnap } from "@/features/studyMap/components/CafeListSheet";
+import { CafeListSheetSnap } from "@/features/studyMap/components/CafeListSheet";
 import { LocationAddDrawer } from "@/features/studyMap/components/LocationAddDrawer";
 import PlaceInfoDrawer, {
   getPlaceInfoDrawerHeight,
@@ -27,14 +30,8 @@ import { NaverLocationProps } from "@/hooks/external/queries";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 import { CoordinatesProps } from "@/types/common";
 import { IMapOptions, IMarkerOptions } from "@/types/externals/naverMapTypes";
-import {
-  StudyPlaceFilter,
-  StudyPlaceProps,
-} from "@/types/models/studyTypes/study-entity.types";
-import {
-  getDistanceFromLatLonInKm,
-  getPreciseDistanceFromLatLonInKm,
-} from "@/utils/mathUtils";
+import { StudyPlaceFilter, StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { getDistanceFromLatLonInKm, getPreciseDistanceFromLatLonInKm } from "@/utils/mathUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface StudyPageMapProps {
@@ -137,8 +134,6 @@ function StudyPageMap({
   // 카공지도 홈의 상시 리스트 시트 높이 단계
   const [sheetSnap, setSheetSnap] = useState<CafeListSheetSnap>("peek");
   // 카공지도: 선택한 카페를 "헤더·칩 아래 ~ 카페 정보 드로어 위" 영역 가운데로 옮기는 요청
-  // 카페 정보 드로어의 딤(가림막) 위에 선택한 핀을 다시 그릴 화면 위치 (지도 이동이 끝난 뒤 채워짐)
-  const [focusPinPoint, setFocusPinPoint] = useState<{ x: number; y: number } | null>(null);
   const [focusRequest, setFocusRequest] = useState<{
     lat: number;
     lon: number;
@@ -436,13 +431,12 @@ function StudyPageMap({
   const openCafeMapPlace = useCallback(
     (place: StudyPlaceProps) => {
       setSheetSnap("peek");
-      setFocusPinPoint(null);
       setSelectedPlaceId(place._id);
       setPlaceInfo(place);
       setDrawerType("placeInfo");
       if (!noModalUpdate) updateQuery({ modal: "placeDrawer" });
 
-      const drawerTop = window.innerHeight - getPlaceInfoDrawerHeight(false);
+      const drawerTop = window.innerHeight - getPlaceInfoDrawerHeight(false, true);
       // 묶음 마커 안에 있으면 선택 표시가 보이도록 개별 핀이 나오는 줌까지 확대
       const isClustered = markersOptions?.some(
         (option) => (option.ids?.length ?? 0) > 1 && option.ids.includes(place._id),
@@ -455,6 +449,13 @@ function StudyPageMap({
       });
     },
     [markersOptions, noModalUpdate, updateQuery],
+  );
+
+  // 커스텀 스타일은 카공지도에서만. 매 렌더 새 객체가 되면 VoteMap 의 [mapOptions]
+  // effect 가 계속 돌아 setOptions 가 줌/중심을 되돌리므로 반드시 메모이즈한다.
+  const styledMapOptions = useMemo(
+    () => (isCafeMap ? withCafeMapStyle(mapOptions) : mapOptions),
+    [isCafeMap, mapOptions],
   );
 
   const handleMarker = useCallback(
@@ -651,7 +652,9 @@ function StudyPageMap({
     if (!isCafeMap || !placeData) return [];
     if (ids.length) return placeData.filter((place) => ids.includes(place._id));
     if (filterType === "about") {
-      return placeData.filter((place) => place.pick === selectedPickNickname && matchesFilters(place));
+      return placeData.filter(
+        (place) => place.pick === selectedPickNickname && matchesFilters(place),
+      );
     }
     if (listCenterLat == null || listCenterLon == null) return [];
     return placeData.filter(
@@ -680,8 +683,8 @@ function StudyPageMap({
       currentLocation
         ? { lat: currentLocation.lat, lon: currentLocation.lon }
         : listCenterLat != null && listCenterLon != null
-        ? { lat: listCenterLat, lon: listCenterLon }
-        : null,
+          ? { lat: listCenterLat, lon: listCenterLon }
+          : null,
     [currentLocation, listCenterLat, listCenterLon],
   );
 
@@ -700,7 +703,7 @@ function StudyPageMap({
           }
           {...(!isMapExpansion
             ? { aspectRatio: 1 / 1, height: "inherit" }
-            : { bottom: isCafeMap ? getSafeAreaBottom(52) : 0 })}
+            : { bottom: isCafeMap ? getSafeAreaBottom(0) : 0 })}
           w={isMapExpansion ? "full" : "auto"}
           bg="transparent"
           onClick={() => {
@@ -799,7 +802,7 @@ function StudyPageMap({
             />
 
             <VoteMap
-              mapOptions={mapOptions}
+              mapOptions={styledMapOptions}
               markersOptions={markersOptions}
               resizeToggle={isMapExpansion}
               handleMarker={handleMarker}
@@ -807,15 +810,15 @@ function StudyPageMap({
               zoomChange={(zoom: number) => setZoomNumber(zoom)}
               onMapClick={isCafeMap ? handleMapClick : undefined}
               focusRequest={isCafeMap ? focusRequest : undefined}
-              onFocusSettled={isCafeMap ? setFocusPinPoint : undefined}
               centerChange={handleCenterChange}
               centerValue={pickCenter}
+              hideLogo={isCafeMap}
               onMapReady={() => setNaverReadyTick((t) => t + 1)}
             />
           </ClipLayer>
         </Box>
       </Box>
-      {isCafeMap && isMapExpansion && (
+      {/* {isCafeMap && isMapExpansion && (
         <CafeListSheet
           places={sheetPlaces}
           refPoint={sheetRefPoint}
@@ -831,7 +834,7 @@ function StudyPageMap({
           }
           onClearScope={ids.length ? () => setIds([]) : undefined}
         />
-      )}
+      )} */}
       {drawerType === "addCafe" && (
         <LocationAddDrawer
           placeArr={placeData}
@@ -925,26 +928,6 @@ function StudyPageMap({
           </ModalContent>
         </Modal>
       )} */}
-      {isCafeMap && drawerType === "placeInfo" && placeInfo && focusPinPoint && (
-        // 네이버 지도의 핀은 딤 아래에 깔리므로, 같은 모양의 선택 핀을 딤 위 같은 자리에 겹쳐 그린다.
-        // 터치는 통과시켜 딤을 누르면 지금처럼 드로어가 닫힌다.
-        <Box
-          pos="fixed"
-          left={`${focusPinPoint.x - getCafeMapPinSize({ isSelected: true }).width / 2}px`}
-          top={`${focusPinPoint.y - getCafeMapPinSize({ isSelected: true }).height}px`}
-          zIndex={1001}
-          pointerEvents="none"
-          dangerouslySetInnerHTML={{
-            __html: getCafeMapPlaceIcon({
-              text: placeInfo.location.name,
-              rating: placeInfo.ratings?.length
-                ? getPlaceScore(placeInfo.ratings).total
-                : undefined,
-              isSelected: true,
-            }),
-          }}
-        />
-      )}
       {drawerType === "placeInfo" && (
         <PlaceInfoDrawer
           handleVotePick={
@@ -966,6 +949,7 @@ function StudyPageMap({
             });
           }}
           zIndex={noModalUpdate ? 4000 : 1000}
+          hideActions={isCafeMap}
         />
       )}
       {drawerType === "list" && (
@@ -1043,9 +1027,7 @@ function StudyPageMap({
         <>
           <ScreenOverlay zIndex={2000} />
           <MainLoading
-            top={
-              isCafeMap ? `calc(50dvh + 30px - (${getSafeAreaBottom(0)}) / 2)` : "50%"
-            }
+            top={isCafeMap ? `calc(50dvh + 30px - (${getSafeAreaBottom(0)}) / 2)` : "50%"}
           />
         </>
       )}

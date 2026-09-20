@@ -12,7 +12,7 @@ import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 // 일반 카페가 아닌 스터디카페·스터디라운지 브랜드는 랭킹에서 뺀다 (이름에 포함되면 제외)
-const RANKING_EXCLUDED_NAME_KEYWORDS = ["카공족", "공태풍", "디딤돌"];
+const RANKING_EXCLUDED_NAME_KEYWORDS = ["카공족", "공태풍", "디딤돌", "스터디카페"];
 
 export default function CafeMapRankingPage() {
   const router = useRouter();

@@ -16,6 +16,19 @@ import {
   StudyPlaceProps,
 } from "@/types/models/studyTypes/study-entity.types";
 
+// 카공지도 전용 커스텀 지도 스타일(GL 벡터맵).
+// 신규 키와 스타일 ID 가 "둘 다" 있을 때만 켠다 — 하나만 있으면 gl 인증이 깨져 지도가 아예 안 뜬다.
+export const CAFE_MAP_STYLE_ID =
+  process.env.NEXT_PUBLIC_NAVER_MAP_KEY_ID && process.env.NEXT_PUBLIC_NAVER_MAP_STYLE_ID
+    ? process.env.NEXT_PUBLIC_NAVER_MAP_STYLE_ID
+    : undefined;
+
+/** 카공지도 지도 옵션에만 커스텀 스타일을 얹는다. 설정이 없으면 원본을 그대로 돌려준다. */
+export const withCafeMapStyle = (options: IMapOptions | undefined): IMapOptions | undefined =>
+  !options || !CAFE_MAP_STYLE_ID
+    ? options
+    : { ...options, gl: true, customStyleId: CAFE_MAP_STYLE_ID };
+
 export const getNearLocationCluster = (
   members: StudyParticipationProps[],
 ): StudyParticipationProps[] => {
@@ -76,7 +89,7 @@ export const getStudyPlaceMarkersOptions = (
     const data2 = placeData.map((p) => [p.location.latitude, p.location.longitude]);
 
     const DBSCAN = new clustering.DBSCAN();
-
+    console.log(32, zoom);
     const ZOOM_EPS_MAPPIN = {
       16: 0.0001,
       15: 0.001,
@@ -87,7 +100,10 @@ export const getStudyPlaceMarkersOptions = (
       10: 0.014,
     };
 
-    const eps = zoom >= 16 || !zoom ? 0.0001 : ZOOM_EPS_MAPPIN[zoom];
+    // GL 벡터맵은 줌이 14.37 처럼 소수로 들어온다. 반올림하지 않으면 위 표 조회가
+    // undefined 가 되어 클러스터링(DBSCAN eps)이 깨진다.
+    const zoomLevel = Math.round(zoom);
+    const eps = 0.0001;
     const minPts = 2;
     const clusters: number[][] = DBSCAN.run(data2, eps, minPts);
 

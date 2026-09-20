@@ -4,6 +4,17 @@ import styled from "styled-components";
 import { IMapOptions, IMarkerOptions } from "@/types/externals/naverMapTypes";
 import { getDistanceFromLatLonInKm } from "@/utils/mathUtils";
 
+// GL(커스텀 스타일) 서브모듈이 뜨기를 기다리는 한계 시간.
+// naver.maps.jsContentLoaded / onJSContentLoaded 는 gl 로딩 후에도 끝내 세팅되지 않는
+// 경우가 있어(2026-09-19 확인) 그 신호를 기다리면 지도가 영영 생성되지 않는다.
+// 그래서 VectorMapType 존재 여부로만 판단하고, 그마저 늦으면 그냥 만든다(래스터로 뜸).
+const GL_READY_TIMEOUT_MS = 3000;
+const GL_READY_POLL_MS = 100;
+
+const isGlReady = () =>
+  typeof naver !== "undefined" &&
+  typeof (naver.maps as unknown as { VectorMapType?: unknown })?.VectorMapType !== "undefined";
+
 const MIN_RADIUS_KM = 3;
 const MIN_VIEWPORT_RADIUS_KM = 0.1; // 100m — 화면이 아무리 좁아도 0 으로 떨어지지 않게.
 const MAX_RADIUS_KM = 1000;
@@ -49,6 +60,8 @@ interface VoteMapProps {
   focusRequest?: { lat: number; lon: number; targetY: number; zoom?: number } | null;
   /** focusRequest 이동이 끝났을 때, 그 좌표가 놓인 화면(viewport) 위치 */
   onFocusSettled?: (point: { x: number; y: number }) => void;
+  /** 네이버 로고·저작권 등 브랜딩 컨트롤을 아예 만들지 않는다 (카공지도 전용, 캡처용) */
+  hideLogo?: boolean;
 }
 
 function VoteMap({
@@ -66,6 +79,7 @@ function VoteMap({
   onMapReady,
   focusRequest,
   onFocusSettled,
+  hideLogo,
 }: VoteMapProps) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
@@ -106,23 +120,53 @@ function VoteMap({
     if (!mapRef.current || typeof naver === "undefined" || !mapOptions) return;
 
     if (!mapInstanceRef.current) {
-      const map = new naver.maps.Map(mapRef.current, {
-        ...mapOptions,
-        logoControl: true,
-        logoControlOptions: {
-          position: naver.maps.Position.BOTTOM_LEFT,
-        },
-      });
+      let cancelled = false;
+      let retryTimer: ReturnType<typeof setTimeout>;
+      const startedAt = Date.now();
 
-      map.setZoom(mapOptions.zoom);
-      mapInstanceRef.current = map;
-      setMapReady(true);
-      onMapReady?.();
-      return;
+      const createMap = () => {
+        if (cancelled || mapInstanceRef.current || !mapRef.current) return;
+
+        // customStyleId 는 gl 서브모듈이 올라온 뒤에만 먹는다. 아직이면 잠깐 재시도하되,
+        // 한계 시간을 넘기면 스타일 없이라도 지도를 띄운다(무한 대기 금지).
+        if (mapOptions.gl && !isGlReady() && Date.now() - startedAt < GL_READY_TIMEOUT_MS) {
+          retryTimer = setTimeout(createMap, GL_READY_POLL_MS);
+          return;
+        }
+
+        const map = new naver.maps.Map(mapRef.current, {
+          ...mapOptions,
+          ...(mapOptions.gl && !isGlReady() ? { gl: false, customStyleId: undefined } : {}),
+          ...(hideLogo
+            ? { logoControl: false, mapDataControl: false, scaleControl: false }
+            : {
+                logoControl: true,
+                logoControlOptions: {
+                  position: naver.maps.Position.BOTTOM_LEFT,
+                },
+              }),
+        });
+
+        map.setZoom(mapOptions.zoom);
+        mapInstanceRef.current = map;
+        setMapReady(true);
+        onMapReady?.();
+      };
+
+      createMap();
+
+      return () => {
+        cancelled = true;
+        clearTimeout(retryTimer);
+      };
     }
 
-    mapInstanceRef.current.setOptions(mapOptions);
-  }, [mapOptions]);
+    mapInstanceRef.current.setOptions(
+      hideLogo
+        ? { ...mapOptions, logoControl: false, mapDataControl: false, scaleControl: false }
+        : { ...mapOptions, logoControl: true },
+    );
+  }, [mapOptions, hideLogo]);
 
   // mapOptions가 갱신되면 setOptions가 zoom을 되돌려 놓기 때문에,
   // fitBounds도 그 뒤에 다시 적용해야 한다. (deps에 mapOptions가 없으면
@@ -433,12 +477,56 @@ function VoteMap({
     };
   }, [focusRequest, mapReady]);
 
-  return <Map ref={mapRef} id="map" />;
+  // 캡처용: 네이버 지도 SDK 는 logoControl: false 여도 로고를 강제로 붙인다
+  // (위치 옵션도 무시하고 우측 하단 고정). 실제 DOM 은 class/id 가 없는
+  //   div(absolute) > div > a[href*="pstatic.net"] > img[src*="naver.net"]
+  // 구조라, 이미지/링크를 찾아 로고만 감싼 래퍼까지만 감춘다.
+  useEffect(() => {
+    if (!hideLogo || !mapReady) return;
+
+    const root = mapRef.current;
+    if (!root) return;
+
+    const sweep = () => {
+      root
+        .querySelectorAll<HTMLElement>(
+          // 타일 이미지도 naver.net / pstatic.net 에서 오므로 도메인이 아니라
+          // 로고 전용 경로(/maps/mantle/)와 파일명으로만 좁힌다.
+          'img[alt="NAVER"], img[src*="new-naver-logo"], img[src*="/maps/mantle/"], a[href*="/maps/mantle/"]',
+        )
+        .forEach((el) => {
+          // 로고만 감싼 래퍼까지만 올라간다. root 바로 아래까지 올라가면
+          // 타일 레이어를 품은 지도 본체가 통째로 사라지므로, "자식이 이것
+          // 하나뿐인 부모"일 때만, 최대 2단계까지만 올라간다.
+          let node: HTMLElement = el.closest("a") ?? el;
+          for (let hop = 0; hop < 2; hop++) {
+            const parent = node.parentElement;
+            if (!parent || parent === root || parent.childElementCount !== 1) break;
+            node = parent;
+          }
+          node.style.display = "none";
+        });
+    };
+
+    sweep();
+    // 지도 초기화 직후 로고가 뒤늦게 붙는 경우까지 커버.
+    const timers = [200, 1000].map((delay) => setTimeout(sweep, delay));
+    // root 직계 자식만 관찰 — 타일은 더 깊은 곳에 붙으므로 팬/줌 때 돌지 않는다.
+    const observer = new MutationObserver(sweep);
+    observer.observe(root, { childList: true });
+
+    return () => {
+      timers.forEach(clearTimeout);
+      observer.disconnect();
+    };
+  }, [hideLogo, mapReady]);
+
+  return <Map ref={mapRef} id="map" $hideLogo={hideLogo} />;
 }
 
 export default VoteMap;
 
-const Map = styled.div`
+const Map = styled.div<{ $hideLogo?: boolean }>`
   width: 100%;
   height: 100%;
   position: relative;
@@ -451,4 +539,18 @@ const Map = styled.div`
   &.expanded > div:nth-of-type(2) {
     transform: translate(12px, -12px);
   }
+
+  /* JS 스윕이 돌기 전(첫 프레임)에도 로고가 보이지 않도록 CSS 로도 막는다.
+     지도 타일도 naver.net / pstatic.net 에서 내려오므로 도메인으로 잡으면
+     타일까지 사라진다 — 로고 전용 경로(/maps/mantle/)와 파일명으로만 좁힐 것. */
+  ${({ $hideLogo }) =>
+    $hideLogo &&
+    `
+    img[alt="NAVER"],
+    img[src*="new-naver-logo"],
+    img[src*="/maps/mantle/"],
+    a[href*="/maps/mantle/"] {
+      display: none !important;
+    }
+  `}
 `;
