@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import AlertCirclePoint from "@/components/atoms/AlertCirclePoint";
 import CurrentLocationBtn from "@/components/atoms/CurrentLocationBtn";
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import { InstagramIcon } from "@/components/Icons/InstagramIcon";
 import { StarIcon } from "@/components/Icons/StarIcon";
 import Header from "@/components/layouts/Header";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
@@ -30,7 +31,10 @@ import { CoordinatesProps, LocationProps } from "@/types/common";
 import { DispatchType } from "@/types/hooks/reactTypes";
 import { PlaceProps } from "@/types/models/studyTypes/entityTypes";
 import { StudyPlaceFilter, StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
+
+export const CAFE_MAP_INSTAGRAM_URL = "https://www.instagram.com/about_cafemap/";
 
 const MAP_BTN_SHADOW = "0 1px 3px rgba(0, 0, 0, 0.07), 0 2px 8px rgba(0, 0, 0, 0.05)";
 
@@ -465,7 +469,14 @@ function StudyMapNav({
             {/* <Box>
               <StatusButton />
             </Box> */}
-            <Flex ml="auto" gap={2} align="flex-start">
+            <Flex
+              ml="auto"
+              // 카공지도는 별 버튼 아래로 인스타 버튼이 쌓이고, About 은 랭킹 버튼과 가로로 선다.
+              direction={isCafeMap ? "column" : "row"}
+              // 별 버튼의 '4.0+' 뱃지가 원 아래로 7px 튀어나와 8px 간격으로는 겹친다.
+              gap={isCafeMap ? "14px" : 2}
+              align={isCafeMap ? "flex-end" : "flex-start"}
+            >
               {/* 별점 4.0이상 토글 — 선택 시 별 채움, 해제 시 빈 별.
                   별만 두면 즐겨찾기로 오해할 수 있어 '4.0+' 뱃지를 원 아래 테두리에 걸쳐 표시 */}
               <Button
@@ -539,6 +550,30 @@ function StudyMapNav({
                   >
                     <path d="M536.5-543.5Q560-567 560-600t-23.5-56.5Q513-680 480-680t-56.5 23.5Q400-633 400-600t23.5 56.5Q447-520 480-520t56.5-23.5ZM440-200v-124q-49-11-87.5-41.5T296-442q-75-9-125.5-65.5T120-640v-40q0-33 23.5-56.5T200-760h80q0-33 23.5-56.5T360-840h240q33 0 56.5 23.5T680-760h80q33 0 56.5 23.5T840-680v40q0 76-50.5 132.5T664-442q-18 46-56.5 76.5T520-324v124h120q17 0 28.5 11.5T680-160q0 17-11.5 28.5T640-120H320q-17 0-28.5-11.5T280-160q0-17 11.5-28.5T320-200h120ZM280-528v-152h-80v40q0 38 22 68.5t58 43.5Zm285 93q35-35 35-85v-240H360v240q0 50 35 85t85 35q50 0 85-35Zm115-93q36-13 58-43.5t22-68.5v-40h-80v152Zm-200-52Z" />
                   </svg>
+                </Button>
+              )}
+              {/* 카공지도 공식 인스타 계정 연결. https URL 이라 Universal/App Link 로
+                  인스타 앱이 깔려 있으면 앱이, 아니면 브라우저가 열린다. */}
+              {isCafeMap && (
+                <Button
+                  aria-label="카공지도 인스타그램"
+                  rounded="full"
+                  bgColor="white"
+                  boxShadow={MAP_BTN_SHADOW}
+                  w="40px"
+                  h="40px"
+                  minW="40px"
+                  size="sm"
+                  p="0"
+                  border="var(--border-main)"
+                  borderColor="var(--gray-300)"
+                  borderWidth="1px"
+                  onClick={() => navigateExternalLink(CAFE_MAP_INSTAGRAM_URL)}
+                  _hover={{ bgColor: "white" }}
+                  _active={{ bgColor: "white" }}
+                  _focus={{ bgColor: "white" }}
+                >
+                  <InstagramIcon />
                 </Button>
               )}
             </Flex>
