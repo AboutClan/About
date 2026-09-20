@@ -5,12 +5,11 @@ import styled from "styled-components";
 
 import DrawerHandle from "@/components/atoms/DrawerHandle";
 import ScreenOverlay from "@/components/atoms/ScreenOverlay";
+import useSheetBodyDrag from "@/hooks/custom/useSheetBodyDrag";
 import { IModal } from "@/types/components/modalTypes";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 export const DRAWER_MIN_HEIGHT = 103;
-//적당한 값 조율해야 함
-export const MAX_DRAG_DISTANCE = 40;
 
 const SWIPE_THRESHOLD = 40; // 스와이프 임계값
 /** 이 높이를 넘을 때만 본문·푸터를 렌더한다 */
@@ -42,6 +41,8 @@ interface BottomFlexDrawerProps extends IModal {
   drawerOptions?: BottomFlexDrawerOptions;
   isOverlay: boolean;
   hasTopNav?: boolean;
+  /** 본문 아무 데나 스와이프해도 핸들처럼 움직이는 동작을 끈다 (기본 켜짐) */
+  isBodyDraggable?: boolean;
 }
 
 export default function BottomFlexDrawer({
@@ -55,6 +56,7 @@ export default function BottomFlexDrawer({
   zIndex,
   isOverlay,
   hasTopNav = true,
+  isBodyDraggable = true,
 }: BottomFlexDrawerProps) {
   // 드래그 중 높이는 ref 로만 들고, 리렌더가 필요한 "본문을 보일지"만 state 로 둔다.
   // (예전에는 pointermove 마다 setDrawerHeight 가 돌아서 드로어와 그 자식 — PlaceInfoDrawer
@@ -120,42 +122,69 @@ export default function BottomFlexDrawer({
     [applyHeight, maxHeight, y],
   );
 
+  // 드래그 엔진. 핸들(pointer)과 본문 스와이프(touch) 두 입력 경로가 이 함수들을 공유한다.
+  // 그래서 "본문 스와이프는 핸들 드래그와 똑같이 동작한다"가 구조적으로 보장된다.
+  const beginDrag = useCallback((clientY: number) => {
+    startYRef.current = clientY;
+    currentHeightRef.current = heightRef.current;
+  }, []);
+
+  const moveDrag = useCallback(
+    (clientY: number) => {
+      const deltaY = startYRef.current - clientY;
+
+      // 드래그 범위는 최소/최대 높이 기준으로 제한한다.
+      const newHeight = Math.max(
+        DRAWER_MIN_HEIGHT,
+        Math.min(currentHeightRef.current + deltaY, maxHeight),
+      );
+
+      applyHeight(newHeight);
+      // 드래그는 transform 을 즉시 직접 갱신. open animation 과 독립적으로 동작.
+      y.set(maxHeight - newHeight);
+    },
+    [applyHeight, maxHeight, y],
+  );
+
+  const endDrag = useCallback(
+    (clientY: number | null) => {
+      const deltaY = clientY == null ? 0 : startYRef.current - clientY;
+
+      // 위로 잘 올렸으면 풀오픈
+      if (deltaY > SWIPE_THRESHOLD) {
+        settleTo(maxHeight);
+        return;
+      }
+
+      // 아래로 충분히 내렸으면 닫기
+      if (deltaY < -SWIPE_THRESHOLD) {
+        setIsModal(false); // ← 진짜 닫는 건 여기서만
+        applyHeight(DRAWER_MIN_HEIGHT);
+        return;
+      }
+
+      // 애매하면 원래 위치로 복원
+      settleTo(currentHeightRef.current);
+    },
+    [applyHeight, maxHeight, setIsModal, settleTo],
+  );
+
+  const cancelDrag = useCallback(() => {
+    settleTo(currentHeightRef.current);
+  }, [settleTo]);
+
   onMoveRef.current = (event) => {
     if (!isDraggingRef.current) return;
     const clientY = readClientY(event);
     if (clientY == null) return;
-    const deltaY = startYRef.current - clientY;
-
-    // 드래그 범위는 최소/최대 높이 기준으로 제한한다.
-    const newHeight = Math.max(DRAWER_MIN_HEIGHT, Math.min(currentHeightRef.current + deltaY, maxHeight));
-
-    applyHeight(newHeight);
-    // 드래그는 transform 을 즉시 직접 갱신. open animation 과 독립적으로 동작.
-    y.set(maxHeight - newHeight);
+    moveDrag(clientY);
   };
 
   onUpRef.current = (event) => {
     if (!isDraggingRef.current) return;
     const clientY = readClientY(event);
-    const deltaY = clientY == null ? 0 : startYRef.current - clientY;
-
     detachDragListeners();
-
-    // 위로 잘 올렸으면 풀오픈
-    if (deltaY > SWIPE_THRESHOLD) {
-      settleTo(maxHeight);
-      return;
-    }
-
-    // 아래로 충분히 내렸으면 닫기
-    if (deltaY < -SWIPE_THRESHOLD) {
-      setIsModal(false); // ← 진짜 닫는 건 여기서만
-      applyHeight(DRAWER_MIN_HEIGHT);
-      return;
-    }
-
-    // 애매하면 원래 위치로 복원
-    settleTo(currentHeightRef.current);
+    endDrag(clientY ?? null);
   };
 
   // 브라우저/웹뷰가 제스처를 가져가면 pointerup 대신 pointercancel 이 온다.
@@ -164,21 +193,40 @@ export default function BottomFlexDrawer({
   onCancelRef.current = () => {
     if (!isDraggingRef.current) return;
     detachDragListeners();
-    settleTo(currentHeightRef.current);
+    cancelDrag();
   };
 
   const handlePointerDown = (event: React.PointerEvent) => {
     // 🔥 여기는 모달을 "닫으면 안 됨"
     const clientY = readClientY(event.nativeEvent);
     if (clientY == null) return;
-    startYRef.current = clientY;
-    currentHeightRef.current = heightRef.current;
+    beginDrag(clientY);
     isDraggingRef.current = true;
 
     window.addEventListener("pointermove", stableMove);
     window.addEventListener("pointerup", stableUp);
     window.addEventListener("pointercancel", stableCancel);
   };
+
+  // 본문 스와이프로 끝난 드래그가 그 자리의 버튼·행을 눌러 버리지 않게 한 틱 막는다.
+  const justDraggedRef = useRef(false);
+
+  const bodyDragRef = useSheetBodyDrag({
+    enabled: isBodyDraggable,
+    canDragUp: () => heightRef.current < maxHeight - 1,
+    // 아래로는 항상 허용한다 — 얼마나 내렸는지(닫을지 되돌릴지)는 endDrag 가 판단한다.
+    canDragDown: () => true,
+    onDragStart: beginDrag,
+    onDragMove: moveDrag,
+    onDragEnd: (clientY) => {
+      justDraggedRef.current = true;
+      setTimeout(() => {
+        justDraggedRef.current = false;
+      }, 0);
+      endDrag(clientY);
+    },
+    onDragCancel: cancelDrag,
+  });
 
   // 드래그 중 언마운트되어도(예: 딤 탭·router.back) window 리스너가 남지 않게 한다.
   useEffect(() => detachDragListeners, [detachDragListeners]);
@@ -193,6 +241,12 @@ export default function BottomFlexDrawer({
         maxheight={maxHeight}
         as={motion.div}
         style={{ y }}
+        onClickCapture={(event: React.MouseEvent) => {
+          // 드래그를 뗀 자리에서 따라오는 click 을 버린다.
+          if (!justDraggedRef.current) return;
+          event.stopPropagation();
+          event.preventDefault();
+        }}
       >
         {hasTopNav && (
           <DrawerHandle
@@ -224,10 +278,13 @@ export default function BottomFlexDrawer({
           </Box>
         )}
         <Flex
+          ref={bodyDragRef}
           direction="column"
           flex={1}
           minH={0}
           w="100%"
+          // pan-y 는 그대로 둔다 — 호출자가 넣는 스크롤 영역에 필요하고,
+          // 스크롤 억제는 useSheetBodyDrag 가 제스처 단위로 preventDefault 해서 처리한다.
           sx={{ touchAction: "pan-y" }}
           align="center"
         >

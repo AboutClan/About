@@ -7,6 +7,7 @@ import DrawerHandle from "@/components/atoms/DrawerHandle";
 import { CAFE_MAP_LOGO_DEFAULT, getCafeMapLogo } from "@/features/study/lib/getStudyVoteIcon";
 import { getPlaceScore } from "@/features/study/lib/studyUtils";
 import { getOpenStatus } from "@/features/studyMap/components/CafeListDrawer";
+import useSheetBodyDrag from "@/hooks/custom/useSheetBodyDrag";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getDistanceFromLatLonInKm } from "@/utils/mathUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
@@ -116,12 +117,18 @@ export default function CafeListSheet({
   // 드래그 직후 따라오는 click 이 "탭해서 열기"로 처리되지 않게 막는다.
   const justDraggedRef = useRef(false);
 
-  const onMoveRef = useRef<(event: PointerEvent) => void>();
-  const onUpRef = useRef<(event: PointerEvent) => void>();
+  const onMoveRef = useRef<(clientY: number, timeStamp: number) => void>();
+  const onUpRef = useRef<(clientY: number, timeStamp: number) => void>();
   const onCancelRef = useRef<() => void>();
 
-  const stableMove = useCallback((event: PointerEvent) => onMoveRef.current?.(event), []);
-  const stableUp = useCallback((event: PointerEvent) => onUpRef.current?.(event), []);
+  const stableMove = useCallback(
+    (event: PointerEvent) => onMoveRef.current?.(event.clientY, event.timeStamp),
+    [],
+  );
+  const stableUp = useCallback(
+    (event: PointerEvent) => onUpRef.current?.(event.clientY, event.timeStamp),
+    [],
+  );
   const stableCancel = useCallback(() => onCancelRef.current?.(), []);
 
   const detachDragListeners = useCallback(() => {
@@ -130,21 +137,23 @@ export default function CafeListSheet({
     window.removeEventListener("pointercancel", stableCancel);
   }, [stableMove, stableUp, stableCancel]);
 
+  // 핸들(pointer)과 목록 스와이프(touch) 두 입력 경로가 이 엔진을 공유한다. 그래서 목록에서
+  // 시작한 스와이프도 핸들 드래그와 완전히 같은 규칙(속도 + 최근접 스냅)으로 끝난다.
   const handlePointerMove = useCallback(
-    (event: PointerEvent) => {
+    (clientY: number, timeStamp: number) => {
       const drag = dragRef.current;
       if (!drag) return;
-      if (Math.abs(event.clientY - drag.startY) > TAP_SLOP) drag.moved = true;
-      const next = drag.startOffset + (event.clientY - drag.startY);
+      if (Math.abs(clientY - drag.startY) > TAP_SLOP) drag.moved = true;
+      const next = drag.startOffset + (clientY - drag.startY);
       y.set(Math.min(snapOffsets.peek, Math.max(0, next)));
-      drag.lastY = event.clientY;
-      drag.lastT = event.timeStamp;
+      drag.lastY = clientY;
+      drag.lastT = timeStamp;
     },
     [snapOffsets, y],
   );
 
   const handlePointerUp = useCallback(
-    (event: PointerEvent) => {
+    (clientY: number, timeStamp: number) => {
       const drag = dragRef.current;
       detachDragListeners();
       if (!drag) return;
@@ -157,8 +166,8 @@ export default function CafeListSheet({
         justDraggedRef.current = false;
       }, 0);
 
-      const dt = Math.max(1, event.timeStamp - drag.lastT);
-      const velocity = (event.clientY - drag.lastY) / dt; // +: 아래로
+      const dt = Math.max(1, timeStamp - drag.lastT);
+      const velocity = (clientY - drag.lastY) / dt; // +: 아래로
       const current = y.get();
       const order: CafeListSheetSnap[] = ["full", "half", "peek"];
 
@@ -220,6 +229,32 @@ export default function CafeListSheet({
   onCancelRef.current = handlePointerCancel;
 
   useEffect(() => detachDragListeners, [detachDragListeners]);
+
+  // 목록 본문에서 시작한 스와이프. 판정(스크롤이냐 시트냐)은 훅이 하고, 확정되면 위 엔진을
+  // 그대로 태운다. moved: true 로 시작하는 이유 — 훅이 이미 슬롭을 넘겨 드래그로 확정한
+  // 뒤에 부르므로, handlePointerUp 의 "탭이면 무시" 분기를 타면 안 된다.
+  const beginBodyDrag = useCallback(
+    (clientY: number, timeStamp: number) => {
+      dragRef.current = {
+        startY: clientY,
+        startOffset: y.get(),
+        lastY: clientY,
+        lastT: timeStamp,
+        moved: true,
+      };
+    },
+    [y],
+  );
+
+  const listDragRef = useSheetBodyDrag({
+    // full 이면 더 올라갈 곳이 없으니 목록 스크롤에 양보한다.
+    canDragUp: () => y.get() > 0,
+    canDragDown: () => y.get() < snapOffsets.peek,
+    onDragStart: beginBodyDrag,
+    onDragMove: handlePointerMove,
+    onDragEnd: handlePointerUp,
+    onDragCancel: handlePointerCancel,
+  });
 
   const rows = useMemo(() => {
     const withMeta = places.map((place) => {
@@ -393,8 +428,10 @@ export default function CafeListSheet({
           </Flex>
         </Box>
 
-        {/* 목록: peek 에서는 스크롤을 잠가 드래그와 충돌하지 않게 한다 */}
+        {/* 목록: peek 에서는 스크롤을 잠가 드래그와 충돌하지 않게 한다.
+            (스크롤 영역이 아예 없으니 위로 미는 순간 훅이 곧바로 시트 드래그로 확정한다) */}
         <Box
+          ref={listDragRef}
           flex={1}
           minH={0}
           overflowY={snap === "peek" ? "hidden" : "auto"}

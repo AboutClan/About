@@ -2,6 +2,8 @@ import { motion, useMotionValue } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
+import { SHEET_NO_DRAG_ATTR } from "@/hooks/custom/useSheetBodyDrag";
+
 const ITEM_HEIGHT = 38;
 
 interface IRulletPicker {
@@ -66,7 +68,9 @@ export default function RulletPicker({
   };
 
   return (
-    <Container>
+    // 이 휠은 자체 세로 드래그를 쓴다. BottomFlexDrawer 본문 안에서 돌기 때문에
+    // 표식이 없으면 휠을 돌릴 때마다 드로어가 같이 따라 움직인다(useSheetBodyDrag).
+    <Container {...{ [SHEET_NO_DRAG_ATTR]: "" }}>
       <ItemsContainer
         drag="y"
         dragConstraints={{
