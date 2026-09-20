@@ -50,6 +50,35 @@ export const getNearLocationCluster = (
   return [...flattened, ...unlocatedMembers];
 };
 
+/**
+ * DBSCAN 결과 캐시. density-clustering 의 DBSCAN 은 _regionQuery 가 전체 점을 순회하는
+ * O(n^2) 구현이라, 줌 한 단계마다 재실행하면 마커가 많을 때 프레임을 통째로 먹는다.
+ * placeData 배열 identity(react-query 캐시가 유지) + zoom 조합으로 재사용한다.
+ */
+const clusterCache = new WeakMap<object, Map<number, { clusters: number[][]; noise: number[] }>>();
+
+const runDbscanCached = (
+  placeData: StudyPlaceProps[],
+  points: number[][],
+  eps: number,
+  minPts: number,
+  zoom: number,
+) => {
+  let byZoom = clusterCache.get(placeData);
+  if (!byZoom) {
+    byZoom = new Map();
+    clusterCache.set(placeData, byZoom);
+  }
+  const hit = byZoom.get(zoom);
+  if (hit) return hit;
+
+  const dbscan = new clustering.DBSCAN();
+  const clusters: number[][] = dbscan.run(points, eps, minPts);
+  const result = { clusters, noise: [...dbscan.noise] };
+  byZoom.set(zoom, result);
+  return result;
+};
+
 export const getStudyPlaceMarkersOptions = (
   placeData: StudyPlaceProps[],
   selectedId: string,
@@ -67,15 +96,14 @@ export const getStudyPlaceMarkersOptions = (
     center: number[];
     count: number;
     type: "cluster" | "noise";
-    name: string;
-    rating: number;
+    /** 클러스터(count > 1)는 목록으로 열리므로 개별 카페 이름·점수를 갖지 않는다 */
+    name?: string;
+    rating?: number;
     defaultLocationLat?: number;
   }
 
   const getClusterInfo = (placeData: StudyPlaceProps[], zoom: number): ClusterInfoProps[] => {
     const data2 = placeData.map((p) => [p.location.latitude, p.location.longitude]);
-
-    const DBSCAN = new clustering.DBSCAN();
 
     const ZOOM_EPS_MAPPIN = {
       16: 0.0001,
@@ -89,7 +117,7 @@ export const getStudyPlaceMarkersOptions = (
 
     const eps = zoom >= 16 || !zoom ? 0.0001 : ZOOM_EPS_MAPPIN[zoom];
     const minPts = 2;
-    const clusters: number[][] = DBSCAN.run(data2, eps, minPts);
+    const { clusters, noise } = runDbscanCached(placeData, data2, eps, minPts, zoom);
 
     // 3️⃣ 중심점 계산 함수
     const calcCentroid = (points: number[][]) => {
@@ -114,12 +142,12 @@ export const getStudyPlaceMarkersOptions = (
         ids,
         center,
         count,
-        type: "cluster",
+        type: "cluster" as const,
       };
     });
 
     // 5️⃣ 노이즈도 같은 형식으로 추가
-    const noiseInfo = DBSCAN.noise.map((idx) => {
+    const noiseInfo = noise.map((idx) => {
       const point = data2[idx];
       const data = placeData[idx];
 
@@ -128,7 +156,7 @@ export const getStudyPlaceMarkersOptions = (
         ids: [data._id],
         center: point,
         count: 1,
-        type: "noise",
+        type: "noise" as const,
         name: data.location.name,
         rating: getPlaceScore(data?.ratings).total,
         defaultLocationLat: data.location.latitude,
@@ -176,7 +204,8 @@ export const getStudyPlaceMarkersOptions = (
             size: new naver.maps.Size(normalPin.width, normalPin.height),
             anchor: new naver.maps.Point(normalPin.width / 2, normalPin.height),
           },
-          selectedIcon: {
+          // 선택 아이콘은 실제로 선택될 때 만든다 (VoteMap 이 호출).
+          getSelectedIcon: () => ({
             content: getCafeMapPlaceIcon({
               // 선택된 카페는 줌과 관계없이 이름을 보여준다 (클러스터는 목록으로 열리므로 제외).
               text: cluster.count === 1 ? cluster.name : null,
@@ -186,7 +215,7 @@ export const getStudyPlaceMarkersOptions = (
             }),
             size: new naver.maps.Size(selectedPin.width, selectedPin.height),
             anchor: new naver.maps.Point(selectedPin.width / 2, selectedPin.height),
-          },
+          }),
         });
         return;
       }

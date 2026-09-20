@@ -60,4 +60,7 @@ export interface IMarkerOptions {
   infoWindow?: any;
   polyline?: any;
   selectedIcon?: naver.maps.ImageIcon | naver.maps.HtmlIcon;
+  /** 선택 아이콘을 필요할 때만 만든다. 선택되는 마커는 최대 1개인데 전량 미리 만들면
+   *  마커당 ~5.5KB SVG 문자열이 통째로 낭비된다(200개면 ~1.1MB). */
+  getSelectedIcon?: () => naver.maps.ImageIcon | naver.maps.HtmlIcon;
 }

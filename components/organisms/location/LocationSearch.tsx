@@ -62,18 +62,38 @@ function LocationSearch({
       setDropdownRect({ top: rect.bottom, left: rect.left, width: rect.width });
     };
 
+    // capture 단계 scroll 은 페이지의 모든 스크롤러에서 발화한다(카페 리스트 시트 포함).
+    // 매 발화마다 getBoundingClientRect + setState 를 하면 강제 레이아웃이 반복되므로
+    // 프레임당 한 번으로 묶는다.
+    let rafId: number | null = null;
+    const scheduleUpdate = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        updateRect();
+      });
+    };
+
     updateRect();
-    window.addEventListener("scroll", updateRect, true);
-    window.addEventListener("resize", updateRect);
+    window.addEventListener("scroll", scheduleUpdate, true);
+    window.addEventListener("resize", scheduleUpdate);
 
     return () => {
-      window.removeEventListener("scroll", updateRect, true);
-      window.removeEventListener("resize", updateRect);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", scheduleUpdate, true);
+      window.removeEventListener("resize", scheduleUpdate);
     };
   }, [isOpen]);
 
-  const { data } = useNaverLocalQuery(value, {
-    enabled: isActive && (value !== "" || !hasInitialValue),
+  // 입력할 때마다 요청이 나가면 "강남역 카페" 한 번에 8개 요청 + 캐시 엔트리 8개가 쌓인다.
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), 250);
+    return () => clearTimeout(timer);
+  }, [value]);
+
+  const { data } = useNaverLocalQuery(debouncedValue, {
+    enabled: isActive && (debouncedValue !== "" || !hasInitialValue),
   });
 
   useEffect(() => {

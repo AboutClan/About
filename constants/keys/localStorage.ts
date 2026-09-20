@@ -56,6 +56,8 @@ export const CAFE_MAP_REVIEW_POPUP = "cafeMapReviewPopup";
 // 노출 게이트용 카운터
 export const CAFE_MAP_VISIT_COUNT = "cafeMapVisitCount";
 export const CAFE_MAP_ENGAGEMENT_COUNT = "cafeMapEngagementCount";
+// 업데이트 소식 종(bell) 뱃지를 이미 본 최신 공지 날짜
+export const CAFE_MAP_NOTICE_SEEN = "cafe-notice";
 // 구버전 키(마이그레이션 후 제거된다)
 export const CAFE_MAP_REVIEW_POPUP_AT = "cafeMapReviewPopupAt";
 export const CAFE_MAP_INSTALL_POPUP_AT = "cafeMapAppInstallDrawerHidden";

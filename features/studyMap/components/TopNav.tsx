@@ -22,6 +22,7 @@ import Header from "@/components/layouts/Header";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import LocationSearch, { mapxyToLatLng } from "@/components/organisms/location/LocationSearch";
+import { CAFE_MAP_NOTICE_SEEN } from "@/constants/keys/localStorage";
 import { usePlaceRankingQuery } from "@/features/study/hooks/queries";
 import { CAFE_LIST_SHEET_PEEK } from "@/features/studyMap/components/CafeListSheet";
 import GuideButton from "@/features/studyMap/components/GuideButton";
@@ -225,6 +226,27 @@ function StudyMapNav({
   const [isRankingOpen, setIsRankingOpen] = useState(false);
   const [isEtcFilterOpen, setIsEtcFilterOpen] = useState(false);
 
+  // 공지 뱃지. 렌더 본문에서 localStorage 를 읽으면 동기 I/O 이고 Safari 시크릿
+  // 모드에서는 throw 한다. 마운트 후 한 번만 읽어 state 로 들고 간다.
+  const [hasUnreadNotice, setHasUnreadNotice] = useState(false);
+  useEffect(() => {
+    if (!LATEST_NOTICE_DATE) return;
+    try {
+      setHasUnreadNotice(localStorage.getItem(CAFE_MAP_NOTICE_SEEN) !== LATEST_NOTICE_DATE);
+    } catch {
+      // 접근 불가 환경에서는 뱃지를 띄우지 않는다.
+    }
+  }, []);
+  const markNoticeSeen = () => {
+    setHasUnreadNotice(false);
+    if (!LATEST_NOTICE_DATE) return;
+    try {
+      localStorage.setItem(CAFE_MAP_NOTICE_SEEN, LATEST_NOTICE_DATE);
+    } catch {
+      // 무시
+    }
+  };
+
   const { data: rankingData } = usePlaceRankingQuery({ enabled: isRankingOpen });
   const [placeInfo, setPlaceInfo] = useState<LocationProps>({
     name: "",
@@ -332,17 +354,13 @@ function StudyMapNav({
                     _hover={{ bg: "gray.50" }}
                     _active={{ bg: "gray.100" }}
                     onClick={() => {
-                      localStorage.setItem(
-                        "cafe-notice",
-                        UPDATE_ITEMS.slice().reverse()?.[1]?.date,
-                      );
+                      markNoticeSeen();
                       setUpdateMenu(true);
                     }}
                     pos="relative"
                   >
                     <Bell size={24} strokeWidth={1.5} color="var(--gray-600)" />
-                    {localStorage.getItem("cafe-notice") !==
-                      UPDATE_ITEMS.slice().reverse()?.[1]?.date && (
+                    {hasUnreadNotice && (
                       <Box
                         position="absolute"
                         right="8px"
@@ -374,6 +392,8 @@ function StudyMapNav({
               />
             </Flex>
           </Flex>
+          {/* 전체 폭을 차지하는 fixed 래퍼라, 통과시키지 않으면 칩이 없는 빈 영역이
+              지도 스와이프를 삼킨다. 터치를 받아야 하는 자식에만 auto 로 되돌린다. */}
           <Flex
             w="100%"
             flexDir="column"
@@ -385,6 +405,7 @@ function StudyMapNav({
             maxW="var(--max-width)"
             mx="auto"
             zIndex={100}
+            pointerEvents="none"
           >
             <Flex
               w="full"
@@ -395,6 +416,7 @@ function StudyMapNav({
               overflowX="auto"
               bg="transparent"
               py={3}
+              pointerEvents="auto"
               sx={{
                 "::-webkit-scrollbar": { display: "none" },
                 scrollbarWidth: "none",
@@ -449,6 +471,7 @@ function StudyMapNav({
                 size="sm"
                 p="0"
                 border="var(--border-main)"
+                pointerEvents="auto"
               >
                 <ExpansionIcon />
               </Button>
@@ -462,7 +485,9 @@ function StudyMapNav({
             maxW="var(--max-width)"
             mx="auto"
             zIndex={100}
-            pointerEvents="auto"
+            // 버튼은 오른쪽에만 있는데 래퍼가 전체 폭을 먹는다.
+            // 왼쪽 빈 영역의 스와이프가 지도로 통과하도록 컨테이너는 none.
+            pointerEvents="none"
             justify="space-between"
             px={4}
           >
@@ -476,6 +501,7 @@ function StudyMapNav({
               // 별 버튼의 '4.0+' 뱃지가 원 아래로 7px 튀어나와 8px 간격으로는 겹친다.
               gap={isCafeMap ? "14px" : 2}
               align={isCafeMap ? "flex-end" : "flex-start"}
+              pointerEvents="auto"
             >
               {/* 별점 4.0이상 토글 — 선택 시 별 채움, 해제 시 빈 별.
                   별만 두면 즐겨찾기로 오해할 수 있어 '4.0+' 뱃지를 원 아래 테두리에 걸쳐 표시 */}
@@ -702,9 +728,7 @@ function StudyMapNav({
       {updateMenu && (
         <RightDrawer title="업데이트 소식" onClose={() => setUpdateMenu(false)} isFull={false}>
           <Flex flex={1} overflowY="auto" direction="column" px={4} pt={2}>
-            {UPDATE_ITEMS.slice()
-              .reverse()
-              .map((item) => (
+            {UPDATE_ITEMS_DESC.map((item) => (
                 <UpdateCard key={item.date + item.isCompleted} {...item} />
               ))}
           </Flex>
@@ -721,9 +745,11 @@ function StudyMapNav({
           bottom={isCafeMap ? `${CAFE_LIST_SHEET_PEEK}px` : 0}
           left={0}
           zIndex={300}
+          // space-between 으로 벌어진 가운데 빈 영역이 지도 스와이프를 삼키지 않게 한다.
+          pointerEvents="none"
           sx={{ paddingBottom: isCafeMap ? "16px" : getSafeAreaBottom(16 + extraBottomPadding) }}
         >
-          <Flex px={4} justify="space-between" align="center">
+          <Flex px={4} justify="space-between" align="center" pointerEvents="none">
             {hasBackButton ? (
               <Button
                 rounded="full"
@@ -736,12 +762,13 @@ function StudyMapNav({
                 border="var(--border-main)"
                 borderWidth="1px"
                 borderColor="var(--gray-300)"
+                pointerEvents="auto"
                 onClick={() => onClose()}
               >
                 <AddCafeIcon2 />
               </Button>
             ) : (
-              <Box>
+              <Box pointerEvents="auto">
                 <CurrentLocationBtn onClick={handleLocationRefetch} isBig={true} />
               </Box>
             )}
@@ -759,13 +786,14 @@ function StudyMapNav({
                   fontSize="13px"
                   iconSpacing={3}
                   h="40px"
+                  pointerEvents="auto"
                   onClick={() => openList()}
                 >
                   리스트로 보기
                 </Button>
               )}
 
-              <Box>
+              <Box pointerEvents="auto">
                 <GuideButton
                   pickReviewPlace={pickReviewPlace}
                   openReviewForm={openReviewForm}
@@ -934,6 +962,11 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["스터디·커뮤니티 기능 정식 출시"],
   },
 ];
+
+// 최신순 정렬은 모듈 로드 때 한 번만 한다 (예전에는 렌더마다 slice().reverse() 를 두 번 했다).
+const UPDATE_ITEMS_DESC = [...UPDATE_ITEMS].reverse();
+/** 뱃지 기준이 되는 공지 날짜. 기존 로직(뒤에서 두 번째)을 그대로 유지한다. */
+const LATEST_NOTICE_DATE = UPDATE_ITEMS_DESC[1]?.date;
 
 function UpdateCard({
   isCompleted,

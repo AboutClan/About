@@ -48,14 +48,18 @@ function findScrollContainer(el: HTMLElement | null): HTMLElement | null {
 }
 
 function useCursorData<T>(
-  useQueryFn: (cursor: number) => { data: T[] | undefined; isLoading: boolean },
+  useQueryFn: (
+    cursor: number,
+    options?: { enabled?: boolean },
+  ) => { data: T[] | undefined; isLoading: boolean },
+  enabled = true,
 ) {
   const [items, setItems] = useState<T[]>([]);
   const [cursor, setCursor] = useState(0);
   const firstLoad = useRef(true);
   const hasMore = useRef(true);
 
-  const { data, isLoading } = useQueryFn(cursor);
+  const { data, isLoading } = useQueryFn(cursor, { enabled });
 
   useEffect(() => {
     if (cursor === 0 && data?.length) setCursor(1);
@@ -138,10 +142,11 @@ function GuideButton({
   const [isLocationConfirmOpen, setIsLocationConfirmOpen] = useState(false);
   const [nearestPlace, setNearestPlace] = useState<StudyPlaceProps | null>(null);
 
-  const reviews = useCursorData<StudyReviewProps>(useStudyReviewsQuery);
-  const newPlaces = useCursorData<StudyPlaceProps>(useStudyPlacesCursorQuery);
-
   const isFeedOpen = router.query.modal === "reviewFeed";
+
+  // 피드 드로어가 열려 있을 때만 가져온다.
+  const reviews = useCursorData<StudyReviewProps>(useStudyReviewsQuery, isFeedOpen);
+  const newPlaces = useCursorData<StudyPlaceProps>(useStudyPlacesCursorQuery, isFeedOpen);
 
   const { loaderRef: reviewLoaderRef } = useScrollInfinite({
     isActive: isFeedOpen && feedTab === "최근 후기",

@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 
 import { useToast } from "@/hooks/custom/CustomToast";
 import { BOTTOM_NAV_HEIGHT_PX, getSafeAreaBottom } from "@/utils/validationUtils";
@@ -45,10 +44,6 @@ const TABS: TabItem[] = [
 export default function CafeMapBottomNav() {
   const router = useRouter();
   const toast = useToast();
-  const { data: session } = useSession();
-  const isLoggedIn =
-    !!session && session.user?.role !== "guest" && session.user?.role !== "newUser";
-  console.log(session, isLoggedIn);
   const activeTab: TabId = (router.query.tab as TabId) || "map";
 
   const handleTabClick = (tab: TabItem) => {

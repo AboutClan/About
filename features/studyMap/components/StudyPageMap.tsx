@@ -58,6 +58,13 @@ const CAFE_MAP_FOCUS_ZOOM = 16;
 const MANY_OUTLETS_MIN_POWER = 4.5;
 const SPACIOUS_MIN_SPACE = 4.7;
 
+/** 지도 중심 변화가 이보다 작으면 같은 위치로 본다 (약 1m) */
+const CENTER_EPSILON = 1e-5;
+/** 뷰포트 반경 변화가 이보다 작으면 무시한다 (km) */
+const VIEWPORT_RADIUS_EPSILON = 0.01;
+/** 선택 핀 크기는 입력이 고정이라 모듈 로드 때 한 번만 구한다 */
+const SELECTED_PIN_SIZE = getCafeMapPinSize({ isSelected: true });
+
 function StudyPageMap({
   isDefaultOpen = false,
   onClose,
@@ -85,9 +92,12 @@ function StudyPageMap({
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>(null);
   const [isMapExpansion, setIsMapExpansion] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [loading2TimedOut, setLoading2TimedOut] = useState(false);
-  // naver SDK가 준비된 시점(VoteMap에서 map 생성 완료)을 감지해 마커 재계산을 트리거
+  const [locationTimedOut, setLocationTimedOut] = useState(false);
+  // naver SDK가 준비된 시점을 감지해 지도 옵션·마커 재계산을 트리거.
+  // VoteMap 의 onMapReady 는 map 생성 이후에만 오고, map 생성에는 mapOptions 가 필요하다.
+  // 즉 SDK 가 늦으면 getMapOptions 가 undefined → 지도 없음 → onMapReady 없음 → 영구 빈 화면.
+  // 그래서 SDK 자체의 로드도 따로 감시한다.
   const [naverReadyTick, setNaverReadyTick] = useState(0);
   const [pickCenter, setPickCenter] = useState<{ lat: number; lng: number } | null>(null);
   const wasPickFilterRef = useRef(false);
@@ -112,12 +122,41 @@ function StudyPageMap({
   // markerRadiusKm 와 달리 hysteresis 없이 idle 마다 직접 반영 — 리스트는
   // 사용자가 보는 것과 어긋나면 안 되고, 줌 단계마다 자연스레 단계적으로 변한다.
   const [viewportRadiusKm, setViewportRadiusKm] = useState(5);
+  // 핀치 중에는 zoom_changed 가 연속으로 온다. 매 발화마다 마커 파이프라인
+  // (클러스터링 + 마커 N개 아이콘 문자열 생성)을 돌리면 제스처가 끊기므로,
+  // 제스처가 멎은 뒤 한 번만 반영한다.
+  const zoomDebounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const handleZoomChange = useCallback((zoom: number) => {
+    if (zoomDebounceRef.current) clearTimeout(zoomDebounceRef.current);
+    zoomDebounceRef.current = setTimeout(() => setZoomNumber(zoom), 150);
+  }, []);
+  useEffect(
+    () => () => {
+      if (zoomDebounceRef.current) clearTimeout(zoomDebounceRef.current);
+    },
+    [],
+  );
+
+  const handleMapReady = useCallback(() => setNaverReadyTick((t) => t + 1), []);
+
   // VoteMap idle 콜백. center 와 radius 를 한 번에 처리하고, useCallback 으로
   // 안정화해 VoteMap 의 idle listener effect 가 재등록되지 않게 한다.
   const handleCenterChange = useCallback(
     (info: { lat: number; lon: number; radiusKm: number; viewportRadiusKm: number }) => {
-      setCurrentMapCenter({ lat: info.lat, lon: info.lon });
-      setViewportRadiusKm(info.viewportRadiusKm);
+      // 매번 새 객체를 넣으면 중심이 사실상 그대로여도 트리 전체가 리렌더되고,
+      // currentMapCenter 에 키를 둔 전 데이터 haversine 패스들이 다시 돈다.
+      setCurrentMapCenter((prev) =>
+        prev &&
+        Math.abs(prev.lat - info.lat) < CENTER_EPSILON &&
+        Math.abs(prev.lon - info.lon) < CENTER_EPSILON
+          ? prev
+          : { lat: info.lat, lon: info.lon },
+      );
+      setViewportRadiusKm((prev) =>
+        Math.abs(prev - info.viewportRadiusKm) < VIEWPORT_RADIUS_EPSILON
+          ? prev
+          : info.viewportRadiusKm,
+      );
       setMarkerRadiusKm((prev) => {
         // 0.5km 미만 차이는 numerical noise → 무시.
         if (Math.abs(info.radiusKm - prev) < 0.5) return prev;
@@ -140,6 +179,19 @@ function StudyPageMap({
   // 카공지도: 선택한 카페를 "헤더·칩 아래 ~ 카페 정보 드로어 위" 영역 가운데로 옮기는 요청
   // 카페 정보 드로어의 딤(가림막) 위에 선택한 핀을 다시 그릴 화면 위치 (지도 이동이 끝난 뒤 채워짐)
   const [focusPinPoint, setFocusPinPoint] = useState<{ x: number; y: number } | null>(null);
+
+  // 선택 핀 HTML(~5.4KB)은 선택된 카페가 바뀔 때만 만든다. 렌더마다 새 문자열 + 새 __html
+  // 객체를 넘기면 React 가 bail out 하지 못해 DOM 서브트리가 매번 다시 파싱된다.
+  const focusPinHtml = useMemo(() => {
+    if (!placeInfo) return null;
+    return {
+      __html: getCafeMapPlaceIcon({
+        text: placeInfo.location.name,
+        rating: placeInfo.ratings?.length ? getPlaceScore(placeInfo.ratings).total : undefined,
+        isSelected: true,
+      }),
+    };
+  }, [placeInfo]);
   const [focusRequest, setFocusRequest] = useState<{
     lat: number;
     lon: number;
@@ -279,20 +331,52 @@ function StudyPageMap({
   // 이후 currentLocation 이 늦게 resolve 되어도 ref 가 바뀌지 않으므로 지도가 튀지 않는다.
   const initialLocationRef = useRef<{ lat: number; lon: number } | null>(null);
 
+  // naver SDK 로드 감시. 준비되면 tick 을 올려 아래 init effect 들이 다시 돌게 한다.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (typeof naver !== "undefined" && naver.maps) {
+      setNaverReadyTick((t) => t + 1);
+      return;
+    }
+    const timer = setInterval(() => {
+      if (typeof naver !== "undefined" && naver.maps) {
+        clearInterval(timer);
+        setNaverReadyTick((t) => t + 1);
+      }
+    }, 200);
+    // 10s 넘게 안 오면 네트워크·키 문제다. 계속 돌려도 의미가 없으니 멈춘다.
+    const giveUp = setTimeout(() => clearInterval(timer), 10_000);
+    return () => {
+      clearInterval(timer);
+      clearTimeout(giveUp);
+    };
+  }, []);
+
   // 위치 권한이 이미 granted 인 경우 currentLocation 이 userInfo 보다 먼저 resolve 되면 즉시 초기화.
   // initialLocationRef 가 아직 비어있을 때만 실행되어 userInfo effect 와 충돌하지 않는다.
   useEffect(() => {
     if (!isCafeMap || !currentLocation || initialLocationRef.current) return;
+    const zoom = 14;
+    const options = getMapOptions(currentLocation, zoom);
+    // SDK 가 아직 없으면 latch 를 세우지 않는다 — 세워 버리면 tick 이 와도 여기로 못 돌아온다.
+    if (!options) return;
     initialLocationRef.current = currentLocation;
     setMarkerCenter((prev) => prev ?? currentLocation);
-    const zoom = 14;
-    setMapOptions(getMapOptions(currentLocation, zoom));
+    setMapOptions(options);
     setZoomNumber(zoom);
-  }, [isCafeMap, currentLocation]);
+  }, [isCafeMap, currentLocation, naverReadyTick]);
 
-  // 초기 지도 map-option 세팅
+  // 초기 지도 map-option 세팅.
+  // userInfo 는 [USER_INFO] refetch 마다 새 객체가 되고(무효화 호출부 다수), 그때마다 이 effect 가
+  // 지도를 initialLocationRef 로 되돌리면 사용자가 움직여 둔 화면이 튄다. 실제로 재센터링이
+  // 필요한 트리거는 isMapExpansion / defaultLocation 변경뿐이므로 그 조합을 키로 1회만 적용한다.
+  const appliedInitKeyRef = useRef<string | null>(null);
+
   useEffect(() => {
     if (!userInfo) return;
+    const initKey = `${isMapExpansion}|${defaultLocation?.lat ?? ""},${defaultLocation?.lon ?? ""}`;
+    if (appliedInitKeyRef.current === initKey) return;
+
     const myLocation = {
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
@@ -308,21 +392,23 @@ function StudyPageMap({
 
     const zoom = defaultLocation ? 16 : mapOptions?.zoom || (isMapExpansion ? 14 : 16);
     const options = getMapOptions(initialLocationRef.current, zoom);
+    // SDK 미준비 시 getMapOptions 는 undefined 다. 가드가 없으면 멀쩡한 값을 덮어써서
+    // 지도가 영구히 뜨지 않는다. (같은 파일의 다른 호출부들도 이 패턴을 쓴다.)
+    if (!options) return;
+    appliedInitKeyRef.current = initKey;
     setZoomNumber(zoom);
     setMapOptions(options);
     // currentLocation 은 의도적으로 deps 에서 제외 — 늦게 도착해도 지도를 다시 움직이지 않기 위함.
     // 사용자가 명시적으로 "현재 위치" 버튼을 누르면 handleLocationRefetch 가 setMapOptions 를 직접 호출.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userInfo, isMapExpansion, defaultLocation]);
+  }, [userInfo, isMapExpansion, defaultLocation, naverReadyTick]);
   useEffect(() => {
-    if (!placeInfo) {
-      if (!noModalUpdate) {
-        updateQuery({
-          modal: null,
-        });
-      }
-      return;
-    }
+    // placeInfo 가 없을 때 updateQuery({ modal: null }) 를 부르면 안 된다 —
+    // (1) 마운트 시 placeInfo 는 null 이라 진입 직후 동일 URL 을 push 해서 첫 back 을 삼키고,
+    // (2) 드로어 close 는 router.back() 과 같은 tick 이라, 커밋 시점의 router.query 에는
+    //     아직 modal=placeDrawer 가 남아 있어 새 엔트리를 push 한다(사이클당 히스토리 +1).
+    // URL→state 동기화는 아래 modalParam effect 가 이미 담당하므로 여기서는 손대지 않는다.
+    if (!placeInfo) return;
     // 카공지도는 openCafeMapPlace 가 드로어에 가리지 않는 위치로 직접 맞춘다.
     if (isCafeMap) return;
     setMapOptions((prev) =>
@@ -370,13 +456,15 @@ function StudyPageMap({
   // 별점·편의시설 필터. 지도 마커(visiblePlaceData)와 카공지도 리스트 시트가 같은 조건을 쓴다.
   const matchesFilters = useCallback(
     (place: StudyPlaceProps) => {
-      if (filterType === "good" && getPlaceScore(place.ratings).total < 4.0) return false;
+      // every 안에서 반복 호출하지 않도록 한 번만 채점한다.
+      const score = getPlaceScore(place.ratings);
+      if (filterType === "good" && score.total < 4.0) return false;
       return amenityFilters.every((f) => {
         if (f === "hasManyOutlets") {
-          return getPlaceScore(place.ratings).power >= MANY_OUTLETS_MIN_POWER;
+          return score.power >= MANY_OUTLETS_MIN_POWER;
         }
         if (f === "isUsuallySpacious") {
-          return getPlaceScore(place.ratings).space >= SPACIOUS_MIN_SPACE;
+          return score.space >= SPACIOUS_MIN_SPACE;
         }
         if (f === "goodForDate") return place.studyCafeMeta?.goodForDate === true;
         if (f === "hasWifi") return place.studyCafeMeta?.hasGoodWifi === true;
@@ -528,9 +616,8 @@ function StudyPageMap({
       window.scrollTo(0, scrollLockY.current);
     }
 
-    if (isMapExpansion) {
-      setFilterType("all");
-    } else setFilterType("all");
+    // 확장/축소 어느 쪽이든 필터는 초기화한다.
+    setFilterType("all");
 
     return () => {
       document.documentElement.style.overscrollBehavior = "";
@@ -604,15 +691,6 @@ function StudyPageMap({
     }
   }, [filterType, selectedPickNickname]);
 
-  useEffect(() => {
-    if (!isMapExpansion) return;
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, [isMapExpansion, filterType]);
-
   // isLoading2(데이터 쿼리)가 5초 초과 시 로딩 오버레이를 강제 숨김
   useEffect(() => {
     if (!isLoading2) {
@@ -624,9 +702,25 @@ function StudyPageMap({
     return () => clearTimeout(timer);
   }, [isLoading2]);
 
+  // 위치 조회도 동일하게 상한을 둔다. geolocation 옵션의 timeout(8s)은 "위치 획득"만
+  // 커버해서, 웹뷰에서 네이티브 권한 프롬프트가 대기 중이면 두 콜백이 모두 오지 않고
+  // isLoadingLocation 이 영구히 true 로 남는다.
+  useEffect(() => {
+    if (!isLoadingLocation) {
+      setLocationTimedOut(false);
+      return;
+    }
+    setLocationTimedOut(false);
+    const timer = setTimeout(() => setLocationTimedOut(true), 5000);
+    return () => clearTimeout(timer);
+  }, [isLoadingLocation]);
+
   // CafeListDrawer로 넘길 정렬된 placeData. 부모 리렌더마다 새 배열이 만들어지는
   // 것을 막고, filter 안에서 cache 객체를 mutate 하던 side-effect도 제거.
   const sortedListPlaces = useMemo(() => {
+    // 리스트 드로어가 닫혀 있으면 아무도 쓰지 않는다. 지도 idle 마다 전 데이터
+    // haversine + sort 를 돌던 비용을 없앤다.
+    if (drawerType !== "list") return undefined;
     if (!placeData) return undefined;
     if (ids.length) {
       return placeData.filter((place) => ids.includes(place._id));
@@ -655,7 +749,19 @@ function StudyPageMap({
     mapOptions?.center?.y,
     mapOptions?.center?.x,
     viewportRadiusKm,
+    drawerType,
   ]);
+
+  const selectedPick = useMemo(
+    () => ARCHIVE_OPTIONS.find((o) => o.nickname === selectedPickNickname),
+    [selectedPickNickname],
+  );
+
+  // about 드로어용 PICK 목록. 인라인으로 두면 렌더마다 새 배열이 만들어진다.
+  const pickPlaces = useMemo(
+    () => placeData?.filter((p) => p.pick === selectedPickNickname) ?? [],
+    [placeData, selectedPickNickname],
+  );
 
   // 카공지도 리스트 시트 목록: 클러스터 선택 > PICK > 지금 화면에 보이는 반경 안의 카페
   const listCenterLat = currentMapCenter?.lat ?? mapOptions?.center?.y;
@@ -817,13 +923,13 @@ function StudyPageMap({
               resizeToggle={isMapExpansion}
               handleMarker={handleMarker}
               selectedMarkerId={selectedPlaceId}
-              zoomChange={(zoom: number) => setZoomNumber(zoom)}
+              zoomChange={handleZoomChange}
               onMapClick={isCafeMap ? handleMapClick : undefined}
               focusRequest={isCafeMap ? focusRequest : undefined}
               onFocusSettled={isCafeMap ? setFocusPinPoint : undefined}
               centerChange={handleCenterChange}
               centerValue={pickCenter}
-              onMapReady={() => setNaverReadyTick((t) => t + 1)}
+              onMapReady={handleMapReady}
             />
           </ClipLayer>
         </Box>
@@ -839,7 +945,7 @@ function StudyPageMap({
             ids.length
               ? "선택한 위치"
               : filterType === "about"
-              ? ARCHIVE_OPTIONS.find((o) => o.nickname === selectedPickNickname)?.title ?? "PICK"
+              ? selectedPick?.title ?? "PICK"
               : undefined
           }
           onClearScope={ids.length ? () => setIds([]) : undefined}
@@ -938,24 +1044,16 @@ function StudyPageMap({
           </ModalContent>
         </Modal>
       )} */}
-      {isCafeMap && drawerType === "placeInfo" && placeInfo && focusPinPoint && (
+      {isCafeMap && drawerType === "placeInfo" && placeInfo && focusPinPoint && focusPinHtml && (
         // 네이버 지도의 핀은 딤 아래에 깔리므로, 같은 모양의 선택 핀을 딤 위 같은 자리에 겹쳐 그린다.
         // 터치는 통과시켜 딤을 누르면 지금처럼 드로어가 닫힌다.
         <Box
           pos="fixed"
-          left={`${focusPinPoint.x - getCafeMapPinSize({ isSelected: true }).width / 2}px`}
-          top={`${focusPinPoint.y - getCafeMapPinSize({ isSelected: true }).height}px`}
+          left={`${focusPinPoint.x - SELECTED_PIN_SIZE.width / 2}px`}
+          top={`${focusPinPoint.y - SELECTED_PIN_SIZE.height}px`}
           zIndex={1001}
           pointerEvents="none"
-          dangerouslySetInnerHTML={{
-            __html: getCafeMapPlaceIcon({
-              text: placeInfo.location.name,
-              rating: placeInfo.ratings?.length
-                ? getPlaceScore(placeInfo.ratings).total
-                : undefined,
-              isSelected: true,
-            }),
-          }}
+          dangerouslySetInnerHTML={focusPinHtml}
         />
       )}
       {drawerType === "placeInfo" && (
@@ -1007,10 +1105,10 @@ function StudyPageMap({
             setReviewPlaceInfo(place);
             updateQuery({ modal: "reviewPlace" });
           }}
-          placeData={placeData?.filter((p) => p.pick === selectedPickNickname) ?? []}
+          placeData={pickPlaces}
           pickNickname={selectedPickNickname}
-          pickTitle={ARCHIVE_OPTIONS.find((o) => o.nickname === selectedPickNickname)?.title}
-          pickSubtitle={ARCHIVE_OPTIONS.find((o) => o.nickname === selectedPickNickname)?.subtitle}
+          pickTitle={selectedPick?.title}
+          pickSubtitle={selectedPick?.subtitle}
         />
       )}
       {reviewPlaceInfo && (
@@ -1052,9 +1150,12 @@ function StudyPageMap({
         />
       )}
 
-      {(isLoading || (isLoading2 && !loading2TimedOut) || (isLoadingLocation && tempToggle)) && (
+      {((isLoading2 && !loading2TimedOut) ||
+        (isLoadingLocation && tempToggle && !locationTimedOut)) && (
         <>
-          <ScreenOverlay zIndex={2000} />
+          {/* 이 딤은 onClick 이 없는 시각 피드백이다. 막아 두면 로딩 중 지도·시트·
+              드로어 조작이 전부 죽으므로 터치를 통과시킨다. */}
+          <ScreenOverlay zIndex={2000} isPassThrough />
           <MainLoading
             top={
               isCafeMap ? `calc(50dvh + 30px - (${getSafeAreaBottom(0)}) / 2)` : "50%"

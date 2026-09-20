@@ -141,12 +141,16 @@ export function CafeListDrawer({
 }
 
 // 영업시간 문자열("HH:mm - HH:mm")로 지금 영업 중인지 판단. 시간 정보가 없으면 isOpen 은 null.
-export function getOpenStatus(place: StudyPlaceProps): { hour: string; isOpen: boolean | null } {
+// now("HH:mm")를 넘기면 그 값을 쓴다 — 목록에서 행마다 dayjs 객체를 새로 만들지 않기 위함.
+export function getOpenStatus(
+  place: StudyPlaceProps,
+  now?: string,
+): { hour: string; isOpen: boolean | null } {
   const hour = place.operatingHours?.[0]?.[1] ?? "";
   if (!hour) return { hour, isOpen: null };
   const [start, end] = hour.split(" - ");
-  const now = dayjs().format("HH:mm");
-  return { hour, isOpen: now >= start && now <= end };
+  const currentTime = now ?? dayjs().format("HH:mm");
+  return { hour, isOpen: currentTime >= start && currentTime <= end };
 }
 
 export function CafeCompactCard({

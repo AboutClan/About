@@ -84,7 +84,10 @@ function VoteMap({
 
   const markerMapRef = useRef<Record<string, naver.maps.Marker>>({});
   const markerIconMapRef = useRef<Record<string, naver.maps.MarkerOptions["icon"]>>({});
-  const markerSelectedIconMapRef = useRef<Record<string, naver.maps.MarkerOptions["icon"]>>({});
+  // 선택 아이콘은 지연 생성 + 1회 캐시. id → resolver.
+  const markerSelectedIconMapRef = useRef<
+    Record<string, () => naver.maps.MarkerOptions["icon"]>
+  >({});
   const prevSelectedMarkerIdRef = useRef<string | null>(null);
 
   // selectedMarkerId를 effect deps에 넣지 않고 ref로만 읽어, 마커 클릭 시
@@ -101,6 +104,18 @@ function VoteMap({
   // 부모가 매 렌더 새 콜백을 넘겨도 focus effect 가 다시 돌지 않게 ref 로 읽는다.
   const onFocusSettledRef = useRef(onFocusSettled);
   onFocusSettledRef.current = onFocusSettled;
+
+  // 같은 이유로 zoom_changed / click / marker click 콜백도 ref 로 읽는다.
+  // deps 에 넣으면 부모 리렌더마다 naver 리스너가 탈착되고(핀치 중 줌 이벤트 유실),
+  // handleMarker 의 경우 마커 N개가 전부 destroy/recreate 된다.
+  const zoomChangeRef = useRef(zoomChange);
+  zoomChangeRef.current = zoomChange;
+  const onMapClickRef = useRef(onMapClick);
+  onMapClickRef.current = onMapClick;
+  const handleMarkerRef = useRef(handleMarker);
+  handleMarkerRef.current = handleMarker;
+  const centerChangeRef = useRef(centerChange);
+  centerChangeRef.current = centerChange;
 
   useEffect(() => {
     if (!mapRef.current || typeof naver === "undefined" || !mapOptions) return;
@@ -158,36 +173,36 @@ function VoteMap({
 
   useEffect(() => {
     if (!mapReady) return;
-    if (!zoomChange) return;
 
     const map = mapInstanceRef.current;
     if (!map || typeof naver === "undefined") return;
 
     const zoomListener = naver.maps.Event.addListener(map, "zoom_changed", () => {
-      zoomChange(map.getZoom());
+      zoomChangeRef.current?.(map.getZoom());
     });
 
     return () => {
       naver.maps.Event.removeListener(zoomListener);
     };
-  }, [mapReady, zoomChange]);
+  }, [mapReady]);
 
   useEffect(() => {
-    if (!mapReady || !onMapClick) return;
+    if (!mapReady) return;
 
     const map = mapInstanceRef.current;
     if (!map || typeof naver === "undefined") return;
 
-    const clickListener = naver.maps.Event.addListener(map, "click", () => onMapClick());
+    const clickListener = naver.maps.Event.addListener(map, "click", () =>
+      onMapClickRef.current?.(),
+    );
 
     return () => {
       naver.maps.Event.removeListener(clickListener);
     };
-  }, [mapReady, onMapClick]);
+  }, [mapReady]);
 
   useEffect(() => {
     if (!mapReady) return;
-    if (!centerChange) return;
 
     const map = mapInstanceRef.current;
     if (!map || typeof naver === "undefined") return;
@@ -234,13 +249,13 @@ function VoteMap({
       }
 
       if (lat == null || lng == null) return;
-      centerChange({ lat, lon: lng, radiusKm, viewportRadiusKm });
+      centerChangeRef.current?.({ lat, lon: lng, radiusKm, viewportRadiusKm });
     });
 
     return () => {
       naver.maps.Event.removeListener(idleListener);
     };
-  }, [mapReady, centerChange]);
+  }, [mapReady]);
 
   useEffect(() => {
     const map = mapInstanceRef.current;
@@ -274,8 +289,13 @@ function VoteMap({
       if (markerOptions.id) {
         markerMapRef.current[markerOptions.id] = marker;
         markerIconMapRef.current[markerOptions.id] = markerOptions.icon;
-        markerSelectedIconMapRef.current[markerOptions.id] =
-          markerOptions.selectedIcon ?? markerOptions.icon;
+        const buildSelected = markerOptions.getSelectedIcon;
+        const eagerSelected = markerOptions.selectedIcon ?? markerOptions.icon;
+        let cachedSelected: naver.maps.MarkerOptions["icon"];
+        markerSelectedIconMapRef.current[markerOptions.id] = () => {
+          if (!cachedSelected) cachedSelected = buildSelected ? buildSelected() : eagerSelected;
+          return cachedSelected;
+        };
       }
 
       if (markerOptions?.isPicked) {
@@ -297,9 +317,9 @@ function VoteMap({
       }
 
       naver.maps.Event.addListener(marker, "click", () => {
-        if (!handleMarker || !markerOptions.id) return;
+        if (!markerOptions.id) return;
 
-        handleMarker(markerOptions.id, map.getZoom(), markerOptions.ids);
+        handleMarkerRef.current?.(markerOptions.id, map.getZoom(), markerOptions.ids);
       });
 
       mapElementsRef.current.markers.push(marker);
@@ -348,7 +368,7 @@ function VoteMap({
     const currentSelectedId = selectedMarkerIdRef.current;
     if (currentSelectedId) {
       const selectedMarker = markerMapRef.current[currentSelectedId];
-      const selectedIcon = markerSelectedIconMapRef.current[currentSelectedId];
+      const selectedIcon = markerSelectedIconMapRef.current[currentSelectedId]?.();
 
       if (selectedMarker && selectedIcon) {
         selectedMarker.setIcon(selectedIcon);
@@ -358,11 +378,18 @@ function VoteMap({
     }
 
     // ② 새 마커 생성 완료 후 기존 마커 제거 (깜박임 방지)
-    prevMarkers.forEach((marker) => marker.setMap(null));
+    // setMap(null) 만으로는 click 리스너 클로저가 남아 markerOptions(아이콘 HTML 문자열
+    // 2개, 마커당 ~11KB)와 map 을 계속 붙잡는다. 리스너까지 끊어야 회수된다.
+    prevMarkers.forEach((marker) => {
+      naver.maps.Event.clearInstanceListeners(marker);
+      marker.setMap(null);
+    });
     prevPolylines.forEach((polyline) => polyline.setMap(null));
     prevInfoWindows.forEach((info) => info.close());
     prevCircles.forEach((circle) => circle.setMap(null));
-  }, [markersOptions, circleCenter, handleMarker, mapReady]);
+    // handleMarker 는 deps 에 없다 — ref 로 읽으므로, 부모의 shallow router push
+    // (드로어 열기/닫기)마다 마커 N개가 전부 재생성되던 문제를 막는다.
+  }, [markersOptions, circleCenter, mapReady]);
 
   useEffect(() => {
     const prevMarkerId = prevSelectedMarkerIdRef.current;
@@ -383,7 +410,7 @@ function VoteMap({
     }
 
     const nextMarker = markerMapRef.current[selectedMarkerId];
-    const selectedIcon = markerSelectedIconMapRef.current[selectedMarkerId];
+    const selectedIcon = markerSelectedIconMapRef.current[selectedMarkerId]?.();
 
     if (nextMarker && selectedIcon) {
       nextMarker.setIcon(selectedIcon);
@@ -432,6 +459,36 @@ function VoteMap({
       naver.maps.Event.removeListener(idleListener);
     };
   }, [focusRequest, mapReady]);
+
+  // 언마운트 정리. /cafe-map 은 탭을 라우트가 아니라 조건부 렌더로 바꾸므로
+  // (pages/cafe-map.tsx) 탭을 왕복할 때마다 이 컴포넌트가 통째로 재생성된다.
+  // 이 cleanup 이 없으면 왕복마다 map 인스턴스 · 타일 레이어 · 마커 N개와
+  // 그 click 클로저가 전부 누수된다. mount 시 1회만 등록한다.
+  useEffect(() => {
+    return () => {
+      if (typeof naver === "undefined") return;
+
+      const { markers, polylines, infoWindow, circles } = mapElementsRef.current;
+      markers.forEach((marker) => {
+        naver.maps.Event.clearInstanceListeners(marker);
+        marker.setMap(null);
+      });
+      polylines.forEach((polyline) => polyline.setMap(null));
+      infoWindow.forEach((info) => info.close());
+      circles.forEach((circle) => circle.setMap(null));
+      mapElementsRef.current = { markers: [], polylines: [], infoWindow: [], circles: [] };
+      markerMapRef.current = {};
+      markerIconMapRef.current = {};
+      markerSelectedIconMapRef.current = {};
+
+      const map = mapInstanceRef.current;
+      if (map) {
+        naver.maps.Event.clearInstanceListeners(map);
+        map.destroy();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
 
   return <Map ref={mapRef} id="map" />;
 }

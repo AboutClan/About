@@ -1,6 +1,7 @@
 import { Box, Flex, Menu, MenuButton, MenuItem, MenuList, Portal } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { animate, motion, useMotionValue } from "framer-motion";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import DrawerHandle from "@/components/atoms/DrawerHandle";
 import { CAFE_MAP_LOGO_DEFAULT, getCafeMapLogo } from "@/features/study/lib/getStudyVoteIcon";
@@ -19,6 +20,8 @@ const FULL_TOP_GAP = 48;
 const HALF_RATIO = 0.45;
 // 이 속도(px/ms) 이상으로 튕기면 거리와 관계없이 그 방향의 다음 단계로 스냅
 const FLICK_VELOCITY = 0.5;
+/** 목록을 한 번에 이만큼만 그린다 (줌아웃 시 전 데이터가 들어오는 것 방지) */
+const ROWS_PAGE_SIZE = 60;
 // 이 거리(px) 이하로 움직이고 떼면 드래그가 아닌 탭으로 본다
 const TAP_SLOP = 6;
 
@@ -113,6 +116,20 @@ export default function CafeListSheet({
   // 드래그 직후 따라오는 click 이 "탭해서 열기"로 처리되지 않게 막는다.
   const justDraggedRef = useRef(false);
 
+  const onMoveRef = useRef<(event: PointerEvent) => void>();
+  const onUpRef = useRef<(event: PointerEvent) => void>();
+  const onCancelRef = useRef<() => void>();
+
+  const stableMove = useCallback((event: PointerEvent) => onMoveRef.current?.(event), []);
+  const stableUp = useCallback((event: PointerEvent) => onUpRef.current?.(event), []);
+  const stableCancel = useCallback(() => onCancelRef.current?.(), []);
+
+  const detachDragListeners = useCallback(() => {
+    window.removeEventListener("pointermove", stableMove);
+    window.removeEventListener("pointerup", stableUp);
+    window.removeEventListener("pointercancel", stableCancel);
+  }, [stableMove, stableUp, stableCancel]);
+
   const handlePointerMove = useCallback(
     (event: PointerEvent) => {
       const drag = dragRef.current;
@@ -129,8 +146,7 @@ export default function CafeListSheet({
   const handlePointerUp = useCallback(
     (event: PointerEvent) => {
       const drag = dragRef.current;
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerup", handlePointerUp);
+      detachDragListeners();
       if (!drag) return;
       dragRef.current = undefined;
 
@@ -169,8 +185,18 @@ export default function CafeListSheet({
       animate(y, snapOffsets[target], { type: "tween", ease: "easeOut", duration: 0.2 });
       if (target !== snap) onSnapChange(target);
     },
-    [handlePointerMove, onSnapChange, snap, snapOffsets, y],
+    [detachDragListeners, onSnapChange, snap, snapOffsets, y],
   );
+
+  // 브라우저/웹뷰가 제스처를 가져가면 pointerup 대신 pointercancel 이 온다. 이걸 받지 않으면
+  // dragRef 와 window 의 pointermove 가 남아, 이후 지도 위 드래그가 시트를 따라오게 만든다.
+  const handlePointerCancel = useCallback(() => {
+    const drag = dragRef.current;
+    detachDragListeners();
+    if (!drag) return;
+    dragRef.current = undefined;
+    animate(y, snapOffsets[snap], { type: "tween", ease: "easeOut", duration: 0.2 });
+  }, [detachDragListeners, snap, snapOffsets, y]);
 
   const handlePointerDown = (event: React.PointerEvent) => {
     // 드롭다운·칩 버튼을 누를 때는 드래그로 가로채지 않는다.
@@ -182,16 +208,18 @@ export default function CafeListSheet({
       lastT: event.timeStamp,
       moved: false,
     };
-    window.addEventListener("pointermove", handlePointerMove);
-    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointermove", stableMove);
+    window.addEventListener("pointerup", stableUp);
+    window.addEventListener("pointercancel", stableCancel);
   };
 
-  useEffect(() => {
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerup", handlePointerUp);
-    };
-  }, [handlePointerMove, handlePointerUp]);
+  // 드래그 중 리렌더(resize 로 snapOffsets 변경 등)가 일어나도 등록·해제 대상이 어긋나지
+  // 않도록, window 에는 identity 가 고정된 wrapper 만 붙인다.
+  onMoveRef.current = handlePointerMove;
+  onUpRef.current = handlePointerUp;
+  onCancelRef.current = handlePointerCancel;
+
+  useEffect(() => detachDragListeners, [detachDragListeners]);
 
   const rows = useMemo(() => {
     const withMeta = places.map((place) => {
@@ -220,6 +248,32 @@ export default function CafeListSheet({
       return byDistance(a, b);
     });
   }, [places, refPoint, sort]);
+
+  // 행 클릭 콜백은 부모에서 매 렌더 새로 만들어진다(shallow router push 의존).
+  // memo 된 행이 그것 때문에 전부 리렌더되지 않게 ref 로 우회한다.
+  const onPlaceClickRef = useRef(onPlaceClick);
+  onPlaceClickRef.current = onPlaceClick;
+  const handleRowClick = useCallback((place: StudyPlaceProps) => {
+    onPlaceClickRef.current(place);
+  }, []);
+
+  // 행마다 dayjs 객체를 만들지 않도록 "지금"을 한 번만 구한다.
+  // 분 단위로만 갱신하면 영업중/종료 표시가 늦지 않으면서 렌더 비용도 거의 없다.
+  const [minuteTick, setMinuteTick] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => setMinuteTick((t) => t + 1), 60_000);
+    return () => clearInterval(timer);
+  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const nowHHmm = useMemo(() => dayjs().format("HH:mm"), [minuteTick]);
+
+  // 줌아웃하면 viewportRadiusKm 이 최대 1000km 까지 벌어져 전 데이터가 목록에 들어온다.
+  // 한 번에 다 그리면 스크롤이 죽으므로 페이지 단위로 늘린다.
+  const [visibleCount, setVisibleCount] = useState(ROWS_PAGE_SIZE);
+  useEffect(() => {
+    setVisibleCount(ROWS_PAGE_SIZE);
+  }, [rows]);
+  const visibleRows = rows.slice(0, visibleCount);
 
   if (!viewportHeight) return null;
 
@@ -355,15 +409,32 @@ export default function CafeListSheet({
           }}
         >
           {rows.length ? (
-            rows.map(({ place, distanceKm, rating }) => (
-              <CafeSheetRow
-                key={place._id}
-                place={place}
-                distanceKm={distanceKm}
-                rating={rating}
-                onClick={() => onPlaceClick(place)}
-              />
-            ))
+            <>
+              {visibleRows.map(({ place, distanceKm, rating }) => (
+                <CafeSheetRow
+                  key={place._id}
+                  place={place}
+                  distanceKm={distanceKm}
+                  rating={rating}
+                  now={nowHHmm}
+                  onSelect={handleRowClick}
+                />
+              ))}
+              {rows.length > visibleCount && (
+                <Box
+                  as="button"
+                  type="button"
+                  w="full"
+                  py={3}
+                  fontSize="13px"
+                  fontWeight={600}
+                  color="gray.600"
+                  onClick={() => setVisibleCount((prev) => prev + ROWS_PAGE_SIZE)}
+                >
+                  더 보기 ({rows.length - visibleCount})
+                </Box>
+              )}
+            </>
           ) : (
             <Box py={8} textAlign="center" fontSize="13px" color="gray.500">
               이 지역에 조건에 맞는 카공 카페가 없어요
@@ -387,18 +458,21 @@ export default function CafeListSheet({
 
 const CAFE_ROW_LOGO = getCafeMapLogo(22, CAFE_MAP_LOGO_DEFAULT);
 
-function CafeSheetRow({
+const CafeSheetRow = memo(function CafeSheetRow({
   place,
   distanceKm,
   rating,
-  onClick,
+  now,
+  onSelect,
 }: {
   place: StudyPlaceProps;
   distanceKm: number;
   rating: number | null;
-  onClick: () => void;
+  /** 부모가 한 번 계산한 "HH:mm". 행마다 dayjs 를 만들지 않기 위해 내려받는다. */
+  now: string;
+  onSelect: (place: StudyPlaceProps) => void;
 }) {
-  const { isOpen } = getOpenStatus(place);
+  const { isOpen } = getOpenStatus(place, now);
   const distance = formatDistance(distanceKm);
 
   const meta: React.ReactNode[] = [];
@@ -432,7 +506,7 @@ function CafeSheetRow({
       borderBottom="var(--border-main)"
       textAlign="left"
       _active={{ opacity: 0.7 }}
-      onClick={onClick}
+      onClick={() => onSelect(place)}
     >
       <Flex
         flexShrink={0}
@@ -473,4 +547,4 @@ function CafeSheetRow({
       </Flex>
     </Flex>
   );
-}
+});
