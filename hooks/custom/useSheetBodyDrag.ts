@@ -161,14 +161,25 @@ export default function useSheetBodyDrag(handlers: SheetBodyDragHandlers) {
     if (Math.abs(dy) < DECIDE_SLOP) return; // 아직 판단 보류
 
     const { canDragUp, canDragDown, onDragStart, onDragMove } = handlersRef.current;
-    // 모바일 사파리는 바운스 중 scrollTop 이 음수가 될 수 있어 <= 로 본다.
-    const atTop = !state.scrollEl || state.scrollEl.scrollTop <= 0;
 
-    // 아래로: 스크롤이 우선이고, 이미 맨 위까지 올라온 뒤에야 시트를 내리는 의도로 읽는다.
-    // 위로: scrollTop 을 보지 않는다. 시트가 최상단 단계에 닿기 전에는 목록이 스크롤되면
-    //       안 되고(peek 에서 목록을 밀면 한 단계 올라가야 한다), 최상단에서는 canDragUp 이
-    //       false 라 자연히 평범한 스크롤로 양보된다.
-    const claim = dy > 0 ? atTop && canDragDown() : canDragUp();
+    // 스크롤 가능한 영역 안이고 그 방향으로 더 스크롤할 여지가 남아 있으면 스크롤이 우선이다.
+    // 방향을 따지지 않고 위로 미는 것을 전부 시트가 가져가면, 중간 단계에서 목록이 양쪽 다
+    // 막혀 아예 스크롤되지 않는다(위는 시트가 가져가고 아래는 scrollTop 0 이라 또 가져감).
+    // 스크롤이 끝까지 간 뒤에야 시트 드래그로 넘긴다 — 사용자가 설명한 그 의도다.
+    // (모바일 사파리는 바운스 중 scrollTop 이 음수가 될 수 있어 경계를 여유 있게 잡는다.)
+    const el = state.scrollEl;
+    const scrollWins = el
+      ? dy > 0
+        ? el.scrollTop > 0 // 아직 위로 더 스크롤할 수 있다
+        : el.scrollTop < el.scrollHeight - el.clientHeight - 1 // 아직 아래로 더 남았다
+      : false;
+    if (scrollWins) {
+      state.phase = "released";
+      return;
+    }
+
+    // peek 처럼 목록 스크롤이 잠긴 단계에서는 scrollEl 이 없어 곧바로 여기로 온다.
+    const claim = dy > 0 ? canDragDown() : canDragUp();
     if (!claim) {
       state.phase = "released";
       return;

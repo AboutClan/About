@@ -477,6 +477,12 @@ export default function CafeListSheet({
               이 지역에 조건에 맞는 카공 카페가 없어요
             </Box>
           )}
+          {/* 화면 밖으로 잘린 만큼의 여백.
+              시트 박스는 항상 full 높이이고 translateY 로만 노출량을 줄이기 때문에, 중간
+              단계에서는 목록 요소의 아래쪽 snapOffsets[snap] px 가 화면 밖에 있다. 이 여백이
+              없으면 끝까지 스크롤해도 마지막 항목들이 그 영역에 갇혀 영영 보이지 않는다.
+              (padding 은 브라우저에 따라 scrollHeight 에 안 잡히는 경우가 있어 요소로 둔다.) */}
+          <Box h={`${snapOffsets[snap]}px`} aria-hidden />
         </Box>
       </Box>
       {/* 하단 탭과의 경계. 하단 탭의 테두리·그림자는 시트 뒤에 가려지므로 여기서 그린다. */}
