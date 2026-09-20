@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Header from "@/components/layouts/Header";
 import { usePlaceRankingQuery } from "@/features/study/hooks/queries";
@@ -17,6 +17,15 @@ export default function CafeMapRankingPage() {
   const modalParam = router.query.modal;
 
   const [reviewPlace, setReviewPlace] = useState<StudyPlaceProps | null>(null);
+
+  // 리뷰 게시판은 ?modal= 로 히스토리에 쌓여 열린다. 열림 여부의 단일 기준도 이 쿼리여야
+  // 뒤로가기(브라우저·안드로이드 하드웨어 모두 router.back())로 닫힌다.
+  // reviewPlace 만 보고 렌더하면 쿼리가 빠져도 드로어가 그대로 남는다.
+  const isReviewOpen = modalParam === "reviewPlace" || modalParam === "addReview";
+
+  useEffect(() => {
+    if (!isReviewOpen) setReviewPlace(null);
+  }, [isReviewOpen]);
 
   const { data: rankingData } = usePlaceRankingQuery();
 
@@ -61,13 +70,10 @@ export default function CafeMapRankingPage() {
       </Flex>
 
       {/* drawer들은 fixed 컨테이너 밖 → 루트 stacking context에서 z-index 적용 */}
-      {reviewPlace && (
+      {isReviewOpen && reviewPlace && (
         <StudyReviewDrawer
           placeInfo={reviewPlace}
-          onClose={() => {
-            router.back();
-            setReviewPlace(null);
-          }}
+          onClose={() => router.back()}
           zIndex={3000}
           handleClick={() => updateQuery({ modal: "addReview" })}
         />

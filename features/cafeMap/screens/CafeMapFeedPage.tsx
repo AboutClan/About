@@ -105,9 +105,15 @@ export default function CafeMapFeedPage() {
   const [feedTab, setFeedTab] = useState<FeedTab>("최근 후기");
   const [reviewPlace, setReviewPlace] = useState<StudyPlaceProps | null>(null);
 
+  // 랭킹 탭과 동일 — 열림 여부의 기준은 쿼리 하나다. 그래야 뒤로가기로 닫힌다.
+  const isReviewOpen = modalParam === "reviewPlace" || modalParam === "addReview";
+
+  useEffect(() => {
+    if (!isReviewOpen) setReviewPlace(null);
+  }, [isReviewOpen]);
+
   const reviews = useCursorData<StudyReviewProps>(useStudyReviewsQuery);
   const newPlaces = useCursorData<StudyPlaceProps>(useStudyPlacesCursorQuery);
-  console.log(3, newPlaces);
   const { loaderRef: reviewLoaderRef } = useScrollInfinite({
     isActive: feedTab === "최근 후기",
     isLoading: reviews.isLoading,
@@ -214,13 +220,10 @@ export default function CafeMapFeedPage() {
         )}
       </Box>
 
-      {reviewPlace && (
+      {isReviewOpen && reviewPlace && (
         <StudyReviewDrawer
           placeInfo={reviewPlace}
-          onClose={() => {
-            router.back();
-            setReviewPlace(null);
-          }}
+          onClose={() => router.back()}
           zIndex={3000}
           handleClick={() => updateQuery({ modal: "addReview" })}
         />
