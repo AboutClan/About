@@ -9,14 +9,13 @@ import Document, {
 import { Fragment } from "react";
 import { ServerStyleSheet } from "styled-components";
 
+import { ABOUT_ORIGIN, CAFE_MAP_ORIGIN, isCafeMapHost } from "@/constants/seo";
 import { GROUP_OG_MAPPING } from "@/pages/s/group/[id]";
-
-const CAFE_MAP_HOSTS = ["xn--ob0b42knwutje.com", "www.xn--ob0b42knwutje.com", "카공지도.com"];
 
 const DEFAULT_IMAGE =
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg";
 /** 카공지도 페이지의 정식 URL. study-about.club/cafe-map 과 같은 내용이라 이쪽으로 통일한다. */
-const CAFE_MAP_CANONICAL = "https://xn--ob0b42knwutje.com/";
+const CAFE_MAP_CANONICAL = `${CAFE_MAP_ORIGIN}/`;
 
 const CAFE_MAP_IMAGE =
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/cafe-map.png";
@@ -43,10 +42,7 @@ const CAFE_MAP_SITE_NAME = "카공지도";
 const CAFE_MAP_LARGE_ICON = "/cafe-map-icon.png";
 
 const resolveOgBase = (host: string | undefined, asPath: string): OG => {
-  const normalizedHost = host?.split(":")?.[0];
-  const isCafeMapHost = CAFE_MAP_HOSTS.includes(normalizedHost || "");
-
-  if (isCafeMapHost) {
+  if (isCafeMapHost(host)) {
     return {
       title: "카공 지도 | 내 근처 카공 카페 찾기",
       description: "100만개 이상의 카공 리뷰를 기반으로 제작된, 진짜 카공 지도",
@@ -66,7 +62,7 @@ const resolveOgBase = (host: string | undefined, asPath: string): OG => {
     return {
       title: "멤버 리뷰",
       description: "함께 참여했던 멤버들에 대한 후기를 익명으로 평가할 수 있어요!",
-      url: "https://study-about.club",
+      url: ABOUT_ORIGIN,
       image: DEFAULT_IMAGE,
     };
   }
@@ -74,7 +70,7 @@ const resolveOgBase = (host: string | undefined, asPath: string): OG => {
     return {
       title: "🔥 열활 멤버 🔥 이벤트 룰렛",
       description: "소모임 열활 멤버에게 드리는 이벤트 티켓! 접속해서 확인하세요!",
-      url: "https://study-about.club/cafe-map",
+      url: `${ABOUT_ORIGIN}/random-roulette`,
       image:
         "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%9D%B4%EB%B2%A4%ED%8A%B8+%EB%A1%A4%EB%A0%9B.png",
     };
@@ -95,7 +91,7 @@ const resolveOgBase = (host: string | undefined, asPath: string): OG => {
     return {
       title: "카공 스터디 라운지",
       description: "스터디 확인, 신청, 변경 모두 여기서!",
-      url: "https://study-about.club/s/lounge",
+      url: `${ABOUT_ORIGIN}/s/lounge`,
       image:
         "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A7%A4%EC%B9%AD-%EB%9D%BC%EC%9A%B4%EC%A7%80.png",
     };
@@ -104,7 +100,7 @@ const resolveOgBase = (host: string | undefined, asPath: string): OG => {
     return {
       title: "내 카공 스터디",
       description: "오늘 참여중인 스터디로 바로 이동!",
-      url: "https://study-about.club/s/result",
+      url: `${ABOUT_ORIGIN}/s/result`,
       image:
         "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
     };
@@ -113,7 +109,7 @@ const resolveOgBase = (host: string | undefined, asPath: string): OG => {
     return {
       title: "실시간 공부 인증",
       description: "개인 공부 인증하고 포인트 받자!",
-      url: "https://study-about.club/s/attend",
+      url: `${ABOUT_ORIGIN}/s/attend`,
       image:
         "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png",
     };
@@ -121,21 +117,21 @@ const resolveOgBase = (host: string | undefined, asPath: string): OG => {
   if (first === "s" && second === "group" && third && GROUP_OG_MAPPING[third]) {
     return {
       ...GROUP_OG_MAPPING[third],
-      url: `https://study-about.club/s/results/group/${third}`,
+      url: `${ABOUT_ORIGIN}/s/results/group/${third}`,
     };
   }
   if (second === "gather") {
     return {
       title: "번개 모임",
       description: "해당 번개로 바로 이동!",
-      url: "https://study-about.club/s/results/gather",
+      url: `${ABOUT_ORIGIN}/s/results/gather`,
       image: DEFAULT_IMAGE,
     };
   }
   return {
     title: "어바웃",
     description: "20대 커뮤니티형 동아리",
-    url: "https://study-about.club",
+    url: ABOUT_ORIGIN,
     image: DEFAULT_IMAGE,
   };
 };
@@ -207,6 +203,20 @@ export default class MyDocument extends Document<MyDocumentProps> {
           />
           <meta charSet="utf-8" key="charset" />
 
+          {/* Search Console 소유권 확인.
+              두 도메인이 같은 앱을 쓰므로 태그도 양쪽에 다 나가지만,
+              구글은 해당 속성의 토큰만 찾으므로 서로 간섭하지 않는다. */}
+          <meta
+            name="google-site-verification"
+            content="nRJzNZkDBWzU9qXQXHXZdtuJfoldqPQUjJmNZ-0GP3c"
+            key="gsc-cafe-map"
+          />
+          <meta
+            name="google-site-verification"
+            content="rRgyxVUhR0gM1ActwAQ9i0OC5_Xmx3VD8J1OGgfvKcU"
+            key="gsc-about"
+          />
+
           {/* 검색결과 파비콘. 카공지도 도메인/경로면 카공지도 아이콘으로 바뀐다.
               구글은 사이트 루트의 아이콘을 쓰므로, 카공지도.com 루트가 곧 카공지도 페이지라 여기서 갈라주면 된다. */}
           <link rel="icon" href={og.icon ?? DEFAULT_ICON} key="icon" />
@@ -244,7 +254,7 @@ export default class MyDocument extends Document<MyDocumentProps> {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 name: og.siteName ?? DEFAULT_SITE_NAME,
-                url: og.siteName === CAFE_MAP_SITE_NAME ? CAFE_MAP_CANONICAL : "https://study-about.club",
+                url: og.siteName === CAFE_MAP_SITE_NAME ? CAFE_MAP_CANONICAL : ABOUT_ORIGIN,
               }),
             }}
           />
