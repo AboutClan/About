@@ -4,6 +4,27 @@ const nextConfig = {
   // 빌드 트레이스 기준점을 이 프로젝트로 명시 고정한다.
   outputFileTracingRoot: __dirname,
 
+  // 카공지도.com 과 study-about.club 이 public/favicon.ico 하나를 공유한다.
+  // <link rel="icon"> 으로 갈라두긴 했지만, /favicon.ico 를 관례적으로 먼저 찾는
+  // 크롤러·브라우저에는 어바웃 배지가 그대로 나간다. beforeFiles 는 public/ 정적
+  // 파일보다 먼저 돌아서 이 경로를 가로챌 수 있는 유일한 지점이다.
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: "/favicon.ico",
+          has: [
+            {
+              type: "host",
+              value: "(www\.)?xn--ob0b42knwutje\.com",
+            },
+          ],
+          destination: "/cafe-map-icon-180.png",
+        },
+      ],
+    };
+  },
+
   async redirects() {
     return [
       {
