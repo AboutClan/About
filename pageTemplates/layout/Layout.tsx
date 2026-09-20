@@ -60,7 +60,6 @@ interface ILayout {
 }
 
 function Layout({ children }: ILayout) {
-  console.log(3535353);
   const toast = useToast();
   const router = useRouter();
   const pathname = usePathname();
@@ -248,7 +247,6 @@ function Layout({ children }: ILayout) {
     };
   }, [pathname, router, toast]);
 
-  console.log(42, token, isPublicPage);
   return (
     <>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
