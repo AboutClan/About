@@ -58,6 +58,9 @@ export const CAFE_MAP_VISIT_COUNT = "cafeMapVisitCount";
 export const CAFE_MAP_ENGAGEMENT_COUNT = "cafeMapEngagementCount";
 // 업데이트 소식 종(bell) 뱃지를 이미 본 최신 공지 날짜
 export const CAFE_MAP_NOTICE_SEEN = "cafe-notice";
+// 스터디 탭 안내 드로어. 예전 어바웃 팝업이 쓰던 STUDY_SPACE_POP_UP("studyPopUp")을
+// 재사용하면 그 시절 값이 남은 기기에서 드로어가 아예 뜨지 않으므로 전용 키를 쓴다.
+export const CAFE_MAP_STUDY_INTRO_POPUP = "cafeMapStudyIntroPopup";
 // 구버전 키(마이그레이션 후 제거된다)
 export const CAFE_MAP_REVIEW_POPUP_AT = "cafeMapReviewPopupAt";
 export const CAFE_MAP_INSTALL_POPUP_AT = "cafeMapAppInstallDrawerHidden";

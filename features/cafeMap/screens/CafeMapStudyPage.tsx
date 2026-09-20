@@ -4,11 +4,10 @@ import { useMemo, useState } from "react";
 
 import Header from "@/components/layouts/Header";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
-import { STUDY_SPACE_POP_UP } from "@/constants/keys/localStorage";
+import { CAFE_MAP_STUDY_INTRO_POPUP } from "@/constants/keys/localStorage";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import StudyPageCalendar from "@/features/studyPage/screens/StudyPageCalendar";
 import StudyPagePlaceSection from "@/features/studyPage/screens/StudyPagePlaceSection";
-import StudyControlButton from "@/features/vote/screens/StudyControlButton";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 const STUDY_APPLY_FORM_URL = "https://forms.gle/Kuj4cgEsjNnRRPM18";
@@ -20,7 +19,7 @@ function getTodayStr() {
 export default function CafeMapStudyPage() {
   const [date, setDate] = useState<string>(getTodayStr());
   const [isPopupOpen, setIsPopupOpen] = useState(
-    () => typeof window !== "undefined" && !localStorage.getItem(STUDY_SPACE_POP_UP),
+    () => typeof window !== "undefined" && !localStorage.getItem(CAFE_MAP_STUDY_INTRO_POPUP),
   );
 
   const isPassedDate = useMemo(
@@ -60,9 +59,6 @@ export default function CafeMapStudyPage() {
             setDate={setDate}
             hideLounge
           />
-        </Box>
-        <Box>
-          <StudyControlButton date={date} />
         </Box>
       </Flex>
 
@@ -155,7 +151,7 @@ export default function CafeMapStudyPage() {
                 fontWeight="semibold"
                 variant="ghost"
                 onClick={() => {
-                  localStorage.setItem(STUDY_SPACE_POP_UP, "DONE");
+                  localStorage.setItem(CAFE_MAP_STUDY_INTRO_POPUP, "DONE");
                   setIsPopupOpen(false);
                 }}
               >
