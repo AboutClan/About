@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import Header from "@/components/layouts/Header";
 import { usePlaceRankingQuery } from "@/features/study/hooks/queries";
@@ -11,9 +11,6 @@ import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 
-// 일반 카페가 아닌 스터디카페·스터디라운지 브랜드는 랭킹에서 뺀다 (이름에 포함되면 제외)
-const RANKING_EXCLUDED_NAME_KEYWORDS = ["카공족", "공태풍", "디딤돌"];
-
 export default function CafeMapRankingPage() {
   const router = useRouter();
   const { updateQuery } = useOverlayRouter();
@@ -22,16 +19,6 @@ export default function CafeMapRankingPage() {
   const [reviewPlace, setReviewPlace] = useState<StudyPlaceProps | null>(null);
 
   const { data: rankingData } = usePlaceRankingQuery();
-  const rankingCafes = useMemo(
-    () =>
-      rankingData?.filter(
-        (item) =>
-          !RANKING_EXCLUDED_NAME_KEYWORDS.some((keyword) =>
-            item.place.location?.name?.includes(keyword),
-          ),
-      ),
-    [rankingData],
-  );
 
   return (
     <>
@@ -57,7 +44,7 @@ export default function CafeMapRankingPage() {
             스터디카페·라운지 등 일반 카페가 아닌 곳은 랭킹에서 제외
           </Box>
           <Flex flexDir="column" px={4}>
-            {rankingCafes?.map((item, idx) => (
+            {rankingData?.map((item, idx) => (
               <RankingCafeCard
                 key={item.place._id}
                 place={item.place}

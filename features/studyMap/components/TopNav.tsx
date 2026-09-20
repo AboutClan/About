@@ -276,7 +276,6 @@ function StudyMapNav({
       onCafeSearch?.({ ...result, latitude, longitude });
     }
   };
-  console.log(35, rankingData);
   return (
     <>
       {/* 상단 헤더 + 검색바 (확장 시에만) */}
