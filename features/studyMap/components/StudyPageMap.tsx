@@ -356,7 +356,7 @@ function StudyPageMap({
   // initialLocationRef 가 아직 비어있을 때만 실행되어 userInfo effect 와 충돌하지 않는다.
   useEffect(() => {
     if (!isCafeMap || !currentLocation || initialLocationRef.current) return;
-    const zoom = 13;
+    const zoom = 12;
     const options = getMapOptions(currentLocation, zoom);
     // SDK 가 아직 없으면 latch 를 세우지 않는다 — 세워 버리면 tick 이 와도 여기로 못 돌아온다.
     if (!options) return;
@@ -392,7 +392,7 @@ function StudyPageMap({
 
     const zoom = defaultLocation
       ? 16
-      : mapOptions?.zoom || (isCafeMap ? 13 : isMapExpansion ? 14 : 16);
+      : mapOptions?.zoom || (isCafeMap ? 12 : isMapExpansion ? 14 : 16);
     const options = getMapOptions(initialLocationRef.current, zoom);
     // SDK 미준비 시 getMapOptions 는 undefined 다. 가드가 없으면 멀쩡한 값을 덮어써서
     // 지도가 영구히 뜨지 않는다. (같은 파일의 다른 호출부들도 이 패턴을 쓴다.)
