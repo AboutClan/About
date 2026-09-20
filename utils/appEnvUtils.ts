@@ -54,3 +54,22 @@ export const isBrokenSafeAreaAndroidInAppBrowser = (): boolean => {
 
   return BROKEN_SAFE_AREA_ANDROID_INAPP_UA_PATTERN.test(getUserAgent());
 };
+
+// 인앱 브라우저(외부 앱이 띄운 WebView) 판별.
+// 이 브라우저들은 사이트 레벨 위치 팝업은 띄우면서도 호스트 앱의 OS 위치 권한이
+// 없으면 POSITION_UNAVAILABLE 로 떨어진다. 이때는 "실외로 나가라"가 아니라
+// 기본 브라우저로 열라고 안내해야 한다.
+//
+// 주의(탐지 한계):
+// - "Instagram"은 인스타그램 인앱 브라우저 UA에 실제로 포함되는 것으로 확인된 토큰이다.
+// - 나머지(kakaotalk / FBAN / FBAV / NAVER / Line)는 널리 알려진 패턴이지만 이 저장소의
+//   실기기 캡처로 검증되지는 않았다. 오탐해도 안내 문구만 바뀌고 기능은 동일하다.
+// - 우리 앱(RN WebView)은 자체 위치 권한을 갖고 있으므로 제외한다.
+const IN_APP_BROWSER_UA_PATTERN = /Instagram|KAKAOTALK|FBAN|FBAV|NAVER\(inapp|Line\//i;
+
+export const isInAppBrowser = (): boolean => {
+  if (typeof window === "undefined") return false;
+  if (isWebView()) return false;
+
+  return IN_APP_BROWSER_UA_PATTERN.test(getUserAgent());
+};
