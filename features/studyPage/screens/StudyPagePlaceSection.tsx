@@ -94,6 +94,9 @@ function StudyPagePlaceSection({
       null,
       null,
       true,
+      // 지난 스터디 카드도 예정 스터디와 똑같이 from=cafe-map을 달아야 상세 화면이 카공지도
+      // 기준으로 그려진다(hideLounge가 곧 카공지도 스터디 탭이라는 뜻).
+      hideLounge,
     );
 
     setThumbnailCardinfoArr((old) => [

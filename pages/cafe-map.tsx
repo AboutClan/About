@@ -21,6 +21,7 @@ import {
   migrateLegacyPopupState,
   REVIEW_POPUP_MIN_VISIT,
 } from "@/features/cafeMap/utils/cafeMapPopup";
+import { clearCafeMapSession } from "@/features/cafeMap/utils/cafeMapSession";
 import StudyPageMap from "@/features/studyMap/components/StudyPageMap";
 import { useBackGuard } from "@/hooks/custom/useBackGuard";
 import { gaEvent } from "@/libs/gtag";
@@ -100,6 +101,9 @@ function StudyMap() {
     main: {
       text: "이 동",
       func: () => {
+        // 여기가 카공지도를 의도적으로 벗어나는 유일한 지점이다. 표식을 지워야 이후 어바웃
+        // 화면들의 뒤로가기가 카공지도로 되돌아오지 않는다.
+        clearCafeMapSession();
         localStorage.setItem("moving", "cafe-map");
         gaEvent("cafe_map_moving");
         router.push("/home");

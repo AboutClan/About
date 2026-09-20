@@ -11,6 +11,12 @@ import { useDeepLink } from "@/@natives/useDeepLink";
 import BottomNav from "@/components/BottomNav";
 import GuestBottomNav from "@/components/layouts/atoms/GuestBottomNav";
 import PageTracker from "@/components/layouts/PageTracker";
+import {
+  getCafeMapReturnPath,
+  isCafeMapSession,
+  markCafeMapSession,
+  saveCafeMapReturnPath,
+} from "@/features/cafeMap/utils/cafeMapSession";
 import { useToken } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useAppSafeAreaBottomCssVar } from "@/hooks/custom/useAppSafeAreaBottomCssVar";
@@ -136,6 +142,14 @@ function Layout({ children }: ILayout) {
 
   const exitAppRef = useRef<boolean>(false);
 
+  // 카공지도 화면을 지날 때마다 세션 표식과 "돌아갈 화면"을 갱신한다. 탭은 ?tab= 쿼리로만
+  // 갈리므로(CafeMapBottomNav) 쿼리까지 담아야 스터디 탭에서 나갔다가 지도 탭으로 튀지 않는다.
+  useEffect(() => {
+    if (!pathname?.startsWith("/cafe-map")) return;
+    markCafeMapSession();
+    if (pathname === "/cafe-map") saveCafeMapReturnPath(router.asPath);
+  }, [pathname, router.asPath]);
+
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (typeof event.data !== "string") return;
@@ -164,6 +178,15 @@ function Layout({ children }: ILayout) {
       // 나가버린다. 지도 외 탭 → 지도 탭으로 직접 되돌리고, 지도 탭에서만 아래 종료 로직을 탄다.
       if (pathname === "/cafe-map" && !isOverlayOpen && router?.query?.tab) {
         router.replace("/cafe-map");
+        return;
+      }
+
+      // 카공지도에서 들어온 화면(스터디 상세 등)은 어떤 경우에도 어바웃으로 빠지지 않는다.
+      // 아래 study/gather/community 분기는 어바웃 기준이라 /studyPage·/gather로 되돌리는데,
+      // 그건 카공지도 사용자에게는 존재하지 않아야 할 화면이다. 카공지도 세션이면 그 분기보다
+      // 먼저 잡아서 머물던 탭으로 돌려보낸다.
+      if (!isOverlayOpen && isCafeMapSession() && !pathname?.startsWith("/cafe-map")) {
+        router.replace(getCafeMapReturnPath());
         return;
       }
 
