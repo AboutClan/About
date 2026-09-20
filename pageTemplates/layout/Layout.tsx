@@ -14,6 +14,7 @@ import PageTracker from "@/components/layouts/PageTracker";
 import { useToken } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useAppSafeAreaBottomCssVar } from "@/hooks/custom/useAppSafeAreaBottomCssVar";
+import { runTopBackGuard } from "@/hooks/custom/useBackGuard";
 import BaseModal from "@/pageTemplates/layout/BaseModal";
 import BaseScript from "@/pageTemplates/layout/BaseScript";
 import { HOME_ACTIVITY_DRAWER_QUERY_KEY } from "@/recoils/transferRecoils";
@@ -24,6 +25,19 @@ import { parseUrlToSegments } from "@/utils/stringUtils";
 import { getBottomNavTotalHeight } from "@/utils/validationUtils";
 
 export const BASE_BOTTOM_NAV_SEGMENT = ["home", "gather", "user", "studyPage", "community"];
+
+// 뒤로가기를 눌렀을 때 "한 번 더 누르면 종료" → exitApp으로 이어지는 앱의 루트 화면들.
+// BASE_BOTTOM_NAV_SEGMENT를 그대로 쓰지 않고 따로 두는 이유: 그 상수는 어바웃 BottomNav 렌더
+// 여부(isBottomNavCondition)와 PageTracker의 탭 전환 판정에도 쓰여서, 여기에 화면을 추가하면
+// 그쪽 동작까지 같이 바뀐다. "종료 대상"이라는 뜻만 따로 표현한다.
+//
+// /cafe-map은 카공지도 앱 웹뷰의 첫 화면(cafe-map-app/App.tsx의 appConfig.uri)이라 돌아갈
+// 히스토리가 없다. 어바웃 앱은 카공지도 화면으로 들어오지 않는다 — 스터디 페이지의
+// "카공지도 바로가기"는 웹뷰 이동이 아니라 카공지도 앱 자체를 띄운다(openCafeMapApp).
+const APP_EXIT_ROOT_PATHNAME = [
+  ...BASE_BOTTOM_NAV_SEGMENT.map((segment) => "/" + segment),
+  "/cafe-map",
+];
 export const NOT_PADDING_NAV_SEGMENT = ["login"];
 export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote", "ranking", "board", "studyPageMap"];
 
@@ -138,8 +152,20 @@ function Layout({ children }: ILayout) {
     };
 
     const handleBackAction = () => {
+      // 1순위: 로컬 state로만 열린 오버레이(히스토리에 흔적이 없어 router.back()으로는 못 닫는다).
+      // 가장 나중에 열린 것부터 하나씩 닫고, 닫을 게 있었으면 페이지 이동은 하지 않는다.
+      if (runTopBackGuard()) return;
+
       const isOverlayOpen =
         !!router?.query?.modal || !!router?.query?.[HOME_ACTIVITY_DRAWER_QUERY_KEY];
+
+      // 카공지도는 탭을 router.replace로 갈아끼워서(CafeMapBottomNav) 탭 간 히스토리가 쌓이지
+      // 않는다. 그래서 지도 외 탭에서 router.back()을 부르면 이전 탭이 아니라 카공지도 밖으로
+      // 나가버린다. 지도 외 탭 → 지도 탭으로 직접 되돌리고, 지도 탭에서만 아래 종료 로직을 탄다.
+      if (pathname === "/cafe-map" && !isOverlayOpen && router?.query?.tab) {
+        router.replace("/cafe-map");
+        return;
+      }
 
       if (!isOverlayOpen) {
         const pathArr = pathname?.split("/");
@@ -175,10 +201,7 @@ function Layout({ children }: ILayout) {
         }
       }
 
-      if (
-        BASE_BOTTOM_NAV_SEGMENT.map((item) => "/" + item).includes(pathname) &&
-        !isOverlayOpen
-      ) {
+      if (APP_EXIT_ROOT_PATHNAME.includes(pathname) && !isOverlayOpen) {
         if (exitAppRef.current) {
           nativeMethodUtils.exitApp();
           return;

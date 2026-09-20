@@ -7,6 +7,7 @@ import TextCheckButton from "@/components/molecules/TextCheckButton";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import { useUserPointMutation } from "@/features/user/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
+import { useBackGuard } from "@/hooks/custom/useBackGuard";
 import { CloseProps } from "@/types/components/modalTypes";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 
@@ -26,6 +27,10 @@ function CafeMapInstagramRewardModal({ onClose }: CloseProps) {
       onClose();
     },
   });
+
+  // 이 모달은 로컬 state로만 열려서 히스토리에 없다. 포인트 지급 요청 중에는 뒤로가기로 닫지
+  // 않는다(지급 응답을 못 받은 채 닫히면 리워드를 받았는지 알 수 없게 된다).
+  useBackGuard(!isLoading, onClose);
 
   const getReward = () => {
     if (!isCheckInsta) {

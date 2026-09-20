@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
+import { useBackGuard } from "@/hooks/custom/useBackGuard";
 import { getDeviceOS } from "@/utils/validationUtils";
 
 export const ANDROID_APP_STORE_URL =
@@ -26,6 +27,10 @@ interface Props {
 export default function CafeMapAppInstallDrawer({ onClose }: Props) {
   const os = getDeviceOS();
   const [showAndroidModal, setShowAndroidModal] = useState(false);
+
+  // 이 드로어는 로컬 state로만 열려서 히스토리에 없다. 뒤로가기는 오버레이를 탭한 것과 같게
+  // 처리한다(=그냥 닫기. "나중에"처럼 24시간 숨김 처리를 하지는 않는다).
+  useBackGuard(true, onClose);
 
   const handleInstall = () => {
     if (os === "iOS") {

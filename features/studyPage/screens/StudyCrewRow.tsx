@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import { HOME_ACTIVITY_ITEMS } from "@/constants/contents/groupInfo";
+import { openCafeMapApp } from "@/features/cafeMap/utils/openCafeMapApp";
 import { useToast } from "@/hooks/custom/CustomToast";
 
 const STUDY_CREW_KEYWORD = "카공 스터디 크루";
@@ -69,7 +70,7 @@ function StudyCrewRow() {
           fontSize="12.5px"
           fontWeight="600"
           color="gray.800"
-          onClick={() => router.push("/cafe-map")}
+          onClick={openCafeMapApp}
         >
           카공지도 바로가기
         </Flex>

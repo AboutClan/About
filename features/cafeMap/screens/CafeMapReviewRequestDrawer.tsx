@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 
 import { CAFE_MAP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
 import { ANDROID_APP_STORE_URL, IOS_APP_STORE_URL } from "@/features/cafeMap/screens/CafeMapAppInstallDrawer";
+import { useBackGuard } from "@/hooks/custom/useBackGuard";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getDeviceOS } from "@/utils/validationUtils";
 
@@ -40,6 +41,10 @@ export default function CafeMapReviewRequestDrawer({ onClose }: Props) {
     localStorage.setItem(CAFE_MAP_REVIEW_POPUP_AT, dayjs().format("YYYYMMDD"));
     onClose();
   };
+
+  // 이 드로어는 로컬 state로만 열려서 히스토리에 없다. 뒤로가기는 오버레이를 탭했을 때와 같은
+  // handleLaterClick으로 처리해서, 스누즈 기록 없이 닫혀 다음 진입 때 또 뜨는 일을 막는다.
+  useBackGuard(true, handleLaterClick);
 
   return (
     <Drawer placement="bottom" onClose={handleLaterClick} isOpen>

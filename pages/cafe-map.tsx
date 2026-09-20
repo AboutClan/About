@@ -18,6 +18,7 @@ import CafeMapReviewRequestDrawer from "@/features/cafeMap/screens/CafeMapReview
 import CafeMapStudyPage from "@/features/cafeMap/screens/CafeMapStudyPage";
 import StudyPageMap from "@/features/studyMap/components/StudyPageMap";
 import { usePointSubLogQuery } from "@/features/user/hooks/queries";
+import { useBackGuard } from "@/hooks/custom/useBackGuard";
 import { gaEvent } from "@/libs/gtag";
 import { isApp, isMobileWeb } from "@/utils/validationUtils";
 
@@ -33,6 +34,10 @@ function StudyMap() {
   const [showReviewDrawer, setShowReviewDrawer] = useState(false);
   const [showInstagramModal, setShowInstagramModal] = useState(false);
   const guestSignInTriedRef = useRef(false);
+
+  // 게스트 안내 모달도 로컬 state라 히스토리에 없다. 뒤로가기로 닫히게 등록한다.
+  // (나머지 팝업 3종은 각 컴포넌트 안에서 스스로 등록한다.)
+  useBackGuard(isModal, () => setIsModal(false));
 
   const activeTab = (router.query.tab as string) || "map";
 

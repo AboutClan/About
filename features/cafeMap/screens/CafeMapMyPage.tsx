@@ -20,6 +20,7 @@ import UserReviewBar from "@/features/user/screens/UserReviewBar";
 import UserSocialGuideDrawer from "@/features/user/screens/UserSocialGuideDrawer";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useKakaoShare } from "@/hooks/custom/KakaoShareHook2";
+import { useBackGuard } from "@/hooks/custom/useBackGuard";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
@@ -37,6 +38,16 @@ function CafeMapMyPage() {
   const [showSecedeModal, setShowSecedeModal] = useState(false);
   const [favoriteDrawer, setFavoriteDrawer] = useState<"likes" | "picks" | null>(null);
   const [reviewPlace, setReviewPlace] = useState<StudyPlaceProps | null>(null);
+
+  // 마이페이지의 드로어/모달은 전부 로컬 state로만 여닫혀 히스토리에 없다. 등록해두지 않으면
+  // 안드로이드 뒤로가기가 시트를 닫는 대신 카공지도 밖으로 나가버린다. 동시에 열릴 수 있는
+  // 조합(설정 드로어 위의 탈퇴 모달 등)은 나중에 열린 쪽이 먼저 닫힌다.
+  useBackGuard(showTempDrawer, () => setShowTempDrawer(false));
+  useBackGuard(showSettingDrawer, () => setShowSettingDrawer(false));
+  useBackGuard(showSuggestModal, () => setShowSuggestModal(false));
+  useBackGuard(showSecedeModal, () => setShowSecedeModal(false));
+  useBackGuard(favoriteDrawer !== null, () => setFavoriteDrawer(null));
+  useBackGuard(reviewPlace !== null, () => setReviewPlace(null));
 
   const temperature = userInfo?.temperature?.temperature ?? 36.5;
   const tempMin = 36.5;
