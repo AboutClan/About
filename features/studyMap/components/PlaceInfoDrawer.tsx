@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 
 import { STUDY_MAIN_IMAGES } from "@/assets/images/studyMain";
+import DrawerHandle from "@/components/atoms/DrawerHandle";
 import StarRating from "@/components/atoms/StarRating";
 import { StarIcon } from "@/components/Icons/StarIcon";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
@@ -356,9 +357,7 @@ export function PlaceInfoBox({
               mx="auto"
               pb={getSafeAreaBottom(16)}
             >
-              <Flex justify="center" pt={3} pb={1}>
-                <Box w="56px" h="4px" borderRadius="2px" bg="gray.300" />
-              </Flex>
+              <DrawerHandle />
               <Box fontWeight={700} fontSize="16px" px={5} pt={2} pb={1}>
                 지도 앱 선택
               </Box>

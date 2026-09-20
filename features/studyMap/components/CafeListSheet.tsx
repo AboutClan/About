@@ -2,6 +2,7 @@ import { Box, Flex, Menu, MenuButton, MenuItem, MenuList, Portal } from "@chakra
 import { animate, motion, useMotionValue } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import DrawerHandle from "@/components/atoms/DrawerHandle";
 import { CAFE_MAP_LOGO_DEFAULT, getCafeMapLogo } from "@/features/study/lib/getStudyVoteIcon";
 import { getPlaceScore } from "@/features/study/lib/studyUtils";
 import { getOpenStatus } from "@/features/studyMap/components/CafeListDrawer";
@@ -12,7 +13,7 @@ import { getSafeAreaBottom } from "@/utils/validationUtils";
 export type CafeListSheetSnap = "peek" | "half" | "full";
 
 // 시트가 가장 낮을 때 보이는 높이. 지도 위 버튼 줄을 이만큼 올려 두기 위해 export.
-export const CAFE_LIST_SHEET_PEEK = 136;
+export const CAFE_LIST_SHEET_PEEK = 142;
 const BOTTOM_NAV_HEIGHT = 52;
 const FULL_TOP_GAP = 48;
 const HALF_RATIO = 0.45;
@@ -273,9 +274,7 @@ export default function CafeListSheet({
           userSelect="none"
           sx={{ touchAction: "none" }}
         >
-          <Flex justify="center" pt="10px" pb="8px">
-            <Box w="40px" h="4px" borderRadius="4px" bg="gray.300" />
-          </Flex>
+          <DrawerHandle />
           <Flex align="center" gap={2} px={4} pb={3}>
             <Menu placement="bottom-start">
               <MenuButton

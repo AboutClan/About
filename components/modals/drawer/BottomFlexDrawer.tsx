@@ -3,6 +3,7 @@ import { animate, motion, useMotionValue } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
+import DrawerHandle from "@/components/atoms/DrawerHandle";
 import ScreenOverlay from "@/components/atoms/ScreenOverlay";
 import { IModal } from "@/types/components/modalTypes";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
@@ -147,11 +148,7 @@ export default function BottomFlexDrawer({
         as={motion.div}
         style={{ y }}
       >
-        {hasTopNav && (
-          <Flex justify="center" py={3} w="full" cursor="grab" onPointerDown={handlePointerDown}>
-            <TopNav />
-          </Flex>
-        )}
+        {hasTopNav && <DrawerHandle cursor="grab" onPointerDown={handlePointerDown} />}
         {drawerOptions?.header && (
           <Flex mb={4} w="full" direction="column" align="flex-start">
             <Box lineHeight="28px" fontWeight={800} mb={1} fontSize="18px">
@@ -226,13 +223,4 @@ const Layout = styled.div<{
      매 프레임 layout reflow 없이 compositor만 사용하게 한다. */
   height: ${(props) => props.maxheight}px;
   will-change: transform;
-`;
-
-const TopNav = styled.nav`
-  width: 56px;
-  height: 4px;
-
-  border-radius: 4px;
-  opacity: 0.4;
-  background-color: var(--color-gray);
 `;

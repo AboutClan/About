@@ -13,6 +13,7 @@ import {
 import dayjs from "dayjs";
 import { useQueryClient } from "react-query";
 
+import DrawerHandle from "@/components/atoms/DrawerHandle";
 import { HOME_APP_REVIEW_POPUP_AT } from "@/constants/keys/localStorage";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import { useUserPointMutation } from "@/features/user/hooks/mutations";
@@ -71,8 +72,8 @@ export default function HomeAppReviewRewardDrawer({ onClose }: Props) {
       <DrawerOverlay />
       <DrawerContent borderTopRadius="20px" maxW="var(--max-width)" mx="auto">
         <DrawerBody p={0}>
-          <VStack spacing={0} pt={3} px={5}>
-            <Box w="56px" h="4px" borderRadius="4px" bg="gray.300" opacity={0.6} mb={5} />
+          <VStack spacing={0} px={5}>
+            <DrawerHandle mb={2} />
 
             <Box
               w="72px"

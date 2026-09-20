@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+import DrawerHandle from "@/components/atoms/DrawerHandle";
 import { ModalLayout } from "@/components/modals/Modals";
 import ForceLogoutDialog from "@/features/login/modals/ForceLogoutDialog";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
@@ -310,9 +311,7 @@ function LoginPage() {
             px={5}
             pb={getSafeAreaBottom(24)}
           >
-            <Flex justify="center" pt={3} pb={2}>
-              <Box w="40px" h="4px" borderRadius="2px" bg="gray.200" />
-            </Flex>
+            <DrawerHandle />
 
             <Box fontWeight={700} fontSize="17px" color="gray.900" pt={1} pb={3}>
               카공지도 이용을 위해 약관 동의가 필요해요
