@@ -14,7 +14,10 @@ import { getMapOptions, getStudyPlaceMarkersOptions } from "@/features/study/lib
 import { getPlaceScore } from "@/features/study/lib/studyUtils";
 import { RightReviewDrawer } from "@/features/study/screens/StudyReview";
 import { CafeListDrawer } from "@/features/studyMap/components/CafeListDrawer";
-import CafeListSheet, { CafeListSheetSnap } from "@/features/studyMap/components/CafeListSheet";
+import CafeListSheet, {
+  CAFE_LIST_SHEET_PEEK,
+  CafeListSheetSnap,
+} from "@/features/studyMap/components/CafeListSheet";
 import { LocationAddDrawer } from "@/features/studyMap/components/LocationAddDrawer";
 import PlaceInfoDrawer, {
   getPlaceInfoDrawerHeight,
@@ -32,11 +35,12 @@ import {
   StudyPlaceFilter,
   StudyPlaceProps,
 } from "@/types/models/studyTypes/study-entity.types";
+import { openInExternalBrowser } from "@/utils/appEnvUtils";
 import {
   getDistanceFromLatLonInKm,
   getPreciseDistanceFromLatLonInKm,
 } from "@/utils/mathUtils";
-import { getSafeAreaBottom } from "@/utils/validationUtils";
+import { getBottomNavTotalHeight, getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface StudyPageMapProps {
   isDefaultOpen?: boolean;
@@ -51,6 +55,14 @@ interface StudyPageMapProps {
 
 // 카공지도 화면 위쪽에서 지도를 가리는 높이: 상단 헤더 + 검색창 + 필터 칩 줄
 const CAFE_MAP_TOP_OBSCURED = 184;
+// 로딩 스피너는 화면 정중앙이 아니라 "지도가 실제로 보이는 영역"의 가운데에 둔다.
+// 위는 헤더·검색창·필터 칩(CAFE_MAP_TOP_OBSCURED), 아래는 peek 상태의 리스트 시트가 가린다.
+// 시트는 하단 내비 위에 붙어 있어 내비 높이(+safe-area)까지 함께 빼야 한다.
+// 시트를 half/full 로 올려도 기준은 peek 으로 고정한다 — 로딩 중에 스피너가 따라 움직이면
+// 오히려 위치가 불안정해 보인다.
+const getCafeMapSpinnerTop = () =>
+  `calc((${CAFE_MAP_TOP_OBSCURED}px + 100dvh - (${getBottomNavTotalHeight()}) - ${CAFE_LIST_SHEET_PEEK}px) / 2)`;
+
 // 묶음 마커 안의 카페를 선택했을 때 개별 핀이 보이도록 확대하는 줌
 const CAFE_MAP_FOCUS_ZOOM = 16;
 // [콘센트 많음] / [자리 여유] 필터 기준 (getPlaceScore 가중 평균)
@@ -83,6 +95,8 @@ function StudyPageMap({
     currentLocation: currentLocation2,
     refetchCurrentLocation,
     isLoadingLocation,
+    isInAppBrowserBlocked,
+    dismissInAppBrowserBlocked,
   } = useUserCurrentLocation();
   const modalParam = router.query.modal;
   const currentLocation = defaultLocation || currentLocation2;
@@ -1152,17 +1166,35 @@ function StudyPageMap({
         />
       )}
 
+      {isInAppBrowserBlocked && (
+        <ModalLayout
+          title="위치 확인이 제한돼요"
+          setIsModal={dismissInAppBrowserBlocked}
+          footerOptions={{
+            main: {
+              text: "기본 브라우저로 열기",
+              func: () => openInExternalBrowser(),
+            },
+            sub: { text: "닫 기" },
+          }}
+        >
+          <p>
+            인스타그램·카카오톡 등 <b>앱 안에서 열린 브라우저</b>는 위치 정보를 가져오지 못하는
+            경우가 있어요.
+            <br />
+            <br />
+            Chrome·Safari 같은 기본 브라우저에서 열면 현재 위치를 사용할 수 있습니다.
+          </p>
+        </ModalLayout>
+      )}
+
       {((isLoading2 && !loading2TimedOut) ||
         (isLoadingLocation && tempToggle && !locationTimedOut)) && (
         <>
           {/* 이 딤은 onClick 이 없는 시각 피드백이다. 막아 두면 로딩 중 지도·시트·
               드로어 조작이 전부 죽으므로 터치를 통과시킨다. */}
           <ScreenOverlay zIndex={2000} isPassThrough />
-          <MainLoading
-            top={
-              isCafeMap ? `calc(50dvh + 30px - (${getSafeAreaBottom(0)}) / 2)` : "50%"
-            }
-          />
+          <MainLoading top={isCafeMap ? getCafeMapSpinnerTop() : "50%"} />
         </>
       )}
     </>

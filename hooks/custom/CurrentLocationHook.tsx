@@ -72,6 +72,9 @@ export function useUserCurrentLocation() {
   const toast = useToast();
   const [coordinate, setCoordinate] = useState<CoordinatesProps | null | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
+  // 인앱 브라우저라 측위가 막힌 경우. 토스트로는 "기본 브라우저로 열기"를 줄 수 없어서
+  // 호출부가 안내 모달을 띄울 수 있게 플래그로 노출한다.
+  const [isInAppBrowserBlocked, setIsInAppBrowserBlocked] = useState(false);
   const mountedRef = useRef(false);
   // 첫 측위가 20초까지 걸릴 수 있어 그 사이 버튼을 여러 번 누르면 감시가 중복으로 돌고
   // 실패 토스트도 그만큼 반복된다. 진행 중인 요청이 있으면 그 결과를 함께 쓴다.
@@ -134,11 +137,9 @@ export function useUserCurrentLocation() {
         );
       } else if (isInAppBrowser()) {
         // 인앱 브라우저는 사이트 팝업을 허용해도 호스트 앱의 OS 위치 권한이 없으면
-        // POSITION_UNAVAILABLE 로 떨어진다. 실내/실외 문제가 아니라 브라우저 문제다.
-        toast(
-          "error",
-          "인앱 브라우저에서는 위치 확인이 제한돼요. Safari·Chrome 등 기본 브라우저에서 열어 주세요.",
-        );
+        // POSITION_UNAVAILABLE 로 떨어진다. 실내/실외 문제가 아니라 브라우저 문제라
+        // "다시 시도"가 의미 없다. 기본 브라우저로 빠져나가도록 안내 모달을 띄운다.
+        setIsInAppBrowserBlocked(true);
       } else if (error.code === error.TIMEOUT) {
         toast("error", "위치를 확인하는 데 시간이 너무 오래 걸려요. 다시 시도해 주세요.");
       } else {
@@ -210,5 +211,7 @@ export function useUserCurrentLocation() {
     currentLocation: coordinate,
     isLoadingLocation: isLoading,
     refetchCurrentLocation: requestCurrentLocation,
+    isInAppBrowserBlocked,
+    dismissInAppBrowserBlocked: () => setIsInAppBrowserBlocked(false),
   };
 }

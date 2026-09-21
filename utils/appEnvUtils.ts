@@ -73,3 +73,36 @@ export const isInAppBrowser = (): boolean => {
 
   return IN_APP_BROWSER_UA_PATTERN.test(getUserAgent());
 };
+
+/**
+ * 인앱 브라우저를 벗어나 기본 브라우저로 현재 페이지를 다시 연다.
+ *
+ * 인앱 웹뷰는 호스트 앱의 위치 권한에 묶여 있어 사이트 팝업을 허용해도 측위가
+ * 실패할 수 있다. 그때 사용자가 직접 빠져나올 수 있는 유일한 경로다.
+ *
+ * - Android: intent:// 로 Chrome 을 지정해 강제로 넘긴다. Chrome 이 없으면
+ *   browser_fallback_url 로 원래 주소를 연다.
+ * - iOS: x-safari-https:// 는 Safari 가 등록해 둔 스킴이라 다수의 인앱 브라우저에서
+ *   동작한다. 다만 공식 API 가 아니라 앱에 따라 막혀 있을 수 있다.
+ */
+export const openInExternalBrowser = (targetUrl?: string) => {
+  if (typeof window === "undefined") return;
+
+  const url = targetUrl ?? window.location.href;
+
+  if (isAndroid()) {
+    const withoutScheme = url.replace(/^https?:\/\//, "");
+    const fallback = encodeURIComponent(url);
+    window.location.href =
+      `intent://${withoutScheme}#Intent;scheme=https;package=com.android.chrome;` +
+      `S.browser_fallback_url=${fallback};end`;
+    return;
+  }
+
+  if (isIOS()) {
+    window.location.href = url.replace(/^https:\/\//, "x-safari-https://");
+    return;
+  }
+
+  window.open(url, "_blank");
+};
