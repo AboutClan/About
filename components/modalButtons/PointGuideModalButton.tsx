@@ -72,7 +72,12 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
 > = {
   study: {
     title: "스터디 포인트 획득 및 벌금",
-    subTitle: "",
+    // 출석 보상은 하한에 랜덤 보너스를 얹는 구조인데(서버 getLowBiasedRandom, 지수 10),
+    // 보너스가 낮은 쪽으로 강하게 치우쳐 절반 이상이 하한만 받는다.
+    // "최대 N Point"만 적어 두면 거의 매번 약속보다 적게 받는 것처럼 읽히므로,
+    // 기본 금액을 앞에 두고 보너스가 드물게 크다는 사실을 함께 적는다.
+    subTitle:
+      "출석 포인트는 기본 금액에 랜덤 보너스가 붙어요. 보너스는 대부분 작고, 드물게 크게 나옵니다.",
     infoArr: [
       {
         left: "스터디 매칭 신청",
@@ -80,32 +85,32 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
       },
       {
         left: "스터디 출석체크 (매칭)",
-        right: "최대 1,000 Point",
+        right: "100 Point + 보너스",
       },
       {
         left: "개인 스터디 인증",
-        right: "최대 500 Point",
+        right: "30 Point + 보너스",
       },
       {
         left: "월간 스터디 랭킹 정산",
         right: "+ 1000 ~ 5000 Point",
       },
 
-      // {
-      //   left: "스터디 지각",
-      //   right: "- 50 Point",
-      //   color: "red",
-      // },
-      // {
-      //   left: "스터디 당일 불참",
-      //   right: "- 500 Point",
-      //   color: "red",
-      // },
-      // {
-      //   left: "스터디 당일 잠수",
-      //   right: "- 1000 Point",
-      //   color: "red",
-      // },
+      {
+        left: "스터디 당일 불참",
+        right: "- 1,000 ~ 2,000 Point",
+        color: "red",
+      },
+      {
+        left: "스터디 무단 불참",
+        right: "- 2,000 Point",
+        color: "red",
+      },
+      {
+        left: "스터디 지각 (1시간 이상)",
+        right: "- 50 Point",
+        color: "red",
+      },
     ],
   },
   store: {

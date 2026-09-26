@@ -18,6 +18,8 @@ export interface StudyParticipationProps {
   isBeforeResult: boolean;
   times: TimeRangeProps;
   dates?: string[];
+  /** 매칭 반경(km). 서버 판정 반경은 여기에 +0.1km. */
+  eps?: number;
 }
 
 export interface StudyConfirmedProps {

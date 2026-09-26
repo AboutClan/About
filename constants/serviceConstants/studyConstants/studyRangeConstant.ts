@@ -11,7 +11,14 @@ export const RANGE_TO_EPS: Record<number, number> = { 1: 2, 2: 3, 3: 4 };
 /** 서버가 실제로 쓰는 반경(km). eps + 0.1. */
 export const MATCH_RADIUS_KM: Record<number, number> = { 1: 2.1, 2: 3.1, 3: 4.1 };
 
-/** 사용자에게 보여주는 예상 이동 시간(분). 위 반경 × 5분/km(≈12km/h). */
-export const RANGE_LABEL_MIN: Record<number, number> = { 1: 10, 2: 15, 3: 20 };
+/**
+ * 사용자에게 보여주는 반경(km).
+ *
+ * 예전에는 예상 이동 시간(분)을 보여줬는데, 반경을 12km/h로 나눈 값이라
+ * "2.1km를 10분"처럼 도보로는 불가능한 숫자였다. 이동 수단을 가정하지 않는
+ * 거리로 표기한다. 판정 반경은 eps+0.1km지만 0.1은 부동소수점 오차용 버퍼라
+ * 표기에는 넣지 않는다.
+ */
+export const RANGE_LABEL_KM: Record<number, number> = RANGE_TO_EPS;
 
 export const DEFAULT_RANGE_NUM = 2;

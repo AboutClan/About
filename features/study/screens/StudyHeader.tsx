@@ -10,18 +10,30 @@ import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import Accordion from "@/components/molecules/Accordion";
 import { ACCORDION_STUDY_FAQ } from "@/constants/contentsText/accordionContents";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { StudyType } from "@/types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 import { getRandomImage } from "@/utils/imageUtils";
 
 interface IStudyHeader {
   date?: string;
   placeInfo: StudyPlaceProps;
+  studyType?: StudyType;
   onSaveImage?: () => void;
 }
 
-function StudyHeader({ placeInfo, date, onSaveImage }: IStudyHeader) {
+function StudyHeader({ placeInfo, date, studyType, onSaveImage }: IStudyHeader) {
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
+
+  // 아직 장소가 없는 "카공 스터디 라운지"(신청만 모여 있는 상태)
+  const isLounge = studyType === "participations";
+
+  const kakaoTitleSuffix =
+    studyType === "soloRealTimes"
+      ? "M월 D일(ddd) 개인 스터디 인증"
+      : isLounge
+        ? "M월 D일(ddd) 카공 스터디 신청"
+        : `M월 D일(ddd) 카공 스터디: ${placeInfo?.location?.name ?? ""}`;
 
   const menuArr: MenuProps[] = [
     {
@@ -38,19 +50,13 @@ function StudyHeader({ placeInfo, date, onSaveImage }: IStudyHeader) {
 
     {
       kakaoOptions: {
-        title:
-          placeInfo?.location.name === "개인 스터디 인증"
-            ? `${dayjsToFormat(dayjs(date).locale("ko"), "M월 D일(ddd) 개인 스터디 인증")}`
-            : placeInfo?.location.name === "스터디 매칭 대기소"
-            ? `${dayjsToFormat(dayjs(date).locale("ko"), "M월 D일(ddd) 카공 스터디 신청")}`
-            : `${dayjsToFormat(
-                dayjs(date).locale("ko"),
-                `M월 D일(ddd) 카공 스터디: ${placeInfo?.location.name}`,
-              )}`,
-        subtitle:
-          placeInfo?.location.address === "위치 선정 중"
-            ? "스터디 멤버 모집중"
-            : placeInfo?.location.address,
+        // studyType으로 분기한다. 예전에는 place.location의 이름·주소를
+        // "개인 스터디 인증" / "스터디 매칭 대기소" / "위치 선정 중" 문자열과 비교했는데
+        // 그 값들은 코드 어디에서도 만들어지지 않아 세 분기 모두 도달하지 못했다.
+        // 그 결과 스터디 라운지는 place 자체가 없어 "카공 스터디: undefined"가,
+        // 개인 공부 인증은 place.name이 "temp"라 "카공 스터디: temp"가 공유됐다.
+        title: dayjsToFormat(dayjs(date).locale("ko"), kakaoTitleSuffix),
+        subtitle: isLounge ? "스터디 멤버 모집중" : placeInfo?.location?.address,
         img: placeInfo?.image || getRandomImage(STUDY_COVER_IMAGES),
         url: "https://about20s.club" + router.asPath,
       },

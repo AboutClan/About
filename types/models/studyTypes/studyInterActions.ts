@@ -26,6 +26,11 @@ export interface StudyVoteProps {
   // 매칭 반경. 유저당 1개이며 모든 anchor에 공통 적용된다.
   eps: number;
   anchors?: StudyVoteAnchorProps[];
+  /**
+   * 날짜별로 다른 참여 시간. 여기 없는 날짜는 공용 start/end를 쓴다.
+   * 서버가 저장 시점에 각 날짜로 앵커링하므로 Dayjs의 날짜 부분은 무시된다.
+   */
+  dateTimes?: { date: string; start: Dayjs; end: Dayjs }[];
 }
 
 export interface IStudyVote extends IStudyVotePlaces, IStudyVoteTime {

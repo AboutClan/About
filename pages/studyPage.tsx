@@ -209,6 +209,8 @@ export default function StudyPage() {
           <Box mb={4}>
             <StudyUnmatchedBanner
               onClose={closeUnmatchedBanner}
+              // 오늘 확정된 스터디 목록. 카드 → 상세의 "스터디 참여"로 바로 합류할 수 있다.
+              onOpenStudyList={() => router.push(`/studyList?date=${getTodayStr()}`)}
               // drawer=apply가 StudyControlButton의 시트를 열고,
               // modal=apply를 StudyControlDrawer가 받아 신청 드로어까지 연다.
               onApplyOtherDate={() => replaceQuery({ drawer: "apply", modal: "apply" })}

@@ -147,7 +147,10 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
               : "출석"}{" "}
             완료!
             <br />
-            랜덤으로{" "}
+            {/*
+              "랜덤으로"를 빼둔다. 보너스가 낮은 쪽으로 강하게 치우쳐 절반 이상이 하한만
+              받는데, 랜덤을 앞세우면 받은 금액이 낙첨 통보처럼 읽힌다.
+            */}
             <b>
               {hasStudyMembership
                 ? Math.floor(transferStudyReward.point * 1.2)
@@ -158,7 +161,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
           </Box>
 
           <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
-            스터디에 참여하면 매번 포인트를 획득할 수 있어요!
+            출석하면 기본 포인트는 항상 받고, 가끔 보너스가 크게 붙어요!
           </Box>
 
           <Box p={5}>

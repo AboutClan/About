@@ -7,7 +7,6 @@ import {
   STUDY_PLACE,
   STUDY_PREFERENCE,
   STUDY_RECORD_MODAL_AT,
-  STUDY_START_TIME,
   STUDY_VOTE,
   STUDY_VOTE_CNT,
 } from "@/constants/keys/queryKeys";
@@ -27,7 +26,10 @@ import {
   StudyWeekSetProps,
 } from "@/types/models/studyTypes/study-set.types";
 import { IStudyVotePlaces } from "@/types/models/studyTypes/studyInterActions";
-import { IArrivedData, VoteCntProps } from "@/types/models/studyTypes/studyRecords";
+import {
+  IArrivedInfoList,
+  VoteCntProps,
+} from "@/types/models/studyTypes/studyRecords";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "@/utils/dateTimeUtils";
 
@@ -54,6 +56,8 @@ export interface InitialParticipationsProps {
   isBeforeResult: boolean;
   /** 매칭 기준점 1~2개. 서버가 없으면 flat 좌표로 정규화해 내려준다. */
   anchors?: { latitude: number; longitude: number; locationDetail?: string }[];
+  /** 매칭 반경(km). 서버 판정 반경은 여기에 +0.1km. */
+  eps?: number;
 }
 
 export interface InitialRealTimesProps {
@@ -326,40 +330,22 @@ export const useStudyNewPlacesQuery = (cursor: number, options?: QueryOptions<St
 //     options,
 //   );
 
-interface IStudyStartTimeData {
-  place_id: string;
-  startTime: string;
+/** `GET /vote2/record` 응답. `date`는 `YYYY-MM-DD` 문자열이다. */
+export interface StudyAttendRecordProps {
+  date: string;
+  arrivedInfoList: IArrivedInfoList[];
 }
-
-export const useStudyStartTimeQuery = (
-  date: Dayjs,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options?: QueryOptions<any>,
-) =>
-  useQuery(
-    [STUDY_START_TIME, dayjsToStr(date)],
-    async () => {
-      const res = await axios.get<IStudyStartTimeData[]>(
-        `${SERVER_URI}/vote/${dayjsToStr(date)}/start`,
-      );
-
-      return res.data.map((item) => ({
-        ...item,
-        startTime: dayjs(item.startTime),
-      }));
-    },
-    options,
-  );
 
 export const useStudyAttendRecordQuery = (
   startDay: Dayjs,
   endDay: Dayjs,
-  options?: QueryOptions<IArrivedData[]>,
+  options?: QueryOptions<StudyAttendRecordProps[]>,
 ) =>
   useQuery(
     [STUDY_RECORD_MODAL_AT, dayjsToStr(startDay), dayjsToStr(endDay)],
     async () => {
-      const res = await axios.get<IArrivedData[]>(`${SERVER_URI}/vote/arrived`, {
+      // 예전 경로는 `GET /vote/arrived`였는데 백엔드에 `vote` 컨트롤러가 없어 항상 실패했다.
+      const res = await axios.get<StudyAttendRecordProps[]>(`${SERVER_URI}/vote2/record`, {
         params: {
           startDay: dayjsToStr(startDay),
           endDay: dayjsToStr(endDay),

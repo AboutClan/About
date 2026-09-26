@@ -10,13 +10,26 @@ import RulletPickerTwo from "@/components/molecules/picker/RulletPickerTwo";
 import { STUDY_VOTE_HOUR_ARR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
 import { TimeOptionCard } from "@/features/community/screens/TestClock";
 import { IModal } from "@/types/components/modalTypes";
-import { createTimeArr, parseTimeToDayjs } from "@/utils/dateTimeUtils";
+import { createTimeArr, dayjsToFormat, parseTimeToDayjs } from "@/utils/dateTimeUtils";
+
+export interface VoteTimeProps {
+  start: Dayjs;
+  end: Dayjs;
+}
 
 interface IStudyVoteTimeRulletDrawer extends IModal {
-  defaultVoteTime?: { start: Dayjs; end: Dayjs };
-  setVoteTime: Dispatch<{ start: Dayjs; end: Dayjs }>;
+  defaultVoteTime?: VoteTimeProps;
+  setVoteTime: Dispatch<VoteTimeProps>;
   drawerOptions: BottomFlexDrawerOptions;
   zIndex?: number;
+  /**
+   * 날짜별로 다른 시간을 정할 수 있게 한다. 2개 이상 넘길 때만 토글이 뜬다.
+   * 넘기지 않으면 기존과 동일하게 공용 시간 하나만 고른다.
+   */
+  perDateDates?: string[];
+  /** 날짜별 시간. 날짜별 모드를 쓰지 않으면 빈 객체로 둔다. */
+  dateTimes?: Record<string, VoteTimeProps>;
+  setDateTimes?: Dispatch<Record<string, VoteTimeProps>>;
 }
 
 export default function StudyVoteTimeRulletDrawer({
@@ -25,23 +38,140 @@ export default function StudyVoteTimeRulletDrawer({
   setIsModal,
   zIndex,
   defaultVoteTime,
+  perDateDates,
+  dateTimes,
+  setDateTimes,
 }: IStudyVoteTimeRulletDrawer) {
   const [isFirst, setIsFirst] = useState(true);
   const [selectedPreset, setSelectedPreset] = useState<"lunch" | "dinner" | null>("lunch");
 
+  const canSplitByDate = !!setDateTimes && (perDateDates?.length ?? 0) > 1;
+  const isSplitByDate = !!dateTimes && Object.keys(dateTimes).length > 0;
+
+  // 날짜별 모드에서 지금 편집 중인 날짜. null이면 날짜 목록을 보여준다.
+  const [editingDate, setEditingDate] = useState<string | null>(null);
+
+  // 공용 시간을 바꾸면 그 값을 받는다. 날짜별 모드에서는 편집 중인 날짜에만 반영한다.
+  const applyTime = (time: VoteTimeProps) => {
+    if (isSplitByDate && editingDate) {
+      setDateTimes({ ...dateTimes, [editingDate]: time });
+      return;
+    }
+
+    setVoteTime(time);
+  };
+
   useEffect(() => {
     if (selectedPreset === "lunch") {
-      setVoteTime({
+      applyTime({
         start: parseTimeToDayjs("14:00"),
         end: parseTimeToDayjs("18:00"),
       });
     } else if (selectedPreset === "dinner") {
-      setVoteTime({
+      applyTime({
         start: parseTimeToDayjs("18:00"),
         end: parseTimeToDayjs("22:00"),
       });
     }
+    // editingDate는 일부러 의존성에서 뺀다 — 날짜를 열어보기만 해도 프리셋이 적용돼
+    // 그 날짜에 정해 둔 시간이 덮이면 안 된다. 프리셋을 실제로 누를 때만 반영한다.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPreset]);
+
+  const getBaseTime = () =>
+    defaultVoteTime ?? {
+      start: parseTimeToDayjs("14:00"),
+      end: parseTimeToDayjs("18:00"),
+    };
+
+  const toggleSplitByDate = () => {
+    if (isSplitByDate) {
+      setDateTimes({});
+      setEditingDate(null);
+      return;
+    }
+
+    // 켤 때는 지금 고른 공용 시간을 모든 날짜의 기본값으로 깔아 둔다.
+    const base = getBaseTime();
+
+    setDateTimes(
+      Object.fromEntries(perDateDates.map((date) => [date, { ...base }])),
+    );
+  };
+
+  // 드로어를 닫고 선택 날짜를 바꾼 뒤 다시 열면 dateTimes가 옛 날짜를 들고 있다.
+  // 그대로 두면 목록이 dateTimes에 없는 날짜를 렌더하다 터지므로, 새 날짜는 기본값으로
+  // 채우고 빠진 날짜는 버려 선택 날짜와 항상 일치시킨다.
+  useEffect(() => {
+    if (!isSplitByDate) return;
+
+    const keys = Object.keys(dateTimes);
+    const dates = perDateDates ?? [];
+    const isSynced =
+      keys.length === dates.length && dates.every((date) => keys.includes(date));
+
+    if (isSynced) return;
+
+    const base = getBaseTime();
+
+    setDateTimes(
+      Object.fromEntries(
+        dates.map((date) => [date, dateTimes[date] ?? { ...base }]),
+      ),
+    );
+    setEditingDate(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSplitByDate, perDateDates]);
+
+  // 날짜별 모드에서 편집할 날짜를 아직 고르지 않았으면 날짜 목록만 보여준다.
+  if (isSplitByDate && !editingDate) {
+    return (
+      <BottomFlexDrawer
+        isOverlay
+        isHideBottom
+        isDrawerUp
+        zIndex={zIndex || 5000}
+        height={400}
+        setIsModal={setIsModal}
+        drawerOptions={drawerOptions}
+      >
+        <SplitByDateToggle isOn onClick={toggleSplitByDate} />
+        <Box w="full" overflowY="auto">
+          {perDateDates.map((date) => (
+            <Flex
+              as="button"
+              type="button"
+              key={date}
+              w="100%"
+              align="center"
+              justify="space-between"
+              py={3}
+              borderBottom="var(--border)"
+              onClick={() => setEditingDate(date)}
+            >
+              <Box fontSize="14px" fontWeight={600} color="gray.800">
+                {dayjsToFormat(dayjs(date), "M월 D일(ddd)")}
+              </Box>
+              <Flex align="center" gap={2}>
+                <Box fontSize="13px" fontWeight={500} color="gray.600">
+                  {/* 동기화 effect가 한 틱 늦게 돌 수 있어 방어한다. */}
+                  {dateTimes[date]
+                    ? `${dayjsToFormat(dateTimes[date].start, "HH:mm")} - ${dayjsToFormat(
+                        dateTimes[date].end,
+                        "HH:mm",
+                      )}`
+                    : "-"}
+                </Box>
+                <Box fontSize="13px" color="gray.400">
+                  ›
+                </Box>
+              </Flex>
+            </Flex>
+          ))}
+        </Box>
+      </BottomFlexDrawer>
+    );
+  }
 
   return (
     <>
@@ -52,8 +182,25 @@ export default function StudyVoteTimeRulletDrawer({
         zIndex={zIndex || 5000}
         height={400}
         setIsModal={setIsModal}
-        drawerOptions={drawerOptions}
+        drawerOptions={
+          editingDate
+            ? // 날짜 하나를 편집하는 중에는 목록으로 돌아가는 버튼만 둔다.
+              {
+                ...drawerOptions,
+                footer: {
+                  text: "완료",
+                  func: () => setEditingDate(null),
+                },
+              }
+            : drawerOptions
+        }
       >
+        {editingDate && (
+          <Box w="full" mb={2} fontSize="13px" fontWeight={600} color="gray.700">
+            {dayjsToFormat(dayjs(editingDate), "M월 D일(ddd)")} 참여 시간
+          </Box>
+        )}
+
         {isFirst ? (
           <>
             <Flex w="full" mb={3}>
@@ -99,6 +246,9 @@ export default function StudyVoteTimeRulletDrawer({
                 </Flex>
               </Flex>
             </Button>
+            {canSplitByDate && !editingDate && (
+              <SplitByDateToggle isOn={false} onClick={toggleSplitByDate} />
+            )}
           </>
         ) : (
           <>
@@ -120,11 +270,41 @@ export default function StudyVoteTimeRulletDrawer({
                 ← 추천 시간대로
               </Button>
             </Flex>
-            <StudyVoteTimeRullets defaultVoteTime={defaultVoteTime} setVoteTime={setVoteTime} />
+            <StudyVoteTimeRullets defaultVoteTime={defaultVoteTime} setVoteTime={applyTime} />
+            {canSplitByDate && !editingDate && (
+              <SplitByDateToggle isOn={false} onClick={toggleSplitByDate} />
+            )}
           </>
         )}
       </BottomFlexDrawer>
     </>
+  );
+}
+
+/** "날짜별로 다르게" 스위치. 여러 날짜를 한 번에 신청할 때만 노출된다. */
+function SplitByDateToggle({ isOn, onClick }: { isOn: boolean; onClick: () => void }) {
+  return (
+    <Flex
+      as="button"
+      type="button"
+      w="100%"
+      mt={3}
+      align="center"
+      justify="space-between"
+      onClick={onClick}
+    >
+      <Box fontSize="12.5px" fontWeight={500} color="gray.600" textAlign="start">
+        날짜별로 다른 시간 설정
+      </Box>
+      <Box
+        fontSize="12px"
+        fontWeight={600}
+        color={isOn ? "mint" : "gray.500"}
+        textDecoration="underline"
+      >
+        {isOn ? "모든 날짜 같게" : "날짜별로 다르게"}
+      </Box>
+    </Flex>
   );
 }
 

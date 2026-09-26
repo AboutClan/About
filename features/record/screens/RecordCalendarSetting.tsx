@@ -42,7 +42,10 @@ function RecordCalendarSetting({
         : { date: idx - frontBlankDate + 1, arrivedInfoList: [] },
     );
 
-    studyRecords
+    // studyRecords가 undefined일 수 있다 — `GET /vote/arrived`는 백엔드에 컨트롤러가 없어
+    // 요청이 실패하고, react-query는 그때 isLoading을 내리고 data를 비운 채로 둔다.
+    // 방어가 없으면 여기서 TypeError가 나 캘린더 화면이 깨졌다.
+    (studyRecords ?? [])
       .map((study) => ({
         arrivedInfoList: study.arrivedInfoList.filter((item) => item.placeId !== ALL_스터디인증),
         date: study.date,

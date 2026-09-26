@@ -7,15 +7,16 @@ import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import DatePointButton from "@/components/molecules/DatePointButton";
 import RangeSlider from "@/components/molecules/RangeSlider";
 import {
-  MATCH_RADIUS_KM,
-  RANGE_LABEL_MIN,
+  DEFAULT_RANGE_NUM,
+  RANGE_LABEL_KM,
+  RANGE_TO_EPS,
 } from "@/constants/serviceConstants/studyConstants/studyRangeConstant";
 import { STUDY_RESULT_HOUR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
+import { countMatchCandidates } from "@/features/study/lib/matchProgress";
 import StudyExpectedMap from "@/features/study/screens/StudyExpectedMap";
 import { LocationProps } from "@/types/common";
 import { StudyParticipationProps } from "@/types/models/studyTypes/study-entity.types";
 import { dayjsToFormat, dayjsToStr, getHour } from "@/utils/dateTimeUtils";
-import { getDistanceFromLatLonInKm } from "@/utils/mathUtils";
 
 export interface DateParticipationsProps {
   date: string;
@@ -105,36 +106,23 @@ function StudyApplySection({
   // 9시 이후에는 오늘 매칭이 이미 확정됐다. 실수로 해제해 신청이 지워지지 않게 잠근다.
   const isTodayLocked = getHour() >= STUDY_RESULT_HOUR;
 
-  const rangeLabelMin = RANGE_LABEL_MIN[rangeNum] ?? RANGE_LABEL_MIN[2];
+  const rangeLabelKm = RANGE_LABEL_KM[rangeNum] ?? RANGE_LABEL_KM[2];
 
   // 선택한 날짜에 신청한 사람 중, 기준점 어느 하나라도 범위 안에 드는 사람 수.
   // 같은 사람이 여러 날 신청하거나 두 기준점에 모두 걸려도 1명으로 센다.
+  //
+  // 여기서는 시간 겹침을 보지 않는다 — 참여 시간은 다음 단계(룰렛)에서 정하므로
+  // 아직 알 수 없다. 내 신청 요약(StudyMyApplySection)은 시간까지 반영한다.
   const nearbyCount = useMemo(() => {
     if (!voteLocations.length || !selectedDates.length) return 0;
 
-    const filterKm = MATCH_RADIUS_KM[rangeNum] ?? MATCH_RADIUS_KM[2];
-    const ids = new Set<string>();
-
-    nearbyParticipations
-      .filter((participation) => selectedDates.includes(participation.date))
-      .flatMap((participation) => participation.study ?? [])
-      .forEach((study) => {
-        if (!study.location?.latitude || !study.location?.longitude || !study.user?._id) return;
-
-        const isNear = voteLocations.some((anchor) => {
-          const distance = getDistanceFromLatLonInKm(
-            anchor.latitude,
-            anchor.longitude,
-            study.location.latitude,
-            study.location.longitude,
-          );
-          return distance != null && distance <= filterKm;
-        });
-
-        if (isNear) ids.add(study.user._id);
-      });
-
-    return ids.size;
+    return countMatchCandidates({
+      anchors: voteLocations,
+      eps: RANGE_TO_EPS[rangeNum] ?? RANGE_TO_EPS[DEFAULT_RANGE_NUM],
+      participations: nearbyParticipations
+        .filter((participation) => selectedDates.includes(participation.date))
+        .flatMap((participation) => participation.study ?? []),
+    });
   }, [nearbyParticipations, selectedDates, voteLocations, rangeNum]);
 
   const getShortName = (location: LocationProps) => location?.name?.split(" ")?.[0];
@@ -242,7 +230,7 @@ function StudyApplySection({
               <SectionLabel>스터디 매칭 범위</SectionLabel>
               <Box fontSize="12px" color="gray.500" mt={0.5}>
                 <Box as="b">{headerLocationText}</Box>
-                {` 기준 ${rangeLabelMin}분 이내 장소로 매칭돼요.`}
+                {` 기준 ${rangeLabelKm}km 이내 카페로 매칭돼요.`}
               </Box>
             </Box>
             <Box flexShrink={0} ml={3}>
@@ -350,9 +338,9 @@ function StudyApplySection({
                   isNumber={false}
                   labelArr={[
                     "범위",
-                    `${RANGE_LABEL_MIN[1]}분`,
-                    `${RANGE_LABEL_MIN[2]}분`,
-                    `${RANGE_LABEL_MIN[3]}분`,
+                    `${RANGE_LABEL_KM[1]}km`,
+                    `${RANGE_LABEL_KM[2]}km`,
+                    `${RANGE_LABEL_KM[3]}km`,
                   ]}
                   setNums={(num: number[]) => {
                     if (num[1] === 0) return;

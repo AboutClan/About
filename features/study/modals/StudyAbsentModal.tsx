@@ -1,14 +1,20 @@
 import { Box } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { AxiosError } from "axios";
 import { useState } from "react";
 
 import Textarea from "@/components/atoms/Textarea";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
+import {
+  getStudyAbsencePoint,
+  REALTIME_ABSENCE_POINT,
+  STUDY_ABSENCE_HOURLY,
+  STUDY_ABSENCE_MAX,
+} from "@/constants/serviceConstants/studyConstants/studyAbsenceConstant";
 import { useStudyAbsenceMutation } from "@/features/study/hooks/mutations";
 import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useUserRequestMutation } from "@/features/user/hooks/sub/request/mutations";
-import { useTypeToast } from "@/hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useRealTimeAbsenceMutation } from "@/hooks/realtime/mutations";
 import { IModal } from "@/types/components/modalTypes";
 import { getTodayStr } from "@/utils/dateTimeUtils";
@@ -19,13 +25,27 @@ interface StudyAbsentModalProps extends IModal {
 
 function StudyAbsentModal({ type, setIsModal }: StudyAbsentModalProps) {
   const typeToast = useTypeToast();
+  const toast = useToast();
   const resetStudy = useResetStudyQuery();
 
   const [value, setValue] = useState<string>("");
 
+  // 자동 매칭은 결과 확정 후 시간이 지날수록 벌금이 오르고, realtime은 고정이다.
+  const absencePoint = type === "study" ? getStudyAbsencePoint() : REALTIME_ABSENCE_POINT;
+  const willIncrease = type === "study" && absencePoint < STUDY_ABSENCE_MAX;
+
   const { data: userInfo } = useUserInfoQuery();
 
   const { mutate: sendRequest } = useUserRequestMutation();
+
+  // 서버가 400으로 거절하는 경우(확정 스터디 없음 / 이미 불참 처리됨)가 있어
+  // onError가 없으면 버튼만 멈추고 아무 안내도 뜨지 않는다.
+  const handleError = (err: AxiosError) => {
+    console.error(err);
+    const message = (err?.response?.data as { message?: string })?.message;
+    toast("error", message || "불참 처리에 실패했어요. 잠시 후 다시 시도해 주세요.");
+    setIsModal(false);
+  };
 
   const { mutate: absentRealTimes, isLoading: isLoading1 } = useRealTimeAbsenceMutation(
     getTodayStr(),
@@ -33,6 +53,7 @@ function StudyAbsentModal({ type, setIsModal }: StudyAbsentModalProps) {
       onSuccess() {
         handleSuccess();
       },
+      onError: handleError,
     },
   );
 
@@ -40,6 +61,7 @@ function StudyAbsentModal({ type, setIsModal }: StudyAbsentModalProps) {
     onSuccess: () => {
       handleSuccess();
     },
+    onError: handleError,
   });
 
   const handleSuccess = () => {
@@ -73,25 +95,18 @@ function StudyAbsentModal({ type, setIsModal }: StudyAbsentModalProps) {
       <ModalLayout title="당일 불참" footerOptions={footerOptions} setIsModal={setIsModal}>
         <>
           <Box as="p" mb={3}>
-            {dayjs().hour() >= 13 ? (
+            당일 불참으로 벌금{" "}
+            <Box as="b" color="red">
+              {absencePoint.toLocaleString()}P
+            </Box>
+            가 차감됩니다.
+            {willIncrease && (
               <>
-                당일 노쇼로 벌금{" "}
-                <Box as="b" color="red">
-                  1,000원
-                </Box>
-                이 발생합니다.
-                <br /> 참여 시간을 변경해 보는 건 어떨까요?
-              </>
-            ) : (
-              <>
-                당일 불참으로 벌금{" "}
-                <Box as="b" color="red">
-                  500원
-                </Box>
-                이 발생합니다.
-                <br /> 참여 시간을 변경해 보는 건 어떨까요?
+                <br />
+                한 시간마다 {STUDY_ABSENCE_HOURLY}P씩 올라가니 늦기 전에 알려주세요.
               </>
             )}
+            <br /> 참여 시간을 변경해 보는 건 어떨까요?
           </Box>
           <Box w="full">
             <Textarea

@@ -70,6 +70,8 @@ function StudyApplyDrawer({
   const [rangeNum, setRangeNum] = useState<number>(DEFAULT_RANGE_NUM);
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
+  // 날짜별로 다른 시간. 비어 있으면 모든 날짜가 voteTime 하나를 공유한다(기존 동작).
+  const [dateTimes, setDateTimes] = useState<Record<string, IStudyVoteTime>>({});
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studySet, isLoading: isStudySetLoading } = useStudySetQuery(dayjsToStr(dayjs()));
@@ -136,12 +138,27 @@ function StudyApplyDrawer({
       locationDetail: getLocationSimpleText(fallbackLocation?.address),
     };
 
+    // 날짜별 시간을 쓰는 경우에도 공용 start/end는 함께 보낸다 —
+    // 서버는 dateTimes에 없는 날짜에 공용 값을 쓰고, 구버전 호환도 유지된다.
+    const splitDates = Object.keys(dateTimes).filter((date) =>
+      selectedDates.includes(date),
+    );
+
+    const fallbackTime = splitDates.length ? dateTimes[splitDates[0]] : voteTime;
+
     voteDateArr({
       ...primary,
-      start: voteTime.start,
-      end: voteTime.end,
+      start: fallbackTime.start,
+      end: fallbackTime.end,
       eps: isLocation ? 1 : (RANGE_TO_EPS[rangeNum] ?? RANGE_TO_EPS[DEFAULT_RANGE_NUM]),
       anchors: anchors.length ? anchors : [primary],
+      ...(splitDates.length && {
+        dateTimes: splitDates.map((date) => ({
+          date,
+          start: dateTimes[date].start,
+          end: dateTimes[date].end,
+        })),
+      }),
     });
   };
 
@@ -154,6 +171,16 @@ function StudyApplyDrawer({
       },
     });
   };
+
+  // 게스트는 드로어를 여는 시점에 안내한다. 예전에는 날짜·기준 위치·시간을 다 채우고
+  // 마지막 "신청 완료"에서야 게스트 안내로 빠져서, 입력이 전부 버려졌다.
+  // useCheckGuest는 유저 정보 로딩 중 undefined를 주므로 true일 때만 움직인다.
+  useEffect(() => {
+    if (isGuest !== true) return;
+
+    handleGuestRedirect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isGuest]);
 
   const handleBottomNav = () => {
     if (!isDateReady) {
@@ -287,6 +314,9 @@ function StudyApplyDrawer({
           setVoteTime={setVoteTime}
           drawerOptions={drawerOptions}
           setIsModal={setIsTimeDrawer}
+          perDateDates={selectedDates}
+          dateTimes={dateTimes}
+          setDateTimes={setDateTimes}
         />
       )}
       {isModal && (

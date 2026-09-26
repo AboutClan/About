@@ -26,7 +26,7 @@ export const useStudyVoteArrMutation = (
   options?: MutationOptions<StudyVoteProps>,
 ) =>
   useMutation<void, AxiosError, StudyVoteProps>((voteInfo) => {
-    const { start, end } = voteInfo;
+    const { start, end, dateTimes } = voteInfo;
     return requestServer<{
       start: string;
       end: string;
@@ -36,12 +36,26 @@ export const useStudyVoteArrMutation = (
       eps: number;
       anchors?: StudyVoteAnchorProps[];
       dates: string[];
+      /** 날짜별로 다른 참여 시간. 없는 날짜는 공용 start/end를 쓴다. */
+      dateTimes?: { date: string; start: string; end: string }[];
     }>({
       method: "post",
       // 신청 취소는 dates가 빈 배열이라 URL의 :date가 비는데, 서버는 :date를 쓰지 않고
       // body의 dates만 본다. 그래도 로그가 지저분해지므로 오늘 날짜로 채워 둔다.
       url: `vote2/${dates?.[0] ?? dayjsToStr(dayjs())}/dateArr`,
-      body: { ...voteInfo, start: start.toISOString(), end: end.toISOString(), dates },
+      body: {
+        ...voteInfo,
+        start: start.toISOString(),
+        end: end.toISOString(),
+        dates,
+        ...(dateTimes?.length && {
+          dateTimes: dateTimes.map((entry) => ({
+            date: entry.date,
+            start: entry.start.toISOString(),
+            end: entry.end.toISOString(),
+          })),
+        }),
+      },
     });
   }, options);
 

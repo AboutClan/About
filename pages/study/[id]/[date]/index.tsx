@@ -337,6 +337,7 @@ export default function Page() {
           <StudyHeader
             date={date}
             placeInfo={placeInfo}
+            studyType={studyType}
             onSaveImage={() => studyMembersRef.current?.saveImage()}
           />
           <Box mb="92px">
