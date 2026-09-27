@@ -109,6 +109,19 @@ function StudyNavigation({
 
   // const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
 
+  // realtime 스터디의 개설자. status로 찾는다 — members[0]이 개설자라는 배열 순서
+  // 가정은 깨질 수 있고, StudyMembers는 이미 status로 찾고 있어 두 곳이 어긋났다.
+  const openMember = findStudy?.members?.find((member) => member.status === "open");
+  const isHost = !!openMember && openMember.user._id === userInfo?._id;
+
+  // 내 realtime status. 서버의 'pending'은 "참여 신청함, 승인 대기"인데,
+  // 프론트 myStudyStatus의 'pending'은 "아직 아무 스터디에도 참여 안 함"이라 뜻이 다르다.
+  // 컨버터가 승인 대기자도 openRealTimes에 넣기 때문에 myStudyStatus만 보면
+  // 승인 대기자가 'participation'으로 잡혀 출석 체크 버튼이 노출됐다.
+  const myRealtimeStatus = findStudy?.members?.find(
+    (member) => member.user._id === userInfo?._id,
+  )?.status;
+
   const getNavigationProps = (studyType: StudyType, myStatus: MyStudyStatus): NavigationProps => {
     if (dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))) {
       return null;
@@ -169,6 +182,17 @@ function StudyNavigation({
         }
 
       case "openRealTimes":
+        // 승인 대기 중에는 출석 체크가 아니라 대기 상태를 보여준다. 예전에는
+        // 출석 체크가 떴고, 누르면 서버가 isOpen 검사에서 떨어뜨려 남의 스터디
+        // 출석이 개인 공부 인증으로 기록됐다(보상 구간·점수도 달라진다).
+        if (myRealtimeStatus === "pending") {
+          return {
+            text: "개설자 승인 대기 중",
+            type: "single",
+            colorScheme: "gray",
+          };
+        }
+
         if (myStatus === "pending") {
           return {
             text: "스터디 참여 신청",
@@ -189,7 +213,7 @@ function StudyNavigation({
             };
           }
 
-          if (findStudy?.members?.[0]?.user._id === userInfo?._id) {
+          if (isHost) {
             return {
               text: "개설 취소",
               type: "single",
