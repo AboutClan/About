@@ -4,9 +4,10 @@ import { useState } from "react";
 
 import Avatar from "@/components/atoms/Avatar";
 import { RankingNumIcon } from "@/components/Icons/RankingIcons";
+import { StarIcon } from "@/components/Icons/StarIcons";
 import { ModalLayout } from "@/components/modals/Modals";
-import { StudyBadge } from "@/components/molecules/cards/ProfileCommentCard";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
+import { getStudyBadgePrizeTier } from "@/constants/serviceConstants/studyConstants/studyBadgeConstant";
 import { RANKING_ANONYMOUS_USERS } from "@/constants/storage/anonymous";
 import { RANK_MAP, UserRankingProps } from "@/pages/ranking";
 
@@ -32,7 +33,6 @@ const GIFT_MAP = {
     "+ 1,000 Point",
     "+ 1,000 Point",
   ],
-  study: ["+ 5,000 Point", "+ 3,000 Point", "+ 1,000 Point", "+ 1,000 Point", "+ 1,000 Point"],
 };
 
 function RankingMembers({ users, fieldName }: IRankingMembers) {
@@ -43,10 +43,19 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
     type: "gold" | "silver" | "bronze" | "temperature" | "study",
     idx: number,
   ) => {
+    // 스터디 보상은 구간 단위라(1~5등 / 6~20등 / 21~50등) 등수별 목록을 따로 두지 않는다.
+    if (type === "study") {
+      const tier = getStudyBadgePrizeTier(idx + 1);
+
+      setGiftContent({
+        title: `스터디 랭킹 ${idx + 1}위 상품`,
+        text: tier ? `${tier.emoji} ${tier.label}` : "-",
+      });
+      return;
+    }
+
     setGiftContent({
-      title: `${
-        type === "temperature" ? "인기" : type === "study" ? "스터디" : RANK_MAP[type]
-      } 랭킹 ${idx + 1}위 상품`,
+      title: `${type === "temperature" ? "인기" : RANK_MAP[type]} 랭킹 ${idx + 1}위 상품`,
       text: `${GIFT_MAP[type][idx]}`,
     });
   };
@@ -55,13 +64,11 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
     <>
       {users?.map((user, idx) => {
         const who = user.user;
-        const rankNum = idx + 1;
-        const value =
-          fieldName === "study"
-            ? user?.valueText
-            : fieldName === "temperature"
-            ? who.temperature.temperature
-            : who[fieldName];
+        // 스터디 탭만 서버가 계산한 순위를 쓴다(동점이면 같은 등수). 나머지 두 탭은
+        // 지금까지 인덱스를 등수로 보여 왔으므로 표시를 바꾸지 않는다.
+        const rankNum = fieldName === "study" ? user.rank : idx + 1;
+        // 스터디 탭은 배지 개수(user.value)를 그대로 쓴다.
+        const value = fieldName === "monthScore" ? who.monthScore : who.temperature?.temperature;
         return (
           <Flex px={3} py={1} pr={5} align="center" key={idx} id={`ranking${who._id}`}>
             <Flex justify="center" mr="10px">
@@ -85,9 +92,7 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
             </Flex>
             <Flex align="center">
               {fieldName === "study" ? (
-                <Box mr={2}>
-                  <StudyBadge cnt={value as number} />
-                </Box>
+                <BadgeCountLabel cnt={user.value} />
               ) : // <Box fontSize="14px" mt="2px" lineHeight="20px" mr={2} fontWeight="bold">
               //   {value}점
               // </Box>
@@ -122,6 +127,23 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
         </ModalLayout>
       )}
     </>
+  );
+}
+
+/**
+ * 이번 달 배지 개수. 스터디 출석 스탬프와 같은 표현(민트 원형 + 별)을 써서
+ * 여기 숫자가 그 스탬프를 센 것이라는 걸 설명 없이 알아보게 한다.
+ */
+function BadgeCountLabel({ cnt }: { cnt: number }) {
+  return (
+    <Flex align="center" mr={2}>
+      <Flex w="22px" h="22px" justify="center" align="center" borderRadius="50%" bg="mint" mr={1}>
+        <StarIcon />
+      </Flex>
+      <Box fontSize="14px" lineHeight="20px" fontWeight="bold">
+        {cnt}
+      </Box>
+    </Flex>
   );
 }
 

@@ -77,12 +77,8 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
     // "최대 N Point"만 적어 두면 거의 매번 약속보다 적게 받는 것처럼 읽히므로,
     // 기본 금액을 앞에 두고 보너스가 드물게 크다는 사실을 함께 적는다.
     subTitle:
-      "출석 포인트는 기본 금액에 랜덤 보너스가 붙어요. 보너스는 대부분 작고, 드물게 크게 나옵니다.",
+      "출석 포인트는 기본 금액에 랜덤 보너스가 붙어요. 보너스는 대부분 작고, 드물게 크게 나옵니다. 정규 매칭 신청은 포인트 대신 스터디 배지가 쌓여요.",
     infoArr: [
-      {
-        left: "스터디 매칭 신청",
-        right: "기본 100 Point",
-      },
       {
         left: "스터디 출석체크 (매칭)",
         right: "100 Point + 보너스",
@@ -92,8 +88,9 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
         right: "30 Point + 보너스",
       },
       {
-        left: "월간 스터디 랭킹 정산",
-        right: "+ 1000 ~ 5000 Point",
+        // 매월 1일 정산. 1~5등 카공족 이용권 / 6~20등 메가커피 / 21~50등 500 포인트.
+        left: "월간 스터디 배지 랭킹",
+        right: "1 ~ 50등 보상 지급",
       },
 
       {
@@ -107,8 +104,9 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
         color: "red",
       },
       {
-        left: "스터디 지각 (1시간 이상)",
-        right: "- 50 Point",
+        // 1시간까지는 벌금이 없고, 그 뒤부터 시간당 100P씩 최대 1,000P까지.
+        left: "스터디 지각 (1시간 초과)",
+        right: "- 시간당 100 Point (최대 1,000)",
         color: "red",
       },
     ],
@@ -117,10 +115,6 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
     title: "포인트 획득 방법",
     subTitle: "동아리 활동을 통해 포인트를 모을 수 있어요! 1포인트는 1원과 동일한 가치를 가집니다.",
     infoArr: [
-      {
-        left: "스터디 매칭 신청",
-        right: "기본 100 Point",
-      },
       {
         left: "스터디 출석체크 (매칭)",
         right: "200 - 1,000 Point",

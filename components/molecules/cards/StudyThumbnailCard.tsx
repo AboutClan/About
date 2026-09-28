@@ -9,6 +9,7 @@ import { LocationDotIcon } from "@/components/Icons/LocationIcons";
 import { UserIcon } from "@/components/Icons/UserIcons";
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
 import PlaceImage from "@/components/molecules/PlaceImage";
+import { STUDY_MIN_MEMBER_COUNT } from "@/constants/serviceConstants/studyConstants/studyMatchConstant";
 import { getStudyBadge } from "@/features/study/lib/studyHelpers";
 import { SingleLineText } from "@/styles/layout/components";
 import { StudyType } from "@/types/models/studyTypes/study-set.types";
@@ -61,7 +62,10 @@ export function StudyThumbnailCard({
 }: StudyThumbnailCardProps) {
   const router = useRouter();
 
-  const temp = dateStatus === "future" && participants.length < 4 ? 4 : 8;
+  const temp =
+    dateStatus === "future" && participants.length < STUDY_MIN_MEMBER_COUNT
+      ? STUDY_MIN_MEMBER_COUNT
+      : STUDY_MAX_CNT;
   const isFeatured = place.name === "카공 스터디 라운지";
 
   return (
@@ -154,14 +158,16 @@ export function StudyThumbnailCard({
               isCompact ? null : (
                 <Flex align="center" color="var(--gray-500)" fontSize="11px" lineHeight="16px">
                   {dateStatus === "future"
-                    ? participants.length < 4
-                      ? "확정까지 "
+                    ? participants.length < STUDY_MIN_MEMBER_COUNT
+                      ? // 미리보기는 3명부터 보이므로 확정 기준 인원을 함께 적어야
+                        // "이미 성사됐다"고 오해하지 않는다.
+                        `확정(${STUDY_MIN_MEMBER_COUNT}명)까지 `
                       : participants.length < 8
-                      ? "마감까지 "
-                      : "인원 마감"
+                        ? "마감까지 "
+                        : "인원 마감"
                     : dateStatus === "current"
-                    ? `${participants.length}명의 멤버가 참여하고 있어요!`
-                    : ""}
+                      ? `${participants.length}명의 멤버가 참여하고 있어요!`
+                      : ""}
                   {dateStatus === "future" && participants.length < 8
                     ? `${temp - participants.length}명 남았어요!`
                     : ""}

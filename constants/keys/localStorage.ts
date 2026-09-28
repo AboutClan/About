@@ -21,7 +21,6 @@ export const RECENT_STUDY_RECORD = {};
 /** */
 export const MY_TODAY_STUDY_FIXED = "myTodayStudyFixed";
 // 매칭 실패 배너를 닫은 날짜(YYYY-MM-DD). 같은 날에는 다시 띄우지 않는다.
-export const STUDY_UNMATCHED_BANNER_CLOSED_AT = "studyUnmatchedBannerClosedAt";
 
 //알림
 export const GATHER_ALERT = "gatherAlert";

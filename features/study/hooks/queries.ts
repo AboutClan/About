@@ -204,6 +204,34 @@ export const useStudyMineQuery = (options?: QueryOptions<StudyMineProps[]>) =>
     options,
   );
 
+export interface StudyBadgeRankProps {
+  rank: number;
+  user: UserSimpleInfoProps;
+  badgeCnt: number;
+}
+
+export interface StudyBadgeRankingProps {
+  ranking: StudyBadgeRankProps[];
+  /** 배지가 0개면 null. 목록(50명) 밖이어도 계산돼 온다. */
+  myRank: number | null;
+  myBadgeCnt: number;
+}
+
+/** 이번 달 스터디 배지 랭킹. 상품 구간이 50등까지라 서버 기본값도 50명이다. */
+export const useStudyBadgeRankingQuery = (
+  options?: QueryOptions<StudyBadgeRankingProps>,
+) =>
+  useQuery<StudyBadgeRankingProps, AxiosError, StudyBadgeRankingProps>(
+    [STUDY_VOTE, "badgeRanking"],
+    async () => {
+      const { data } = await axios.get<StudyBadgeRankingProps>(
+        `${SERVER_URI}/vote2/badge-ranking`,
+      );
+      return data;
+    },
+    options,
+  );
+
 export interface StudyCrewMemberStatsProps {
   userId: string;
   lastVoteDate: string | null;

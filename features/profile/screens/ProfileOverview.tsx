@@ -101,12 +101,8 @@ function ProfileOverview({ user, gatherCount }: IProfileOverview) {
               </RelationItem>
               <RelationItem>
                 <span>스터디</span>
-                <span>
-                  {Math.floor(
-                    (user.studyRecord.accumulationCnt * 3 + user.studyRecord.accumulationMinutes) /
-                      3,
-                  ) || 0}
-                </span>
+                {/* accumulationMinutes는 "누적 공부 분"이라 횟수와 더할 수 없다. */}
+                <span>{user.studyRecord?.accumulationCnt || 0}</span>
               </RelationItem>
             </Flex>
             <Flex

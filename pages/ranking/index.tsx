@@ -12,9 +12,16 @@ import InfoModalButton from "@/components/modalButtons/InfoModalButton";
 import TabNav from "@/components/molecules/navs/TabNav";
 import WinnerTextSlider from "@/components/molecules/WinnerTextSlider";
 import { usePrizeQuery } from "@/constants/prize/queries";
+import {
+  getNextStudyBadgePrizeTier,
+  getStudyBadgePrizeTier,
+} from "@/constants/serviceConstants/studyConstants/studyBadgeConstant";
 import { useAllUserDataQuery, UserStudyDataProps } from "@/features/admin/hooks/quries";
 import RankingMembers from "@/features/ranking/screens/RankingMembers";
+import { useStudyBadgeRankingQuery } from "@/features/study/hooks/queries";
+import StudyBadgeGuideModal from "@/features/study/screens/modals/StudyBadgeGuideModal";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
 export type RankingTab = "월간 활동 랭킹" | "누적 인기 랭킹" | "스터디 랭킹";
@@ -26,7 +33,11 @@ interface RankingProps {
 }
 
 export interface UserRankingProps extends RankingProps {
-  user: UserStudyDataProps;
+  /**
+   * 스터디 탭은 배지 랭킹 API를 쓰고 그 응답에는 studyRecord·rank가 없다.
+   * 두 필드만 선택으로 두어 세 탭이 같은 목록 컴포넌트를 공유한다.
+   */
+  user: UserSimpleInfoProps & Partial<Pick<UserStudyDataProps, "studyRecord" | "rank">>;
 }
 
 type MedalType = "골드" | "실버" | "브론즈";
@@ -44,33 +55,52 @@ function Ranking() {
 
   const [myRanking, setMyRanking] = useState<RankingProps>();
   const [sortedUsers, setSortedUsers] = useState<UserRankingProps[]>();
-  const [commentText, setCommentText] = useState<{ first: string; value: number }>();
+  // 스터디 탭은 "몇 점 남았다"가 아니라 보상 구간을 말해야 하므로 text로 문장을 그대로 받는다.
+  const [commentText, setCommentText] = useState<{
+    first?: string;
+    value?: number;
+    unit?: string;
+    text?: string;
+  }>();
   const [users2, setUsers2] = useState<UserRankingProps[]>();
 
   const tab: RankingTab =
     tabParam === "study"
       ? "스터디 랭킹"
       : tabParam === "temperature"
-      ? "누적 인기 랭킹"
-      : "월간 활동 랭킹";
+        ? "누적 인기 랭킹"
+        : "월간 활동 랭킹";
 
   const setTab = (newTab: RankingTab) => {
     const param =
-      newTab === "스터디 랭킹" ? "study" : newTab === "누적 인기 랭킹" ? "temperature" : "monthScore";
+      newTab === "스터디 랭킹"
+        ? "study"
+        : newTab === "누적 인기 랭킹"
+          ? "temperature"
+          : "monthScore";
     router.replace({ query: { ...router.query, tab: param } }, undefined, { shallow: true });
   };
 
   const [medal, setMedal] = useState<MedalType>("골드");
+  const [isBadgeGuideModal, setIsBadgeGuideModal] = useState(false);
 
   const { data: userInfo } = useUserInfoQuery();
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const isStudyTab = tab === "스터디 랭킹";
+
   const fieldName =
     tab === "스터디 랭킹" ? "study" : tab === "월간 활동 랭킹" ? "monthScore" : "temperature";
 
   const { data: allUserData2 } = useAllUserDataQuery(fieldName, {
-    enabled: !!fieldName,
+    enabled: !!fieldName && !isStudyTab,
+  });
+
+  // 스터디 랭킹은 이번 달 배지 개수 기준이고, 서버가 정렬·동점·내 순위를 모두 계산해 준다.
+  // 브라우저에서 다시 정렬하면 화면 순위와 매월 1일 실제로 상품을 받는 순위가 갈린다.
+  const { data: badgeRanking } = useStudyBadgeRankingQuery({
+    enabled: isStudyTab && !!session,
   });
 
   const allUserData = useMemo(
@@ -82,6 +112,9 @@ function Ranking() {
 
   useEffect(() => {
     setSortedUsers(null);
+    // 탭마다 기준이 달라서, 이전 탭 값이 남아 있으면 상단에 다른 탭 순위가 잠깐 보인다.
+    setMyRanking(undefined);
+    setCommentText(undefined);
 
     setIsLoading(true);
     const timeout = setTimeout(() => {
@@ -91,17 +124,29 @@ function Ranking() {
   }, [tab]);
 
   useEffect(() => {
+    // 서버가 준 순위를 그대로 쓴다(동점이면 먼저 달성한 사람이 상위).
+    if (isStudyTab) {
+      if (!badgeRanking) return;
+
+      setSortedUsers(
+        badgeRanking.ranking.map((entry) => ({
+          user: entry.user,
+          value: entry.badgeCnt,
+          rank: entry.rank,
+        })),
+      );
+      // myRank는 목록(50명) 밖이어도 계산돼 오고, 배지가 0개면 null이다.
+      setMyRanking({ rank: badgeRanking.myRank, value: badgeRanking.myBadgeCnt });
+      return;
+    }
+
     if (!allUserData?.length || !session) return;
 
     const sortUserByTab = (users: UserStudyDataProps[], tab: RankingTab) => {
       const temp = [...users];
 
       return temp.sort((a, b) => {
-        if (tab === "스터디 랭킹") {
-          const aSum = a.studyRecord.accumulationCnt + a.studyRecord.accumulationMinutes;
-          const bSum = b.studyRecord.accumulationCnt + b.studyRecord.accumulationMinutes;
-          return bSum - aSum; // 숫자가 클수록 앞에 오게
-        } else if (tab === "월간 활동 랭킹") {
+        if (tab === "월간 활동 랭킹") {
           return b.monthScore - a.monthScore;
         } else {
           return b.temperature.temperature - a.temperature.temperature;
@@ -116,32 +161,11 @@ function Ranking() {
 
     const rankedUsers: UserRankingProps[] = [...sortedData]
       .sort((a, b) => {
-        if (fieldName === "study") {
-          const aSum = a.studyRecord.accumulationCnt + a.studyRecord.accumulationMinutes;
-          const bSum = b.studyRecord.accumulationCnt + b.studyRecord.accumulationMinutes;
-
-          return bSum - aSum;
-        }
         const aValue = fieldName === "monthScore" ? a.monthScore : a.temperature.temperature;
         const bValue = fieldName === "monthScore" ? b.monthScore : b.temperature.temperature;
         return bValue - aValue;
       })
       .map((data) => {
-        if (fieldName === "study") {
-          const sum = data.studyRecord.accumulationCnt + data.studyRecord.accumulationMinutes;
-
-          if (!valueToRank.has(sum)) {
-            valueToRank.set(sum, currentRank);
-          }
-          currentRank++;
-
-          return {
-            user: { ...data },
-            value: sum,
-            valueText: data.studyRecord.accumulationCnt + data.studyRecord.accumulationMinutes + "",
-            rank: valueToRank.get(sum)!,
-          };
-        }
         const value = fieldName === "monthScore" ? data.monthScore : data.temperature.temperature;
 
         if (!valueToRank.has(value)) {
@@ -165,7 +189,7 @@ function Ranking() {
       tab === "월간 활동 랭킹" &&
         setMyRanking({ rank: findMyInfo?.rank, value: findMyInfo?.value });
     }
-  }, [allUserData, session, tab, medal]);
+  }, [allUserData, session, tab, medal, isStudyTab, badgeRanking]);
 
   const tabOptionsArr: { text: RankingTab; func: () => void }[] = [
     { text: "월간 활동 랭킹", func: () => setTab("월간 활동 랭킹") },
@@ -174,6 +198,22 @@ function Ranking() {
   ];
 
   useEffect(() => {
+    // 스터디 탭은 50등까지 전부 보상 구간이라 "상품 획득까지 N점"이 맞지 않는다.
+    // 지금 순위가 어떤 보상에 닿아 있는지를 그대로 말해 준다.
+    if (isStudyTab) {
+      if (!myRanking?.rank || myRanking.rank === 1) return;
+
+      const currentTier = getStudyBadgePrizeTier(myRanking.rank);
+      const nextTier = getNextStudyBadgePrizeTier(myRanking.rank);
+
+      setCommentText({
+        text: currentTier
+          ? `지금 순위면 ${currentTier.emoji} ${currentTier.label}을 받아요`
+          : `${myRanking.rank - nextTier.to}명만 앞서면 ${nextTier.emoji} ${nextTier.label}`,
+      });
+      return;
+    }
+
     if (
       tab !== "월간 활동 랭킹" ||
       !myRanking?.rank ||
@@ -204,7 +244,7 @@ function Ranking() {
       }
     };
     setCommentText(getCommentText(myRanking, sortedUsers));
-  }, [myRanking, allUserData, tab]);
+  }, [myRanking, allUserData, tab, isStudyTab, sortedUsers]);
 
   const [textArr, setTextArr] = useState<
     {
@@ -251,6 +291,8 @@ function Ranking() {
                   "첫 활동으로 랭킹에 도전해보세요!"
                 ) : myRanking?.rank === 1 ? (
                   "랭킹 1위 달성을 축하합니다."
+                ) : commentText?.text ? (
+                  commentText.text
                 ) : (
                   <>
                     {commentText?.first} <b>{commentText?.value}점</b> 남았어요
@@ -278,7 +320,9 @@ function Ranking() {
                 {myRanking?.rank ? (
                   <>
                     <Box fontSize="16px" lineHeight="24px" mr={1} fontWeight="bold">
-                      {RANK_MAP[userInfo?.rank]} {myRanking.rank}위
+                      {/* 골드·실버·브론즈는 월간 활동 점수로 갈리는 등급이라 스터디 순위에는 붙이지 않는다. */}
+                      {!isStudyTab && `${RANK_MAP[userInfo?.rank]} `}
+                      {myRanking.rank}위
                     </Box>
                     {/* <Box color="mint" fontSize="13px" mt="1px" lineHeight="18px" fontWeight="bold">
                       {myRanking.value}점
@@ -339,8 +383,25 @@ function Ranking() {
             ※ 인기 랭킹은 상위 500명까지만 보여집니다.
           </Flex>
         ) : (
-          <Flex h="52px" align="center" mx={5} color="gray.500" fontSize="12px">
-            ※ 카공 스터디와 개인 공부 인증을 합친 횟수입니다.
+          <Flex minH="52px" py={2} align="center" justify="space-between" gap={3} mx={5}>
+            <Box color="gray.500" fontSize="12px" lineHeight="18px">
+              ※ 이번 달에 모은 스터디 스탬프 개수 순위입니다. 매월 1일 초기화됩니다.
+            </Box>
+            {/* 스탬프를 어떻게 얻는지 궁금해지는 자리가 여기라서 안내를 여기 붙인다. */}
+            <Box
+              as="button"
+              type="button"
+              flexShrink={0}
+              px={2}
+              py={2}
+              fontSize="12px"
+              fontWeight={600}
+              color="mint"
+              textDecoration="underline"
+              onClick={() => setIsBadgeGuideModal(true)}
+            >
+              스탬프 안내
+            </Box>
           </Flex>
         )}
         {isLoading ? (
@@ -368,6 +429,7 @@ function Ranking() {
           </Box>
         )}
       </Slide>
+      {isBadgeGuideModal && <StudyBadgeGuideModal onClose={() => setIsBadgeGuideModal(false)} />}
       {/* {isModal && <RuleModal content={CONTENT} setIsModal={setIsModal} />} */}
     </>
   );

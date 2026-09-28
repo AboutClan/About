@@ -63,6 +63,14 @@ export const setStudyThumbnailCard = (
   //     func,
   //   });
   // }
+  const pendingParticipants = shortenParticipations(participations, openRealTimes);
+
+  // 라운지 카드는 대기 중인 신청 풀을 대표하므로 내가 그 안에 있으면 체크를 붙인다.
+  // 여태 false로 고정돼 있어서 신청해도 카드에 아무 표시가 없었다.
+  const myPendingParticipation = myId
+    ? pendingParticipants.find((par) => par.user._id === myId)
+    : null;
+
   if (!isPassedDate && !temp) {
     basicThumbnailCard.push({
       place: {
@@ -77,13 +85,13 @@ export const setStudyThumbnailCard = (
         },
         _id: "",
       },
-      participants: shortenParticipations(participations, openRealTimes).map((par) => par.user),
+      participants: pendingParticipants.map((par) => par.user),
       url:
         `/study/participations/${date}?type=participations` +
         (pathHome ? "&path=home" : "") +
         (fromCafeMap ? "&from=cafe-map" : ""),
       studyType: "participations",
-      isMyStudy: false,
+      isMyStudy: !!myPendingParticipation,
       func,
     });
   }
@@ -240,8 +248,8 @@ export const setStudyThumbnailCard = (
       dateStatus: dayjs(data.date).hour(9).isAfter(dayjs())
         ? "future"
         : data.date == getTodayStr()
-        ? "current"
-        : "prev",
+          ? "current"
+          : "prev",
       func,
     };
   });

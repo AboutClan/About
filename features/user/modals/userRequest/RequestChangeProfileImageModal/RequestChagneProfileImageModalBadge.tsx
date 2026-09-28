@@ -3,10 +3,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
-import {
-  BADGE_COLOR_MAPPINGS,
-  USER_BADGE_ARR,
-} from "@/constants/serviceConstants/badgeConstants";
+import { BADGE_COLOR_MAPPINGS, USER_BADGE_ARR } from "@/constants/serviceConstants/badgeConstants";
 import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
@@ -55,9 +52,8 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
       <Grid h="140px" overflow="auto" gridTemplateColumns="repeat(3,1fr)" gap={2} p={3}>
         {USER_BADGE_ARR.map((badge, idx) => {
           const hasBadge =
-            (badge === "열공러" &&
-              userInfo?.studyRecord?.accumulationMinutes + userInfo?.studyRecord?.accumulationCnt >
-                10) ||
+            // 스터디 참여 횟수 기준. accumulationMinutes(분)를 더하면 기준이 무의미해진다.
+            (badge === "열공러" && userInfo?.studyRecord?.accumulationCnt > 10) ||
             userInfo?.badge.badgeList.includes(badge) ||
             ["대학생", "휴학생", "졸업생"].includes(badge) ||
             (badge === "뉴비" && dayjs(userInfo?.registerDate).add(3, "month").isAfter(dayjs()));

@@ -6,12 +6,13 @@ import { useEffect, useMemo, useState } from "react";
 
 import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import Slide from "@/components/layouts/PageSlide";
-import { ModalLayout } from "@/components/modals/Modals";
-import { STUDY_UNMATCHED_BANNER_CLOSED_AT } from "@/constants/keys/localStorage";
-import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
+import {
+  useStudyBadgeRankingQuery,
+  useStudyPassedDayQuery,
+  useStudySetQuery,
+} from "@/features/study/hooks/queries";
 import StudyIntroduceDrawer from "@/features/study/screens/StudyIntroduceDrawer";
-import StudyMyApplySection from "@/features/study/screens/StudyMyApplySection";
-import StudyUnmatchedBanner from "@/features/study/screens/StudyUnmatchedBanner";
+import StudyMyStatus from "@/features/study/screens/StudyMyStatus";
 import { LocationAddDrawer } from "@/features/studyMap/components/LocationAddDrawer";
 import StudyCrewRow from "@/features/studyPage/screens/StudyCrewRow";
 import StudyPageHeader from "@/features/studyPage/screens/StudyPageHeader";
@@ -21,7 +22,6 @@ import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entity.types";
 import { getTodayStr } from "@/utils/dateTimeUtils";
-import { getLocalStorageObj, setLocalStorageObj } from "@/utils/storageUtils";
 
 type ModalType = "cafe" | "introduce" | null;
 
@@ -53,30 +53,9 @@ export default function StudyPage() {
     enabled: !!date && isPassedDate,
   });
 
-  // 오늘 결과가 확정된 뒤, 내가 매칭에서 빠졌는지. 서버가 unmatchedUsers를 내려주지만
-  // 지금까지 컨버터에서 버려져 화면에 도달하지 못했다.
-  const isUnmatchedToday = useMemo(() => {
-    if (!studySet?.unmatched?.length || !userInfo?._id) return false;
-
-    return studySet.unmatched.some(
-      (entry) =>
-        entry.date === getTodayStr() && entry.users.some((user) => user._id === userInfo._id),
-    );
-  }, [studySet?.unmatched, userInfo?._id]);
-
-  // 배너를 닫은 날짜. 같은 날 다시 방문해도 뜨지 않고, 다음 날 실패하면 다시 보인다.
-  // localStorage는 클라이언트에서만 읽을 수 있어 마운트 후에 불러온다.
-  const [unmatchedBannerClosedAt, setUnmatchedBannerClosedAt] = useState<string | null>(null);
-
-  useEffect(() => {
-    setUnmatchedBannerClosedAt(getLocalStorageObj(STUDY_UNMATCHED_BANNER_CLOSED_AT));
-  }, []);
-
-  const closeUnmatchedBanner = () => {
-    const today = getTodayStr();
-    setUnmatchedBannerClosedAt(today);
-    setLocalStorageObj(STUDY_UNMATCHED_BANNER_CLOSED_AT, today);
-  };
+  const { data: badgeRanking } = useStudyBadgeRankingQuery({
+    enabled: !!session && userInfo?.role !== "guest",
+  });
 
   const replaceQuery = (query: Record<string, string | null | undefined>) => {
     const nextQuery = {
@@ -204,31 +183,14 @@ export default function StudyPage() {
         <StudyCrewRow />
       </Slide>
 
-      {isUnmatchedToday && unmatchedBannerClosedAt !== getTodayStr() && (
+      {userInfo?.role !== "guest" && studySet && badgeRanking && (
         <Slide>
-          <Box mb={4}>
-            <StudyUnmatchedBanner
-              onClose={closeUnmatchedBanner}
-              // 오늘 확정된 스터디 목록. 카드 → 상세의 "스터디 참여"로 바로 합류할 수 있다.
-              onOpenStudyList={() => router.push(`/studyList?date=${getTodayStr()}`)}
-              // drawer=apply가 StudyControlButton의 시트를 열고,
-              // modal=apply를 StudyControlDrawer가 받아 신청 드로어까지 연다.
-              onApplyOtherDate={() => replaceQuery({ drawer: "apply", modal: "apply" })}
-              onSoloStudy={() =>
-                router.push(`/vote/attend/configuration?date=${getTodayStr()}&type=soloRealTimes`)
-              }
-            />
-          </Box>
-        </Slide>
-      )}
-
-      {userInfo?.role !== "guest" && studySet && (
-        <Slide>
-          <Box mb={4}>
-            <StudyMyApplySection
+          <Box mt={3}>
+            <StudyMyStatus
               studySet={studySet}
               myId={userInfo?._id}
-              onEdit={() => replaceQuery({ drawer: "apply", modal: "applyChange" })}
+              badgeRanking={badgeRanking}
+              onOpenRanking={() => router.push("/ranking?tab=study")}
             />
           </Box>
         </Slide>

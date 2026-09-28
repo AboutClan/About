@@ -102,8 +102,8 @@ export default function ProfileCommentCard({
                   {isCafeMap
                     ? studyUser?.nickname || maskUserName(user?.name)
                     : isGuest
-                    ? maskUserName(user?.name)
-                    : user?.name || "익명"}
+                      ? maskUserName(user?.name)
+                      : user?.name || "익명"}
                 </Box>
 
                 {!isStudy && <UserBadge badgeIdx={user?.badge?.badgeIdx} />}
@@ -112,12 +112,8 @@ export default function ProfileCommentCard({
                   <>
                     <PlainPopover content="스터디 출석 횟수">
                       <Box as="span" display="inline-flex">
-                        <StudyBadge
-                          cnt={
-                            studyUser?.studyRecord?.accumulationCnt +
-                            studyUser?.studyRecord?.accumulationMinutes
-                          }
-                        />
+                        {/* 팝오버 문구대로 "출석 횟수"만 센다. */}
+                        <StudyBadge cnt={studyUser?.studyRecord?.accumulationCnt} />
                       </Box>
                     </PlainPopover>
                     {studyUser?.studyIntroduce?.studyStyle && (
@@ -280,8 +276,8 @@ function StudyPopoverIcon({ children, content, size: sizeType }: StudyPopoverIco
             sizeType === "md2" || sizeType === "sm2"
               ? "orange.50"
               : size === "sm"
-              ? "blue.50"
-              : "green.50"
+                ? "blue.50"
+                : "green.50"
           }
         >
           {children}
