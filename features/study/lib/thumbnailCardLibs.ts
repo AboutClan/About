@@ -36,33 +36,37 @@ export const setStudyThumbnailCard = (
   const { participations, openRealTimes, soloRealTimes, results } = studySet;
 
   const isPassedDate = dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
-  // const isFutureDate = dayjs(date).startOf("day").isAfter(dayjs().startOf("day"));
+  const isFutureDate = dayjs(date).startOf("day").isAfter(dayjs().startOf("day"));
 
   const basicThumbnailCard: StudyThumbnailCardProps[] = [];
-  // if (soloRealTimes && !isFutureDate && !isTemp) {
-  //   basicThumbnailCard.push({
-  //     place: {
-  //       name: "실시간 공부 인증",
-  //       branch: "자유 장소",
-  //       address: "공부 인증하면, 돈이 쌓인다!",
-  //       date: null,
-  //       imageProps: {
-  //         image:
-  //           "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84+%EA%B3%B5%EB%B6%80+%EC%9D%B8%EC%A6%9D.png",
-  //         isPriority: true,
-  //       },
-  //       _id: "",
-  //     },
-  //     participants: soloRealTimes?.flatMap((par) => par.study.members.map((member) => member.user)),
-  //     url:
-  //       `/study/realTime/${date}?type=soloRealTimes` +
-  //       (pathHome ? "&path=home" : "") +
-  //       (fromCafeMap ? "&from=cafe-map" : ""),
-  //     studyType: "soloRealTimes",
-  //     isMyStudy: false,
-  //     func,
-  //   });
-  // }
+  // 개인 공부 인증. 미래 날짜에는 두지 않는다 — 인증은 그날 현장에서만 할 수 있다.
+  const soloMembers =
+    soloRealTimes?.flatMap((par) => par.study.members.map((member) => member.user)) ?? [];
+
+  if (soloRealTimes && !isFutureDate && !isTemp) {
+    basicThumbnailCard.push({
+      place: {
+        name: "실시간 공부 인증",
+        branch: "자유 장소",
+        address: "카페·집·도서관 어디서든 공부를 인증해요",
+        date: null,
+        imageProps: {
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84+%EA%B3%B5%EB%B6%80+%EC%9D%B8%EC%A6%9D.png",
+          isPriority: true,
+        },
+        _id: "",
+      },
+      participants: soloMembers,
+      url:
+        `/study/realTime/${date}?type=soloRealTimes` +
+        (pathHome ? "&path=home" : "") +
+        (fromCafeMap ? "&from=cafe-map" : ""),
+      studyType: "soloRealTimes",
+      isMyStudy: myId ? soloMembers.some((user) => user._id === myId) : false,
+      func,
+    });
+  }
   const pendingParticipants = shortenParticipations(participations, openRealTimes);
 
   // 라운지 카드는 대기 중인 신청 풀을 대표하므로 내가 그 안에 있으면 체크를 붙인다.

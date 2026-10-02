@@ -87,6 +87,20 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
     return { gender: user?.gender, birth: user?.birth };
   };
 
+  /** 더미 참여자 중 user 레퍼런스가 없는 데이터가 존재한다(구버전 스크립트로 주입된 케이스).
+   *  user가 비어 있으면 dummy 필드로 최소 정보를 만들어 카드가 깨지지 않게 한다. */
+  const getParticipantUser = (par: IGatherParticipants): UserSimpleInfoProps =>
+    par.user ??
+    ({
+      ...SECRET_USER_SUMMARY,
+      _id: par.dummyId || "",
+      uid: par.dummyId || "",
+      name: par.dummyName || "익명",
+      gender: par.dummyGender,
+      birth: par.dummyBirth || "000101",
+      comment: "",
+    } as unknown as UserSimpleInfoProps);
+
   const getOpenGatherMemo = (par: IGatherParticipants) => {
     const { gender, birth } = getParticipantGenderBirth(par);
     const age = birthToAge(birth);
@@ -103,30 +117,29 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
 
   const organizerCard = {
     user: isSecret ? SECRET_USER_SUMMARY : (data?.user as IUser),
-    memo: isSecret ? "익명 참여자" : (data?.user as IUser).comment,
+    memo: isSecret ? "익명 참여자" : (data?.user as IUser)?.comment,
     rightComponent: <SocialingScoreBadge user={data?.user as UserSimpleInfoProps} size="sm" />,
     crownType: "main" as const,
   };
 
-  const userCardArr: IProfileCommentCard[] = (data?.participants ? [...data.participants] : []).flatMap(
-    (par, idx) => {
-      const card: IProfileCommentCard = {
-        user: isSecret ? (SECRET_USER_SUMMARY as UserSimpleInfoProps) : par.user,
-        memo:
-          gatherType === "openGather"
-            ? getOpenGatherMemo(par)
-            : gatherType === "officialGather"
+  const userCardArr: IProfileCommentCard[] = (
+    data?.participants ? [...data.participants] : []
+  ).flatMap((par, idx) => {
+    const parUser = getParticipantUser(par);
+    const card: IProfileCommentCard = {
+      user: isSecret ? (SECRET_USER_SUMMARY as UserSimpleInfoProps) : parUser,
+      memo:
+        gatherType === "openGather"
+          ? getOpenGatherMemo(par)
+          : gatherType === "officialGather"
             ? getGenderAgeMemo(par)
             : gatherType === "secretGather" && !isMyGather
-            ? `익명 참여자 ${idx + 1}`
-            : par.user.comment,
-        rightComponent: isSecret ? null : (
-          <SocialingScoreBadge user={par?.user as UserSimpleInfoProps} size="sm" />
-        ),
-      };
-      return par.withCompanion ? [card, card] : [card];
-    },
-  );
+              ? `익명 참여자 ${idx + 1}`
+              : (parUser as IUser)?.comment,
+      rightComponent: isSecret ? null : <SocialingScoreBadge user={parUser} size="sm" />,
+    };
+    return par.withCompanion ? [card, card] : [card];
+  });
 
   const isAdminOpen =
     (data?.user as IUser)?._id === "65df1ddcd73ecfd250b42c89" && data?.memberCnt?.max !== 1;
