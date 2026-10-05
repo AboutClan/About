@@ -153,7 +153,7 @@ function StudyPagePlaceSection({
       <Flex flexDir="column" mb={20} mt={2}>
         <Box>
           <Box>
-            {thumbnailCardInfoArr?.length && !isLoading
+            {thumbnailCardInfoArr?.length > 0 && !isLoading
               ? thumbnailCardInfoArr.map((thumbnailCardInfo, idx) => {
                   const cardDate = thumbnailCardInfo.place.date;
                   const groupKey = cardDate ? dayjsToFormat(cardDate, "YYYY-MM-DD") : "lounge";
@@ -201,7 +201,7 @@ function StudyPagePlaceSection({
                   </>
                 )}
 
-            {thumbnailCardInfoArr?.length && (
+            {thumbnailCardInfoArr?.length > 0 && (
               <Button
                 w="100%"
                 h="40px"

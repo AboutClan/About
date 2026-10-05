@@ -37,6 +37,8 @@ export interface IProfileCommentCard {
   isSoloStudy?: boolean;
   isCafeMap?: boolean;
   pendingType?: "pendingOwner" | "pending" | null;
+  /** 주면 아바타를 눌러도 프로필로 가지 않고 이 문구를 띄운다. */
+  profileLockedToast?: string;
 }
 
 // ...
@@ -66,6 +68,7 @@ export default function ProfileCommentCard({
   isSoloStudy,
   isCafeMap,
   pendingType,
+  profileLockedToast,
 }: IProfileCommentCard) {
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -92,7 +95,12 @@ export default function ProfileCommentCard({
           {leftComponent && <Box mr={4}>{leftComponent}</Box>}
 
           <Flex flex={1} opacity={pendingType === "pendingOwner" ? 0.5 : 1}>
-            <Avatar user={user} size="md1" isLink={isCafeMap ? false : !isGuest} />
+            <Avatar
+              user={user}
+              size="md1"
+              isLink={isCafeMap ? false : !isGuest}
+              lockedToast={profileLockedToast}
+            />
 
             <Flex direction="column" flex={1} justify="center" ml={3} my={1} minW={0}>
               <Flex align="center" mb={memo || comment ? 1 : 0} overflow="hidden" flexWrap="nowrap">

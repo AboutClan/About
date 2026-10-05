@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -34,6 +34,8 @@ interface StudyDateDrawerProps {
   location?: LocationProps;
   canChange?: boolean;
   isLocation?: boolean;
+  /** 주면 신청 화면 아래에 "직접 스터디 열기" 링크를 둔다(스터디 탭 전용). */
+  onOpenStudy?: () => void;
 }
 
 const PRELOAD_IMAGE_SRCS = ["/icons/lunch.png", "/icons/dinner.png", "/icons/selectIcon.png"];
@@ -55,6 +57,7 @@ function StudyApplyDrawer({
   location,
   canChange = false,
   isLocation,
+  onOpenStudy,
 }: StudyDateDrawerProps) {
   const toast = useToast();
   const router = useRouter();
@@ -300,6 +303,21 @@ function StudyApplyDrawer({
               onEditAnchor={setEditingAnchorIndex}
               onRemoveAnchor={handleRemoveAnchor}
             />
+            {onOpenStudy && (
+              <Box
+                as="button"
+                type="button"
+                mt={6}
+                mx="auto"
+                py={2}
+                fontSize="12px"
+                color="gray.500"
+                textDecoration="underline"
+                onClick={onOpenStudy}
+              >
+                갈 카페와 시간이 정해져 있다면? 직접 스터디 열기
+              </Box>
+            )}
           </Flex>
           <BottomNav
             isSlide={false}

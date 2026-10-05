@@ -67,7 +67,9 @@ export const setStudyThumbnailCard = (
       func,
     });
   }
-  const pendingParticipants = shortenParticipations(participations, openRealTimes);
+  // 라운지는 매칭을 신청해 둔 멤버 전원이다. 직접 개설(openRealTimes) 멤버는 신청자가 아니라서
+  // 넣지 않는다(예전에는 섞여 들어갔다).
+  const pendingParticipants = shortenParticipations(participations);
 
   // 라운지 카드는 대기 중인 신청 풀을 대표하므로 내가 그 안에 있으면 체크를 붙인다.
   // 여태 false로 고정돼 있어서 신청해도 카드에 아무 표시가 없었다.
@@ -79,8 +81,9 @@ export const setStudyThumbnailCard = (
     basicThumbnailCard.push({
       place: {
         name: "카공 스터디 라운지",
-        branch: "위치 선정 중...",
-        address: "가까운 멤버들과 스터디를 매칭하고 있어요",
+        // 라운지는 스터디를 신청해 둔 모든 멤버가 모이는 곳이다. 무엇인지 숫자로 바로 읽히게 한다.
+        branch: "카공 매칭 중...",
+        address: "가까운 멤버들과 스터디를 연결하고 있어요",
         date: null,
         imageProps: {
           image:

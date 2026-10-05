@@ -8,6 +8,13 @@ import { isWebView } from "@/utils/appEnvUtils";
 import { setAuthIntent } from "@/utils/authIntentUtils";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
+
+/**
+ * 게스트 안내 바 높이(px). 하단 고정 버튼(ControlButton)이 이만큼 더 올라가야 바에 가리지 않는다.
+ * 바 안의 내용(두 줄 안내 + sm 버튼, 위아래 8px)보다 크게 잡아 고정한다.
+ */
+export const GUEST_BOTTOM_NAV_HEIGHT = 52;
+
 function GuestBottomNav() {
   const { data: session } = useSession();
   const toast = useToast();
@@ -33,6 +40,7 @@ function GuestBottomNav() {
           0,
         )}))`}
         w="100%"
+        h={`${GUEST_BOTTOM_NAV_HEIGHT}px`}
         maxW="var(--max-width)"
         bg="gray.50" // 기존 흰색 대신 살짝 밝은 톤으로 구분 강화
         zIndex="100"

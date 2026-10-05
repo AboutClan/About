@@ -16,6 +16,7 @@ import {
 import ProfileCardColumn from "@/components/organisms/ProfileCardColumn";
 import { STUDY_HEART_ARR } from "@/constants/keys/localStorage";
 import { STUDY_LOCATION_CENTER_MAPPING } from "@/constants/service/study/place";
+import { STUDY_RESULT_HOUR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useStudyCommentMutation } from "@/features/study/hooks/mutations";
 import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 import { getNearLocationCluster } from "@/features/study/lib/setStudyMapOptions";
@@ -38,6 +39,8 @@ import { getRandomImage } from "@/utils/imageUtils";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 
 const PARTICIPATIONS_MAX_VISIBLE = 10;
+const STUDY_PROFILE_LOCKED_TOAST =
+  "스터디가 확정되면 같은 스터디 멤버끼리만 프로필을 볼 수 있어요.";
 const NO_VOTE_KEY = "no-vote";
 // 1x1 투명 픽셀. CORS로 인해 원본 이미지를 데이터URL로 embed하지 못했을 때
 // html-to-image가 이걸 대신 써서 캡처 자체가 실패(reject)하지 않도록 한다.
@@ -218,6 +221,7 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
     return {
       user: participant.user,
       memo: participant.user?.comment,
+      profileLockedToast: STUDY_PROFILE_LOCKED_TOAST,
       rightComponent: regionNames.length ? (
         <Flex gap={1} justify="flex-end" flexShrink={0}>
           {regionNames.map((name) => (
@@ -339,6 +343,23 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
     !isOpen &&
     totalParticipationMemberCnt > PARTICIPATIONS_MAX_VISIBLE;
 
+  /**
+   * 스터디 프로필 공개 규칙: 확정 전 신청자(라운지·오픈 예정 조)의 프로필은 누구도 볼 수 없고,
+   * 확정된 스터디에서는 같은 스터디 멤버끼리만 볼 수 있다. 개인 공부 인증은 신청이 아니라 제외.
+   */
+  const isConfirmedStudy =
+    studyType === "openRealTimes" ||
+    (studyType === "results" &&
+      (date < getTodayStr() ||
+        (date === getTodayStr() && dayjs().hour() >= STUDY_RESULT_HOUR)));
+  const isMyStudyMember = (members as StudyConfirmedMemberProps[]).some(
+    (member) => member?.user?._id === userInfo?._id,
+  );
+  const profileLockedToast =
+    studyType === "soloRealTimes" || (isConfirmedStudy && isMyStudyMember)
+      ? undefined
+      : STUDY_PROFILE_LOCKED_TOAST;
+
   const userCardArr: IProfileCommentCard[] =
     studyType === "participations"
       ? []
@@ -383,6 +404,7 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
           return {
             ...obj,
             changeComment,
+            profileLockedToast,
             pendingType: (studyType === "openRealTimes" && participant.status === "pending"
               ? findMine
                 ? "pendingOwner"

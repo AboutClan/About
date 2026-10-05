@@ -54,6 +54,8 @@ function StudyNearMemberSection({ myStudyInfo, members }: StudyNearMemberSection
     return {
       user: user,
       memo: participant.user.comment,
+      // 확정 전 신청자 프로필은 공개하지 않는다(StudyMembers와 같은 규칙).
+      profileLockedToast: "스터디가 확정되면 같은 스터디 멤버끼리만 프로필을 볼 수 있어요.",
       rightComponent: (
         <Badge variant="subtle" colorScheme="blue" size="md">
           {getPlaceBranch(participant.location.address)}

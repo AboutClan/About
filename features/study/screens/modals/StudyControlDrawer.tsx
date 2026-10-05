@@ -16,9 +16,24 @@ type DrawerType = "apply" | "open";
 interface StudyControlDrawerProps {
   date: string;
   onClose: () => void;
+  /**
+   * 메뉴(신청·개설·개인 인증)를 띄우지 않고 ?modal= 에 맞는 드로어만 연다.
+   * 스터디 탭은 신청·개설 버튼을 화면에 직접 두므로 메뉴를 한 번 더 거치지 않는다.
+   */
+  hideMenu?: boolean;
+  /**
+   * 드로어를 닫을 때 router.back()으로 ?modal= 을 걷을지. 호출부가 modal을 push로
+   * 얹지 않았다면(첫 진입·replace) back이 페이지를 빠져나가므로 false로 두고 직접 걷는다.
+   */
+  closeWithBack?: boolean;
 }
 
-function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
+function StudyControlDrawer({
+  date,
+  onClose,
+  hideMenu = false,
+  closeWithBack = true,
+}: StudyControlDrawerProps) {
   const isGuest = useCheckGuest();
   const router = useRouter();
   const pathname = usePathname();
@@ -35,6 +50,11 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
       setDrawerType(null);
     }
   }, [modalParam]);
+
+  const closeDrawer = () => {
+    onClose();
+    if (closeWithBack) router.back();
+  };
 
   const handleGuest = () => {
     if (isCafeMap) {
@@ -110,59 +130,68 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
 
   return (
     <>
-      <BottomFlexDrawer
-        isOverlay
-        isDrawerUp
-        setIsModal={onClose}
-        isHideBottom
-        drawerOptions={{ footer: { text: "닫 기", func: onClose } }}
-        height={249}
-        zIndex={800}
-      >
-        {buttonProps.map((props, idx) => (
-          <Button
-            key={idx}
-            h="52px"
-            justifyContent="flex-start"
-            display="flex"
-            variant="unstyled"
-            py={4}
-            w="100%"
-            lineHeight="20px"
-            onClick={props.func}
-            isDisabled={props?.isDisabled}
-          >
-            <Box w="20px" h="20px" mr={4} opacity={0.5}>
-              {props.icon}
-            </Box>
-            <Box
-              fontSize="13px"
-              color={
-                isCafeMap && props.text !== "개인 공부 인증" ? "var(--gray-400)" : "var(--gray-600)"
-              }
-              fontWeight="regular"
+      {!hideMenu && (
+        <BottomFlexDrawer
+          isOverlay
+          isDrawerUp
+          setIsModal={onClose}
+          isHideBottom
+          drawerOptions={{ footer: { text: "닫 기", func: onClose } }}
+          height={249}
+          zIndex={800}
+        >
+          {buttonProps.map((props, idx) => (
+            <Button
+              key={idx}
+              h="52px"
+              justifyContent="flex-start"
+              display="flex"
+              variant="unstyled"
+              py={4}
+              w="100%"
+              lineHeight="20px"
+              onClick={props.func}
+              isDisabled={props?.isDisabled}
             >
-              {props.text}
-            </Box>
-          </Button>
-        ))}
-      </BottomFlexDrawer>
+              <Box w="20px" h="20px" mr={4} opacity={0.5}>
+                {props.icon}
+              </Box>
+              <Box
+                fontSize="13px"
+                color={
+                  isCafeMap && props.text !== "개인 공부 인증"
+                    ? "var(--gray-400)"
+                    : "var(--gray-600)"
+                }
+                fontWeight="regular"
+              >
+                {props.text}
+              </Box>
+            </Button>
+          ))}
+        </BottomFlexDrawer>
+      )}
 
       {drawerType === "apply" && (
         <StudyApplyDrawer
           defaultDate={date}
-          onClose={() => {
-            onClose();
-            router.back();
-          }}
+          // 메뉴를 숨긴 화면(스터디 탭)은 개설 진입점이 따로 없어서 신청 화면에서 연다.
+          onOpenStudy={
+            hideMenu
+              ? () =>
+                  router.replace(
+                    { pathname: router.pathname, query: { ...router.query, modal: "open" } },
+                    undefined,
+                    { shallow: true },
+                  )
+              : undefined
+          }
+          onClose={closeDrawer}
         />
       )}
       {drawerType === "open" && (
         <StudyOpenDrawer
-          onClose={() => {
-            onClose();
-            router.back();
-          }}
+          onClose={closeDrawer}
         />
       )}
       {isCafeMapGuestModal && <CafeMapGuestModal setIsModal={setIsCafeMapGuestModal} />}

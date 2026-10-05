@@ -50,6 +50,8 @@ interface IAvatar {
   isSquare?: boolean;
   isWhite?: boolean;
   isEmpty?: boolean;
+  /** 주면 프로필로 이동하지 않고 이 문구를 토스트로 띄운다(예: 스터디 확정 전 신청자). */
+  lockedToast?: string;
 }
 
 function AvatarComponent({
@@ -60,6 +62,7 @@ function AvatarComponent({
   user = ABOUT_USER_SUMMARY,
   isSquare,
   isWhite,
+  lockedToast,
 }: IAvatar) {
   const router = useRouter();
   const toast = useToast();
@@ -177,12 +180,12 @@ function AvatarComponent({
         <Box>
           <AvatarComponent />
         </Box>
-      ) : isDummy ? (
+      ) : lockedToast || isDummy ? (
         <Box
           style={{ outline: "none", cursor: "pointer" }}
           onClick={(e) => {
             e.stopPropagation();
-            toast("info", "프로필 열람이 불가능한 인원입니다.");
+            toast("info", lockedToast ?? "프로필 열람이 불가능한 인원입니다.");
           }}
         >
           <AvatarComponent />

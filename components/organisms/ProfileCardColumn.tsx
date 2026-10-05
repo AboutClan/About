@@ -34,6 +34,7 @@ export default function ProfileCardColumn({
           isSoloStudy={isSoloStudy}
           isCafeMap={isCafeMap}
           pendingType={userCard?.pendingType}
+          profileLockedToast={userCard?.profileLockedToast}
         />
       ))}
     </Layout>

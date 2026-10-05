@@ -3,7 +3,7 @@ import InfoModalButton from "@/components/modalButtons/InfoModalButton";
 
 function StudyPageHeader() {
   return (
-    <Header title="스터디" isBack={false}>
+    <Header title="카공 스터디" isBack={false}>
       <InfoModalButton type="study" />
     </Header>
   );

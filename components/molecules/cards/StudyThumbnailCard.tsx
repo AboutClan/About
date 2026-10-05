@@ -62,10 +62,24 @@ export function StudyThumbnailCard({
 }: StudyThumbnailCardProps) {
   const router = useRouter();
 
-  const temp =
-    dateStatus === "future" && participants.length < STUDY_MIN_MEMBER_COUNT
-      ? STUDY_MIN_MEMBER_COUNT
-      : STUDY_MAX_CNT;
+  // 4명 확정 기준은 정규 매칭(results)에만 있다. 직접 개설(openRealTimes)은 인원과 무관하게 열린다.
+  const isMatching = studyType === "results";
+
+  /**
+   * 카드 하단 안내. 정규 매칭의 9시 전 카드는 미리보기라서, 인원이 차도 "마감까지"처럼
+   * 확정된 것으로 읽히는 말을 쓰지 않는다. 4명 미만이면 남은 인원, 이상이면 확정 시각만 말한다.
+   */
+  const footerText = (() => {
+    const cnt = participants.length;
+    if (dateStatus === "current") return `${cnt}명의 멤버가 참여하고 있어요!`;
+    if (dateStatus !== "future") return "";
+    if (isMatching) {
+      return cnt < STUDY_MIN_MEMBER_COUNT
+        ? `확정(${STUDY_MIN_MEMBER_COUNT}명)까지 ${STUDY_MIN_MEMBER_COUNT - cnt}명 남았어요!`
+        : "오전 9시에 확정돼요";
+    }
+    return cnt < STUDY_MAX_CNT ? `마감까지 ${STUDY_MAX_CNT - cnt}명 남았어요!` : "인원 마감";
+  })();
   const isFeatured = place.name === "카공 스터디 라운지";
 
   return (
@@ -123,7 +137,7 @@ export function StudyThumbnailCard({
                 textOverflow="ellipsis"
                 whiteSpace="wrap"
                 maxW={
-                  place.branch === "자유 장소" || place.branch === "위치 선정 중..."
+                  place.branch === "자유 장소" || studyType === "participations"
                     ? "100%"
                     : "60%"
                 }
@@ -134,7 +148,7 @@ export function StudyThumbnailCard({
                   WebkitBoxOrient: "vertical",
                 }}
                 fontWeight={
-                  place.branch === "자유 장소" || place.branch === "위치 선정 중..." ? 400 : 600
+                  place.branch === "자유 장소" || studyType === "participations" ? 400 : 600
                 }
               >
                 {place.address}
@@ -157,20 +171,7 @@ export function StudyThumbnailCard({
             {studyType !== "participations" && studyType !== "soloRealTimes" ? (
               isCompact ? null : (
                 <Flex align="center" color="var(--gray-500)" fontSize="11px" lineHeight="16px">
-                  {dateStatus === "future"
-                    ? participants.length < STUDY_MIN_MEMBER_COUNT
-                      ? // 미리보기는 3명부터 보이므로 확정 기준 인원을 함께 적어야
-                        // "이미 성사됐다"고 오해하지 않는다.
-                        `확정(${STUDY_MIN_MEMBER_COUNT}명)까지 `
-                      : participants.length < 8
-                        ? "마감까지 "
-                        : "인원 마감"
-                    : dateStatus === "current"
-                      ? `${participants.length}명의 멤버가 참여하고 있어요!`
-                      : ""}
-                  {dateStatus === "future" && participants.length < 8
-                    ? `${temp - participants.length}명 남았어요!`
-                    : ""}
+                  {footerText}
                 </Flex>
               )
             ) : (
