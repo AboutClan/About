@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { getGroupParticipantCount } from "@/features/group/lib/groupUtils";
 import { useFailToast } from "@/hooks/custom/CustomToast";
 import { IGroup } from "@/types/models/groupTypes/group";
+import { isAllAgeRange } from "@/utils/ageUtils";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 interface IGroupBlock {
@@ -33,7 +34,7 @@ function GroupBlock({ group }: IGroupBlock) {
       group.memberCnt.max === 0 ? "자유" : group.memberCnt.max + "명"
     }`,
     조건: `${
-      group.age[0] === 19 && group.age[1] === 28
+      isAllAgeRange(group.age)
         ? "제한없음"
         : group.age[0] + " ~ " + group.age[1] + "세"
     }`,

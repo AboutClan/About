@@ -18,6 +18,7 @@ import {
   IGatherParticipants,
 } from "@/types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { isAllAgeRange } from "@/utils/ageUtils";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
 
 const VOTER_SHOW_MAX = 4;
@@ -168,7 +169,7 @@ export function GatherThumbnailCard({
               <Badge size="md" ml={1} variant="subtle" colorScheme="blue">
                 오픈 번개
               </Badge>
-            ) : age[0] !== 19 || age[1] !== 28 ? (
+            ) : !isAllAgeRange(age) ? (
               <Badge size="md" variant="subtle" colorScheme="blue">
                 만 {age[0]} ~ {age[1]}세
               </Badge>

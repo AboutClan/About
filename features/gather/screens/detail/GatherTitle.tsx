@@ -2,6 +2,7 @@ import { Badge, Box, Flex } from "@chakra-ui/react";
 
 import MainBadge from "@/components/atoms/MainBadge";
 import { GatherCategory } from "@/types/models/gatherTypes/gatherTypes";
+import { isAllAgeRange } from "@/utils/ageUtils";
 
 interface IGatherTitle {
   title: string;
@@ -22,7 +23,7 @@ function GatherTitle({
   isGroupGather,
   isOpenGather,
 }: IGatherTitle) {
-  const isDefault = age[0] === 19 && age[1] === 28;
+  const isDefault = isAllAgeRange(age);
 
   return (
     <Flex flexDir="column" px={5} pt={4} pb={0}>
