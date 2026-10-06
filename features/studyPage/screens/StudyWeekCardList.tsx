@@ -2,11 +2,13 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 
+import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
 } from "@/components/molecules/cards/StudyThumbnailCard";
 import { StudyThumbnailCardSkeleton } from "@/components/skeleton/StudyThumbnailCardSkeleton";
+import { STUDY_RESULT_HOUR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useLastStudySetQuery } from "@/features/study/hooks/queries";
 import { setStudyThumbnailCard } from "@/features/study/lib/thumbnailCardLibs";
 import { StudyWeekSetProps } from "@/types/models/studyTypes/study-set.types";
@@ -17,12 +19,18 @@ const LOUNGE_NAME = "카공 스터디 라운지";
 interface StudyWeekCardListProps {
   studySet: StudyWeekSetProps | null | undefined;
   myId: string | undefined;
+  /** 오늘 열린 스터디가 없을 때 "직접 열어 보세요"를 누르면 부른다(직접 개설 드로어). */
+  onOpenStudy: () => void;
 }
 
 interface CardSection {
   key: string;
   title: string;
   cards: StudyThumbnailCardProps[];
+  /** 카드 아래 한 줄 안내(라운지의 날짜별 신청 현황). */
+  footer?: string;
+  /** 카드가 없을 때 보여 줄 빈 상태(오늘 9시 이후 열린 스터디 없음). */
+  isEmptyToday?: boolean;
 }
 
 /**
@@ -34,7 +42,7 @@ interface CardSection {
  *   종류를 섞으면 9시 전후에 카드가 무엇을 뜻하는지 헷갈린다.
  * - 개인 공부 인증은 스터디 탭에서 뺐다.
  */
-function StudyWeekCardList({ studySet, myId }: StudyWeekCardListProps) {
+function StudyWeekCardList({ studySet, myId, onOpenStudy }: StudyWeekCardListProps) {
   const sections = useMemo<CardSection[] | null>(() => {
     if (!studySet) return null;
     const today = getTodayStr();
@@ -54,6 +62,21 @@ function StudyWeekCardList({ studySet, myId }: StudyWeekCardListProps) {
 
     const loungeCards = cards.filter((card) => card.place.name === LOUNGE_NAME);
 
+    // 라운지 아래 날짜별 신청 현황("수 3명 · 목 5명 신청 중"). 카드가 없는 날짜도 사람이 모이고
+    // 있다는 걸 보여 준다. 오늘은 9시 매칭 전까지만 센다.
+    const loungeFooter = studySet.participations
+      .filter(
+        (day) =>
+          day.study.length > 0 &&
+          (day.date > today || (day.date === today && dayjs().hour() < STUDY_RESULT_HOUR)),
+      )
+      .sort((a, b) => (a.date < b.date ? -1 : 1))
+      .map(
+        (day) =>
+          `${day.date === today ? "오늘" : dayjs(day.date).format("ddd")} ${day.study.length}명`,
+      )
+      .join(" · ");
+
     const kindRank = (card: StudyThumbnailCardProps) => {
       if (card.studyType === "openRealTimes") return 2;
       return card.dateStatus === "future" ? 1 : 0;
@@ -71,7 +94,7 @@ function StudyWeekCardList({ studySet, myId }: StudyWeekCardListProps) {
       .sort(([a], [b]) => (a < b ? -1 : 1))
       .map(([key, dayCards]) => ({
         key,
-        title: dayjsToFormat(dayjs(key), "M월 D일") + (key === today ? " (오늘)" : ""),
+        title: dayjsToFormat(dayjs(key), "M월 D일 (ddd)") + (key === today ? " · 오늘" : ""),
         cards: [...dayCards].sort(
           (a, b) =>
             Number(b.isMyStudy) - Number(a.isMyStudy) ||
@@ -80,8 +103,29 @@ function StudyWeekCardList({ studySet, myId }: StudyWeekCardListProps) {
         ),
       }));
 
+    // 오늘 9시 이후 오늘 카드가 하나도 없으면 "오늘" 구분선째 사라져, 오늘 하고 싶은 사람이
+    // 갈 곳이 없다. 빈 오늘 칸을 넣고 직접 개설로 이어 준다.
+    const isAfterResult = dayjs().hour() >= STUDY_RESULT_HOUR;
+    if (isAfterResult && !byDate.has(today)) {
+      dateSections.unshift({
+        key: today,
+        title: dayjsToFormat(dayjs(today), "M월 D일 (ddd)") + " · 오늘",
+        cards: [],
+        isEmptyToday: true,
+      } as CardSection);
+    }
+
     return [
-      ...(loungeCards.length ? [{ key: "lounge", title: "스터디 라운지", cards: loungeCards }] : []),
+      ...(loungeCards.length
+        ? [
+            {
+              key: "lounge",
+              title: "스터디 라운지",
+              cards: loungeCards,
+              footer: loungeFooter ? `${loungeFooter} 신청 중` : undefined,
+            },
+          ]
+        : []),
       ...dateSections,
     ];
   }, [studySet, myId]);
@@ -108,6 +152,37 @@ function StudyWeekCardList({ studySet, myId }: StudyWeekCardListProps) {
               <StudyThumbnailCard {...card} />
             </Box>
           ))}
+          {section.isEmptyToday && (
+            <Flex
+              align="center"
+              justify="space-between"
+              mb={3}
+              px={4}
+              py={3}
+              bg="gray.50"
+              borderRadius="10px"
+              fontSize="13px"
+            >
+              <Box color="gray.600">오늘은 열린 스터디가 없어요</Box>
+              <Flex
+                as="button"
+                type="button"
+                align="center"
+                gap={0.5}
+                fontWeight={600}
+                color="mint"
+                onClick={onOpenStudy}
+              >
+                직접 열어 보세요
+                <ShortArrowIcon dir="right" color="mint" />
+              </Flex>
+            </Flex>
+          )}
+          {section.footer && (
+            <Box mt={-1} mb={3} fontSize="12px" lineHeight="18px" color="gray.500">
+              {section.footer}
+            </Box>
+          )}
         </Box>
       ))}
       <PastStudySection myId={myId} />

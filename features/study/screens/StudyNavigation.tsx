@@ -493,16 +493,15 @@ function StudyNavigation({
                       setIsModal(true);
                     }}
                   />
+                  {/*
+                    라운지는 여러 날짜를 한꺼번에 신청한 상태라 단일 날짜용 시간 변경(timeChange)을 쓸 수
+                    없다. 예전에는 누를 때마다 "참여 정보를 찾을 수 없습니다"만 떴다. 날짜별 시간을 바꿀 수
+                    있는 신청 변경 화면으로 보낸다.
+                  */}
                   <IconTextColButton
                     icon={<ClockIcon />}
                     text="시간 변경"
-                    func={() => {
-                      if (!myStudyInfo || studyType === "participations") {
-                        toast("error", "참여 정보를 찾을 수 없습니다.");
-                        return;
-                      }
-                      setDrawerType("timeChange");
-                    }}
+                    func={() => navigationProps.func?.()}
                   />
                 </>
               ) : navigationProps.text === "출석 메세지 변경" ? null : (
@@ -657,6 +656,7 @@ function StudyNavigation({
         <StudyCancelModal
           onClose={() => setIsModal(false)}
           isLoading={isLoading2}
+          dateCount={myStudyDateArr?.length}
           handleCancel={() => {
             voteDateArr({
               locationDetail: null,

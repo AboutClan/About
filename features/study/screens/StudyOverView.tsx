@@ -63,8 +63,8 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
         studyType === "soloRealTimes"
           ? "자유 카페 / 자유 공간"
           : studyType === "participations"
-          ? "설정한 매칭 범위 내 · 3명 이상의 멤버"
-          : "설정한 매칭 범위 내 · 3명 이상의 멤버",
+          ? "설정한 매칭 범위 내 · 4명 이상의 멤버"
+          : "설정한 매칭 범위 내 · 4명 이상의 멤버",
     },
 
     // {

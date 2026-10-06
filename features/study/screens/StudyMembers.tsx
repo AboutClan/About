@@ -20,6 +20,7 @@ import { STUDY_RESULT_HOUR } from "@/constants/serviceConstants/studyConstants/s
 import { useStudyCommentMutation } from "@/features/study/hooks/mutations";
 import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 import { getNearLocationCluster } from "@/features/study/lib/setStudyMapOptions";
+import { toStudyZone } from "@/features/study/lib/studyZone";
 import StudyCrewStatsDrawer from "@/features/study/screens/modals/StudyCrewStatsDrawer";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
@@ -96,8 +97,12 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const captureRef = useRef<HTMLDivElement>(null);
 
+  // 라운지에서 "전체 신청자 보기"를 직접 눌렀는지. 누른 뒤에는 가까운 날짜로 다시 되돌리지 않는다.
+  const hasChosenAllRef = useRef(false);
+
   useEffect(() => {
     setSelectedDate(null);
+    hasChosenAllRef.current = false;
   }, [studyType, isCrew]);
 
   const handleSaveImage = async () => {
@@ -207,15 +212,9 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
       ? participant.locations
       : [participant.location];
 
+    // "지역 멤버" 탭과 같은 생활권 이름(강남·서초 등)을 쓴다.
     const regionNames = Array.from(
-      new Set(
-        sources
-          .map((loc) => {
-            const addressArr = loc?.address?.split(" ");
-            return addressArr?.[1] || addressArr?.[0];
-          })
-          .filter(Boolean),
-      ),
+      new Set(sources.map((loc) => toStudyZone(loc?.address)).filter(Boolean)),
     ).slice(0, 2);
 
     return {
@@ -230,7 +229,7 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
               variant="subtle"
               colorScheme="blue"
               size="md"
-              maxW="66px"
+              maxW="96px"
               isTruncated
             >
               {name}
@@ -315,6 +314,17 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
   }, [participationMembers, studyType]);
 
   const dateOnlySections = dateSections.filter((section) => section.date);
+
+  /**
+   * 라운지는 처음부터 가장 가까운 날짜만 보여 준다. 전체를 날짜별로 나열하면 여러 날 신청한
+   * 사람이 날짜마다 반복돼 목록이 끝없이 길었다. 전체는 "전체 신청자 보기"로 볼 수 있다.
+   */
+  const firstDate = dateOnlySections[0]?.date ?? null;
+  useEffect(() => {
+    if (studyType !== "participations" || isCrew) return;
+    if (selectedDate || hasChosenAllRef.current || dateOnlySections.length < 2) return;
+    setSelectedDate(firstDate);
+  }, [studyType, isCrew, firstDate, dateOnlySections.length, selectedDate]);
 
   const isPagedParticipationList = studyType === "participations" && !isCrew;
   const totalParticipationMemberCnt = dateSections.reduce(
@@ -534,25 +544,30 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
                     px={4}
                     py={3}
                     bg={selectedDate === null ? "gray.800" : "white"}
-                    onClick={() => setSelectedDate(null)}
+                    onClick={() => {
+                      hasChosenAllRef.current = true;
+                      setSelectedDate(null);
+                    }}
                   >
                     <Box
                       fontSize="13px"
                       fontWeight="bold"
                       color={selectedDate === null ? "white" : "gray.800"}
                     >
-                      투표 날짜 전체 보기
+                      전체 신청자 보기
                     </Box>
                     <Box fontSize="12px" color={selectedDate === null ? "white" : "gray.500"}>
-                      {totalParticipationMemberCnt}명 참여 중
+                      {/* 사람 기준(중복 제외). 날짜별 합계를 쓰면 여러 날 신청한 사람이 여러 번 세진다. */}
+                      {participationMembers.length}명 신청 중
                     </Box>
                   </Flex>
-                  <Box
-                    display="grid"
-                    gridTemplateColumns="repeat(2, 1fr)"
+                  {/* 날짜 칸은 가로로 넘기는 한 줄. 2열 격자는 신청자 목록을 화면 아래로 밀어냈다. */}
+                  <Flex
                     gap={2}
                     p={2}
                     borderTop="var(--border)"
+                    overflowX="auto"
+                    sx={{ "&::-webkit-scrollbar": { display: "none" } }}
                   >
                     {dateOnlySections.map((section) => (
                       <Flex
@@ -562,6 +577,9 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
                         direction="column"
                         align="center"
                         justify="center"
+                        flexShrink={0}
+                        minW="68px"
+                        px={3}
                         py={2}
                         borderRadius="8px"
                         border="1px solid"
@@ -584,7 +602,7 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
                         </Box>
                       </Flex>
                     ))}
-                  </Box>
+                  </Flex>
                 </Box>
               )}
               {displayedDateSections.map((section) => (
@@ -597,7 +615,7 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
                           {dayjsToKr(dayjs(section.date))}
                         </Box>
                         <Box ml={1} fontSize="12px" color="gray.500">
-                          · {section.members.length}명 투표중
+                          · {section.members.length}명 신청
                         </Box>
                       </Flex>
                       <Box h="1px" flex={1} bg="gray.200" />
@@ -610,7 +628,7 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
                       color="gray.500"
                       textAlign="center"
                     >
-                      투표 정보 없음 · {section.members.length}명
+                      신청 날짜 없음 · {section.members.length}명
                     </Box>
                   )}
                   <ProfileCardColumn

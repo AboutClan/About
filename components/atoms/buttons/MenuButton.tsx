@@ -22,9 +22,11 @@ export interface MenuProps {
 
 interface MenuButtonProps {
   menuArr: MenuProps[];
+  /** 메뉴를 여는 아이콘. 기본은 설정(톱니). */
+  icon?: React.ReactNode;
 }
 
-function MenuButton({ menuArr }: MenuButtonProps) {
+function MenuButton({ menuArr, icon }: MenuButtonProps) {
   const { shareToKakao } = useKakaoShare();
   return (
     <Menu>
@@ -39,7 +41,7 @@ function MenuButton({ menuArr }: MenuButtonProps) {
             variant="unstyled"
           >
             <Flex justify="center" align="center">
-              <SettingIcon />
+              {icon ?? <SettingIcon />}
             </Flex>
           </ChakraMenuButton>
           <MenuList fontSize="15px" borderWidth="2px" borderColor="gray.200">

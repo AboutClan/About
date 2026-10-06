@@ -81,8 +81,7 @@ export const setStudyThumbnailCard = (
     basicThumbnailCard.push({
       place: {
         name: "카공 스터디 라운지",
-        // 라운지는 스터디를 신청해 둔 모든 멤버가 모이는 곳이다. 무엇인지 숫자로 바로 읽히게 한다.
-        branch: "카공 매칭 중...",
+        branch: "장소 매칭 중...",
         address: "가까운 멤버들과 스터디를 연결하고 있어요",
         date: null,
         imageProps: {
@@ -231,7 +230,8 @@ export const setStudyThumbnailCard = (
     return {
       place: {
         name: placeInfo.location.name,
-        branch: textArr?.[0] + " " + textArr?.[1],
+        // "서울특별시 서초구"처럼 시까지 쓰면 길기만 하다. 구(두 번째 토큰)만 쓰고, 없으면 첫 토큰.
+        branch: textArr?.[1] || textArr?.[0] || "",
         address: `${dayjsToFormat(result.earliestStart, "HH:mm")} ~ ${dayjsToFormat(
           result.latestEnd,
           "HH:mm",

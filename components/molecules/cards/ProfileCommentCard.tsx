@@ -168,9 +168,12 @@ export default function ProfileCommentCard({
               </Flex>
 
               <Flex lineHeight="16px" alignItems="center" color="gray.500" fontSize="12px">
-                <Text as="span" noOfLines={2} color="gray.500" fontSize="12px" lineHeight="16px">
-                  {text || memo || "코멘트 없음"}
-                </Text>
+                {/* 소개가 없으면 비워 둔다. "코멘트 없음"으로 빈 칸을 굳이 알릴 필요가 없다. */}
+                {(text || memo) && (
+                  <Text as="span" noOfLines={2} color="gray.500" fontSize="12px" lineHeight="16px">
+                    {text || memo}
+                  </Text>
+                )}
 
                 {user.uid === userInfo?.uid && hasCommentButton && (
                   <Button variant="unstyled" ml={1} onClick={() => setIsCommentModal(true)}>

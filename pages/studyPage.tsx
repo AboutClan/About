@@ -209,7 +209,8 @@ export default function StudyPage() {
       <StudyPageHeader />
 
       <Slide>
-        <Box mt={3}>
+        {/* 내 스터디 카드는 헤더 바로 아래에 붙인다(사이 여백 없이). */}
+        <Box>
           <StudyMyCard
             studySet={studySet}
             myId={userInfo?._id}
@@ -220,8 +221,12 @@ export default function StudyPage() {
         </Box>
 
         {/* 직접 개설은 신청 드로어 안에서 연다(StudyApplyDrawer onOpenStudy). */}
-        <Box mt={3} mb={28}>
-          <StudyWeekCardList studySet={studySet} myId={userInfo?._id} />
+        <Box mt={3} mb={36}>
+          <StudyWeekCardList
+            studySet={studySet}
+            myId={userInfo?._id}
+            onOpenStudy={() => openControl("open")}
+          />
         </Box>
       </Slide>
 

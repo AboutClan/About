@@ -7,22 +7,14 @@ import { useEffect, useRef, useState } from "react";
 import Divider from "@/components/atoms/Divider";
 import InfoList from "@/components/atoms/lists/InfoList";
 import { MainLoading, MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
-import Select from "@/components/atoms/Select";
 import Slide from "@/components/layouts/PageSlide";
 import TabNav from "@/components/molecules/navs/TabNav";
 import {
-  STUDY_CREW_ID_MAPPING,
-  STUDY_CREW_PLACE_MAPPING,
-  STUDY_CREW_REGION,
-  STUDY_CREW_REGION_ID_MAPPING,
   STUDY_CREW_REGION_LOCATION_MAPPING,
   STUDY_CREW_REGION_SLUG_MAPPING,
-  StudyCrewRegion,
   StudyCrewSlug,
 } from "@/constants/service/study/place";
 import StudyStep from "@/features/gather/screens/detail/StudyStep";
-import { GroupThumbnailCard } from "@/features/group/components/GroupThumbnailCard";
-import { useGroupIdQuery, useMyCrewGroupStudyQuery } from "@/features/group/hooks/queries";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import { shortenParticipations } from "@/features/study/lib/studyConverters";
 import { getMyStudyDateArr } from "@/features/study/lib/studyHelpers";
@@ -36,15 +28,14 @@ import StudyNavigation from "@/features/study/screens/StudyNavigation";
 import StudyNearMap from "@/features/study/screens/StudyNearMap";
 import StudyOverview from "@/features/study/screens/StudyOverView";
 import StudyPlaceMap from "@/features/study/screens/StudyPlaceMap";
+import StudyRegionMembers from "@/features/study/screens/StudyRegionMembers";
 import StudyReviewSection from "@/features/study/screens/StudyReview";
 import StudyTimeBoard from "@/features/study/screens/StudyTimeBoard";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
-import { createGroupThumbnailProps } from "@/pages/group";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
-  StudyCrew,
   StudyParticipationProps,
 } from "@/types/models/studyTypes/study-entity.types";
 import {
@@ -61,7 +52,11 @@ export default function Page() {
   const toast = useToast();
   const { id, date: date2, type, studyLocation, from, crew } = router.query;
   const userInfo = useUserInfo();
+  // 화면 표시(이름 마스킹·링크 막기)는 게스트도 카공지도와 같게 다룬다.
   const isCafeMap = from === "cafe-map" || userInfo?.role === "guest";
+  // 안내·하단 버튼은 실제로 카공지도에서 들어온 경우에만 숨긴다. 예전에는 게스트도 여기에 걸려
+  // 진행 방식·규칙 안내·신청 버튼이 모두 사라져, 라운지를 눌러 들어온 게스트가 할 수 있는 게 없었다.
+  const isFromCafeMap = from === "cafe-map";
   const date = date2 as string;
   const studyType = type as StudyType;
 
@@ -80,7 +75,8 @@ export default function Page() {
   //     ? dayjs(date).add(1, "day")
   //     : dayjs(date),
   // );
-  const [tab, setTab] = useState<"일반 스터디" | "스터디 크루">("일반 스터디");
+  // 두 번째 탭은 예전 "스터디 크루"를 대신하는 "지역 멤버"(StudyRegionMembers)다.
+  const [tab, setTab] = useState<"일반 스터디" | "지역 멤버">("일반 스터디");
   const studyMembersRef = useRef<StudyMembersHandle>(null);
   // const [isTicketModal, setIsTicketModal] = useState(false);
 
@@ -122,7 +118,7 @@ export default function Page() {
 
   useEffect(() => {
     if (studyLocation === "true") {
-      setTab("스터디 크루");
+      setTab("지역 멤버");
     }
   }, [studyLocation]);
 
@@ -216,7 +212,8 @@ export default function Page() {
 
   const members2 =
     studyType === "participations"
-      ? shortenParticipations(participationsSet, studySet?.["openRealTimes"])
+      ? // 라운지는 매칭 신청자만 보여 준다(첫 화면 라운지 카드와 같은 기준). 직접 개설 멤버는 신청자가 아니다.
+        shortenParticipations(participationsSet)
       : studyType === "soloRealTimes"
         ? (studyData as StudyConfirmedSetProps[])?.map((study) => ({
             ...study.study.members[0],
@@ -225,84 +222,8 @@ export default function Page() {
 
   const isParticipations = studyType === "participations";
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const entry = Object.entries(STUDY_CREW_PLACE_MAPPING).find(([_, places]) =>
-    places.some((s) => s.name === findStudy?.place?.location?.name),
-  );
-
-  const crewKey = entry?.[0] as StudyCrew;
-
-  const legacyCrewMembers =
-    tab === "스터디 크루"
-      ? (members2 as StudyParticipationProps[])?.filter((member) =>
-          crewKey ? !!member?.user?.belong : !!member?.user?.belong,
-        )
-      : members2;
-
-  const legacyGroupId = !crewKey ? null : STUDY_CREW_ID_MAPPING?.[crewKey];
-
-  const { data: legacyGroup } = useGroupIdQuery(legacyGroupId, {
-    enabled: !isParticipations && !!legacyGroupId,
-  });
-
-  const isCrewTab = isParticipations && tab === "스터디 크루";
-
-  const { data: myCrewData, isLoading: isMyCrewLoading } = useMyCrewGroupStudyQuery({
-    enabled: isCrewTab,
-  });
-
-  const [crewRegion, setCrewRegion] = useState<StudyCrewRegion | null>(null);
-
-  useEffect(() => {
-    if (!isCrewTab || crewRegion || isMyCrewLoading || !myCrewData) return;
-    const matchedRegion = myCrewData.groupStudyId
-      ? (Object.keys(STUDY_CREW_REGION_ID_MAPPING) as StudyCrewRegion[]).find(
-          (region) => STUDY_CREW_REGION_ID_MAPPING[region] === myCrewData.groupStudyId,
-        )
-      : null;
-    setCrewRegion(matchedRegion || "강남·서초");
-  }, [isCrewTab, myCrewData, isMyCrewLoading, crewRegion]);
-
-  const crewGroupStudyId = crewRegion ? STUDY_CREW_REGION_ID_MAPPING[crewRegion] : null;
-
-  const { data: crewGroup } = useGroupIdQuery(crewGroupStudyId, {
-    enabled: isCrewTab && !!crewGroupStudyId,
-  });
-
-  const crewMembers = crewGroup?.participants
-    ?.map((participant) => {
-      const matched = (members2 as StudyParticipationProps[])?.find(
-        (m) => m?.user?._id === participant.user._id,
-      );
-      return {
-        ...matched,
-        user: participant.user,
-        dates: matched?.dates || [],
-      };
-    })
-    .sort((a, b) => {
-      const aNearest = a.dates?.length ? Math.min(...a.dates.map((d) => dayjs(d).valueOf())) : null;
-      const bNearest = b.dates?.length ? Math.min(...b.dates.map((d) => dayjs(d).valueOf())) : null;
-      if (aNearest === null && bNearest === null) return 0;
-      if (aNearest === null) return 1;
-      if (bNearest === null) return -1;
-      return aNearest - bNearest;
-    }) as StudyParticipationProps[];
-
-  const members = isParticipations
-    ? tab === "스터디 크루"
-      ? crewMembers
-      : members2
-    : legacyCrewMembers;
-
-  const group = isParticipations ? crewGroup : legacyGroup;
-
-  // react-query가 아직 fetch를 시작하지 않은 "idle" 상태에서는 isLoading이 false로 보고돼
-  // 탭을 누른 첫 렌더에 로딩으로 잡히지 않는 경우가 있어, isLoading 플래그 대신
-  // 실제 데이터 존재 여부로 로딩 상태를 판단한다.
-  const isTabContentLoading = isParticipations
-    ? isCrewTab && (!crewRegion || (!!crewGroupStudyId && !crewGroup))
-    : tab === "스터디 크루" && !!legacyGroupId && !legacyGroup;
+  const members = members2;
+  const isRegionTab = tab === "지역 멤버";
 
   const placeInfo = findStudy?.place;
 
@@ -325,10 +246,6 @@ export default function Page() {
   if (crewFixedLocation && userInfo && userInfo.role === "guest") {
     return <StudyCrewLoginRequired />;
   }
-
-  const pendingStudyCrewMemberIds = isCrewTab
-    ? (crewGroup?.participants?.map((par) => par.user._id) ?? [])
-    : null;
 
   return (
     <>
@@ -363,47 +280,17 @@ export default function Page() {
                       func: () => setTab("일반 스터디"),
                     },
                     {
-                      text: "스터디 크루",
-                      func: () => {
-                        setTab("스터디 크루");
-                      },
+                      text: "지역 멤버",
+                      func: () => setTab("지역 멤버"),
                     },
                   ]}
                 />
               </Box>
             </Slide>
-            {isCrewTab && (
-              <Slide isNoPadding>
-                <Flex
-                  align="center"
-                  justify="space-between"
-                  mx={5}
-                  mt={4}
-                  p={3}
-                  bg="mint.50"
-                  borderRadius="12px"
-                >
-                  <Box fontSize="14px" fontWeight="semibold" color="gray.800">
-                    지역별 스터디 크루
-                  </Box>
-                  {crewRegion ? (
-                    <Select
-                      defaultValue={crewRegion}
-                      options={[...STUDY_CREW_REGION]}
-                      setValue={(value) => setCrewRegion(value as StudyCrewRegion)}
-                      size="sm"
-                      isThick
-                    />
-                  ) : (
-                    <Box pos="relative" minH="28px" w="90px" />
-                  )}
-                </Flex>
-              </Slide>
-            )}
             <Slide>
-              {isTabContentLoading ? (
-                <Box pos="relative" minH="280px">
-                  <MainLoadingAbsolute size="sm" />
+              {isRegionTab ? (
+                <Box pt={5} pb={2}>
+                  <StudyRegionMembers isCafeMap={isCafeMap} />
                 </Box>
               ) : (
                 <>
@@ -441,7 +328,7 @@ export default function Page() {
                           date={date}
                           members={members || []}
                           studyType={studyType}
-                          isCrew={tab === "스터디 크루"}
+                          isCrew={false}
                           coordinates={{
                             lat: placeInfo?.location.latitude,
                             lon: placeInfo?.location?.longitude,
@@ -450,7 +337,7 @@ export default function Page() {
                           pendingResultsSet={
                             studyType === "participations" ? studySet?.results : null
                           }
-                          crewMemberIds={pendingStudyCrewMemberIds}
+                          crewMemberIds={null}
                         />
                       )}
                     </Box>
@@ -467,7 +354,7 @@ export default function Page() {
                 </>
               )}
             </Slide>
-            {!isCafeMap && (
+            {!isFromCafeMap && (
               <>
                 <Box h={2} bg="gray.100" my={4} />
                 <Slide>
@@ -478,20 +365,7 @@ export default function Page() {
                 </Slide>
               </>
             )}
-            {tab === "스터디 크루" && group ? (
-              <>
-                <Box h={2} bg="gray.100" my={4} />
-                <Slide>
-                  <Box mb={2} fontSize="16px" fontWeight="semibold">
-                    연동된 소모임
-                  </Box>
-                  <GroupThumbnailCard
-                    {...createGroupThumbnailProps(group, "pending", null, null, true)}
-                  />
-                </Slide>
-              </>
-            ) : null}{" "}
-            <Box h={2} bg="gray.100" my={4} />
+                        <Box h={2} bg="gray.100" my={4} />
             {studyType === "participations" && (
               <>
                 <StudyPlaceMap
@@ -531,37 +405,26 @@ export default function Page() {
                 }
               />
             )}
-            {!isCafeMap && (
+            {!isFromCafeMap && (
               <>
                 <Box h={2} bg="gray.100" mb={4} />
                 <Box mx={5}>
                   <Box mb={3} fontSize="16px" fontWeight="semibold">
-                    {tab === "스터디 크루" ? "스터디 크루 혜택" : "스터디 규칙 안내"}
+                    스터디 규칙 안내
                   </Box>
-                  {tab === "일반 스터디" ? (
-                    <InfoList
-                      items={[
-                        "어바웃 멤버 누구나 자유롭게 신청할 수 있습니다.",
-                        "당일 오전 9시에 스터디가 확정됩니다.",
-                        "스터디 출석 시 최대 500 Point가 적립됩니다.",
-                        "스터디 확정 후 불참은 1,000 Point가 차감됩니다.",
-                        "스터디 신청 후 잠수는 2,000 Point가 차감됩니다.",
-                        "스터디 당일 참여는 빈자리가 있는 경우에만 가능합니다.",
-                        "스터디 종료 후, 멤버 후기 평가를 할 수 있습니다.",
-                      ]}
-                      isLight
-                    />
-                  ) : (
-                    <InfoList
-                      items={[
-                        "해당 지역 스터디에 우선 매칭됩니다.",
-                        "정원이 마감되어도 추가 참여가 가능합니다.",
-                        "스터디 출석 시 [이벤트 뽑기권]이 지급됩니다.",
-                        "같은 지역 인원들과 다양한 활동을 할 수 있습니다.",
-                      ]}
-                      isLight
-                    />
-                  )}
+                  <InfoList
+                    items={[
+                      // 값은 서버 CONSTANTS.ts(STUDY_ATTEND_BEFORE·STUDY_ABSENCE_*·ABSENCE_FEE)와 맞춘다.
+                      "어바웃 멤버 누구나 자유롭게 신청할 수 있습니다.",
+                      "당일 오전 9시, 가까운 멤버가 4명 이상 모이면 스터디가 확정됩니다.",
+                      // InfoList는 줄바꿈을 막는다(공용). 한 줄에 들어가게 짧게 쓴다.
+                      "스터디 출석 시 100~1,000 Point가 랜덤으로 적립됩니다.",
+                      "확정 후 불참 신고 시 1,000~2,000 Point (늦을수록 증가)",
+                      "확정 후 연락 없이 불참하면 2,000 Point가 차감됩니다.",
+                      "스터디 당일 참여는 빈자리가 있는 경우에만 가능합니다.",
+                    ]}
+                    isLight
+                  />
                 </Box>
               </>
             )}
@@ -582,7 +445,8 @@ export default function Page() {
                 (member) => member.user._id === userInfo?._id,
               )
             }
-            isCafeMap={isCafeMap}
+            // 게스트는 하단 버튼을 눌러 가입 안내를 받는다(카공지도에서 온 경우만 버튼을 숨긴다).
+            isCafeMap={isFromCafeMap}
           />
 
           {/* {date === dayjsToStr(dayjs()) &&

@@ -40,6 +40,11 @@ interface ApplyStatus {
   count: number;
   /** 내가 신청한 시간("14:00~18:00"). 확인하려고 드로어를 열지 않게 같이 보여 준다. */
   time: string | null;
+  /**
+   * 인원을 센 기준 지역(내 첫 번째 기준점의 구, 예: "서초구"). 라운지 아래 줄은 그날 전체 인원이라,
+   * 이 숫자가 "내 근처" 기준이라는 걸 지역 이름으로 드러낸다.
+   */
+  region: string | null;
 }
 
 const formatTime = (raw?: string) => (raw ? dayjs(raw).format("HH:mm") : null);
@@ -99,6 +104,9 @@ function StudyMyCard({ studySet, myId, isGuest, badgeRanking, onOpenRanking }: S
         const time = mine.times?.start
           ? `${formatTime(mine.times.start as string)}~${formatTime(mine.times.end as string)}`
           : null;
+        const anchors = mine.locations?.length ? mine.locations : [mine.location];
+        const addressTokens = anchors[0]?.address?.split(" ") ?? [];
+        const region = addressTokens[1] || addressTokens[0] || null;
 
         const previewGroup = studySet.results.find(
           (entry) =>
@@ -112,6 +120,7 @@ function StudyMyCard({ studySet, myId, isGuest, badgeRanking, onOpenRanking }: S
               placeName: previewGroup.study.place?.location?.name ?? null,
               count: previewGroup.study.members.length,
               time,
+              region,
             },
           ];
         }
@@ -123,12 +132,12 @@ function StudyMyCard({ studySet, myId, isGuest, badgeRanking, onOpenRanking }: S
             .filter((entry) => entry.date === day.date)
             .flatMap((entry) => entry.study.members.map((member) => member.user?._id)),
         );
-        const anchors = mine.locations?.length ? mine.locations : [mine.location];
         return [
           {
             date: day.date,
             placeName: null,
             time,
+            region,
             count: countMatchCandidates({
               anchors,
               eps: mine.eps ?? DEFAULT_EPS_KM,
@@ -314,48 +323,87 @@ function ApplyStatusBlock({ statuses }: { statuses: ApplyStatus[] }) {
         신청한 스터디
       </Box>
       <Box mt={2}>
-        {statuses.map(({ date, placeName, count, time }) => {
-          const remain = Math.max(STUDY_MIN_MEMBER_COUNT - count, 0);
+        {statuses.map(({ date, placeName, count, time, region }) => {
           return (
-            <Flex key={date} align="center" justify="space-between" py={1.5} fontSize="13px">
-              <Box fontWeight={600} color="gray.800" flexShrink={0}>
-                {dayjs(date).format("M/D(ddd)")}
+            <Flex key={date} align="center" justify="space-between" py={1.5} gap={3}>
+              {/* 시간은 날짜 아래 줄로 내려 오른쪽 상태 문구가 쓸 폭을 확보한다. */}
+              <Box flexShrink={0}>
+                <Box fontSize="13px" fontWeight={600} lineHeight="18px" color="gray.800">
+                  {dayjs(date).format("M/D(ddd)")}
+                </Box>
                 {time && (
-                  <Box as="span" ml={1.5} fontSize="11px" fontWeight={400} color="gray.500">
+                  <Box fontSize="11px" lineHeight="16px" color="gray.500">
                     {time}
                   </Box>
                 )}
               </Box>
-              <Box ml={3} color="gray.600" textAlign="right" isTruncated>
+              {/*
+                숫자는 하나만 쓴다(현재 인원). 확정까지 남은 자리는 점 4개로 보여 준다 — "2명 · 2명 더"처럼
+                숫자 두 개를 나란히 쓰면 어느 쪽이 무엇인지 헷갈렸다. 오픈 예정이면 카페 이름이 기준을
+                말해 주고, 아니면 지역 이름("서초구 2명")으로 "내 근처" 기준임을 밝힌다.
+                길이가 정해지지 않은 카페·지역 이름만 줄임표로 줄어든다.
+              */}
+              <Flex
+                minW={0}
+                justify="flex-end"
+                align="center"
+                gap={1.5}
+                fontSize="13px"
+                color="gray.600"
+                whiteSpace="nowrap"
+              >
                 {placeName ? (
                   <>
-                    <Box as="span" color="mint" fontWeight={600}>
+                    <Box as="span" flexShrink={0} color="mint" fontWeight={600}>
                       오픈 예정
-                    </Box>{" "}
-                    · {placeName} · {count}명
-                    {/* 미리보기는 3명부터 보인다. 확정 기준(4명)에 못 미치면 남은 인원을 같이 적는다. */}
-                    {remain > 0 && ` · 확정까지 ${remain}명`}
-                  </>
-                ) : remain > 0 ? (
-                  <>
-                    내 근처 {count}명 ·{" "}
-                    <Box as="span" color="mint" fontWeight={600}>
-                      {remain}명
-                    </Box>{" "}
-                    더 모이면 확정
+                    </Box>
+                    <Box as="span" flexShrink={0}>
+                      ·
+                    </Box>
+                    <Box as="span" minW={0} isTruncated>
+                      {placeName}
+                    </Box>
                   </>
                 ) : (
-                  <>내 근처 {count}명 · 9시에 카페가 정해져요</>
+                  <>
+                    {region && (
+                      <Box as="span" minW={0} isTruncated>
+                        {region}
+                      </Box>
+                    )}
+                    <Box as="span" flexShrink={0} fontWeight={600} color="gray.800">
+                      {count}명
+                    </Box>
+                  </>
                 )}
-              </Box>
+                <MatchDots count={count} />
+              </Flex>
             </Flex>
           );
         })}
       </Box>
       <Box mt={1} fontSize="11px" color="gray.400">
-        오전 9시 전까지는 무료로 변경·취소할 수 있어요.
+        당일 오전 9시까지 무료로 변경·취소할 수 있어요.
       </Box>
     </>
+  );
+}
+
+/** 확정 기준(4명)까지 찬 자리를 점으로. 다 차면 민트로 바뀐다. 4명을 넘어도 점은 4개다. */
+function MatchDots({ count }: { count: number }) {
+  const isReady = count >= STUDY_MIN_MEMBER_COUNT;
+  return (
+    <Flex flexShrink={0} gap="3px" ml={0.5} aria-label={`확정 기준 ${STUDY_MIN_MEMBER_COUNT}명 중 ${Math.min(count, STUDY_MIN_MEMBER_COUNT)}명`}>
+      {Array.from({ length: STUDY_MIN_MEMBER_COUNT }, (_, idx) => (
+        <Box
+          key={idx}
+          w="7px"
+          h="7px"
+          borderRadius="50%"
+          bg={isReady ? "mint" : idx < count ? "gray.600" : "gray.200"}
+        />
+      ))}
+    </Flex>
   );
 }
 

@@ -75,7 +75,7 @@ export function StudyThumbnailCard({
     if (dateStatus !== "future") return "";
     if (isMatching) {
       return cnt < STUDY_MIN_MEMBER_COUNT
-        ? `확정(${STUDY_MIN_MEMBER_COUNT}명)까지 ${STUDY_MIN_MEMBER_COUNT - cnt}명 남았어요!`
+        ? `확정까지 ${STUDY_MIN_MEMBER_COUNT - cnt}명 남았어요!`
         : "오전 9시에 확정돼요";
     }
     return cnt < STUDY_MAX_CNT ? `마감까지 ${STUDY_MAX_CNT - cnt}명 남았어요!` : "인원 마감";
@@ -178,30 +178,9 @@ export function StudyThumbnailCard({
               <Flex>
                 <UserIcon size="sm" />
                 <Flex lineHeight="12px" ml={1} fontSize="10px" align="center" fontWeight={500}>
-                  <Box
-                    fontWeight={600}
-                    as="span"
-                    color={
-                      participants.length >= STUDY_MAX_CNT &&
-                      studyType !== "participations" &&
-                      studyType !== "soloRealTimes"
-                        ? "var(--color-red)"
-                        : "var(--color-gray)"
-                    }
-                  >
-                    {participants.length}
-                  </Box>
-                  <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
-                    /
-                  </Box>
-                  <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                    {studyType === "soloRealTimes" || studyType === "participations" ? (
-                      <Box>
-                        <InfinityIcon />
-                      </Box>
-                    ) : (
-                      STUDY_MAX_CNT
-                    )}
+                  {/* 라운지·개인 인증은 정원이 없다. "N / ∞"보다 인원만 적는 편이 잘 읽힌다. */}
+                  <Box fontWeight={600} as="span" color="var(--color-gray)">
+                    {participants.length}명
                   </Box>
                 </Flex>
               </Flex>

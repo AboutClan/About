@@ -232,6 +232,37 @@ export const useStudyBadgeRankingQuery = (
     options,
   );
 
+export interface StudyRegionMemberProps {
+  user: Pick<UserSimpleInfoProps, "_id" | "name" | "avatar" | "profileImage" | "role" | "uid"> & {
+    nickname?: string;
+  };
+  /** 이번 주(오늘 이후)에 신청이 있다. */
+  isApplying: boolean;
+}
+
+export interface StudyRegionMembersProps {
+  /** 멤버가 많은 순. 구마다 앞쪽 일부 멤버만 온다(count가 전체 인원). */
+  regions: {
+    name: string;
+    count: number;
+    applyingCount: number;
+    members: StudyRegionMemberProps[];
+  }[];
+}
+
+/** 라운지 "지역 멤버" 탭: 구마다 스터디를 신청해 본 멤버(미니 프로필). */
+export const useStudyRegionMembersQuery = (options?: QueryOptions<StudyRegionMembersProps>) =>
+  useQuery<StudyRegionMembersProps, AxiosError, StudyRegionMembersProps>(
+    [STUDY_VOTE, "regionMembers"],
+    async () => {
+      const { data } = await axios.get<StudyRegionMembersProps>(
+        `${SERVER_URI}/vote2/region-members`,
+      );
+      return data;
+    },
+    options,
+  );
+
 export interface StudyCrewMemberStatsProps {
   userId: string;
   lastVoteDate: string | null;
