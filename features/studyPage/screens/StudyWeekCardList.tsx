@@ -22,7 +22,7 @@ interface StudyWeekCardListProps {
   /** 오늘 열린 스터디가 없을 때 "직접 열어 보세요"를 누르면 부른다(직접 개설 드로어). */
   onOpenStudy?: () => void;
   /**
-   * 카공지도 스터디 탭. 신청 기능이 없으므로 라운지(신청 현황)와 "직접 열어 보세요"를 빼고,
+   * 카공지도 스터디 탭. 신청 기능이 없으므로 "직접 열어 보세요"를 빼고(라운지는 보여 준다),
    * 카드 링크에 from=cafe-map을 달아 상세가 카공지도 기준(버튼 숨김·이름 가림)으로 그려지게 한다.
    */
   isCafeMap?: boolean;
@@ -54,7 +54,7 @@ function StudyWeekCardList({ studySet, myId, onOpenStudy, isCafeMap }: StudyWeek
 
     // 라운지는 신청자 전원을 보여 준다(오픈 예정 조에 들어간 사람 포함).
     // 마지막 인자(isTemp)가 개인 공부 인증 카드를 뺀다.
-    const allCards = setStudyThumbnailCard(
+    const cards = setStudyThumbnailCard(
       today,
       studySet,
       myId,
@@ -64,9 +64,6 @@ function StudyWeekCardList({ studySet, myId, onOpenStudy, isCafeMap }: StudyWeek
       isCafeMap,
       true,
     );
-    const cards = isCafeMap
-      ? allCards.filter((card) => card.place.name !== LOUNGE_NAME)
-      : allCards;
 
     const loungeCards = cards.filter((card) => card.place.name === LOUNGE_NAME);
 
