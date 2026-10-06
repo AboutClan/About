@@ -1,7 +1,8 @@
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
+import CafeMapBottomNav from "@/components/CafeMapBottomNav";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { CAFE_MAP_INSTALL_POPUP, CAFE_MAP_REVIEW_POPUP } from "@/constants/keys/localStorage";
 import CafeMapAppInstallDrawer from "@/features/cafeMap/screens/CafeMapAppInstallDrawer";
@@ -121,7 +122,7 @@ function StudyMap() {
       {activeTab === "study" && <CafeMapStudyPage />}
       {activeTab === "community" && <CafeMapCommunityPage />}
       {activeTab === "profile" && <CafeMapMyPage />}
-      {/* <CafeMapBottomNav /> */}
+      <CafeMapBottomNav />
       {isModal && (
         <ModalLayout title="안내사항" footerOptions={footerOptions} setIsModal={setIsModal}>
           <p>
