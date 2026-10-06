@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
@@ -24,7 +24,7 @@ import PlaceInfoDrawer, {
 } from "@/features/studyMap/components/PlaceInfoDrawer";
 import StudyMapMenuDrawer from "@/features/studyMap/components/StudyMapMenuDrawer";
 import { StudyReviewDrawer } from "@/features/studyMap/components/StudyReviewDrawer";
-import StudyMapNav, { ARCHIVE_OPTIONS } from "@/features/studyMap/components/TopNav";
+import StudyMapNav, { ARCHIVE_OPTIONS, ExpansionIcon } from "@/features/studyMap/components/TopNav";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useUserCurrentLocation } from "@/hooks/custom/CurrentLocationHook";
 import { NaverLocationProps } from "@/hooks/external/queries";
@@ -933,6 +933,16 @@ function StudyPageMap({
               }}
             />
 
+            {/*
+              페이지 안에 작게 들어간 지도(카공지도 탭 제외)는 터치를 받지 않는다. 지도가 터치를 잡으면
+              그 위에서 위아래로 밀 때 페이지가 스크롤되지 않고 지도가 끌려갔다. pointer-events를 끄면
+              손가락이 지도를 지나 페이지 스크롤로 이어진다. 크게 보기는 오른쪽 위 버튼(또는 탭)으로 연다.
+            */}
+            <Box
+              w="100%"
+              h="100%"
+              pointerEvents={!isMapExpansion && !isCafeMap ? "none" : "auto"}
+            >
             <VoteMap
               mapOptions={mapOptions}
               markersOptions={markersOptions}
@@ -947,6 +957,28 @@ function StudyPageMap({
               centerValue={pickCenter}
               onMapReady={handleMapReady}
             />
+            </Box>
+            {!isMapExpansion && !isCafeMap && (
+              <Flex
+                as="button"
+                type="button"
+                aria-label="지도 크게 보기"
+                pos="absolute"
+                top={3}
+                right={3}
+                zIndex={10}
+                w="32px"
+                h="32px"
+                align="center"
+                justify="center"
+                bg="white"
+                borderRadius="6px"
+                border="var(--border-main)"
+                boxShadow="0 1px 4px rgba(0, 0, 0, 0.12)"
+              >
+                <ExpansionIcon />
+              </Flex>
+            )}
           </ClipLayer>
         </Box>
       </Box>

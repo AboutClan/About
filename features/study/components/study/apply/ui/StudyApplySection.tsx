@@ -2,8 +2,6 @@ import { Box, Button, Collapse, Flex, Grid } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import PageIntro from "@/components/atoms/PageIntro";
-import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import DatePointButton from "@/components/molecules/DatePointButton";
 import RangeSlider from "@/components/molecules/RangeSlider";
 import {
@@ -37,17 +35,36 @@ interface StudyApplySectionProps {
   /** index === voteLocations.length 면 새 기준점 추가다. */
   onEditAnchor: (index: number) => void;
   onRemoveAnchor: (index: number) => void;
+  /** 내 userId. 날짜별 근처 인원에서 나를 뺀다. */
+  myId?: string;
 }
 
 const WEEK_DAYS_KR = ["일", "월", "화", "수", "목", "금", "토"];
 
 export const MAX_ANCHOR_COUNT = 2;
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+/** 신청 화면 섹션 제목. 날짜·범위·시간 세 섹션이 같은 모양(번호 + 15px 굵게)을 쓴다. */
+export function SectionLabel({ step, children }: { step?: number; children: React.ReactNode }) {
   return (
-    <Box fontSize="15px" fontWeight={700} color="gray.800">
+    <Flex align="center" gap={1.5} fontSize="15px" fontWeight={700} color="gray.800">
+      {step && (
+        <Flex
+          w="18px"
+          h="18px"
+          align="center"
+          justify="center"
+          borderRadius="50%"
+          bg="gray.800"
+          color="white"
+          fontSize="11px"
+          fontWeight={700}
+          flexShrink={0}
+        >
+          {step}
+        </Flex>
+      )}
       {children}
-    </Box>
+    </Flex>
   );
 }
 
@@ -63,8 +80,10 @@ function StudyApplySection({
   isLocation,
   onEditAnchor,
   onRemoveAnchor,
+  myId,
 }: StudyApplySectionProps) {
-  const [isRangeOpen, setIsRangeOpen] = useState(true);
+  // 위치·범위는 한 줄 요약으로 접어 두고, 바꿀 때만 펼친다(화면 하나에 날짜·위치·시간을 담기 위해).
+  const [isRangeOpen, setIsRangeOpen] = useState(false);
   const hasInitializedRef = useRef(false);
 
   // 서버는 제출된 날짜 목록을 "이번 주 최종 상태"로 해석해 목록에 없는 날짜의 신청을 지운다.
@@ -108,22 +127,18 @@ function StudyApplySection({
 
   const rangeLabelKm = RANGE_LABEL_KM[rangeNum] ?? RANGE_LABEL_KM[2];
 
-  // 선택한 날짜에 신청한 사람 중, 기준점 어느 하나라도 범위 안에 드는 사람 수.
-  // 같은 사람이 여러 날 신청하거나 두 기준점에 모두 걸려도 1명으로 센다.
-  //
-  // 여기서는 시간 겹침을 보지 않는다 — 참여 시간은 다음 단계(룰렛)에서 정하므로
-  // 아직 알 수 없다. 내 신청 요약(StudyMyApplySection)은 시간까지 반영한다.
-  const nearbyCount = useMemo(() => {
-    if (!voteLocations.length || !selectedDates.length) return 0;
-
-    return countMatchCandidates({
-      anchors: voteLocations,
-      eps: RANGE_TO_EPS[rangeNum] ?? RANGE_TO_EPS[DEFAULT_RANGE_NUM],
-      participations: nearbyParticipations
-        .filter((participation) => selectedDates.includes(participation.date))
-        .flatMap((participation) => participation.study ?? []),
-    });
-  }, [nearbyParticipations, selectedDates, voteLocations, rangeNum]);
+  // 날짜별 근처 신청 인원(나 제외). 예전에는 고른 날짜를 모두 합쳐 셌고 나 자신도 포함했다.
+  const nearbyCountByDate = useMemo(() => {
+    if (!voteLocations.length) return {} as Record<string, number>;
+    const eps = RANGE_TO_EPS[rangeNum] ?? RANGE_TO_EPS[DEFAULT_RANGE_NUM];
+    return Object.fromEntries(
+      nearbyParticipations.map((participation) => {
+        const others = (participation.study ?? []).filter((par) => par.user?._id !== myId);
+        const count = countMatchCandidates({ anchors: voteLocations, eps, participations: others });
+        return [participation.date, count];
+      }),
+    ) as Record<string, number>;
+  }, [nearbyParticipations, voteLocations, rangeNum, myId]);
 
   const getShortName = (location: LocationProps) => location?.name?.split(" ")?.[0];
 
@@ -136,14 +151,13 @@ function StudyApplySection({
   return (
     <Flex direction="column" gap={5}>
       <Box>
-        <PageIntro
-          main={{
-            first: "희망 날짜 선택",
-          }}
-          sub="스터디에 참여하고 싶은 날짜를 모두 선택해 주세요"
-        />
+        {/* 페이지 제목은 헤더("스터디 신청")가 한다. 섹션 제목은 세 섹션 모두 같은 모양으로. */}
+        <SectionLabel step={1}>희망 날짜</SectionLabel>
+        <Box mt={0.5} fontSize="12px" color="gray.500">
+          참여하고 싶은 날짜를 모두 선택해 주세요
+        </Box>
 
-        <Box position="relative" mt="14px">
+        <Box position="relative" mt="26px">
           <Flex
             position="absolute"
             top="-14px"
@@ -190,8 +204,9 @@ function StudyApplySection({
               {weekDates.map((d) => {
                 const dateStr = dayjsToStr(d);
                 const isLockedToday = isTodayLocked && d.isSame(today, "day");
+                const nearbyCount = nearbyCountByDate[dateStr] ?? 0;
                 return (
-                  <Flex key={dateStr} justify="center">
+                  <Flex key={dateStr} direction="column" align="center">
                     <DatePointButton
                       date={dateStr}
                       func={() => handleClickDate(dateStr)}
@@ -201,6 +216,10 @@ function StudyApplySection({
                       isMint={false}
                       size="md"
                     />
+                    {/* 근처 신청 인원. 0명이면 오히려 망설이게 해서 비워 둔다. */}
+                    <Box mt={1} h="16px" fontSize="11px" lineHeight="16px" color="mint">
+                      {!isLockedToday && nearbyCount > 0 ? `${nearbyCount}명` : ""}
+                    </Box>
                   </Flex>
                 );
               })}
@@ -208,11 +227,15 @@ function StudyApplySection({
           </Box>
         </Box>
 
-        {!!beforeMyDates?.length && (
-          <Box mt={2} fontSize="11.5px" color="gray.500" lineHeight="16px">
-            미리 선택된 날짜는 이미 신청한 날짜예요. 해제하면 신청이 취소돼요.
-          </Box>
-        )}
+        <Box mt={2} fontSize="11.5px" color="gray.500" lineHeight="16px">
+          숫자는 내 근처 신청 인원{isTodayLocked && " · 오늘은 9시에 확정됐어요"}
+          {!!beforeMyDates?.length && (
+            <>
+              <br />
+              미리 선택된 날짜는 이미 신청한 날짜예요(해제하면 취소)
+            </>
+          )}
+        </Box>
       </Box>
 
       {!isLocation && (
@@ -227,31 +250,15 @@ function StudyApplySection({
             onClick={() => setIsRangeOpen((old) => !old)}
           >
             <Box textAlign="start">
-              <SectionLabel>스터디 매칭 범위</SectionLabel>
+              <SectionLabel step={2}>매칭 범위</SectionLabel>
               <Box fontSize="12px" color="gray.500" mt={0.5}>
                 <Box as="b">{headerLocationText}</Box>
                 {` 기준 ${rangeLabelKm}km 이내 카페로 매칭돼요.`}
               </Box>
             </Box>
-            <Box flexShrink={0} ml={3}>
-              <ShortArrowIcon dir={isRangeOpen ? "top" : "bottom"} color="gray" />
-            </Box>
-          </Flex>
-
-          <Flex
-            mx={4}
-            mb={4}
-            p={3}
-            bg="mint.50"
-            borderRadius="10px"
-            align="center"
-            justify="space-between"
-          >
-            <Box fontSize="12.5px" color="gray.600">
-              현재 범위 내 스터디 신청 인원
-            </Box>
-            <Box fontSize="14px" fontWeight={700} color="mint">
-              {nearbyCount}명
+            {/* 화살표만으로는 바꿀 수 있다는 게 잘 안 보여 글자로 둔다. */}
+            <Box flexShrink={0} ml={3} fontSize="12px" fontWeight={600} color="mint">
+              {isRangeOpen ? "접기" : "변경"}
             </Box>
           </Flex>
 
@@ -358,7 +365,6 @@ function StudyApplySection({
           </Collapse>
         </Box>
       )}
-      <Box h="24px" />
     </Flex>
   );
 }

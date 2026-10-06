@@ -20,7 +20,6 @@ import { STUDY_RESULT_HOUR } from "@/constants/serviceConstants/studyConstants/s
 import { useStudyCommentMutation } from "@/features/study/hooks/mutations";
 import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 import { getNearLocationCluster } from "@/features/study/lib/setStudyMapOptions";
-import { toStudyZone } from "@/features/study/lib/studyZone";
 import StudyCrewStatsDrawer from "@/features/study/screens/modals/StudyCrewStatsDrawer";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
@@ -212,9 +211,16 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
       ? participant.locations
       : [participant.location];
 
-    // "지역 멤버" 탭과 같은 생활권 이름(강남·서초 등)을 쓴다.
+    // 신청 위치의 구 이름 하나("성동구"). 생활권 묶음("성동·광진")은 지역 멤버 탭에서만 쓴다.
     const regionNames = Array.from(
-      new Set(sources.map((loc) => toStudyZone(loc?.address)).filter(Boolean)),
+      new Set(
+        sources
+          .map((loc) => {
+            const addressArr = loc?.address?.split(" ");
+            return addressArr?.[1] || addressArr?.[0];
+          })
+          .filter(Boolean),
+      ),
     ).slice(0, 2);
 
     return {
@@ -229,7 +235,7 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
               variant="subtle"
               colorScheme="blue"
               size="md"
-              maxW="96px"
+              maxW="66px"
               isTruncated
             >
               {name}

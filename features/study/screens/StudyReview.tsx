@@ -13,9 +13,11 @@ import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 interface StudyReviewProps {
   placeInfo: StudyPlaceProps;
   isArrived: boolean;
+  // 오픈 예정 조처럼 아직 가 보지 않은 사람이 보는 곳에서는 리뷰만 보여 준다(별점 유도 문구·버튼 없음).
+  isReadOnly?: boolean;
 }
 
-function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
+function StudyReviewSection({ placeInfo, isArrived, isReadOnly }: StudyReviewProps) {
   const toast = useToast();
   const isGuest = useCheckGuest();
   const typeToast = useTypeToast();
@@ -48,7 +50,10 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
   return (
     <>
       <Box px={5} mt={5} mb={5}>
-        <SectionHeader title="카공 장소 리뷰" subTitle="별점만 체크해도 200 Point 획득!">
+        <SectionHeader
+          title="카공 장소 리뷰"
+          subTitle={isReadOnly ? undefined : "별점만 체크해도 200 Point 획득!"}
+        >
           <Button variant="unstyled" onClick={() => typeToast(isGuest ? "guest" : "not-yet")}>
             <ShortArrowIcon dir="right" />
           </Button>
@@ -64,6 +69,7 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
             </Box>
           ))}
 
+          {!isReadOnly && (
           <Button
             mt={2}
             borderRadius={8}
@@ -89,6 +95,7 @@ function StudyReviewSection({ placeInfo, isArrived }: StudyReviewProps) {
           >
             카공 장소 별점 남기기
           </Button>
+          )}
         </Flex>{" "}
       </Box>
       {isReviewDrawer && (

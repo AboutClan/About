@@ -42,9 +42,10 @@ export const useStudyMutations = (date: Dayjs) => {
   const typeToast = useTypeToast();
   const resetStudy = useResetStudyQuery();
 
+  // 오픈 예정 조 상세의 "이 스터디에 같이 신청하기"에서만 쓴다.
   const { mutate: vote, isLoading: isLoading1 } = useStudyVoteMutation(date, "post", {
     onSuccess: () => {
-      typeToast("apply");
+      toast("success", "신청 완료! 오전 9시에 확정되면 알려드릴게요");
       resetStudy();
     },
   });

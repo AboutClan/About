@@ -261,7 +261,7 @@ function StudyNavigation({
         if (myStatus === "pending") {
           if (resultStatus === "expected") {
             return {
-              text: "이 장소로 스터디 매칭 신청",
+              text: "이 스터디에 같이 신청하기",
               type: "single",
               colorScheme: "mint",
               func: () => {

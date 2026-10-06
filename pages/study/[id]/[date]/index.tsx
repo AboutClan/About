@@ -240,6 +240,8 @@ export default function Page() {
   }, [myStudyStatus]);
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
+  // 오픈 예정 조(내일 이후 매칭 미리보기). 아직 열리지 않았으니 진행 방식은 숨기고 리뷰는 아래로 내린다.
+  const isExpectedStudy = studyType === "results" && dayjs(date).isAfter(dayjs(), "day");
 
   if (!router.isReady) return null;
 
@@ -260,7 +262,12 @@ export default function Page() {
           <Box mb="92px">
             <Slide isNoPadding>
               <StudyCover studyType={studyType} coverImage={placeInfo?.coverImage} />
-              <StudyOverview date={date} placeInfo={placeInfo} studyType={studyType} />
+              <StudyOverview
+                date={date}
+                placeInfo={placeInfo}
+                studyType={studyType}
+                members={findStudy ? findStudy.members : undefined}
+              />
               <Divider />
             </Slide>
             <Slide>
@@ -269,26 +276,29 @@ export default function Page() {
               )}
             </Slide>
             <Slide isNoPadding>
-              <Box borderBottom="var(--border)" px={5}>
-                <TabNav
-                  selected={tab}
-                  isFullSize
-                  isBlack
-                  tabOptionsArr={[
-                    {
-                      text: "일반 스터디",
-                      func: () => setTab("일반 스터디"),
-                    },
-                    {
-                      text: "지역 멤버",
-                      func: () => setTab("지역 멤버"),
-                    },
-                  ]}
-                />
-              </Box>
+              {/* 지역 멤버 탭은 라운지(신청 단계)에서만. 장소 조 상세에서는 조 멤버만 본다. */}
+              {isParticipations && (
+                <Box borderBottom="var(--border)" px={5}>
+                  <TabNav
+                    selected={tab}
+                    isFullSize
+                    isBlack
+                    tabOptionsArr={[
+                      {
+                        text: "일반 스터디",
+                        func: () => setTab("일반 스터디"),
+                      },
+                      {
+                        text: "지역 멤버",
+                        func: () => setTab("지역 멤버"),
+                      },
+                    ]}
+                  />
+                </Box>
+              )}
             </Slide>
             <Slide>
-              {isRegionTab ? (
+              {isRegionTab && isParticipations ? (
                 <Box pt={5} pb={2}>
                   <StudyRegionMembers isCafeMap={isCafeMap} />
                 </Box>
@@ -300,13 +310,24 @@ export default function Page() {
                     studyType={studyType}
                     isCrew={tab === "스터디 크루"}
                   /> */}
-                  {isOpenStudy && members?.length && (
-                    <StudyTimeBoard
-                      members={members as StudyConfirmedMemberProps[]}
-                      isCafeMap={isCafeMap}
-                    />
+                  {isOpenStudy && !!members?.length && (
+                    <Box pt={5}>
+                      <Box fontSize="16px" fontWeight="bold" mb={3}>
+                        멤버 시간
+                      </Box>
+                      <StudyTimeBoard
+                        members={members as StudyConfirmedMemberProps[]}
+                        isCafeMap={isCafeMap}
+                      />
+                    </Box>
                   )}
                   <Box h="1px" bg="gray.100" my={4} />
+                  {/* 장소 조는 탭이 없어 목록 제목을 따로 둔다. */}
+                  {isOpenStudy && !!members?.length && (
+                    <Box fontSize="16px" fontWeight="bold" mt={5}>
+                      {isExpectedStudy ? "신청 멤버" : "참여 멤버"} {members.length}명
+                    </Box>
+                  )}
                   <Box pb={2} pos="relative">
                     {/* {(studyType === "soloRealTimes" || studyType === "participations") &&
                       tab === "일반 스터디" && (
@@ -317,7 +338,8 @@ export default function Page() {
                         />
                       )} */}
 
-                    <Box minH="240px">
+                    {/* 장소 조는 인원이 적어 최소 높이를 두면 아래가 크게 빈다. */}
+                    <Box minH={isOpenStudy ? undefined : "240px"}>
                       {isPassedSolo && !studyPassedData ? (
                         <Box pos="relative" minH="140px">
                           <MainLoadingAbsolute size="sm" />
@@ -354,7 +376,7 @@ export default function Page() {
                 </>
               )}
             </Slide>
-            {!isFromCafeMap && (
+            {!isFromCafeMap && !isExpectedStudy && (
               <>
                 <Box h={2} bg="gray.100" my={4} />
                 <Slide>
@@ -365,20 +387,19 @@ export default function Page() {
                 </Slide>
               </>
             )}
-                        <Box h={2} bg="gray.100" my={4} />
+            {/* 오픈 예정 조는 바로 아래 규칙 안내가 자기 구분선을 가진다(두 줄 겹침 방지). */}
+            {!isExpectedStudy && <Box h={2} bg="gray.100" my={4} />}
             {studyType === "participations" && (
               <>
                 <StudyPlaceMap
+                  // 신청했으면 내 신청 위치, 아니면 지도가 현재 위치·회원 위치로 잡는다.
                   centerLocation={
-                    myStudyInfo
+                    (myStudyInfo as StudyParticipationProps)?.location?.latitude
                       ? {
                           lat: (myStudyInfo as StudyParticipationProps).location.latitude,
                           lon: (myStudyInfo as StudyParticipationProps).location.longitude,
                         }
-                      : {
-                          lat: userInfo?.locationDetail.latitude,
-                          lon: userInfo?.locationDetail.longitude,
-                        }
+                      : null
                   }
                 />
                 <Box h={5} />
@@ -397,7 +418,7 @@ export default function Page() {
                 <Box h={2} bg="gray.100" my={4} />
               </>
             )}
-            {placeInfo && studyType === "results" && (
+            {placeInfo && studyType === "results" && !isExpectedStudy && (
               <StudyReviewSection
                 placeInfo={placeInfo}
                 isArrived={
@@ -416,16 +437,31 @@ export default function Page() {
                     items={[
                       // 값은 서버 CONSTANTS.ts(STUDY_ATTEND_BEFORE·STUDY_ABSENCE_*·ABSENCE_FEE)와 맞춘다.
                       "어바웃 멤버 누구나 자유롭게 신청할 수 있습니다.",
-                      "당일 오전 9시, 가까운 멤버가 4명 이상 모이면 스터디가 확정됩니다.",
+                      "당일 오전 9시, 가까운 멤버가 4명 이상 모이면 확정됩니다.",
                       // InfoList는 줄바꿈을 막는다(공용). 한 줄에 들어가게 짧게 쓴다.
                       "스터디 출석 시 100~1,000 Point가 랜덤으로 적립됩니다.",
                       "확정 후 불참 신고 시 1,000~2,000 Point (늦을수록 증가)",
                       "확정 후 연락 없이 불참하면 2,000 Point가 차감됩니다.",
-                      "스터디 당일 참여는 빈자리가 있는 경우에만 가능합니다.",
+                      // 확정 이후 이야기라 오픈 예정 조에서는 뺀다.
+                      ...(isExpectedStudy
+                        ? []
+                        : ["스터디 당일 참여는 빈자리가 있는 경우에만 가능합니다."]),
                     ]}
                     isLight
                   />
                 </Box>
+              </>
+            )}
+            {placeInfo && isExpectedStudy && (
+              <>
+                <Box h={2} bg="gray.100" my={4} />
+                <StudyReviewSection
+                  placeInfo={placeInfo}
+                  isArrived={
+                    (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type === "arrived"
+                  }
+                  isReadOnly
+                />
               </>
             )}
           </Box>

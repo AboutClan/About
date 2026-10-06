@@ -205,7 +205,7 @@ export default function StudyVoteTimeRulletDrawer({
           <>
             <Flex w="full" mb={3}>
               <TimeOptionCard
-                title="점심"
+                title="오후"
                 time="14:00 - 18:00"
                 iconSrc="/icons/lunch.png"
                 isSelected={selectedPreset === "lunch"}
@@ -262,7 +262,7 @@ export default function StudyVoteTimeRulletDrawer({
                 fontWeight={500}
                 color="gray.600"
                 onClick={() => {
-                  // 프리셋으로 돌아가면 기본값(점심)이 다시 적용된다.
+                  // 프리셋으로 돌아가면 기본값(오후)이 다시 적용된다.
                   setSelectedPreset("lunch");
                   setIsFirst(true);
                 }}
@@ -345,9 +345,10 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
 
     return adjustedTime.format("HH:mm");
   };
+  // 받은 시간(defaultVoteTime)에서 룰렛을 시작한다. 예전에는 여기서 바로 return해 늘 14–18에서
+  // 시작했고, 아래 마운트 effect가 그 값을 setVoteTime으로 올려 기존 시간을 덮었다.
   useEffect(() => {
     if (defaultVoteTime) {
-      return;
       const startIndex = startItemArr.findIndex((time) => {
         return (
           dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.start)

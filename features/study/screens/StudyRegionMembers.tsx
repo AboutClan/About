@@ -58,7 +58,7 @@ function StudyRegionMembers({ isCafeMap = false }: StudyRegionMembersProps) {
         최근 스터디를 신청한 멤버예요.
       </Box>
       {regions.map((region) => (
-        <Box key={region.name} mb={6}>
+        <Box key={region.name} id={`region-${region.name}`} mb={6} scrollMarginTop="72px">
           <Flex align="baseline" justify="space-between" mb={3}>
             <Box fontSize="15px" fontWeight="bold" color="gray.800">
               {region.name}{" "}
@@ -100,9 +100,15 @@ function StudyRegionMembers({ isCafeMap = false }: StudyRegionMembersProps) {
                 py={1}
                 fontSize="12px"
                 color="gray.500"
-                onClick={() => setExpanded((old) => old.filter((name) => name !== region.name))}
+                onClick={() => {
+                  setExpanded((old) => old.filter((name) => name !== region.name));
+                  // 길게 펼친 목록을 접으면 화면이 그 지역 제목보다 한참 아래에 남는다. 제목으로 되돌린다.
+                  document
+                    .getElementById(`region-${region.name}`)
+                    ?.scrollIntoView({ block: "start", behavior: "smooth" });
+                }}
               >
-                접기
+                접기 ▲
               </Box>
             </Flex>
           )}

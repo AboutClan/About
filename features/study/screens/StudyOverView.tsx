@@ -7,7 +7,10 @@ import InfoBoxCol, { InfoBoxProps } from "@/components/molecules/InfoBoxCol";
 import { getStudyBadge } from "@/features/study/lib/studyHelpers";
 import { getPlaceScore } from "@/features/study/lib/studyUtils";
 import { useUserCurrentLocation } from "@/hooks/custom/CurrentLocationHook";
-import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import {
+  StudyConfirmedMemberProps,
+  StudyPlaceProps,
+} from "@/types/models/studyTypes/study-entity.types";
 import { StudyType } from "@/types/models/studyTypes/study-set.types";
 import { getDistanceFromLatLonInKm } from "@/utils/mathUtils";
 import { getPlaceBranch } from "@/utils/stringUtils";
@@ -16,19 +19,45 @@ interface IStudyOverview {
   placeInfo: StudyPlaceProps;
   studyType: StudyType;
   date: string;
+  // 매칭 스터디(results) 상단의 인원·예정 시간에 쓴다.
+  members?: StudyConfirmedMemberProps[];
 }
 
-function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
+const STUDY_CONFIRM_CNT = 4;
+
+/** 멤버 시간이 모두 겹치는 구간. 겹치지 않으면 가장 이른 시작 ~ 가장 늦은 끝. */
+const getStudyTimeText = (members?: StudyConfirmedMemberProps[]) => {
+  const times = (members ?? [])
+    .filter((m) => m?.time?.start && m?.time?.end)
+    .map((m) => ({ start: dayjs(m.time.start), end: dayjs(m.time.end) }));
+  if (!times.length) return null;
+  const latestStart = times.reduce((a, t) => (t.start.isAfter(a) ? t.start : a), times[0].start);
+  const earliestEnd = times.reduce((a, t) => (t.end.isBefore(a) ? t.end : a), times[0].end);
+  const [start, end] = latestStart.isBefore(earliestEnd)
+    ? [latestStart, earliestEnd]
+    : [
+        times.reduce((a, t) => (t.start.isBefore(a) ? t.start : a), times[0].start),
+        times.reduce((a, t) => (t.end.isAfter(a) ? t.end : a), times[0].end),
+      ];
+  return `${start.format("HH:mm")} ~ ${end.format("HH:mm")}`;
+};
+
+function StudyOverview({ placeInfo, date, studyType, members }: IStudyOverview) {
   const { currentLocation } = useUserCurrentLocation();
 
-  const { text: badgeText, colorScheme: badgeColorScheme } = getStudyBadge(
-    studyType,
-    dayjs(date).startOf("day").isAfter(dayjs())
-      ? "future"
-      : dayjs(date).startOf("day").isBefore(dayjs())
-      ? "prev"
-      : "current",
-  );
+  const dateStatus = dayjs(date).startOf("day").isAfter(dayjs())
+    ? "future"
+    : dayjs(date).isSame(dayjs(), "day")
+    ? "current"
+    : "prev";
+  const { text: badgeText, colorScheme: badgeColorScheme } = getStudyBadge(studyType, dateStatus);
+
+  // 매칭 스터디 상단: 언제 열리는지·몇 명인지·확정까지 몇 명 남았는지를 한눈에.
+  const isExpected = studyType === "results" && dateStatus === "future";
+  const memberCnt = members?.length ?? 0;
+  const remainCnt = Math.max(STUDY_CONFIRM_CNT - memberCnt, 0);
+  const studyTimeText = getStudyTimeText(members);
+  const dateText = dayjs(date).locale("ko").format("M/D(ddd)");
 
   const distance = getDistanceFromLatLonInKm(
     placeInfo?.location.latitude,
@@ -44,13 +73,15 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
           ? "매칭 시간"
           : studyType === "soloRealTimes"
           ? "영업 시간"
-          : "확정 시간",
+          : isExpected
+          ? "예정 시간"
+          : "스터디 시간",
       text:
         studyType === "participations"
           ? "당일 오전 9시"
           : studyType === "soloRealTimes"
           ? "하루 공부가 끝나는 순간까지"
-          : "정보 없음",
+          : studyTimeText ?? "멤버 시간 확인 중",
     },
     {
       category:
@@ -80,9 +111,19 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
         {studyType !== "participations" && studyType !== "soloRealTimes" ? (
           <>
             <Box color="var(--gray-500)" fontSize="12px">
-              <Flex mb={1}>
+              <Flex mb={1} align="center">
                 <Box mr={1}>
-                  <MainBadge text="매칭 스터디" />
+                  <MainBadge
+                    text={
+                      studyType !== "results"
+                        ? "매칭 스터디"
+                        : isExpected
+                        ? `오픈 예정 · ${dateText}`
+                        : dateStatus === "current"
+                        ? "오늘의 스터디"
+                        : `지난 스터디 · ${dateText}`
+                    }
+                  />
                 </Box>
                 <MainBadge
                   text={placeInfo && getPlaceBranch(placeInfo.location.address, true)}
@@ -90,12 +131,37 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
                 />
               </Flex>
             </Box>
-            <Flex align="center" mb={3}>
+            <Flex align="center" mb={studyType === "results" && memberCnt ? 1 : 3}>
               <Box mt={1} mr={2} fontSize="20px" fontWeight="bold">
                 {placeInfo?.location?.name}
               </Box>
               <StarRating rating={getPlaceScore(placeInfo?.ratings).total} size="lg" />
             </Flex>
+            {studyType === "results" && !!memberCnt && (
+              <Box mb={3} fontSize="13px" color="gray.600">
+                {isExpected ? (
+                  <>
+                    {memberCnt}명 신청
+                    {remainCnt > 0 && (
+                      <>
+                        {" · "}
+                        <Box as="span" color="mint" fontWeight={600}>
+                          확정까지 {remainCnt}명
+                        </Box>
+                      </>
+                    )}
+                    {" · "}오전 9시에 확정돼요
+                  </>
+                ) : (
+                  <>{memberCnt}명 참여</>
+                )}
+                {studyTimeText && (
+                  <Box mt={0.5}>
+                    {isExpected ? "예정 시간" : "스터디 시간"} {studyTimeText}
+                  </Box>
+                )}
+              </Box>
+            )}
           </>
         ) : (
           <Box mb={3}>

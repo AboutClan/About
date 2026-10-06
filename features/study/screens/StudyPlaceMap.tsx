@@ -7,7 +7,11 @@ import { CoordinatesProps } from "@/types/common";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 
 interface StudyPlaceMapProps {
-  centerLocation: CoordinatesProps;
+  /**
+   * 지도 중심. 스터디를 신청했으면 내 신청 위치(매칭에 실제로 쓰는 기준점)를 준다.
+   * 없으면 지도가 현재 위치 → 회원 위치 순으로 알아서 잡는다.
+   */
+  centerLocation?: CoordinatesProps | null;
 }
 
 function StudyPlaceMap({ centerLocation }: StudyPlaceMapProps) {
@@ -23,7 +27,8 @@ function StudyPlaceMap({ centerLocation }: StudyPlaceMapProps) {
           아래 등록된 장소 중 가까운 곳으로 스터디가 매칭돼요.
         </Box>
       </Box>
-      <StudyPageMap isCafeMap={false} />
+      {/* 예전에는 centerLocation을 받고도 넘기지 않아, 노원으로 신청해도 지금 있는 곳(강남 등)이 보였다. */}
+      <StudyPageMap isCafeMap={false} defaultLocation={centerLocation ?? undefined} />
       {placeInfo && (
         <PlaceInfoDrawer
           handleVotePick={null}
