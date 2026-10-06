@@ -34,10 +34,8 @@ interface StudyApplyTimeSectionProps {
   /** 날짜별로 다른 시간 모드. 비어 있으면 모든 날짜가 공용 시간을 쓴다. */
   dateTimes: Record<string, IStudyVoteTime>;
   setDateTimes: (next: Record<string, IStudyVoteTime>) => void;
-  /** 이미 신청해 둔 날짜의 기존 시간. 이 날짜들은 직접 바꾸지 않는 한 그대로 둔다. */
+  /** 이미 신청해 둔 날짜의 기존 시간. 날짜별 모드를 켤 때 출발값으로 쓴다. */
   existingTimes: Record<string, IStudyVoteTime>;
-  applyToExisting: boolean;
-  setApplyToExisting: (value: boolean) => void;
   /**
    * 이미 확정된 날짜(오늘 9시 이후). 확정 뒤 시간 변경은 스터디 상세에서 하므로 여기서는 바꾸지 않는다.
    */
@@ -47,9 +45,8 @@ interface StudyApplyTimeSectionProps {
 /**
  * 신청 화면 안의 "참여 시간" 영역.
  *
- * 예전에는 시간을 다음 단계 시트에서 골랐고, 시트를 열자마자 "점심(14~18)"이 공용 시간으로
- * 들어가 이미 신청해 둔 날짜의 시간까지 사용자 모르게 덮어썼다. 이제 공용 시간은 새로 고른
- * 날짜에만 적용하고, 기존 날짜는 "모든 날짜에 적용"을 눌러야 바뀐다.
+ * 보이는 시간이 곧 제출되는 시간이다. 이미 신청해 둔 사람은 드로어가 기존 시간으로 채워 열어서
+ * (StudyApplyDrawer), 손대지 않으면 기존 시간이 그대로 나간다.
  */
 function StudyApplyTimeSection({
   selectedDates,
@@ -59,8 +56,6 @@ function StudyApplyTimeSection({
   dateTimes,
   setDateTimes,
   existingTimes,
-  applyToExisting,
-  setApplyToExisting,
   lockedDate = null,
 }: StudyApplyTimeSectionProps) {
   // 직접 선택 시트가 편집 중인 대상. "common"이면 공용 시간, 날짜면 그 날짜.
@@ -70,7 +65,6 @@ function StudyApplyTimeSection({
   const isSplit = Object.keys(dateTimes).length > 0;
   // 확정된 날짜는 시간 영역에서 다루지 않는다(보이지도, 바뀌지도 않게).
   const editableDates = selectedDates.filter((date) => date !== lockedDate);
-  const keptDates = editableDates.filter((date) => existingTimes[date]);
 
   // 날짜별 모드에서 날짜를 추가·해제하면 목록을 맞춘다. 안 맞추면 새로 고른 날짜가 "-"로 보이고
   // 화면에 없는 공용 시간으로 저장됐다(기존 신청 날짜면 기존 시간까지 덮였다).
@@ -148,59 +142,23 @@ function StudyApplyTimeSection({
       </Flex>
 
       {!isSplit ? (
-        <>
-          <Flex mt={3} gap={2}>
-            {(["afternoon", "evening"] as const).map((key) => (
-              <TimeChip
-                key={key}
-                label={STUDY_TIME_PRESETS[key].label}
-                time={`${STUDY_TIME_PRESETS[key].start}–${STUDY_TIME_PRESETS[key].end}`}
-                isSelected={preset === key}
-                onClick={() => onChangeCommon(key, presetToTime(key))}
-              />
-            ))}
+        <Flex mt={3} gap={2}>
+          {(["afternoon", "evening"] as const).map((key) => (
             <TimeChip
-              label="직접 선택"
-              time={preset === "custom" ? formatTimeRange(commonTime) : "시간 고르기"}
-              isSelected={preset === "custom"}
-              onClick={() => openEditor("common")}
+              key={key}
+              label={STUDY_TIME_PRESETS[key].label}
+              time={`${STUDY_TIME_PRESETS[key].start}–${STUDY_TIME_PRESETS[key].end}`}
+              isSelected={preset === key}
+              onClick={() => onChangeCommon(key, presetToTime(key))}
             />
-          </Flex>
-
-          {keptDates.length > 0 && (
-            <Flex
-              mt={3}
-              p={3}
-              gap={2}
-              align="center"
-              justify="space-between"
-              bg="gray.50"
-              borderRadius="10px"
-              fontSize="12px"
-              lineHeight="18px"
-            >
-              <Box color="gray.600">
-                {applyToExisting
-                  ? "이미 신청한 날짜도 이 시간으로 바뀌어요."
-                  : `${keptDates
-                      .map((date) => dayjsToFormat(dayjs(date), "M/D(ddd)"))
-                      .join(", ")}은 기존 시간(${formatTimeRange(
-                      existingTimes[keptDates[0]],
-                    )}${keptDates.length > 1 ? " 등" : ""}) 그대로예요.`}
-              </Box>
-              <Box
-                as="button"
-                type="button"
-                flexShrink={0}
-                fontWeight={600}
-                color="mint"
-                onClick={() => setApplyToExisting(!applyToExisting)}
-              >
-                {applyToExisting ? "기존 시간 유지" : "모든 날짜에 적용"}
-              </Box>
-            </Flex>
-          )}
-        </>
+          ))}
+          <TimeChip
+            label="직접 선택"
+            time={preset === "custom" ? formatTimeRange(commonTime) : "시간 고르기"}
+            isSelected={preset === "custom"}
+            onClick={() => openEditor("common")}
+          />
+        </Flex>
       ) : (
         <Box mt={2}>
           {editableDates.map((date) => (
@@ -232,7 +190,8 @@ function StudyApplyTimeSection({
           isHideBottom
           isDrawerUp
           zIndex={5000}
-          height={340}
+          // 제목 + 룰렛 + 확인 버튼이 다 들어가는 높이. 340이면 룰렛이 확인 버튼 위로 겹쳤다(원래 시간 시트와 같은 400).
+          height={400}
           setIsModal={() => setEditing(null)}
           drawerOptions={{
             header: {

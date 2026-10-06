@@ -66,10 +66,10 @@ function StudyApplyDrawer({
   // null이면 드로어가 닫혀 있다.
   const [editingAnchorIndex, setEditingAnchorIndex] = useState<number | null>(null);
   const [rangeNum, setRangeNum] = useState<number>(DEFAULT_RANGE_NUM);
-  // 공용 참여 시간. 새로 고른 날짜에 적용된다(기존 신청 날짜는 applyToExisting일 때만).
+  // 공용 참여 시간. 선택한 모든 날짜에 적용된다(날짜별 모드가 아닐 때). 이미 신청해 둔 사람은
+  // 아래 초기화 effect가 기존 시간으로 채워, 손대지 않으면 기존 시간이 그대로 다시 나간다.
   const [timePreset, setTimePreset] = useState<StudyTimePreset>("afternoon");
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>(() => presetToTime("afternoon"));
-  const [applyToExisting, setApplyToExisting] = useState(false);
   // 날짜별로 다른 시간. 비어 있으면 모든 날짜가 voteTime 하나를 공유한다(기존 동작).
   const [dateTimes, setDateTimes] = useState<Record<string, IStudyVoteTime>>({});
 
@@ -142,6 +142,32 @@ function StudyApplyDrawer({
 
   const isChange = !!beforeMyDates?.length;
 
+  // 이미 신청해 둔 사람은 시간 영역을 기존 시간으로 시작한다. 안내 문구 없이도 화면에 보이는 시간이
+  // 곧 제출되는 시간이 되게 하려는 것. 날짜마다 시간이 다르면 날짜별 모드로 연다. 한 번만 한다.
+  const hasInitTimeRef = useRef(false);
+  useEffect(() => {
+    if (hasInitTimeRef.current || !isDateReady) return;
+    hasInitTimeRef.current = true;
+
+    const lockedToday = getHour() >= STUDY_RESULT_HOUR ? dayjsToStr(dayjs()) : null;
+    const entries = Object.entries(existingTimes).filter(
+      ([date]) => date !== lockedToday && beforeMyDates?.includes(date),
+    );
+    if (!entries.length) return;
+
+    if (new Set(entries.map(([, time]) => formatTimeRange(time))).size === 1) {
+      const time = entries[0][1];
+      const preset = (["afternoon", "evening"] as const).find(
+        (key) => formatTimeRange(presetToTime(key)) === formatTimeRange(time),
+      );
+      setTimePreset(preset ?? "custom");
+      setVoteTime(time);
+    } else {
+      setDateTimes(Object.fromEntries(entries));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDateReady, existingTimes]);
+
   const fallbackLocation = userInfo?.locationDetail;
 
   const submitVote = () => {
@@ -157,12 +183,9 @@ function StudyApplyDrawer({
       locationDetail: getLocationSimpleText(fallbackLocation?.address),
     };
 
-    // 날짜별 시간: 날짜별 모드면 그 값, 아니면 기존 신청 날짜의 기존 시간("모든 날짜에 적용"을
-    // 누르지 않은 경우). 예전에는 공용 시간이 모든 날짜에 적용돼 기존 날짜 시간이 조용히 바뀌었다.
+    // 날짜별 모드면 그 값, 아니면 공용 시간 하나(화면에 보이는 그대로).
     // 공용 start/end는 함께 보낸다 — 서버는 dateTimes에 없는 날짜에 공용 값을 쓴다.
-    const perDateTimes: Record<string, IStudyVoteTime> = {
-      ...(Object.keys(dateTimes).length ? dateTimes : applyToExisting ? {} : existingTimes),
-    };
+    const perDateTimes: Record<string, IStudyVoteTime> = { ...dateTimes };
     // 오늘 9시 이후(확정된 날짜)는 무슨 일이 있어도 기존 시간 그대로 보낸다 — 확정 뒤 변경은 상세에서 한다.
     const lockedToday = getHour() >= STUDY_RESULT_HOUR ? dayjsToStr(dayjs()) : null;
     if (lockedToday && existingTimes[lockedToday]) {
@@ -308,14 +331,7 @@ function StudyApplyDrawer({
   // 오늘 9시 전에 오늘을 신청하면 곧바로 확정된다는 걸 알려 준다.
   const isTodayImminent =
     getHour() < STUDY_RESULT_HOUR && selectedDates.includes(dayjsToStr(dayjs()));
-  // 기존 신청 날짜를 유지하는 기본 상태에서는 공용 시간만 쓰면 실제 제출값과 달라 보인다.
-  const keepsExisting =
-    !Object.keys(dateTimes).length &&
-    !applyToExisting &&
-    selectedDates.some((date) => existingTimes[date]);
-  const summaryTime = Object.keys(dateTimes).length
-    ? "날짜별 시간"
-    : `${formatTimeRange(voteTime)}${keepsExisting ? " (신청했던 날짜는 기존 시간)" : ""}`;
+  const summaryTime = Object.keys(dateTimes).length ? "날짜별 시간" : formatTimeRange(voteTime);
 
   const bottomText =
     !selectedDates.length && isChange ? "신청 취소" : isChange ? "변경하기" : "신청하기";
@@ -352,8 +368,6 @@ function StudyApplyDrawer({
                   dateTimes={dateTimes}
                   setDateTimes={setDateTimes}
                   existingTimes={existingTimes}
-                  applyToExisting={applyToExisting}
-                  setApplyToExisting={setApplyToExisting}
                   lockedDate={getHour() >= STUDY_RESULT_HOUR ? dayjsToStr(dayjs()) : null}
                 />
               </Box>
@@ -361,8 +375,7 @@ function StudyApplyDrawer({
             {selectedDates.length > 0 && (
               <Box mt={5} p={3} bg="gray.50" borderRadius="10px" fontSize="12px" lineHeight="18px">
                 <Box fontWeight={600} color="gray.800">
-                  {summaryDates}
-                  {summaryPlace ? ` · ${summaryPlace} 기준` : ""} · {summaryTime}
+                  {summaryDates} · {summaryTime}
                 </Box>
                 <Box mt={1} color="gray.500">
                   당일 오전 9시, 가까운 멤버가 4명 이상 모이면 확정돼요. <br />
