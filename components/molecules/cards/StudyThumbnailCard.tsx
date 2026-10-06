@@ -62,24 +62,14 @@ export function StudyThumbnailCard({
 }: StudyThumbnailCardProps) {
   const router = useRouter();
 
-  // 4명 확정 기준은 정규 매칭(results)에만 있다. 직접 개설(openRealTimes)은 인원과 무관하게 열린다.
-  const isMatching = studyType === "results";
-
   /**
-   * 카드 하단 안내. 정규 매칭의 9시 전 카드는 미리보기라서, 인원이 차도 "마감까지"처럼
-   * 확정된 것으로 읽히는 말을 쓰지 않는다. 4명 미만이면 남은 인원, 이상이면 확정 시각만 말한다.
+   * 카드 우측 하단. 매칭 스터디(오픈 예정·확정)는 인원 "N / 8"(최대 8명).
+   * 직접 개설은 4명 미만이면 모집 중 안내, 4명부터 "N / 8". 지난 스터디는 모두 "N / 8".
    */
-  const footerText = (() => {
-    const cnt = participants.length;
-    if (dateStatus === "current") return `${cnt}명의 멤버가 참여하고 있어요!`;
-    if (dateStatus !== "future") return "";
-    if (isMatching) {
-      return cnt < STUDY_MIN_MEMBER_COUNT
-        ? `확정까지 ${STUDY_MIN_MEMBER_COUNT - cnt}명 남았어요!`
-        : "오전 9시에 확정돼요";
-    }
-    return cnt < STUDY_MAX_CNT ? `마감까지 ${STUDY_MAX_CNT - cnt}명 남았어요!` : "인원 마감";
-  })();
+  const isRecruiting =
+    studyType === "openRealTimes" &&
+    dateStatus !== "prev" &&
+    participants.length < STUDY_MIN_MEMBER_COUNT;
   const isFeatured = place.name === "카공 스터디 라운지";
 
   return (
@@ -169,9 +159,34 @@ export function StudyThumbnailCard({
               />
             </Box>
             {studyType !== "participations" && studyType !== "soloRealTimes" ? (
-              isCompact ? null : (
-                <Flex align="center" color="var(--gray-500)" fontSize="11px" lineHeight="16px">
-                  {footerText}
+              isRecruiting ? (
+                isCompact ? null : (
+                  <Flex align="center" color="var(--gray-500)" fontSize="11px" lineHeight="16px">
+                    함께 공부할 멤버를 모집하고 있어요
+                  </Flex>
+                )
+              ) : (
+                <Flex>
+                  <UserIcon size="sm" />
+                  <Flex lineHeight="12px" ml={1} fontSize="10px" align="center" fontWeight={500}>
+                    <Box
+                      fontWeight={600}
+                      as="span"
+                      color={
+                        participants.length >= STUDY_MAX_CNT
+                          ? "var(--color-red)"
+                          : "var(--color-gray)"
+                      }
+                    >
+                      {participants.length}
+                    </Box>
+                    <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                      /
+                    </Box>
+                    <Box as="span" color="var(--gray-500)" fontWeight={500}>
+                      {STUDY_MAX_CNT}
+                    </Box>
+                  </Flex>
                 </Flex>
               )
             ) : (

@@ -328,9 +328,6 @@ function StudyApplyDrawer({
     firstPlace && voteLocations.length > 1
       ? `${firstPlace} 외 ${voteLocations.length - 1}곳`
       : firstPlace;
-  // 오늘 9시 전에 오늘을 신청하면 곧바로 확정된다는 걸 알려 준다.
-  const isTodayImminent =
-    getHour() < STUDY_RESULT_HOUR && selectedDates.includes(dayjsToStr(dayjs()));
   const summaryTime = Object.keys(dateTimes).length ? "날짜별 시간" : formatTimeRange(voteTime);
 
   const bottomText =
@@ -378,9 +375,7 @@ function StudyApplyDrawer({
                   {summaryDates} · {summaryTime}
                 </Box>
                 <Box mt={1} color="gray.500">
-                  당일 오전 9시, 가까운 멤버가 4명 이상 모이면 확정돼요. <br />
-                  확정 후 당일 불참 시에는 포인트가 차감됩니다.
-                  {isTodayImminent && " 오늘 신청은 오전 9시에 바로 확정돼요."}
+                  오전 9시에 근처 멤버 4명이 모이면 확정돼요
                 </Box>
               </Box>
             )}

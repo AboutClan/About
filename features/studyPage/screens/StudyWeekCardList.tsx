@@ -20,7 +20,12 @@ interface StudyWeekCardListProps {
   studySet: StudyWeekSetProps | null | undefined;
   myId: string | undefined;
   /** 오늘 열린 스터디가 없을 때 "직접 열어 보세요"를 누르면 부른다(직접 개설 드로어). */
-  onOpenStudy: () => void;
+  onOpenStudy?: () => void;
+  /**
+   * 카공지도 스터디 탭. 신청 기능이 없으므로 라운지(신청 현황)와 "직접 열어 보세요"를 빼고,
+   * 카드 링크에 from=cafe-map을 달아 상세가 카공지도 기준(버튼 숨김·이름 가림)으로 그려지게 한다.
+   */
+  isCafeMap?: boolean;
 }
 
 interface CardSection {
@@ -42,23 +47,26 @@ interface CardSection {
  *   종류를 섞으면 9시 전후에 카드가 무엇을 뜻하는지 헷갈린다.
  * - 개인 공부 인증은 스터디 탭에서 뺐다.
  */
-function StudyWeekCardList({ studySet, myId, onOpenStudy }: StudyWeekCardListProps) {
+function StudyWeekCardList({ studySet, myId, onOpenStudy, isCafeMap }: StudyWeekCardListProps) {
   const sections = useMemo<CardSection[] | null>(() => {
     if (!studySet) return null;
     const today = getTodayStr();
 
     // 라운지는 신청자 전원을 보여 준다(오픈 예정 조에 들어간 사람 포함).
     // 마지막 인자(isTemp)가 개인 공부 인증 카드를 뺀다.
-    const cards = setStudyThumbnailCard(
+    const allCards = setStudyThumbnailCard(
       today,
       studySet,
       myId,
       undefined,
       undefined,
       undefined,
-      undefined,
+      isCafeMap,
       true,
     );
+    const cards = isCafeMap
+      ? allCards.filter((card) => card.place.name !== LOUNGE_NAME)
+      : allCards;
 
     const loungeCards = cards.filter((card) => card.place.name === LOUNGE_NAME);
 
@@ -128,7 +136,7 @@ function StudyWeekCardList({ studySet, myId, onOpenStudy }: StudyWeekCardListPro
         : []),
       ...dateSections,
     ];
-  }, [studySet, myId]);
+  }, [studySet, myId, isCafeMap]);
 
   if (!sections) {
     return (
@@ -164,6 +172,7 @@ function StudyWeekCardList({ studySet, myId, onOpenStudy }: StudyWeekCardListPro
               fontSize="13px"
             >
               <Box color="gray.600">오늘은 열린 스터디가 없어요</Box>
+              {!isCafeMap && onOpenStudy && (
               <Flex
                 as="button"
                 type="button"
@@ -176,6 +185,7 @@ function StudyWeekCardList({ studySet, myId, onOpenStudy }: StudyWeekCardListPro
                 직접 열어 보세요
                 <ShortArrowIcon dir="right" color="mint" />
               </Flex>
+              )}
             </Flex>
           )}
           {section.footer && (
@@ -185,19 +195,19 @@ function StudyWeekCardList({ studySet, myId, onOpenStudy }: StudyWeekCardListPro
           )}
         </Box>
       ))}
-      <PastStudySection myId={myId} />
+      <PastStudySection myId={myId} isCafeMap={isCafeMap} />
     </Box>
   );
 }
 
 /** 지난 스터디는 접어 두고, 누를 때마다 한 주씩 더 불러온다. */
-function PastStudySection({ myId }: { myId: string | undefined }) {
+function PastStudySection({ myId, isCafeMap }: { myId: string | undefined; isCafeMap?: boolean }) {
   const [weekCnt, setWeekCnt] = useState(0);
 
   return (
     <Box mt={4}>
       {Array.from({ length: weekCnt }, (_, i) => (
-        <PastWeekCards key={i} idx={i + 1} myId={myId} />
+        <PastWeekCards key={i} idx={i + 1} myId={myId} isCafeMap={isCafeMap} />
       ))}
       <Button
         w="100%"
@@ -215,14 +225,22 @@ function PastStudySection({ myId }: { myId: string | undefined }) {
   );
 }
 
-function PastWeekCards({ idx, myId }: { idx: number; myId: string | undefined }) {
+function PastWeekCards({
+  idx,
+  myId,
+  isCafeMap,
+}: {
+  idx: number;
+  myId: string | undefined;
+  isCafeMap?: boolean;
+}) {
   const { data } = useLastStudySetQuery(idx);
 
   const cards = useMemo(() => {
     if (!data) return null;
     // temp=true: 라운지 제외·최신순, isTemp=true: 개인 공부 인증 카드 제외
-    return setStudyThumbnailCard(getTodayStr(), data, myId, null, null, true, false, true);
-  }, [data, myId]);
+    return setStudyThumbnailCard(getTodayStr(), data, myId, null, null, true, isCafeMap, true);
+  }, [data, myId, isCafeMap]);
 
   if (!cards) return <StudyThumbnailCardSkeleton />;
 

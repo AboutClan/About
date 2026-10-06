@@ -228,13 +228,7 @@ function StudyApplySection({
         </Box>
 
         <Box mt={2} fontSize="11.5px" color="gray.500" lineHeight="16px">
-          숫자는 내 근처 신청 인원{isTodayLocked && " · 오늘은 9시에 확정됐어요"}
-          {!!beforeMyDates?.length && (
-            <>
-              <br />
-              미리 선택된 날짜는 이미 신청한 날짜예요(해제하면 취소)
-            </>
-          )}
+          숫자는 근처 신청 인원
         </Box>
       </Box>
 

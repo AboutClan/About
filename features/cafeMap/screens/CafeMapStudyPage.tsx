@@ -1,39 +1,25 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import Header from "@/components/layouts/Header";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import { CAFE_MAP_STUDY_INTRO_POPUP } from "@/constants/keys/localStorage";
-import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
-import StudyPageCalendar from "@/features/studyPage/screens/StudyPageCalendar";
-import StudyPagePlaceSection from "@/features/studyPage/screens/StudyPagePlaceSection";
+import { useStudySetQuery } from "@/features/study/hooks/queries";
+import StudyWeekCardList from "@/features/studyPage/screens/StudyWeekCardList";
+import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import { getTodayStr } from "@/utils/dateTimeUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 const STUDY_APPLY_FORM_URL = "https://forms.gle/Kuj4cgEsjNnRRPM18";
 
-function getTodayStr() {
-  return dayjs().format("YYYY-MM-DD");
-}
-
 export default function CafeMapStudyPage() {
-  const [date, setDate] = useState<string>(getTodayStr());
   const [isPopupOpen, setIsPopupOpen] = useState(
     () => typeof window !== "undefined" && !localStorage.getItem(CAFE_MAP_STUDY_INTRO_POPUP),
   );
 
-  const isPassedDate = useMemo(
-    () => dayjs(date).startOf("day").isBefore(dayjs().startOf("day")),
-    [date],
-  );
-
-  const { data: studySet } = useStudySetQuery(date, {
-    enabled: !!date && !isPassedDate,
-  });
-
-  const { data: passedStudyData } = useStudyPassedDayQuery(date, {
-    enabled: !!date && isPassedDate,
-  });
+  // 어바웃 스터디 탭과 같은 주간 목록(오늘부터 8일). 신청 관련 영역은 isCafeMap으로 뺀다.
+  const { data: studySet } = useStudySetQuery(getTodayStr());
+  const { data: userInfo } = useUserInfoQuery();
 
   return (
     <>
@@ -51,14 +37,8 @@ export default function CafeMapStudyPage() {
       >
         <Header title="스터디" isBack={false} isSlide={false} />
 
-        <Box flex={1} overflowY="auto" px={5}>
-          <StudyPageCalendar date={date} setDate={setDate} onDateChange={setDate} />
-          <StudyPagePlaceSection
-            studySet={isPassedDate ? passedStudyData : studySet}
-            date={date}
-            setDate={setDate}
-            hideLounge
-          />
+        <Box flex={1} overflowY="auto" px={5} pb={6}>
+          <StudyWeekCardList studySet={studySet} myId={userInfo?._id} isCafeMap />
         </Box>
       </Flex>
 

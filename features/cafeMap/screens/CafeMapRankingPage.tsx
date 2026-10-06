@@ -2,12 +2,14 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import Header from "@/components/layouts/Header";
 import { usePlaceRankingQuery } from "@/features/study/hooks/queries";
 import { RightReviewDrawer } from "@/features/study/screens/StudyReview";
 import { StudyReviewDrawer } from "@/features/studyMap/components/StudyReviewDrawer";
 import { RankingCafeCard } from "@/features/studyMap/components/TopNav";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
+import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 export default function CafeMapRankingPage() {
   const router = useRouter();
@@ -38,13 +40,14 @@ export default function CafeMapRankingPage() {
         top={0}
         left={0}
         right={0}
-        bottom={0}
+        // 하단 탭바(CafeMapBottomNav) 높이만큼 비운다. 0이면 이 화면(z 500)이 탭바를 덮는다.
+        bottom={getSafeAreaBottom(52)}
         zIndex={500}
         bg="white"
         maxW="var(--max-width)"
         mx="auto"
       >
-        {/* <Header title="카공 랭킹 TOP 100" isBack={false} isSlide={false} /> */}
+        <Header title="카공 랭킹 TOP 100" isBack={false} isSlide={false} />
 
         <Box flex={1} overflowY="auto" borderTop="var(--border-main)">
           <Flex flexDir="column" px={4}>
