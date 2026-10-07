@@ -166,7 +166,11 @@ function Configuration() {
 
     // 1자 이상만 보던 검증이라 "ㅇ" 한 글자로 통과했다. 인상착의는 같은 조원이
     // 나를 찾는 데 쓰이므로 최소 길이를 두고, 왜 필요한지도 함께 알린다.
-    if ((attendMessage?.trim()?.length ?? 0) < MIN_ATTEND_MESSAGE_LENGTH) {
+    // 직접 개설 스터디(openRealTimes)는 사진·메시지 없이도 출석할 수 있다.
+    if (
+      type !== "openRealTimes" &&
+      (attendMessage?.trim()?.length ?? 0) < MIN_ATTEND_MESSAGE_LENGTH
+    ) {
       if (isSoloRealTimesPage) toast("warning", "오늘의 한마디를 남겨주세요!");
       else toast("warning", "같은 조원이 찾을 수 있게 자리와 인상착의를 적어주세요");
       return;
@@ -199,9 +203,10 @@ function Configuration() {
       );
       attendRealTimeStudy(formData);
     } else if (type === "openRealTimes") {
-      formData.append("memo", attendMessage);
+      // 비어 있으면 보내지 않는다(빈 값을 append하면 "undefined" 문자열이 메모·파일 자리로 간다).
+      if (attendMessage?.trim()) formData.append("memo", attendMessage);
       formData.append("place", JSON.stringify(findStudy.place.location));
-      formData.append("images", image as Blob);
+      if (image) formData.append("images", image as Blob);
       formData.append(
         "time",
         JSON.stringify({
@@ -244,7 +249,13 @@ function Configuration() {
           </Box>
           <Box mb={3}>
             <SectionTitle
-              text={isSoloRealTimesPage ? "오늘의 공부 한마디" : "내 위치 및 인상착의"}
+              text={
+                isSoloRealTimesPage
+                  ? "오늘의 공부 한마디"
+                  : type === "openRealTimes"
+                    ? "내 위치 및 인상착의 (선택)"
+                    : "내 위치 및 인상착의"
+              }
             />
           </Box>
           <Textarea
