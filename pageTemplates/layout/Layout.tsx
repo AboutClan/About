@@ -2,9 +2,9 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDeepLink } from "@/@natives/useDeepLink";
@@ -17,6 +17,7 @@ import {
   markCafeMapSession,
   saveCafeMapReturnPath,
 } from "@/features/cafeMap/utils/cafeMapSession";
+import { IS_PROMO_STUDY_MOCK } from "@/features/study/lib/promoStudyMock";
 import { useToken } from "@/hooks/custom/CustomHooks";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useAppSafeAreaBottomCssVar } from "@/hooks/custom/useAppSafeAreaBottomCssVar";
@@ -80,8 +81,12 @@ function Layout({ children }: ILayout) {
 
   const currentSegment = parseUrlToSegments(pathname);
 
+  // 홍보 캡처(promo/study-mock 브랜치)에서는 하단 탭을 숨긴다.
   const isBottomNavCondition = useMemo(
-    () => BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0]) && !currentSegment?.[1],
+    () =>
+      !IS_PROMO_STUDY_MOCK &&
+      BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0]) &&
+      !currentSegment?.[1],
     [currentSegment],
   );
 
@@ -257,31 +262,33 @@ function Layout({ children }: ILayout) {
             id="root-modal"
             style={{
               ...((currentSegment?.[0] === "register" && currentSegment?.[1] === "auth") ||
-              (currentSegment?.[1] === "register" && currentSegment?.[2] === "auth")
+              (currentSegment?.[1] === "register" && currentSegment?.[2] === "auth") ||
+              // 홍보 캡처: 스터디 탭·상세는 헤더·하단 탭을 숨기므로 여백도 없앤다.
+              (IS_PROMO_STUDY_MOCK && ["studyPage", "study"].includes(currentSegment?.[0]))
                 ? {}
                 : NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
-                ? {
-                    paddingTop: `56px`,
-                  }
-                : currentSegment?.[0] === "group" && currentSegment?.[2] === "p"
-                ? {
-                    // /group/[id]/p 는 헤더 없는 단독 공개 미리보기 페이지라 상단 여백은
-                    // 필요 없지만, 하단에 참여 신청 BottomButtonNav가 고정으로 떠 있어
-                    // 마지막 콘텐츠가 가려지지 않도록 하단 여백은 유지한다.
-                    paddingBottom: getBottomNavTotalHeight(),
-                  }
-                : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
-                  !(currentSegment?.[0] === "cafe-map" && currentSegment?.[1] === "login") &&
-                  !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
-                  !(currentSegment?.[0] === "user" && currentSegment?.[1])
-                ? {
-                    paddingTop: `56px`,
-                    // BottomNav의 실제 점유 높이(52px + safe-area)와 동일한 계산값을 사용해
-                    // 마지막 콘텐츠가 BottomNav에 가려지지 않게 한다. safe-area 자체는
-                    // --app-safe-area-bottom CSS 변수를 통해 전달되므로 여기서 별도 분기가 필요 없다.
-                    paddingBottom: getBottomNavTotalHeight(),
-                  }
-                : {}),
+                  ? {
+                      paddingTop: `56px`,
+                    }
+                  : currentSegment?.[0] === "group" && currentSegment?.[2] === "p"
+                    ? {
+                        // /group/[id]/p 는 헤더 없는 단독 공개 미리보기 페이지라 상단 여백은
+                        // 필요 없지만, 하단에 참여 신청 BottomButtonNav가 고정으로 떠 있어
+                        // 마지막 콘텐츠가 가려지지 않도록 하단 여백은 유지한다.
+                        paddingBottom: getBottomNavTotalHeight(),
+                      }
+                    : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
+                        !(currentSegment?.[0] === "cafe-map" && currentSegment?.[1] === "login") &&
+                        !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
+                        !(currentSegment?.[0] === "user" && currentSegment?.[1])
+                      ? {
+                          paddingTop: `56px`,
+                          // BottomNav의 실제 점유 높이(52px + safe-area)와 동일한 계산값을 사용해
+                          // 마지막 콘텐츠가 BottomNav에 가려지지 않게 한다. safe-area 자체는
+                          // --app-safe-area-bottom CSS 변수를 통해 전달되므로 여기서 별도 분기가 필요 없다.
+                          paddingBottom: getBottomNavTotalHeight(),
+                        }
+                      : {}),
               boxShadow: "0 1px 0 rgba(0,0,0,0.05)",
             }}
           >

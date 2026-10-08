@@ -11,6 +11,15 @@ import {
   STUDY_VOTE_CNT,
 } from "@/constants/keys/queryKeys";
 import { SERVER_URI } from "@/constants/system";
+import {
+  injectPromoLastWeek,
+  injectPromoPassedDay,
+  injectPromoWeek,
+  IS_PROMO_STUDY_MOCK,
+  maskPromoName,
+  toPromoRealDate,
+  toPromoUser,
+} from "@/features/study/lib/promoStudyMock";
 import { setStudyOneDayData, setStudyWeekData } from "@/features/study/lib/studyConverters";
 import { CoordinatesProps, TimeRangeProps } from "@/types/common";
 import { QueryOptions } from "@/types/hooks/reactTypes";
@@ -91,7 +100,7 @@ export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) 
     async () => {
       const { data } = await axios.get<StudySetInitialDataProps[]>(`${SERVER_URI}/vote2/week`);
 
-      return data;
+      return IS_PROMO_STUDY_MOCK ? injectPromoWeek(data) : data;
     },
     {
       select: (data) => {
@@ -123,7 +132,7 @@ export const useLastStudySetQuery = (idx: number, options?: StudyWeekQueryOption
       const { data } = await axios.get<StudySetInitialDataProps[]>(
         `${SERVER_URI}/vote2/${idx}/lastWeek`,
       );
-      return data;
+      return IS_PROMO_STUDY_MOCK ? injectPromoLastWeek(data) : data;
     },
     {
       select: (data) => {
@@ -171,11 +180,15 @@ export const useStudyPassedDayQuery = (date: string, options?: QueryOptions<Stud
   useQuery<StudySetProps, AxiosError, StudySetProps>(
     [STUDY_VOTE, date],
     async () => {
+      const realDate = toPromoRealDate(date);
       const { data } = await axios.get<InitialStudyPassedDayProps>(
-        `${SERVER_URI}/vote2/${date}/info`,
+        `${SERVER_URI}/vote2/${realDate}/info`,
       );
 
-      return setStudyOneDayData(data, date);
+      return setStudyOneDayData(
+        IS_PROMO_STUDY_MOCK ? await injectPromoPassedDay(data, realDate) : data,
+        date,
+      );
     },
     options,
   );
@@ -258,7 +271,20 @@ export const useStudyRegionMembersQuery = (options?: QueryOptions<StudyRegionMem
       const { data } = await axios.get<StudyRegionMembersProps>(
         `${SERVER_URI}/vote2/region-members`,
       );
-      return data;
+      if (!IS_PROMO_STUDY_MOCK) return data;
+      return {
+        ...data,
+        regions: data.regions.map((region) => ({
+          ...region,
+          members: region.members.map((member) => ({
+            ...member,
+            user: {
+              ...toPromoUser(member.user, true),
+              nickname: maskPromoName(member.user.nickname),
+            },
+          })),
+        })),
+      };
     },
     options,
   );

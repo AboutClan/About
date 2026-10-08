@@ -12,6 +12,15 @@ import { ServerStyleSheet } from "styled-components";
 import { ABOUT_ORIGIN, CAFE_MAP_ORIGIN, isCafeMapHost } from "@/constants/seo";
 import { GROUP_OG_MAPPING } from "@/pages/s/group/[id]";
 
+// 네이버 클라우드 Maps 신규 키(ncpKeyId)여야 gl 서브모듈(벡터 지도·커스텀 스타일)을 쓸 수 있다.
+// 키가 없는 환경은 기존 키로 래스터 지도만 띄운다.
+// defer 라 gl 은 본체 뒤에 비동기로 받는데, SDK 는 callback 이 있어야만 다 받은 뒤
+// naver.maps.jsContentLoaded 를 true 로 바꾼다(isNaverMapReady 가 이 값을 본다). 콜백 자체는 빈 함수.
+const NAVER_MAP_KEY_ID = process.env.NEXT_PUBLIC_NAVER_MAP_KEY_ID;
+const NAVER_MAP_SCRIPT_SRC = NAVER_MAP_KEY_ID
+  ? `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_KEY_ID}&submodules=gl&callback=__naverMapsLoaded`
+  : "https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=kyi1yirf4s&submodules=geocoder";
+
 const DEFAULT_IMAGE =
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg";
 /** 카공지도 페이지의 정식 URL. study-about.club/cafe-map 과 같은 내용이라 이쪽으로 통일한다. */
@@ -263,9 +272,9 @@ export default class MyDocument extends Document<MyDocumentProps> {
           {/* <script src="https://sandbox.cookiepayments.com/js/cookiepayments-1.1.4.js"></script> */}
 
           <script
-            defer
-            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=kyi1yirf4s&submodules=geocoder"
-          ></script>
+            dangerouslySetInnerHTML={{ __html: "window.__naverMapsLoaded=function(){};" }}
+          />
+          <script defer src={NAVER_MAP_SCRIPT_SRC}></script>
         </Head>
         <body>
           <Main />

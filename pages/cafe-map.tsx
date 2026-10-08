@@ -114,9 +114,17 @@ function StudyMap() {
     },
   };
 
+  // [데모 브랜치] 지도 탭은 항상 영상 촬영용 데모 화면(mapOnly)으로 띄운다. 팝업·안내 모달도 띄우지 않는다.
+  if (activeTab === "map")
+    return (
+      <>
+        <StudyPageMap isDefaultOpen onClose={onClose} isDown isCafeMap mapOnly />
+        <CafeMapBottomNav />
+      </>
+    );
+
   return (
     <>
-      {activeTab === "map" && <StudyPageMap isDefaultOpen onClose={onClose} isDown isCafeMap />}
       {activeTab === "feed" && <CafeMapFeedPage />}
       {activeTab === "ranking" && <CafeMapRankingPage />}
       {activeTab === "study" && <CafeMapStudyPage />}

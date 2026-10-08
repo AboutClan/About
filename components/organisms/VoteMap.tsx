@@ -49,7 +49,21 @@ interface VoteMapProps {
   focusRequest?: { lat: number; lon: number; targetY: number; zoom?: number } | null;
   /** focusRequest 이동이 끝났을 때, 그 좌표가 놓인 화면(viewport) 위치 */
   onFocusSettled?: (point: { x: number; y: number }) => void;
+  /**
+   * [임시·영상 촬영용] 이 좌표들에 canvasPinIcon 을 DOM 마커 대신 캔버스 한 장에 그린다.
+   * 마커 수천 개도 줌이 부드럽지만 클릭은 되지 않는다.
+   */
+  canvasPins?: { lat: number; lon: number }[];
+  canvasPinIcon?: naver.maps.ImageIcon;
+  /** [임시·영상 촬영용] 왼쪽 아래 NAVER 로고를 숨긴다. */
+  hideLogo?: boolean;
+  /** [임시·영상 촬영용] 누르면 3초간 일정한 속도로 화면을 오른쪽으로 이동시키는 버튼 */
+  showPanDemoButton?: boolean;
 }
+
+// [임시·영상 촬영용] 스와이프 재생 설정. 화면이 오른쪽(동쪽)으로 이동한다(지도 내용은 왼쪽으로 흐름).
+const PAN_DEMO_DURATION_MS = 2500;
+const PAN_DEMO_SPEED_PX_PER_SEC = 144;
 
 function VoteMap({
   mapOptions,
@@ -66,6 +80,10 @@ function VoteMap({
   onMapReady,
   focusRequest,
   onFocusSettled,
+  canvasPins,
+  canvasPinIcon,
+  hideLogo = false,
+  showPanDemoButton = false,
 }: VoteMapProps) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
@@ -123,7 +141,7 @@ function VoteMap({
     if (!mapInstanceRef.current) {
       const map = new naver.maps.Map(mapRef.current, {
         ...mapOptions,
-        logoControl: true,
+        logoControl: !hideLogo,
         logoControlOptions: {
           position: naver.maps.Position.BOTTOM_LEFT,
         },
@@ -256,6 +274,150 @@ function VoteMap({
       naver.maps.Event.removeListener(idleListener);
     };
   }, [mapReady]);
+
+  // [임시·영상 촬영용] 캔버스 핀. 매 프레임 현재 지도 상태로 다시 그려 줌 애니메이션을 따라간다.
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    const container = mapRef.current;
+    if (!mapReady || !map || !container || !canvasPins?.length || !canvasPinIcon) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    const size = canvasPinIcon.size as naver.maps.Size;
+    const anchor = canvasPinIcon.anchor as naver.maps.Point;
+    const iconWidth = size.width;
+    const iconHeight = size.height;
+
+    // SVG 를 기기 해상도로 한 번만 래스터화해 두고 프레임마다 비트맵만 찍는다.
+    const sprite = document.createElement("canvas");
+    sprite.width = Math.ceil(iconWidth * dpr);
+    sprite.height = Math.ceil(iconHeight * dpr);
+    let spriteReady = false;
+    const img = new Image();
+    img.onload = () => {
+      sprite.getContext("2d")?.drawImage(img, 0, 0, sprite.width, sprite.height);
+      spriteReady = true;
+    };
+    img.src = canvasPinIcon.url;
+
+    const canvas = document.createElement("canvas");
+    canvas.style.cssText = "position:absolute; left:0; top:0; pointer-events:none; z-index:100;";
+    container.appendChild(canvas);
+    const ctx = canvas.getContext("2d");
+
+    // 위경도를 메르카토르 좌표로 한 번만 바꿔 둔다. 프레임마다는 현재 화면 bounds 로
+    // 선형 변환(곱셈·덧셈)만 해서 핀 수천 개도 지도 API 호출 없이 그린다.
+    const toMercatorY = (lat: number) => Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
+    const pinCount = canvasPins.length;
+    const pinX = new Float64Array(pinCount);
+    const pinY = new Float64Array(pinCount);
+    canvasPins.forEach((p, i) => {
+      pinX[i] = p.lon;
+      pinY[i] = toMercatorY(p.lat);
+    });
+
+    let lastKey = "";
+    let raf = 0;
+    const draw = () => {
+      raf = requestAnimationFrame(draw);
+      if (!ctx || !spriteReady) return;
+
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      const bounds = map.getBounds() as naver.maps.LatLngBounds;
+      const west = bounds.getSW().lng();
+      const east = bounds.getNE().lng();
+      const north = toMercatorY(bounds.getNE().lat());
+      const south = toMercatorY(bounds.getSW().lat());
+
+      // 지도가 멈춰 있으면 다시 그리지 않는다.
+      const key = `${width},${height},${west},${east},${north},${south}`;
+      if (key === lastKey) return;
+      lastKey = key;
+
+      if (canvas.width !== Math.round(width * dpr) || canvas.height !== Math.round(height * dpr)) {
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+      }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const scaleX = (width * dpr) / (east - west);
+      const scaleY = (height * dpr) / (north - south);
+      const offsetX = anchor.x * dpr;
+      const offsetY = anchor.y * dpr;
+      const maxX = canvas.width;
+      const maxY = canvas.height;
+      const minX = -sprite.width;
+      const minY = -sprite.height;
+
+      for (let i = 0; i < pinCount; i += 1) {
+        const x = (pinX[i] - west) * scaleX - offsetX;
+        const y = (north - pinY[i]) * scaleY - offsetY;
+        if (x > maxX || y > maxY || x < minX || y < minY) continue;
+        ctx.drawImage(sprite, Math.round(x), Math.round(y));
+      }
+    };
+    raf = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      canvas.remove();
+    };
+  }, [mapReady, canvasPins, canvasPinIcon]);
+
+  // [임시·영상 촬영용] 스와이프 재생. 경과 시간 기준 목표 이동량을 정해 두고 매 프레임 모자란 만큼만
+  // 중심을 옮겨, 프레임이 밀려도 3초 동안 정확히 일정한 속도가 된다.
+  const [isPanDemoRunning, setIsPanDemoRunning] = useState(false);
+  const panDemoRafRef = useRef(0);
+  const startPanDemo = () => {
+    const map = mapInstanceRef.current;
+    if (!map || !mapRef.current) return;
+    setIsPanDemoRunning(true);
+
+    const container = mapRef.current;
+    // 끝나면 이 위치로 바로 되돌려, 같은 장면을 반복해서 찍을 수 있게 한다.
+    const startCenter = map.getCenter() as naver.maps.LatLng;
+    const finish = () => {
+      map.setCenter(startCenter);
+      setIsPanDemoRunning(false);
+    };
+    const start = performance.now();
+    let movedPx = 0;
+    const step = (now: number) => {
+      const elapsed = Math.min(now - start, PAN_DEMO_DURATION_MS);
+      const targetPx = (PAN_DEMO_SPEED_PX_PER_SEC * elapsed) / 1000;
+      const deltaPx = targetPx - movedPx;
+      movedPx = targetPx;
+
+      try {
+        if (deltaPx > 0) {
+          const bounds = map.getBounds() as naver.maps.LatLngBounds;
+          const lngPerPx = (bounds.getNE().lng() - bounds.getSW().lng()) / container.clientWidth;
+          const center = map.getCenter() as naver.maps.LatLng;
+          // 화면이 오른쪽(동쪽, 경도 증가)으로 이동하고 지도 내용은 왼쪽으로 흐른다.
+          map.setCenter(new naver.maps.LatLng(center.lat(), center.lng() + deltaPx * lngPerPx));
+        }
+      } catch {
+        // 지도 API 오류로 멈추더라도 버튼은 다시 보이게 한다.
+        finish();
+        return;
+      }
+
+      if (elapsed < PAN_DEMO_DURATION_MS) {
+        panDemoRafRef.current = requestAnimationFrame(step);
+      } else {
+        finish();
+      }
+    };
+    panDemoRafRef.current = requestAnimationFrame(step);
+  };
+  // 핫 리로드 때는 state 는 남고 이 cleanup 으로 루프만 멈춘다. 다시 실행될 때 상태도 풀어
+  // 버튼이 숨겨진 채로 굳지 않게 한다.
+  useEffect(() => {
+    setIsPanDemoRunning(false);
+    return () => cancelAnimationFrame(panDemoRafRef.current);
+  }, []);
 
   useEffect(() => {
     const map = mapInstanceRef.current;
@@ -490,12 +652,46 @@ function VoteMap({
     };
   }, []);
 
-  return <Map ref={mapRef} id="map" />;
+  return (
+    <>
+      <Map ref={mapRef} id="map" $hideLogo={hideLogo} />
+      {showPanDemoButton && !isPanDemoRunning && (
+        <PanDemoButton type="button" onClick={startPanDemo}>
+          ▶
+        </PanDemoButton>
+      )}
+    </>
+  );
 }
 
 export default VoteMap;
 
-const Map = styled.div`
+const PanDemoButton = styled.button`
+  position: fixed;
+  left: 16px;
+  bottom: 24px;
+  z-index: 2000;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid var(--gray-300);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  font-size: 14px;
+  color: var(--gray-800);
+`;
+
+const Map = styled.div<{ $hideLogo?: boolean }>`
+  /* GL 지도는 logoControl: false 를 무시하고 로고를 그려서 CSS 로 숨긴다. */
+  ${({ $hideLogo }) =>
+    $hideLogo &&
+    `
+    img[alt="NAVER"],
+    .mapboxgl-ctrl-logo {
+      display: none !important;
+    }
+  `}
+
   width: 100%;
   height: 100%;
   position: relative;

@@ -82,8 +82,7 @@ export function CafeListDrawer({
                 </>
               ) : type === "drawer" ? (
                 <>
-                  반경 <b>{formatRadius(radiusKm ?? 0)}</b>에 <b>{placeData?.length}개</b>의 카공
-                  카페가 있어요!
+                  전체 <b>{placeData?.length}개</b>의 카공 카페가 있어요!
                 </>
               ) : (
                 <>
@@ -148,9 +147,28 @@ export function getOpenStatus(
 ): { hour: string; isOpen: boolean | null } {
   const hour = place.operatingHours?.[0]?.[1] ?? "";
   if (!hour) return { hour, isOpen: null };
-  const [start, end] = hour.split(" - ");
-  const currentTime = now ?? dayjs().format("HH:mm");
-  return { hour, isOpen: currentTime >= start && currentTime <= end };
+  return { hour, isOpen: isOpenAt(hour, now ?? dayjs().format("HH:mm")) };
+}
+
+const toMinutes = (hhmm?: string): number | null => {
+  const m = hhmm?.trim().match(/^(\d{1,2}):(\d{2})$/);
+  return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+};
+
+/**
+ * "HH:mm - HH:mm" 영업시간에 now("HH:mm")가 들어가는지. 형식을 모르면 null.
+ * 자정을 넘기는 영업(10:00 - 02:00)은 시작 이후이거나 마감 이전이면 영업 중,
+ * 시작과 마감이 같으면(00:00 - 00:00 등) 24시간 영업으로 본다.
+ */
+export function isOpenAt(hour: string, now: string): boolean | null {
+  const [startText, endText] = hour.split(" - ");
+  const start = toMinutes(startText);
+  const end = toMinutes(endText);
+  const cur = toMinutes(now);
+  if (start === null || end === null || cur === null) return null;
+  if (start === end) return true;
+  if (start < end) return cur >= start && cur < end;
+  return cur >= start || cur < end;
 }
 
 export function CafeCompactCard({

@@ -19,6 +19,10 @@ export interface IMapOptions {
   mapTypeControl?: boolean;
   mapTypeControlOptions?: any;
   mapTypeId?: "normal";
+  /** 벡터(GL) 지도. 지도 생성 시점에만 적용되고 submodules=gl 이 필요하다. */
+  gl?: boolean;
+  /** 네이버 클라우드 스타일 에디터에서 만든 스타일 ID. gl: true 일 때만 동작한다. */
+  customStyleId?: string;
 
   mapTypes?: any;
   maxBounds?: any;

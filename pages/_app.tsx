@@ -1,6 +1,8 @@
 import "dayjs/locale/ko";
 import "@/styles/globals.css";
 import "@/styles/variable.css";
+// 홍보 캡처용(promo/study-mock 브랜치 전용): 화면 날짜 이동을 첫 렌더 전에 건다.
+import "@/features/study/lib/promoStudyMock";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import dayjs from "dayjs";

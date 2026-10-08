@@ -16,6 +16,7 @@ import {
 } from "@/constants/service/study/place";
 import StudyStep from "@/features/gather/screens/detail/StudyStep";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
+import { IS_PROMO_STUDY_MOCK } from "@/features/study/lib/promoStudyMock";
 import { shortenParticipations } from "@/features/study/lib/studyConverters";
 import { getMyStudyDateArr } from "@/features/study/lib/studyHelpers";
 import StudyLinkModal from "@/features/study/screens/modals/StudyLinkModal";
@@ -253,12 +254,15 @@ export default function Page() {
     <>
       {isPassedSolo || studyPassedData || studySet ? (
         <>
-          <StudyHeader
-            date={date}
-            placeInfo={placeInfo}
-            studyType={studyType}
-            onSaveImage={() => studyMembersRef.current?.saveImage()}
-          />
+          {/* 홍보 캡처(promo/study-mock 브랜치)에서는 헤더를 숨긴다. */}
+          {!IS_PROMO_STUDY_MOCK && (
+            <StudyHeader
+              date={date}
+              placeInfo={placeInfo}
+              studyType={studyType}
+              onSaveImage={() => studyMembersRef.current?.saveImage()}
+            />
+          )}
           <Box mb="92px">
             <Slide isNoPadding>
               <StudyCover studyType={studyType} coverImage={placeInfo?.coverImage} />

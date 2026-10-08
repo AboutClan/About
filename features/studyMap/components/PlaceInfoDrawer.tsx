@@ -9,6 +9,7 @@ import { StarIcon } from "@/components/Icons/StarIcon";
 import BottomFlexDrawer from "@/components/modals/drawer/BottomFlexDrawer";
 import PlaceImage from "@/components/molecules/PlaceImage";
 import { getPlaceScore } from "@/features/study/lib/studyUtils";
+import { isOpenAt } from "@/features/studyMap/components/CafeListDrawer";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getRandomImage } from "@/utils/imageUtils";
 import { navigateExternalLink } from "@/utils/navigateUtils";
@@ -81,9 +82,8 @@ export function PlaceInfoCard({
     (ratings?.length || 0) + 2 + Number(placeInfo?.location?.latitude?.toString().slice(-1));
 
   const hour = placeInfo?.operatingHours?.[0]?.[1] || "08:00 - 22:00";
-  const [start, end] = hour.split(" - ");
-  const now = dayjs().format("HH:mm");
-  const isCurrent = now >= start && now <= end;
+  // 자정을 넘기는 영업(10:00 - 02:00)도 목록과 같은 기준으로 판단한다.
+  const isCurrent = isOpenAt(hour, dayjs().format("HH:mm")) ?? false;
 
   return (
     <>

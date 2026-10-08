@@ -1,6 +1,7 @@
 import clustering from "density-clustering";
 
 import {
+  getCafeMapPinImageIcon,
   getCafeMapPinSize,
   getCafeMapPlaceIcon,
   getCurrentLocationIcon,
@@ -115,9 +116,12 @@ export const getStudyPlaceMarkersOptions = (
       10: 0.014,
     };
 
-    const eps = zoom >= 16 || !zoom ? 0.0001 : ZOOM_EPS_MAPPIN[zoom];
+    const eps = 0.0025;
     const minPts = 2;
-    const { clusters, noise } = runDbscanCached(placeData, data2, eps, minPts, zoom);
+    // 카공지도는 묶지 않고 모든 카페를 개별 마커로 그린다.
+    const { clusters, noise } = isCafeMap
+      ? { clusters: [] as number[][], noise: placeData.map((_, idx) => idx) }
+      : runDbscanCached(placeData, data2, eps, minPts, zoom);
 
     // 3️⃣ 중심점 계산 함수
     const calcCentroid = (points: number[][]) => {
@@ -188,22 +192,27 @@ export const getStudyPlaceMarkersOptions = (
       if (isCafeMap) {
         const normalPin = getCafeMapPinSize({ isEmphasized: isDefaultPlace });
         const selectedPin = getCafeMapPinSize({ isSelected: true });
+        // 카공지도는 카페 밀도가 높아 14 에서 라벨이 겹치므로 15 부터 표시.
+        const labelText = cluster.count === 1 && zoomNumber >= 15 ? cluster.name : null;
         temp.push({
           id: cluster._id,
           ids: cluster.ids,
           type: "place",
           position: new naver.maps.LatLng(cluster.center[0], cluster.center[1]),
-          icon: {
-            content: getCafeMapPlaceIcon({
-              // 카공지도는 카페 밀도가 높아 14 에서 라벨이 겹치므로 15 부터 표시.
-              text: cluster.count === 1 && zoomNumber >= 15 ? cluster.name : null,
-              rating: cluster.rating,
-              count: cluster.count,
-              isEmphasized: isDefaultPlace,
-            }),
-            size: new naver.maps.Size(normalPin.width, normalPin.height),
-            anchor: new naver.maps.Point(normalPin.width / 2, normalPin.height),
-          },
+          // 라벨·배지 없는 핀은 가벼운 이미지 아이콘으로 그린다 (마커가 많을 때 줌 버벅임 방지).
+          icon:
+            !labelText && cluster.count === 1
+              ? getCafeMapPinImageIcon({ isEmphasized: isDefaultPlace })
+              : {
+                  content: getCafeMapPlaceIcon({
+                    text: labelText,
+                    rating: cluster.rating,
+                    count: cluster.count,
+                    isEmphasized: isDefaultPlace,
+                  }),
+                  size: new naver.maps.Size(normalPin.width, normalPin.height),
+                  anchor: new naver.maps.Point(normalPin.width / 2, normalPin.height),
+                },
           // 선택 아이콘은 실제로 선택될 때 만든다 (VoteMap 이 호출).
           getSelectedIcon: () => ({
             content: getCafeMapPlaceIcon({
@@ -225,13 +234,13 @@ export const getStudyPlaceMarkersOptions = (
           defaultLocation && cluster?.defaultLocationLat === defaultLocation?.lat
             ? getPlaceBasicIcon("orange", null)
             : cluster.count > 1
-            ? getPlaceCountIcon(cluster.count)
-            : getPlaceBasicIcon(
-                "mint",
-                zoomNumber >= 14 ? cluster.name : null,
-                false,
-                cluster.rating,
-              ),
+              ? getPlaceCountIcon(cluster.count)
+              : getPlaceBasicIcon(
+                  "mint",
+                  zoomNumber >= 14 ? cluster.name : null,
+                  false,
+                  cluster.rating,
+                ),
         size: new naver.maps.Size(120, 60),
         anchor: new naver.maps.Point(60, 60),
       };

@@ -1,14 +1,16 @@
 import { Box, Button, Flex, Skeleton } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { Fragment, useMemo } from "react";
+import { Fragment, useMemo, useState } from "react";
 
 import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
+import { GiftIcon } from "@/components/Icons/GiftIcon";
 import { StarIcon } from "@/components/Icons/StarIcons";
 import { STUDY_MIN_MEMBER_COUNT } from "@/constants/serviceConstants/studyConstants/studyMatchConstant";
 import { STUDY_RESULT_HOUR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
 import { StudyBadgeRankingProps } from "@/features/study/hooks/queries";
 import { countMatchCandidates } from "@/features/study/lib/matchProgress";
+import StudyBadgePrizeModal from "@/features/study/screens/modals/StudyBadgePrizeModal";
 import { StudyWeekSetProps } from "@/types/models/studyTypes/study-set.types";
 import { getTodayStr } from "@/utils/dateTimeUtils";
 
@@ -63,6 +65,8 @@ const isConfirmedDate = (date: string) =>
  * 스탬프·랭킹은 신청을 끌어내는 정보가 아니라서 맨 아래 한 줄로만 둔다.
  */
 function StudyMyCard({ studySet, myId, isGuest, badgeRanking, onOpenRanking }: StudyMyCardProps) {
+  const [isPrizeModal, setIsPrizeModal] = useState(false);
+
   const todayStudy = useMemo<TodayStudy | null>(() => {
     if (!studySet || !myId) return null;
     const today = getTodayStr();
@@ -218,19 +222,38 @@ function StudyMyCard({ studySet, myId, isGuest, badgeRanking, onOpenRanking }: S
             <Box color="gray.400">·</Box>
             {badgeRanking.myRank ? `${badgeRanking.myRank}위` : "순위권 외"}
           </Flex>
-          <Flex
-            as="button"
-            type="button"
-            align="center"
-            gap={0.5}
-            fontWeight="bold"
-            color="mint"
-            onClick={onOpenRanking}
-          >
-            랭킹
-            <ShortArrowIcon dir="right" color="mint" />
+          <Flex align="center" gap={2}>
+            <Flex
+              as="button"
+              type="button"
+              aria-label="이번 달 랭킹 상품"
+              align="center"
+              // 원본(18px)은 12px 글자 옆에서 튀어서 글자 높이에 맞춘다.
+              sx={{ svg: { width: "12px", height: "13px" } }}
+              onClick={() => setIsPrizeModal(true)}
+            >
+              <GiftIcon />
+            </Flex>
+            <Flex
+              as="button"
+              type="button"
+              align="center"
+              gap={0.5}
+              fontWeight="bold"
+              color="mint"
+              onClick={onOpenRanking}
+            >
+              랭킹
+              <ShortArrowIcon dir="right" color="mint" />
+            </Flex>
           </Flex>
         </Flex>
+      )}
+      {isPrizeModal && (
+        <StudyBadgePrizeModal
+          myRank={badgeRanking?.myRank ?? null}
+          onClose={() => setIsPrizeModal(false)}
+        />
       )}
     </Box>
   );

@@ -89,7 +89,7 @@ export default function StudyStep() {
     {
       step: 3,
       title: "스터디 일일 톡방에 입장해요",
-      description: "진행 순서를 확인하고, 참여 멤버들과 소통할 수 있어요",
+      description: "가이드를 확인하고, 참여 멤버들과 소통할 수 있어요",
       date: "톡방 입장",
     },
     {

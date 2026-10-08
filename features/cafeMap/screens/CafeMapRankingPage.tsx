@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Header from "@/components/layouts/Header";
 import { usePlaceRankingQuery } from "@/features/study/hooks/queries";
@@ -10,6 +10,10 @@ import { RankingCafeCard } from "@/features/studyMap/components/TopNav";
 import { useOverlayRouter } from "@/hooks/useOverlayRouter";
 import { StudyPlaceProps } from "@/types/models/studyTypes/study-entity.types";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
+
+// [임시·영상 촬영용] ?demo=1 일 때 왼쪽 아래 ▶ 버튼으로 목록을 일정한 속도로 아래로 스크롤한다.
+const SCROLL_DEMO_DURATION_MS = 5000;
+const SCROLL_DEMO_SPEED_PX_PER_SEC = 360;
 
 export default function CafeMapRankingPage() {
   const router = useRouter();
@@ -28,6 +32,36 @@ export default function CafeMapRankingPage() {
   }, [isReviewOpen]);
 
   const { data: rankingData } = usePlaceRankingQuery();
+
+  // [임시·영상 촬영용] 스크롤 재생. 경과 시간 기준 절대 위치로 맞춰 프레임이 밀려도 속도가 일정하고,
+  // 끝나면 시작 위치로 되돌려 같은 장면을 반복해서 찍을 수 있다.
+  const isScrollDemo = router.query.demo !== undefined;
+  const listRef = useRef<HTMLDivElement>(null);
+  const scrollDemoRafRef = useRef(0);
+  const [isScrollDemoRunning, setIsScrollDemoRunning] = useState(false);
+  const startScrollDemo = () => {
+    const list = listRef.current;
+    if (!list) return;
+    setIsScrollDemoRunning(true);
+    const startTop = list.scrollTop;
+    const start = performance.now();
+    const step = (now: number) => {
+      const elapsed = Math.min(now - start, SCROLL_DEMO_DURATION_MS);
+      list.scrollTop = startTop + (SCROLL_DEMO_SPEED_PX_PER_SEC * elapsed) / 1000;
+      if (elapsed < SCROLL_DEMO_DURATION_MS) {
+        scrollDemoRafRef.current = requestAnimationFrame(step);
+      } else {
+        list.scrollTop = startTop;
+        setIsScrollDemoRunning(false);
+      }
+    };
+    scrollDemoRafRef.current = requestAnimationFrame(step);
+  };
+  // 핫 리로드로 루프만 멈추고 state 가 남아 버튼이 숨겨진 채 굳지 않게 한다.
+  useEffect(() => {
+    setIsScrollDemoRunning(false);
+    return () => cancelAnimationFrame(scrollDemoRafRef.current);
+  }, []);
 
   return (
     <>
@@ -49,7 +83,7 @@ export default function CafeMapRankingPage() {
       >
         <Header title="카공 랭킹 TOP 100" isBack={false} isSlide={false} />
 
-        <Box flex={1} overflowY="auto" borderTop="var(--border-main)">
+        <Box ref={listRef} flex={1} overflowY="auto" borderTop="var(--border-main)">
           <Flex flexDir="column" px={4}>
             {rankingData?.map((item, idx) => (
               <RankingCafeCard
@@ -66,6 +100,31 @@ export default function CafeMapRankingPage() {
           </Flex>
         </Box>
       </Flex>
+
+      {isScrollDemo && !isScrollDemoRunning && (
+        <Flex
+          as="button"
+          type="button"
+          aria-label="스크롤 재생"
+          pos="fixed"
+          left="16px"
+          bottom={getSafeAreaBottom(52 + 24)}
+          zIndex={600}
+          w="40px"
+          h="40px"
+          align="center"
+          justify="center"
+          borderRadius="full"
+          bg="white"
+          border="1px solid var(--gray-300)"
+          boxShadow="0 1px 4px rgba(0, 0, 0, 0.12)"
+          fontSize="14px"
+          color="gray.800"
+          onClick={startScrollDemo}
+        >
+          ▶
+        </Flex>
+      )}
 
       {/* drawer들은 fixed 컨테이너 밖 → 루트 stacking context에서 z-index 적용 */}
       {isReviewOpen && reviewPlace && (

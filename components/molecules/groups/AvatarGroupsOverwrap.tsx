@@ -67,6 +67,8 @@ export default function AvatarGroupsOverwrap({
 }
 const Participants = styled.div<{ size: "sm" | "lg" }>`
   display: flex;
+  /* 아바타·+칸의 zIndex(100+)가 이 묶음 밖으로 새면 고정 헤더 위로 올라온다. 여기 안에서만 쌓이게 가둔다. */
+  isolation: isolate;
 
   & > *:not(:first-child) {
     margin-left: ${(props) => (props.size === "sm" ? "-4px" : "-8px")};

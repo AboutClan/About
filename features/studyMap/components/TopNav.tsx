@@ -56,8 +56,8 @@ const INLINE_FILTER_BUTTONS = [
     ),
   },
   {
-    label: "자리 여유",
-    value: "isUsuallySpacious",
+    label: "와이파이",
+    value: "hasWifi",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@ const INLINE_FILTER_BUTTONS = [
         width="16px"
         fill="currentColor"
       >
-        <path d="M200-120q-17 0-28.5-11.5T160-160v-40q-50 0-85-35t-35-85v-200q0-50 35-85t85-35v-80q0-50 35-85t85-35h400q50 0 85 35t35 85v80q50 0 85 35t35 85v200q0 50-35 85t-85 35v40q0 17-11.5 28.5T760-120q-17 0-28.5-11.5T720-160v-40H240v40q0 17-11.5 28.5T200-120Zm-40-160h640q17 0 28.5-11.5T840-320v-200q0-17-11.5-28.5T800-560q-17 0-28.5 11.5T760-520v160H200v-160q0-17-11.5-28.5T160-560q-17 0-28.5 11.5T120-520v200q0 17 11.5 28.5T160-280Zm120-160h400v-80q0-27 11-49t29-39v-112q0-17-11.5-28.5T680-760H280q-17 0-28.5 11.5T240-720v112q18 17 29 39t11 49v80Zm200 0Zm0 160Zm0-80Z" />
+        <path d="M480-120q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM254-346l-84-86q59-59 138.5-93.5T480-560q92 0 171.5 35T790-430l-84 84q-44-44-102-69t-124-25q-66 0-124 25t-102 69ZM84-516 0-600q92-94 215-147t265-53q142 0 265 53t215 147l-84 84q-77-77-178.5-120.5T480-680q-116 0-217.5 43.5T84-516Z" />
       </svg>
     ),
   },
@@ -82,6 +82,21 @@ const INLINE_FILTER_BUTTONS = [
         fill="currentColor"
       >
         <path d="M480-80q-134 0-227-93t-93-227v-200q0-122 96-201t224-79q128 0 224 79t96 201v440q0 33-23.5 56.5T720-80H480Zm0-80h80q-19-25-29.5-55.5T520-280v-42q-10 1-20 1.5t-20 .5q-67 0-129.5-23.5T240-415v15q0 100 70 170t170 70Zm120-120q0 50 35 85t85 35v-255q-26 26-56 44.5T600-340v60ZM480-400q95 0 167.5-55.5T720-600q0-35-12-65.5T674-720q-64 2-109 48t-45 112q0 17-11.5 28.5T480-520q-17 0-28.5-11.5T440-560q0-66-45-111t-109-48q-22 24-34 54t-12 65q0 89 72.5 144.5T480-400ZM311.5-571.5Q300-583 300-600t11.5-28.5Q323-640 340-640t28.5 11.5Q380-617 380-600t-11.5 28.5Q357-560 340-560t-28.5-11.5Zm280 0Q580-583 580-600t11.5-28.5Q603-640 620-640t28.5 11.5Q660-617 660-600t-11.5 28.5Q637-560 620-560t-28.5-11.5ZM370-778q34 14 62 37t48 52q20-29 47.5-52t61.5-37q-25-11-52.5-16.5T480-800q-29 0-56.5 5.5T370-778Zm430 618H520h280Zm-320 0q-100 0-170-70t-70-170q0 100 70 170t170 70h80-80Zm120-120q0 50 35 85t85 35q-50 0-85-35t-35-85ZM480-689Z" />
+      </svg>
+    ),
+  },
+  {
+    label: "자리 여유",
+    value: "isUsuallySpacious",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="16px"
+        viewBox="0 -960 960 960"
+        width="16px"
+        fill="currentColor"
+      >
+        <path d="M200-120q-17 0-28.5-11.5T160-160v-40q-50 0-85-35t-35-85v-200q0-50 35-85t85-35v-80q0-50 35-85t85-35h400q50 0 85 35t35 85v80q50 0 85 35t35 85v200q0 50-35 85t-85 35v40q0 17-11.5 28.5T760-120q-17 0-28.5-11.5T720-160v-40H240v40q0 17-11.5 28.5T200-120Zm-40-160h640q17 0 28.5-11.5T840-320v-200q0-17-11.5-28.5T800-560q-17 0-28.5 11.5T760-520v160H200v-160q0-17-11.5-28.5T160-560q-17 0-28.5 11.5T120-520v200q0 17 11.5 28.5T160-280Zm120-160h400v-80q0-27 11-49t29-39v-112q0-17-11.5-28.5T680-760H280q-17 0-28.5 11.5T240-720v112q18 17 29 39t11 49v80Zm200 0Zm0 160Zm0-80Z" />
       </svg>
     ),
   },
@@ -132,7 +147,6 @@ const ETC_FILTER_ICON = (
 
 /** [기타] 바텀시트에서 고르는 필터 — value는 StudyPageMap의 matchesFilters와 짝 */
 const ETC_FILTER_OPTIONS = [
-  { label: "와이파이 빵빵", value: "hasWifi" },
   { label: "단체석", value: "hasGroupSeats" },
   { label: "좌석 편한", value: "hasComfortableSeats" },
   { label: "가성비", value: "hasGoodValueDrinks" },
@@ -194,6 +208,8 @@ interface StudyMapNavProps {
   pickReviewPlace: (place: StudyPlaceProps) => void;
   openReviewForm?: (place: StudyPlaceProps) => void;
   getCurrentLocation: () => Promise<CoordinatesProps | null>;
+  /** [임시·영상 촬영용] 인스타 버튼·하단 버튼 줄(현재 위치·가이드)을 숨긴다. */
+  hideExtraButtons?: boolean;
 }
 
 function StudyMapNav({
@@ -218,6 +234,7 @@ function StudyMapNav({
   pickReviewPlace,
   openReviewForm,
   getCurrentLocation,
+  hideExtraButtons = false,
 }: StudyMapNavProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -285,7 +302,7 @@ function StudyMapNav({
     );
   };
 
-  const activeEtcCount = ETC_FILTER_OPTIONS.filter((o) => amenityFilters.includes(o.value)).length;
+  const activeEtcCount =ETC_FILTER_OPTIONS.filter((o) => amenityFilters.includes(o.value)).length;
 
   const resetEtcFilters = () => {
     setAmenityFilters((prev) => prev.filter((v) => !ETC_FILTER_OPTIONS.some((o) => o.value === v)));
@@ -580,7 +597,7 @@ function StudyMapNav({
               )}
               {/* 카공지도 공식 인스타 계정 연결. https URL 이라 Universal/App Link 로
                   인스타 앱이 깔려 있으면 앱이, 아니면 브라우저가 열린다. */}
-              {isCafeMap && (
+              {isCafeMap && !hideExtraButtons && (
                 <Button
                   aria-label="카공지도 인스타그램"
                   rounded="full"
@@ -729,14 +746,14 @@ function StudyMapNav({
         <RightDrawer title="업데이트 소식" onClose={() => setUpdateMenu(false)} isFull={false}>
           <Flex flex={1} overflowY="auto" direction="column" px={4} pt={2}>
             {UPDATE_ITEMS_DESC.map((item) => (
-                <UpdateCard key={item.date + item.isCompleted} {...item} />
-              ))}
+              <UpdateCard key={item.date + item.isCompleted} {...item} />
+            ))}
           </Flex>
         </RightDrawer>
       )}
 
       {/* 하단 버튼 행 (확장 시에만) */}
-      {isMapExpansion && (
+      {isMapExpansion && !hideExtraButtons && (
         <Flex
           flexDir="column"
           pos="absolute"

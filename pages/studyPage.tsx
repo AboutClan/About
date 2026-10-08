@@ -9,6 +9,7 @@ import ControlButton from "@/components/ControlButton";
 import Slide from "@/components/layouts/PageSlide";
 import { STUDY_RESULT_HOUR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useStudyBadgeRankingQuery, useStudySetQuery } from "@/features/study/hooks/queries";
+import { IS_PROMO_STUDY_MOCK } from "@/features/study/lib/promoStudyMock";
 import StudyControlDrawer from "@/features/study/screens/modals/StudyControlDrawer";
 import StudyIntroduceDrawer from "@/features/study/screens/StudyIntroduceDrawer";
 import StudyMyCard from "@/features/studyPage/screens/StudyMyCard";
@@ -206,7 +207,7 @@ export default function StudyPage() {
 
   return (
     <>
-      <StudyPageHeader />
+      {!IS_PROMO_STUDY_MOCK && <StudyPageHeader />}
 
       <Slide>
         {/* 내 스터디 카드는 헤더 바로 아래에 붙인다(사이 여백 없이). */}
@@ -231,7 +232,8 @@ export default function StudyPage() {
       </Slide>
 
       {/* 문구가 신청 여부로 갈리므로 데이터가 온 뒤에 그린다(로딩 중 문구가 바뀌는 깜빡임 방지). */}
-      {studySet && (
+      {/* 홍보 캡처(promo/study-mock 브랜치)에서는 신청 버튼을 숨긴다. */}
+      {studySet && !IS_PROMO_STUDY_MOCK && (
         <ControlButton
           text={hasApplied ? "신청 변경" : "스터디 신청"}
           rightIcon={<CheckIcon />}
