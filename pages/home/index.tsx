@@ -8,7 +8,6 @@ import ChallengeSection from "@/features/home/screens/ChallengeSection";
 import HomeBannerSlide from "@/features/home/screens/HomeBannerSlide";
 import HomeFooter from "@/features/home/screens/HomeFooter";
 import HomeGatherSection from "@/features/home/screens/HomeGatherSection";
-import HomeGroupSection from "@/features/home/screens/HomeGroupSection";
 import HomeHeader from "@/features/home/screens/homeHeader/HomeHeader";
 import HomeHotClubSection from "@/features/home/screens/HomeHotClubSection";
 import HomeInitialSetting from "@/features/home/screens/HomeInitialSetting";
@@ -35,20 +34,22 @@ function Home() {
       </Box>
       <Box h={2} />
       <Slide isNoPadding>
-        <HomeHotClubSection />
+        <HomeGatherSection type="official" />
       </Slide>
       <Slide isNoPadding>
         <HomeStudySection />
       </Slide>
       <Box h={2} />
       <Slide isNoPadding>
-        <HomeGatherSection />
+        <HomeGatherSection type="general" />
+      </Slide>
+      <Slide isNoPadding>
+        <HomeHotClubSection />
       </Slide>
       <Slide>
         <HomeReviewSection />
-      </Slide>{" "}
+      </Slide>
       <Slide isNoPadding>
-        <HomeGroupSection />
         <ChallengeSection />
       </Slide>
       {/* <Slide isNoPadding>
