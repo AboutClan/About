@@ -953,7 +953,22 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
   {
     date: "2026-09-20",
     isCompleted: true,
-    textArr: ["카공지도 시즌2 대규모 업데이트"],
+    textArr: ["카공지도 시즌3 대규모 업데이트"],
+  },
+  {
+    date: "2026-10-01",
+    isCompleted: true,
+    textArr: ["스터디 베타 오픈"],
+  },
+  {
+    date: "2026-10-08",
+    isCompleted: true,
+    textArr: ["AI 평가 기준 상향"],
+  },
+  {
+    date: "2026-10-14",
+    isCompleted: true,
+    textArr: ["카페 정보 추가 및 이미지 변경"],
   },
 
   {
