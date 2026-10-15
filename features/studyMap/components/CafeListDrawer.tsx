@@ -148,9 +148,26 @@ export function getOpenStatus(
 ): { hour: string; isOpen: boolean | null } {
   const hour = place.operatingHours?.[0]?.[1] ?? "";
   if (!hour) return { hour, isOpen: null };
-  const [start, end] = hour.split(" - ");
-  const currentTime = now ?? dayjs().format("HH:mm");
-  return { hour, isOpen: currentTime >= start && currentTime <= end };
+  return { hour, isOpen: isOpenAt(hour, now ?? dayjs().format("HH:mm")) };
+}
+
+const toMinutes = (time?: string) => {
+  const match = time?.trim().match(/^(\d{1,2}):(\d{2})$/);
+  return match ? Number(match[1]) * 60 + Number(match[2]) : null;
+};
+
+// "HH:mm - HH:mm"이 now("HH:mm")에 영업 중인지. 종료가 시작보다 이르면(예: "10:00 - 02:00", "11:00 - 00:00")
+// 자정을 넘기는 영업이라 시작 이후이거나 종료 이전이면 영업 중이다. 형식을 못 읽으면 null.
+export function isOpenAt(hour: string, now: string): boolean | null {
+  const [startText, endText] = hour.split(" - ");
+  const start = toMinutes(startText);
+  // 네이버가 "26:00"처럼 24시를 넘겨 표기하면 다음날 시각으로 본다
+  const rawEnd = toMinutes(endText);
+  const end = rawEnd !== null && rawEnd > 24 * 60 ? rawEnd - 24 * 60 : rawEnd;
+  const current = toMinutes(now);
+  if (start === null || end === null || current === null) return null;
+  if (start === end) return true;
+  return start < end ? current >= start && current < end : current >= start || current < end;
 }
 
 export function CafeCompactCard({
@@ -210,14 +227,16 @@ export function CafeCompactCard({
         {/* 영업 상태 + 영업 시간 */}
         {hour && (
           <Flex align="center" gap={1}>
-            <Box
-              fontSize="11px"
-              fontWeight={600}
-              color={isOpen ? "green.500" : "gray.400"}
-              lineHeight="16px"
-            >
-              {isOpen ? "영업중" : "영업 종료"}
-            </Box>
+            {isOpen !== null && (
+              <Box
+                fontSize="11px"
+                fontWeight={600}
+                color={isOpen ? "green.500" : "gray.400"}
+                lineHeight="16px"
+              >
+                {isOpen ? "영업중" : "영업 종료"}
+              </Box>
+            )}
             <Box fontSize="11px" color="gray.400" lineHeight="16px">
               · {hour}
             </Box>
