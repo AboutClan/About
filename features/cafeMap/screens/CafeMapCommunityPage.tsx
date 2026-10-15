@@ -30,7 +30,7 @@ export default function CafeMapCommunityPage() {
 
   const handleTabClick = (tab: CommunityTab) => {
     if (COMING_SOON_TABS.includes(tab)) {
-      toast("info", `${tab}은 9월 30일 오픈 예정이에요!`);
+      toast("info", `${tab}은 10월 30일 오픈 예정이에요!`);
       return;
     }
     setCommunityTab(tab);
