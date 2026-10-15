@@ -61,6 +61,8 @@ export interface StudyRatingProps {
   user?: string;
   createdAt?: string;
   name?: string;
+  /** 작성자의 몇 번째 후기인지. GET /place/ratings 피드에서만 내려온다 */
+  reviewSeq?: number;
 }
 export interface StudyPlaceProps extends PlaceRegisterProps {
   _id: string;

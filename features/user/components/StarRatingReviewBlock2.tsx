@@ -94,6 +94,16 @@ function StarRatingReviewBlock2({ review, idx }: StarRatingReviewBlockProps) {
           <Flex h="30px" ml={2} flexDir="column" align="start">
             <Box fontSize="11px" color="gray.800">
               {!review?.name || review?.name === "익명" ? `익명 ${idx}` : review.name}
+              {review.reviewSeq > 0 && (
+                <Box
+                  as="span"
+                  ml={1}
+                  fontSize="10px"
+                  color={review.reviewSeq === 1 ? "mint" : "gray.500"}
+                >
+                  {review.reviewSeq === 1 ? "최초 리뷰 작성" : `${review.reviewSeq}번째 리뷰`}
+                </Box>
+              )}
             </Box>
             <Box mt="auto" fontSize="10px" color="gray.500" lineHeight="12px">
               {createdAt ? dayjsToFormat(dayjs(createdAt), "YYYY.MM.DD") : "2026년 5월 17일"}

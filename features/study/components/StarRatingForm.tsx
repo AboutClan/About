@@ -70,7 +70,7 @@ function ReviewForm({ placeId, onClose }: { placeId: string; onClose: () => void
       return;
     }
 
-    mutate({ ...review, comment: text, name: userInfo?.nickname.trim() });
+    mutate({ ...review, comment: text, name: userInfo?.nickname?.trim() ?? "" });
   };
   const router = useRouter();
   return (

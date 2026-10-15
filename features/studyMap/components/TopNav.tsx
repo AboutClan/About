@@ -966,9 +966,9 @@ const UPDATE_ITEMS: { isCompleted: boolean; date: string; textArr: string[] }[] 
     textArr: ["AI 평가 기준 상향"],
   },
   {
-    date: "2026-10-14",
+    date: "2026-10-15",
     isCompleted: true,
-    textArr: ["카페 정보 추가 및 이미지 변경"],
+    textArr: ["커뮤니티 후기에 프로필 닉네임 노출", "후기마다 몇 번째 리뷰인지 표시"],
   },
 
   {
