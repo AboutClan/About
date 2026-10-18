@@ -8,7 +8,16 @@ function RegisterFAQ() {
   const [size, setSize] = useState(3);
 
   const content = [
-    ...ACCORDION_CONTENT_FAQ.slice(0, 2),
+    ACCORDION_CONTENT_FAQ[0],
+    {
+      title: "20대가 지나면 탈퇴해야 하나요?",
+      content: `
+아니요! 나이 제한은 가입일을 기준으로 적용돼요.
+20대에 가입했다면 이후에도 계속 활동할 수 있어요.
+
+실제로 20대 후반 이후의 멤버들이 지속적으로 함께하는
+직장인 모임도 활발하게 운영되고 있어요!`,
+    },
     {
       title: "가입 완료 후에는 어떻게 하나요?",
       content: `
@@ -16,7 +25,7 @@ function RegisterFAQ() {
 어바웃 앱에서는 [동아리 활동 시작하기]를 누르고,
 가입 후 안내되는 [신규 인원 가이드]를 확인해 주세요!`,
     },
-    ...ACCORDION_CONTENT_FAQ.slice(2),
+    ...ACCORDION_CONTENT_FAQ.slice(1),
   ];
 
   return (
