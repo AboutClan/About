@@ -1,6 +1,7 @@
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
+import { UserRating } from "@/features/user/hooks/mutations";
 import { requestServer } from "@/libs/methodHelpers";
 import { MutationOptions } from "@/types/hooks/reactTypes";
 import { GroupMemberRole, IGroup, IGroupWriting } from "@/types/models/groupTypes/group";
@@ -245,6 +246,24 @@ export const useGroupMonthAttendMutation = (
           userId,
           last: false,
         },
+      }),
+    options,
+  );
+
+interface GroupEvaluationParam {
+  infos: { toUid: string; rating: UserRating }[];
+}
+
+export const useGroupEvaluationMutation = (
+  groupId: string,
+  options?: MutationOptions<GroupEvaluationParam>,
+) =>
+  useMutation<void, AxiosError, GroupEvaluationParam>(
+    ({ infos }) =>
+      requestServer<{ groupStudyId: string } & GroupEvaluationParam>({
+        method: "post",
+        url: "groupStudy/evaluation",
+        body: { groupStudyId: groupId, infos },
       }),
     options,
   );

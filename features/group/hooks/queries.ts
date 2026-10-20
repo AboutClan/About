@@ -4,10 +4,12 @@ import { useQuery } from "react-query";
 import { GroupCategoryMain } from "@/constants/contentsText/GroupContents";
 import { GATHER_CONTENT, GROUP_STUDY } from "@/constants/keys/queryKeys";
 import { SERVER_URI } from "@/constants/system";
+import { UserRating } from "@/features/user/hooks/mutations";
 import { IGatherSummary } from "@/pages/review";
 import { QueryOptions } from "@/types/hooks/reactTypes";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { GroupStatus, IGroup, IGroupAttendance } from "@/types/models/groupTypes/group";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 export interface GroupShapShotProps {
   hotClub: IGroup[];
@@ -190,6 +192,53 @@ export const useGroupIdMannerQuery = (
 
       const data = res.data;
       return data;
+    },
+    options,
+  );
+
+export interface GroupEvaluationProps {
+  period: string;
+  start: string;
+  members: UserSimpleInfoProps[];
+  eligible: { user: UserSimpleInfoProps; submitted: boolean }[];
+  canVote: boolean;
+  myRatings: Record<string, UserRating>;
+}
+
+export const useGroupEvaluationQuery = (
+  groupStudyId?: string,
+  options?: QueryOptions<GroupEvaluationProps>,
+) =>
+  useQuery<GroupEvaluationProps, AxiosError, GroupEvaluationProps>(
+    [GROUP_STUDY, "evaluation", groupStudyId],
+    async () => {
+      const res = await axios.get<GroupEvaluationProps>(`${SERVER_URI}/groupStudy/evaluation`, {
+        params: { groupStudyId },
+      });
+      return res.data;
+    },
+    options,
+  );
+
+export interface MannerDetailItem {
+  // 평가자는 익명이라 내려오지 않는다
+  sub: UserRating;
+  date: string;
+  source: "groupMonthly" | null;
+}
+
+export const useGroupMannerDetailQuery = (
+  groupStudyId?: string,
+  options?: QueryOptions<Record<string, MannerDetailItem[]>>,
+) =>
+  useQuery<Record<string, MannerDetailItem[]>, AxiosError, Record<string, MannerDetailItem[]>>(
+    [GROUP_STUDY, "mannerDetail", groupStudyId],
+    async () => {
+      const res = await axios.get<Record<string, MannerDetailItem[]>>(
+        `${SERVER_URI}/groupStudy/manner/detail`,
+        { params: { groupStudyId } },
+      );
+      return res.data;
     },
     options,
   );

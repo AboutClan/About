@@ -2,6 +2,7 @@ import {
   Badge,
   Box,
   Button,
+  Collapse,
   Flex,
   HStack,
   Menu,
@@ -25,8 +26,8 @@ import {
   useGroupRandomTicketMutation,
 } from "@/features/group/hooks/mutations";
 import {
-  GradeProps,
-  useGroupIdMannerQuery,
+  MannerDetailItem,
+  useGroupMannerDetailQuery,
   useGroupsMemberActivityQuery,
 } from "@/features/group/hooks/queries";
 import { useUserRandomTicketMutation } from "@/features/user/hooks/mutations";
@@ -56,6 +57,13 @@ interface AdminSectionProps {
   randomTicket: number;
 }
 
+const RATING_TEXT: Record<MannerDetailItem["sub"], string> = {
+  great: "최고예요😘",
+  good: "좋아요😉",
+  soso: "그냥 그래요😑",
+  block: "불편해요🫤",
+};
+
 export interface SelectMemberProps {
   type: "member" | "ticket" | null;
   userId: string;
@@ -66,12 +74,10 @@ export function AdminSection({ groupId, users, randomTicket }: AdminSectionProps
   const typeToast = useTypeToast();
   const queryClient = useQueryClient();
 
-  const { data } = useGroupIdMannerQuery(groupId, null, { enabled: !!groupId });
+  const { data } = useGroupMannerDetailQuery(groupId, { enabled: !!groupId });
   const { data: activityData } = useGroupsMemberActivityQuery(groupId, "last", {
     enabled: !!groupId,
   });
-
-  console.log(3, data);
 
   const { mutate: changeRole, isLoading: isLoading1 } = useGroupMemberRoleMutation(+groupId, {
     onSuccess() {
@@ -171,7 +177,7 @@ function UserBlock({
   isLoading,
 }: {
   who: GroupParicipantProps;
-  data: GradeProps[];
+  data: Record<string, MannerDetailItem[]>;
   activityData: {
     user: string;
     monthGatherCount: number;
@@ -182,14 +188,16 @@ function UserBlock({
 }) {
   const userInfo = useUserInfo();
 
-  const grade =
-    data &&
-    (data[who.user.uid] as {
-      great: number;
-      good: number;
-      soso: number;
-      block: number;
-    });
+  const [isOpen, setIsOpen] = useState(false);
+
+  // 평가자별 가장 최근 평가 1건으로 등급 계산
+  const received = (data?.[who.user.uid] ?? []).filter((item) => item.sub in RATING_TEXT);
+  const grade = received.length
+    ? received.reduce(
+        (acc, item) => ({ ...acc, [item.sub]: acc[item.sub] + 1 }),
+        { great: 0, good: 0, soso: 0, block: 0 },
+      )
+    : undefined;
   const { total, value } = calculateGrade(grade);
 
   const role = who?.role;
@@ -308,6 +316,45 @@ function UserBlock({
               </Box>
             </Flex>
           </Flex>
+          <Button
+            w="full"
+            h="32px"
+            variant="ghost"
+            borderRadius={0}
+            borderTop="1px solid"
+            borderColor="gray.100"
+            bg="white"
+            fontSize="12px"
+            color="gray.600"
+            rightIcon={<ShortArrowIcon dir={isOpen ? "top" : "bottom"} size="sm" />}
+            onClick={() => setIsOpen((old) => !old)}
+          >
+            {isOpen ? "닫기" : "열기"}
+          </Button>
+          <Collapse in={isOpen} animateOpacity>
+            <Box bg="white" borderTop="1px solid" borderColor="gray.100" px={3} py={2}>
+              {received.length ? (
+                received.map((item, idx) => (
+                  <Flex key={idx} align="center" py={1.5}>
+                    <Box fontSize="12px" fontWeight="semibold" color="gray.500">
+                      익명 멤버
+                    </Box>
+                    <Box ml="auto" fontSize="12px" fontWeight="semibold" color="gray.700">
+                      {RATING_TEXT[item.sub]}
+                    </Box>
+                    <Box ml={2} fontSize="11px" color="gray.500" textAlign="right" minW="72px">
+                      {dayjsToFormat(dayjs(item.date), "YY.MM.DD")} ·{" "}
+                      {item.source === "groupMonthly" ? "월간" : "모임"}
+                    </Box>
+                  </Flex>
+                ))
+              ) : (
+                <Box py={2} fontSize="12px" color="gray.500" textAlign="center">
+                  받은 평가가 없어요
+                </Box>
+              )}
+            </Box>
+          </Collapse>
         </Box>
       </Flex>
     </>

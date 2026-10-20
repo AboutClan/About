@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import { useGroupIdQuery } from "@/features/group/hooks/queries";
 import { AdminSection } from "@/features/group/screens/admin/AdminSection";
 import DeleteSection from "@/features/group/screens/admin/DeleteSection";
 import { InviteSection } from "@/features/group/screens/admin/InviteSection";
+import { useToast } from "@/hooks/custom/CustomToast";
 import { GroupParicipantProps } from "@/types/models/groupTypes/group";
 
 const TAB_ARR = ["참여 인원 관리", "신청 인원 확인", "내보내기/보증금"] as const;
@@ -18,6 +19,7 @@ type Tab = (typeof TAB_ARR)[number];
 
 function Admin() {
   const router = useRouter();
+  const toast = useToast();
   const id = Array.isArray(router.query.id) ? router.query.id[0] : router.query.id;
 
   const { data: group } = useGroupIdQuery(id, { enabled: !!id });
@@ -44,13 +46,31 @@ function Admin() {
           isFullSize
           isBlack
         />
-        <Box px={5} pt={3}>
-          <Link href={`/group/${id}/profile`}>
+        <Flex px={5} pt={3} gap={2}>
+          <Link href={`/group/${id}/profile`} style={{ flex: 1 }}>
             <Button w="100%" size="sm" variant="outline" colorScheme="gray">
               멤버 프로필 모아보기
             </Button>
           </Link>
-        </Box>
+          <Button
+            flex={1}
+            size="sm"
+            variant="outline"
+            colorScheme="gray"
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(
+                  `https://about20s.club/group/${id}/evaluation`,
+                );
+                toast("success", "월간 평가 링크를 복사했어요.");
+              } catch {
+                toast("error", "복사에 실패했습니다.");
+              }
+            }}
+          >
+            월간 평가 링크 복사
+          </Button>
+        </Flex>
         {tab === "참여 인원 관리" ? (
           <AdminSection
             groupId={id}
