@@ -14,7 +14,7 @@ interface RegisterInviteProps {
   fee: number;
 }
 
-const CLUB_UID_ARR = ["5006986335", "5006950630"];
+const CLUB_UID_ARR = ["5006986335", "5006950630", "5143952296", "5143942568"];
 
 // 실제 회원 코드가 아닌, 고정 할인 금액을 주는 프로모션 코드
 const PROMOTION_CODE_DISCOUNTS: Record<string, number> = {
