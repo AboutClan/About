@@ -25,9 +25,9 @@ import GatherGuide from "@/features/gather/screens/detail/GatherGuide";
 import GatherHeader from "@/features/gather/screens/detail/GatherHeader";
 import GatherParticipation from "@/features/gather/screens/detail/GatherParticipation";
 import GatherTitle from "@/features/gather/screens/detail/GatherTitle";
+import RegularGatherApplicants from "@/features/gather/screens/detail/RegularGatherApplicants";
 import RegularGatherConfirmedList from "@/features/gather/screens/detail/RegularGatherConfirmedList";
 import RegularGatherSchedule from "@/features/gather/screens/detail/RegularGatherSchedule";
-import { getRegularApplicants } from "@/features/gather/utils/regularGather";
 import { GroupThumbnailCard } from "@/features/group/components/GroupThumbnailCard";
 import { useGroupIdQuery } from "@/features/group/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
@@ -177,10 +177,7 @@ function GatherDetail() {
               <Divider />
               {isRegularGather ? (
                 <>
-                  <GatherParticipation
-                    data={{ ...gather, participants: getRegularApplicants(gather) }}
-                    gatherType={gather.category}
-                  />
+                  <RegularGatherApplicants data={gather} />
                   <RegularGatherConfirmedList gatherId={gather.id} />
                 </>
               ) : (

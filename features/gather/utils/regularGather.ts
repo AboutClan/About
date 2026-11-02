@@ -1,12 +1,6 @@
 import dayjs from "dayjs";
 
-import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
-import {
-  IGather,
-  IGatherParticipants,
-  IRegularContent,
-  IRegularSlot,
-} from "@/types/models/gatherTypes/gatherTypes";
+import { IGather, IRegularContent, IRegularSlot } from "@/types/models/gatherTypes/gatherTypes";
 
 /**
  * 상시 행사(regularGather) 공통 계산.
@@ -56,23 +50,6 @@ export const formatSlot = (slot: IRegularSlot) =>
 const isThisRound = (gather: Pick<IGather, "formStats">) =>
   gather.formStats?.roundKey === getCurrentRoundKey();
 
-/** 이번 주 전체 신청 인원(표시용으로 부풀린 값). 지난 주 집계면 0에서 시작한다. */
-export const getRegularApplicantCount = (gather: Pick<IGather, "formStats" | "id">) =>
-  getApplicantCount(0, isThisRound(gather) ? gather.formStats.total : 0, gather.id);
-
-/**
- * 이번 주 일정·콘텐츠별 신청 인원(표시용으로 부풀린 값).
- * 전체 인원에 더한 보정치(id % 10)를 같은 묶음의 선택지 수로 나눠 붙여, 묶음 합이 전체 표시값을 넘지 않게 한다.
- */
-export const getOptionApplicantCount = (
-  gather: Pick<IGather, "formStats" | "id">,
-  optionKey: string,
-  groupSize: number,
-) => {
-  const real = isThisRound(gather) ? (gather.formStats.byOption?.[optionKey] ?? 0) : 0;
-  return real + Math.floor((gather.id % 10) / Math.max(groupSize, 1));
-};
-
 /** 내가 이번 주에 앱에서 신청했는지 (waiting.createdAt 기준) */
 export const isAppliedThisRound = (gather: Pick<IGather, "waiting">, userId?: string) => {
   if (!userId) return false;
@@ -83,22 +60,113 @@ export const isAppliedThisRound = (gather: Pick<IGather, "waiting">, userId?: st
   );
 };
 
-/** 이번 주(월요일 00:00 이후)에 앱에서 신청한 대기열 */
-export const getThisRoundWaitings = <W extends { createdAt?: string }>(waitings: W[] = []) => {
-  const roundStart = getRoundStart();
-  return waitings.filter((who) => !!who.createdAt && !dayjs(who.createdAt).isBefore(roundStart));
+/** 화면에 보여 줄 신청자 한 명. 가짜 인원(isFake)도 같은 모양이다. */
+export interface RegularApplicant {
+  id: string;
+  gender: "남성" | "여성" | null;
+  age: number | null;
+  keys: string[];
+  submittedAt: string | null;
+  isFake: boolean;
+}
+
+/** 시드가 같으면 늘 같은 난수열 (mulberry32) */
+const seededRandom = (seedText: string) => {
+  let seed = 2166136261;
+  for (let i = 0; i < seedText.length; i++)
+    seed = Math.imul(seed ^ seedText.charCodeAt(i), 16777619);
+  return () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 };
 
+const pickSome = <T>(items: T[], random: () => number, max = 2) => {
+  if (!items.length) return [];
+  const count = Math.min(items.length, 1 + Math.floor(random() * max));
+  return [...items].sort(() => random() - 0.5).slice(0, count);
+};
+
+/** 남성:여성이 2:1을 넘지 않게 채울 가짜 여성 수 */
+const getFakeFemaleCount = (male: number, female: number) =>
+  Math.max(0, Math.ceil(male / 2) - female);
+
 /**
- * 상시 행사 신청자 목록: 기존 참여자(운영용 더미 포함) + 이번 주 앱 신청자.
- * 구글폼으로만 신청한 사람은 프로필이 없어 인원수(formStats)에만 반영된다.
+ * 상시 행사 이번 주 신청자 목록(최근 신청 순).
+ * 구글폼 신청자(formStats.applicants)에 남성:여성이 2:1을 넘지 않도록 가짜 여성 신청자를 더한다.
+ * 가짜 인원은 행사 id·주차·순번으로 시드를 고정해 새로고침해도 같은 사람이 같은 자리에 나온다.
  */
-export const getRegularApplicants = (
-  gather: Pick<IGather, "participants" | "waiting">,
-): IGatherParticipants[] => [
-  ...(gather.participants ?? []),
-  ...getThisRoundWaitings(gather.waiting).map((who) => ({ user: who.user, phase: who.phase })),
-];
+export const buildRegularApplicants = (
+  gather: Pick<IGather, "id" | "age" | "formStats" | "slots" | "contents">,
+): RegularApplicant[] => {
+  const currentYear = dayjs().year();
+  const real: RegularApplicant[] = (
+    isThisRound(gather) ? (gather.formStats.applicants ?? []) : []
+  ).map((applicant, idx) => ({
+    id: `real-${idx}`,
+    gender: applicant.gender,
+    age: applicant.birthYear ? currentYear - applicant.birthYear : null,
+    keys: applicant.keys ?? [],
+    submittedAt: applicant.submittedAt,
+    isFake: false,
+  }));
+
+  const male = real.filter((a) => a.gender === "남성").length;
+  const female = real.filter((a) => a.gender === "여성").length;
+  const fakeCount = getFakeFemaleCount(male, female);
+
+  // 가짜 인원이 고를 선택지: 지난 날짜는 빼고, 콘텐츠 전용 일정은 그 콘텐츠도 함께 고른 것으로 친다.
+  const visibleSlots = getVisibleSlots(gather.slots);
+  const commonSlots = visibleSlots.filter((slot) => !slot.contentKey);
+  const linkedSlots = visibleSlots.filter((slot) => !!slot.contentKey);
+  const freeContents = (gather.contents ?? []).filter(
+    (content) => !(gather.slots ?? []).some((slot) => slot.contentKey === content.key),
+  );
+
+  const [ageMin, ageMax] =
+    gather.age?.length === 2
+      ? [Math.max(gather.age[0], 20), Math.min(gather.age[1], 27)]
+      : [21, 26];
+  const [lo, hi] = ageMin <= ageMax ? [ageMin, ageMax] : [21, 26];
+
+  const roundStart = getRoundStart();
+  const lastSync = gather.formStats?.updatedAt ? dayjs(gather.formStats.updatedAt) : roundStart;
+  const span = Math.max(lastSync.diff(roundStart), 0);
+
+  const fakes: RegularApplicant[] = Array.from({ length: fakeCount }, (_, idx) => {
+    const random = seededRandom(`${gather.id}-${getCurrentRoundKey()}-${idx}`);
+    const keys = new Set<string>();
+    pickSome(commonSlots, random).forEach((slot) => keys.add(slot.key));
+    pickSome(linkedSlots, random).forEach((slot) => {
+      keys.add(slot.key);
+      keys.add(slot.contentKey);
+    });
+    pickSome(freeContents, random).forEach((content) => keys.add(content.key));
+    return {
+      id: `fake-${idx}`,
+      gender: "여성",
+      age: lo + Math.floor(random() * (hi - lo + 1)),
+      keys: Array.from(keys),
+      submittedAt: roundStart.add(Math.floor(random() * span), "ms").toISOString(),
+      isFake: true,
+    };
+  });
+
+  return [...real, ...fakes].sort(
+    (a, b) => dayjs(b.submittedAt ?? 0).valueOf() - dayjs(a.submittedAt ?? 0).valueOf(),
+  );
+};
+
+/** 신청자 목록에서 slot·content key별 인원 */
+export const countApplicantsByOption = (applicants: RegularApplicant[]) => {
+  const counts: Record<string, number> = {};
+  applicants.forEach((applicant) =>
+    applicant.keys.forEach((key) => (counts[key] = (counts[key] ?? 0) + 1)),
+  );
+  return counts;
+};
 
 /** 매주 일정이 있으면 "매주 금·토·일", 날짜 일정만 있으면 "11.7 ~ 11.15" */
 export const summarizeSchedule = (slots: IRegularSlot[] = []) => {

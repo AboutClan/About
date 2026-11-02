@@ -11,8 +11,7 @@ import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOver
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
 import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
 import {
-  getRegularApplicantCount,
-  getThisRoundWaitings,
+  buildRegularApplicants,
   summarizeLocation,
   summarizeSchedule,
 } from "@/features/gather/utils/regularGather";
@@ -104,13 +103,13 @@ export function GatherThumbnailCard({
 
   const isAdmin = userInfo?.role === "previliged";
 
-  // 상시 행사는 참여자 대신 신청자(기존 참여자 + 이번 주 앱 신청자)를 보여 준다.
+  // 상시 행사는 참여자 대신 이번 주 신청자(구글폼 신청자 + 성비 보정 인원)를 익명으로 보여 준다.
   const participantsMember: IGatherParticipants[] =
     gatherType === "regularGather"
-      ? [
-          ...participants,
-          ...getThisRoundWaitings(waitings).map((who) => ({ user: who.user, phase: who.phase })),
-        ]
+      ? buildRegularApplicants({ id, age, formStats, slots, contents }).map(() => ({
+          user: SECRET_USER_SUMMARY as unknown as UserSimpleInfoProps,
+          phase: "first",
+        }))
       : maxCnt !== 1 &&
           gatherType !== "openGather" &&
           gatherType !== "secretGather" &&
@@ -188,14 +187,8 @@ export function GatherThumbnailCard({
                 </Badge>
               )}
             </Flex>
-            {isRegular ? (
-              <Box fontSize="12px" fontWeight={400} color="gray.500">
-                이번 주 신청{" "}
-                <Box as="span" fontWeight={600}>
-                  {getRegularApplicantCount({ formStats, id })}명
-                </Box>
-              </Box>
-            ) : gatherType === "officialGather" ? (
+            {/* 상시 행사는 아래 아바타 줄이 신청자 기준이라 오른쪽 위 인원은 따로 표시하지 않는다 */}
+            {isRegular ? null : gatherType === "officialGather" ? (
               <Box fontSize="12px" fontWeight={400} color="gray.500">
                 {status === "pending" ? "현재 신청중인 인원" : "총 신청 인원"}{" "}
                 <Box as="span" fontWeight={600}>

@@ -1,12 +1,12 @@
 import { Badge, Box, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import Divider from "@/components/atoms/Divider";
 import {
+  buildRegularApplicants,
+  countApplicantsByOption,
   formatSlot,
-  getOptionApplicantCount,
-  getRegularApplicantCount,
   getVisibleSlots,
 } from "@/features/gather/utils/regularGather";
 import StudyAddressMap from "@/features/study/screens/StudyAddressMap";
@@ -35,20 +35,14 @@ function RegularGatherSchedule({ data }: RegularGatherScheduleProps) {
     return !hasOwnSlots || visibleSlots.some((slot) => slot.contentKey === content.key);
   });
 
+  // 신청자 목록(가짜 인원 포함)과 같은 기준으로 일정·콘텐츠별 인원을 센다.
+  const optionCounts = useMemo(() => countApplicantsByOption(buildRegularApplicants(data)), [data]);
+
   const toggleMap = (key: string) => setOpenMapKey((prev) => (prev === key ? null : key));
 
   return (
     <>
       <Box px={5} pb={4}>
-        <Flex justify="flex-end" mb={2}>
-          <Text fontSize="12px" color="gray.500">
-            이번 주 신청{" "}
-            <Box as="span" fontWeight={600}>
-              {getRegularApplicantCount(data)}명
-            </Box>
-          </Text>
-        </Flex>
-
         {data.location?.main && (
           <LocationRow
             mapKey="common"
@@ -73,7 +67,7 @@ function RegularGatherSchedule({ data }: RegularGatherScheduleProps) {
                     {formatSlot(slot)}
                   </Text>
                   <Text fontSize="11px" color="gray.500">
-                    신청 {getOptionApplicantCount(data, slot.key, commonSlots.length)}명
+                    신청 {optionCounts[slot.key] ?? 0}명
                   </Text>
                 </Flex>
               ))}
@@ -100,7 +94,7 @@ function RegularGatherSchedule({ data }: RegularGatherScheduleProps) {
                         {CIRCLED_NUMBERS[idx] ?? `${idx + 1}.`} {content.title}
                       </Text>
                       <Text fontSize="11px" color="gray.500" flexShrink={0} lineHeight="20px">
-                        신청 {getOptionApplicantCount(data, content.key, contents.length)}명
+                        신청 {optionCounts[content.key] ?? 0}명
                       </Text>
                     </Flex>
                     {content.badge && (

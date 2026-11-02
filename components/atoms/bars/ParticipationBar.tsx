@@ -5,9 +5,17 @@ interface ParticipationBarProps {
   participantsCnt: number;
   maxCnt?: number;
   rightText?: React.ReactNode;
+  /** 기본 문구("참여 인원"/"참여중인 인원") 대신 쓸 제목 */
+  label?: string;
 }
 
-function ParticipationBar({ type, participantsCnt, maxCnt = 8, rightText }: ParticipationBarProps) {
+function ParticipationBar({
+  type,
+  participantsCnt,
+  maxCnt = 8,
+  rightText,
+  label,
+}: ParticipationBarProps) {
   return (
     <Flex
       align="center"
@@ -18,7 +26,7 @@ function ParticipationBar({ type, participantsCnt, maxCnt = 8, rightText }: Part
       borderBottom="var(--border)"
     >
       <Flex align="center">
-        <span>{type === "open" ? "참여 인원" : "참여중인 인원"}</span>
+        <span>{label ?? (type === "open" ? "참여 인원" : "참여중인 인원")}</span>
         <Box as="span" ml={2} color={participantsCnt <= maxCnt ? "mint" : "red"}>
           {participantsCnt}
         </Box>

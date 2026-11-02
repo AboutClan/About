@@ -12,7 +12,6 @@ import GatherDateParticipationChart, {
 } from "@/features/gather/screens/detail/GatherDateParticipationChart";
 import GatherOfficialParticipationChart from "@/features/gather/screens/detail/GatherOfficialParticipationChart";
 import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
-import { getRegularApplicantCount } from "@/features/gather/utils/regularGather";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   GatherCategory,
@@ -38,12 +37,9 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   const isMyGather = data.participants?.some((p) => p.user?._id === userInfo?._id);
 
   const isPrivileged = userInfo?.role === "previliged";
-  // 상시 행사는 data.participants에 신청자 목록(getRegularApplicants)을 넣어 넘긴다.
-  const isRegularGather = gatherType === "regularGather";
   const isAnonymizedGather =
     gatherType === "openGather" ||
     gatherType === "officialGather" ||
-    isRegularGather ||
     (gatherType === "secretGather" && !isMyGather);
 
   const [isRevealed, setIsRevealed] = useState(false);
@@ -135,7 +131,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
       memo:
         gatherType === "openGather"
           ? getOpenGatherMemo(par)
-          : gatherType === "officialGather" || isRegularGather
+          : gatherType === "officialGather"
             ? getGenderAgeMemo(par)
             : gatherType === "secretGather" && !isMyGather
               ? `익명 참여자 ${idx + 1}`
@@ -156,14 +152,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
           participantsCnt={participantsCnt + (isAdminOpen ? 0 : 1)}
           maxCnt={data?.memberCnt.max}
           rightText={
-            isRegularGather ? (
-              <>
-                이번 주 신청 인원{" "}
-                <Box as="span" fontWeight={600}>
-                  {getRegularApplicantCount(data)}명
-                </Box>
-              </>
-            ) : gatherType === "officialGather" ? (
+            gatherType === "officialGather" ? (
               <>
                 {status === "pending" ? "현재 신청중인 인원" : "총 신청 인원"}{" "}
                 <Box as="span" fontWeight={600}>
@@ -194,12 +183,6 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
         <GatherDateParticipationChart stats={dateParticipationStats} minRequired={5} />
       )}
       {gatherType === "officialGather" && <GatherOfficialParticipationChart data={data} />}
-      {isRegularGather && (
-        <GatherOfficialParticipationChart
-          data={data}
-          applicantLabel={{ text: "이번 주 신청 인원", count: getRegularApplicantCount(data) }}
-        />
-      )}
     </>
   );
 }

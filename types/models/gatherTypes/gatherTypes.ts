@@ -50,7 +50,17 @@ export interface IRegularFormStats {
   roundKey: string;
   total: number;
   byOption: Record<string, number>;
+  /** 이번 주 구글폼 신청자(익명). 이름·연락처는 없다. */
+  applicants?: IRegularFormApplicant[];
   updatedAt: string;
+}
+
+export interface IRegularFormApplicant {
+  gender: "남성" | "여성" | null;
+  birthYear: number | null;
+  /** 고른 slot·content key */
+  keys: string[];
+  submittedAt: string | null;
 }
 
 export interface IGatherDateOption {
