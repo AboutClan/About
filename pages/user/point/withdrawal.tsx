@@ -11,6 +11,7 @@ import RegisterOverview from "@/features/register/screens/RegisterOverview";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useUserRequestMutation } from "@/features/user/hooks/sub/request/mutations";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
+import { getDisplayName } from "@/utils/stringUtils";
 
 function WithDrawel() {
   const router = useRouter();
@@ -51,7 +52,7 @@ function WithDrawel() {
           <span>아래 정보를 정확하게 입력해 주세요</span>
         </RegisterOverview>
         <Box py={3} mb={5} mt={-5}>
-          <Box fontSize="11px">{userInfo?.name.slice(1)}님의 보유 포인트</Box>
+          <Box fontSize="11px">{getDisplayName(userInfo)}님의 보유 포인트</Box>
           <Box fontSize="20px" fontWeight="semibold" color="mint">
             {userInfo?.point} Point
           </Box>

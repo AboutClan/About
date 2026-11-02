@@ -10,6 +10,7 @@ import { usePointSystemMutation, useUserTicketMutation } from "@/features/user/h
 import { useTicketSystemLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 function GatherTicketLogSection() {
   const toast = useToast();
@@ -54,7 +55,7 @@ function GatherTicketLogSection() {
         <Box mt="56px">
           <Flex px={5} justify="space-between" align="center">
             <Box py={4}>
-              <Box fontSize="11px">{userInfo?.name.slice(1)}님의 보유 티켓</Box>
+              <Box fontSize="11px">{getDisplayName(userInfo)}님의 보유 티켓</Box>
               <Box fontSize="20px" fontWeight="semibold">
                 {userInfo?.ticket?.gatherTicket}개
               </Box>

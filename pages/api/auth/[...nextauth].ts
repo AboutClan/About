@@ -24,6 +24,7 @@ const GUEST_USER = {
   id: "69c4f9ce862f5d10130252ab",
   uid: "1234567890",
   name: "guest",
+  nickname: "게스트",
   role: "guest",
   isActive: false,
   profileImage: "",
@@ -33,6 +34,7 @@ const TEST_USER = {
   id: "6938e715ec55cba47b90954d",
   uid: "1234567898",
   name: "테스트",
+  nickname: "테스트",
   role: "member",
   isActive: true,
   profileImage: DEFAULT_PROFILE_IMAGE,
@@ -248,6 +250,7 @@ function buildAuthOptions(): NextAuthOptions {
               (user as any).uid = realUser.uid;
               (user as any).role = realUser.role;
               user.name = realUser.name;
+              (user as any).nickname = realUser.nickname ?? "";
               user.id = realUser.id;
               (user as any).isActive = realUser.isActive ?? false;
               (user as any).profileImage = realUser.profileImage || DEFAULT_PROFILE_IMAGE;
@@ -274,6 +277,7 @@ function buildAuthOptions(): NextAuthOptions {
             if (findUser) {
               (user as any).role = findUser.role;
               user.name = findUser.name ?? user.name;
+              (user as any).nickname = findUser.nickname ?? "";
               (user as any).uid = findUser.uid ?? userUid;
               user.id = findUser.id ?? user.id;
 
@@ -353,7 +357,7 @@ function buildAuthOptions(): NextAuthOptions {
         return baseUrl;
       },
       async session({ session, token, user, trigger }) {
-        if (trigger === "update") return session;
+        // 닉네임 수정 후 update()로 갱신할 수 있도록 update도 토큰 기준으로 다시 만든다(jwt 콜백이 DB에서 nickname을 다시 읽음)
         // uid "1234567890"은 guest/credentials 전용 하드코딩 UID — 실제 OAuth 유저는 절대 이 값을 가지지 않음
         // name 기반 판별을 제거해 실제 유저 name이 "게스트"일 때 MEMBER_GUEST_USER로 오인하는 문제 방지
         if (token.uid === "1234567890") {
@@ -363,6 +367,7 @@ function buildAuthOptions(): NextAuthOptions {
             id: token.id,
             uid: token.uid,
             name: token.name ?? "",
+            nickname: token.nickname ?? "",
             role: token.role,
             isActive: token.isActive,
             profileImage: token.profileImage,
@@ -375,6 +380,24 @@ function buildAuthOptions(): NextAuthOptions {
 
       async jwt({ token, account, user, trigger }) {
         try {
+          // 닉네임은 로그인 이후 바뀔 수 있고, 닉네임 도입 전에 발급된 토큰에는 아예 없다.
+          // update() 호출 시, 또는 토큰에 닉네임이 없을(없거나 빈 값) 때 DB에서 읽어 채운다.
+          // 빈 값도 다시 읽는 건 가입 승인·일괄 부여로 로그인 이후에 닉네임이 생기기 때문.
+          // 닉네임이 생기면 그 뒤로는 읽지 않는다.
+          if (
+            token.uid &&
+            token.uid !== "1234567890" &&
+            (trigger === "update" || !token.nickname)
+          ) {
+            try {
+              await dbConnect();
+              const found = await User.findOne({ uid: token.uid }, { nickname: 1 }).lean();
+              token.nickname = (found as any)?.nickname ?? "";
+            } catch (e) {
+              console.error("[jwt] nickname 조회 실패", e);
+            }
+          }
+
           if (trigger === "update") {
             return token;
           }
@@ -420,6 +443,7 @@ function buildAuthOptions(): NextAuthOptions {
                 id: user.id ?? token.id,
                 uid: user.uid ?? token.uid,
                 name: user.name ?? token.name ?? "",
+                nickname: (user as { nickname?: string }).nickname ?? token.nickname ?? "",
                 profileImage: user.profileImage ?? token.profileImage ?? "",
                 role: user.role ?? token.role ?? "newUser",
                 isActive: user.isActive ?? token.isActive ?? false,

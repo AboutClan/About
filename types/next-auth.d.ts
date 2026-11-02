@@ -11,6 +11,7 @@ declare module "next-auth/jwt" {
     id?: string;
     uid?: string;
     name?: string;
+    nickname?: string;
     profileImage?: string;
     role?: UserRole;
     isActive?: boolean;
@@ -99,6 +100,7 @@ declare module "next-auth" {
       id: string;
       uid: string;
       name: string;
+      nickname?: string;
       role: UserRole;
       isActive: boolean;
       profileImage: string;

@@ -7,6 +7,7 @@ import Select from "@/components/atoms/Select";
 import TabNav, { ITabNavOptions } from "@/components/molecules/navs/TabNav";
 import { usePointSystemLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 function UserLogSection() {
   const [tab, setTab] = useState<"score" | "point" | "deposit">("score");
@@ -32,7 +33,7 @@ function UserLogSection() {
       <Box px={5}>
         <Box py={3}>
           <Box fontSize="11px">
-            {userInfo?.name.slice(1)}님의 보유{" "}
+            {getDisplayName(userInfo)}님의 보유{" "}
             {tab === "score" ? "점수" : tab === "point" ? "포인트" : "보증금"}
           </Box>
           <Box fontSize="20px" fontWeight="semibold">

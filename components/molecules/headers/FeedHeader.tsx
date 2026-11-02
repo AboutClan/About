@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import Avatar from "@/components/atoms/Avatar";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { getDisplayName } from "@/utils/stringUtils";
 interface IFeedHeader {
   writer: UserSimpleInfoProps;
   date: string;
@@ -13,7 +14,7 @@ function FeedHeader({ writer, date }: IFeedHeader) {
       <Profile>
         <Avatar user={writer} size="sm1" />
         <div>
-          <Writer>{writer.name}</Writer>
+          <Writer>{getDisplayName(writer)}</Writer>
           <span>{date}</span>
         </div>
       </Profile>

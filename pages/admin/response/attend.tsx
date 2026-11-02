@@ -23,7 +23,7 @@ function CheckAttendWinner() {
                 <Wrapper>
                   <ItemHeader>
                     <span>
-                      {item.writer.name}({item.writer.uid})
+                      {item.writer.name}{item.writer.nickname ? `(${item.writer.nickname})` : ""}({item.writer.uid})
                     </span>
                     <span>{dayjs(item.updatedAt).format("M월 D일 H시 m분")}</span>
                   </ItemHeader>

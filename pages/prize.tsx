@@ -10,6 +10,7 @@ import IconRowBlock2 from "@/components/molecules/IconRowBlock2";
 import { usePrizeQuery } from "@/constants/prize/queries";
 import { HomeIcon, RankingIconImage, StoreIconImage } from "@/features/home/screens/HomeNav";
 import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 function Prize() {
   const [cursor, setCursor] = useState(0);
@@ -105,7 +106,7 @@ function Prize() {
                         <Flex flexDir="column" align="center" justify="center">
                           <Avatar user={{ ...log.winner }} size="xs1" />
                           <Box fontSize="10px" mt={1}>
-                            {log.winner.name}
+                            {getDisplayName(log.winner)}
                           </Box>
                         </Flex>
                       }
@@ -130,7 +131,7 @@ function Prize() {
                       <Flex flexDir="column" align="center">
                         <Avatar user={{ ...log.winner }} size="xs1" />
                         <Box fontSize="10px" mt={1}>
-                          {log.winner.name}
+                          {getDisplayName(log.winner)}
                         </Box>
                       </Flex>
                     }

@@ -17,6 +17,7 @@ import { useStoreQuery } from "@/features/store/hooks/queries";
 import { useHasMemership } from "@/hooks/custom/UserHooks";
 import { IStoreApplicant, IStoreGift, StoreGiftProps } from "@/types/models/store";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
+import { getDisplayName } from "@/utils/stringUtils";
 
 export interface IGiftEntry extends IStoreGift {
   users: IStoreApplicant[];
@@ -129,7 +130,7 @@ function StorePage() {
         ?.filter((props) => props.description.split(" "))
         ?.slice(0, 5)
         ?.map((props) => ({
-          name: props.winner.name.slice(0, 1) + "*" + props.winner.name.slice(2),
+          name: getDisplayName(props.winner),
           gift: props.gift,
         })),
     );

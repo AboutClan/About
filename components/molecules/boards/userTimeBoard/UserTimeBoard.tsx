@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { transformToUserBlocks } from "@/components/molecules/boards/userTimeBoard/_lib/transformToUserBlocks";
 import { COLOR_400_ARR } from "@/constants/colorConstants";
 import { STUDY_VOTE_HOUR_ARR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
-import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { TimeRangeProps } from "@/types/models/utilTypes";
-import { maskUserName } from "@/utils/stringUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 export interface ITimeBoardParticipant {
   name: string;
+  nickname?: string;
   time: TimeRangeProps;
 }
 
@@ -22,15 +22,12 @@ interface IUserTimeBlock {
   startToEndInterval: number;
   startInterval: number;
   name: string;
+  nickname?: string;
   start: string;
   end: string;
 }
 
-export default function UserTimeBoard({ members, isCafeMap }: ITimeBoard) {
-  const isGuest = useCheckGuest();
-  // 카공지도는 로그인 회원(role !== guest)도 어바웃 실명을 보면 안 된다.
-  const isMasked = isGuest || isCafeMap;
-
+export default function UserTimeBoard({ members }: ITimeBoard) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [blockWidth, setBlockWidth] = useState<number>(0);
   const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);
@@ -92,7 +89,7 @@ export default function UserTimeBoard({ members, isCafeMap }: ITimeBoard) {
                 py={0.5}
                 bg={COLOR_400_ARR[idx]}
               >
-                {isMasked ? maskUserName(props.name) : props.name}
+                {getDisplayName(props)}
                 <br />
                 {props.start} - {props.startToEndInterval >= 2 && props.end}
               </Box>

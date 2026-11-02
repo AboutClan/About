@@ -162,7 +162,10 @@ function UserSection({ user }: { user: IUser }) {
 
   return (
     <SectionItem>
-      <Item>{user.name}</Item>
+      <Item>
+        {user.name}
+        {user.nickname ? `(${user.nickname})` : ""}
+      </Item>
       <Select
         defaultValue={user.role}
         onChange={(e) => onRoleChanged(e.target.value as UserRole, user)}

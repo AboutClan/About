@@ -31,6 +31,9 @@ export const UserSchema: Schema<IUser> = new Schema({
     type: String,
     required: true,
   },
+  nickname: {
+    type: String,
+  },
   registerDate: {
     type: String,
     default: "",

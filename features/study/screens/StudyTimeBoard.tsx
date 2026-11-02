@@ -16,6 +16,7 @@ export default function StudyTimeBoard({ members, isCafeMap }: IStudyTimeBoard) 
 const transformToTimeBoardProp = (members: StudyConfirmedMemberProps[]) => {
   return members.map((par) => ({
     name: par.user.name,
+    nickname: par.user.nickname,
     time: {
       start: par.time.start,
       end: par.time.end,

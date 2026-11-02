@@ -7,6 +7,7 @@ import Avatar from "@/components/atoms/Avatar";
 import { transferUserName } from "@/recoils/transferRecoils";
 import { MyChatsProps } from "@/types/models/chat";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface NoticeChatProps {
   chats: MyChatsProps[];
@@ -21,13 +22,13 @@ function NoticeChat({ chats }: NoticeChatProps) {
         const user = chat.user;
 
         return (
-          <Link href={`/chat/${user._id}`} key={idx} onClick={() => setTransferUserName(user.name)}>
+          <Link href={`/chat/${user._id}`} key={idx} onClick={() => setTransferUserName(getDisplayName(user))}>
             <Flex px={5} py={3} justify="space-between" align="center" borderBottom="var(--border)">
               <Flex flex={1}>
                 <Avatar user={user} size="md1" isLink={false} />
                 <Flex ml={4} direction="column" justify="space-around">
                   <Box fontSize="13px" fontWeight={600}>
-                    {user.name}
+                    {getDisplayName(user)}
                   </Box>
                   <Box
                     color="var(--gray-500)"

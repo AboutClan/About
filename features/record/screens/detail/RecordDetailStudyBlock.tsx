@@ -6,6 +6,7 @@ import { PLACE_TO_NAME } from "@/constants/serviceConstants/studyConstants/study
 import { PLACE_TO_LOCATION } from "@/constants/serviceConstants/studyConstants/studyLocationConstants";
 import { ISortedLocationStudies } from "@/features/record/screens/detail/RecordDetail";
 import { Location } from "@/types/services/locationTypes";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface IRecordDetailStudyBlock {
   locationStudies: ISortedLocationStudies;
@@ -27,7 +28,7 @@ function RecordDetailStudyBlock({ locationStudies }: IRecordDetailStudyBlock) {
               <MemberWrapper>
                 {arrivedInfoList.arrivedInfo.map((user, idx2) => (
                   <Fragment key={idx2}>
-                    {idx2 < 4 && <Member>{user.name.slice(-2)}</Member>}
+                    {idx2 < 4 && <Member>{getDisplayName(user)}</Member>}
                     {idx2 === 4 && (
                       <i
                         className="fa-regular fa-ellipsis fa-sm"

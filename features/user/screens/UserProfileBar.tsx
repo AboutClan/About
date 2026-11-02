@@ -10,6 +10,7 @@ import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants"
 import { CameraIcon, ProfileCamera } from "@/features/user/screens/UserProfileSection";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface UserProfileBarProps {
   user: IUser;
@@ -40,12 +41,7 @@ function UserProfileBar({ user, editUrl, name, isCafeMap }: UserProfileBarProps)
         <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
           <Flex align="center" mb={1}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
-              {name ||
-                (user?.role === "guest"
-                  ? "게스트"
-                  : user?.role === "cafe_user"
-                  ? user?.nickname
-                  : user?.name || "익명")}
+              {name || (user?.role === "guest" ? "게스트" : getDisplayName(user))}
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
             {!isCafeMap && (

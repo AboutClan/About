@@ -5,6 +5,7 @@ import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { IModal } from "@/types/components/modalTypes";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface RequestBirthModalProps extends IModal {
   type: "profile" | "location";
@@ -49,8 +50,8 @@ function RequestBirthModal({ setIsModal, type }: RequestBirthModalProps) {
     >
       <Box textAlign="start">
         {type === "profile"
-          ? `친구로 등록된 인원을 제외하고, ${session?.user.name}님의 프로필을 확인할 수 없습니다.`
-          : `친구로 등록된 인원을 제외하고, ${session?.user.name}님의 스터디 활동 위치를 확인할 수 없습니다.`}
+          ? `친구로 등록된 인원을 제외하고, ${getDisplayName(session?.user)}님의 프로필을 확인할 수 없습니다.`
+          : `친구로 등록된 인원을 제외하고, ${getDisplayName(session?.user)}님의 스터디 활동 위치를 확인할 수 없습니다.`}
       </Box>
     </ModalLayout>
   );

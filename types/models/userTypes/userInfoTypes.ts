@@ -73,6 +73,7 @@ export interface UserStudyRecordProps {
 
 export interface UserSimpleInfoProps {
   name: string;
+  nickname?: string;
   avatar: AvatarProps;
   profileImage: string;
   _id: string;

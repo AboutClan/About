@@ -73,3 +73,18 @@ export const maskUserName = (name: string | undefined | null) => {
   if (name.length <= 1) return name;
   return name.slice(0, 1) + "*" + name.slice(2);
 };
+
+/**
+ * 화면에 보여줄 유저 이름. 닉네임이 있으면 닉네임, 없으면 실명을 마스킹한다.
+ * 실명 그대로 폴백하지 않는다. (결제·관리자·초대 검색 등 실명이 필요한 곳은 name을 직접 쓴다)
+ */
+export const getDisplayName = (
+  user:
+    | { nickname?: string | null; name?: string | null; isPseudonym?: boolean }
+    | undefined
+    | null,
+) => {
+  // SECRET_USER_SUMMARY로 만든 화면용 가명("익명 3", "글쓴이")은 실명이 아니므로 그대로
+  if (user?.isPseudonym) return user.name || "익명";
+  return user?.nickname || maskUserName(user?.name);
+};

@@ -22,6 +22,7 @@ import { useFailToast, useToast } from "@/hooks/custom/CustomToast";
 import { AlphabetChangeGuideModal } from "@/modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import { Alphabet, ICollectionAlphabet } from "@/types/models/collections";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { getDisplayName } from "@/utils/stringUtils";
 
 const ALPHABET_COLLECTION: Alphabet[] = ["A", "B", "O", "U", "T"];
 
@@ -184,7 +185,7 @@ function CollectionAlphabet() {
                     <Flex flexDir="column" alignItems="center">
                       <Avatar size="md1" user={user} />{" "}
                       <Box mt={2} fontSize="12px">
-                        {user.name}
+                        {getDisplayName(user)}
                       </Box>
                     </Flex>
                     <Info>

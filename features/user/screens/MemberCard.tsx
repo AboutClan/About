@@ -5,6 +5,7 @@ import Avatar from "@/components/atoms/Avatar";
 import { useGroupMyStatusQuery } from "@/features/group/hooks/queries";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { birthToAge } from "@/utils/convertUtils/convertTypes";
+import { getDisplayName } from "@/utils/stringUtils";
 
 const ROLE_KR: Record<string, string> = {
   member: "정회원",
@@ -87,7 +88,7 @@ function MemberCard() {
       {/* 이름 + 코멘트 */}
       <Box px={6} mb={4}>
         <Box fontSize="18px" fontWeight={800} color="gray.900" lineHeight="26px">
-          {userInfo.name}
+          {getDisplayName(userInfo)}
         </Box>
         <Box fontSize="12px" color="gray.500" mt={0.5}>
           {userInfo.comment || "소개글 없음"}

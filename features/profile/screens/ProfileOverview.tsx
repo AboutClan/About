@@ -11,6 +11,7 @@ import ProfileOverviewSkeleton from "@/features/profile/screens/skeleton/Profile
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface IProfileOverview {
   user?: IUser;
@@ -35,7 +36,7 @@ function ProfileOverview({ user, gatherCount }: IProfileOverview) {
               <Flex ml={3} direction="column">
                 <Flex mb={0.5} align="center">
                   <Box mr={1} fontSize="16px" fontWeight="bold">
-                    {user?.name || session?.user.name}
+                    {user ? getDisplayName(user) : getDisplayName(session?.user)}
                   </Box>
                   <Box mb={0.5}>
                     <UserBadge badgeIdx={user?.badge?.badgeIdx} />

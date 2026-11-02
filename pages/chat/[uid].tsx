@@ -17,6 +17,7 @@ import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useKeypadHeight } from "@/hooks/custom/useKeypadHeight";
 import { transferUserName } from "@/recoils/transferRecoils";
 import { getDateDiff } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 interface Chat {
   message: string;
@@ -69,7 +70,7 @@ function Uid() {
   const [isBanModal, setIsBanModal] = useState(false);
   return (
     <>
-      <Header title={`${userName || opponent?.name}님과의 메세지`} rightPadding={4}>
+      <Header title={`${userName || getDisplayName(opponent)}님과의 메세지`} rightPadding={4}>
         <ButtonWrapper onClick={() => setIsBanModal(true)}>
           <BanIcon />
         </ButtonWrapper>
@@ -113,7 +114,7 @@ function Uid() {
                           </Box>
                           <Flex ml="8px" direction="column">
                             <Box as="span" fontSize="10px" color="gray.700">
-                              {opponent.name}
+                              {getDisplayName(opponent)}
                             </Box>
                             <Box
                               mt={0.5}

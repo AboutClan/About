@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import { useSession } from "next-auth/react";
 import { useMutation, useQueryClient } from "react-query";
 
 import { USER_INFO } from "@/constants/keys/queryKeys";
@@ -105,16 +106,25 @@ export const useUserRegisterControlMutation = <T extends "post" | "delete">(
     options,
   );
 
-export const useUserInfoMutation = (options?: MutationOptions<Partial<IUser>>) =>
-  useMutation<void, AxiosError, Partial<IUser>>(
+export const useUserInfoMutation = (options?: MutationOptions<Partial<IUser>>) => {
+  const { update } = useSession();
+  return useMutation<void, AxiosError, Partial<IUser>>(
     (param) =>
       requestServer<Partial<IUser>>({
         method: "post",
         url: `user/profile`,
         body: param,
       }),
-    options,
+    {
+      ...options,
+      onSuccess(data, variables, context) {
+        // 세션 토큰의 nickname은 update() 때 jwt 콜백이 DB에서 다시 읽는다
+        if (variables?.nickname !== undefined) update();
+        return options?.onSuccess?.(data, variables, context);
+      },
+    },
   );
+};
 
 type UserInfoFieldParam<T> = T extends "avatar"
   ? AvatarProps

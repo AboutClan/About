@@ -3,6 +3,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { StoreGiftProps } from "@/types/models/store";
+import { getDisplayName } from "@/utils/stringUtils";
 interface IStoreGiftWinModal extends IModal {
   winners: StoreGiftProps["winner"];
 }
@@ -23,7 +24,7 @@ function StoreGiftWinModal({ setIsModal, winners }: IStoreGiftWinModal) {
         {winners.map((winner, idx) => {
           return (
             <Box flex={1} color="mint" fontSize="12px" fontWeight="semibold" key={idx}>
-              {winner.name}
+              {getDisplayName(winner)}
             </Box>
           );
         })}

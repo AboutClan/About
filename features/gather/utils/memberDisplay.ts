@@ -34,9 +34,15 @@ export const getDisplayNickname = (
   pool?: readonly string[],
 ) => user?.nickname || getFallbackNickname(seed, pool);
 
-/** ProfileCommentCard 등 user.name을 그리는 컴포넌트에 넘길 때 name 자리에 닉네임을 넣는다 */
+/**
+ * ProfileCommentCard 등 이름을 그리는 컴포넌트에 넘길 때 name·nickname 자리에 닉네임을 넣는다.
+ * (getDisplayName은 nickname이 비면 name을 마스킹하므로 nickname도 채워야 기본 닉네임이 그대로 보인다)
+ */
 export const withDisplayNickname = <T extends Partial<UserSimpleInfoProps>>(
   user: T,
   seed: string,
   pool?: readonly string[],
-) => ({ ...user, name: getDisplayNickname(user, seed, pool) }) as T;
+) => {
+  const displayName = getDisplayNickname(user, seed, pool);
+  return { ...user, name: displayName, nickname: displayName } as T;
+};

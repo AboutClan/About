@@ -14,6 +14,7 @@ import {
 import { ReplyProps , UserCommentProps as CommentProps } from "@/types/components/propTypes";
 import { DispatchType } from "@/types/hooks/reactTypes";
 import { getDateDiff } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface UserCommentProps extends Omit<CommentProps, "_id"> {
   isSecret?: boolean;
@@ -148,7 +149,7 @@ function UserComment({
         <Flex w="full" direction="column" fontSize="12px" lineHeight={1.6} justify="space-around">
           <Flex w="full" justify="space-between" mb={1}>
             <Box fontWeight="bold" fontSize="13px" lineHeight="20px" color="gray.800">
-              {user.name}
+              {getDisplayName(user)}
             </Box>
             {session?.user.uid === user.uid && (
               <Button variant="unstyled" onClick={() => setIsEditModal(true)}>
@@ -193,7 +194,7 @@ function UserComment({
                   fontWeight={500}
                   onClick={() => {
                     setReplyProps({
-                      replyName: user.name,
+                      replyName: getDisplayName(user),
                       parentId: commentId,
                     });
                   }}

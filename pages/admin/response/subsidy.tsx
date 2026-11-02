@@ -66,7 +66,10 @@ function AdminRegister() {
                 <Flex key={idx} justify="space-between" align="center">
                   <Flex flexDir="column" align="center">
                     <Avatar user={data.writer} size="md1" />
-                    <Box fontWeight={600}>{data.writer.name}</Box>
+                    <Box fontWeight={600}>
+                      {data.writer.name}
+                      {data.writer.nickname ? `(${data.writer.nickname})` : ""}
+                    </Box>
                     <Box fontSize="11px">{dayjsToFormat(dayjs(data.updatedAt), "M/DD 신청")}</Box>
                   </Flex>
                   <Box fontSize="12px" mx={3} as="p" flex={1}>

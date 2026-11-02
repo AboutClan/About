@@ -38,6 +38,7 @@ import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { GroupMemberRole } from "@/types/models/groupTypes/group";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
+import { getDisplayName } from "@/utils/stringUtils";
 
 export type GroupSectionCategory = "정 보" | "모 임" | "피 드";
 
@@ -276,7 +277,7 @@ export function ResultModal({
               fontWeight="semibold"
               color="var(--gray-800)"
             >
-              {userInfo?.name} (
+              {getDisplayName(userInfo)} (
               {!role
                 ? "외부인"
                 : role === "regularMember"

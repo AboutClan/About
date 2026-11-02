@@ -10,6 +10,7 @@ import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
 import { getStudyBadgePrizeTier } from "@/constants/serviceConstants/studyConstants/studyBadgeConstant";
 import { RANKING_ANONYMOUS_USERS } from "@/constants/storage/anonymous";
 import { RANK_MAP, UserRankingProps } from "@/pages/ranking";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface IRankingMembers {
   users: UserRankingProps[];
@@ -87,7 +88,7 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
                 fontWeight={who.uid === session?.user.uid ? "semibold" : "medium"}
                 color={who.uid === session?.user.uid ? "mint" : "inherit"}
               >
-                {who.name}
+                {getDisplayName(who)}
               </Box>
             </Flex>
             <Flex align="center">

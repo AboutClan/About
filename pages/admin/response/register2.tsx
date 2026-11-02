@@ -70,7 +70,10 @@ function AdminRegister2() {
           {filteredData.map((who, idx) => (
             <Item key={idx}>
               <div>
-                <span>{who?.name}</span>
+                <span>
+                  {who?.name}
+                  {who?.nickname ? `(${who.nickname})` : ""}
+                </span>
                 <span>{dayjsToFormat(dayjs(who.updatedAt), "YY-MM-DD / HH:mm 신청")}</span>
               </div>
               <ContactWrapper>

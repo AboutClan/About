@@ -9,6 +9,7 @@ import Slide from "@/components/layouts/PageSlide";
 import IconRowBlock2 from "@/components/molecules/IconRowBlock2";
 import { usePointSystemLogQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 import { dayjsToFormat, dayjsToStr } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 function UserLogSection() {
   const { data: userInfo } = useUserInfoQuery();
@@ -25,7 +26,7 @@ function UserLogSection() {
         <Box px={5}>
           <Flex align="center" justify="space-between">
             <Box py={3}>
-              <Box fontSize="11px">{userInfo?.name.slice(1)}님의 보유 포인트</Box>
+              <Box fontSize="11px">{getDisplayName(userInfo)}님의 보유 포인트</Box>
               <Box fontSize="20px" fontWeight="semibold">
                 {userInfo?.point} Point
               </Box>

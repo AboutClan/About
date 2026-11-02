@@ -35,6 +35,7 @@ import { transferUserName } from "@/recoils/transferRecoils";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { IUserRequest } from "@/types/models/userTypes/userRequestTypes";
 import { getDateDiff } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface ProfileDetailPageProps {
   user?: IUser;
@@ -87,7 +88,7 @@ function ProfileDetailPage({ user }: ProfileDetailPageProps) {
   });
 
   useEffect(() => {
-    if (user) setTransferUserName(user.name);
+    if (user) setTransferUserName(getDisplayName(user));
 
     if (user?.friend?.some((who) => who === session?.user?.uid)) {
       setIsMyFriend(true);

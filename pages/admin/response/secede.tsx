@@ -48,7 +48,10 @@ function AdminSecede() {
                   <ItemHeader>
                     <Title>
                       <div>
-                        <span>{item?.writer?.name} / </span>
+                        <span>
+                          {item?.writer?.name}
+                          {item?.writer?.nickname ? `(${item.writer.nickname})` : ""} /{" "}
+                        </span>
                         <span>
                           쿠폰:{" "}
                           {data2?.map((data) => data?.meta?.uid).includes(item?.writer?.uid)

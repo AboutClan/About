@@ -11,6 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { ModalLayout } from "@/components/modals/Modals";
 import { IModal } from "@/types/components/modalTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { getDisplayName } from "@/utils/stringUtils";
 
 // eslint-disable-next-line react-hooks/rules-of-hooks -- Swiper의 static 메서드이며 React Hook이 아니다 (react-hooks v5 오탐)
 SwiperCore.use([Scrollbar]);
@@ -69,7 +70,7 @@ function StoreMembersModal({ setIsModal, members }: StoreMembersModalProps) {
                   pb={2}
                   mb={2}
                 >
-                  <Box color="mint">{member.user.name}</Box>
+                  <Box color="mint">{getDisplayName(member.user)}</Box>
                   <Box color="gray.600">{member.cnt}회</Box>
                 </Flex>
               ))}

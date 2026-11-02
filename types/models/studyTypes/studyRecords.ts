@@ -3,6 +3,7 @@ import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 export interface IArrivedInfo {
   uid: string;
   name: string;
+  nickname?: string;
 }
 
 export interface IArrivedInfoList {

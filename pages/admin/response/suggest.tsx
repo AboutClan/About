@@ -47,7 +47,10 @@ function AdminSuggest() {
                   <ItemHeader>
                     <Title>{item?.title}</Title>
                     <div>
-                      <span>{item?.writer?.name}</span>
+                      <span>
+                        {item?.writer?.name}
+                        {item?.writer?.nickname ? `(${item.writer.nickname})` : ""}
+                      </span>
                       <span>{dayjs(item.updatedAt).format("M월 D일")}</span>
                     </div>
                   </ItemHeader>

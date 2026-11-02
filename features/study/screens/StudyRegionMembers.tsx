@@ -8,7 +8,7 @@ import {
   StudyRegionMemberProps,
   useStudyRegionMembersQuery,
 } from "@/features/study/hooks/queries";
-import { maskUserName } from "@/utils/stringUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 /** 처음에 펼쳐 둘 구 수. 나머지는 "지역 더보기"로. */
 const INITIAL_REGION_CNT = 5;
@@ -87,7 +87,7 @@ function StudyRegionMembers({ isCafeMap = false }: StudyRegionMembersProps) {
                   onClick={() => setExpanded((old) => [...old, region.name])}
                 />
               ) : (
-                <MiniProfile key={member.user._id} member={member} isMasked={isCafeMap} />
+                <MiniProfile key={member.user._id} member={member} />
               );
             })}
           </Grid>
@@ -133,9 +133,9 @@ function StudyRegionMembers({ isCafeMap = false }: StudyRegionMembersProps) {
   );
 }
 
-function MiniProfile({ member, isMasked }: { member: StudyRegionMemberProps; isMasked: boolean }) {
-  // 닉네임이 아니라 실명을 쓴다(게스트·카공지도면 마스킹).
-  const name = member.user.name;
+function MiniProfile({ member }: { member: StudyRegionMemberProps }) {
+  // 닉네임 우선, 없으면 마스킹된 실명.
+  const name = getDisplayName(member.user);
   return (
     <Flex direction="column" align="center" minW={0}>
       <Box pos="relative">
@@ -163,7 +163,7 @@ function MiniProfile({ member, isMasked }: { member: StudyRegionMemberProps; isM
         textAlign="center"
         isTruncated
       >
-        {isMasked ? maskUserName(name) : name}
+        {name}
       </Box>
     </Flex>
   );

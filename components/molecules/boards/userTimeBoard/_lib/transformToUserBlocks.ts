@@ -11,6 +11,7 @@ export const transformToUserBlocks = (participants: ITimeBoardParticipant[]) => 
     const startToEndInterval = endTime - startTime;
     return {
       name: par.name,
+      nickname: par.nickname,
       start: start.format("HH:mm"),
       end: end.format("HH:mm"),
       startInterval: startTime - 10,

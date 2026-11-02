@@ -7,6 +7,7 @@ import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import InfoBoxCol from "@/components/molecules/InfoBoxCol";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface UserSocialGuideDrawerProps {
   onClose: () => void;
@@ -82,7 +83,7 @@ function UserSocialGuideDrawer2({ onClose }: UserSocialGuideDrawerProps) {
         <Flex fontSize="16px" w="full">
           <Box>
             <Box as="span" fontWeight="bold" fontSize="18px">
-              {userInfo?.name}
+              {getDisplayName(userInfo)}
             </Box>
             님의 소셜링 온도 =
           </Box>

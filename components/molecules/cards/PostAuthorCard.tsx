@@ -5,6 +5,7 @@ import Avatar from "@/components/atoms/Avatar";
 import { AboutIcon } from "@/components/Icons/AboutIcon";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface PostAuthorCardProps {
   createdAt: string;
@@ -21,7 +22,7 @@ function PostAuthorCard({ organizer, createdAt, children, isAdminOpen }: PostAut
         {isAdminOpen ? <AboutIcon size="xs" /> : <Avatar user={organizer} size="sm1" />}
         <Box ml={2}>
           <Box fontSize="13px" fontWeight="bold" lineHeight="20px" mb={0.5}>
-            {isAdminOpen ? "어바웃" : organizer.name}
+            {isAdminOpen ? "어바웃" : getDisplayName(organizer)}
           </Box>
           <Box fontSize="10px" fontWeight="ight" lineHeight="12px" color="gray.500">
             {getDateDiff(dayjs(createdAt))}

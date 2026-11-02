@@ -39,6 +39,7 @@ import { usePointSystemMutation, useUserRandomTicketMutation } from "@/features/
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
+import { getDisplayName } from "@/utils/stringUtils";
 
 const MotionDiv = chakra(motion.div, {
   shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
@@ -228,7 +229,7 @@ export default function TicketWheelRoulette() {
         ?.filter((props) => props.description.split(" "))
         ?.slice(0, 5)
         ?.map((props) => ({
-          name: props.winner.name,
+          name: getDisplayName(props.winner),
           gift: props.gift,
         })),
     );
@@ -243,7 +244,7 @@ export default function TicketWheelRoulette() {
         <Container py={0} px={0} minH="100vh" display="flex" flexDir="column" alignItems="center">
           <Flex w="100%" justify="space-between" align="center" borderBottom="var(--border)">
             <Box py={4} mx={2}>
-              <Box fontSize="11px">{userInfo?.name}님의 보유 뽑기권</Box>
+              <Box fontSize="11px">{getDisplayName(userInfo)}님의 보유 뽑기권</Box>
               <Box fontSize="20px" fontWeight="semibold">
                 {ticketCount} 장
               </Box>

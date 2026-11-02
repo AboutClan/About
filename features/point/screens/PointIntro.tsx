@@ -1,12 +1,14 @@
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
+import { getDisplayName } from "@/utils/stringUtils";
+
 function PointIntro() {
   const { data: session } = useSession();
 
   return (
     <Layout>
-      <span>{session?.user.name}</span>님 만나서 반가워요!
+      <span>{getDisplayName(session?.user)}</span>님 만나서 반가워요!
     </Layout>
   );
 }

@@ -17,8 +17,8 @@ function Nickname() {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [errorMessage, setErrorMessage] = useState("");
-  // 저장된 nickname이 있으면 우선 사용, 없으면 NICE 인증에서 받은 name 사용
-  const [value, setValue] = useState<string>(info?.nickname ?? info?.name ?? "");
+  // 저장된 nickname이 있으면 사용(실명은 미리 채우지 않는다)
+  const [value, setValue] = useState<string>(info?.nickname ?? "");
 
   const { data } = useUserNicknamesQuery();
 

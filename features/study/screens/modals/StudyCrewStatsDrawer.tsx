@@ -7,6 +7,7 @@ import RightDrawer from "@/components/modals/drawer/RightDrawer";
 import { useStudyCrewStatsQuery } from "@/features/study/hooks/queries";
 import { StudyParticipationProps } from "@/types/models/studyTypes/study-entity.types";
 import { dayjsToFormat } from "@/utils/dateTimeUtils";
+import { getDisplayName } from "@/utils/stringUtils";
 
 interface StudyCrewStatsDrawerProps {
   crewMembers: StudyParticipationProps[];
@@ -52,7 +53,7 @@ function StudyCrewStatsDrawer({ crewMembers, onClose }: StudyCrewStatsDrawerProp
               <Avatar user={row.user} size="sm1" isLink={false} />
               <Flex direction="column" flex={1} gap={1}>
                 <Box fontSize="13px" fontWeight="semibold" color="gray.800">
-                  {row.user.name || "익명"}
+                  {getDisplayName(row.user)}
                 </Box>
                 <Flex fontSize="11px" color="gray.500" gap={2} wrap="wrap">
                   <Box>최근 투표일: {formatStatDate(row.lastVoteDate)}</Box>

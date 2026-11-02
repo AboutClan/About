@@ -23,6 +23,7 @@ import StudyBadgeGuideModal from "@/features/study/screens/modals/StudyBadgeGuid
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { shuffleArray } from "@/utils/convertUtils/convertDatas";
+import { getDisplayName } from "@/utils/stringUtils";
 
 export type RankingTab = "월간 활동 랭킹" | "누적 인기 랭킹" | "스터디 랭킹";
 
@@ -267,7 +268,7 @@ function Ranking() {
         )
         ?.slice(0, 5)
         ?.map((props) => ({
-          name: props.winner.name,
+          name: getDisplayName(props.winner),
           gift: props.gift,
         })),
     );
@@ -282,7 +283,7 @@ function Ranking() {
         <Flex flexDir="column" align="center" mx="auto" mt={2} mb={6}>
           <Box h="80px">{userInfo && <Avatar user={userInfo} size="xl2" />}</Box>
           <Box mt={2} fontSize="15px" fontWeight="bold" h="22.5px">
-            {userInfo?.name}
+            {getDisplayName(userInfo)}
           </Box>
           <Box h="18px">
             {myRanking ? (
