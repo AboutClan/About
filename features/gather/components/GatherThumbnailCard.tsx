@@ -103,7 +103,7 @@ export function GatherThumbnailCard({
 
   const isAdmin = userInfo?.role === "previliged";
 
-  // 상시 행사는 참여자 대신 이번 주 신청자(구글폼 신청자 + 성비 보정 인원)를 익명으로 보여 준다.
+  // 상시 행사는 참여자 대신 신청자(구글폼 신청자 + 성비 보정 인원)를 익명으로 보여 준다.
   const participantsMember: IGatherParticipants[] =
     gatherType === "regularGather"
       ? buildRegularApplicants({ id, age, formStats, slots, contents }).map(() => ({

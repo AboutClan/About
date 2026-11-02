@@ -19,7 +19,7 @@ interface RegularGatherApplicantsProps {
 }
 
 /**
- * 상시 행사 상세: 이번 주 신청자를 익명 카드로 보여 준다.
+ * 상시 행사 상세: 신청자(아직 지나지 않은 날짜를 고른 구글폼 응답 + 가짜 인원)를 익명 카드로 보여 준다.
  * 카드마다 성별·나이, 고른 일정 / 콘텐츠, 신청 시각을 표시하고 아래에 나이·성비 통계를 붙인다.
  */
 function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
@@ -65,13 +65,13 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
       <Flex flexDir="column" px={5}>
         <ParticipationBar
           type="pending"
-          label="이번 주 신청 인원"
+          label="신청 인원"
           participantsCnt={applicants.length}
           maxCnt={data.memberCnt?.max}
         />
         {!applicants.length ? (
           <Text py={4} fontSize="13px" color="gray.500">
-            아직 이번 주 신청자가 없어요.
+            아직 신청자가 없어요.
           </Text>
         ) : (
           applicants.map((applicant) => {
@@ -155,7 +155,7 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
       </Flex>
       <GatherOfficialParticipationChart
         data={chartData}
-        applicantLabel={{ text: "이번 주 신청 인원", count: applicants.length }}
+        applicantLabel={{ text: "신청 인원", count: applicants.length }}
       />
     </>
   );
