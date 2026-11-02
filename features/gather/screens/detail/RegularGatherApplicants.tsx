@@ -171,13 +171,13 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
   );
 }
 
-/** "방금 전" / "15분 전" / "3시간 전" / 하루가 지나면 "11.1" */
+/** "방금 전 신청" / "15분 전 신청" / "3시간 전 신청" / 하루가 지나면 "11월 1일 신청" */
 function formatRelative(time: string) {
   const minutes = dayjs().diff(dayjs(time), "minute");
-  if (minutes < 1) return "방금 전";
-  if (minutes < 60) return `${minutes}분 전`;
-  if (minutes < 60 * 24) return `${Math.floor(minutes / 60)}시간 전`;
-  return dayjs(time).format("M.D");
+  if (minutes < 1) return "방금 전 신청";
+  if (minutes < 60) return `${minutes}분 전 신청`;
+  if (minutes < 60 * 24) return `${Math.floor(minutes / 60)}시간 전 신청`;
+  return `${dayjs(time).format("M월 D일")} 신청`;
 }
 
 export default RegularGatherApplicants;
