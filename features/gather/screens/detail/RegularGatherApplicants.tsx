@@ -3,8 +3,8 @@ import dayjs from "dayjs";
 import { useMemo } from "react";
 
 import Avatar from "@/components/atoms/Avatar";
-import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
 import ParticipationBar from "@/components/atoms/bars/ParticipationBar";
+import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
 import GatherOfficialParticipationChart from "@/features/gather/screens/detail/GatherOfficialParticipationChart";
 import { getFallbackAvatar, getFallbackNickname } from "@/features/gather/utils/memberDisplay";
 import {
