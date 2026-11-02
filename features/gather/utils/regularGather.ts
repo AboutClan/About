@@ -89,28 +89,50 @@ const pickSome = <T>(items: T[], random: () => number, max = 2) => {
   return [...items].sort(() => random() - 0.5).slice(0, count);
 };
 
-/** 이번 주 신청자가 이보다 적으면 가짜 인원으로 채운다 */
-const MIN_APPLICANTS = 6;
-
 /**
  * 가짜 인원의 성별 목록.
  * 1) 남성:여성이 2:1을 넘지 않게 여성을 채우고
- * 2) 그래도 MIN_APPLICANTS명보다 적으면 적은 쪽 성별부터 번갈아 채운다(여성 먼저).
+ * 2) 그래도 minCount명(5 또는 6)보다 적으면, 2:1을 넘지 않는 한 남성부터 채운다(남성이 더 많게).
+ *    실제 0명이면 5명 → 남3·여2, 6명 → 남4·여2.
  */
-const getFakeGenders = (male: number, female: number): ("남성" | "여성")[] => {
+const getFakeGenders = (male: number, female: number, minCount: number) => {
   const genders: ("남성" | "여성")[] = [];
   let [m, f] = [male, female];
   while (m > f * 2) {
     genders.push("여성");
     f++;
   }
-  while (m + f < MIN_APPLICANTS) {
-    const next = m < f ? "남성" : "여성";
+  while (m + f < minCount) {
+    const next = m + 1 <= f * 2 ? "남성" : "여성";
     genders.push(next);
     if (next === "남성") m++;
     else f++;
   }
   return genders;
+};
+
+/** 가짜 인원 나이: 20~29세, 20대 중반이 조금 더 자주 나오게 */
+const FAKE_AGE_WEIGHTS: [number, number][] = [
+  [20, 8],
+  [21, 9],
+  [22, 10],
+  [23, 11],
+  [24, 12],
+  [25, 12],
+  [26, 11],
+  [27, 10],
+  [28, 9],
+  [29, 8],
+];
+
+const pickFakeAge = (random: () => number) => {
+  const total = FAKE_AGE_WEIGHTS.reduce((sum, [, weight]) => sum + weight, 0);
+  let roll = random() * total;
+  for (const [age, weight] of FAKE_AGE_WEIGHTS) {
+    roll -= weight;
+    if (roll < 0) return age;
+  }
+  return FAKE_AGE_WEIGHTS[FAKE_AGE_WEIGHTS.length - 1][0];
 };
 
 /**
@@ -135,7 +157,9 @@ export const buildRegularApplicants = (
 
   const male = real.filter((a) => a.gender === "남성").length;
   const female = real.filter((a) => a.gender === "여성").length;
-  const fakeGenders = getFakeGenders(male, female);
+  // 최소 인원은 행사·주차마다 5 또는 6으로 고정(매번 같은 숫자면 인위적이라서)
+  const minCount = seededRandom(`${gather.id}-${getCurrentRoundKey()}-min`)() < 0.5 ? 5 : 6;
+  const fakeGenders = getFakeGenders(male, female, minCount);
 
   // 가짜 인원이 고를 선택지: 지난 날짜는 빼고, 콘텐츠 전용 일정은 그 콘텐츠도 함께 고른 것으로 친다.
   const visibleSlots = getVisibleSlots(gather.slots);
@@ -144,12 +168,6 @@ export const buildRegularApplicants = (
   const freeContents = (gather.contents ?? []).filter(
     (content) => !(gather.slots ?? []).some((slot) => slot.contentKey === content.key),
   );
-
-  const [ageMin, ageMax] =
-    gather.age?.length === 2
-      ? [Math.max(gather.age[0], 20), Math.min(gather.age[1], 27)]
-      : [21, 26];
-  const [lo, hi] = ageMin <= ageMax ? [ageMin, ageMax] : [21, 26];
 
   const roundStart = getRoundStart();
   const lastSync = gather.formStats?.updatedAt ? dayjs(gather.formStats.updatedAt) : roundStart;
@@ -167,7 +185,7 @@ export const buildRegularApplicants = (
     return {
       id: `fake-${idx}`,
       gender,
-      age: lo + Math.floor(random() * (hi - lo + 1)),
+      age: pickFakeAge(random),
       keys: Array.from(keys),
       submittedAt: roundStart.add(Math.floor(random() * span), "ms").toISOString(),
       isFake: true,
