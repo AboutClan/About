@@ -11,6 +11,7 @@ import {
   getWeekdayLabel,
   RegularApplicant,
 } from "@/features/gather/utils/regularGather";
+import { useDefaultNicknamesQuery } from "@/features/user/hooks/queries";
 import { IGather, IGatherParticipants } from "@/types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
@@ -24,6 +25,7 @@ interface RegularGatherApplicantsProps {
  * 카드마다 성별·나이, 고른 일정 / 콘텐츠, 신청 시각을 표시하고 아래에 나이·성비 통계를 붙인다.
  */
 function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
+  const { data: nicknamePool } = useDefaultNicknamesQuery();
   const applicants = useMemo(() => buildRegularApplicants(data), [data]);
 
   const slotLabel = (key: string) => {
@@ -94,7 +96,7 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
                 <Flex direction="column" flex={1} ml={3} minW={0}>
                   <Flex align="baseline">
                     <Box fontSize="13px" fontWeight="semibold" lineHeight="20px">
-                      {getFallbackNickname(`${data.id}-${applicant.id}`)}
+                      {getFallbackNickname(`${data.id}-${applicant.id}`, nicknamePool)}
                     </Box>
                     {(applicant.gender || applicant.age) && (
                       <Box ml={1} fontSize="11px" color="gray.500">

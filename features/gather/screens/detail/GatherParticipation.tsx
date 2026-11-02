@@ -12,6 +12,7 @@ import GatherDateParticipationChart, {
 import GatherOfficialParticipationChart from "@/features/gather/screens/detail/GatherOfficialParticipationChart";
 import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
 import { getFallbackAvatar, withDisplayNickname } from "@/features/gather/utils/memberDisplay";
+import { useDefaultNicknamesQuery } from "@/features/user/hooks/queries";
 import {
   GatherCategory,
   IGather,
@@ -26,6 +27,7 @@ interface IGatherParticipation {
 }
 
 function GatherParticipation({ data, gatherType }: IGatherParticipation) {
+  const { data: nicknamePool } = useDefaultNicknamesQuery();
   const status = data.status;
   const participantsCnt = data.participants.reduce(
     (acc, par) => acc + 1 + (par.withCompanion ? 1 : 0),
@@ -104,7 +106,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
 
   // 익명 처리 없이 아바타/프로필 사진과 닉네임(없으면 기본 닉네임)을 보여 준다.
   const organizerCard = {
-    user: withDisplayNickname(data?.user as IUser, `organizer-${data?.id}`),
+    user: withDisplayNickname(data?.user as IUser, `organizer-${data?.id}`, nicknamePool),
     memo: (data?.user as IUser)?.comment,
     rightComponent: <SocialingScoreBadge user={data?.user as UserSimpleInfoProps} size="sm" />,
     crownType: "main" as const,
@@ -115,7 +117,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   ).flatMap((par, idx) => {
     const parUser = getParticipantUser(par);
     const card: IProfileCommentCard = {
-      user: withDisplayNickname(parUser, `${data?.id}-${parUser?._id || idx}`),
+      user: withDisplayNickname(parUser, `${data?.id}-${parUser?._id || idx}`, nicknamePool),
       memo:
         gatherType === "openGather"
           ? getOpenGatherMemo(par)
