@@ -18,6 +18,7 @@ import { MemberReviewRow } from "@/features/user/components/MemberReviewRow";
 import { UserRating } from "@/features/user/hooks/mutations";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { getDisplayName } from "@/utils/stringUtils";
 
 export default function GroupEvaluationScreen() {
   const toast = useToast();
@@ -83,23 +84,34 @@ export default function GroupEvaluationScreen() {
             <Box fontSize="12px" color="gray.500">
               아래는 1회 이상 모임에 참여하여 이번 달 투표 권한이 있는 멤버입니다.
             </Box>
+            {/* 다른 멤버의 투표 여부는 보여주지 않고 내 상태만 안내 */}
+            <Flex
+              mt={3}
+              px={3}
+              py={2.5}
+              borderRadius="12px"
+              bg="gray.50"
+              align="center"
+              gap={1.5}
+              fontSize="13px"
+              fontWeight="semibold"
+              color={!data.canVote ? "gray.500" : data.mySubmitted ? "mint" : "red.500"}
+            >
+              {data.mySubmitted && <SubmittedIcon />}
+              {!data.canVote
+                ? "투표 권한이 없어요"
+                : data.mySubmitted
+                  ? "투표를 완료했어요"
+                  : "아직 투표하지 않았어요. 25일까지 투표해야 해요."}
+            </Flex>
           </Box>
           <Grid mt={3} px={5} templateColumns="repeat(5, 1fr)" rowGap={3} columnGap={2}>
-            {data.eligible.map(({ user, submitted }) => (
+            {data.eligible.map(({ user }) => (
               <Flex key={user.uid} direction="column" align="center" minW={0}>
                 <Avatar user={user} size="sm1" isLink={false} />
                 <Box mt={1} fontSize="11px" fontWeight="semibold" noOfLines={1} maxW="full">
-                  {user.name}
+                  {getDisplayName(user)}
                 </Box>
-                <Flex mt={0.5} h="16px" align="center">
-                  {submitted ? (
-                    <SubmittedIcon />
-                  ) : (
-                    <Box fontSize="10px" color="gray.400">
-                      미참여
-                    </Box>
-                  )}
-                </Flex>
               </Flex>
             ))}
           </Grid>

@@ -200,8 +200,10 @@ export interface GroupEvaluationProps {
   period: string;
   start: string;
   members: UserSimpleInfoProps[];
-  eligible: { user: UserSimpleInfoProps; submitted: boolean }[];
+  // 다른 멤버의 투표 여부는 내려오지 않는다
+  eligible: { user: UserSimpleInfoProps }[];
   canVote: boolean;
+  mySubmitted: boolean;
   myRatings: Record<string, UserRating>;
 }
 
