@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Badge, Box, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useMemo } from "react";
 
@@ -34,19 +34,17 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
   };
   const contentLabel = (key: string) => data.contents?.find((c) => c.key === key)?.title ?? null;
 
-  /** "금 19:00, 토 13:00 / D'FESTA THE ORIGIN" (콘텐츠 전용 일정은 날짜만 적고 콘텐츠명은 뒤에) */
-  const getChoiceText = (applicant: RegularApplicant) => {
+  /** 고른 일정·콘텐츠 이름 (행사에 등록된 순서대로) */
+  const getChoices = (applicant: RegularApplicant) => {
     const slotOrder = (data.slots ?? []).map((s) => s.key);
     const contentOrder = (data.contents ?? []).map((c) => c.key);
-    const slots = applicant.keys
-      .filter((key) => slotOrder.includes(key))
-      .sort((a, b) => slotOrder.indexOf(a) - slotOrder.indexOf(b))
-      .map(slotLabel);
-    const contents = applicant.keys
-      .filter((key) => contentOrder.includes(key))
-      .sort((a, b) => contentOrder.indexOf(a) - contentOrder.indexOf(b))
-      .map(contentLabel);
-    return [slots.join(", "), contents.join(", ")].filter(Boolean).join(" / ");
+    const pick = (order: string[], label: (key: string) => string | null) =>
+      applicant.keys
+        .filter((key) => order.includes(key))
+        .sort((a, b) => order.indexOf(a) - order.indexOf(b))
+        .map((key) => ({ key, text: label(key) }))
+        .filter((item): item is { key: string; text: string } => !!item.text);
+    return { slots: pick(slotOrder, slotLabel), contents: pick(contentOrder, contentLabel) };
   };
 
   // 통계 차트는 participants의 더미 성별·생년(YYMMDD)으로 계산하므로 그 모양으로 바꿔 넘긴다.
@@ -76,37 +74,83 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
             아직 이번 주 신청자가 없어요.
           </Text>
         ) : (
-          applicants.map((applicant) => (
-            <Flex key={applicant.id} py={2.5} align="center" borderBottom="var(--border)">
-              <Avatar
-                user={SECRET_USER_SUMMARY as unknown as UserSimpleInfoProps}
-                size="md1"
-                isLink={false}
-              />
-              <Flex direction="column" flex={1} ml={3} minW={0}>
-                <Flex align="baseline">
-                  <Box fontSize="13px" fontWeight="semibold" lineHeight="20px">
-                    익명
-                  </Box>
-                  {(applicant.gender || applicant.age) && (
-                    <Box ml={1} fontSize="11px" color="gray.500">
-                      {[applicant.gender, applicant.age ? `${applicant.age}세` : null]
-                        .filter(Boolean)
-                        .join(" · ")}
+          applicants.map((applicant) => {
+            const { slots, contents } = getChoices(applicant);
+            const isNew =
+              !!applicant.submittedAt && dayjs().diff(dayjs(applicant.submittedAt), "hour") < 24;
+            return (
+              <Flex key={applicant.id} py={2.5} align="center" borderBottom="var(--border)">
+                <Avatar
+                  user={SECRET_USER_SUMMARY as unknown as UserSimpleInfoProps}
+                  size="md1"
+                  isLink={false}
+                />
+                <Flex direction="column" flex={1} ml={3} minW={0}>
+                  <Flex align="baseline">
+                    <Box fontSize="13px" fontWeight="semibold" lineHeight="20px">
+                      익명
                     </Box>
+                    {(applicant.gender || applicant.age) && (
+                      <Box ml={1} fontSize="11px" color="gray.500">
+                        {[applicant.gender, applicant.age ? `${applicant.age}세` : null]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </Box>
+                    )}
+                  </Flex>
+                  {slots.length || contents.length ? (
+                    <Flex mt={1} gap={1} wrap="wrap">
+                      {slots.map((slot) => (
+                        <Badge
+                          key={slot.key}
+                          variant="outline"
+                          colorScheme="mint"
+                          fontSize="10px"
+                          fontWeight={500}
+                          borderRadius="4px"
+                          px={1.5}
+                        >
+                          {slot.text}
+                        </Badge>
+                      ))}
+                      {contents.map((content) => (
+                        <Badge
+                          key={content.key}
+                          variant="subtle"
+                          colorScheme="gray"
+                          color="var(--gray-600)"
+                          fontSize="10px"
+                          fontWeight={500}
+                          borderRadius="4px"
+                          px={1.5}
+                          maxW="160px"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                          whiteSpace="nowrap"
+                        >
+                          {content.text}
+                        </Badge>
+                      ))}
+                    </Flex>
+                  ) : (
+                    <Text fontSize="12px" color="gray.500">
+                      선택 정보 없음
+                    </Text>
                   )}
                 </Flex>
-                <Text fontSize="12px" color="gray.600" noOfLines={1}>
-                  {getChoiceText(applicant) || "선택 정보 없음"}
-                </Text>
+                {applicant.submittedAt && (
+                  <Flex ml={2} flexShrink={0} align="center" fontSize="11px" color="gray.500">
+                    {isNew && (
+                      <Box as="span" mr={1} fontSize="9px" fontWeight={700} color="mint">
+                        NEW
+                      </Box>
+                    )}
+                    {formatRelative(applicant.submittedAt)}
+                  </Flex>
+                )}
               </Flex>
-              {applicant.submittedAt && (
-                <Box ml={2} flexShrink={0} fontSize="11px" color="gray.500">
-                  {dayjs(applicant.submittedAt).format("M.D HH:mm")}
-                </Box>
-              )}
-            </Flex>
-          ))
+            );
+          })
         )}
       </Flex>
       <GatherOfficialParticipationChart
@@ -115,6 +159,15 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
       />
     </>
   );
+}
+
+/** "방금 전" / "15분 전" / "3시간 전" / 하루가 지나면 "11.1" */
+function formatRelative(time: string) {
+  const minutes = dayjs().diff(dayjs(time), "minute");
+  if (minutes < 1) return "방금 전";
+  if (minutes < 60) return `${minutes}분 전`;
+  if (minutes < 60 * 24) return `${Math.floor(minutes / 60)}시간 전`;
+  return dayjs(time).format("M.D");
 }
 
 export default RegularGatherApplicants;
