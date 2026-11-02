@@ -160,7 +160,7 @@ export function GatherThumbnailCard({
       }}
     >
       <Flex justify="space-between">
-        <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
+        <PlaceImage src={imageProps.image} priority={imageProps.isPriority} isZoomed={isRegular} />
         <Flex direction="column" ml="12px" flex={1}>
           <Flex justify="space-between" align="center">
             <Flex>
@@ -313,9 +313,12 @@ export function GatherThumbnailCard({
   );
 }
 
-type PlaceImageProps = Omit<ComponentProps<typeof Image>, "alt" | "sizes" | "fill">;
+type PlaceImageProps = Omit<ComponentProps<typeof Image>, "alt" | "sizes" | "fill"> & {
+  /** 상시 행사 포스터는 안쪽 얇은 테두리가 작은 썸네일에서 한쪽만 보여서, 12% 확대해 양쪽 테두리를 잘라 낸다(가장자리 약 5.4%씩) */
+  isZoomed?: boolean;
+};
 
-function PlaceImage(props: PlaceImageProps) {
+function PlaceImage({ isZoomed, ...props }: PlaceImageProps) {
   const [imgSrc, setImgSrc] = useState(props?.src || "");
   return (
     <Box
@@ -344,6 +347,7 @@ function PlaceImage(props: PlaceImageProps) {
           // 정사각형이 아닌 이미지는 가운데 기준으로 잘라 채운다
           objectFit: "cover",
           objectPosition: "center",
+          ...(isZoomed && { transform: "scale(1.12)" }),
         }}
       />
     </Box>
