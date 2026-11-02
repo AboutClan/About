@@ -1,7 +1,12 @@
 import dayjs from "dayjs";
 
 import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
-import { IGather, IRegularContent, IRegularSlot } from "@/types/models/gatherTypes/gatherTypes";
+import {
+  IGather,
+  IGatherParticipants,
+  IRegularContent,
+  IRegularSlot,
+} from "@/types/models/gatherTypes/gatherTypes";
 
 /**
  * 상시 행사(regularGather) 공통 계산.
@@ -48,12 +53,6 @@ export const formatSlot = (slot: IRegularSlot) =>
     ? `${getSlotDateTime(slot).locale("ko").format("M.D(ddd)")} ${slot.time}`
     : `매주 ${getWeekdayLabel(slot.weekday)} ${slot.time}`;
 
-/** 카드 칩용 "금 19:00" / "11.7 16:00" */
-export const formatSlotShort = (slot: IRegularSlot) =>
-  slot.date
-    ? `${getSlotDateTime(slot).format("M.D")} ${slot.time}`
-    : `${getWeekdayLabel(slot.weekday)} ${slot.time}`;
-
 const isThisRound = (gather: Pick<IGather, "formStats">) =>
   gather.formStats?.roundKey === getCurrentRoundKey();
 
@@ -83,6 +82,23 @@ export const isAppliedThisRound = (gather: Pick<IGather, "waiting">, userId?: st
       who.user?._id === userId && !!who.createdAt && !dayjs(who.createdAt).isBefore(roundStart),
   );
 };
+
+/** 이번 주(월요일 00:00 이후)에 앱에서 신청한 대기열 */
+export const getThisRoundWaitings = <W extends { createdAt?: string }>(waitings: W[] = []) => {
+  const roundStart = getRoundStart();
+  return waitings.filter((who) => !!who.createdAt && !dayjs(who.createdAt).isBefore(roundStart));
+};
+
+/**
+ * 상시 행사 신청자 목록: 기존 참여자(운영용 더미 포함) + 이번 주 앱 신청자.
+ * 구글폼으로만 신청한 사람은 프로필이 없어 인원수(formStats)에만 반영된다.
+ */
+export const getRegularApplicants = (
+  gather: Pick<IGather, "participants" | "waiting">,
+): IGatherParticipants[] => [
+  ...(gather.participants ?? []),
+  ...getThisRoundWaitings(gather.waiting).map((who) => ({ user: who.user, phase: who.phase })),
+];
 
 /** 매주 일정이 있으면 "매주 금·토·일", 날짜 일정만 있으면 "11.7 ~ 11.15" */
 export const summarizeSchedule = (slots: IRegularSlot[] = []) => {

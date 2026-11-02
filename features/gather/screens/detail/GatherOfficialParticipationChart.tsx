@@ -8,6 +8,8 @@ import { birthToAge } from "@/utils/convertUtils/convertTypes";
 
 interface IGatherOfficialParticipationChart {
   data: IGather;
+  /** 상단 오른쪽 인원 문구를 바꿀 때 (상시 행사: 이번 주 신청 인원) */
+  applicantLabel?: { text: string; count: number };
 }
 
 const PLOT_HEIGHT = 88;
@@ -52,7 +54,10 @@ function computeGenderTotals(data: IGather) {
   return { male, female };
 }
 
-function GatherOfficialParticipationChart({ data }: IGatherOfficialParticipationChart) {
+function GatherOfficialParticipationChart({
+  data,
+  applicantLabel,
+}: IGatherOfficialParticipationChart) {
   const ageStats = useMemo(() => computeAgeStats(data), [data]);
   const { male: totalMale, female: totalFemale } = useMemo(() => computeGenderTotals(data), [data]);
   const total = totalMale + totalFemale;
@@ -76,9 +81,10 @@ function GatherOfficialParticipationChart({ data }: IGatherOfficialParticipation
           참여 인원 통계
         </Text>
         <Text fontSize="12px" color="gray.500">
-          {data.status === "pending" ? "현재 신청중인 인원" : "총 신청 인원"}{" "}
+          {applicantLabel?.text ??
+            (data.status === "pending" ? "현재 신청중인 인원" : "총 신청 인원")}{" "}
           <Text as="span" fontWeight={600}>
-            {applicantCount}명
+            {applicantLabel?.count ?? applicantCount}명
           </Text>
         </Text>
       </Flex>

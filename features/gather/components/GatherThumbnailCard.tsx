@@ -11,9 +11,8 @@ import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOver
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
 import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
 import {
-  formatSlotShort,
   getRegularApplicantCount,
-  getVisibleSlots,
+  getThisRoundWaitings,
   summarizeLocation,
   summarizeSchedule,
 } from "@/features/gather/utils/regularGather";
@@ -42,6 +41,7 @@ export interface GatherThumbnailCardProps {
   waitings?: {
     user: UserSimpleInfoProps;
     phase: "first" | "second";
+    createdAt?: string;
   }[];
   imageProps: {
     image: string;
@@ -104,13 +104,19 @@ export function GatherThumbnailCard({
 
   const isAdmin = userInfo?.role === "previliged";
 
-  const participantsMember =
-    maxCnt !== 1 &&
-    gatherType !== "openGather" &&
-    gatherType !== "secretGather" &&
-    gatherType !== "officialGather"
-      ? participants.filter((par) => par.user?._id !== "65df1ddcd73ecfd250b42c89")
-      : participants;
+  // 상시 행사는 참여자 대신 신청자(기존 참여자 + 이번 주 앱 신청자)를 보여 준다.
+  const participantsMember: IGatherParticipants[] =
+    gatherType === "regularGather"
+      ? [
+          ...participants,
+          ...getThisRoundWaitings(waitings).map((who) => ({ user: who.user, phase: who.phase })),
+        ]
+      : maxCnt !== 1 &&
+          gatherType !== "openGather" &&
+          gatherType !== "secretGather" &&
+          gatherType !== "officialGather"
+        ? participants.filter((par) => par.user?._id !== "65df1ddcd73ecfd250b42c89")
+        : participants;
 
   const participantsCnt = participantsMember.reduce(
     (acc, par) => acc + 1 + (par.withCompanion ? 1 : 0),
@@ -244,67 +250,41 @@ export function GatherThumbnailCard({
             )}
           </Subtitle>
 
-          {isRegular ? (
-            // 콘텐츠 라인업이 있으면 콘텐츠명, 없으면 일정을 칩으로 보여 준다.
-            <Flex mt={1} gap={1} overflow="hidden">
-              {(contents?.length
-                ? contents.map((content) => ({ key: content.key, text: content.title }))
-                : getVisibleSlots(slots).map((slot) => ({
-                    key: slot.key,
-                    text: formatSlotShort(slot),
-                  }))
-              ).map((chip) => (
-                <Badge
-                  key={chip.key}
-                  size="md"
-                  variant="subtle"
-                  colorScheme="gray"
-                  color="var(--gray-600)"
-                  flexShrink={0}
-                  maxW="96px"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
+          <Flex mt={1} alignItems="center" justify="space-between">
+            <AvatarGroupsOverwrap
+              users={participantsMember?.map((par) =>
+                gatherType === "openGather" ||
+                gatherType === "secretGather" ||
+                gatherType === "officialGather" ||
+                gatherType === "regularGather"
+                  ? SECRET_USER_SUMMARY
+                  : par.user,
+              )}
+              maxCnt={VOTER_SHOW_MAX}
+            />
+            <Flex align="center" color="var(--gray-500)">
+              <UserIcon size="sm" />
+              <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
+                <Box
+                  fontWeight={600}
+                  as="span"
+                  color={
+                    maxCnt !== 0 && participantsCnt >= maxCnt
+                      ? "var(--color-red)"
+                      : "var(--color-gray)"
+                  }
                 >
-                  {chip.text}
-                </Badge>
-              ))}
-            </Flex>
-          ) : (
-            <Flex mt={1} alignItems="center" justify="space-between">
-              <AvatarGroupsOverwrap
-                users={participantsMember?.map((par) =>
-                  gatherType === "openGather" ||
-                  gatherType === "secretGather" ||
-                  gatherType === "officialGather"
-                    ? SECRET_USER_SUMMARY
-                    : par.user,
-                )}
-                maxCnt={VOTER_SHOW_MAX}
-              />
-              <Flex align="center" color="var(--gray-500)">
-                <UserIcon size="sm" />
-                <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
-                  <Box
-                    fontWeight={600}
-                    as="span"
-                    color={
-                      maxCnt !== 0 && participantsCnt >= maxCnt
-                        ? "var(--color-red)"
-                        : "var(--color-gray)"
-                    }
-                  >
-                    {participantsCnt}
-                  </Box>
-                  <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
-                    /
-                  </Box>
-                  <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                    {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
-                  </Box>
-                </Flex>
+                  {participantsCnt}
+                </Box>
+                <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                  /
+                </Box>
+                <Box as="span" color="var(--gray-500)" fontWeight={500}>
+                  {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
+                </Box>
               </Flex>
             </Flex>
-          )}
+          </Flex>
         </Flex>
       </Flex>
       {has && (
