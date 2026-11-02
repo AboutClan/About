@@ -22,7 +22,7 @@ import { useGatherChildrenQuery } from "@/features/gather/hooks/queries";
 import GatherExpireModal from "@/features/gather/modals/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "@/features/gather/modals/gatherExpireModal/GatherReviewDrawer";
 import { transferGatherDataState } from "@/features/gather/state";
-import { getRegularFormUrl, isAppliedRegular } from "@/features/gather/utils/regularGather";
+import { isAppliedRegular } from "@/features/gather/utils/regularGather";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { FeedProps } from "@/types/models/feed";
@@ -176,7 +176,7 @@ function GatherBootmNav({
           isEnd: true,
         };
       }
-      // 내 회원 ID가 채워진 폼 응답이 명단에 들어오면 신청 완료(폼 제출 후 몇 초 뒤 반영)
+      // 내 폼 응답이 명단에 들어와 나와 연결되면 신청 완료(폼 제출 후 몇 초 뒤 반영)
       if (isAppliedRegular(data, userInfo?.uid)) {
         return {
           text: "신청 완료 · 결과 발표 대기",
@@ -456,11 +456,10 @@ function GatherBootmNav({
 
   const handleOfficialApply = () => {
     setIsModal(false);
-    // 상시 행사는 대기열에 넣지 않는다. 폼에 회원 ID를 미리 채워 열고, 폼 응답으로 신청자 명단에 들어간다.
-    if (!isRegularGather) sendRegisterForm({ phase: "first" });
-    const formUrl = isRegularGather ? getRegularFormUrl(data, userInfo?.uid) : data?.googleFormUrl;
-    if (formUrl) {
-      window.open(formUrl, "_blank");
+    // 상시 행사도 신청 기록(대기열)을 남긴다. 서버가 이 기록과 폼 응답을 짝지어 신청자 명단에 내 프로필을 붙인다.
+    sendRegisterForm({ phase: "first" });
+    if (data?.googleFormUrl) {
+      window.open(data.googleFormUrl, "_blank");
     } else {
       toast("warning", "아직 신청 폼이 준비되지 않았어요. 잠시 후 다시 시도해주세요.");
     }

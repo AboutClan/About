@@ -55,29 +55,12 @@ export const formatSlot = (slot: IRegularSlot) =>
 const isThisRound = (gather: Pick<IGather, "formStats">) =>
   gather.formStats?.roundKey === getCurrentRoundKey();
 
-/** 내 신청(회원 ID가 채워진 폼 응답)이 신청자 명단에 있는지 */
-export const isAppliedRegular = (gather: Pick<IGather, "formStats">, uid?: string) =>
-  !!uid && isThisRound(gather) && !!gather.formStats.applicants?.some((a) => a.uid === uid);
-
 /**
- * 신청 폼 링크. 폼의 "회원 ID" 질문(formUidEntryId)이 있으면 내 uid를 미리 채운 링크를 만든다.
- * 미리 채우기는 docs.google.com/forms/.../viewform 주소에서만 동작한다(forms.gle 단축 주소는 X).
+ * 내 폼 응답이 신청자 명단에 나와 연결됐는지.
+ * 서버가 앱 신청 기록(대기열)과 폼 응답을 신청 시각·성별·출생연도로 짝지어 회원을 붙인다(폼 제출 후 몇 초 뒤).
  */
-export const getRegularFormUrl = (
-  gather: Pick<IGather, "googleFormUrl" | "formUidEntryId">,
-  uid?: string,
-) => {
-  if (!gather.googleFormUrl) return null;
-  if (!gather.formUidEntryId || !uid) return gather.googleFormUrl;
-  try {
-    const url = new URL(gather.googleFormUrl);
-    url.searchParams.set("usp", "pp_url");
-    url.searchParams.set(gather.formUidEntryId, uid);
-    return url.toString();
-  } catch {
-    return gather.googleFormUrl;
-  }
-};
+export const isAppliedRegular = (gather: Pick<IGather, "formStats">, uid?: string) =>
+  !!uid && isThisRound(gather) && !!gather.formStats.applicants?.some((a) => a.user?.uid === uid);
 
 /** 화면에 보여 줄 신청자 한 명. 가짜 인원(isFake)도 같은 모양이다. */
 export interface RegularApplicant {

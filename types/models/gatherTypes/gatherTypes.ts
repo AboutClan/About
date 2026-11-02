@@ -61,9 +61,8 @@ export interface IRegularFormApplicant {
   /** 고른 slot·content key */
   keys: string[];
   submittedAt: string | null;
-  /** 앱에서 신청해 폼에 미리 채워진 회원 uid (외부 신청자는 null) */
   uid?: string | null;
-  /** uid로 연결된 회원(집계 시점 스냅샷) */
+  /** 앱 신청 기록과 짝지어 연결된 회원(집계 시점 스냅샷). 외부 신청자는 null */
   user?: IRegularApplicantUser | null;
 }
 
@@ -109,8 +108,6 @@ export interface IGatherWriting {
   formStats?: IRegularFormStats | null;
   /** 상시 행사에서 확정돼 따로 만든 모임이면 부모 gather id */
   parentGatherId?: number | null;
-  /** 구글폼 "회원 ID" 질문의 미리 채우기 키(예: "entry.123456") */
-  formUidEntryId?: string | null;
 }
 
 export type GatherCategory =
