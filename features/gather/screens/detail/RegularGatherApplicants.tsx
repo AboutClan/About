@@ -4,8 +4,8 @@ import { useMemo } from "react";
 
 import Avatar from "@/components/atoms/Avatar";
 import ParticipationBar from "@/components/atoms/bars/ParticipationBar";
-import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
 import GatherOfficialParticipationChart from "@/features/gather/screens/detail/GatherOfficialParticipationChart";
+import { getFallbackAvatar, getFallbackNickname } from "@/features/gather/utils/memberDisplay";
 import {
   buildRegularApplicants,
   getWeekdayLabel,
@@ -19,7 +19,8 @@ interface RegularGatherApplicantsProps {
 }
 
 /**
- * 상시 행사 상세: 신청자(아직 지나지 않은 날짜를 고른 구글폼 응답 + 가짜 인원)를 익명 카드로 보여 준다.
+ * 상시 행사 상세: 신청자(아직 지나지 않은 날짜를 고른 구글폼 응답 + 가짜 인원)를 카드로 보여 준다.
+ * 폼 신청자는 회원과 연결되지 않아 신청자별로 고정된 기본 닉네임·아바타를 쓴다.
  * 카드마다 성별·나이, 고른 일정 / 콘텐츠, 신청 시각을 표시하고 아래에 나이·성비 통계를 붙인다.
  */
 function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
@@ -81,14 +82,19 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
             return (
               <Flex key={applicant.id} py={2.5} align="center" borderBottom="var(--border)">
                 <Avatar
-                  user={SECRET_USER_SUMMARY as unknown as UserSimpleInfoProps}
+                  user={
+                    {
+                      _id: "",
+                      avatar: getFallbackAvatar(`${data.id}-${applicant.id}`),
+                    } as unknown as UserSimpleInfoProps
+                  }
                   size="md1"
                   isLink={false}
                 />
                 <Flex direction="column" flex={1} ml={3} minW={0}>
                   <Flex align="baseline">
                     <Box fontSize="13px" fontWeight="semibold" lineHeight="20px">
-                      익명
+                      {getFallbackNickname(`${data.id}-${applicant.id}`)}
                     </Box>
                     {(applicant.gender || applicant.age) && (
                       <Box ml={1} fontSize="11px" color="gray.500">

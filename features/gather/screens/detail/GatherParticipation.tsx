@@ -1,6 +1,5 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useState } from "react";
 
 import ParticipationBar from "@/components/atoms/bars/ParticipationBar";
 import { IProfileCommentCard } from "@/components/molecules/cards/ProfileCommentCard";
@@ -12,7 +11,7 @@ import GatherDateParticipationChart, {
 } from "@/features/gather/screens/detail/GatherDateParticipationChart";
 import GatherOfficialParticipationChart from "@/features/gather/screens/detail/GatherOfficialParticipationChart";
 import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
-import { useUserInfo } from "@/hooks/custom/UserHooks";
+import { getFallbackAvatar, withDisplayNickname } from "@/features/gather/utils/memberDisplay";
 import {
   GatherCategory,
   IGather,
@@ -27,24 +26,12 @@ interface IGatherParticipation {
 }
 
 function GatherParticipation({ data, gatherType }: IGatherParticipation) {
-  const userInfo = useUserInfo();
   const status = data.status;
   const participantsCnt = data.participants.reduce(
     (acc, par) => acc + 1 + (par.withCompanion ? 1 : 0),
     0,
   );
   const applicantCount = getApplicantCount(participantsCnt, data.waiting?.length ?? 0, data.id);
-  const isMyGather = data.participants?.some((p) => p.user?._id === userInfo?._id);
-
-  const isPrivileged = userInfo?.role === "previliged";
-  const isAnonymizedGather =
-    gatherType === "openGather" ||
-    gatherType === "officialGather" ||
-    (gatherType === "secretGather" && !isMyGather);
-
-  const [isRevealed, setIsRevealed] = useState(false);
-
-  const isSecret = isAnonymizedGather && !(isPrivileged && isRevealed);
 
   const findVoterUser = (voter: UserSimpleInfoProps | string) => {
     if (typeof voter !== "string" && (voter as IUser)?.gender) return voter as IUser;
@@ -95,7 +82,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
       ...SECRET_USER_SUMMARY,
       _id: par.dummyId || "",
       uid: par.dummyId || "",
-      name: par.dummyName || "익명",
+      avatar: getFallbackAvatar(par.dummyId || ""),
       gender: par.dummyGender,
       birth: par.dummyBirth || "000101",
       comment: "",
@@ -115,9 +102,10 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
     return [gender, age ? `${age}세` : null].filter(Boolean).join(" · ");
   };
 
+  // 익명 처리 없이 아바타/프로필 사진과 닉네임(없으면 기본 닉네임)을 보여 준다.
   const organizerCard = {
-    user: isSecret ? SECRET_USER_SUMMARY : (data?.user as IUser),
-    memo: isSecret ? "익명 참여자" : (data?.user as IUser)?.comment,
+    user: withDisplayNickname(data?.user as IUser, `organizer-${data?.id}`),
+    memo: (data?.user as IUser)?.comment,
     rightComponent: <SocialingScoreBadge user={data?.user as UserSimpleInfoProps} size="sm" />,
     crownType: "main" as const,
   };
@@ -127,16 +115,14 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   ).flatMap((par, idx) => {
     const parUser = getParticipantUser(par);
     const card: IProfileCommentCard = {
-      user: isSecret ? (SECRET_USER_SUMMARY as UserSimpleInfoProps) : parUser,
+      user: withDisplayNickname(parUser, `${data?.id}-${parUser?._id || idx}`),
       memo:
         gatherType === "openGather"
           ? getOpenGatherMemo(par)
           : gatherType === "officialGather"
             ? getGenderAgeMemo(par)
-            : gatherType === "secretGather" && !isMyGather
-              ? `익명 참여자 ${idx + 1}`
-              : (parUser as IUser)?.comment,
-      rightComponent: isSecret ? null : <SocialingScoreBadge user={parUser} size="sm" />,
+            : (parUser as IUser)?.comment,
+      rightComponent: <SocialingScoreBadge user={parUser} size="sm" />,
     };
     return par.withCompanion ? [card, card] : [card];
   });
@@ -162,18 +148,6 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
             ) : undefined
           }
         />
-        {isPrivileged && isAnonymizedGather && (
-          <Flex justify="flex-end" mb={2}>
-            <Button
-              variant="outline"
-              size="xs"
-              colorScheme="gray"
-              onClick={() => setIsRevealed((prev) => !prev)}
-            >
-              {isRevealed ? "익명으로 보기" : "실명으로 보기"}
-            </Button>
-          </Flex>
-        )}
         <ProfileCardColumn
           hasCommentButton={false}
           userCardArr={[...(!isAdminOpen ? [organizerCard] : []), ...userCardArr]}

@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { UserIcon } from "@/components/Icons/UserIcons";
 import { InfinityIcon } from "@/components/molecules/cards/StudyThumbnailCard";
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
-import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
+import { getFallbackAvatar } from "@/features/gather/utils/memberDisplay";
 import {
   buildRegularApplicants,
   summarizeLocation,
@@ -102,11 +102,15 @@ export function GatherThumbnailCard({
 
   const isAdmin = userInfo?.role === "previliged";
 
-  // 상시 행사는 참여자 대신 신청자(구글폼 신청자 + 성비 보정 인원)를 익명으로 보여 준다.
+  // 상시 행사는 참여자 대신 신청자(구글폼 신청자 + 성비 보정 인원)를 보여 준다.
+  // 폼 신청자는 회원과 연결되지 않아 신청자별로 고정된 기본 아바타를 쓴다.
   const participantsMember: IGatherParticipants[] =
     gatherType === "regularGather"
-      ? buildRegularApplicants({ id, age, formStats, slots, contents }).map(() => ({
-          user: SECRET_USER_SUMMARY as unknown as UserSimpleInfoProps,
+      ? buildRegularApplicants({ id, age, formStats, slots, contents }).map((applicant) => ({
+          user: {
+            _id: "",
+            avatar: getFallbackAvatar(`${id}-${applicant.id}`),
+          } as unknown as UserSimpleInfoProps,
           phase: "first",
         }))
       : maxCnt !== 1 &&
@@ -235,14 +239,7 @@ export function GatherThumbnailCard({
 
           <Flex mt={1} alignItems="center" justify="space-between">
             <AvatarGroupsOverwrap
-              users={participantsMember?.map((par) =>
-                gatherType === "openGather" ||
-                gatherType === "secretGather" ||
-                gatherType === "officialGather" ||
-                gatherType === "regularGather"
-                  ? SECRET_USER_SUMMARY
-                  : par.user,
-              )}
+              users={participantsMember?.map((par) => par.user)}
               maxCnt={VOTER_SHOW_MAX}
             />
             <Flex align="center" color="var(--gray-500)">
