@@ -178,7 +178,7 @@ export function GatherThumbnailCard({
                     : statusProps.text}
               </Badge>
 
-              {gatherType !== "officialGather" && !isRegular && (
+              {gatherType !== "officialGather" && (
                 <Badge size="md" colorScheme="gray" color="var(--gray-600)">
                   {category}
                 </Badge>
