@@ -96,7 +96,7 @@ export default function ProcessGuide({
         {
           step: 1,
           title: "원하는 일정과 콘텐츠를 골라 신청해요",
-          description: "여러 개 골라도 괜찮아요. 신청은 매주 월요일에 새로 받아요",
+          description: "여러 개 골라도 괜찮아요",
         },
         {
           step: 2,
