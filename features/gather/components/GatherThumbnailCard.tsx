@@ -9,7 +9,6 @@ import { UserIcon } from "@/components/Icons/UserIcons";
 import { InfinityIcon } from "@/components/molecules/cards/StudyThumbnailCard";
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
-import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
 import {
   buildRegularApplicants,
   summarizeLocation,
@@ -122,8 +121,6 @@ export function GatherThumbnailCard({
     0,
   );
 
-  const applicantCount = getApplicantCount(participantsCnt, waitings?.length ?? 0, id);
-
   const has = !!(gatherReview || memberReview);
 
   // 상시 행사는 date가 개설일이라 날짜로 지난 모임/오늘 판정을 하지 않는다.
@@ -187,15 +184,8 @@ export function GatherThumbnailCard({
                 </Badge>
               )}
             </Flex>
-            {/* 상시 행사는 아래 아바타 줄이 신청자 기준이라 오른쪽 위 인원은 따로 표시하지 않는다 */}
-            {isRegular ? null : gatherType === "officialGather" ? (
-              <Box fontSize="12px" fontWeight={400} color="gray.500">
-                {status === "pending" ? "현재 신청중인 인원" : "총 신청 인원"}{" "}
-                <Box as="span" fontWeight={600}>
-                  {applicantCount}명
-                </Box>
-              </Box>
-            ) : gatherType === "openGather" ? (
+            {/* 상시·공식 모임은 오른쪽 위에 신청 인원을 따로 표시하지 않는다(아래 아바타 줄로 대신) */}
+            {isRegular || gatherType === "officialGather" ? null : gatherType === "openGather" ? (
               <Badge size="md" ml={1} variant="subtle" colorScheme="blue">
                 오픈 번개
               </Badge>
