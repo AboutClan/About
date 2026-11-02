@@ -12,6 +12,7 @@ import {
   RegularApplicant,
 } from "@/features/gather/utils/regularGather";
 import { useDefaultNicknamesQuery } from "@/features/user/hooks/queries";
+import { useToast } from "@/hooks/custom/CustomToast";
 import { IGather, IGatherParticipants } from "@/types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
@@ -27,6 +28,7 @@ interface RegularGatherApplicantsProps {
  */
 function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
   const { data: nicknamePool } = useDefaultNicknamesQuery();
+  const toast = useToast();
   const applicants = useMemo(() => buildRegularApplicants(data), [data]);
 
   const slotLabel = (key: string) => {
@@ -84,16 +86,28 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
               !!applicant.submittedAt && dayjs().diff(dayjs(applicant.submittedAt), "hour") < 24;
             return (
               <Flex key={applicant.id} py={2.5} align="center" borderBottom="var(--border)">
-                <Avatar
-                  user={
-                    (applicant.user ?? {
-                      _id: "",
-                      avatar: getFallbackAvatar(`${data.id}-${applicant.id}`),
-                    }) as unknown as UserSimpleInfoProps
-                  }
-                  size="md1"
-                  isLink={!!applicant.user}
-                />
+                {applicant.user ? (
+                  <Avatar user={applicant.user as unknown as UserSimpleInfoProps} size="md1" />
+                ) : (
+                  // 회원과 연결되지 않은 신청자(외부 신청자·성비 보정 인원)는 볼 프로필이 없다
+                  <Box
+                    cursor="pointer"
+                    onClick={() =>
+                      toast("info", "어바웃 외부 멤버라 프로필 정보를 확인할 수 없어요.")
+                    }
+                  >
+                    <Avatar
+                      user={
+                        {
+                          _id: "",
+                          avatar: getFallbackAvatar(`${data.id}-${applicant.id}`),
+                        } as unknown as UserSimpleInfoProps
+                      }
+                      size="md1"
+                      isLink={false}
+                    />
+                  </Box>
+                )}
                 <Flex direction="column" flex={1} ml={3} minW={0}>
                   <Flex align="baseline">
                     <Box fontSize="13px" fontWeight="semibold" lineHeight="20px">
