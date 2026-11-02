@@ -21,7 +21,8 @@ interface RegularGatherApplicantsProps {
 
 /**
  * 상시 행사 상세: 신청자(아직 지나지 않은 날짜를 고른 구글폼 응답 + 가짜 인원)를 카드로 보여 준다.
- * 폼 신청자는 회원과 연결되지 않아 신청자별로 고정된 기본 닉네임·아바타를 쓴다.
+ * 앱에서 신청한 회원(폼에 회원 ID가 채워진 응답)은 그 회원의 아바타·닉네임을,
+ * 외부 신청자는 신청자별로 고정된 기본 닉네임·아바타를 쓴다.
  * 카드마다 성별·나이, 고른 일정 / 콘텐츠, 신청 시각을 표시하고 아래에 나이·성비 통계를 붙인다.
  */
 function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
@@ -85,18 +86,19 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
               <Flex key={applicant.id} py={2.5} align="center" borderBottom="var(--border)">
                 <Avatar
                   user={
-                    {
+                    (applicant.user ?? {
                       _id: "",
                       avatar: getFallbackAvatar(`${data.id}-${applicant.id}`),
-                    } as unknown as UserSimpleInfoProps
+                    }) as unknown as UserSimpleInfoProps
                   }
                   size="md1"
-                  isLink={false}
+                  isLink={!!applicant.user}
                 />
                 <Flex direction="column" flex={1} ml={3} minW={0}>
                   <Flex align="baseline">
                     <Box fontSize="13px" fontWeight="semibold" lineHeight="20px">
-                      {getFallbackNickname(`${data.id}-${applicant.id}`, nicknamePool)}
+                      {applicant.user?.nickname ||
+                        getFallbackNickname(`${data.id}-${applicant.id}`, nicknamePool)}
                     </Box>
                     {(applicant.gender || applicant.age) && (
                       <Box ml={1} fontSize="11px" color="gray.500">

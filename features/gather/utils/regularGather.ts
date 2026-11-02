@@ -1,6 +1,11 @@
 import dayjs from "dayjs";
 
-import { IGather, IRegularContent, IRegularSlot } from "@/types/models/gatherTypes/gatherTypes";
+import {
+  IGather,
+  IRegularApplicantUser,
+  IRegularContent,
+  IRegularSlot,
+} from "@/types/models/gatherTypes/gatherTypes";
 
 /**
  * 상시 행사(regularGather) 공통 계산.
@@ -50,14 +55,28 @@ export const formatSlot = (slot: IRegularSlot) =>
 const isThisRound = (gather: Pick<IGather, "formStats">) =>
   gather.formStats?.roundKey === getCurrentRoundKey();
 
-/** 내가 이번 주에 앱에서 신청했는지 (waiting.createdAt 기준) */
-export const isAppliedThisRound = (gather: Pick<IGather, "waiting">, userId?: string) => {
-  if (!userId) return false;
-  const roundStart = getRoundStart();
-  return gather.waiting.some(
-    (who) =>
-      who.user?._id === userId && !!who.createdAt && !dayjs(who.createdAt).isBefore(roundStart),
-  );
+/** 내 신청(회원 ID가 채워진 폼 응답)이 신청자 명단에 있는지 */
+export const isAppliedRegular = (gather: Pick<IGather, "formStats">, uid?: string) =>
+  !!uid && isThisRound(gather) && !!gather.formStats.applicants?.some((a) => a.uid === uid);
+
+/**
+ * 신청 폼 링크. 폼의 "회원 ID" 질문(formUidEntryId)이 있으면 내 uid를 미리 채운 링크를 만든다.
+ * 미리 채우기는 docs.google.com/forms/.../viewform 주소에서만 동작한다(forms.gle 단축 주소는 X).
+ */
+export const getRegularFormUrl = (
+  gather: Pick<IGather, "googleFormUrl" | "formUidEntryId">,
+  uid?: string,
+) => {
+  if (!gather.googleFormUrl) return null;
+  if (!gather.formUidEntryId || !uid) return gather.googleFormUrl;
+  try {
+    const url = new URL(gather.googleFormUrl);
+    url.searchParams.set("usp", "pp_url");
+    url.searchParams.set(gather.formUidEntryId, uid);
+    return url.toString();
+  } catch {
+    return gather.googleFormUrl;
+  }
 };
 
 /** 화면에 보여 줄 신청자 한 명. 가짜 인원(isFake)도 같은 모양이다. */
@@ -68,6 +87,8 @@ export interface RegularApplicant {
   keys: string[];
   submittedAt: string | null;
   isFake: boolean;
+  /** 앱에서 신청한 회원이면 그 회원(아바타·닉네임 표시용) */
+  user?: IRegularApplicantUser | null;
 }
 
 /** 시드가 같으면 늘 같은 난수열 (mulberry32) */
@@ -153,6 +174,7 @@ export const buildRegularApplicants = (
     keys: applicant.keys ?? [],
     submittedAt: applicant.submittedAt,
     isFake: false,
+    user: applicant.user ?? null,
   }));
 
   const male = real.filter((a) => a.gender === "남성").length;

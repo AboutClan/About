@@ -107,10 +107,11 @@ export function GatherThumbnailCard({
   const participantsMember: IGatherParticipants[] =
     gatherType === "regularGather"
       ? buildRegularApplicants({ id, age, formStats, slots, contents }).map((applicant) => ({
-          user: {
+          // 앱에서 신청한 회원은 그 회원의 아바타, 외부 신청자는 고정된 기본 아바타
+          user: (applicant.user ?? {
             _id: "",
             avatar: getFallbackAvatar(`${id}-${applicant.id}`),
-          } as unknown as UserSimpleInfoProps,
+          }) as unknown as UserSimpleInfoProps,
           phase: "first",
         }))
       : maxCnt !== 1 &&
