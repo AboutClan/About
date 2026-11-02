@@ -130,7 +130,7 @@ export function GatherThumbnailCard({
   const statusProps = isRegular
     ? status === "close"
       ? { text: "종료", colorScheme: "gray" }
-      : { text: "상시 모집", colorScheme: "mint" }
+      : STATUS_TO_BADGE_PROPS.pending
     : STATUS_TO_BADGE_PROPS[
         dayjs(date).isBefore(dayjs().startOf("day"))
           ? "expired"
