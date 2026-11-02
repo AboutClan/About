@@ -60,6 +60,9 @@ function HomeGatherSection({ type }: HomeGatherSectionProps) {
     ? "어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
     : "내가 원하는 때, 내 취향대로, 골라서 참여!";
 
+  // 2열 x 3개를 다 채우지 못하면(6개 미만) 섹션을 숨긴다. 로딩 중에는 그대로 둔다.
+  if (gathers && (data?.filter((gather) => !!gather).length ?? 0) < 6) return null;
+
   return (
     <SlideSectionRow gap="12px">
       <SlideSectionCol title={title} subTitle={subTitle}>
