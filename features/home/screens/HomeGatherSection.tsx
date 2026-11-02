@@ -1,13 +1,15 @@
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
+import SectionHeader from "@/components/atoms/SectionHeader";
 import SlideSectionCol from "@/components/molecules/SlideSectionCol";
 import SlideSectionRow from "@/components/molecules/SlideSectionRow";
 import { useGatherQuery } from "@/features/gather/hooks/queries";
 import HomeGatherCol from "@/features/home/screens/HomeGatherCol";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 
-// 공식 행사로 노출할 모임 id를 원하는 순서대로 나열하면 그 순서대로 2x3 배치됩니다.
-// 비워두면 첫번째 섹션 후보(officialGather/openGather/secretGather) 중 기본 순서로 6개를 사용합니다.
+// 공식 행사로 노출할 모임 id를 원하는 순서대로 나열하면 그 순서대로 1열로 배치됩니다(최대 5개).
+// 비워두면 FEATURED_CATEGORIES 후보 중 기본 순서로 5개를 사용합니다.
 const FEATURED_GATHER_ID_ORDER: number[] = [];
 
 const FEATURED_CATEGORIES = [
@@ -17,6 +19,8 @@ const FEATURED_CATEGORIES = [
   "secretGather",
   "gather2",
 ];
+
+const OFFICIAL_SHOW_CNT = 5;
 
 interface HomeGatherSectionProps {
   type: "official" | "general";
@@ -46,7 +50,7 @@ function HomeGatherSection({ type }: HomeGatherSectionProps) {
     ? FEATURED_GATHER_ID_ORDER.map((id) =>
         featuredPool?.find((gather) => gather?.id === id),
       ).filter((gather) => !!gather)
-    : featuredPool?.slice(0, 6);
+    : featuredPool?.slice(0, OFFICIAL_SHOW_CNT);
 
   // 일반 번개 섹션에서는 공식 행사 섹션에 이미 노출된 모임을 제외하고 채운다.
   const usedIds = new Set(featuredData?.map((gather) => gather?.id));
@@ -60,8 +64,22 @@ function HomeGatherSection({ type }: HomeGatherSectionProps) {
     ? "어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
     : "내가 원하는 때, 내 취향대로, 골라서 참여!";
 
-  // 2열 x 3개를 다 채우지 못하면(6개 미만) 섹션을 숨긴다. 로딩 중에는 그대로 둔다.
-  if (gathers && (data?.filter((gather) => !!gather).length ?? 0) < 6) return null;
+  // 공식 행사는 1열 5개, 일반 번개는 2열 x 3개. 다 채우지 못하면 섹션을 숨긴다(로딩 중에는 그대로 둔다).
+  const fullCount = isOfficial ? OFFICIAL_SHOW_CNT : 6;
+  if (gathers && (data?.filter((gather) => !!gather).length ?? 0) < fullCount) return null;
+
+  if (isOfficial) {
+    return (
+      <Box px={5} mt={5}>
+        <SectionHeader title={title} subTitle={subTitle} />
+        <HomeGatherCol
+          gathers={data?.slice(0, OFFICIAL_SHOW_CNT)?.filter((gather) => !!gather)}
+          isPriority
+          maxCnt={OFFICIAL_SHOW_CNT}
+        />
+      </Box>
+    );
+  }
 
   return (
     <SlideSectionRow gap="12px">

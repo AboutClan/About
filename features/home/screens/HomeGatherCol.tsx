@@ -19,9 +19,15 @@ dayjs().locale("ko");
 interface HomeGatherColProps {
   gathers: IGather[];
   isPriority: boolean;
+  /** 세로로 보여 줄 카드 수 (기본 3) */
+  maxCnt?: number;
 }
 
-export default function HomeGatherCol({ gathers: prevGathers, isPriority }: HomeGatherColProps) {
+export default function HomeGatherCol({
+  gathers: prevGathers,
+  isPriority,
+  maxCnt = 3,
+}: HomeGatherColProps) {
   const setBackUrl = useSetRecoilState(backUrlState);
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
   console.log(24, prevGathers);
@@ -29,7 +35,7 @@ export default function HomeGatherCol({ gathers: prevGathers, isPriority }: Home
     if (!prevGathers) return;
     const gathers = prevGathers?.filter((gather) => !!gather);
     setCardDataArr(
-      setGatherDataToCardCol(gathers.slice(0, 3), isPriority, () => setBackUrl("/home")),
+      setGatherDataToCardCol(gathers.slice(0, maxCnt), isPriority, () => setBackUrl("/home")),
     );
   }, [prevGathers]);
 
@@ -43,7 +49,7 @@ export default function HomeGatherCol({ gathers: prevGathers, isPriority }: Home
         </Flex>
       ) : (
         <Flex direction="column">
-          {[1, 2, 3].map((idx) => (
+          {Array.from({ length: maxCnt }, (_, idx) => (
             <GatherThumbnailCardSkeleton key={idx} />
           ))}
         </Flex>
