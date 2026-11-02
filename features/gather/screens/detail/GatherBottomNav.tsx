@@ -557,8 +557,8 @@ function GatherBootmNav({
             </Box>
           ) : isRegularGather ? (
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
-              구글폼에서 원하는 일정·콘텐츠를 골라 주세요(복수 선택 가능). 확정되면 알림으로
-              알려드려요!
+              구글폼에서 원하는 일정·콘텐츠를 골라 주세요(복수 선택 가능). 확정되면 개별로
+              연락드려요!
             </Box>
           ) : isOfficialGather ? (
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>

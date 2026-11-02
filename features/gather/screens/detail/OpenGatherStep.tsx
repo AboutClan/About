@@ -105,7 +105,7 @@ export default function ProcessGuide({
         },
         {
           step: 3,
-          title: "참여가 확정되면 알림을 보내드려요",
+          title: "참여가 확정되면 개별로 연락드려요",
           description: "확정된 모임은 아래 '확정된 모임'에서도 확인할 수 있어요",
         },
       ]
