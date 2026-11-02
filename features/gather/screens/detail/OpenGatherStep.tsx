@@ -95,17 +95,18 @@ export default function ProcessGuide({
     ? [
         {
           step: 1,
-          title: "원하는 일정·콘텐츠를 골라 구글폼으로 신청해요",
-          description: "신청은 매주 월요일에 새로 시작돼요",
+          title: "원하는 일정과 콘텐츠를 골라 신청해요",
+          description: "여러 개 골라도 괜찮아요. 신청은 매주 월요일에 새로 받아요",
         },
         {
           step: 2,
-          title: "인원·성비·희망 콘텐츠를 고려해 멤버를 매칭해요",
+          title: "운영진이 조를 짜요",
+          description: "인원·성비·희망 콘텐츠를 고려해 함께할 멤버를 매칭해요",
         },
         {
           step: 3,
-          title: "확정되면 알림으로 결과를 알려드려요",
-          description: "확정된 모임은 아래 '확정된 모임'에서도 볼 수 있어요",
+          title: "참여가 확정되면 알림을 보내드려요",
+          description: "확정된 모임은 아래 '확정된 모임'에서도 확인할 수 있어요",
         },
       ]
     : isOfficialGather
