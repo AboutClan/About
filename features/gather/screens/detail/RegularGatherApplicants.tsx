@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useMemo } from "react";
 
 import Avatar from "@/components/atoms/Avatar";
+import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
 import ParticipationBar from "@/components/atoms/bars/ParticipationBar";
 import GatherOfficialParticipationChart from "@/features/gather/screens/detail/GatherOfficialParticipationChart";
 import { getFallbackAvatar, getFallbackNickname } from "@/features/gather/utils/memberDisplay";
@@ -87,7 +88,21 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
             return (
               <Flex key={applicant.id} py={2.5} align="center" borderBottom="var(--border)">
                 {applicant.user ? (
-                  <Avatar user={applicant.user as unknown as UserSimpleInfoProps} size="md1" />
+                  // 회원과 연결된 신청자는 아바타 오른쪽 아래에 인증 체크
+                  <Box position="relative" flexShrink={0}>
+                    <Avatar user={applicant.user as unknown as UserSimpleInfoProps} size="md1" />
+                    <Flex
+                      position="absolute"
+                      right="-2px"
+                      bottom="-2px"
+                      bg="white"
+                      borderRadius="full"
+                      p="1px"
+                      pointerEvents="none"
+                    >
+                      <CheckCircleIcon size="sm" color="mint" isFill />
+                    </Flex>
+                  </Box>
                 ) : (
                   // 회원과 연결되지 않은 신청자(외부 신청자·성비 보정 인원)는 볼 프로필이 없다
                   <Box
