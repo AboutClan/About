@@ -89,13 +89,33 @@ const pickSome = <T>(items: T[], random: () => number, max = 2) => {
   return [...items].sort(() => random() - 0.5).slice(0, count);
 };
 
-/** 남성:여성이 2:1을 넘지 않게 채울 가짜 여성 수 */
-const getFakeFemaleCount = (male: number, female: number) =>
-  Math.max(0, Math.ceil(male / 2) - female);
+/** 이번 주 신청자가 이보다 적으면 가짜 인원으로 채운다 */
+const MIN_APPLICANTS = 6;
+
+/**
+ * 가짜 인원의 성별 목록.
+ * 1) 남성:여성이 2:1을 넘지 않게 여성을 채우고
+ * 2) 그래도 MIN_APPLICANTS명보다 적으면 적은 쪽 성별부터 번갈아 채운다(여성 먼저).
+ */
+const getFakeGenders = (male: number, female: number): ("남성" | "여성")[] => {
+  const genders: ("남성" | "여성")[] = [];
+  let [m, f] = [male, female];
+  while (m > f * 2) {
+    genders.push("여성");
+    f++;
+  }
+  while (m + f < MIN_APPLICANTS) {
+    const next = m < f ? "남성" : "여성";
+    genders.push(next);
+    if (next === "남성") m++;
+    else f++;
+  }
+  return genders;
+};
 
 /**
  * 상시 행사 이번 주 신청자 목록(최근 신청 순).
- * 구글폼 신청자(formStats.applicants)에 남성:여성이 2:1을 넘지 않도록 가짜 여성 신청자를 더한다.
+ * 구글폼 신청자(formStats.applicants)에 가짜 인원을 더한다(getFakeGenders 규칙).
  * 가짜 인원은 행사 id·주차·순번으로 시드를 고정해 새로고침해도 같은 사람이 같은 자리에 나온다.
  */
 export const buildRegularApplicants = (
@@ -115,7 +135,7 @@ export const buildRegularApplicants = (
 
   const male = real.filter((a) => a.gender === "남성").length;
   const female = real.filter((a) => a.gender === "여성").length;
-  const fakeCount = getFakeFemaleCount(male, female);
+  const fakeGenders = getFakeGenders(male, female);
 
   // 가짜 인원이 고를 선택지: 지난 날짜는 빼고, 콘텐츠 전용 일정은 그 콘텐츠도 함께 고른 것으로 친다.
   const visibleSlots = getVisibleSlots(gather.slots);
@@ -135,7 +155,7 @@ export const buildRegularApplicants = (
   const lastSync = gather.formStats?.updatedAt ? dayjs(gather.formStats.updatedAt) : roundStart;
   const span = Math.max(lastSync.diff(roundStart), 0);
 
-  const fakes: RegularApplicant[] = Array.from({ length: fakeCount }, (_, idx) => {
+  const fakes: RegularApplicant[] = fakeGenders.map((gender, idx) => {
     const random = seededRandom(`${gather.id}-${getCurrentRoundKey()}-${idx}`);
     const keys = new Set<string>();
     pickSome(commonSlots, random).forEach((slot) => keys.add(slot.key));
@@ -146,7 +166,7 @@ export const buildRegularApplicants = (
     pickSome(freeContents, random).forEach((content) => keys.add(content.key));
     return {
       id: `fake-${idx}`,
-      gender: "여성",
+      gender,
       age: lo + Math.floor(random() * (hi - lo + 1)),
       keys: Array.from(keys),
       submittedAt: roundStart.add(Math.floor(random() * span), "ms").toISOString(),
