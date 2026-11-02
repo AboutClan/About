@@ -27,7 +27,7 @@ function ParticipationBar({
     >
       <Flex align="center">
         <span>{label ?? (type === "open" ? "참여 인원" : "참여중인 인원")}</span>
-        <Box as="span" ml={2} color={participantsCnt <= maxCnt ? "mint" : "red"}>
+        <Box as="span" ml={2} color={!maxCnt || participantsCnt <= maxCnt ? "mint" : "red"}>
           {participantsCnt}
         </Box>
         <Box as="span" mx={1} color="gray.600">

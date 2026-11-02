@@ -341,7 +341,9 @@ function PlaceImage(props: PlaceImageProps) {
           )
         }
         style={{
+          // 정사각형이 아닌 이미지는 가운데 기준으로 잘라 채운다
           objectFit: "cover",
+          objectPosition: "center",
         }}
       />
     </Box>
