@@ -14,7 +14,8 @@ import LabeledInput from "@/components/molecules/LabeledInput";
 import SearchLocation from "@/components/organisms/SearchLocation";
 import { USER_INFO } from "@/constants/keys/queryKeys";
 import { useUserInfoMutation } from "@/features/user/hooks/mutations";
-import { useUserInfoQuery } from "@/features/user/hooks/queries";
+import { useUserInfoQuery, useUserNicknamesQuery } from "@/features/user/hooks/queries";
+import { validateNickname } from "@/features/user/lib/defaultNickname";
 import { CameraIcon, ProfileCamera } from "@/features/user/screens/UserProfileSection";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { NaverLocationProps } from "@/hooks/external/queries";
@@ -34,6 +35,9 @@ function Profile() {
     }[]
   >(userInfo?.majors);
 
+  const { data: allNicknames } = useUserNicknamesQuery();
+  const [nickname, setNickname] = useState("");
+  const [nicknameError, setNicknameError] = useState("");
   const [mbti, setMbti] = useState("");
   const [instagram, setInstagram] = useState("");
   const [comment, setComment] = useState("");
@@ -66,13 +70,25 @@ function Profile() {
       longitude: userInfo.locationDetail?.longitude ?? null,
       latitude: userInfo.locationDetail?.latitude ?? null,
     });
+    setNickname(userInfo.nickname ?? "");
     setInstagram(userInfo.instagram ?? "");
     setComment(userInfo.comment ?? "");
     setText(userInfo.introduceText ?? "");
   }, [userInfo]);
 
   const handleSubmit = () => {
+    // 닉네임이 아직 없는 회원이 비워 둔 채 저장하면 닉네임은 건드리지 않는다.
+    const isNicknameUntouched = !nickname.trim() && !userInfo?.nickname;
+    const error = isNicknameUntouched
+      ? ""
+      : validateNickname(nickname, userInfo?.nickname, allNicknames);
+    if (error) {
+      setNicknameError(error);
+      toast("warning", error);
+      return;
+    }
     mutate({
+      ...(!isNicknameUntouched && { nickname: nickname.trim() }),
       locationDetail: {
         name: placeInfo?.name,
         address: placeInfo?.address,
@@ -114,6 +130,22 @@ function Profile() {
           </Flex>
           <Box mb={4}>
             <LabeledInput label="이름" value={userInfo?.name || ""} isDisabled />
+          </Box>
+          <Box mb={4}>
+            <LabeledInput
+              label="닉네임"
+              value={nickname}
+              onChange={(e) => {
+                setNickname(e.target.value);
+                setNicknameError("");
+              }}
+              isInvalid={!!nicknameError}
+            />
+            {nicknameError && (
+              <Box mt={1} fontSize="11px" color="var(--color-red)">
+                {nicknameError}
+              </Box>
+            )}
           </Box>
           <Box mb={4}>
             <LabeledInput

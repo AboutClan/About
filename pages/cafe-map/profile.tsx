@@ -56,6 +56,11 @@ function CafeMapProfile() {
   });
 
   const validateNickname = (): boolean => {
+    // 지금 닉네임 그대로면 통과 (어바웃 기본 닉네임은 5글자를 넘을 수 있음)
+    if (nickname && nickname === userInfo?.nickname) {
+      setNicknameError("");
+      return true;
+    }
     if (nickname.length < 1 || nickname.length > 5) {
       setNicknameError("1~5글자로 입력해주세요.");
       return false;

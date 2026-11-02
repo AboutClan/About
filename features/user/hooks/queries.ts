@@ -50,6 +50,18 @@ export const useUserInfoQuery = (options?: QueryOptions<IUser>) =>
     },
     options,
   );
+
+// 기본(랜덤) 닉네임 후보 목록 — 서버 randomNickname.ts가 원본
+export const useDefaultNicknamesQuery = (options?: QueryOptions<string[]>) =>
+  useQuery<string[], AxiosError, string[]>(
+    [USER_INFO, "all", "nicknames", "default"],
+    async () => {
+      const res = await axios.get<string[]>(`${SERVER_URI}/user/nicknames/default`);
+      return res.data;
+    },
+    { staleTime: Infinity, ...options },
+  );
+
 export const useUserNicknamesQuery = (options?: QueryOptions<string[]>) =>
   useQuery<string[], AxiosError, string[]>(
     [USER_INFO, "all", "nicknames"],

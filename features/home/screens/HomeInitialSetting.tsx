@@ -17,19 +17,23 @@ import {
   HOME_APP_REVIEW_POPUP_AT,
   HOME_POPUP_DAILY_COUNT,
   MEMBERSHIP_AT,
+  NICKNAME_SET_POPUP,
 } from "@/constants/keys/localStorage";
 import { STUDY_ATTEND_AT } from "@/constants/keys/queryKeys";
 import { MODAL_QUEUE_PRIORITY } from "@/constants/modalQueuePriority";
 import { useGatherReviewOneQuery } from "@/features/gather/hooks/queries";
 import GatherRecordDrawer from "@/features/gather/modals/GatherRecordDrawer";
 import NewbieBenefitModal from "@/features/home/modals/NewbieBenefitModal";
+import NicknameSetModal from "@/features/home/modals/NicknameSetModal";
 import HomeAppReviewRewardDrawer, { HOME_APP_REVIEW_REWARD_SUB } from "@/features/home/screens/HomeAppReviewRewardDrawer";
 import { useUserInfoFieldMutation } from "@/features/user/hooks/mutations";
 import {
+  useDefaultNicknamesQuery,
   usePointSubLogQuery,
   useUserInfoQuery,
   useUserMembershipLogQuery,
 } from "@/features/user/hooks/queries";
+import { isDefaultNickname } from "@/features/user/lib/defaultNickname";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { useSingleModalSlot } from "@/hooks/custom/useSingleModalSlot";
 import { usePushServiceInitialize } from "@/hooks/FcmManger/mutaion";
@@ -44,6 +48,7 @@ import { isApp, isMobileWeb } from "@/utils/validationUtils";
 // 체크 순서(=노출 우선순위)에서 가장 먼저 만족하는 팝업 "하나"만 선택된다.
 type HomePopupType =
   | "forceUpdate"
+  | "nickname"
   | "limit"
   | "membership"
   | "friend"
@@ -59,6 +64,7 @@ interface HomePopupProps extends CloseProps {
 
 const HOME_POPUP_COMPONENTS: Record<HomePopupType, ComponentType<HomePopupProps>> = {
   forceUpdate: ForceUpdateModal,
+  nickname: NicknameSetModal,
   limit: LimitModal,
   membership: NewbieBenefitModal,
   friend: FriendInviteModal,
@@ -279,6 +285,8 @@ function HomeInitialSetting() {
     typeof window !== "undefined" ? localStorage.getItem(STUDY_ATTEND_AT) : null;
   const studyRecord = studyRecordStr ? JSON.parse(studyRecordStr) : null;
   const { data: membershipLog, isLoading: isLoadingMembership } = useUserMembershipLogQuery();
+  const { data: defaultNicknames, isLoading: isLoadingDefaultNicknames } =
+    useDefaultNicknamesQuery();
   const { data: appReviewRewardLog } = usePointSubLogQuery(HOME_APP_REVIEW_REWARD_SUB, {
     enabled: isApp(),
   });
@@ -301,7 +309,8 @@ function HomeInitialSetting() {
   useEffect(() => {
     if (activePopup !== null && activePopup !== "forceUpdate") {
       setHasShownHomeAutoPopup(true);
-      increaseTodayHomePopupCount();
+      // 닉네임 설정은 하루 개수 제한 밖이라 세지 않는다.
+      if (activePopup !== "nickname") increaseTodayHomePopupCount();
     }
   }, [activePopup, setHasShownHomeAutoPopup]);
 
@@ -313,12 +322,26 @@ function HomeInitialSetting() {
   // 2~8순위 판단에 쓰이는 데이터가 전부 도착했는지 여부.
   // (세션은 쿠키 기반이라 일부 인앱 브라우저에서 신뢰할 수 없으므로 게이트에서 제외한다.)
   const isCorePopupDataReady =
-    !isLoadingUserInfo && gatherReviewData !== undefined && !isLoadingMembership;
+    !isLoadingUserInfo &&
+    gatherReviewData !== undefined &&
+    !isLoadingMembership &&
+    !isLoadingDefaultNicknames;
 
   // 2~7순위: 기존 UserSettingPopUp이 담당하던 팝업들. 위에서부터 순서대로 검사해 가장 먼저
   // 만족하는 조건 하나만 고른다. isCorePopupDataReady가 true일 때만 호출되므로 여기서 다시
   // 로딩 여부를 확인할 필요는 없다.
   const decideHomePopup = (): HomePopupType | null => {
+    // 기본(랜덤) 닉네임 회원의 닉네임 설정은 하루 개수 제한과 상관없이 먼저 띄운다.
+    // 확인을 누를 때까지(=NICKNAME_SET_POPUP에 uid 기록) 방문마다 뜬다.
+    if (
+      userInfo &&
+      !isGuest &&
+      isDefaultNickname(userInfo.nickname, defaultNicknames) &&
+      localStorage.getItem(NICKNAME_SET_POPUP) !== userInfo.uid
+    ) {
+      return "nickname";
+    }
+
     // 이 체인(강제 업데이트 제외)은 하루에 최대 HOME_POPUP_DAILY_LIMIT개까지만 보여준다.
     if (getTodayHomePopupCount() >= HOME_POPUP_DAILY_LIMIT) return null;
 
