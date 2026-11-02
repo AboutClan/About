@@ -15,7 +15,42 @@ export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
   waiting: {
     user: UserSimpleInfoProps;
     phase: "first" | "second";
+    createdAt?: string;
   }[];
+}
+
+/**
+ * 상시 행사(regularGather)의 일정. 매주 반복이면 weekday, 특정 날짜면 date.
+ * contentKey가 있으면 그 콘텐츠 전용 일정이다. key는 formStats.byOption의 키와 같다.
+ */
+export interface IRegularSlot {
+  key: string;
+  /** 0(일) ~ 6(토) */
+  weekday?: number;
+  /** "YYYY-MM-DD" */
+  date?: string;
+  /** "19:00" */
+  time: string;
+  contentKey?: string;
+}
+
+/** 상시 행사의 콘텐츠 라인업(수시 교체). location이 없으면 행사 공통 location을 쓴다. */
+export interface IRegularContent {
+  key: string;
+  title: string;
+  description?: string;
+  url?: string;
+  /** "제휴 할인 가능" 같은 짧은 배지 */
+  badge?: string;
+  location?: IGatherLocation;
+}
+
+/** 상시 행사 구글폼 신청 집계. roundKey는 그 주 월요일(KST) "YYYY-MM-DD", byOption은 slot·content key별 선택 수. */
+export interface IRegularFormStats {
+  roundKey: string;
+  total: number;
+  byOption: Record<string, number>;
+  updatedAt: string;
 }
 
 export interface IGatherDateOption {
@@ -47,10 +82,22 @@ export interface IGatherWriting {
   groupId?: string;
   postImage?: string;
   dateOptions?: IGatherDateOption[];
+  slots?: IRegularSlot[];
+  contents?: IRegularContent[];
+  formStats?: IRegularFormStats | null;
+  /** 상시 행사에서 확정돼 따로 만든 모임이면 부모 gather id */
+  parentGatherId?: number | null;
 }
 
 export type GatherCategory =
-  "gather" | "event" | "group" | "official" | "openGather" | "secretGather" | "officialGather";
+  | "gather"
+  | "event"
+  | "group"
+  | "official"
+  | "openGather"
+  | "secretGather"
+  | "officialGather"
+  | "regularGather";
 export type IGatherType = { title: GatherCategoryMain; subtitle?: string };
 
 export type GatherStatus = "open" | "close" | "end" | "pending" | "planned" | "expired" | "today";

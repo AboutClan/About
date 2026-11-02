@@ -10,12 +10,22 @@ import { InfinityIcon } from "@/components/molecules/cards/StudyThumbnailCard";
 import AvatarGroupsOverwrap from "@/components/molecules/groups/AvatarGroupsOverwrap";
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
 import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
+import {
+  formatSlotShort,
+  getRegularApplicantCount,
+  getVisibleSlots,
+  summarizeLocation,
+  summarizeSchedule,
+} from "@/features/gather/utils/regularGather";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { SingleLineText } from "@/styles/layout/components";
 import {
   GatherCategory,
   GatherStatus,
   IGatherParticipants,
+  IRegularContent,
+  IRegularFormStats,
+  IRegularSlot,
 } from "@/types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { isAllAgeRange } from "@/utils/ageUtils";
@@ -52,6 +62,10 @@ export interface GatherThumbnailCardProps {
   };
   homePath?: boolean;
   disableLink?: boolean;
+  /** 상시 행사(regularGather)만 */
+  slots?: IRegularSlot[];
+  contents?: IRegularContent[];
+  formStats?: IRegularFormStats | null;
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -82,6 +96,9 @@ export function GatherThumbnailCard({
   memberReview,
   homePath,
   disableLink,
+  slots,
+  contents,
+  formStats,
 }: GatherThumbnailCardProps) {
   const userInfo = useUserInfo();
 
@@ -104,16 +121,23 @@ export function GatherThumbnailCard({
 
   const has = !!(gatherReview || memberReview);
 
-  const statusProps =
-    STATUS_TO_BADGE_PROPS[
-      dayjs(date).isBefore(dayjs().startOf("day"))
-        ? "expired"
-        : status === "pending"
-        ? dayjs(date).startOf("day").isSame(dayjs().startOf("day"))
-          ? "today"
-          : status
-        : status
-    ];
+  // 상시 행사는 date가 개설일이라 날짜로 지난 모임/오늘 판정을 하지 않는다.
+  const isRegular = gatherType === "regularGather";
+  const regularPlace = isRegular ? summarizeLocation(place, contents) : "";
+
+  const statusProps = isRegular
+    ? status === "close"
+      ? { text: "종료", colorScheme: "gray" }
+      : { text: "상시 모집", colorScheme: "mint" }
+    : STATUS_TO_BADGE_PROPS[
+        dayjs(date).isBefore(dayjs().startOf("day"))
+          ? "expired"
+          : status === "pending"
+            ? dayjs(date).startOf("day").isSame(dayjs().startOf("day"))
+              ? "today"
+              : status
+            : status
+      ];
 
   return (
     <CardLink
@@ -148,17 +172,24 @@ export function GatherThumbnailCard({
                 {gatherType === "event"
                   ? "이벤트"
                   : gatherType === "official"
-                  ? "공식 행사"
-                  : statusProps.text}
+                    ? "공식 행사"
+                    : statusProps.text}
               </Badge>
 
-              {gatherType !== "officialGather" && (
+              {gatherType !== "officialGather" && !isRegular && (
                 <Badge size="md" colorScheme="gray" color="var(--gray-600)">
                   {category}
                 </Badge>
               )}
             </Flex>
-            {gatherType === "officialGather" ? (
+            {isRegular ? (
+              <Box fontSize="12px" fontWeight={400} color="gray.500">
+                이번 주 신청{" "}
+                <Box as="span" fontWeight={600}>
+                  {getRegularApplicantCount({ formStats, id })}명
+                </Box>
+              </Box>
+            ) : gatherType === "officialGather" ? (
               <Box fontSize="12px" fontWeight={400} color="gray.500">
                 {status === "pending" ? "현재 신청중인 인원" : "총 신청 인원"}{" "}
                 <Box as="span" fontWeight={600}>
@@ -182,7 +213,21 @@ export function GatherThumbnailCard({
           </Flex>
           <Title>{title}</Title>
           <Subtitle>
-            {gatherType !== "event" ? (
+            {isRegular ? (
+              <>
+                <Box as="span">{summarizeSchedule(slots)}</Box>
+                {regularPlace && (
+                  <>
+                    <Box as="span" color="var(--gray-400)">
+                      ・
+                    </Box>
+                    <Box as="span" fontWeight={600}>
+                      {regularPlace}
+                    </Box>
+                  </>
+                )}
+              </>
+            ) : gatherType !== "event" ? (
               <>
                 <Box as="span">{dayjsToFormat(dayjs(date).locale("ko"), "M.D(ddd) HH:mm")}</Box>
                 <Box as="span" color="var(--gray-400)">
@@ -199,40 +244,67 @@ export function GatherThumbnailCard({
             )}
           </Subtitle>
 
-          <Flex mt={1} alignItems="center" justify="space-between">
-            <AvatarGroupsOverwrap
-              users={participantsMember?.map((par) =>
-                gatherType === "openGather" ||
-                gatherType === "secretGather" ||
-                gatherType === "officialGather"
-                  ? SECRET_USER_SUMMARY
-                  : par.user,
-              )}
-              maxCnt={VOTER_SHOW_MAX}
-            />
-            <Flex align="center" color="var(--gray-500)">
-              <UserIcon size="sm" />
-              <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
-                <Box
-                  fontWeight={600}
-                  as="span"
-                  color={
-                    maxCnt !== 0 && participantsCnt >= maxCnt
-                      ? "var(--color-red)"
-                      : "var(--color-gray)"
-                  }
+          {isRegular ? (
+            // 콘텐츠 라인업이 있으면 콘텐츠명, 없으면 일정을 칩으로 보여 준다.
+            <Flex mt={1} gap={1} overflow="hidden">
+              {(contents?.length
+                ? contents.map((content) => ({ key: content.key, text: content.title }))
+                : getVisibleSlots(slots).map((slot) => ({
+                    key: slot.key,
+                    text: formatSlotShort(slot),
+                  }))
+              ).map((chip) => (
+                <Badge
+                  key={chip.key}
+                  size="md"
+                  variant="subtle"
+                  colorScheme="gray"
+                  color="var(--gray-600)"
+                  flexShrink={0}
+                  maxW="96px"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
                 >
-                  {participantsCnt}
-                </Box>
-                <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
-                  /
-                </Box>
-                <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                  {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
-                </Box>
+                  {chip.text}
+                </Badge>
+              ))}
+            </Flex>
+          ) : (
+            <Flex mt={1} alignItems="center" justify="space-between">
+              <AvatarGroupsOverwrap
+                users={participantsMember?.map((par) =>
+                  gatherType === "openGather" ||
+                  gatherType === "secretGather" ||
+                  gatherType === "officialGather"
+                    ? SECRET_USER_SUMMARY
+                    : par.user,
+                )}
+                maxCnt={VOTER_SHOW_MAX}
+              />
+              <Flex align="center" color="var(--gray-500)">
+                <UserIcon size="sm" />
+                <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
+                  <Box
+                    fontWeight={600}
+                    as="span"
+                    color={
+                      maxCnt !== 0 && participantsCnt >= maxCnt
+                        ? "var(--color-red)"
+                        : "var(--color-gray)"
+                    }
+                  >
+                    {participantsCnt}
+                  </Box>
+                  <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                    /
+                  </Box>
+                  <Box as="span" color="var(--gray-500)" fontWeight={500}>
+                    {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
+                  </Box>
+                </Flex>
               </Flex>
             </Flex>
-          </Flex>
+          )}
         </Flex>
       </Flex>
       {has && (

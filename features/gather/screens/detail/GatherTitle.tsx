@@ -12,6 +12,7 @@ interface IGatherTitle {
   isFree: boolean;
   isGroupGather: boolean;
   isOpenGather: boolean;
+  isRegularGather?: boolean;
 }
 
 function GatherTitle({
@@ -22,6 +23,7 @@ function GatherTitle({
   isFree,
   isGroupGather,
   isOpenGather,
+  isRegularGather,
 }: IGatherTitle) {
   const isDefault = isAllAgeRange(age);
 
@@ -30,10 +32,23 @@ function GatherTitle({
       <Flex mb={2}>
         <Box mr={1}>
           <MainBadge
-            text={type === "event" ? "이벤트" : type === "official" ? "공식 행사" : category}
+            text={
+              isRegularGather
+                ? "상시 행사"
+                : type === "event"
+                  ? "이벤트"
+                  : type === "official"
+                    ? "공식 행사"
+                    : category
+            }
           />
         </Box>
-        <MainBadge text={isOpenGather ? "매칭" : isFree ? "선착순" : "승인제"} type="sub" />
+        <MainBadge
+          text={
+            isRegularGather ? "운영진 매칭" : isOpenGather ? "매칭" : isFree ? "선착순" : "승인제"
+          }
+          type="sub"
+        />
         {isGroupGather && (
           <Badge
             px={2}

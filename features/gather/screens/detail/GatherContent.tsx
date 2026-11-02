@@ -13,6 +13,7 @@ interface IGather {
   location: IGatherLocation;
   isOpenGather: boolean;
   isOfficialGather?: boolean;
+  isRegularGather?: boolean;
   date: string;
 }
 
@@ -22,6 +23,7 @@ function GatherContent({
   location,
   isOpenGather,
   isOfficialGather,
+  isRegularGather,
   date,
 }: IGather) {
   return (
@@ -39,11 +41,16 @@ function GatherContent({
             unoptimized
           />
         </Box>
-      ) : isOpenGather || isOfficialGather ? (
-        <ProcessGuide date={date} isOfficialGather={isOfficialGather} />
+      ) : isOpenGather || isOfficialGather || isRegularGather ? (
+        <ProcessGuide
+          date={date}
+          isOfficialGather={isOfficialGather}
+          isRegularGather={isRegularGather}
+        />
       ) : null}
       <Box px={5} mt={5}>
-        {location?.latitude && (
+        {/* 상시 행사는 회차마다 장소가 달라 회차 목록에서 따로 보여 준다 */}
+        {!isRegularGather && location?.latitude && (
           <StudyAddressMap
             location={{
               name: location.main,

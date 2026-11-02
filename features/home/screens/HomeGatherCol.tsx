@@ -88,6 +88,9 @@ export const setGatherDataToCardCol = (
         ...gather.participants,
       ],
       waitings: gather.waiting,
+      slots: gather.slots,
+      contents: gather.contents,
+      formStats: gather.formStats,
 
       age: gather.age,
       func,

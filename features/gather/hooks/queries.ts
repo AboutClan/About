@@ -29,6 +29,19 @@ export const useGatherQuery = (
     options,
   );
 
+/** 상시 행사에서 확정돼 따로 만든 모임 목록 (최신순) */
+export const useGatherChildrenQuery = (parentGatherId: number, options?: QueryOptions<IGather[]>) =>
+  useQuery<IGather[], AxiosError>(
+    [GATHER_CONTENT, "children", parentGatherId],
+    async () => {
+      const res = await axios.get<IGather[]>(`${SERVER_URI}/gather/children`, {
+        params: { parentGatherId },
+      });
+      return res.data;
+    },
+    options,
+  );
+
 export const useGatherCountQuery = (userId: string, options?: QueryOptions<number>) =>
   useQuery<number, AxiosError>(
     [GATHER_CONTENT, "groupCount", userId],

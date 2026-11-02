@@ -18,9 +18,11 @@ import {
   useGatherWaitingMutation,
   useGatherWaitingStatusMutation,
 } from "@/features/gather/hooks/mutations";
+import { useGatherChildrenQuery } from "@/features/gather/hooks/queries";
 import GatherExpireModal from "@/features/gather/modals/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "@/features/gather/modals/gatherExpireModal/GatherReviewDrawer";
 import { transferGatherDataState } from "@/features/gather/state";
+import { isAppliedThisRound } from "@/features/gather/utils/regularGather";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { FeedProps } from "@/types/models/feed";
@@ -31,11 +33,17 @@ interface IGatherBootmNav {
   data: IGather;
   isOpenGather: boolean;
   isOfficialGather?: boolean;
+  isRegularGather?: boolean;
 }
 
 type ButtonType = "cancel" | "expire" | "review";
 
-function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNav) {
+function GatherBootmNav({
+  data,
+  isOpenGather,
+  isOfficialGather,
+  isRegularGather,
+}: IGatherBootmNav) {
   const { id } = useParams<{ id: string }>() || {};
   const router = useRouter();
   const toast = useToast();
@@ -89,6 +97,16 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
     },
   });
 
+  // 상시 행사: 내가 들어간 다가오는 확정 모임이 있으면 그쪽으로 안내한다.
+  const { data: childGathers } = useGatherChildrenQuery(data?.id, {
+    enabled: !!isRegularGather && !!data?.id,
+  });
+  const myUpcomingChild = childGathers?.find(
+    (child) =>
+      !dayjs(child.date).isBefore(dayjs().startOf("day")) &&
+      child.participants.some((who) => who?.user?._id === userInfo?._id),
+  );
+
   const { data: feed } = useFeedsQuery(data?.category as "group" | "gather", data?.id, null, true, {
     enabled: !!data?.id && !!data?.category && data.status === "open",
   });
@@ -138,6 +156,50 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
     isEnd?: boolean;
     isReverse?: boolean;
   } => {
+    // 상시 행사는 아래의 정원·참여 취소·후기 분기를 타지 않는다.
+    if (isRegularGather) {
+      if (data.status === "close") {
+        return { text: "종료된 행사입니다.", type: "black", isReverse: true, isEnd: true };
+      }
+      if (myUpcomingChild) {
+        return {
+          text: "확정된 내 모임 보기",
+          handleFunction: () => router.push(`/gather/${myUpcomingChild.id}`),
+          isEnd: true,
+        };
+      }
+      if (myGather) {
+        return {
+          text: "신청자 관리",
+          handleFunction: () => router.push(`/gather/${data.id}/admin`),
+          isReverse: true,
+          isEnd: true,
+        };
+      }
+      if (isAppliedThisRound(data, userInfo?._id)) {
+        return {
+          text: "이번 주 신청 완료 · 결과 발표 대기",
+          type: "black",
+          isReverse: true,
+          isEnd: true,
+        };
+      }
+      return {
+        text: "이번 주 신청하기",
+        handleFunction: () => {
+          if (isGuest) {
+            router.replace({
+              pathname: router.pathname,
+              query: { ...router.query, guest: "on" },
+            });
+            return;
+          }
+          setIsModal(true);
+        },
+        isReverse: true,
+      };
+    }
+
     if (isOpenGather && isParticipant) {
       if (isParticipant) {
         if (data?.reviewers?.some((r) => r === userInfo?._id)) {
@@ -448,9 +510,9 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
           height={
             isOpenGather
               ? 360 + (data?.dateOptions?.length || 0) * 56
-              : isOfficialGather
-              ? 380
-              : 432
+              : isOfficialGather || isRegularGather
+                ? 380
+                : 432
           }
           isHideBottom
           setIsModal={() => setIsModal(false)}
@@ -470,6 +532,12 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
                 <br />
                 모임에 참여할까요?
               </>
+            ) : isRegularGather ? (
+              <>
+                신청 정보를 바탕으로
+                <br />
+                운영진이 멤버를 매칭해요.
+              </>
             ) : isOfficialGather ? (
               <>운영진 승인을 통해 참여가 확정돼요.</>
             ) : (
@@ -486,6 +554,11 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
           {isOpenGather ? (
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
               조 편성 후에 참여를 취소하면 <b>2,000P</b>가 차감됩니다.
+            </Box>
+          ) : isRegularGather ? (
+            <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
+              구글폼에서 원하는 일정·콘텐츠를 골라 주세요(복수 선택 가능). 확정되면 알림으로
+              알려드려요!
             </Box>
           ) : isOfficialGather ? (
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
@@ -567,7 +640,7 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
                 </Checkbox>
               </Box>
             </Box>
-          ) : isOfficialGather ? (
+          ) : isOfficialGather || isRegularGather ? (
             <Box w="100%" pt={4}>
               <Flex
                 direction="column"
@@ -586,7 +659,9 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
                   참여 신청 시 구글폼 작성 페이지로 이동!
                 </Box>
                 <Box fontSize="12px" color="gray.500">
-                  나이, 성별, 후기 등을 고려해 운영진이 별도로 승인 연락을 드려요
+                  {isRegularGather
+                    ? "인원, 성비, 희망 콘텐츠를 고려해 매칭돼요"
+                    : "나이, 성별, 후기 등을 고려해 운영진이 별도로 승인 연락을 드려요"}
                 </Box>
               </Flex>
             </Box>
@@ -606,18 +681,18 @@ function GatherBootmNav({ data, isOpenGather, isOfficialGather }: IGatherBootmNa
               size="lg"
               colorScheme="black"
               onClick={() =>
-                isOfficialGather
+                isOfficialGather || isRegularGather
                   ? handleOfficialApply()
                   : handleParticipate(data?.isApprovalRequired ? "apply" : "participate")
               }
               isLoading={isLoading1 || isLoading2}
               isDisabled={isOpenGather && !selectedDates.length}
             >
-              {isOfficialGather
+              {isOfficialGather || isRegularGather
                 ? "구글폼 작성하러 가기"
                 : data?.isApprovalRequired
-                ? "참여 신청"
-                : "참여하기"}
+                  ? "참여 신청"
+                  : "참여하기"}
             </Button>
             <Button
               my={2}

@@ -10,7 +10,13 @@ import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 // 비워두면 첫번째 섹션 후보(officialGather/openGather/secretGather) 중 기본 순서로 6개를 사용합니다.
 const FEATURED_GATHER_ID_ORDER: number[] = [];
 
-const FEATURED_CATEGORIES = ["officialGather", "openGather", "secretGather", "gather2"];
+const FEATURED_CATEGORIES = [
+  "regularGather",
+  "officialGather",
+  "openGather",
+  "secretGather",
+  "gather2",
+];
 
 interface HomeGatherSectionProps {
   type: "official" | "general";
@@ -18,10 +24,12 @@ interface HomeGatherSectionProps {
 
 function HomeGatherSection({ type }: HomeGatherSectionProps) {
   const { data: gathers } = useGatherQuery(-1);
-  // 공식 행사 섹션에는 officialGather/openGather/secretGather/gather2만 노출된다.
-  // 다가오는 모임은 가까운 날짜순, 이미 지난 모임은 그 뒤에 최근 것부터. 날짜 미정은 맨 뒤.
+  // 공식 행사 섹션에는 FEATURED_CATEGORIES만 노출된다.
+  // 상시 행사(date가 개설일이라 날짜 정렬 의미 없음)가 맨 앞, 그다음 다가오는 모임은 가까운 날짜순,
+  // 이미 지난 모임은 그 뒤에 최근 것부터. 날짜 미정은 맨 뒤.
   const now = dayjs();
   const getSortKey = (gather: IGather) => {
+    if (gather.category === "regularGather") return [-1, gather.id];
     const date = dayjs(gather.date);
     if (!date.isValid()) return [2, 0];
     return date.isBefore(now) ? [1, -date.valueOf()] : [0, date.valueOf()];

@@ -25,6 +25,8 @@ import GatherGuide from "@/features/gather/screens/detail/GatherGuide";
 import GatherHeader from "@/features/gather/screens/detail/GatherHeader";
 import GatherParticipation from "@/features/gather/screens/detail/GatherParticipation";
 import GatherTitle from "@/features/gather/screens/detail/GatherTitle";
+import RegularGatherConfirmedList from "@/features/gather/screens/detail/RegularGatherConfirmedList";
+import RegularGatherSchedule from "@/features/gather/screens/detail/RegularGatherSchedule";
 import { GroupThumbnailCard } from "@/features/group/components/GroupThumbnailCard";
 import { useGroupIdQuery } from "@/features/group/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
@@ -58,6 +60,7 @@ function GatherDetail() {
 
   const isOpenGather = gather?.category === "openGather";
   const isOfficialGather = gather?.category === "officialGather";
+  const isRegularGather = gather?.category === "regularGather";
   const isAdmin = (gather?.user as UserSimpleInfoProps)?._id === userInfo?._id;
 
   const groupId = gather?.groupId;
@@ -85,6 +88,8 @@ function GatherDetail() {
   useEffect(() => {
     if (inviteParticipatedRef.current) return;
     if (!gather || !uid || !userInfo || isMember || isLoading || userInfo?.role === "guest") return;
+    // 상시 행사는 구글폼 신청 → 확정 모임 초대로만 참여한다.
+    if (gather.category === "regularGather") return;
 
     const inviteUid = Array.isArray(uid) ? uid[0] : uid;
 
@@ -152,18 +157,28 @@ function GatherDetail() {
                 isFree={!gather.isApprovalRequired}
                 isGroupGather={!!groupId}
                 isOpenGather={isOpenGather}
+                isRegularGather={isRegularGather}
               />
-              <GatherDetailInfo data={gather} isMember={isMember} isOpenGather={isOpenGather} />
+              {isRegularGather ? (
+                <RegularGatherSchedule data={gather} />
+              ) : (
+                <GatherDetailInfo data={gather} isMember={isMember} isOpenGather={isOpenGather} />
+              )}
               <GatherContent
                 content={gather.content}
                 postImage={postImage}
                 location={gather.location}
                 isOpenGather={isOpenGather}
                 isOfficialGather={isOfficialGather}
+                isRegularGather={isRegularGather}
                 date={gather.date}
               />
               <Divider />
-              <GatherParticipation data={gather} gatherType={gather.category} />
+              {isRegularGather ? (
+                <RegularGatherConfirmedList gatherId={gather.id} />
+              ) : (
+                <GatherParticipation data={gather} gatherType={gather.category} />
+              )}
               {group && (
                 <Box px={5} mt={8}>
                   <Box mb={2} fontSize="16px" fontWeight="semibold">
@@ -174,10 +189,12 @@ function GatherDetail() {
                   />
                 </Box>
               )}
-              <GatherGuide
-                isAdmin={(gather?.user as UserSimpleInfoProps)?._id === session?.user.id}
-                isOpenGather={isOpenGather}
-              />
+              {!isRegularGather && (
+                <GatherGuide
+                  isAdmin={(gather?.user as UserSimpleInfoProps)?._id === session?.user.id}
+                  isOpenGather={isOpenGather}
+                />
+              )}
               <GatherComments comments={gather.comments} />
             </Box>
           </Slide>
@@ -186,6 +203,7 @@ function GatherDetail() {
               data={gather}
               isOpenGather={isOpenGather}
               isOfficialGather={isOfficialGather}
+              isRegularGather={isRegularGather}
             />
           )}
         </>
