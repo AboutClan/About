@@ -114,6 +114,21 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
                       {applicant.user?.nickname ||
                         getFallbackNickname(`${data.id}-${applicant.id}`, nicknamePool)}
                     </Box>
+                    {/* 회원과 연결된 신청자만 어바웃 멤버 배지 */}
+                    {applicant.user && (
+                      <Badge
+                        ml={1}
+                        variant="subtle"
+                        colorScheme="mint"
+                        fontSize="9px"
+                        fontWeight={600}
+                        borderRadius="4px"
+                        px={1.5}
+                        alignSelf="center"
+                      >
+                        어바웃 멤버
+                      </Badge>
+                    )}
                     {(applicant.gender || applicant.age) && (
                       <Box ml={1} fontSize="11px" color="gray.500">
                         {[applicant.gender, applicant.age ? `${applicant.age}세` : null]
