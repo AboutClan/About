@@ -162,7 +162,7 @@ export function GatherThumbnailCard({
       }}
     >
       <Flex justify="space-between">
-        <PlaceImage src={imageProps.image} priority={imageProps.isPriority} isZoomed={isRegular} />
+        <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
         <Flex direction="column" ml="12px" flex={1}>
           <Flex justify="space-between" align="center">
             <Flex>
@@ -301,13 +301,16 @@ export function GatherThumbnailCard({
   );
 }
 
-type PlaceImageProps = Omit<ComponentProps<typeof Image>, "alt" | "sizes" | "fill"> & {
-  /** 상시 행사 포스터는 안쪽 얇은 테두리가 작은 썸네일에서 한쪽만 보여서, 12% 확대해 양쪽 테두리를 잘라 낸다(가장자리 약 5.4%씩) */
-  isZoomed?: boolean;
-};
+type PlaceImageProps = Omit<ComponentProps<typeof Image>, "alt" | "sizes" | "fill">;
 
-function PlaceImage({ isZoomed, ...props }: PlaceImageProps) {
+/** 가로·세로 차이가 이 비율보다 크면 정사각형이 아닌 이미지로 본다 */
+const NON_SQUARE_RATIO = 0.02;
+
+function PlaceImage(props: PlaceImageProps) {
   const [imgSrc, setImgSrc] = useState(props?.src || "");
+  // 정사각형이 아닌 이미지(주로 4:5 포스터)는 안쪽 얇은 테두리가 작은 썸네일에서 한쪽만 보여서,
+  // 12% 확대해 가장자리를 양쪽 약 5.4%씩 잘라 낸다. 실제 크기는 이미지를 불러온 뒤 안다.
+  const [isNonSquare, setIsNonSquare] = useState(false);
   return (
     <Box
       aspectRatio={1 / 1}
@@ -326,6 +329,10 @@ function PlaceImage({ isZoomed, ...props }: PlaceImageProps) {
         alt="thumbnailImage"
         sizes="98px"
         fill
+        onLoad={(e) => {
+          const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+          setIsNonSquare(!!w && !!h && Math.abs(w - h) / Math.max(w, h) > NON_SQUARE_RATIO);
+        }}
         onError={() =>
           setImgSrc(
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/choosing-perfect-movie.jpg",
@@ -335,7 +342,7 @@ function PlaceImage({ isZoomed, ...props }: PlaceImageProps) {
           // 정사각형이 아닌 이미지는 가운데 기준으로 잘라 채운다
           objectFit: "cover",
           objectPosition: "center",
-          ...(isZoomed && { transform: "scale(1.12)" }),
+          ...(isNonSquare && { transform: "scale(1.12)" }),
         }}
       />
     </Box>
