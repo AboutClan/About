@@ -54,7 +54,10 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         {/* 구글 검색결과 제목은 og:title 이 아니라 <title> 을 본다.
             Layout 이 토큰 없는 SSR 에서는 children 을 렌더하지 않아 페이지의 next/head 가
             서버 HTML 에 안 실린다. 그래서 카공지도 분기를 Layout 바깥인 여기서 처리한다. */}
-        <title>{isCafeMapRoute(router.pathname) ? CAFE_MAP_TITLE : DEFAULT_TITLE}</title>
+        <title>
+          {pageProps?.og?.title ??
+            (isCafeMapRoute(router.pathname) ? CAFE_MAP_TITLE : DEFAULT_TITLE)}
+        </title>
       </Head>
 
       <QueryClientProvider client={queryClient}>

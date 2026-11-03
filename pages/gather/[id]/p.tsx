@@ -1,6 +1,7 @@
 import "dayjs/locale/ko";
 
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -11,6 +12,8 @@ import Divider from "@/components/atoms/Divider";
 import { MainLoading } from "@/components/atoms/loaders/MainLoading";
 import Slide from "@/components/layouts/PageSlide";
 import BottomButtonNav from "@/components/molecules/BottomButtonNav";
+import { ABOUT_ORIGIN } from "@/constants/seo";
+import { SERVER_URI } from "@/constants/system";
 import { useGatherWaitingMutation } from "@/features/gather/hooks/mutations";
 import { useGatherIDQuery } from "@/features/gather/hooks/queries";
 import GatherContent from "@/features/gather/screens/detail/GatherContent";
@@ -22,6 +25,37 @@ import RegularGatherConfirmedList from "@/features/gather/screens/detail/Regular
 import RegularGatherSchedule from "@/features/gather/screens/detail/RegularGatherSchedule";
 import { getRandomImage } from "@/utils/imageUtils";
 import { navigateExternalLink } from "@/utils/navigateUtils";
+
+/**
+ * 카카오톡 등 공유 미리보기(OG)를 모임 기준으로 만든다. 번개 API는 로그인이 필요해서
+ * 로그인 없이 부를 수 있는 GET /gather/og(구글폼 있는 공개 모임만)를 쓰고, _document가 pageProps.og를 쓴다.
+ */
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const id = String(ctx.params?.id ?? "");
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 3000);
+    const res = await fetch(`${SERVER_URI}/gather/og?gatherId=${encodeURIComponent(id)}`, {
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    if (!res.ok) return { props: {} };
+    const data: { title?: string; description?: string; image?: string | null } = await res.json();
+    return {
+      props: {
+        og: {
+          title: data.title || "어바웃 모임",
+          description: data.description || "어바웃 모임에 참여해 보세요!",
+          url: `${ABOUT_ORIGIN}/gather/${id}/p`,
+          ...(data.image ? { image: data.image } : {}),
+        },
+      },
+    };
+  } catch {
+    // OG를 못 받아도 페이지는 열려야 한다(경로 기본 OG 사용)
+    return { props: {} };
+  }
+};
 
 /** 실시간 참여 현황: 페이지를 열어 둔 동안 이 간격으로 다시 불러온다 */
 const REFRESH_INTERVAL_MS = 30 * 1000;

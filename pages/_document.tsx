@@ -181,7 +181,11 @@ export default class MyDocument extends Document<MyDocumentProps> {
     }
   }
   render() {
-    const { og } = this.props;
+    // 페이지가 getServerSideProps로 og를 넘기면(예: /gather/[id]/p) 경로별 기본값보다 우선한다.
+    const pageOg = (
+      this.props as unknown as { __NEXT_DATA__?: { props?: { pageProps?: { og?: Partial<OG> } } } }
+    ).__NEXT_DATA__?.props?.pageProps?.og;
+    const og: OG = { ...this.props.og, ...(pageOg ?? {}) };
     return (
       <Html>
         <Head>
