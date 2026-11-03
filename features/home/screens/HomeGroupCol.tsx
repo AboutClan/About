@@ -14,7 +14,8 @@ dayjs().locale("ko");
 interface HomeGroupColProps {
   threeGroups: IGroup[];
   isStudy?: boolean;
-  type: "develop" | "hobby" | "culture" | "social" | "crew" | "expected";
+  /** 더 보기 링크 대상. pending = 모집중, expected = 오픈 예정 */
+  type: "develop" | "hobby" | "culture" | "social" | "crew" | "expected" | "pending";
 }
 
 export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupColProps) {
@@ -28,14 +29,16 @@ export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupCo
     type === "develop"
       ? "category=1"
       : type === "hobby"
-      ? "category=2"
-      : type === "culture"
-      ? "category=3"
-      : type === "social"
-      ? "category=4"
-      : type === "crew"
-      ? "category=5"
-      : "filter=expected";
+        ? "category=2"
+        : type === "culture"
+          ? "category=3"
+          : type === "social"
+            ? "category=4"
+            : type === "crew"
+              ? "category=5"
+              : type === "pending"
+                ? "filter=pending"
+                : "filter=expected";
 
   return (
     <Box my={4}>
@@ -50,18 +53,18 @@ export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupCo
                 group.id === 138
                   ? "end"
                   : group.status === "end"
-                  ? "end"
-                  : group.status === "planned"
-                  ? "planned"
-                  : group.memberCnt.max === 0
-                  ? "pending"
-                  : group.memberCnt.max <= participantCnt
-                  ? "full"
-                  : group.memberCnt.max - 2 <= participantCnt
-                  ? "imminent"
-                  : group.memberCnt.min > participantCnt
-                  ? "planned"
-                  : group.status;
+                    ? "end"
+                    : group.status === "planned"
+                      ? "planned"
+                      : group.memberCnt.max === 0
+                        ? "pending"
+                        : group.memberCnt.max <= participantCnt
+                          ? "full"
+                          : group.memberCnt.max - 2 <= participantCnt
+                            ? "imminent"
+                            : group.memberCnt.min > participantCnt
+                              ? "planned"
+                              : group.status;
 
               return (
                 <GroupThumbnailCard
