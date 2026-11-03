@@ -11,7 +11,6 @@ import HomeGatherSection from "@/features/home/screens/HomeGatherSection";
 import HomeHeader from "@/features/home/screens/homeHeader/HomeHeader";
 import HomeHotClubSection from "@/features/home/screens/HomeHotClubSection";
 import HomeInitialSetting from "@/features/home/screens/HomeInitialSetting";
-import HomeNav from "@/features/home/screens/HomeNav";
 import HomeReviewSection from "@/features/home/screens/HomeReviewSection";
 import HomeStudySection from "@/features/home/screens/HomeStudySection";
 
@@ -26,9 +25,10 @@ function Home() {
         <HomeBannerSlide />
       </Slide>
       <Box h={4} />
-      <Slide>
+      {/* 동아리 카테고리 숨김 */}
+      {/* <Slide>
         <HomeNav />
-      </Slide>
+      </Slide> */}
       <Box>
         <Divider />
       </Box>
