@@ -54,6 +54,7 @@ export function StudyPageTopNav({
         <Box
           h="calc(100dvh - 112px)"
           w="full"
+          maxW="var(--max-width)"
           bg="linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0) 20%)"
           pos="fixed"
           top="112px"

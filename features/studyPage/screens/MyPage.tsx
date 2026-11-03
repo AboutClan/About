@@ -10,6 +10,7 @@ import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { isWebView } from "@/utils/appEnvUtils";
 import { setAuthIntent } from "@/utils/authIntentUtils";
+import { fixedRightInColumn } from "@/utils/layoutUtils";
 import { navigateExternalLink } from "@/utils/navigateUtils";
 import { getSafeAreaBottom, isApp, isIOS } from "@/utils/validationUtils";
 
@@ -161,7 +162,7 @@ function LoginPage() {
           position="fixed"
           top="12px"
           opacity={0.8}
-          right="12px"
+          right={fixedRightInColumn(12)}
           zIndex={1000}
           p={1}
           color="white"

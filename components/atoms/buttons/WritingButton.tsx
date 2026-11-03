@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 
+import { fixedRightInColumn } from "@/utils/layoutUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface IWritingIcon {
@@ -42,7 +43,7 @@ const Layout = styled.button<{ isBottomNav: boolean }>`
   bottom: ${(props) =>
     props.isBottomNav ? `calc(var(--bottom-nav-height) + ${getSafeAreaBottom(20)})` : "20px"};
 
-  right: 20px;
+  right: ${fixedRightInColumn(20)};
   background-color: var(--color-mint);
   width: 56px;
   height: 56px;

@@ -5,6 +5,7 @@ import InfoList from "@/components/atoms/lists/InfoList";
 import { ModalLayout } from "@/components/modals/Modals";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entity.types";
+import { fixedRightInColumn } from "@/utils/layoutUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 interface StudyReviewButtonProps {
   placeId: string;
@@ -39,7 +40,7 @@ function StudyReviewButton({ myStudyInfo }: StudyReviewButtonProps) {
             ? getSafeAreaBottom(72)
             : `calc(var(--bottom-nav-height) + ${getSafeAreaBottom(72)})`
         }
-        right="20px"
+        right={fixedRightInColumn(20)}
       >
         <Button
           fontSize="12px"

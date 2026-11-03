@@ -8,6 +8,7 @@ import { CheckIcon } from "@/features/vote/screens/StudyControlButton";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entity.types";
+import { fixedRightInColumn } from "@/utils/layoutUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 interface StudyExtraButtonProps {
   myStudyInfo: StudyConfirmedMemberProps;
@@ -30,7 +31,7 @@ function StudyExtraButton({ myStudyInfo }: StudyExtraButtonProps) {
           lineHeight="24px"
           fontWeight={700}
           bottom={isAttend ? getSafeAreaBottom(76) : getSafeAreaBottom(76)}
-          right="20px"
+          right={fixedRightInColumn(20)}
         >
           <Button
             fontSize="12px"

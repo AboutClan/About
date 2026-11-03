@@ -30,6 +30,7 @@ const Layout = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
+  max-width: var(--max-width);
   background-color: var(--gray-300);
 `;
 

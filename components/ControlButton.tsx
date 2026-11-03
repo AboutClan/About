@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { ReactElement } from "react";
 
 import { GUEST_BOTTOM_NAV_HEIGHT } from "@/components/layouts/atoms/GuestBottomNav";
+import { fixedRightInColumn } from "@/utils/layoutUtils";
 import { getSafeAreaBottom } from "@/utils/validationUtils";
 
 interface ControlButtonProps {
@@ -37,7 +38,7 @@ function ControlButton({
       bottom={`calc(${hasBottomNav ? "var(--bottom-nav-height)" : "8px"} + ${
         guestBarHeight
       }px + ${getSafeAreaBottom(12)})`}
-      right="20px"
+      right={fixedRightInColumn(20)}
     >
       <Button
         fontSize="12px"
