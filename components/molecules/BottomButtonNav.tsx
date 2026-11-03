@@ -28,6 +28,7 @@ function BottomButtonNav({
       position="fixed"
       bottom={0}
       w="full"
+      maxW="var(--max-width)"
       borderTop="var(--border-main)"
       align="center"
       bg={handleClick ? "white" : "gray.200"}
