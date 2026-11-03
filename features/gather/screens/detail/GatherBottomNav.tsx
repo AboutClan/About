@@ -188,7 +188,8 @@ function GatherBootmNav({
       return {
         text: "신청하기",
         handleFunction: () => {
-          if (isGuest) {
+          // 구글폼이 있으면 게스트도 폼으로 신청할 수 있다(handleOfficialApply에서 게스트는 신청 기록을 남기지 않음)
+          if (isGuest && !data?.googleFormUrl) {
             router.replace({
               pathname: router.pathname,
               query: { ...router.query, guest: "on" },
@@ -242,7 +243,8 @@ function GatherBootmNav({
       return {
         text: "참여 신청",
         handleFunction: () => {
-          if (isGuest) {
+          // 구글폼이 있으면 게스트도 폼으로 신청할 수 있다(handleOfficialApply에서 게스트는 신청 기록을 남기지 않음)
+          if (isGuest && !data?.googleFormUrl) {
             router.replace({
               pathname: router.pathname,
               query: {
@@ -457,7 +459,8 @@ function GatherBootmNav({
   const handleOfficialApply = () => {
     setIsModal(false);
     // 상시 행사도 신청 기록(대기열)을 남긴다. 서버가 이 기록과 폼 응답을 짝지어 신청자 명단에 내 프로필을 붙인다.
-    sendRegisterForm({ phase: "first" });
+    // 게스트는 계정을 남기지 않고 구글폼으로만 신청한다(외부 신청자와 같음).
+    if (!isGuest) sendRegisterForm({ phase: "first" });
     if (data?.googleFormUrl) {
       window.open(data.googleFormUrl, "_blank");
     } else {
