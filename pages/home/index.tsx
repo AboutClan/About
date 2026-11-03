@@ -1,12 +1,9 @@
 import { Box } from "@chakra-ui/react";
 
-import Divider from "@/components/atoms/Divider";
 import Slide from "@/components/layouts/PageSlide";
 import HomeActivityDrawer from "@/components/overlay/HomeActivityDrawer";
-import HomeActivityIntroPopup from "@/components/overlay/HomeActivityIntroPopup";
 import ChallengeSection from "@/features/home/screens/ChallengeSection";
 import HomeBannerSlide from "@/features/home/screens/HomeBannerSlide";
-import HomeFooter from "@/features/home/screens/HomeFooter";
 import HomeGatherSection from "@/features/home/screens/HomeGatherSection";
 import HomeHeader from "@/features/home/screens/homeHeader/HomeHeader";
 import HomeHotClubSection from "@/features/home/screens/HomeHotClubSection";
@@ -24,15 +21,12 @@ function Home() {
       <Slide isNoPadding>
         <HomeBannerSlide />
       </Slide>
-      <Box h={4} />
+      <Box h={3} />
       {/* 동아리 카테고리 숨김 */}
       {/* <Slide>
         <HomeNav />
       </Slide> */}
-      <Box>
-        <Divider />
-      </Box>
-      <Box h={2} />
+
       <Slide isNoPadding>
         <HomeGatherSection type="official" />
       </Slide>
