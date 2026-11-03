@@ -8,7 +8,6 @@ import HomeGatherSection from "@/features/home/screens/HomeGatherSection";
 import HomeHeader from "@/features/home/screens/homeHeader/HomeHeader";
 import HomeHotClubSection from "@/features/home/screens/HomeHotClubSection";
 import HomeInitialSetting from "@/features/home/screens/HomeInitialSetting";
-import HomeReviewSection from "@/features/home/screens/HomeReviewSection";
 import HomeStudySection from "@/features/home/screens/HomeStudySection";
 
 function Home() {
@@ -40,9 +39,10 @@ function Home() {
       <Slide isNoPadding>
         <HomeHotClubSection />
       </Slide>
-      <Slide>
+      {/* 후기 섹션 숨김 */}
+      {/* <Slide>
         <HomeReviewSection />
-      </Slide>
+      </Slide> */}
       <Slide isNoPadding>
         <ChallengeSection />
       </Slide>
