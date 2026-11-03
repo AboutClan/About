@@ -14,6 +14,7 @@ import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
 import {
   canSeeRealName,
   getFallbackAvatar,
+  PUBLIC_PROFILE_LOCKED_TOAST,
   withDisplayNickname,
 } from "@/features/gather/utils/memberDisplay";
 import { useDefaultNicknamesQuery } from "@/features/user/hooks/queries";
@@ -29,13 +30,16 @@ import { birthToAge } from "@/utils/convertUtils/convertTypes";
 interface IGatherParticipation {
   data: IGather;
   gatherType: GatherCategory;
+  /** 공개 페이지: 프로필 이동 대신 안내 토스트, 실명 숨김 */
+  isPublic?: boolean;
 }
 
-function GatherParticipation({ data, gatherType }: IGatherParticipation) {
+function GatherParticipation({ data, gatherType, isPublic }: IGatherParticipation) {
   const { data: nicknamePool } = useDefaultNicknamesQuery();
   const userInfo = useUserInfo();
-  // 운영진·모임장은 "닉네임 (실명)"으로 본다
-  const showRealName = canSeeRealName(userInfo, data?.user as IUser);
+  // 운영진·모임장은 "닉네임 (실명)"으로 본다(공개 페이지 제외)
+  const showRealName = !isPublic && canSeeRealName(userInfo, data?.user as IUser);
+  const profileLockedToast = isPublic ? PUBLIC_PROFILE_LOCKED_TOAST : undefined;
   const status = data.status;
   const participantsCnt = data.participants.reduce(
     (acc, par) => acc + 1 + (par.withCompanion ? 1 : 0),
@@ -123,6 +127,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
     memo: (data?.user as IUser)?.comment,
     rightComponent: <SocialingScoreBadge user={data?.user as UserSimpleInfoProps} size="sm" />,
     crownType: "main" as const,
+    profileLockedToast,
   };
 
   const userCardArr: IProfileCommentCard[] = (
@@ -143,6 +148,7 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
             ? getGenderAgeMemo(par)
             : (parUser as IUser)?.comment,
       rightComponent: <SocialingScoreBadge user={parUser} size="sm" />,
+      profileLockedToast,
     };
     return par.withCompanion ? [card, card] : [card];
   });

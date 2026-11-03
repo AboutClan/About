@@ -8,14 +8,20 @@ import { setGatherDataToCardCol } from "@/features/home/screens/HomeGatherCol";
 
 interface RegularGatherConfirmedListProps {
   gatherId: number;
+  /** 공개 페이지: 카드를 눌러도 다른 페이지로 이동하지 않게 */
+  isPublic?: boolean;
 }
 
 const PAST_SHOW_DEFAULT = 3;
 
 /** 상시 행사 상세: 이 행사에서 확정돼 따로 만든 모임 목록. 다가오는 모임은 모두, 지난 모임은 접어서 보여 준다. */
-function RegularGatherConfirmedList({ gatherId }: RegularGatherConfirmedListProps) {
+function RegularGatherConfirmedList({ gatherId, isPublic }: RegularGatherConfirmedListProps) {
   const [isPastOpen, setIsPastOpen] = useState(false);
-  const { data: children } = useGatherChildrenQuery(gatherId, { enabled: !!gatherId });
+  const { data: children } = useGatherChildrenQuery(gatherId, {
+    enabled: !!gatherId,
+    // 공개 페이지는 실시간 현황을 보여 주므로 함께 갱신
+    refetchInterval: isPublic ? 30 * 1000 : false,
+  });
 
   const today = dayjs().startOf("day");
   const upcoming = (children ?? [])
@@ -36,7 +42,7 @@ function RegularGatherConfirmedList({ gatherId }: RegularGatherConfirmedListProp
       ) : (
         <>
           {setGatherDataToCardCol([...upcoming, ...shownPast], false).map((cardProps) => (
-            <GatherThumbnailCard key={cardProps.id} {...cardProps} />
+            <GatherThumbnailCard key={cardProps.id} {...cardProps} disableLink={isPublic} />
           ))}
           {past.length > PAST_SHOW_DEFAULT && (
             <Button

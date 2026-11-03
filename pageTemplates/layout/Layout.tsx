@@ -204,7 +204,13 @@ function Layout({ children }: ILayout) {
           return;
         }
 
-        if (firstPath === "gather" && secondPath && secondPath !== "writing") {
+        // /gather/[id]/p 는 단독 공개 페이지라 뒤로가기로 /gather 목록에 보내지 않는다
+        if (
+          firstPath === "gather" &&
+          secondPath &&
+          secondPath !== "writing" &&
+          pathArr?.[3] !== "p"
+        ) {
           if (prevPath === "home") {
             router.replace("/home");
           } else {
@@ -263,9 +269,10 @@ function Layout({ children }: ILayout) {
                 ? {
                     paddingTop: `56px`,
                   }
-                : currentSegment?.[0] === "group" && currentSegment?.[2] === "p"
+                : (currentSegment?.[0] === "group" || currentSegment?.[0] === "gather") &&
+                  currentSegment?.[2] === "p"
                 ? {
-                    // /group/[id]/p 는 헤더 없는 단독 공개 미리보기 페이지라 상단 여백은
+                    // /group/[id]/p, /gather/[id]/p 는 헤더 없는 단독 공개 페이지라 상단 여백은
                     // 필요 없지만, 하단에 참여 신청 BottomButtonNav가 고정으로 떠 있어
                     // 마지막 콘텐츠가 가려지지 않도록 하단 여백은 유지한다.
                     paddingBottom: getBottomNavTotalHeight(),

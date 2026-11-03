@@ -10,6 +10,7 @@ import {
   canSeeRealName,
   getFallbackAvatar,
   getFallbackNickname,
+  PUBLIC_PROFILE_LOCKED_TOAST,
   withRealName,
 } from "@/features/gather/utils/memberDisplay";
 import {
@@ -25,6 +26,8 @@ import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
 interface RegularGatherApplicantsProps {
   data: IGather;
+  /** 공개 페이지: 프로필 이동 대신 안내 토스트, 실명 숨김 */
+  isPublic?: boolean;
 }
 
 /**
@@ -33,12 +36,12 @@ interface RegularGatherApplicantsProps {
  * 외부 신청자는 신청자별로 고정된 기본 닉네임·아바타를 쓴다.
  * 카드마다 성별·나이, 고른 일정 / 콘텐츠, 신청 시각을 표시하고 아래에 나이·성비 통계를 붙인다.
  */
-function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
+function RegularGatherApplicants({ data, isPublic }: RegularGatherApplicantsProps) {
   const { data: nicknamePool } = useDefaultNicknamesQuery();
   const toast = useToast();
   const userInfo = useUserInfo();
   // 운영진·모임장은 회원과 연결된 신청자를 "닉네임 (실명)"으로 본다
-  const showRealName = canSeeRealName(userInfo, data.user as UserSimpleInfoProps);
+  const showRealName = !isPublic && canSeeRealName(userInfo, data.user as UserSimpleInfoProps);
   const applicants = useMemo(() => buildRegularApplicants(data), [data]);
 
   const slotLabel = (key: string) => {
@@ -99,7 +102,11 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
                 {applicant.user ? (
                   // 회원과 연결된 신청자는 아바타 오른쪽 아래에 인증 체크
                   <Box position="relative" flexShrink={0}>
-                    <Avatar user={applicant.user as unknown as UserSimpleInfoProps} size="md1" />
+                    <Avatar
+                      user={applicant.user as unknown as UserSimpleInfoProps}
+                      size="md1"
+                      lockedToast={isPublic ? PUBLIC_PROFILE_LOCKED_TOAST : undefined}
+                    />
                     <Flex
                       position="absolute"
                       right="-2px"
@@ -117,7 +124,12 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
                   <Box
                     cursor="pointer"
                     onClick={() =>
-                      toast("info", "어바웃 외부 멤버라 프로필 정보를 확인할 수 없어요.")
+                      toast(
+                        "info",
+                        isPublic
+                          ? PUBLIC_PROFILE_LOCKED_TOAST
+                          : "어바웃 외부 멤버라 프로필 정보를 확인할 수 없어요.",
+                      )
                     }
                   >
                     <Avatar

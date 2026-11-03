@@ -14,9 +14,11 @@ interface IGatherDetailInfo {
   data: IGather;
   isMember: boolean;
   isOpenGather: boolean;
+  /** 공개 페이지: 단톡방·초대코드를 숨긴다 */
+  isPublic?: boolean;
 }
 
-function GatherDetailInfo({ data, isMember, isOpenGather }: IGatherDetailInfo) {
+function GatherDetailInfo({ data, isMember, isOpenGather, isPublic }: IGatherDetailInfo) {
   const { data: session } = useSession();
   const isOrganizer = (data?.user as UserSimpleInfoProps)?.uid === session?.user?.uid;
 
@@ -39,7 +41,7 @@ function GatherDetailInfo({ data, isMember, isOpenGather }: IGatherDetailInfo) {
               category: "일 정",
               text: dayjsToFormat(dayjs(data?.date), "M.D(ddd) HH:mm"),
             },
-            ...(!isOpenGather
+            ...(!isOpenGather && !isPublic
               ? [
                   {
                     category: "단톡방",
@@ -53,7 +55,7 @@ function GatherDetailInfo({ data, isMember, isOpenGather }: IGatherDetailInfo) {
                   },
                 ]
               : []),
-            ...(isOrganizer
+            ...(isOrganizer && !isPublic
               ? [
                   {
                     category: "초대코드",

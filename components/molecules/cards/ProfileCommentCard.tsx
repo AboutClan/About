@@ -98,7 +98,7 @@ export default function ProfileCommentCard({
             <Avatar
               user={user}
               size="md1"
-              isLink={isCafeMap ? false : !isGuest}
+              isLink={isCafeMap ? false : !!profileLockedToast || !isGuest}
               lockedToast={profileLockedToast}
             />
 
