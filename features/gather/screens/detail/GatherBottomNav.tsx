@@ -515,9 +515,11 @@ function GatherBootmNav({
           height={
             isOpenGather
               ? 360 + (data?.dateOptions?.length || 0) * 56
-              : isOfficialGather || isRegularGather
-                ? 380
-                : 432
+              : isRegularGather
+                ? 448 // 제목 2줄 + 안내 2줄이라 공식 모임보다 높다
+                : isOfficialGather
+                  ? 380
+                  : 432
           }
           isHideBottom
           setIsModal={() => setIsModal(false)}
