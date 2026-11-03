@@ -309,8 +309,9 @@ const NON_SQUARE_RATIO = 0.02;
 function PlaceImage(props: PlaceImageProps) {
   const [imgSrc, setImgSrc] = useState(props?.src || "");
   // 정사각형이 아닌 이미지(주로 4:5 포스터)는 안쪽 얇은 테두리가 작은 썸네일에서 한쪽만 보여서,
-  // 12% 확대해 가장자리를 양쪽 약 5.4%씩 잘라 낸다. 실제 크기는 이미지를 불러온 뒤 안다.
-  const [isNonSquare, setIsNonSquare] = useState(false);
+  // 12% 확대해 가장자리를 양쪽 약 5.4%씩 잘라 낸다. 실제 크기는 이미지를 불러온 뒤 알므로,
+  // 판단 전(null)에는 숨겨 확대 전 모습이 한 번 보였다가 커지는 깜빡임을 막는다.
+  const [isNonSquare, setIsNonSquare] = useState<boolean | null>(null);
   return (
     <Box
       aspectRatio={1 / 1}
@@ -343,6 +344,7 @@ function PlaceImage(props: PlaceImageProps) {
           objectFit: "cover",
           objectPosition: "center",
           ...(isNonSquare && { transform: "scale(1.12)" }),
+          ...(isNonSquare === null && { visibility: "hidden" }),
         }}
       />
     </Box>
