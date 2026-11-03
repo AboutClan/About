@@ -69,6 +69,8 @@ export interface IRegularFormApplicant {
 export interface IRegularApplicantUser {
   _id: string;
   uid: string;
+  /** 실명. 운영진·모임장 화면에서만 보여 준다 */
+  name?: string;
   nickname?: string;
   avatar?: { type: number; bg: number };
   profileImage?: string;

@@ -42,7 +42,27 @@ export const withDisplayNickname = <T extends Partial<UserSimpleInfoProps>>(
   user: T,
   seed: string,
   pool?: readonly string[],
+  /** 관리자·모임장이 볼 때: "닉네임 (실명)" */
+  showRealName?: boolean,
 ) => {
-  const displayName = getDisplayNickname(user, seed, pool);
+  const displayName = withRealName(
+    getDisplayNickname(user, seed, pool),
+    showRealName ? user?.name : null,
+  );
   return { ...user, name: displayName, nickname: displayName } as T;
+};
+
+/** "닉네임 (실명)". 실명이 없거나 닉네임과 같으면 닉네임만 */
+export const withRealName = (nickname: string, realName?: string | null) =>
+  realName && realName !== "익명" && realName !== nickname ? `${nickname} (${realName})` : nickname;
+
+/** 모임 참여자·신청자의 실명까지 볼 수 있는 사람: 운영진(previliged·manager) 또는 그 모임의 모임장 */
+export const canSeeRealName = (
+  viewer: { _id?: string; role?: string } | undefined | null,
+  organizer: { _id?: string } | string | undefined | null,
+) => {
+  if (!viewer) return false;
+  if (viewer.role === "previliged" || viewer.role === "manager") return true;
+  const organizerId = typeof organizer === "string" ? organizer : organizer?._id;
+  return !!viewer._id && viewer._id === organizerId;
 };

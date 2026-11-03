@@ -11,8 +11,13 @@ import GatherDateParticipationChart, {
 } from "@/features/gather/screens/detail/GatherDateParticipationChart";
 import GatherOfficialParticipationChart from "@/features/gather/screens/detail/GatherOfficialParticipationChart";
 import { getApplicantCount } from "@/features/gather/utils/getApplicantCount";
-import { getFallbackAvatar, withDisplayNickname } from "@/features/gather/utils/memberDisplay";
+import {
+  canSeeRealName,
+  getFallbackAvatar,
+  withDisplayNickname,
+} from "@/features/gather/utils/memberDisplay";
 import { useDefaultNicknamesQuery } from "@/features/user/hooks/queries";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import {
   GatherCategory,
   IGather,
@@ -28,6 +33,9 @@ interface IGatherParticipation {
 
 function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   const { data: nicknamePool } = useDefaultNicknamesQuery();
+  const userInfo = useUserInfo();
+  // 운영진·모임장은 "닉네임 (실명)"으로 본다
+  const showRealName = canSeeRealName(userInfo, data?.user as IUser);
   const status = data.status;
   const participantsCnt = data.participants.reduce(
     (acc, par) => acc + 1 + (par.withCompanion ? 1 : 0),
@@ -106,7 +114,12 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
 
   // 익명 처리 없이 아바타/프로필 사진과 닉네임(없으면 기본 닉네임)을 보여 준다.
   const organizerCard = {
-    user: withDisplayNickname(data?.user as IUser, `organizer-${data?.id}`, nicknamePool),
+    user: withDisplayNickname(
+      data?.user as IUser,
+      `organizer-${data?.id}`,
+      nicknamePool,
+      showRealName,
+    ),
     memo: (data?.user as IUser)?.comment,
     rightComponent: <SocialingScoreBadge user={data?.user as UserSimpleInfoProps} size="sm" />,
     crownType: "main" as const,
@@ -117,7 +130,12 @@ function GatherParticipation({ data, gatherType }: IGatherParticipation) {
   ).flatMap((par, idx) => {
     const parUser = getParticipantUser(par);
     const card: IProfileCommentCard = {
-      user: withDisplayNickname(parUser, `${data?.id}-${parUser?._id || idx}`, nicknamePool),
+      user: withDisplayNickname(
+        parUser,
+        `${data?.id}-${parUser?._id || idx}`,
+        nicknamePool,
+        showRealName,
+      ),
       memo:
         gatherType === "openGather"
           ? getOpenGatherMemo(par)

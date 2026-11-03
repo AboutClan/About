@@ -6,7 +6,12 @@ import Avatar from "@/components/atoms/Avatar";
 import ParticipationBar from "@/components/atoms/bars/ParticipationBar";
 import { CheckCircleIcon } from "@/components/Icons/CircleIcons";
 import GatherOfficialParticipationChart from "@/features/gather/screens/detail/GatherOfficialParticipationChart";
-import { getFallbackAvatar, getFallbackNickname } from "@/features/gather/utils/memberDisplay";
+import {
+  canSeeRealName,
+  getFallbackAvatar,
+  getFallbackNickname,
+  withRealName,
+} from "@/features/gather/utils/memberDisplay";
 import {
   buildRegularApplicants,
   getWeekdayLabel,
@@ -14,6 +19,7 @@ import {
 } from "@/features/gather/utils/regularGather";
 import { useDefaultNicknamesQuery } from "@/features/user/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
+import { useUserInfo } from "@/hooks/custom/UserHooks";
 import { IGather, IGatherParticipants } from "@/types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 
@@ -30,6 +36,9 @@ interface RegularGatherApplicantsProps {
 function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
   const { data: nicknamePool } = useDefaultNicknamesQuery();
   const toast = useToast();
+  const userInfo = useUserInfo();
+  // 운영진·모임장은 회원과 연결된 신청자를 "닉네임 (실명)"으로 본다
+  const showRealName = canSeeRealName(userInfo, data.user as UserSimpleInfoProps);
   const applicants = useMemo(() => buildRegularApplicants(data), [data]);
 
   const slotLabel = (key: string) => {
@@ -126,8 +135,11 @@ function RegularGatherApplicants({ data }: RegularGatherApplicantsProps) {
                 <Flex direction="column" flex={1} ml={3} minW={0}>
                   <Flex align="baseline">
                     <Box fontSize="13px" fontWeight="semibold" lineHeight="20px">
-                      {applicant.user?.nickname ||
-                        getFallbackNickname(`${data.id}-${applicant.id}`, nicknamePool)}
+                      {withRealName(
+                        applicant.user?.nickname ||
+                          getFallbackNickname(`${data.id}-${applicant.id}`, nicknamePool),
+                        showRealName ? applicant.user?.name : null,
+                      )}
                     </Box>
                     {(applicant.gender || applicant.age) && (
                       <Box ml={1} fontSize="11px" color="gray.500">
