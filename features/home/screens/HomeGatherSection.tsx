@@ -59,9 +59,9 @@ function HomeGatherSection({ type }: HomeGatherSectionProps) {
 
   const isOfficial = type === "official";
   const data = isOfficial ? featuredData : upcomingData;
-  const title = isOfficial ? "🔥 놓치면 후회하는 About 공식 행사" : "오늘 뭐하지? About 번개";
+  const title = isOfficial ? "🔥 이번 주 어바웃 공식 모임" : "오늘 뭐하지? About 번개";
   const subTitle = isOfficial
-    ? "어바웃 동아리의 공식 모임, 지금 바로 신청하세요!"
+    ? "취향 맞는 친구들과 만나는 가장 쉬운 방법"
     : "내가 원하는 때, 내 취향대로, 골라서 참여!";
 
   // 공식 행사는 1열 5개, 일반 번개는 2열 x 3개. 다 채우지 못하면 섹션을 숨긴다(로딩 중에는 그대로 둔다).
