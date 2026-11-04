@@ -239,6 +239,15 @@ function GatherBootmNav({
       }
     }
 
+    // 상시 행사에서 만든 확정 모임은 직접 참여받지 않고, 신청은 상위 상시 행사(구글폼)에서 받는다
+    if (data?.parentGatherId && !isParticipant && !myGather && data.status === "pending") {
+      return {
+        text: "신청하기",
+        handleFunction: () => router.push(`/gather/${data.parentGatherId}`),
+        isReverse: true,
+      };
+    }
+
     if (isOfficialGather && !isParticipant && !myGather) {
       return {
         text: "참여 신청",
