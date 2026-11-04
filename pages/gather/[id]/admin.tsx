@@ -7,6 +7,7 @@ import Slide from "@/components/layouts/PageSlide";
 import TabNav from "@/components/molecules/navs/TabNav";
 import UserApprovalBoard from "@/components/organisms/boards/UserApprovalBoard";
 import UserDeleteBoard from "@/components/organisms/boards/UserDeleteBoard";
+import ParentApplicantInviteBoard from "@/features/gather/components/ParentApplicantInviteBoard";
 import RegularConfirmBoard from "@/features/gather/components/RegularConfirmBoard";
 import UserInviteBoard from "@/features/gather/components/UserInviteBoard";
 import {
@@ -22,8 +23,11 @@ import { safeDecodeTel } from "@/utils/utils";
 const TAB_ARR = ["신청 인원", "참여 인원", "인원 초대"] as const;
 // 상시 행사는 신청을 구글폼으로 받고 참여는 확정 모임에서 하므로 확정 모임 만들기만 둔다
 const REGULAR_TAB_ARR = ["확정 모임"] as const;
+// 상시 행사에서 만든 확정 모임은 상위 행사 신청자를 바로 초대할 수 있게 한다
+const CONFIRMED_TAB_ARR = ["상시 행사 신청자", "참여 인원", "인원 초대"] as const;
 
-type Tab = (typeof TAB_ARR)[number] | (typeof REGULAR_TAB_ARR)[number];
+type Tab =
+  (typeof TAB_ARR)[number] | (typeof REGULAR_TAB_ARR)[number] | (typeof CONFIRMED_TAB_ARR)[number];
 
 function Admin() {
   const router = useRouter();
@@ -38,7 +42,11 @@ function Admin() {
   });
 
   const isRegularGather = gatherData?.category === "regularGather";
-  const tabs: readonly Tab[] = isRegularGather ? REGULAR_TAB_ARR : TAB_ARR;
+  const tabs: readonly Tab[] = isRegularGather
+    ? REGULAR_TAB_ARR
+    : gatherData?.parentGatherId
+      ? CONFIRMED_TAB_ARR
+      : TAB_ARR;
   const currentTab: Tab = tabs.includes(tab) ? tab : tabs[0];
 
   const { mutate } = useGatherWaitingStatusMutation(+id, {
@@ -81,6 +89,8 @@ function Admin() {
         {gatherData &&
           (currentTab === "확정 모임" ? (
             <RegularConfirmBoard gather={gatherData} />
+          ) : currentTab === "상시 행사 신청자" ? (
+            <ParentApplicantInviteBoard gather={gatherData} />
           ) : currentTab === "신청 인원" ? (
             gatherData?.waiting?.length ? (
               <UserApprovalBoard
