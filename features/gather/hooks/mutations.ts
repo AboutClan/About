@@ -241,3 +241,27 @@ export const useGatherRequestLikeMutation = (options?: MutationOptions<{ grId: s
       }),
     options,
   );
+
+interface IRegularConfirmParam {
+  /** 일정(slot) key, 일정이 없는 상시 행사면 콘텐츠 key */
+  optionKey: string;
+  /** 확정 모임 일시(ISO) */
+  date: string;
+  title: string;
+  userIds: string[];
+}
+
+/** 상시 행사에서 확정 모임을 만들고 선택한 회원을 초대 참여자로 넣는다(운영진·모임장) */
+export const useRegularConfirmMutation = (
+  parentGatherId: number,
+  options?: MutationOptions<IRegularConfirmParam, { gatherId: number }>,
+) =>
+  useMutation<{ gatherId: number }, AxiosError, IRegularConfirmParam>(
+    (param) =>
+      requestServer<IRegularConfirmParam & { parentGatherId: number }, { gatherId: number }>({
+        method: "post",
+        url: "gather/regular/confirm",
+        body: { parentGatherId, ...param },
+      }),
+    options,
+  );

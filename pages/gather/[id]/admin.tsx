@@ -7,6 +7,7 @@ import Slide from "@/components/layouts/PageSlide";
 import TabNav from "@/components/molecules/navs/TabNav";
 import UserApprovalBoard from "@/components/organisms/boards/UserApprovalBoard";
 import UserDeleteBoard from "@/components/organisms/boards/UserDeleteBoard";
+import RegularConfirmBoard from "@/features/gather/components/RegularConfirmBoard";
 import UserInviteBoard from "@/features/gather/components/UserInviteBoard";
 import {
   useGatherParticipationMutation,
@@ -19,8 +20,10 @@ import { IUser } from "@/types/models/userTypes/userInfoTypes";
 import { safeDecodeTel } from "@/utils/utils";
 
 const TAB_ARR = ["신청 인원", "참여 인원", "인원 초대"] as const;
+// 상시 행사는 신청을 구글폼으로 받고 참여는 확정 모임에서 하므로 확정 모임 만들기만 둔다
+const REGULAR_TAB_ARR = ["확정 모임"] as const;
 
-type Tab = (typeof TAB_ARR)[number];
+type Tab = (typeof TAB_ARR)[number] | (typeof REGULAR_TAB_ARR)[number];
 
 function Admin() {
   const router = useRouter();
@@ -33,6 +36,10 @@ function Admin() {
   const { data: gatherData } = useGatherIDQuery(+id, {
     enabled: !!id,
   });
+
+  const isRegularGather = gatherData?.category === "regularGather";
+  const tabs: readonly Tab[] = isRegularGather ? REGULAR_TAB_ARR : TAB_ARR;
+  const currentTab: Tab = tabs.includes(tab) ? tab : tabs[0];
 
   const { mutate } = useGatherWaitingStatusMutation(+id, {
     onSuccess() {
@@ -62,17 +69,19 @@ function Admin() {
       <Header title="관리자 페이지" />
       <Slide isNoPadding>
         <TabNav
-          tabOptionsArr={TAB_ARR.map((tab) => ({
+          tabOptionsArr={tabs.map((tab) => ({
             text: tab,
             func: () => setTab(tab),
           }))}
-          selected={tab}
+          selected={currentTab}
           isFullSize
           isBlack
         />
         <Box h={5} />
         {gatherData &&
-          (tab === "신청 인원" ? (
+          (currentTab === "확정 모임" ? (
+            <RegularConfirmBoard gather={gatherData} />
+          ) : currentTab === "신청 인원" ? (
             gatherData?.waiting?.length ? (
               <UserApprovalBoard
                 users={gatherData.waiting.map((who) => ({
@@ -99,7 +108,7 @@ function Admin() {
                 현재 신청중인 인원이 없습니다.
               </Flex>
             )
-          ) : tab === "참여 인원" ? (
+          ) : currentTab === "참여 인원" ? (
             <Box px={5}>
               <UserDeleteBoard
                 users={gatherData.participants.map((who) =>
@@ -157,8 +166,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const res = await fetch(`${SERVER_URI}/gather?gatherId=${id}`);
     if (res.ok) {
       const gather = await res.json();
-      const ownerId =
-        typeof gather?.user === "string" ? gather.user : gather?.user?._id;
+      const ownerId = typeof gather?.user === "string" ? gather.user : gather?.user?._id;
       const isOwner = ownerId === session.user.id;
       const isSuperAdmin = GATHER_ADMIN_UIDS.includes(session.user.uid);
 
