@@ -29,6 +29,23 @@ export const useGatherQuery = (
     options,
   );
 
+export type HomeGatherSectionKey = "regular" | "upcoming" | "past" | "partner";
+
+/** 홈 번개 섹션별 모임(각 최대 3개) */
+export const useHomeGatherSectionsQuery = (
+  options?: QueryOptions<Record<HomeGatherSectionKey, IGather[]>>,
+) =>
+  useQuery<Record<HomeGatherSectionKey, IGather[]>, AxiosError>(
+    [GATHER_CONTENT, "homeSections"],
+    async () => {
+      const res = await axios.get<Record<HomeGatherSectionKey, IGather[]>>(`${SERVER_URI}/gather`, {
+        params: { cursor: -2 },
+      });
+      return res.data;
+    },
+    options,
+  );
+
 /** 상시 행사에서 확정돼 따로 만든 모임 목록 (최신순) */
 export const useGatherChildrenQuery = (parentGatherId: number, options?: QueryOptions<IGather[]>) =>
   useQuery<IGather[], AxiosError>(

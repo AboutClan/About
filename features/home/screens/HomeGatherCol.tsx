@@ -21,16 +21,18 @@ interface HomeGatherColProps {
   isPriority: boolean;
   /** 세로로 보여 줄 카드 수 (기본 3) */
   maxCnt?: number;
+  /** 아래 [더보기] 이동 경로. null이면 버튼을 숨긴다 */
+  moreUrl?: string | null;
 }
 
 export default function HomeGatherCol({
   gathers: prevGathers,
   isPriority,
   maxCnt = 3,
+  moreUrl = "/gather",
 }: HomeGatherColProps) {
   const setBackUrl = useSetRecoilState(backUrlState);
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
-  console.log(24, prevGathers);
   useEffect(() => {
     if (!prevGathers) return;
     const gathers = prevGathers?.filter((gather) => !!gather);
@@ -54,7 +56,7 @@ export default function HomeGatherCol({
           ))}
         </Flex>
       )}{" "}
-      <SectionFooterButton url="/gather" />
+      {moreUrl && <SectionFooterButton url={moreUrl} />}
     </Box>
   );
 }

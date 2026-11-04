@@ -27,14 +27,20 @@ function Home() {
       </Slide> */}
 
       <Slide isNoPadding>
-        <HomeGatherSection type="official" />
+        <HomeGatherSection type="regular" />
       </Slide>
       <Slide isNoPadding>
         <HomeStudySection />
       </Slide>
       <Box h={2} />
       <Slide isNoPadding>
-        <HomeGatherSection type="general" />
+        <HomeGatherSection type="upcoming" />
+      </Slide>
+      <Slide isNoPadding>
+        <HomeGatherSection type="past" />
+      </Slide>
+      <Slide isNoPadding>
+        <HomeGatherSection type="partner" />
       </Slide>
       <Slide isNoPadding>
         <HomeHotClubSection />
