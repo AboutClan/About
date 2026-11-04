@@ -236,7 +236,9 @@ export function GatherThumbnailCard({
               </>
             ) : isRegular ? (
               <>
-                <Box as="span">{summarizeSchedule(slots)}</Box>
+                <Box as="span" color="var(--color-mint)" fontWeight={600}>
+                  {summarizeSchedule(slots)}
+                </Box>
                 {regularPlace && (
                   <>
                     <Box as="span" color="var(--gray-400)">
@@ -250,7 +252,9 @@ export function GatherThumbnailCard({
               </>
             ) : gatherType !== "event" ? (
               <>
-                <Box as="span">{dayjsToFormat(dayjs(date).locale("ko"), "M.D(ddd) HH:mm")}</Box>
+                <Box as="span" color="var(--color-mint)" fontWeight={600}>
+                  {dayjsToFormat(dayjs(date).locale("ko"), "M.D(ddd) HH:mm")}
+                </Box>
                 <Box as="span" color="var(--gray-400)">
                   ・
                 </Box>
