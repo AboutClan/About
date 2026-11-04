@@ -25,6 +25,7 @@ import GatherGuide from "@/features/gather/screens/detail/GatherGuide";
 import GatherHeader from "@/features/gather/screens/detail/GatherHeader";
 import GatherParticipation from "@/features/gather/screens/detail/GatherParticipation";
 import GatherTitle from "@/features/gather/screens/detail/GatherTitle";
+import PartnerGatherInfo from "@/features/gather/screens/detail/PartnerGatherInfo";
 import RegularGatherApplicants from "@/features/gather/screens/detail/RegularGatherApplicants";
 import RegularGatherConfirmedList from "@/features/gather/screens/detail/RegularGatherConfirmedList";
 import RegularGatherSchedule from "@/features/gather/screens/detail/RegularGatherSchedule";
@@ -62,6 +63,8 @@ function GatherDetail() {
   const isOpenGather = gather?.category === "openGather";
   const isOfficialGather = gather?.category === "officialGather";
   const isRegularGather = gather?.category === "regularGather";
+  // 제휴 프로그램: 참여 현황·댓글 없이 안내와 외부 신청 링크만
+  const isPartnerGather = gather?.category === "partnerGather";
   const isAdmin = (gather?.user as UserSimpleInfoProps)?._id === userInfo?._id;
 
   const groupId = gather?.groupId;
@@ -159,8 +162,11 @@ function GatherDetail() {
                 isGroupGather={!!groupId}
                 isOpenGather={isOpenGather}
                 isRegularGather={isRegularGather}
+                isPartnerGather={isPartnerGather}
               />
-              {isRegularGather ? (
+              {isPartnerGather ? (
+                <PartnerGatherInfo data={gather} />
+              ) : isRegularGather ? (
                 <RegularGatherSchedule data={gather} />
               ) : (
                 <GatherDetailInfo data={gather} isMember={isMember} isOpenGather={isOpenGather} />
@@ -174,8 +180,8 @@ function GatherDetail() {
                 isRegularGather={isRegularGather}
                 date={gather.date}
               />
-              <Divider />
-              {isRegularGather ? (
+              {!isPartnerGather && <Divider />}
+              {isPartnerGather ? null : isRegularGather ? (
                 <>
                   <RegularGatherApplicants data={gather} />
                   <RegularGatherConfirmedList gatherId={gather.id} />
@@ -193,13 +199,13 @@ function GatherDetail() {
                   />
                 </Box>
               )}
-              {!isRegularGather && (
+              {!isRegularGather && !isPartnerGather && (
                 <GatherGuide
                   isAdmin={(gather?.user as UserSimpleInfoProps)?._id === session?.user.id}
                   isOpenGather={isOpenGather}
                 />
               )}
-              <GatherComments comments={gather.comments} />
+              {!isPartnerGather && <GatherComments comments={gather.comments} />}
             </Box>
           </Slide>
           {kakao !== "share" && (
@@ -208,6 +214,7 @@ function GatherDetail() {
               isOpenGather={isOpenGather}
               isOfficialGather={isOfficialGather}
               isRegularGather={isRegularGather}
+              isPartnerGather={isPartnerGather}
             />
           )}
         </>

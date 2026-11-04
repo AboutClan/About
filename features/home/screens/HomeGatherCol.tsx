@@ -97,6 +97,7 @@ export const setGatherDataToCardCol = (
       slots: gather.slots,
       contents: gather.contents,
       formStats: gather.formStats,
+      benefit: gather.benefit,
 
       age: gather.age,
       func,

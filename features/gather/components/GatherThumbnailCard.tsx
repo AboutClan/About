@@ -64,6 +64,8 @@ export interface GatherThumbnailCardProps {
   slots?: IRegularSlot[];
   contents?: IRegularContent[];
   formStats?: IRegularFormStats | null;
+  /** 제휴 프로그램(partnerGather)만: 할인 혜택 문구 */
+  benefit?: string | null;
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -97,6 +99,7 @@ export function GatherThumbnailCard({
   slots,
   contents,
   formStats,
+  benefit,
 }: GatherThumbnailCardProps) {
   const userInfo = useUserInfo();
 
@@ -130,21 +133,24 @@ export function GatherThumbnailCard({
 
   // 상시 행사는 date가 개설일이라 날짜로 지난 모임/오늘 판정을 하지 않는다.
   const isRegular = gatherType === "regularGather";
+  // 제휴 프로그램도 상시 신청이라 날짜로 판정하지 않는다
+  const isPartner = gatherType === "partnerGather";
   const regularPlace = isRegular ? summarizeLocation(place, contents) : "";
 
-  const statusProps = isRegular
-    ? status === "close"
-      ? { text: "종료", colorScheme: "gray" }
-      : STATUS_TO_BADGE_PROPS.pending
-    : STATUS_TO_BADGE_PROPS[
-        dayjs(date).isBefore(dayjs().startOf("day"))
-          ? "expired"
-          : status === "pending"
-            ? dayjs(date).startOf("day").isSame(dayjs().startOf("day"))
-              ? "today"
+  const statusProps =
+    isRegular || isPartner
+      ? status === "close"
+        ? { text: "종료", colorScheme: "gray" }
+        : STATUS_TO_BADGE_PROPS.pending
+      : STATUS_TO_BADGE_PROPS[
+          dayjs(date).isBefore(dayjs().startOf("day"))
+            ? "expired"
+            : status === "pending"
+              ? dayjs(date).startOf("day").isSame(dayjs().startOf("day"))
+                ? "today"
+                : status
               : status
-            : status
-      ];
+        ];
 
   return (
     <CardLink
@@ -190,7 +196,12 @@ export function GatherThumbnailCard({
               )}
             </Flex>
             {/* 상시·공식 모임은 오른쪽 위에 신청 인원을 따로 표시하지 않는다(아래 아바타 줄로 대신) */}
-            {isRegular || gatherType === "officialGather" ? null : gatherType === "openGather" ? (
+            {isPartner ? (
+              <Badge size="md" ml={1} variant="subtle" colorScheme="purple">
+                제휴
+              </Badge>
+            ) : isRegular || gatherType === "officialGather" ? null : gatherType ===
+              "openGather" ? (
               <Badge size="md" ml={1} variant="subtle" colorScheme="blue">
                 오픈 번개
               </Badge>
@@ -207,7 +218,23 @@ export function GatherThumbnailCard({
           </Flex>
           <Title>{title}</Title>
           <Subtitle>
-            {isRegular ? (
+            {isPartner ? (
+              <>
+                <Box as="span" color="var(--color-mint)" fontWeight={600}>
+                  {benefit || "어바웃 회원 할인"}
+                </Box>
+                {place && (
+                  <>
+                    <Box as="span" color="var(--gray-400)">
+                      ・
+                    </Box>
+                    <Box as="span" fontWeight={600}>
+                      {place}
+                    </Box>
+                  </>
+                )}
+              </>
+            ) : isRegular ? (
               <>
                 <Box as="span">{summarizeSchedule(slots)}</Box>
                 {regularPlace && (
@@ -238,34 +265,41 @@ export function GatherThumbnailCard({
             )}
           </Subtitle>
 
-          <Flex mt={1} alignItems="center" justify="space-between">
-            <AvatarGroupsOverwrap
-              users={participantsMember?.map((par) => par.user)}
-              maxCnt={VOTER_SHOW_MAX}
-            />
-            <Flex align="center" color="var(--gray-500)">
-              <UserIcon size="sm" />
-              <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
-                <Box
-                  fontWeight={600}
-                  as="span"
-                  color={
-                    maxCnt !== 0 && participantsCnt >= maxCnt
-                      ? "var(--color-red)"
-                      : "var(--color-gray)"
-                  }
-                >
-                  {participantsCnt}
-                </Box>
-                <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
-                  /
-                </Box>
-                <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                  {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
-                </Box>
+          {isPartner ? (
+            // 제휴 프로그램은 참여 현황 대신 안내 문구만
+            <Box mt={1} fontSize="11px" color="var(--gray-500)">
+              어바웃 외부 파트너 프로그램
+            </Box>
+          ) : (
+            <Flex mt={1} alignItems="center" justify="space-between">
+              <AvatarGroupsOverwrap
+                users={participantsMember?.map((par) => par.user)}
+                maxCnt={VOTER_SHOW_MAX}
+              />
+              <Flex align="center" color="var(--gray-500)">
+                <UserIcon size="sm" />
+                <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
+                  <Box
+                    fontWeight={600}
+                    as="span"
+                    color={
+                      maxCnt !== 0 && participantsCnt >= maxCnt
+                        ? "var(--color-red)"
+                        : "var(--color-gray)"
+                    }
+                  >
+                    {participantsCnt}
+                  </Box>
+                  <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                    /
+                  </Box>
+                  <Box as="span" color="var(--gray-500)" fontWeight={500}>
+                    {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
+                  </Box>
+                </Flex>
               </Flex>
             </Flex>
-          </Flex>
+          )}
         </Flex>
       </Flex>
       {has && (

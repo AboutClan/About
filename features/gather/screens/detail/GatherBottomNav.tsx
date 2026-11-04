@@ -29,11 +29,13 @@ import { FeedProps } from "@/types/models/feed";
 import { IGather } from "@/types/models/gatherTypes/gatherTypes";
 import { IUser, UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
 import { birthToAge } from "@/utils/convertUtils/convertTypes";
+import { navigateExternalLink } from "@/utils/navigateUtils";
 interface IGatherBootmNav {
   data: IGather;
   isOpenGather: boolean;
   isOfficialGather?: boolean;
   isRegularGather?: boolean;
+  isPartnerGather?: boolean;
 }
 
 type ButtonType = "cancel" | "expire" | "review";
@@ -43,6 +45,7 @@ function GatherBootmNav({
   isOpenGather,
   isOfficialGather,
   isRegularGather,
+  isPartnerGather,
 }: IGatherBootmNav) {
   const { id } = useParams<{ id: string }>() || {};
   const router = useRouter();
@@ -157,6 +160,24 @@ function GatherBootmNav({
     isReverse?: boolean;
   } => {
     // 상시 행사는 아래의 정원·참여 취소·후기 분기를 타지 않는다.
+    // 제휴 프로그램은 외부 신청 링크로만 보낸다(게스트 포함, 참여·대기 없음)
+    if (isPartnerGather) {
+      if (data.status === "close") {
+        return { text: "모집이 종료됐어요", type: "black", isReverse: true, isEnd: true };
+      }
+      return {
+        text: "할인받고 신청하기",
+        handleFunction: () => {
+          if (!data.applyUrl) {
+            toast("warning", "아직 신청 링크가 준비되지 않았어요.");
+            return;
+          }
+          navigateExternalLink(data.applyUrl);
+        },
+        isEnd: true,
+      };
+    }
+
     if (isRegularGather) {
       if (data.status === "close") {
         return { text: "종료된 행사입니다.", type: "black", isReverse: true, isEnd: true };

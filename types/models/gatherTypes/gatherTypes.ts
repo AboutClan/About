@@ -110,6 +110,10 @@ export interface IGatherWriting {
   formStats?: IRegularFormStats | null;
   /** 상시 행사에서 확정돼 따로 만든 모임이면 부모 gather id */
   parentGatherId?: number | null;
+  /** 제휴 프로그램: 신청하기를 누르면 이동할 외부 URL */
+  applyUrl?: string | null;
+  /** 제휴 프로그램: 할인 혜택 문구 */
+  benefit?: string | null;
 }
 
 export type GatherCategory =
@@ -120,7 +124,9 @@ export type GatherCategory =
   | "openGather"
   | "secretGather"
   | "officialGather"
-  | "regularGather";
+  | "regularGather"
+  /** 어바웃 외부 파트너 프로그램(안내용, 신청은 applyUrl) */
+  | "partnerGather";
 export type IGatherType = { title: GatherCategoryMain; subtitle?: string };
 
 export type GatherStatus = "open" | "close" | "end" | "pending" | "planned" | "expired" | "today";
