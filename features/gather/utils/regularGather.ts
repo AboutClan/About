@@ -221,8 +221,10 @@ export const summarizeSchedule = (slots: IRegularSlot[] = []) => {
 
   const dated = visible.filter((slot) => !!slot.date);
   if (!dated.length) return slots.length ? "모집 종료" : "상시 진행";
-  const first = getSlotDateTime(dated[0]).format("M.D");
-  const last = getSlotDateTime(dated[dated.length - 1]).format("M.D");
+  const first = getSlotDateTime(dated[0]).locale("ko").format("M.D(ddd)");
+  const last = getSlotDateTime(dated[dated.length - 1])
+    .locale("ko")
+    .format("M.D(ddd)");
   return first === last ? first : `${first} ~ ${last}`;
 };
 

@@ -230,7 +230,7 @@ function formatRelative(time: string) {
   if (minutes < 1) return "방금 전 신청";
   if (minutes < 60) return `${minutes}분 전 신청`;
   if (minutes < 60 * 24) return `${Math.floor(minutes / 60)}시간 전 신청`;
-  return `${dayjs(time).format("M월 D일")} 신청`;
+  return `${dayjs(time).locale("ko").format("M월 D일(ddd)")} 신청`;
 }
 
 export default RegularGatherApplicants;

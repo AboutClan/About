@@ -115,7 +115,9 @@ export function StudyThumbnailCard({
           <Subtitle>
             <Flex>
               {place.date && (
-                <Box as="span">{dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}</Box>
+                <Box as="span" color="var(--color-mint)" fontWeight={600}>
+                  {dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}
+                </Box>
               )}
               {place.date && (
                 <Box as="span" color="var(--gray-400)">
@@ -127,9 +129,7 @@ export function StudyThumbnailCard({
                 textOverflow="ellipsis"
                 whiteSpace="wrap"
                 maxW={
-                  place.branch === "자유 장소" || studyType === "participations"
-                    ? "100%"
-                    : "60%"
+                  place.branch === "자유 장소" || studyType === "participations" ? "100%" : "60%"
                 }
                 overflow="hidden"
                 display="-webkit-box"

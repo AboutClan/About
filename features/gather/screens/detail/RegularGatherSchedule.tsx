@@ -160,7 +160,7 @@ function RegularGatherSchedule({ data }: RegularGatherScheduleProps) {
 
         {data.formStats?.updatedAt && (
           <Text mt={2} fontSize="11px" color="gray.400" textAlign="end">
-            신청 인원 {dayjs(data.formStats.updatedAt).format("M.D HH:mm")} 기준
+            신청 인원 {dayjs(data.formStats.updatedAt).locale("ko").format("M.D(ddd) HH:mm")} 기준
           </Text>
         )}
       </Box>
