@@ -98,6 +98,7 @@ export const setGatherDataToCardCol = (
       contents: gather.contents,
       formStats: gather.formStats,
       benefit: gather.benefit,
+      scheduleLabel: gather.scheduleLabel,
 
       age: gather.age,
       func,

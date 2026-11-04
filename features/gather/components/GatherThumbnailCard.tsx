@@ -66,6 +66,8 @@ export interface GatherThumbnailCardProps {
   formStats?: IRegularFormStats | null;
   /** 제휴 프로그램(partnerGather)만: 할인 혜택 문구 */
   benefit?: string | null;
+  /** 상시 행사만: 카드에 보일 기간 문구(없으면 일정으로 자동 요약) */
+  scheduleLabel?: string | null;
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -100,6 +102,7 @@ export function GatherThumbnailCard({
   contents,
   formStats,
   benefit,
+  scheduleLabel,
 }: GatherThumbnailCardProps) {
   const userInfo = useUserInfo();
 
@@ -237,7 +240,7 @@ export function GatherThumbnailCard({
             ) : isRegular ? (
               <>
                 <Box as="span" color="var(--color-mint)" fontWeight={600}>
-                  {summarizeSchedule(slots)}
+                  {scheduleLabel || summarizeSchedule(slots)}
                 </Box>
                 {regularPlace && (
                   <>

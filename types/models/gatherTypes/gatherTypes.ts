@@ -114,6 +114,8 @@ export interface IGatherWriting {
   applyUrl?: string | null;
   /** 제휴 프로그램: 할인 혜택 문구 */
   benefit?: string | null;
+  /** 상시 행사 카드 기간 문구(예: "11~12월 진행"). 없으면 일정으로 자동 요약 */
+  scheduleLabel?: string | null;
 }
 
 export type GatherCategory =
