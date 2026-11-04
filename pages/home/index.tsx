@@ -37,10 +37,10 @@ function Home() {
         <HomeGatherSection type="upcoming" />
       </Slide>
       <Slide isNoPadding>
-        <HomeGatherSection type="past" />
+        <HomeGatherSection type="partner" />
       </Slide>
       <Slide isNoPadding>
-        <HomeGatherSection type="partner" />
+        <HomeGatherSection type="past" />
       </Slide>
       <Slide isNoPadding>
         <HomeHotClubSection />
