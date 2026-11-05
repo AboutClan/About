@@ -433,12 +433,6 @@ export default function ExamplePage() {
     console.log(52, res.data);
   };
 
-  const recoverGroupstudyTicketPoints = async () => {
-    console.log(23);
-    // const res = await axios.post(`${SERVER_URI}/admin/user/run/monthly-ticket-attend`);
-    // console.log(51, res.data);
-  };
-
   const { mutate: registerCoupon } = useCouponRegisterMutation({
     onSuccess: (data) => {
       console.log("coupon registered", data);
@@ -475,7 +469,6 @@ export default function ExamplePage() {
     <>
       <Button>모달 열기</Button>
       <Button onClick={getSchedule}>스케줄 조회</Button>
-      <Button onClick={recoverGroupstudyTicketPoints}>모임 티켓 포인트 복구</Button>
 
       <Flex direction="column" gap={2} mt={6} p={4} border="1px solid #eee">
         <Flex gap={2}>

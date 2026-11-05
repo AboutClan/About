@@ -35,6 +35,7 @@ export default function ProfileCardColumn({
           isCafeMap={isCafeMap}
           pendingType={userCard?.pendingType}
           profileLockedToast={userCard?.profileLockedToast}
+          showRealName={userCard?.showRealName}
         />
       ))}
     </Layout>

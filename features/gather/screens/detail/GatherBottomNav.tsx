@@ -95,7 +95,7 @@ function GatherBootmNav({
       queryClient.refetchQueries([GATHER_CONTENT, id + ""]);
     },
     onError() {
-      toast("error", "상대가 보유중인 참여권이 없습니다.");
+      toast("error", "요청을 처리하지 못했습니다. 다시 시도해주세요.");
       queryClient.refetchQueries([GATHER_CONTENT, id + ""]);
     },
   });
@@ -430,7 +430,7 @@ function GatherBootmNav({
     }
 
     return {
-      text: data?.isApprovalRequired ? "참여 신청" : "참여하기",
+      text: isGuest ? "가입하고 참여하기" : data?.isApprovalRequired ? "참여 신청" : "참여하기",
       handleFunction: () => {
         if (isGuest) {
           router.replace({
@@ -508,10 +508,6 @@ function GatherBootmNav({
 
   const handleParticipate = (type: "participate" | "apply") => {
     if (isLoading1 || isLoading2) return;
-    // if (userInfo?.ticket?.gatherTicket <= 0) {
-    //   toast("error", "보유한 번개 참여권이 없습니다.");
-    //   return;
-    // }
     if (isOpenGather && !selectedDates.length) {
       toast("warning", "참여 가능한 날짜를 선택해주세요.");
       return;
@@ -610,12 +606,7 @@ function GatherBootmNav({
             <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
               구글폼을 작성해 주시면 개별적으로 연락드려요!
             </Box>
-          ) : (
-            <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
-              {data?.isApprovalRequired ? "승인되면" : null} <b>번개 참여권 1장</b>이 소모됩니다.
-              (참여권은 매월 리필돼요!)
-            </Box>
-          )}
+          ) : null}
           {isOpenGather ? (
             <Box w="100%" pt={4}>
               <Box fontSize="13px" fontWeight="600" color="gray.800" mt={3} mb={3}>
@@ -773,7 +764,7 @@ function GatherBootmNav({
           <Box mb={5}>
             {diffDate >= 2 ? (
               <>
-                모임 {diffDate}일 전으로 참여권이 반환되며,
+                모임 {diffDate}일 전 취소로
                 <br /> 별도의 패널티가 발생하지 않습니다.
               </>
             ) : diffDate === 1 ? (

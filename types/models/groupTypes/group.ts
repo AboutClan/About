@@ -11,7 +11,6 @@ export interface IGroup extends IGroupWriting {
   comments: UserCommentProps[];
   notionUrl?: string;
   googleFormUrl?: string;
-  requiredTicket: number;
   randomTicket: number;
   meetingType: "online" | "offline" | "hybrid";
 }

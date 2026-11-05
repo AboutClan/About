@@ -12,10 +12,7 @@ import { useToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
 import DailyCheckWinModal from "@/modals/aboutHeader/dailyCheckModal/DailyCheckWinModal";
 import ErrorUserInfoPopUp from "@/modals/pop-up/ErrorUserInfoPopUp";
-import {
-  transferDailyCheckWinState,
-  transferStudyRewardState,
-} from "@/recoils/transferRecoils";
+import { transferDailyCheckWinState, transferStudyRewardState } from "@/recoils/transferRecoils";
 import { DispatchBoolean } from "@/types/hooks/reactTypes";
 import { isWebView } from "@/utils/appEnvUtils";
 import { setAuthIntent } from "@/utils/authIntentUtils";
@@ -86,7 +83,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
       {isLogoutModal && <AlertModal options={LOGOUT_ALERT_OPTIONS} setIsModal={cancelLogout} />}
 
       {isError && <ErrorUserInfoPopUp setIsModal={setIsError} />}
-{/* 
+      {/* 
       {isWriteModal && <WriteDrawer />} */}
 
       {isGuestModal && (
@@ -109,11 +106,10 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
                 await signIn("kakao", { callbackUrl: "/home" });
               },
             },
+            // 어느 화면에서든 열리므로 홈으로 보내지 않고 닫기만 한다
             sub: {
-              text: "홈 화면으로",
-              func: () => {
-                router.push("/home");
-              },
+              text: "계속 둘러보기",
+              func: closeGuestModal,
             },
           }}
         >
@@ -143,8 +139,8 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
             {transferStudyReward.message === "스터디 개설"
               ? "개설"
               : transferStudyReward.message?.split(" ")[0] === "개인"
-              ? "인증"
-              : "출석"}{" "}
+                ? "인증"
+                : "출석"}{" "}
             완료!
             <br />
             {/*

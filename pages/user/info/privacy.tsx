@@ -72,7 +72,7 @@ function Privacy() {
               </Text>
             </ListItem>
             <ListItem>
-              <Text>포인트·참여권(티켓) 적립 및 사용 내역</Text>
+              <Text>포인트 적립 및 사용 내역</Text>
               <Text fontSize="sm">사용 목적: 리워드 제공, 이용 내역 확인, 이상 거래 탐지</Text>
             </ListItem>
             <ListItem>

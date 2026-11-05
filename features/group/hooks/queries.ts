@@ -100,7 +100,6 @@ interface GroupMineProps {
   title: string;
   isMember: boolean;
   id: string;
-  requiredTicket: number;
   squareImage: string;
 }
 

@@ -189,8 +189,7 @@ function NewbieGuidePage() {
                 <CheckIcon boxSize="8px" color="white" />
               </Flex>
               <Box fontSize="13px" lineHeight="18px" color="gray.700" fontWeight={600}>
-                포인트 획득량 증가 및 <br />
-                월간 번개 참여권 및 소모임 참여권 추가 지급
+                포인트 획득량 증가
               </Box>
             </Flex>
           </Box>
@@ -207,31 +206,19 @@ function NewbieGuidePage() {
             </Bullet>
             <Bullet>
               <b>번개</b>: 날짜와 주제가 확정되어 있는 일일 모임!
-              <br /> 선착순 모임과 승인제 모임이 존재하고, 번개 참여권 1장이 소모됩니다.
+              <br /> 선착순 모임과 승인제 모임이 존재해요.
             </Bullet>
             <Bullet>
               <b>소모임</b>: 관심사를 기반으로 지속적으로 활동하는 모임! <br /> 하나의 동아리라고
-              생각하면 이해가 쉬워요. 매월 가입중인 소모임 기준으로 소모임 참여권이 소모됩니다.
+              생각하면 이해가 쉬워요.
             </Bullet>
           </Box>
 
           <Box mb={7}>
-            <SectionTitle num={5}>참여권 & 포인트 운영 규칙</SectionTitle>
+            <SectionTitle num={5}>포인트 운영 규칙</SectionTitle>
             <Bullet>
-              매월 번개 참여권과 소모임 참여권이 자동 리필돼요!
-              <br /> 나의 <b>소셜링 온도</b>에 따라 최대 6장까지 지급됩니다.
-            </Bullet>
-            <Bullet>
-              매월 리필되는 번개 참여권보다 더 많은 모임에 참여하고 싶다면 포인트로 참여권을 추가
-              구매할 수 있어요!
-            </Bullet>
-            <Bullet>
-              매월 내가 받는 참여권보다 정산되는 소모임 참여권이 더 많다면, 부족한 만큼{" "}
-              <b>포인트로 대체 차감</b>됩니다.
-            </Bullet>
-            <Bullet>
-              포인트는 참여권 구매뿐 아니라 모임 참여 보증금 역할도 해요. 그래서 번개나 스터디 당일
-              노쇼 시에도 포인트가 차감될 수 있어요.
+              포인트는 모임 참여 보증금 역할도 해요. 그래서 번개나 스터디 당일 노쇼 시에는 포인트가
+              차감될 수 있어요.
             </Bullet>
             <Bullet>
               한 달 동안 앱에 접속조차 하지 않았다면 <b>1,000 포인트</b>가 월간 패널티로 차감돼요.

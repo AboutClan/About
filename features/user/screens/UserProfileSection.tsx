@@ -14,15 +14,14 @@ import RequestChangeProfileImageModalAvatar from "@/features/user/modals/userReq
 import SpecialAvatarModal from "@/features/user/modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
 import UserBenefitBanner from "@/features/user/screens/UserBenefitBanner";
 import UserCollection from "@/features/user/screens/UserCollection2";
-import UserPointBlock from "@/features/user/screens/UserPointBlock";
-import UserProfile from "@/features/user/screens/UserProfile2";
+import UserFriendBlock from "@/features/user/screens/UserFriendBlock";
+import UserMenuRows from "@/features/user/screens/UserMenuRows";
+import UserPointActivityBlock from "@/features/user/screens/UserPointActivityBlock";
 import UserProfileBar from "@/features/user/screens/UserProfileBar";
 import UserReviewBar from "@/features/user/screens/UserReviewBar";
 import UserScoreGuideDrawer from "@/features/user/screens/UserScoreGuideDrawer";
 import UserSocialGuideDrawer from "@/features/user/screens/UserSocialGuideDrawer";
-import UserTicketDeductionNotice from "@/features/user/screens/UserTicketDeductionNotice";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
-import { useCheckGuest } from "@/hooks/custom/UserHooks";
 import { IModal } from "@/types/components/modalTypes";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
 
@@ -34,10 +33,10 @@ type ModalType = "score" | "temperature";
 
 function UserProfileSection({ user }: UserProfileSectionProps) {
   const router = useRouter();
-  const isGuest = useCheckGuest();
   const searchParams = useSearchParams();
   const modalParam = searchParams.get("modal") as ModalType;
   const [modalType, setModalType] = useState<ModalType>();
+  const isGuest = user?.role === "guest";
 
   useEffect(() => {
     if (!modalParam) {
@@ -49,49 +48,28 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
 
   return (
     <>
-      <Box borderBottom="var(--border)" pb={3} mb={3}>
+      <Box pb={3}>
         <UserProfileBar user={user} />
-        <UserPointBlock
-          handleButton={() => {
-            router.push(
-              { pathname: router.pathname, query: { ...router.query, modal: "temperature" } },
-              undefined,
-              {
-                shallow: true,
-              },
-            );
-            setModalType("temperature");
-          }}
-        />
-        {/* <UserScoreBar
-          score={user?.monthScore}
-          handleButton={() => {
-            router.push(
-              { pathname: router.pathname, query: { ...router.query, modal: "score" } },
-              undefined,
-              {
-                shallow: true,
-              },
-            );
-            setModalType("score");
-          }}
-        /> */}
+        {!isGuest && <UserPointActivityBlock />}
       </Box>
-      {!isGuest && <UserTicketDeductionNotice />}
-      <UserBenefitBanner />
       <Box borderY="var(--border)" py={2}>
         <UserReviewBar hasTop={false} user={user} />
       </Box>
+      {!isGuest && <UserFriendBlock />}
+      <UserMenuRows isGuest={isGuest} />
+      <Box h={5} />
+      <UserBenefitBanner />
       <UserCollection />
-      <UserProfile />
-      {user?.role !== "guest" && (
+      {!isGuest && (
         <Flex
           mt={5}
-          w="full"
+          mx={5}
+          w="calc(100% - 40px)"
           pos="relative"
           aspectRatio="2.12/1"
           flexDir="column"
           overflow="hidden"
+          borderRadius="16px"
           as="button"
           onClick={() => {
             router.push(`/board`);
@@ -99,7 +77,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
         >
           <Image
             fill
-            alt="friendImage"
+            alt="친구 초대 이벤트"
             sizes="500px"
             src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%B9%9C%EA%B5%AC%EC%B4%88%EB%8C%80%EC%9D%B4%EB%B2%A4%ED%8A%B8%EA%B0%80%EB%A1%9C.png"
           />

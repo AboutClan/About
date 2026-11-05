@@ -1,141 +1,36 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import Slide from "@/components/layouts/PageSlide";
-import TabNav from "@/components/molecules/navs/TabNav";
 import HomeActivityDrawer from "@/components/overlay/HomeActivityDrawer";
-import { GATHER_REVIEW_RECEIVE, GATHER_REVIEW_WRITE } from "@/constants/keys/localStorage";
-import { useFeedCntQuery } from "@/features/feed/hooks/queries";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
-import UserGatherSection from "@/features/user/screens/UserGatherSection";
-import UserGroupSection from "@/features/user/screens/UserGroupSection";
 import UserHeader from "@/features/user/screens/UserHeader2";
-import UserLogSection from "@/features/user/screens/UserLogSection";
 import UserProfileSection from "@/features/user/screens/UserProfileSection";
-import UserStudySection from "@/features/user/screens/UserStudySection";
-import { useTypeToast } from "@/hooks/custom/CustomToast";
-import { useCheckGuest } from "@/hooks/custom/UserHooks";
 
-type Tab = "profile" | "gather" | "group" | "study";
+// 예전 탭 링크(/user?tab=gather 등)는 각 하위 페이지로 보낸다
+const LEGACY_TAB_PATH: Record<string, string> = {
+  group: "/user/group",
+  gather: "/user/gather",
+  study: "/user/study",
+};
 
 function UserPage() {
   const router = useRouter();
-  const tabParam = router.query.tab as Tab;
+  const tabParam = router.query.tab as string;
   const { data: user } = useUserInfoQuery();
-  const [section, setSection] = useState<Tab>("profile");
-  const [isAlert, setIsAlert] = useState(false);
-  const isGuest = useCheckGuest();
-  const typeToast = useTypeToast();
-
-  const { data: feeds } = useFeedCntQuery();
 
   useEffect(() => {
-    if (!tabParam) return;
-    setSection(tabParam);
+    const path = LEGACY_TAB_PATH[tabParam];
+    if (path) router.replace(path);
   }, [tabParam]);
-
-  const handleClickTab = (type: Tab) => {
-    setSection(type);
-  };
-
-  useEffect(() => {
-    if (!feeds) return;
-
-    const feedSumWriteSave = localStorage.getItem(GATHER_REVIEW_WRITE);
-    const feedSumReceiveSave = localStorage.getItem(GATHER_REVIEW_RECEIVE);
-
-    if (
-      (feeds?.reviewReceived !== 0 || feeds?.writtenReviewCnt !== 0) &&
-      (feeds?.reviewReceived !== +feedSumReceiveSave ||
-        feeds?.writtenReviewCnt !== +feedSumWriteSave)
-    ) {
-      setIsAlert(true);
-    } else {
-      setIsAlert(false);
-    }
-  }, [feeds]);
 
   return (
     <>
       <HomeActivityDrawer />
       <UserHeader />
       <Slide isNoPadding>
-        <Box borderBottom="var(--border)" px={5} mb={5}>
-          <TabNav
-            selected={
-              section === "profile"
-                ? "프로필"
-                : section === "gather"
-                ? "내가 참여한 모임"
-                : section === "study"
-                ? "내가 참여한 스터디"
-                : "소모임"
-            }
-            tabOptionsArr={[
-              {
-                text: "프로필",
-                func: () => {
-                  router.replace(`/user?tab=profile`);
-                  handleClickTab("profile");
-                },
-              },
-              {
-                text: "가입중인 소모임",
-                func: () => {
-                  if (isGuest) {
-                    typeToast("guest");
-                    return;
-                  }
-                  router.replace(`/user?tab=group`);
-                  handleClickTab("group");
-                },
-              },
-              {
-                text: "내가 참여한 모임",
-                func: () => {
-                  if (isGuest) {
-                    typeToast("guest");
-                    return;
-                  }
-                  router.replace(`/user?tab=gather`);
-                  handleClickTab("gather");
-                  setIsAlert(false);
-                },
-                isAlert,
-              },
-              {
-                text: "내가 참여한 스터디",
-                func: () => {
-                  if (isGuest) {
-                    typeToast("guest");
-                    return;
-                  }
-                  router.replace(`/user?tab=study`);
-                  handleClickTab("study");
-                },
-              },
-            ]}
-            isBlack
-          />
-        </Box>
-      </Slide>
-      <Slide isNoPadding>
-        {user && (
-          <>
-            {section === "profile" ? (
-              <UserProfileSection user={user} />
-            ) : section === "gather" ? (
-              <UserGatherSection />
-            ) : section === "study" ? (
-              <UserStudySection />
-            ) : section === "group" ? (
-              <UserGroupSection />
-            ) : (
-              <UserLogSection />
-            )}
-          </>
-        )}
+        {user && <UserProfileSection user={user} />}
         <Box h={10} />
       </Slide>
     </>

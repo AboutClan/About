@@ -39,6 +39,8 @@ export interface IProfileCommentCard {
   pendingType?: "pendingOwner" | "pending" | null;
   /** 주면 아바타를 눌러도 프로필로 가지 않고 이 문구를 띄운다. */
   profileLockedToast?: string;
+  /** 같은 스터디 참여자끼리는 닉네임 대신 실명을 보여 준다. */
+  showRealName?: boolean;
 }
 
 // ...
@@ -69,6 +71,7 @@ export default function ProfileCommentCard({
   isCafeMap,
   pendingType,
   profileLockedToast,
+  showRealName,
 }: IProfileCommentCard) {
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -106,8 +109,8 @@ export default function ProfileCommentCard({
               <Flex align="center" mb={memo || comment ? 1 : 0} overflow="hidden" flexWrap="nowrap">
                 <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
                   {/* 닉네임이 있으면 닉네임, 없으면 마스킹. 실명으로 폴백하지 않는다
-                      (닉네임 미설정 회원은 백엔드가 "" 로 채운다). */}
-                  {getDisplayName(user)}
+                      (닉네임 미설정 회원은 백엔드가 "" 로 채운다). 같은 스터디 참여자에게만 실명. */}
+                  {showRealName && user?.name ? user.name : getDisplayName(user)}
                 </Box>
 
                 {!isStudy && <UserBadge badgeIdx={user?.badge?.badgeIdx} />}

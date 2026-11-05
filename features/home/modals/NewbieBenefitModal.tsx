@@ -110,14 +110,6 @@ function NewbieBenefitModal({ onClose }: CloseProps) {
             left: "스터디 참여 리워드",
             right: "+ 20% 포인트",
           },
-          {
-            left: "번개 참여권",
-            right: "월 1장 추가",
-          },
-          {
-            left: "소모임 참여권",
-            right: "월 2장 추가",
-          },
         ]}
       />
       <Box mt={2} mb={2}>

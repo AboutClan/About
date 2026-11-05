@@ -73,7 +73,7 @@ function UserGatherSection() {
       setGatherDataToCardCol(
         gathers,
         true,
-        () => setBackUrl("/user?tab=gather"),
+        () => setBackUrl("/user/gather"),
         userInfo._id,
         leftFunc,
         rightFunc,

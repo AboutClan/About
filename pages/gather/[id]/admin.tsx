@@ -54,7 +54,7 @@ function Admin() {
       resetQuery();
     },
     onError() {
-      toast("error", "상대가 보유중인 참여권이 없습니다.");
+      toast("error", "요청을 처리하지 못했습니다. 다시 시도해주세요.");
       resetQuery();
     },
   });

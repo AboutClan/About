@@ -7,9 +7,7 @@ import styled from "styled-components";
 import CountNum from "@/components/atoms/CountNum";
 import { MainLoadingAbsolute } from "@/components/atoms/loaders/MainLoading";
 import { IFooterOptions, ModalLayout } from "@/components/modals/Modals";
-import { STORE_GIFT } from "@/constants/keys/queryKeys";
 import { useStoreMutation } from "@/features/store/hooks/mutation";
-import { usePointSystemMutation, useUserTicketMutation } from "@/features/user/hooks/mutations";
 import { usePointSystemQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useErrorToast, useFailToast, useToast } from "@/hooks/custom/CustomToast";
 import { useHasMemership } from "@/hooks/custom/UserHooks";
@@ -42,15 +40,6 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     },
     onError: errorToast,
   });
-  const { mutate: getPoint } = usePointSystemMutation("point");
-  useUserTicketMutation({
-    onSuccess() {
-      getPoint({ value: -totalCost, message: `${giftInfo.name} 구매` });
-      toast("success", "충전되었습니다.");
-      queryClient.invalidateQueries([STORE_GIFT]);
-    },
-  });
-
   const hasMembership = useHasMemership("store");
 
   const totalCost = giftInfo.point * (hasMembership ? 0.9 : 1) * value;
@@ -89,13 +78,6 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
       failToast("free", "최대 구매 개수를 초과할 수 없습니다.");
       return;
     }
-
-    // if (giftInfo?.type) {
-    //   mutate({
-    //     ticketNum: value,
-    //     type: giftInfo?.name === "번개 참여권" ? "gather" : "groupStudy",
-    //   });
-    // } else {
 
     applyGift({ storeId: giftInfo._id, cnt: value });
   };

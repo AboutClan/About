@@ -15,7 +15,7 @@ export interface StoreGiftProps {
 export interface IStoreGift {
   image: string;
   name: string;
-  type?: "about" | "ticket" | null;
+  type?: "about" | null;
   brand: string;
   point: number;
   winner: number;

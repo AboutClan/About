@@ -14,11 +14,12 @@ import GatherMain from "@/features/gather/screens/GatherMain";
 import GatherPick from "@/features/gather/screens/GatherPick";
 import { sharedGatherWritingState, transferGatherDataState } from "@/features/gather/state";
 import SquareLoungeSection from "@/features/square/screens/SquareLoungeSection";
-import { useToast } from "@/hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 
 export default function GatherLandingScreen() {
   const router = useRouter();
   const toast = useToast();
+  const typeToast = useTypeToast();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const tabParam = searchParams.get("tab");
@@ -41,10 +42,11 @@ export default function GatherLandingScreen() {
 
   useEffect(() => {
     if (tabParam === "gather") setTab("번개");
-    if (tabParam === "lounge") setTab("라운지");
-  }, [tabParam]);
+    // 게스트에게는 라운지(지난 모임 후기)를 보여 주지 않는다: 최근 후기가 뜸해 첫 방문자에게 활동이 없어 보인다
+    if (tabParam === "lounge" && !isGuest) setTab("라운지");
+  }, [tabParam, isGuest]);
 
-  const tabNavOptions: ITabNavOptions[] = [
+  const allTabNavOptions: ITabNavOptions[] = [
     {
       text: "번개",
       func: () => {
@@ -70,6 +72,9 @@ export default function GatherLandingScreen() {
       },
     },
   ];
+  const tabNavOptions = isGuest
+    ? allTabNavOptions.filter((option) => option.text !== "라운지")
+    : allTabNavOptions;
 
   return (
     <>
@@ -89,34 +94,27 @@ export default function GatherLandingScreen() {
         )}
       </Slide>
 
-      {!isGuest && (
-        <ControlButton
-          text={tab === "번개" ? "모임 개설" : tab === "라운지" ? "후기 작성" : "모임 제안"}
-          rightIcon={
-            tab === "번개" ? (
-              <ThunderIcon />
-            ) : tab === "라운지" ? (
-              <Writing2Icon />
-            ) : (
-              <Writing2Icon />
-            )
+      {/* 게스트에게도 버튼은 보여 주고, 누르면 가입 안내 모달을 연다 */}
+      <ControlButton
+        text={tab === "번개" ? "모임 개설" : tab === "라운지" ? "후기 작성" : "모임 제안"}
+        rightIcon={
+          tab === "번개" ? <ThunderIcon /> : tab === "라운지" ? <Writing2Icon /> : <Writing2Icon />
+        }
+        hasBottomNav
+        handleClick={() => {
+          if (isGuest) {
+            typeToast("guest");
+            return;
           }
-          hasBottomNav
-          handleClick={() => {
-            if (tab === "번개") {
-              router.push("/gather/writing/category");
-            } else if (tab === "이런 번개 어때요?") {
-              setIsGatherPickModal(true);
-            } else {
-              toast(
-                "info",
-                "준비중인 기능입니다. 모임 상세페이지에서도 후기를 작성할 수 있습니다!",
-              );
-            }
-          }}
-          isDisabled={isGuest}
-        />
-      )}
+          if (tab === "번개") {
+            router.push("/gather/writing/category");
+          } else if (tab === "이런 번개 어때요?") {
+            setIsGatherPickModal(true);
+          } else {
+            toast("info", "준비중인 기능입니다. 모임 상세페이지에서도 후기를 작성할 수 있습니다!");
+          }
+        }}
+      />
       {/*       
       {!isGuest && tab === "번개" && (
         <WritingButton url="/gather/writing/category" type="thunder" />

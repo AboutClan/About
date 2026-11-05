@@ -6,11 +6,12 @@ import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entit
 interface IStudyTimeBoard {
   members: StudyConfirmedMemberProps[];
   isCafeMap?: boolean;
+  showRealName?: boolean;
 }
-export default function StudyTimeBoard({ members, isCafeMap }: IStudyTimeBoard) {
+export default function StudyTimeBoard({ members, isCafeMap, showRealName }: IStudyTimeBoard) {
   const timeBoardMembers: ITimeBoardParticipant[] = transformToTimeBoardProp(members);
 
-  return <UserTimeBoard members={timeBoardMembers} isCafeMap={isCafeMap} />;
+  return <UserTimeBoard members={timeBoardMembers} isCafeMap={isCafeMap} showRealName={showRealName} />;
 }
 
 const transformToTimeBoardProp = (members: StudyConfirmedMemberProps[]) => {

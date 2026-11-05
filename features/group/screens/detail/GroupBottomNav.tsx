@@ -49,7 +49,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
         queryClient.invalidateQueries([GROUP_STUDY, id]);
       },
       onError() {
-        toast("warning", "보유중인 티켓이 부족합니다.");
+        toast("warning", "가입하지 못했습니다. 다시 시도해주세요.");
       },
     },
   );
@@ -176,7 +176,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     }
 
     return {
-      text: "가입 신청",
+      text: isGuest ? "가입하고 참여하기" : "가입 신청",
       handleFunction: () => {
         if (isGuest) {
           router.replace({

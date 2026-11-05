@@ -151,7 +151,22 @@ export const useGatherReviewOneQuery = (options?: QueryOptions<IGather>) =>
     },
     options,
   );
-export const useGatherRequestQuery = (options?: QueryOptions<GatherRequestProps[]>) =>
+export interface ReviewableGatherProps {
+  id: number;
+  title: string;
+  date: string;
+}
+
+export const useGatherReviewListQuery = (options?: QueryOptions<ReviewableGatherProps[]>) =>
+  useQuery<ReviewableGatherProps[], AxiosError, ReviewableGatherProps[]>(
+    [GATHER_CONTENT, "review", "list"],
+    async () => {
+      const res = await axios.get<ReviewableGatherProps[]>(`${SERVER_URI}/gather/review/list`);
+      return res.data;
+    },
+    options,
+  );
+export const useGatherRequestQuery =(options?: QueryOptions<GatherRequestProps[]>) =>
   useQuery<GatherRequestProps[], AxiosError, GatherRequestProps[]>(
     ["gatherRequest"],
     async () => {

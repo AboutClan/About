@@ -21,7 +21,7 @@ function UserBenefitBanner() {
         p={4}
       >
         <Flex align="center" justify="space-between" mb={2}>
-          <Box fontSize="16px" fontWeight={800} color="var(--gray-800)">
+          <Box fontSize="16px" fontWeight={600} color="var(--gray-800)">
             어바웃 멤버 제휴 혜택
           </Box>
           <Badge
@@ -38,13 +38,13 @@ function UserBenefitBanner() {
         </Flex>
 
         <Box
-          fontSize="12px"
-          lineHeight="18px"
+          fontSize="14px"
+          lineHeight="21px"
           color="var(--gray-500)"
           sx={{
             display: "-webkit-box",
             WebkitBoxOrient: "vertical",
-            WebkitLineClamp: 4,
+            WebkitLineClamp: 3,
             overflow: "hidden",
           }}
         >

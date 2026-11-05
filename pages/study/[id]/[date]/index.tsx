@@ -17,7 +17,7 @@ import {
 import StudyStep from "@/features/gather/screens/detail/StudyStep";
 import { useStudyPassedDayQuery, useStudySetQuery } from "@/features/study/hooks/queries";
 import { shortenParticipations } from "@/features/study/lib/studyConverters";
-import { getMyStudyDateArr } from "@/features/study/lib/studyHelpers";
+import { canSeeStudyRealName, getMyStudyDateArr } from "@/features/study/lib/studyHelpers";
 import StudyLinkModal from "@/features/study/screens/modals/StudyLinkModal";
 import StudyAddressMap from "@/features/study/screens/StudyAddressMap";
 import StudyCover from "@/features/study/screens/StudyCover";
@@ -242,6 +242,14 @@ export default function Page() {
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
   // 오픈 예정 조(내일 이후 매칭 미리보기). 아직 열리지 않았으니 진행 방식은 숨기고 리뷰는 아래로 내린다.
   const isExpectedStudy = studyType === "results" && dayjs(date).isAfter(dayjs(), "day");
+  const showRealName =
+    isOpenStudy &&
+    canSeeStudyRealName({
+      studyType,
+      date,
+      members: members as StudyConfirmedMemberProps[],
+      myId: userInfo?._id,
+    });
 
   if (!router.isReady) return null;
 
@@ -318,6 +326,7 @@ export default function Page() {
                       <StudyTimeBoard
                         members={members as StudyConfirmedMemberProps[]}
                         isCafeMap={isCafeMap}
+                        showRealName={showRealName}
                       />
                     </Box>
                   )}
@@ -326,6 +335,13 @@ export default function Page() {
                   {isOpenStudy && !!members?.length && (
                     <Box fontSize="16px" fontWeight="bold" mt={5}>
                       {isExpectedStudy ? "신청 멤버" : "참여 멤버"} {members.length}명
+                    </Box>
+                  )}
+                  {isOpenStudy && !!members?.length && (
+                    <Box mt={1} fontSize="12px" color="gray.500">
+                      {showRealName
+                        ? "같은 스터디 멤버끼리는 서로 이름이 보여요."
+                        : "스터디에 참여하면 멤버 이름을 확인할 수 있어요."}
                     </Box>
                   )}
                   <Box pb={2} pos="relative">

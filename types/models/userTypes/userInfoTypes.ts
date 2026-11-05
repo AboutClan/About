@@ -43,10 +43,6 @@ export interface IUser
   monthScore: number;
   instagram?: string;
   _id: string;
-  ticket: {
-    gatherTicket: number;
-    groupStudyTicket: number;
-  };
   isLocationSharingDenided: boolean;
   studyRecord: UserStudyRecordProps;
   monthStudyTarget: number;

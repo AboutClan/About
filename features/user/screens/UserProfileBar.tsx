@@ -4,13 +4,11 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import Avatar from "@/components/atoms/Avatar";
-import SpecialBadge from "@/components/atoms/badges/SpecialBadge";
 import UserBadge from "@/components/atoms/badges/UserBadge";
 import { SECRET_USER_SUMMARY } from "@/constants/serviceConstants/userConstants";
 import { CameraIcon, ProfileCamera } from "@/features/user/screens/UserProfileSection";
 import { useTypeToast } from "@/hooks/custom/CustomToast";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
-import { getDisplayName } from "@/utils/stringUtils";
 
 interface UserProfileBarProps {
   user: IUser;
@@ -19,12 +17,14 @@ interface UserProfileBarProps {
   isCafeMap?: boolean;
 }
 
-function UserProfileBar({ user, editUrl, name, isCafeMap }: UserProfileBarProps) {
+function UserProfileBar({ user, editUrl, name }: UserProfileBarProps) {
   const router = useRouter();
   const typeToast = useTypeToast();
   const isGuest = user?.role === "guest";
   const [isDrawer, setIsDrawer] = useState(false);
-  console.log(4, name);
+  // 본인 화면이라 실명을 그대로 쓴다: 이승주(쥬니)
+  const displayName =
+    name || (isGuest ? "게스트" : user?.nickname ? `${user?.name}(${user.nickname})` : user?.name);
   return (
     <>
       <Flex px={5} py={3} align="center">
@@ -41,16 +41,9 @@ function UserProfileBar({ user, editUrl, name, isCafeMap }: UserProfileBarProps)
         <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
           <Flex align="center" mb={1}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
-              {name || (user?.role === "guest" ? "게스트" : getDisplayName(user))}
+              {displayName}
             </Box>
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
-            {!isCafeMap && (
-              <Box ml={1}>
-                <SpecialBadge
-                  hasMembership={user?.membership !== "normal" || user?.role === "guest"}
-                />
-              </Box>
-            )}
           </Flex>
           <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
             <CommentText>{user?.comment}</CommentText>
@@ -67,7 +60,7 @@ function UserProfileBar({ user, editUrl, name, isCafeMap }: UserProfileBarProps)
                 router.push(editUrl || "/user/profile");
               }}
               size="sm"
-              h="20px"
+              h="28px"
               bg="gray.100"
               color="gray.500"
               borderRadius="12px"

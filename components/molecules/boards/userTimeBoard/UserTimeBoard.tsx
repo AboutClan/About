@@ -16,6 +16,8 @@ export interface ITimeBoardParticipant {
 interface ITimeBoard {
   members: ITimeBoardParticipant[];
   isCafeMap?: boolean;
+  /** 같은 스터디 참여자끼리는 닉네임 대신 실명을 보여 준다. */
+  showRealName?: boolean;
 }
 
 interface IUserTimeBlock {
@@ -27,7 +29,7 @@ interface IUserTimeBlock {
   end: string;
 }
 
-export default function UserTimeBoard({ members }: ITimeBoard) {
+export default function UserTimeBoard({ members, showRealName }: ITimeBoard) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [blockWidth, setBlockWidth] = useState<number>(0);
   const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);
@@ -89,7 +91,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
                 py={0.5}
                 bg={COLOR_400_ARR[idx]}
               >
-                {getDisplayName(props)}
+                {showRealName && props.name ? props.name : getDisplayName(props)}
                 <br />
                 {props.start} - {props.startToEndInterval >= 2 && props.end}
               </Box>

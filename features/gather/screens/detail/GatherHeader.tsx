@@ -180,7 +180,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
                   title: `${isAdmin ? "(모임장 초대) " : ""}${gatherData.title}`,
                   date: gatherData.date,
                   subtitle: isAdmin
-                    ? `해당 링크를 클릭하면 참여권 소모 없이 모임에 즉시 참여됩니다.`
+                    ? `해당 링크를 클릭하면 모임에 즉시 참여됩니다.`
                     : gatherData?.content,
                   img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
                   url:
@@ -208,8 +208,6 @@ function GatherHeader({ gatherData }: IGatherHeader) {
           <p>
             <b>일반 링크</b>는 해당 모임 페이지만 공유하고,
             <br /> <b>초대 링크</b>는 누르는 즉시 모임에 참여돼요.
-            <br />
-            (초대 링크는 참여권도 소모되지 않아요)
             <br />
           </p>
         </ModalLayout>

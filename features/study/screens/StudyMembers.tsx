@@ -20,6 +20,7 @@ import { STUDY_RESULT_HOUR } from "@/constants/serviceConstants/studyConstants/s
 import { useStudyCommentMutation } from "@/features/study/hooks/mutations";
 import { useResetStudyQuery } from "@/features/study/hooks/useResetStudyQuery";
 import { getNearLocationCluster } from "@/features/study/lib/setStudyMapOptions";
+import { canSeeStudyRealName } from "@/features/study/lib/studyHelpers";
 import StudyCrewStatsDrawer from "@/features/study/screens/modals/StudyCrewStatsDrawer";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { useUserInfo } from "@/hooks/custom/UserHooks";
@@ -40,7 +41,7 @@ import { navigateExternalLink } from "@/utils/navigateUtils";
 
 const PARTICIPATIONS_MAX_VISIBLE = 10;
 const STUDY_PROFILE_LOCKED_TOAST =
-  "스터디가 확정되면 같은 스터디 멤버끼리만 프로필을 볼 수 있어요.";
+  "스터디가 확정되면 같은 스터디 멤버끼리만 이름과 프로필을 볼 수 있어요.";
 const NO_VOTE_KEY = "no-vote";
 // 1x1 투명 픽셀. CORS로 인해 원본 이미지를 데이터URL로 embed하지 못했을 때
 // html-to-image가 이걸 대신 써서 캡처 자체가 실패(reject)하지 않도록 한다.
@@ -375,6 +376,13 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
     studyType === "soloRealTimes" || (isConfirmedStudy && isMyStudyMember)
       ? undefined
       : STUDY_PROFILE_LOCKED_TOAST;
+  // 이름도 같은 기준. 단 승인 대기 중인 나는 아직 참여자가 아니므로 제외.
+  const showRealName = canSeeStudyRealName({
+    studyType,
+    date,
+    members: members as StudyConfirmedMemberProps[],
+    myId: userInfo?._id,
+  });
 
   const userCardArr: IProfileCommentCard[] =
     studyType === "participations"
@@ -421,6 +429,7 @@ const StudyMembers = forwardRef<StudyMembersHandle, IStudyMembers>(function Stud
             ...obj,
             changeComment,
             profileLockedToast,
+            showRealName,
             pendingType: (studyType === "openRealTimes" && participant.status === "pending"
               ? findMine
                 ? "pendingOwner"

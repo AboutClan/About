@@ -17,6 +17,7 @@ function UserReviewBar({ user, hasTop = true, isCafeMap }: UserReviewBarProps) {
   });
 
   const totalCnt = reviewArr?.totalCnt;
+  const evalCnt = Math.round(user?.temperature?.cnt ?? 0);
 
   const calculatePercent = (cnt: number) => {
     if (!cnt) return 0;
@@ -41,31 +42,37 @@ function UserReviewBar({ user, hasTop = true, isCafeMap }: UserReviewBarProps) {
                   {user?.temperature?.temperature}°C
                 </Box>
               </Flex>
-              <Box fontSize="10px" color="gray.400" fontWeight={400}>
+              <Box fontSize="11px" color="gray.400" fontWeight={400}>
                 {isCafeMap
                   ? "스터디 오픈 이후부터 사용할 수 있어요!"
-                  : `멤버 평가 ${Math.round(Math.round(user?.temperature?.cnt))}회 반영`}
+                  : `멤버 평가 ${evalCnt}회 반영`}
               </Box>
             </Box>
           </Flex>
         </Box>
       </Box>
-      <Flex mx={5} fontSize="13px" gap={5} pb={1.5} color="gray.600">
-        <Flex align="center" flex={1}>
-          <Avatar user={{ avatar: { type: 20, bg: 1 } }} size="xs1" />
-          <Box ml={2} mr={1}>
-            최고예요 😘
-          </Box>
-          <Box fontWeight="600">{calculatePercent(reviewArr?.greatCnt)}%</Box>
+      {reviewArr && !totalCnt ? (
+        <Box mx={5} pb={1.5} fontSize="13px" color="gray.500">
+          아직 받은 평가가 없어요
+        </Box>
+      ) : (
+        <Flex mx={5} fontSize="13px" gap={5} pb={1.5} color="gray.600">
+          <Flex align="center" flex={1}>
+            <Avatar user={{ avatar: { type: 20, bg: 1 } }} size="xs1" />
+            <Box ml={2} mr={1}>
+              최고예요 😘
+            </Box>
+            <Box fontWeight="600">{calculatePercent(reviewArr?.greatCnt)}%</Box>
+          </Flex>
+          <Flex align="center" flex={1}>
+            <Avatar user={{ avatar: { type: 11, bg: 6 } }} size="xs1" />
+            <Box ml={2} mr={1}>
+              좋아요 😉
+            </Box>
+            <Box fontWeight="600">{calculatePercent(reviewArr?.goodCnt)}%</Box>
+          </Flex>
         </Flex>
-        <Flex align="center" flex={1}>
-          <Avatar user={{ avatar: { type: 11, bg: 6 } }} size="xs1" />
-          <Box ml={2} mr={1}>
-            좋아요 😉
-          </Box>
-          <Box fontWeight="600">{calculatePercent(reviewArr?.goodCnt)}%</Box>
-        </Flex>
-      </Flex>
+      )}
     </>
   );
 }

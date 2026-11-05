@@ -1,9 +1,14 @@
+import dayjs from "dayjs";
+
+import { STUDY_RESULT_HOUR } from "@/constants/serviceConstants/studyConstants/studyTimeConstant";
+import { StudyConfirmedMemberProps } from "@/types/models/studyTypes/study-entity.types";
 import {
   StudyConfirmedSetProps,
   StudyParticipationsSetProps,
   StudySetProps,
   StudyType,
 } from "@/types/models/studyTypes/study-set.types";
+import { getTodayStr } from "@/utils/dateTimeUtils";
 
 export const getMyStudyDateArr = (
   studySet: StudySetProps,
@@ -57,4 +62,29 @@ export const getStudyBadge = (studyType: StudyType, dateStatus: "future" | "curr
         return { text: "지난 스터디", colorScheme: "black" };
       }
   }
+};
+
+/**
+ * 같은 스터디 참여자끼리는 닉네임 대신 실명을 보여 준다.
+ * 확정된 장소 스터디(오픈 스터디, 결과 발표 이후의 매칭 조)에 내가 참여 중일 때만 true.
+ * 라운지 신청자·오픈 예정 조·개인 공부 인증, 승인 대기(pending) 상태에서는 false.
+ */
+export const canSeeStudyRealName = ({
+  studyType,
+  date,
+  members,
+  myId,
+}: {
+  studyType: StudyType;
+  date: string;
+  members: StudyConfirmedMemberProps[] | null | undefined;
+  myId: string | undefined;
+}) => {
+  if (!myId || !members?.length) return false;
+  const isConfirmedStudy =
+    studyType === "openRealTimes" ||
+    (studyType === "results" &&
+      (date < getTodayStr() || (date === getTodayStr() && dayjs().hour() >= STUDY_RESULT_HOUR)));
+  if (!isConfirmedStudy) return false;
+  return members.some((member) => member?.user?._id === myId && member?.status !== "pending");
 };

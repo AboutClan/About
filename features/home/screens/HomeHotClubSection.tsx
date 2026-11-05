@@ -25,13 +25,13 @@ function HomeHotClubSection() {
     <Box>
       <SlideSectionRow gap="16px">
         <SlideSectionCol
-          title="🔥26년 2학기, 동아리가 고민된다면?"
+          title="🔥동아리가 고민된다면?"
           subTitle="취향대로 선택해 참여하는 다양한 소모임"
         >
           <HomeGroupCol threeGroups={randomHotClubs.slice(0, 3)} type="pending" />
         </SlideSectionCol>
         <SlideSectionCol
-          title="🔥26년 2학기, 동아리가 고민된다면?"
+          title="🔥동아리가 고민된다면?"
           subTitle="취향대로 선택해 참여하는 다양한 소모임"
         >
           <HomeGroupCol threeGroups={randomHotClubs.slice(3, 6)} type="pending" />
@@ -40,13 +40,13 @@ function HomeHotClubSection() {
       {randomHotClubs.length > 6 && (
         <SlideSectionRow gap="16px">
           <SlideSectionCol
-            title="2학기를 책임질 든든한 취미 소모임"
+            title="🎯취향저격 취미 소모임"
             subTitle="학교 끝나면 시작되는 은밀한(?) 취미 생활"
           >
             <HomeGroupCol threeGroups={randomHotClubs.slice(6, 9)} type="pending" />
           </SlideSectionCol>
           <SlideSectionCol
-            title="2학기를 책임질 든든한 취미 소모임"
+            title="🎯취향저격 취미 소모임"
             subTitle="학교 끝나면 시작되는 은밀한(?) 취미 생활"
           >
             <HomeGroupCol threeGroups={randomHotClubs.slice(9, 12)} type="pending" />

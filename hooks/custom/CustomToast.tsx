@@ -1,16 +1,12 @@
 import { useToast as useChakraToast } from "@chakra-ui/react";
 import { AxiosError } from "axios";
+import { useRouter } from "next/router";
 import { useCallback } from "react";
 
+import { isCafeMapSession } from "@/features/cafeMap/utils/cafeMapSession";
+
 export type FailToast =
-  | "free"
-  | "guest"
-  | "loadStudy"
-  | "studyVote"
-  | "apply"
-  | "error"
-  | "time"
-  | "warning";
+  "free" | "guest" | "loadStudy" | "studyVote" | "apply" | "error" | "time" | "warning";
 
 export const useToast = () => {
   const toast = useChakraToast();
@@ -22,7 +18,6 @@ export const useToast = () => {
       duration: number = 3000,
       isBottom: boolean = false,
     ) => {
-   
       toast({
         title: title,
         status,
@@ -87,11 +82,28 @@ const TOAST_MAP: Record<ToastType, ToastConfig> = {
   },
 };
 
+/**
+ * 게스트가 막힌 기능을 눌렀을 때: 토스트 대신 어바웃 가입 안내 모달(BaseModal의 ?guest=on)을 연다.
+ * 카공지도는 별개 앱이라 어바웃 가입으로 보내지 않는다 — 열지 않고 false를 돌려주면 호출부가 기존 토스트를 띄운다.
+ */
+export const useOpenGuestModal = () => {
+  const router = useRouter();
+  return useCallback(() => {
+    if (router.pathname.startsWith("/cafe-map") || isCafeMapSession()) return false;
+    router.push({ pathname: router.pathname, query: { ...router.query, guest: "on" } }, undefined, {
+      shallow: true,
+    });
+    return true;
+  }, [router]);
+};
+
 export const useTypeToast = () => {
   const toast = useChakraToast();
+  const openGuestModal = useOpenGuestModal();
 
   const showToast = useCallback(
     (type: ToastType) => {
+      if (type === "guest" && openGuestModal()) return;
       toast({
         status: "success",
         duration: 3000,
@@ -103,7 +115,7 @@ export const useTypeToast = () => {
         },
       });
     },
-    [toast],
+    [toast, openGuestModal],
   );
 
   return showToast;
@@ -133,9 +145,11 @@ export const usePointToast = () => {
 
 export const useFailToast = () => {
   const toast = useChakraToast();
+  const openGuestModal = useOpenGuestModal();
 
   const showFailToast = useCallback(
     (type: FailToast, sub?: string) => {
+      if (type === "guest" && openGuestModal()) return;
       let text = "";
       if (type === "free") text = sub;
       if (type === "error") text = "오류가 발생했어요! 관리자에게 문의해주세요!";
@@ -157,7 +171,7 @@ export const useFailToast = () => {
         },
       });
     },
-    [toast],
+    [toast, openGuestModal],
   );
   return showFailToast;
 };

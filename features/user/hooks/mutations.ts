@@ -74,19 +74,6 @@ export const useUserCafeRegisterMutation = (options?: MutationOptions<IUserRegis
       }),
     options,
   );
-
-export const useUserTicketMutation = (
-  options?: MutationOptions<{ ticketNum: number; type: "gather" | "groupStudy" }>,
-) =>
-  useMutation<void, AxiosError, { ticketNum: number; type: "gather" | "groupStudy" }>(
-    (param) =>
-      requestServer<{ ticketNum: number; type: "gather" | "groupStudy" }>({
-        method: "post",
-        url: `user/ticket`,
-        body: param,
-      }),
-    options,
-  );
 interface UserRegisterControlProps {
   uid: string;
   referrerUid?: string;

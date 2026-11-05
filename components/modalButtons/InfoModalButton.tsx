@@ -187,7 +187,6 @@ const INFO_MODAL_CONTENTS: Record<InfoType, { title: string; items: string[] }> 
     items: [
       "주제, 인원, 나이 등을 설정할 수 있습니다.",
       "모임장은 최대 30,000원을 지원 받습니다.",
-      "모임 참여에는 번개 참여권이 소모됩니다.",
     ],
   },
   gatherRequest: {
@@ -203,7 +202,6 @@ const INFO_MODAL_CONTENTS: Record<InfoType, { title: string; items: string[] }> 
     items: [
       "관심사에 맞게 지속해서 활동할 수 있습니다.",
       "모임장은 월 최대 30,000원을 지원 받습니다.",
-      "모임 참여에는 소모임 참여권이 소모됩니다.",
     ],
   },
   map: {

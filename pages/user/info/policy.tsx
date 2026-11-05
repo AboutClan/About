@@ -63,10 +63,6 @@ function Policy() {
               사용할 수 있는 단위를 말합니다.
             </ListItem>
             <ListItem>
-              &quot;참여권(티켓)&quot;이란 번개 또는 소모임에 참여하기 위해 필요한 이용권으로,
-              월별로 부여·초기화되며, About 정책에 따라 추가 지급 또는 구매가 가능할 수 있습니다.
-            </ListItem>
-            <ListItem>
               &quot;소셜링 온도&quot;란 번개(소셜링) 참여 후 멤버들이 남기는 익명 리뷰를 바탕으로
               산정되는 후기 지표로, 모임 승인률·혜택 등에 영향을 줄 수 있습니다.
             </ListItem>
@@ -165,7 +161,7 @@ function Policy() {
             <ListItem>번개(소셜링) 개설 및 참여 기능</ListItem>
             <ListItem>소모임 개설, 승인, 운영 및 멤버 관리 기능</ListItem>
             <ListItem>동아리 행사 및 각종 이벤트 안내·신청 기능</ListItem>
-            <ListItem>포인트·참여권 관리 및 활동 리워드 기능</ListItem>
+            <ListItem>포인트 관리 및 활동 리워드 기능</ListItem>
             <ListItem>카공 지도, 후기/리뷰, 신고·거리두기 등 부가 기능</ListItem>
             <ListItem>
               그 밖에 About가 추가로 개발하거나 제휴를 통해 제공하는 일체의 서비스
@@ -275,9 +271,9 @@ function Policy() {
             </ListItem>
           </List>
 
-          {/* 제5장 포인트·참여권 */}
+          {/* 제5장 포인트 */}
           <Heading as="h2" fontSize="2xl" mt={6}>
-            제5장 포인트·참여권
+            제5장 포인트
           </Heading>
           <Heading as="h3" fontSize="lg" mt={3}>
             제12조(포인트)
@@ -318,20 +314,7 @@ function Policy() {
           </List>
 
           <Heading as="h3" fontSize="lg" mt={3}>
-            제13조(참여권(티켓))
-          </Heading>
-          <List styleType="number" ml="1em">
-            <ListItem>
-              참여권은 번개 또는 소모임 참여를 위해 필요한 이용권으로, 매월 1일 기준으로
-              초기화·지급됩니다. 기본 제공 수량 및 추가 지급 기준은 서비스 내 정책에 따릅니다.
-            </ListItem>
-            <ListItem>
-              참여권은 타인에게 양도할 수 없으며, 유효기간이 지난 참여권은 소멸합니다.
-            </ListItem>
-          </List>
-
-          <Heading as="h3" fontSize="lg" mt={3}>
-            제14조(모임 불참에 따른 포인트 차감)
+            제13조(모임 불참에 따른 포인트 차감)
           </Heading>
           <List styleType="number" ml="1em">
             <ListItem>
@@ -355,7 +338,7 @@ function Policy() {
           </Heading>
 
           <Heading as="h3" fontSize="lg" mt={3}>
-            제15조(개인정보 보호)
+            제14조(개인정보 보호)
           </Heading>
           <Text>
             About는 회원의 개인정보를 보호하기 위하여 관련 법령 및 개인정보처리방침을 준수합니다.
@@ -369,7 +352,7 @@ function Policy() {
           </Heading>
 
           <Heading as="h3" fontSize="lg" mt={3}>
-            제16조(약관의 개정)
+            제15조(약관의 개정)
           </Heading>
           <List styleType="number" ml="1em">
             <ListItem>
@@ -389,7 +372,7 @@ function Policy() {
           </List>
 
           <Heading as="h3" fontSize="lg" mt={3}>
-            제17조(면책조항)
+            제16조(면책조항)
           </Heading>
           <List styleType="number" ml="1em">
             <ListItem>
@@ -406,7 +389,7 @@ function Policy() {
           </List>
 
           <Heading as="h3" fontSize="lg" mt={3}>
-            제18조(준거법 및 관할)
+            제17조(준거법 및 관할)
           </Heading>
           <Text>
             본 약관 및 서비스 이용과 관련하여 About와 회원 간에 발생한 분쟁에 대하여는 대한민국 법을
@@ -415,7 +398,7 @@ function Policy() {
 
           {/* 결제 및 환불 조항 추가 */}
           <Heading as="h3" fontSize="lg" mt={3}>
-            제19조(결제 및 환불)
+            제18조(결제 및 환불)
           </Heading>
           <List styleType="number" ml="1em">
             <ListItem>

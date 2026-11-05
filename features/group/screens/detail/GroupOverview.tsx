@@ -57,13 +57,14 @@ function GroupOverview({
           ...(hideMemberOnlyInfo
             ? []
             : [
-                {
-                  category: group.meetingType === "online" || isGuest ? "최근 활동 날짜" : "티 켓",
-                  text:
-                    group.meetingType === "online" || isGuest
-                      ? `${dayjs().subtract(1, "day").format("YY년 M월 D일")}`
-                      : `월 ${group.requiredTicket}장 소모`,
-                },
+                ...(group.meetingType === "online" || isGuest
+                  ? [
+                      {
+                        category: "최근 활동 날짜",
+                        text: `${dayjs().subtract(1, "day").format("YY년 M월 D일")}`,
+                      },
+                    ]
+                  : []),
                 {
                   category: "단톡방",
                   rightChildren: group?.link ? (

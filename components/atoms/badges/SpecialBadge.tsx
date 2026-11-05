@@ -33,14 +33,6 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
         type: "스터디 참여 리워드",
         value: "+ 20% 포인트",
       },
-      {
-        type: "번개 참여권",
-        value: "월 1장 추가",
-      },
-      {
-        type: "소모임 참여권",
-        value: "월 2장 추가",
-      },
     ],
     studySupporters: [
       {
@@ -68,10 +60,6 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
       {
         type: "번개 개설 리워드",
         value: "+ 150%",
-      },
-      {
-        type: "번개 참여권",
-        value: "월 2장 추가",
       },
       {
         type: "스토어 상품 할인",
@@ -103,14 +91,6 @@ function SpecialBadge({ hasMembership }: SpecialBadgeProps) {
       {
         type: "번개 개설 리워드",
         value: "+ 150%",
-      },
-      {
-        type: "번개 참여권",
-        value: "+ 월 2장",
-      },
-      {
-        type: "소모임 참여권",
-        value: "+ 월 4장",
       },
       {
         type: "스토어 상품 할인",

@@ -39,46 +39,6 @@ function UserPointBlock({ handleButton }: { handleButton: () => void }) {
         bgColor="white"
       >
         <Flex mr={3} justify="space-around">
-          <Link href="/user/log/gatherTicket" onClick={handleGuestClick} style={{ flex: 1 }}>
-            <Flex direction="column" align="center">
-              <Flex
-                justify="center"
-                align="center"
-                w="48px"
-                h="48px"
-                bg="RGBA(173, 50, 82,0.08)"
-                borderRadius="50%"
-              >
-                <Image src="/ticket1.png" alt="ticket1" width={32} height={32} />
-              </Flex>
-              <Box mt={2} fontSize="16px" fontWeight="bold">
-                {userInfo?.ticket.gatherTicket || 0}
-              </Box>
-              <Box fontWeight="medium" fontSize="10px" color="var(--gray-500)" lineHeight="12px">
-                번개 참여권
-              </Box>
-            </Flex>
-          </Link>
-          <Link href="/user/log/groupStudyTicket" onClick={handleGuestClick} style={{ flex: 1 }}>
-            <Flex direction="column" align="center">
-              <Flex
-                justify="center"
-                align="center"
-                w="48px"
-                h="48px"
-                bg="RGBA(61, 111, 243,0.08)"
-                borderRadius="50%"
-              >
-                <Image src="/ticket2.png" alt="ticket2" width={32} height={32} />
-              </Flex>
-              <Box mt={2} fontSize="16px" fontWeight="bold">
-                {userInfo?.ticket.groupStudyTicket || 0}
-              </Box>
-              <Box fontWeight="medium" fontSize="10px" color="var(--gray-500)" lineHeight="12px">
-                소모임 참여권
-              </Box>
-            </Flex>
-          </Link>
           <Link href="/user/log/point" onClick={handleGuestClick} style={{ flex: 1 }}>
             <Flex direction="column" align="center">
               <Flex
@@ -127,7 +87,7 @@ function UserPointBlock({ handleButton }: { handleButton: () => void }) {
               handleButton();
             }}
           >
-            월간 참여권 가이드
+            소셜링 온도 혜택
           </Button>
         </Flex>
         {/* <Flex justify="space-around" mt={5}>

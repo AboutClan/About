@@ -1,105 +1,17 @@
-import { Box, Collapse, Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Flex } from "@chakra-ui/react";
 
 import Avatar from "@/components/atoms/Avatar";
-import { ShortArrowIcon } from "@/components/Icons/ArrowIcons";
 import RightDrawer from "@/components/modals/drawer/RightDrawer";
-import InfoBoxCol from "@/components/molecules/InfoBoxCol";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
-import { UserMemberShip, UserRole } from "@/types/models/userTypes/userInfoTypes";
 import { getDisplayName } from "@/utils/stringUtils";
 
 interface UserSocialGuideDrawerProps {
   onClose: () => void;
 }
 
-// SpecialBadge(components/atoms/badges/SpecialBadge.tsx)의 멤버십별 혜택 중
-// "번개 참여권" / "소모임 참여권" 추가 지급분만 뽑아온 값.
-const MEMBERSHIP_TICKET_BONUS: Record<UserMemberShip, { gather: number; group: number }> = {
-  newbie: { gather: 1, group: 2 },
-  studySupporters: { gather: 0, group: 0 },
-  gatherSupporters: { gather: 2, group: 0 },
-  manager: { gather: 2, group: 4 },
-  normal: { gather: 0, group: 0 },
-};
-
-const TEMPERATURE_BRACKETS: { label: string; temp: number }[] = [
-  { label: "36.5도 - 38도", temp: 36.5 },
-  { label: "38도 - 40도", temp: 38 },
-  { label: "40도 - 42도", temp: 40 },
-  { label: "42도 - 44도", temp: 42 },
-  { label: "44도 이상", temp: 44 },
-];
-
-export const getTemperatureTicket = (
-  temp: number,
-  isGirl: boolean,
-  membership: UserMemberShip,
-  role?: UserRole,
-) => {
-  let gather, group;
-
-  if (temp < 36.5) {
-    gather = 1;
-    group = 4;
-  } else if (temp < 38) {
-    gather = 2;
-    group = 4;
-  } else if (temp < 40) {
-    gather = 3;
-    group = 4;
-  } else if (temp < 42) {
-    gather = 3;
-    group = 5;
-  } else if (temp < 44) {
-    gather = 4;
-    group = 5;
-  } else {
-    gather = 4;
-    group = 6;
-  }
-
-  // 여자일 경우 보정
-  if (isGirl && role !== "guest") {
-    gather += 1;
-    group += 1;
-  }
-
-  // SpecialBadge와 동일하게, 게스트는 뉴비 멤버십 기준으로 취급한다.
-  const effectiveMembership = role === "guest" ? "newbie" : membership;
-  const bonus = MEMBERSHIP_TICKET_BONUS[effectiveMembership] ?? MEMBERSHIP_TICKET_BONUS.normal;
-  gather += bonus.gather;
-  group += bonus.group;
-
-  return { gather, group };
-};
-
 function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
   const { data: userInfo } = useUserInfoQuery();
-
-  const isGirl = userInfo?.gender === "여성";
-
-  const [isBenefit, setIsBenefit] = useState(true);
-
-  const benefitArr: { category: string; text: string }[] = TEMPERATURE_BRACKETS.map(
-    ({ label, temp }) => {
-      const { gather, group } = getTemperatureTicket(
-        temp,
-        isGirl,
-        userInfo?.membership,
-        userInfo?.role,
-      );
-      return { category: label, text: `번개 티켓 ${gather}장 / 소모임 티켓 ${group}장` };
-    },
-  );
-
-  const { gather, group } = getTemperatureTicket(
-    userInfo?.temperature.temperature,
-    isGirl,
-    userInfo?.membership,
-    userInfo?.role,
-  );
 
   return (
     <RightDrawer title="혜택" px={false} onClose={onClose}>
@@ -116,55 +28,14 @@ function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
           </Box>
         </Flex>
       </Flex>
-      <Flex px={5} justify="space-between" py={3}>
-        <Flex fontSize="16px" fontWeight="bold" w="full">
-          <Box as="span" fontSize="16px">
-            매월 받는 참여권 =
-          </Box>
-          <Box as="span" ml={1} color="mint" fontSize="16px">
-            번개 티켓 {gather}장 / 소모임 티켓 {group}장
-          </Box>
-        </Flex>
-      </Flex>
-      <Box px={5} borderTop="var(--border)" pb={2}>
-        <Collapse in={isBenefit} animateOpacity unmountOnExit>
-          <Box px={5} mb={1} borderTop="var(--border)">
-            <InfoBoxCol infoBoxPropsArr={benefitArr} />
-          </Box>
-        </Collapse>
-      </Box>
-      <Box
-        fontSize="13px"
-        mb={5}
-        w="full"
-        py={1.5}
-        as="button"
-        color="white"
-        bg="mint"
-        borderBottomRadius="12px"
-        onClick={() => setIsBenefit((old) => !old)}
+      <Flex
+        py={4}
+        flexDir="row-reverse"
+        justify="space-between"
+        align="center"
+        px={10}
+        borderTop="var(--border)"
       >
-        <Flex justify="center" align="center">
-          소셜링 온도별 티켓 개수
-          <Box ml={1}>
-            <ShortArrowIcon dir={isBenefit ? "top" : "bottom"} color="white" />
-          </Box>
-        </Flex>
-      </Box>
-      <Flex py={4} justify="space-between" px={10} borderBottom="var(--border)">
-        <Avatar size="xl2" user={{ avatar: { type: 2, bg: 6 } }} />
-        <Flex flexDir="column" alignItems="flex-end">
-          <Box fontSize="18px" fontWeight="bold" color="mint" mb={1}>
-            모임 참여권 지급
-          </Box>
-          <Box as="p" textAlign="end">
-            소셜링 온도가 높을수록
-            <br />
-            지급되는 모임 참여권이 많아져요!
-          </Box>
-        </Flex>
-      </Flex>{" "}
-      <Flex py={4} flexDir="row-reverse" justify="space-between" align="center" px={10}>
         <Avatar size="xl2" user={{ avatar: { type: 16, bg: 8 } }} />
         <Flex flexDir="column">
           <Box fontSize="18px" fontWeight="bold" color="mint" mb={1}>
@@ -190,19 +61,6 @@ function UserSocialGuideDrawer({ onClose }: UserSocialGuideDrawerProps) {
           </Box>
         </Flex>
       </Flex>
-      <Flex py={4} flexDir="row-reverse" align="center" justify="space-between" px={10}>
-        <Avatar size="xl2" user={{ avatar: { type: 20, bg: 2 } }} />
-        <Flex flexDir="column">
-          <Box fontSize="18px" fontWeight="bold" color="mint" mb={1}>
-            참여권 구매
-          </Box>
-          <Box as="p">
-            더 많은 참여권이 필요하다면,
-            <br />
-            1,000 포인트로 구매할 수 있어요!
-          </Box>
-        </Flex>
-      </Flex>{" "}
       {/* <Box bg="mint">받은 혜택 자세히 보기</Box> */}
       {/* <ValueBoxCol
         items={[
