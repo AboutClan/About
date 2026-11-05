@@ -79,87 +79,109 @@ interface ProcessGuideProps {
   date: string;
   isOfficialGather?: boolean;
   isRegularGather?: boolean;
+  isGroupRegular?: boolean;
 }
 
 export default function ProcessGuide({
   date,
   isOfficialGather,
   isRegularGather,
+  isGroupRegular,
 }: ProcessGuideProps) {
   const gatherDate = dayjs(date);
   const mondayOfWeek = gatherDate.subtract((gatherDate.day() + 6) % 7, "day");
   const prevFriday = mondayOfWeek.subtract(3, "day");
   const prevSunday = mondayOfWeek.subtract(1, "day");
 
-  const steps: StepItem[] = isRegularGather
+  const steps: StepItem[] = isGroupRegular
     ? [
         {
           step: 1,
-          title: "원하는 일정과 콘텐츠를 골라 신청해요",
-          description: "여러 개 골라도 괜찮아요",
+          title: "소모임에 가입해요",
+          description: "하단 버튼을 누르면 소모임 페이지로 이동해요",
         },
         {
           step: 2,
-          title: "운영진이 조를 짜요",
-          description: "인원·성비·희망 콘텐츠를 고려해 함께할 멤버를 매칭해요",
+          title: "소모임 톡방에서 매주 일정을 정해요",
+          description: "투표로 날짜·장소를 정하고, 되는 날에 자유롭게 참여해요",
         },
         {
           step: 3,
-          title: "참여가 확정되면 개별로 연락드려요",
-          description: "확정된 모임은 아래 '확정된 모임'에서도 확인할 수 있어요",
+          title: "멤버들과 함께 모여요!",
+          description: "매주 진행돼서 원하는 주에 언제든 참여할 수 있어요",
         },
       ]
-    : isOfficialGather
+    : isRegularGather
       ? [
           {
             step: 1,
-            title: "구글폼으로 먼저 신청을 받아요",
-            description: "하단의 신청하기 버튼을 누르면 구글폼으로 연결돼요",
+            title: "원하는 일정과 콘텐츠를 골라 신청해요",
+            description: "여러 개 골라도 괜찮아요",
           },
           {
             step: 2,
-            title: "나이·성별·후기 등을 고려해 승인 연락을 드려요",
-            description: "3일 이내에 연락을 받지 못하면 보류 상태예요!",
+            title: "운영진이 조를 짜요",
+            description: "인원·성비·희망 콘텐츠를 고려해 함께할 멤버를 매칭해요",
           },
           {
             step: 3,
-            title: "참여비 입금 후 톡방에 입장해요",
-            description: "상세 내용은 승인자에 한해 별도 안내드려요!",
+            title: "참여가 확정되면 개별로 연락드려요",
+            description: "확정된 모임은 아래 '확정된 모임'에서도 확인할 수 있어요",
           },
         ]
-      : [
-          {
-            step: 1,
-            title: "모임에 관심 있는 멤버들의 신청을 먼저 받아요",
-            description: "신청자들의 선택 날짜, 나이, 성별만 공개돼요",
-          },
-          {
-            step: 2,
-            title: "날짜·나이·성별을 고려해 조가 추천돼요",
-            description: "추천된 조원들의 프로필이 공개돼요",
-            date: dayjsToKr(prevFriday),
-          },
-          {
-            step: 3,
-            title: "최종 참여를 확정하면, 톡방이 개설돼요",
-            description: "조 편성 후 불참은 2,000P가 차감될 수 있어요",
-            date: dayjsToKr(prevSunday),
-          },
-          {
-            step: 4,
-            title: "멤버들과 함께 모임을 진행해요!",
-            description: "시간, 장소, 콘텐츠는 운영진이 함께 조율해요",
-          },
-        ];
+      : isOfficialGather
+        ? [
+            {
+              step: 1,
+              title: "구글폼으로 먼저 신청을 받아요",
+              description: "하단의 신청하기 버튼을 누르면 구글폼으로 연결돼요",
+            },
+            {
+              step: 2,
+              title: "나이·성별·후기 등을 고려해 승인 연락을 드려요",
+              description: "3일 이내에 연락을 받지 못하면 보류 상태예요!",
+            },
+            {
+              step: 3,
+              title: "참여비 입금 후 톡방에 입장해요",
+              description: "상세 내용은 승인자에 한해 별도 안내드려요!",
+            },
+          ]
+        : [
+            {
+              step: 1,
+              title: "모임에 관심 있는 멤버들의 신청을 먼저 받아요",
+              description: "신청자들의 선택 날짜, 나이, 성별만 공개돼요",
+            },
+            {
+              step: 2,
+              title: "날짜·나이·성별을 고려해 조가 추천돼요",
+              description: "추천된 조원들의 프로필이 공개돼요",
+              date: dayjsToKr(prevFriday),
+            },
+            {
+              step: 3,
+              title: "최종 참여를 확정하면, 톡방이 개설돼요",
+              description: "조 편성 후 불참은 2,000P가 차감될 수 있어요",
+              date: dayjsToKr(prevSunday),
+            },
+            {
+              step: 4,
+              title: "멤버들과 함께 모임을 진행해요!",
+              description: "시간, 장소, 콘텐츠는 운영진이 함께 조율해요",
+            },
+          ];
 
   return (
     <Box bg="gray.100" border="var(--border-main)" borderRadius="8px" p={5} py={4} mx={5} mt={5}>
       <Text color="gray.800" fontSize="16px" fontWeight="600" mb={4}>
-        {isRegularGather
-          ? "상시 행사는 이렇게 진행돼요!"
-          : isOfficialGather
-            ? "정기모임은 이렇게 진행돼요!"
-            : "오픈 번개는 이렇게 진행돼요!"}
+        {isGroupRegular
+          ? "매주 이렇게 진행돼요!"
+          : isRegularGather
+            ? "상시 행사는 이렇게 진행돼요!"
+            : isOfficialGather
+              ? "정기모임은 이렇게 진행돼요!"
+              : "오픈 번개는 이렇게 진행돼요!"}
       </Text>
       <VStack spacing={0} align="stretch">
         {steps.map((item, index) => (

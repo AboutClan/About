@@ -52,7 +52,15 @@ export const formatSlot = (slot: IRegularSlot) =>
     ? `${getSlotDateTime(slot).locale("ko").format("M.D(ddd)")} ${slot.time}`
     : `매주 ${getWeekdayLabel(slot.weekday)} ${slot.time}`;
 
-const isThisRound = (gather: Pick<IGather, "formStats">) =>
+/**
+ * 소모임형 상시 행사: 구글폼 없이 소모임과 연결된 상시 행사.
+ * 신청하기는 소모임 가입으로 연결하고, 일정은 소모임 톡방에서 매주 정한다.
+ */
+export const isGroupRegularGather = (
+  gather?: Pick<IGather, "category" | "googleFormUrl" | "groupId"> | null,
+) => gather?.category === "regularGather" && !gather.googleFormUrl && !!gather.groupId;
+
+const isThisRound =(gather: Pick<IGather, "formStats">) =>
   gather.formStats?.roundKey === getCurrentRoundKey();
 
 /**

@@ -8,6 +8,7 @@ import {
   countApplicantsByOption,
   formatSlot,
   getVisibleSlots,
+  isGroupRegularGather,
 } from "@/features/gather/utils/regularGather";
 import StudyAddressMap from "@/features/study/screens/StudyAddressMap";
 import { IGather, IGatherLocation } from "@/types/models/gatherTypes/gatherTypes";
@@ -154,7 +155,11 @@ function RegularGatherSchedule({ data }: RegularGatherScheduleProps) {
 
         {!commonSlots.length && !contents.length && (
           <Text fontSize="13px" color="gray.500">
-            {allSlots.length ? "모집 중인 일정이 없어요." : "일정을 준비 중이에요."}
+            {isGroupRegularGather(data)
+              ? "일정은 소모임 톡방에서 매주 투표로 정해요."
+              : allSlots.length
+                ? "모집 중인 일정이 없어요."
+                : "일정을 준비 중이에요."}
           </Text>
         )}
 

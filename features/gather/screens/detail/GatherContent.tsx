@@ -14,6 +14,8 @@ interface IGather {
   isOpenGather: boolean;
   isOfficialGather?: boolean;
   isRegularGather?: boolean;
+  /** 소모임형 상시 행사(소모임 가입으로 참여) */
+  isGroupRegular?: boolean;
   date: string;
 }
 
@@ -24,6 +26,7 @@ function GatherContent({
   isOpenGather,
   isOfficialGather,
   isRegularGather,
+  isGroupRegular,
   date,
 }: IGather) {
   return (
@@ -46,6 +49,7 @@ function GatherContent({
           date={date}
           isOfficialGather={isOfficialGather}
           isRegularGather={isRegularGather}
+          isGroupRegular={isGroupRegular}
         />
       ) : null}
       <Box px={5} mt={5}>

@@ -29,6 +29,7 @@ import PartnerGatherInfo from "@/features/gather/screens/detail/PartnerGatherInf
 import RegularGatherApplicants from "@/features/gather/screens/detail/RegularGatherApplicants";
 import RegularGatherConfirmedList from "@/features/gather/screens/detail/RegularGatherConfirmedList";
 import RegularGatherSchedule from "@/features/gather/screens/detail/RegularGatherSchedule";
+import { isGroupRegularGather } from "@/features/gather/utils/regularGather";
 import { GroupThumbnailCard } from "@/features/group/components/GroupThumbnailCard";
 import { useGroupIdQuery } from "@/features/group/hooks/queries";
 import { useToast } from "@/hooks/custom/CustomToast";
@@ -178,10 +179,11 @@ function GatherDetail() {
                 isOpenGather={isOpenGather}
                 isOfficialGather={isOfficialGather}
                 isRegularGather={isRegularGather}
+                isGroupRegular={isGroupRegularGather(gather)}
                 date={gather.date}
               />
-              {!isPartnerGather && <Divider />}
-              {isPartnerGather ? null : isRegularGather ? (
+              {!isPartnerGather && !isGroupRegularGather(gather) && <Divider />}
+              {isPartnerGather ? null : isGroupRegularGather(gather) ? null : isRegularGather ? (
                 <>
                   <RegularGatherApplicants data={gather} />
                   <RegularGatherConfirmedList gatherId={gather.id} />

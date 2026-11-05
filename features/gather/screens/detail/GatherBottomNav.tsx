@@ -22,7 +22,7 @@ import { useGatherChildrenQuery } from "@/features/gather/hooks/queries";
 import GatherExpireModal from "@/features/gather/modals/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "@/features/gather/modals/gatherExpireModal/GatherReviewDrawer";
 import { transferGatherDataState } from "@/features/gather/state";
-import { isAppliedRegular } from "@/features/gather/utils/regularGather";
+import { isAppliedRegular, isGroupRegularGather } from "@/features/gather/utils/regularGather";
 import { useUserInfoQuery } from "@/features/user/hooks/queries";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { FeedProps } from "@/types/models/feed";
@@ -181,6 +181,14 @@ function GatherBootmNav({
     if (isRegularGather) {
       if (data.status === "close") {
         return { text: "종료된 행사입니다.", type: "black", isReverse: true, isEnd: true };
+      }
+      // 소모임형 상시 행사는 소모임에 가입해 톡방에서 매주 일정을 정한다
+      if (isGroupRegularGather(data)) {
+        return {
+          text: "소모임 가입하고 참여하기",
+          handleFunction: () => router.push(`/group/${data.groupId}`),
+          isReverse: true,
+        };
       }
       if (myUpcomingChild) {
         return {
