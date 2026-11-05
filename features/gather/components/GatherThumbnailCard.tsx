@@ -20,6 +20,7 @@ import {
   GatherCategory,
   GatherStatus,
   IGatherParticipants,
+  IRegularApplicantUser,
   IRegularContent,
   IRegularFormStats,
   IRegularSlot,
@@ -64,6 +65,8 @@ export interface GatherThumbnailCardProps {
   slots?: IRegularSlot[];
   contents?: IRegularContent[];
   formStats?: IRegularFormStats | null;
+  /** 소모임형 상시 행사만: 소모임 모임에 참여한 적 있는 멤버 */
+  groupMembers?: IRegularApplicantUser[];
   /** 제휴 프로그램(partnerGather)만: 할인 혜택 문구 */
   benefit?: string | null;
   /** 상시 행사만: 카드에 보일 기간 문구(없으면 일정으로 자동 요약) */
@@ -101,6 +104,7 @@ export function GatherThumbnailCard({
   slots,
   contents,
   formStats,
+  groupMembers,
   benefit,
   scheduleLabel,
 }: GatherThumbnailCardProps) {
@@ -110,8 +114,13 @@ export function GatherThumbnailCard({
 
   // 상시 행사는 참여자 대신 신청자(구글폼 신청자 + 성비 보정 인원)를 보여 준다.
   // 폼 신청자는 회원과 연결되지 않아 신청자별로 고정된 기본 아바타를 쓴다.
-  const participantsMember: IGatherParticipants[] =
-    gatherType === "regularGather"
+  // 소모임형 상시 행사는 소모임 모임에 참여한 적 있는 실제 멤버를 보여 준다.
+  const participantsMember: IGatherParticipants[] = groupMembers
+    ? groupMembers.map((member) => ({
+        user: member as unknown as UserSimpleInfoProps,
+        phase: "first",
+      }))
+    : gatherType === "regularGather"
       ? buildRegularApplicants({ id, age, formStats, slots, contents }).map((applicant) => ({
           // 앱에서 신청한 회원은 그 회원의 아바타, 외부 신청자는 고정된 기본 아바타
           user: (applicant.user ?? {

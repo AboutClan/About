@@ -99,6 +99,7 @@ export const setGatherDataToCardCol = (
       slots: gather.slots,
       contents: gather.contents,
       formStats: gather.formStats,
+      groupMembers: gather.groupMembers,
       benefit: gather.benefit,
       scheduleLabel: gather.scheduleLabel,
 

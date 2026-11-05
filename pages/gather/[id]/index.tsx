@@ -25,6 +25,7 @@ import GatherGuide from "@/features/gather/screens/detail/GatherGuide";
 import GatherHeader from "@/features/gather/screens/detail/GatherHeader";
 import GatherParticipation from "@/features/gather/screens/detail/GatherParticipation";
 import GatherTitle from "@/features/gather/screens/detail/GatherTitle";
+import GroupRegularMembers from "@/features/gather/screens/detail/GroupRegularMembers";
 import PartnerGatherInfo from "@/features/gather/screens/detail/PartnerGatherInfo";
 import RegularGatherApplicants from "@/features/gather/screens/detail/RegularGatherApplicants";
 import RegularGatherConfirmedList from "@/features/gather/screens/detail/RegularGatherConfirmedList";
@@ -182,8 +183,10 @@ function GatherDetail() {
                 isGroupRegular={isGroupRegularGather(gather)}
                 date={gather.date}
               />
-              {!isPartnerGather && !isGroupRegularGather(gather) && <Divider />}
-              {isPartnerGather ? null : isGroupRegularGather(gather) ? null : isRegularGather ? (
+              {!isPartnerGather && <Divider />}
+              {isPartnerGather ? null : isGroupRegularGather(gather) ? (
+                <GroupRegularMembers data={gather} />
+              ) : isRegularGather ? (
                 <>
                   <RegularGatherApplicants data={gather} />
                   <RegularGatherConfirmedList gatherId={gather.id} />

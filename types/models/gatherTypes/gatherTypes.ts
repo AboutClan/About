@@ -103,6 +103,8 @@ export interface IGatherWriting {
   isApprovalRequired?: boolean;
   category?: GatherCategory;
   groupId?: string;
+  /** 소모임형 상시 행사만: 소모임 모임에 1회 이상 참여한 소모임 멤버(참여 많은 순) */
+  groupMembers?: IRegularApplicantUser[];
   postImage?: string;
   dateOptions?: IGatherDateOption[];
   slots?: IRegularSlot[];
