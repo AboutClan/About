@@ -1,9 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
+import { useMemo } from "react";
 
 import Avatar from "@/components/atoms/Avatar";
 import { useUidsToUsersInfoQuery, useUserInfoQuery } from "@/features/user/hooks/queries";
 import { BarRightIcon } from "@/features/user/screens/UserScoreBar";
+import { UserSimpleInfoProps } from "@/types/models/userTypes/userInfoTypes";
+import { shuffleArray } from "@/utils/convertUtils/convertDatas";
 
 /** 서로 '최고예요'를 눌러 자동 등록된 친구 목록(작은 프로필). 게스트에게는 렌더하지 않는다 */
 function UserFriendBlock() {
@@ -12,6 +15,11 @@ function UserFriendBlock() {
   const { data: friends } = useUidsToUsersInfoQuery(friendUids, {
     enabled: friendUids.length > 0,
   });
+  // 친구 순서는 매번 랜덤으로
+  const shuffledFriends: UserSimpleInfoProps[] = useMemo(
+    () => shuffleArray(friends ?? []),
+    [friends],
+  );
 
   return (
     <Box mx={5} mt={4} mb={3}>
@@ -65,7 +73,7 @@ function UserFriendBlock() {
           overflowX="auto"
           sx={{ scrollbarWidth: "none", "&::-webkit-scrollbar": { display: "none" } }}
         >
-          {(friends ?? []).map((friend) => (
+          {shuffledFriends.map((friend) => (
             <Flex key={friend.uid} direction="column" align="center" w="48px" flexShrink={0}>
               <Avatar user={friend} size="sm1" />
               <Box

@@ -37,8 +37,14 @@ interface IGatherParticipation {
 function GatherParticipation({ data, gatherType, isPublic }: IGatherParticipation) {
   const { data: nicknamePool } = useDefaultNicknamesQuery();
   const userInfo = useUserInfo();
-  // 운영진·모임장은 "닉네임 (실명)"으로 본다(공개 페이지 제외)
-  const showRealName = !isPublic && canSeeRealName(userInfo, data?.user as IUser);
+  // 운영진·모임장·참여자는 "닉네임 (실명)"으로 본다(공개 페이지 제외)
+  const showRealName =
+    !isPublic &&
+    canSeeRealName(
+      userInfo,
+      data?.user as IUser,
+      data?.participants as { user?: UserSimpleInfoProps }[],
+    );
   const profileLockedToast = isPublic ? PUBLIC_PROFILE_LOCKED_TOAST : undefined;
   const status = data.status;
   const participantsCnt = data.participants.reduce(

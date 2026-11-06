@@ -7,6 +7,7 @@ import styled from "styled-components";
 import Avatar from "@/components/atoms/Avatar";
 import UserBadge from "@/components/atoms/badges/UserBadge";
 import SocialingScoreBadge from "@/components/molecules/SocialingScoreBadge";
+import { withRealName } from "@/features/gather/utils/memberDisplay";
 import ProfileOverviewSkeleton from "@/features/profile/screens/skeleton/ProfileOverviewSkeleton";
 import { useToast, useTypeToast } from "@/hooks/custom/CustomToast";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
@@ -36,7 +37,10 @@ function ProfileOverview({ user, gatherCount }: IProfileOverview) {
               <Flex ml={3} direction="column">
                 <Flex mb={0.5} align="center">
                   <Box mr={1} fontSize="16px" fontWeight="bold">
-                    {user ? getDisplayName(user) : getDisplayName(session?.user)}
+                    {/* 친구끼리는 "닉네임 (실명)" */}
+                    {user
+                      ? withRealName(getDisplayName(user), isFriend ? user.name : null)
+                      : getDisplayName(session?.user)}
                   </Box>
                   <Box mb={0.5}>
                     <UserBadge badgeIdx={user?.badge?.badgeIdx} />

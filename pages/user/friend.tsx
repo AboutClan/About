@@ -36,7 +36,8 @@ function ProfileFriend() {
             friends?.map((who) => {
               return (
                 <Item key={who.uid} onClick={() => onClickUser(who)}>
-                  <ProfileCommentCard user={who} comment={{ comment: who.comment }} />
+                  {/* 친구끼리는 실명을 보여 준다 */}
+                  <ProfileCommentCard user={who} comment={{ comment: who.comment }} showRealName />
                 </Item>
               );
             })

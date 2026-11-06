@@ -59,13 +59,21 @@ export const withRealName = (nickname: string, realName?: string | null) =>
 /** 공개 페이지(/gather/[id]/p)에서 멤버 프로필을 눌렀을 때 */
 export const PUBLIC_PROFILE_LOCKED_TOAST = "참여자끼리만 서로 확인할 수 있어요.";
 
-/** 모임 참여자·신청자의 실명까지 볼 수 있는 사람: 운영진(previliged·manager) 또는 그 모임의 모임장 */
+/**
+ * 모임 참여자·신청자의 실명까지 볼 수 있는 사람: 운영진(previliged·manager), 그 모임의 모임장,
+ * participants를 넘긴 경우 그 모임에 참여 중인 사람
+ */
 export const canSeeRealName = (
   viewer: { _id?: string; role?: string } | undefined | null,
   organizer: { _id?: string } | string | undefined | null,
+  participants?: { user?: { _id?: string } | string | null }[],
 ) => {
   if (!viewer) return false;
   if (viewer.role === "previliged" || viewer.role === "manager") return true;
+  if (!viewer._id) return false;
   const organizerId = typeof organizer === "string" ? organizer : organizer?._id;
-  return !!viewer._id && viewer._id === organizerId;
+  if (viewer._id === organizerId) return true;
+  return !!participants?.some(
+    (par) => (typeof par.user === "string" ? par.user : par.user?._id) === viewer._id,
+  );
 };
