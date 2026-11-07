@@ -42,7 +42,7 @@ function RegularConfirmBoard({ gather }: RegularConfirmBoardProps) {
   const toast = useToast();
 
   const options: ConfirmOption[] = useMemo(() => {
-    const slots = getVisibleSlots(gather.slots);
+    const slots = getVisibleSlots(gather.slots, false);
     if (slots.length) {
       return slots.map((slot) => ({
         key: slot.key,

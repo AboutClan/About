@@ -6,8 +6,7 @@ import Divider from "@/components/atoms/Divider";
 import {
   buildRegularApplicants,
   countApplicantsByOption,
-  formatSlot,
-  getVisibleSlots,
+  getScheduleRows,
   isGroupRegularGather,
 } from "@/features/gather/utils/regularGather";
 import StudyAddressMap from "@/features/study/screens/StudyAddressMap";
@@ -23,17 +22,17 @@ const CIRCLED_NUMBERS = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧",
  * 상시 행사 상세: 장소·일정 대신 일정과 콘텐츠 라인업을 보여 준다.
  * - 콘텐츠와 연결되지 않은 일정 → "일정" 박스
  * - 콘텐츠 → "라인업" 카드. 콘텐츠 전용 일정(contentKey)은 카드 안에 표시
- * 날짜가 지난 일정은 숨기고, 전용 일정이 모두 지난 콘텐츠도 숨긴다.
+ * 이번 주 회차부터 보여 주고, 마감된 회차(목요일부터 그 주·지난 회차)는 취소선으로 표시한다.
  */
 function RegularGatherSchedule({ data }: RegularGatherScheduleProps) {
   const [openMapKey, setOpenMapKey] = useState<string | null>(null);
 
   const allSlots = data.slots ?? [];
-  const visibleSlots = getVisibleSlots(allSlots);
-  const commonSlots = visibleSlots.filter((slot) => !slot.contentKey);
+  const scheduleRows = getScheduleRows(allSlots);
+  const commonRows = scheduleRows.filter((row) => !row.slot.contentKey);
   const contents = (data.contents ?? []).filter((content) => {
     const hasOwnSlots = allSlots.some((slot) => slot.contentKey === content.key);
-    return !hasOwnSlots || visibleSlots.some((slot) => slot.contentKey === content.key);
+    return !hasOwnSlots || scheduleRows.some((row) => row.slot.contentKey === content.key);
   });
 
   // 신청자 목록(가짜 인원 포함)과 같은 기준으로 일정·콘텐츠별 인원을 센다.
@@ -53,22 +52,27 @@ function RegularGatherSchedule({ data }: RegularGatherScheduleProps) {
           />
         )}
 
-        {commonSlots.length > 0 && (
-          <Section title="일정" isMulti={commonSlots.length > 1}>
+        {commonRows.length > 0 && (
+          <Section title="일정" isMulti={commonRows.length > 1}>
             <Box border="var(--border)" borderRadius="8px" px={4} py={1} bg="white">
-              {commonSlots.map((slot, idx) => (
+              {commonRows.map((row, idx) => (
                 <Flex
-                  key={slot.key}
+                  key={row.id}
                   justify="space-between"
                   align="center"
                   py={2}
                   borderTop={idx ? "var(--border)" : "none"}
                 >
-                  <Text fontSize="13px" fontWeight={600} color="gray.800">
-                    {formatSlot(slot)}
+                  <Text
+                    fontSize="13px"
+                    fontWeight={600}
+                    color={row.isClosed ? "gray.400" : "gray.800"}
+                    textDecoration={row.isClosed ? "line-through" : "none"}
+                  >
+                    {row.label}
                   </Text>
-                  <Text fontSize="11px" color="gray.500">
-                    신청 {optionCounts[slot.key] ?? 0}명
+                  <Text fontSize="11px" color={row.isClosed ? "gray.400" : "gray.500"}>
+                    {row.isClosed ? "마감" : `신청 ${optionCounts[row.slot.key] ?? 0}명`}
                   </Text>
                 </Flex>
               ))}
@@ -80,7 +84,7 @@ function RegularGatherSchedule({ data }: RegularGatherScheduleProps) {
           <Section title="라인업" isMulti={contents.length > 1}>
             <Flex flexDir="column" gap={2}>
               {contents.map((content, idx) => {
-                const ownSlots = visibleSlots.filter((slot) => slot.contentKey === content.key);
+                const ownRows = scheduleRows.filter((row) => row.slot.contentKey === content.key);
                 return (
                   <Box
                     key={content.key}
@@ -108,17 +112,18 @@ function RegularGatherSchedule({ data }: RegularGatherScheduleProps) {
                         {content.description}
                       </Text>
                     )}
-                    {ownSlots.length > 0 && (
+                    {ownRows.length > 0 && (
                       <Flex mt={2} gap={1} wrap="wrap">
-                        {ownSlots.map((slot) => (
+                        {ownRows.map((row) => (
                           <Badge
-                            key={slot.key}
+                            key={row.id}
                             size="md"
                             variant="subtle"
                             colorScheme="gray"
-                            color="var(--gray-700)"
+                            color={row.isClosed ? "var(--gray-400)" : "var(--gray-700)"}
+                            textDecoration={row.isClosed ? "line-through" : "none"}
                           >
-                            {formatSlot(slot)}
+                            {row.label}
                           </Badge>
                         ))}
                       </Flex>
@@ -153,13 +158,19 @@ function RegularGatherSchedule({ data }: RegularGatherScheduleProps) {
           </Section>
         )}
 
-        {!commonSlots.length && !contents.length && (
+        {!commonRows.length && !contents.length && (
           <Text fontSize="13px" color="gray.500">
             {isGroupRegularGather(data)
               ? "일정은 소모임 톡방에서 매주 투표로 정해요."
               : allSlots.length
                 ? "모집 중인 일정이 없어요."
                 : "일정을 준비 중이에요."}
+          </Text>
+        )}
+
+        {(commonRows.length > 0 || contents.length > 0) && (
+          <Text mt={2} fontSize="11px" color="gray.500">
+            매주 목요일 마감 · 이후 신청은 자리가 나면 연락드려요.
           </Text>
         )}
 

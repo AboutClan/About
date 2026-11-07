@@ -28,12 +28,82 @@ export const getCurrentRoundKey = () => getRoundStart().format("YYYY-MM-DD");
 
 const getSlotDateTime = (slot: IRegularSlot) => dayjs(`${slot.date} ${slot.time}`);
 
-/** 날짜가 정해진 일정 중 이미 지난 것 */
-const isPastSlot = (slot: IRegularSlot) => !!slot.date && getSlotDateTime(slot).isBefore(dayjs());
+/** 그 주 모임을 마감하는 요일(월요일 기준 3일 뒤 = 목요일 00:00) */
+const CLOSE_OFFSET_DAYS = 3;
 
-/** 지난 날짜 일정을 빼고, 매주 일정(월요일부터) → 날짜 일정(가까운 순)으로 정렬 */
-export const getVisibleSlots = (slots: IRegularSlot[] = []) => {
-  const upcoming = slots.filter((slot) => !isPastSlot(slot));
+/** 신청할 수 있는 가장 이른 회차의 주 월요일. 목요일부터는 그 주가 마감이라 다음 주다. */
+const getOpenWeekStart = () => {
+  const roundStart = getRoundStart();
+  return dayjs().isBefore(roundStart.add(CLOSE_OFFSET_DAYS, "day"))
+    ? roundStart
+    : roundStart.add(7, "day");
+};
+
+/**
+ * 날짜가 정해진 일정 중 이미 지난 것.
+ * hideClosedWeek면 마감된 주(목요일부터 그 주)에 속한 것도 지난 것으로 본다.
+ */
+const isClosedSlot = (slot: IRegularSlot, hideClosedWeek: boolean) =>
+  !!slot.date &&
+  (getSlotDateTime(slot).isBefore(dayjs()) ||
+    (hideClosedWeek && dayjs(slot.date).isBefore(getOpenWeekStart())));
+
+/** 상세 화면 일정 한 줄: 실제 날짜 회차와 마감 여부 */
+export interface RegularScheduleRow {
+  /** 화면 key (slot.key + 날짜) */
+  id: string;
+  slot: IRegularSlot;
+  /** "11.13(금) 19:00" */
+  label: string;
+  /** 마감된 주(목요일부터 그 주)이거나 이미 지난 회차 */
+  isClosed: boolean;
+}
+
+/**
+ * 상세 화면에 보여 줄 일정(날짜 순).
+ * - 매주 일정: 이번 주 회차, 그 회차가 마감이면 다음 주 회차도
+ * - 날짜 일정: 이번 주 이후 것
+ * 마감된 회차도 보여 주되 isClosed로 표시한다(취소선).
+ */
+export const getScheduleRows = (slots: IRegularSlot[] = []): RegularScheduleRow[] => {
+  const roundStart = getRoundStart();
+  const openWeekStart = getOpenWeekStart();
+  const now = dayjs();
+  const isClosedAt = (when: dayjs.Dayjs) => when.isBefore(openWeekStart) || when.isBefore(now);
+  const toRow = (slot: IRegularSlot, when: dayjs.Dayjs): RegularScheduleRow => ({
+    id: `${slot.key}-${when.format("YYYYMMDD")}`,
+    slot,
+    label: `${when.locale("ko").format("M.D(ddd)")} ${slot.time}`,
+    isClosed: isClosedAt(when),
+  });
+
+  const rows: { row: RegularScheduleRow; at: number }[] = [];
+  slots.forEach((slot) => {
+    if (slot.date) {
+      const when = getSlotDateTime(slot);
+      if (!when.isBefore(roundStart)) rows.push({ row: toRow(slot, when), at: when.valueOf() });
+      return;
+    }
+    const [hour, minute] = slot.time.split(":").map(Number);
+    const thisWeek = roundStart
+      .add(((slot.weekday ?? 0) + 6) % 7, "day")
+      .hour(hour || 0)
+      .minute(minute || 0);
+    rows.push({ row: toRow(slot, thisWeek), at: thisWeek.valueOf() });
+    if (isClosedAt(thisWeek)) {
+      const nextWeek = thisWeek.add(7, "day");
+      rows.push({ row: toRow(slot, nextWeek), at: nextWeek.valueOf() });
+    }
+  });
+  return rows.sort((a, b) => a.at - b.at).map(({ row }) => row);
+};
+
+/**
+ * 지난·마감된 날짜 일정을 빼고, 매주 일정(월요일부터) → 날짜 일정(가까운 순)으로 정렬.
+ * 관리자 확정 모임 화면은 마감된 주의 일정으로 모임을 만들어야 하므로 hideClosedWeek=false로 부른다.
+ */
+export const getVisibleSlots = (slots: IRegularSlot[] = [], hideClosedWeek = true) => {
+  const upcoming = slots.filter((slot) => !isClosedSlot(slot, hideClosedWeek));
   const weekly = upcoming
     .filter((slot) => !slot.date)
     .sort(
@@ -60,7 +130,7 @@ export const isGroupRegularGather = (
   gather?: Pick<IGather, "category" | "googleFormUrl" | "groupId"> | null,
 ) => gather?.category === "regularGather" && !gather.googleFormUrl && !!gather.groupId;
 
-const isThisRound =(gather: Pick<IGather, "formStats">) =>
+const isThisRound = (gather: Pick<IGather, "formStats">) =>
   gather.formStats?.roundKey === getCurrentRoundKey();
 
 /**
