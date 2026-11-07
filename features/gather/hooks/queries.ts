@@ -29,9 +29,9 @@ export const useGatherQuery = (
     options,
   );
 
-export type HomeGatherSectionKey = "regular" | "upcoming" | "past" | "partner";
+export type HomeGatherSectionKey = "regular" | "groupRegular" | "past" | "partner";
 
-/** 홈 번개 섹션별 모임(각 최대 3개) */
+/** 홈 번개 섹션별 모임(각 최대 3개, regular는 최대 6개) */
 export const useHomeGatherSectionsQuery = (
   options?: QueryOptions<Record<HomeGatherSectionKey, IGather[]>>,
 ) =>

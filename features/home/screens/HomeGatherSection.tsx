@@ -1,6 +1,8 @@
 import { Box } from "@chakra-ui/react";
 
 import SectionHeader from "@/components/atoms/SectionHeader";
+import SlideSectionCol from "@/components/molecules/SlideSectionCol";
+import SlideSectionRow from "@/components/molecules/SlideSectionRow";
 import { HomeGatherSectionKey, useHomeGatherSectionsQuery } from "@/features/gather/hooks/queries";
 import HomeGatherCol from "@/features/home/screens/HomeGatherCol";
 
@@ -15,9 +17,9 @@ const SECTION_TEXT: Record<
     subTitle: "취향 맞는 친구들과 만나는 가장 쉬운 방법",
     moreUrl: "/gather",
   },
-  upcoming: {
-    title: "⚡ 이번 주 번개 모임",
-    subTitle: "내가 원하는 때, 내 취향대로, 골라서 참여!",
+  groupRegular: {
+    title: "🙌 소모임에서 진행되는 상시 모임",
+    subTitle: "소모임에 가입하고 매주 함께해요",
     moreUrl: "/gather",
   },
   past: {
@@ -37,7 +39,7 @@ interface HomeGatherSectionProps {
 }
 
 /**
- * 홈 번개 섹션(카드 3개씩). 어떤 모임을 어떤 순서로 넣을지는 서버(findHomeGatherSectionsV2)가 정한다.
+ * 홈 번개 섹션(카드 3개씩, 상시 행사는 2열 x 3개). 어떤 모임을 어떤 순서로 넣을지는 서버(findHomeGatherSectionsV2)가 정한다.
  * 모임이 하나도 없으면 섹션을 숨긴다(로딩 중에는 스켈레톤).
  */
 function HomeGatherSection({ type }: HomeGatherSectionProps) {
@@ -46,6 +48,27 @@ function HomeGatherSection({ type }: HomeGatherSectionProps) {
   const { title, subTitle, moreUrl } = SECTION_TEXT[type];
 
   if (data && !gathers?.length) return null;
+
+  // 상시 행사는 2열 x 3개를 가로로 넘겨 본다. 3개 이하면 1열만.
+  if (type === "regular" && (!gathers || gathers.length > SECTION_SHOW_CNT)) {
+    return (
+      <SlideSectionRow gap="12px">
+        {[0, 1].map((col) => {
+          const colGathers = gathers?.slice(col * SECTION_SHOW_CNT, (col + 1) * SECTION_SHOW_CNT);
+          return (
+            <SlideSectionCol key={col} title={title} subTitle={subTitle}>
+              <HomeGatherCol
+                gathers={colGathers}
+                isPriority
+                maxCnt={colGathers ? colGathers.length : SECTION_SHOW_CNT}
+                moreUrl={moreUrl}
+              />
+            </SlideSectionCol>
+          );
+        })}
+      </SlideSectionRow>
+    );
+  }
 
   return (
     <Box px={5} mt={5}>

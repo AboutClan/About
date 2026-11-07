@@ -34,7 +34,7 @@ function Home() {
       </Slide>
       <Box h={2} />
       <Slide isNoPadding>
-        <HomeGatherSection type="upcoming" />
+        <HomeGatherSection type="groupRegular" />
       </Slide>
       <Slide isNoPadding>
         <HomeGatherSection type="partner" />
