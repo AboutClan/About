@@ -44,10 +44,13 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   const { data: session } = useSession();
 
-  const isAdmin =
+  // 모임 정보 수정·초대 링크는 모임장(과 기존 운영 계정)만. 수정하면 모임장이 수정한 사람으로 바뀌기 때문이다.
+  const isOwner =
     (gatherData?.user as UserSimpleInfoProps)?._id === session?.user.id ||
     session?.user.uid === "2259633694" ||
     session?.user.uid === "3224546232";
+  // 멤버 관리·불참 체크·상태 변경은 운영진(previliged)도 가능
+  const isAdmin = isOwner || session?.user.role === "previliged";
 
   const { mutate: absenceCheck } = useGatherAbsenceCheckMutation(+gatherData.id, {
     onSuccess() {
@@ -94,15 +97,19 @@ function GatherHeader({ gatherData }: IGatherHeader) {
                   setModalType("absence");
                 },
               },
-          {
-            text: "모임 정보 수정",
-            icon: <EditIcon />,
-            func: () => {
-              setGatherWriting({ ...gatherData, date: dayjs(gatherData.date).toString() });
-              setIsGatherEdit(true);
-              router.push(`/gather/writing/category?id=${gatherData.id}&edit=on`);
-            },
-          },
+          ...(isOwner
+            ? [
+                {
+                  text: "모임 정보 수정",
+                  icon: <EditIcon />,
+                  func: () => {
+                    setGatherWriting({ ...gatherData, date: dayjs(gatherData.date).toString() });
+                    setIsGatherEdit(true);
+                    router.push(`/gather/writing/category?id=${gatherData.id}&edit=on`);
+                  },
+                },
+              ]
+            : []),
 
           ...(gatherData?.status !== "pending"
             ? [
@@ -177,16 +184,16 @@ function GatherHeader({ gatherData }: IGatherHeader) {
               text: "초대 링크 공유",
               func: () => {
                 shareToKakao({
-                  title: `${isAdmin ? "(모임장 초대) " : ""}${gatherData.title}`,
+                  title: `${isOwner ? "(모임장 초대) " : ""}${gatherData.title}`,
                   date: gatherData.date,
-                  subtitle: isAdmin
+                  subtitle: isOwner
                     ? `해당 링크를 클릭하면 모임에 즉시 참여됩니다.`
                     : gatherData?.content,
                   img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
                   url:
                     "https://about20s.club" +
                     `/gather/${gatherData.id}` +
-                    `${isAdmin ? `?uid=${session?.user.uid}` : ``}`,
+                    `${isOwner ? `?uid=${session?.user.uid}` : ``}`,
                 });
               },
             },

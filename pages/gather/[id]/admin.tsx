@@ -16,8 +16,10 @@ import {
 } from "@/features/gather/hooks/mutations";
 import { useGatherIDQuery } from "@/features/gather/hooks/queries";
 import { useResetGatherQuery } from "@/features/gather/hooks/useResetGatherQuery";
+import { withRealName } from "@/features/gather/utils/memberDisplay";
 import { useToast } from "@/hooks/custom/CustomToast";
 import { IUser } from "@/types/models/userTypes/userInfoTypes";
+import { getDisplayName } from "@/utils/stringUtils";
 import { safeDecodeTel } from "@/utils/utils";
 
 const TAB_ARR = ["신청 인원", "참여 인원", "인원 초대"] as const;
@@ -25,6 +27,11 @@ const TAB_ARR = ["신청 인원", "참여 인원", "인원 초대"] as const;
 const REGULAR_TAB_ARR = ["확정 모임"] as const;
 // 상시 행사에서 만든 확정 모임은 상위 행사 신청자를 바로 초대할 수 있게 한다
 const CONFIRMED_TAB_ARR = ["상시 행사 신청자", "참여 인원", "인원 초대"] as const;
+
+const withRealNameUser = (user: IUser) => {
+  const displayName = withRealName(getDisplayName(user), user?.name);
+  return { ...user, name: displayName, nickname: displayName };
+};
 
 type Tab =
   (typeof TAB_ARR)[number] | (typeof REGULAR_TAB_ARR)[number] | (typeof CONFIRMED_TAB_ARR)[number];
@@ -129,7 +136,8 @@ function Admin() {
                         deleteId: who.dummyId,
                       }
                     : {
-                        user: who.user,
+                        // 관리자 페이지(모임장·운영진만 진입)라 "닉네임 (실명)"으로 보여 준다
+                        user: withRealNameUser(who.user as IUser),
                         text:
                           safeDecodeTel((who?.user as IUser)?.telephone) ||
                           ((who?.user as IUser)?.telephone?.toString() ?? "없음"),
@@ -178,7 +186,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       const gather = await res.json();
       const ownerId = typeof gather?.user === "string" ? gather.user : gather?.user?._id;
       const isOwner = ownerId === session.user.id;
-      const isSuperAdmin = GATHER_ADMIN_UIDS.includes(session.user.uid);
+      const isSuperAdmin =
+        GATHER_ADMIN_UIDS.includes(session.user.uid) || session.user.role === "previliged";
 
       if (!isOwner && !isSuperAdmin) {
         return { redirect: { destination: "/home", permanent: false } };
